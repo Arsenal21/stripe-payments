@@ -48,11 +48,11 @@ class AcceptStripePayments_Admin {
 
         //Add any required inline JS code in the admin dashboard side.
         add_action('admin_print_scripts', array($this, 'asp_print_admin_scripts'));
-        
+
         //TinyMCE button related
-        add_action('init', array($this, 'tinymce_shortcode_button'));        
+        add_action('init', array($this, 'tinymce_shortcode_button'));
         add_action('current_screen', array($this, 'check_current_screen'));
-        add_action('wp_ajax_asp_tinymce_get_settings', array($this, 'tinymce_ajax_handler'));// Add ajax action handler for tinymce
+        add_action('wp_ajax_asp_tinymce_get_settings', array($this, 'tinymce_ajax_handler')); // Add ajax action handler for tinymce
     }
 
     public function check_current_screen() {
@@ -72,11 +72,11 @@ class AcceptStripePayments_Admin {
         //The following is used by the TinyMCE button.
         ?>
         <script type="text/javascript">
-        var asp_admin_ajax_url = '<?php echo admin_url('admin-ajax.php?action=ajax'); ?>';
+            var asp_admin_ajax_url = '<?php echo admin_url('admin-ajax.php?action=ajax'); ?>';
         </script>
         <?php
     }
-    
+
     public function tinymce_ajax_handler() {
         $opt = get_option('AcceptStripePayments-settings');
         $ret['button_text'] = $opt['button_text'];
@@ -196,11 +196,12 @@ class AcceptStripePayments_Admin {
         add_settings_section('AcceptStripePayments-credentials-section', 'Credentials', null, $this->plugin_slug);
 
         add_settings_field('checkout_url', 'Checkout Result Page URL', array(&$this, 'settings_field_callback'), $this->plugin_slug, 'AcceptStripePayments-global-section', array('field' => 'checkout_url', 'desc' => 'This page is automatically created for you when you install the plugin. Do not delete this page as the plugin will send the customer to this page after the payment.', 'size' => 100));
-        add_settings_field('currency_code', 'Currency', array(&$this, 'settings_field_callback'), $this->plugin_slug, 'AcceptStripePayments-global-section', array('field' => 'currency_code', 'desc' => '', 'size' => 10));        
+        add_settings_field('currency_code', 'Currency', array(&$this, 'settings_field_callback'), $this->plugin_slug, 'AcceptStripePayments-global-section', array('field' => 'currency_code', 'desc' => '', 'size' => 10));
         add_settings_field('button_text', 'Button Text', array(&$this, 'settings_field_callback'), $this->plugin_slug, 'AcceptStripePayments-global-section', array('field' => 'button_text', 'desc' => 'Example: Buy Now, Pay Now etc.'));
-        add_settings_field('dont_save_card', 'Do Not Save Card Data on Stripe', array(&$this, 'settings_field_callback'), $this->plugin_slug, 'AcceptStripePayments-global-section', array('field' => 'dont_save_card', 'desc' => 'When this checkbox is checked, the transaction won\'t create the customer (no card will be saved for that).'));        
+        add_settings_field('dont_save_card', 'Do Not Save Card Data on Stripe', array(&$this, 'settings_field_callback'), $this->plugin_slug, 'AcceptStripePayments-global-section', array('field' => 'dont_save_card', 'desc' => 'When this checkbox is checked, the transaction won\'t create the customer (no card will be saved for that).'));
         add_settings_field('use_new_button_method', 'Use New Method To Display Buttons', array(&$this, 'settings_field_callback'), $this->plugin_slug, 'AcceptStripePayments-global-section', array('field' => 'use_new_button_method',
             'desc' => 'Use new method to display Stripe buttons. It makes connection to Stripe website only when button is clicked, which makes the page with buttons load faster. A little drawback is that Stripe pop-up is displayed with a small delay after button click. If you have more than one button on a page, enabling this option is highly recommended.'));
+        add_settings_field('checkout_lang', 'Stripe Checkout Language', array(&$this, 'settings_field_callback'), $this->plugin_slug, 'AcceptStripePayments-global-section', array('field' => 'checkout_lang', 'desc' => 'Specify language to be used in Stripe checkout pop-up or select "Autodetect" to let Stripe handle it.'));
 
         add_settings_field('is_live', 'Live Mode', array(&$this, 'settings_field_callback'), $this->plugin_slug, 'AcceptStripePayments-credentials-section', array('field' => 'is_live', 'desc' => 'Check this to run the transaction in live mode. When unchecked it will run in test mode.'));
         add_settings_field('api_publishable_key', 'Stripe Publishable Key', array(&$this, 'settings_field_callback'), $this->plugin_slug, 'AcceptStripePayments-credentials-section', array('field' => 'api_publishable_key', 'desc' => ''));
@@ -313,6 +314,32 @@ class AcceptStripePayments_Admin {
         return $opts;
     }
 
+    public function get_checkout_lang_options($selected_value = '') {
+        $data_arr = array(
+            "" => "Autodetect",
+            "da" => "Danish",
+            "nl" => "Dutch",
+            "en" => "English",
+            "fi" => "Finnish",
+            "fr" => "French",
+            "de" => "German",
+            "it" => "Italian",
+            "ja" => "Japanese",
+            "no" => "Norwegian",
+            "zh" => "Simplified Chinese",
+            "es" => "Spanish",
+            "sv" => "Swedish",
+        );
+        $opt_tpl = '<option value="%val%"%selected%>%name%</option>';
+        $opts = $selected_value === false ? '<option value="" selected>(Default)</option>' : '';
+        foreach ($data_arr as $key => $value) {
+            $selected = $selected_value == $key ? ' selected' : '';
+            $opts .= str_replace(array('%val%', '%name%', '%selected%'), array($key, $value, $selected), $opt_tpl);
+        }
+
+        return $opts;
+    }
+
     /**
      * Settings HTML
      *
@@ -345,6 +372,13 @@ class AcceptStripePayments_Admin {
                 echo $this->get_currency_options($field_value);
                 echo '</select>';
 //              echo "<p class=\"description\">{$desc}</p>";
+                break;
+            case 'checkout_lang':
+                // list of supported languages can be found here: https://stripe.com/docs/checkout#supported-languages
+                echo '<select name="AcceptStripePayments-settings[' . $field . ']">';
+                echo $this->get_checkout_lang_options($field_value);
+                echo '</select>';
+                echo "<p class=\"description\">{$desc}</p>";
                 break;
             // case 'button_text':
             // case 'api_username':
@@ -392,6 +426,8 @@ class AcceptStripePayments_Admin {
             $output['currency_code'] = $input['currency_code'];
         else
             add_settings_error('AcceptStripePayments-settings', 'invalid-currency-code', 'You must specify payment currency.');
+
+        $output['checkout_lang'] = $input['checkout_lang'];
 
         if (!empty($input['api_publishable_key']))
             $output['api_publishable_key'] = $input['api_publishable_key'];

@@ -122,10 +122,13 @@ class AcceptStripePaymentsShortcode {
 
         $button = "<button id='{$button_id}' type='submit' class='{$class}'><span>{$button_text}</span></button>";
 
+        $checkout_lang = $this->AcceptStripePayments->get_setting('checkout_lang');
+
         $data = array(
             'description' => $description,
             'image' => $item_logo,
             'currency' => $currency,
+            'locale' => (empty($checkout_lang) ? 'auto' : $checkout_lang),
             'name' => $name,
             'url' => $url,
             'amount' => $priceInCents,
@@ -170,14 +173,15 @@ class AcceptStripePaymentsShortcode {
         $output .= "data-description='{$data['description']}'";
         $output .= "data-label='{$button_text}'";
         $output .= "data-currency='{$data['currency']}'";
+        $output .= "data-locale='{$data['locale']}'";
         if (!empty($data['image'])) {//Show item logo/thumbnail in the stripe payment window
             $output .= "data-image='{$data['image']}'";
         }
 
-        if ($data['billingAddress']){
+        if ($data['billingAddress']) {
             $output .= "data-billing-address='{$data['billingAddress']}'";
         }
-        if ($data['shippingAddress']){
+        if ($data['shippingAddress']) {
             $output .= "data-shipping-address='{$data['shippingAddress']}'";
         }
         $output .= apply_filters('asp_additional_stripe_checkout_data_parameters', ''); //Filter to allow the addition of extra data parameters for stripe checkout.
@@ -348,10 +352,8 @@ class AcceptStripePaymentsShortcode {
 
             //Insert the order data to the custom post
             $order = ASPOrder::get_instance();
-            $order_post_id = $order->insert($post_data, $charge);
+            $order->insert($post_data, $charge);
 
-            $post_data['order_post_id'] = $order_post_id;
-            
             //Action hook with the checkout post data parameters.
             do_action('asp_stripe_payment_completed', $post_data, $charge);
 

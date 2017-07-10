@@ -173,6 +173,7 @@ None
 == Changelog ==
 
 = TODO 1.5.7 =
+- Added "Stripe Checkout Language" option to the settings.
 - The 'asp_stripe_payment_completed' hook now passes the order post ID in the $post_data array.
 
 = 1.5.6 =
