@@ -37,7 +37,7 @@ function wp_asp_add_stripe_handler(data) {
                 data.handler = StripeCheckout.configure({
                     key: stripehandler.key,
                     amount: data.amount,
-                    locale: 'auto',
+                    locale: data.locale,
                     description: data.description,
                     name: data.name,
                     currency: data.currency,
@@ -53,7 +53,7 @@ function wp_asp_add_stripe_handler(data) {
                 data.handler = StripeCheckout.configure({
                     key: stripehandler.key,
                     amount: data.amount,
-                    locale: 'auto',
+                    locale: data.locale,
                     description: data.description,
                     name: data.name,
                     currency: data.currency,
