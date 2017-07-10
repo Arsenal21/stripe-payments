@@ -352,7 +352,9 @@ class AcceptStripePaymentsShortcode {
 
             //Insert the order data to the custom post
             $order = ASPOrder::get_instance();
-            $order->insert($post_data, $charge);
+            $order_post_id = $order->insert($post_data, $charge);
+
+            $post_data['order_post_id'] = $order_post_id;
 
             //Action hook with the checkout post data parameters.
             do_action('asp_stripe_payment_completed', $post_data, $charge);
