@@ -271,68 +271,10 @@ class AcceptStripePayments_Admin {
         <?php
     }
 
-    public function get_currency_options($selected_value = '') {
-        $currencies = array(
-            "USD" => "US Dollars (USD)",
-            "EUR" => "Euros (EUR)",
-            "GBP" => "Pounds Sterling (GBP)",
-            "AUD" => "Australian Dollars (AUD)",
-            "BRL" => "Brazilian Real (BRL)",
-            "CAD" => "Canadian Dollars (CAD)",
-            "CNY" => "Chinese Yuan (CNY)",
-            "CZK" => "Czech Koruna (CZK)",
-            "DKK" => "Danish Krone (DKK)",
-            "HKD" => "Hong Kong Dollar (HKD)",
-            "HUF" => "Hungarian Forint (HUF)",
-            "INR" => "Indian Rupee (INR)",
-            "IDR" => "Indonesia Rupiah (IDR)",
-            "ILS" => "Israeli Shekel (ILS)",
-            "JPY" => "Japanese Yen (JPY)",
-            "MYR" => "Malaysian Ringgits (MYR)",
-            "MXN" => "Mexican Peso (MXN)",
-            "NZD" => "New Zealand Dollar (NZD)",
-            "NOK" => "Norwegian Krone (NOK)",
-            "PHP" => "Philippine Pesos (PHP)",
-            "PLN" => "Polish Zloty (PLN)",
-            "SGD" => "Singapore Dollar (SGD)",
-            "ZAR" => "South African Rand (ZAR)",
-            "KRW" => "South Korean Won (KRW)",
-            "SEK" => "Swedish Krona (SEK)",
-            "CHF" => "Swiss Franc (CHF)",
-            "TWD" => "Taiwan New Dollars (TWD)",
-            "THB" => "Thai Baht (THB)",
-            "TRY" => "Turkish Lira (TRY)",
-            "VND" => "Vietnamese Dong (VND)",
-        );
-        $opt_tpl = '<option value="%curr_code%"%selected%>%curr_name%</option>';
-        $opts = $selected_value === false ? '<option value="" selected>(Default)</option>' : '';
-        foreach ($currencies as $key => $value) {
-            $selected = $selected_value == $key ? ' selected' : '';
-            $opts .= str_replace(array('%curr_code%', '%curr_name%', '%selected%'), array($key, $value, $selected), $opt_tpl);
-        }
-
-        return $opts;
-    }
-
-    public function get_checkout_lang_options($selected_value = '') {
-        $data_arr = array(
-            "" => "Autodetect",
-            "da" => "Danish",
-            "nl" => "Dutch",
-            "en" => "English",
-            "fi" => "Finnish",
-            "fr" => "French",
-            "de" => "German",
-            "it" => "Italian",
-            "ja" => "Japanese",
-            "no" => "Norwegian",
-            "zh" => "Simplified Chinese",
-            "es" => "Spanish",
-            "sv" => "Swedish",
-        );
+    public function generate_select_options($opts_arr, $selected_value = '') {
         $opt_tpl = '<option value="%val%"%selected%>%name%</option>';
         $opts = $selected_value === false ? '<option value="" selected>(Default)</option>' : '';
-        foreach ($data_arr as $key => $value) {
+        foreach ($opts_arr as $key => $value) {
             $selected = $selected_value == $key ? ' selected' : '';
             $opts .= str_replace(array('%val%', '%name%', '%selected%'), array($key, $value, $selected), $opt_tpl);
         }
@@ -368,15 +310,62 @@ class AcceptStripePayments_Admin {
                 echo "<textarea cols='70' rows='7' name='AcceptStripePayments-settings[{$field}]'>{$field_value}</textarea><p class=\"description\">{$desc}</p>";
                 break;
             case 'currency_code':
+                $currencies = array(
+                    "USD" => "US Dollars (USD)",
+                    "EUR" => "Euros (EUR)",
+                    "GBP" => "Pounds Sterling (GBP)",
+                    "AUD" => "Australian Dollars (AUD)",
+                    "BRL" => "Brazilian Real (BRL)",
+                    "CAD" => "Canadian Dollars (CAD)",
+                    "CNY" => "Chinese Yuan (CNY)",
+                    "CZK" => "Czech Koruna (CZK)",
+                    "DKK" => "Danish Krone (DKK)",
+                    "HKD" => "Hong Kong Dollar (HKD)",
+                    "HUF" => "Hungarian Forint (HUF)",
+                    "INR" => "Indian Rupee (INR)",
+                    "IDR" => "Indonesia Rupiah (IDR)",
+                    "ILS" => "Israeli Shekel (ILS)",
+                    "JPY" => "Japanese Yen (JPY)",
+                    "MYR" => "Malaysian Ringgits (MYR)",
+                    "MXN" => "Mexican Peso (MXN)",
+                    "NZD" => "New Zealand Dollar (NZD)",
+                    "NOK" => "Norwegian Krone (NOK)",
+                    "PHP" => "Philippine Pesos (PHP)",
+                    "PLN" => "Polish Zloty (PLN)",
+                    "SGD" => "Singapore Dollar (SGD)",
+                    "ZAR" => "South African Rand (ZAR)",
+                    "KRW" => "South Korean Won (KRW)",
+                    "SEK" => "Swedish Krona (SEK)",
+                    "CHF" => "Swiss Franc (CHF)",
+                    "TWD" => "Taiwan New Dollars (TWD)",
+                    "THB" => "Thai Baht (THB)",
+                    "TRY" => "Turkish Lira (TRY)",
+                    "VND" => "Vietnamese Dong (VND)",
+                );
                 echo '<select name="AcceptStripePayments-settings[' . $field . ']">';
-                echo $this->get_currency_options($field_value);
+                echo $this->generate_select_options($currencies, $field_value);
                 echo '</select>';
 //              echo "<p class=\"description\">{$desc}</p>";
                 break;
             case 'checkout_lang':
                 // list of supported languages can be found here: https://stripe.com/docs/checkout#supported-languages
+                $checkout_langs = array(
+                    "" => "Autodetect",
+                    "da" => "Danish",
+                    "nl" => "Dutch",
+                    "en" => "English",
+                    "fi" => "Finnish",
+                    "fr" => "French",
+                    "de" => "German",
+                    "it" => "Italian",
+                    "ja" => "Japanese",
+                    "no" => "Norwegian",
+                    "zh" => "Simplified Chinese",
+                    "es" => "Spanish",
+                    "sv" => "Swedish",
+                );
                 echo '<select name="AcceptStripePayments-settings[' . $field . ']">';
-                echo $this->get_checkout_lang_options($field_value);
+                echo $this->generate_select_options($checkout_langs, $field_value);
                 echo '</select>';
                 echo "<p class=\"description\">{$desc}</p>";
                 break;
