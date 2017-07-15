@@ -33,23 +33,37 @@ function wp_asp_add_stripe_handler(data) {
 
     function wp_asp_check_handler() {
         if (typeof (data.handler) == "undefined") {
-            var stripeParams = {
-                key: stripehandler.key,
-                amount: data.amount,
-                locale: data.locale,
-                description: data.description,
-                name: data.name,
-                currency: data.currency,
-                image: data.image,
-                url: data.url,
-                token: function (token, args) {
-                    wp_asp_hadnle_token(data, token, args);
-                }};
             if (data.billingAddress) {
-                stripeParams.billingAddress = data.billingAddress;
-                stripeParams.shippingAddress = data.shippingAddress;
+                data.handler = StripeCheckout.configure({
+                    key: stripehandler.key,
+                    amount: data.amount,
+                    locale: data.locale,
+                    description: data.description,
+                    name: data.name,
+                    currency: data.currency,
+                    image: data.image,
+                    billingAddress: data.billingAddress,
+                    shippingAddress: data.shippingAddress,
+                    url: data.url,
+                    token: function (token, args) {
+                        wp_asp_hadnle_token(data, token, args);
+                    }
+                });
+            } else { //workaround for Stripe to not display warning when billingAddress and shippingAddress are both set to false
+                data.handler = StripeCheckout.configure({
+                    key: stripehandler.key,
+                    amount: data.amount,
+                    locale: data.locale,
+                    description: data.description,
+                    name: data.name,
+                    currency: data.currency,
+                    image: data.image,
+                    url: data.url,
+                    token: function (token, args) {
+                        wp_asp_hadnle_token(data, token, args);
+                    }
+                });
             }
-            data.handler = StripeCheckout.configure(stripeParams);
         }
     }
 
