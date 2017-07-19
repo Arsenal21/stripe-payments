@@ -172,6 +172,9 @@ None
 
 == Changelog ==
 
+= TODO 1.5.8 =
+- Added Italian language translation file to the plugin. Translation was submitted by Daniele Oneta.
+
 = 1.5.7 =
 - Added "Stripe Checkout Language" option to the settings.
 - The 'asp_stripe_payment_completed' hook now passes the order post ID in the $post_data array.
