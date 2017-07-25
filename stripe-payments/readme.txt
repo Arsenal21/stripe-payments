@@ -174,6 +174,7 @@ None
 
 = TODO 1.5.8 =
 - Added Italian language translation file to the plugin. Translation was submitted by Daniele Oneta.
+- Zero-decimal currencies (like JPY) are no longer multiplied by 100.
 
 = 1.5.7 =
 - Added "Stripe Checkout Language" option to the settings.

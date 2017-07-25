@@ -3,6 +3,7 @@
 class AcceptStripePaymentsShortcode {
 
     var $AcceptStripePayments = null;
+    var $zeroCents = array('JPY', 'MGA', 'VND', 'KRW');
 
     /**
      * Instance of this class.
@@ -108,7 +109,12 @@ class AcceptStripePaymentsShortcode {
         $button_id = 'stripe_button_' . $uniq_id;
         self::$payment_buttons[] = $button_id;
         $paymentAmount = ("$quantity" === "NA" ? $price : ($price * $quantity));
-        $priceInCents = $paymentAmount * 100;
+        if (in_array($currency, $this->zeroCents)) {
+            //this is zero-cents currency, amount shouldn't be multiplied by 100
+            $priceInCents = $paymentAmount;
+        } else {
+            $priceInCents = $paymentAmount * 100;
+        }
         if ((!isset($description) || empty($description)) && $price != 0) {
             //Create a description using quantity and payment amount
             $description = "{$quantity} piece" . ($quantity <> 1 ? "s" : "") . " for {$paymentAmount} {$currency}";
@@ -136,6 +142,7 @@ class AcceptStripePaymentsShortcode {
             'shippingAddress' => (empty($shipping_address) ? false : true),
             'uniq_id' => $uniq_id,
             'variable' => ($price == 0 ? true : false),
+            'zeroCents' => $this->zeroCents,
         );
 
         $output = "<form id='stripe_form_{$uniq_id}' action='" . $this->AcceptStripePayments->get_setting('checkout_url') . "' METHOD='POST'> ";
@@ -290,12 +297,18 @@ class AcceptStripePaymentsShortcode {
 
         $opt = get_option('AcceptStripePayments-settings');
 
+        if (in_array($currency_code, $this->zeroCents)) {
+            $amount = $paymentAmount;
+        } else {
+            $amount = $paymentAmount * 100;
+        }
+
         ob_start();
         try {
 
             if ($opt['dont_save_card'] == 1) {
                 $charge = Stripe_Charge::create(array(
-                            'amount' => $paymentAmount * 100,
+                            'amount' => $amount,
                             'currency' => $currencyCodeType,
                             'description' => $charge_description,
                             'source' => $stripeToken,
@@ -309,7 +322,7 @@ class AcceptStripePaymentsShortcode {
 
                 $charge = Stripe_Charge::create(array(
                             'customer' => $customer->id,
-                            'amount' => $paymentAmount * 100,
+                            'amount' => $amount,
                             'currency' => $currencyCodeType,
                             'description' => $charge_description,
                 ));
