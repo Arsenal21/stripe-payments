@@ -4,7 +4,7 @@ Donate link: http://www.tipsandtricks-hq.com/
 Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortcode, digital goods, payment gateway, instant payment, commerce, digital downloads, downloads, e-commerce, e-store, ecommerce, eshop, donation
 Requires at least: 4.7
 Tested up to: 4.8
-Stable tag: 1.5.7
+Stable tag: 1.5.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -172,9 +172,9 @@ None
 
 == Changelog ==
 
-= TODO 1.5.8 =
-- Added Italian language translation file to the plugin. Translation was submitted by Daniele Oneta.
+= 1.5.8 =
 - Zero-decimal currencies (like JPY) are no longer multiplied by 100.
+- Added Italian language translation file to the plugin. Translation was submitted by Daniele Oneta.
 
 = 1.5.7 =
 - Added "Stripe Checkout Language" option to the settings.
