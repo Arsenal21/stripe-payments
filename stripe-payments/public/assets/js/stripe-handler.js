@@ -88,7 +88,9 @@ function wp_asp_add_stripe_handler(data) {
         else {
             jQuery('#error_explanation_' + data.uniq_id).html('');
             jQuery('input#stripeAmount_' + data.uniq_id).val(amount);
-            amount = amount * 100;
+            if (data.zeroCents.indexOf(data.currency) <= -1) {
+                amount = amount * 100;
+            }
             data.handler.open({
                 amount: amount
             });
