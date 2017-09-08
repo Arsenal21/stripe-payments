@@ -173,7 +173,7 @@ None
 == Changelog ==
 
 = TODO 1.5.9 =
-- Moved "Settings" menu item from WP Settings to "Stripe Orders".
+- Moved "Settings" menu item from WP Settings to a new independent menu called "Stripe Payments".
 
 = 1.5.8 =
 - Zero-decimal currencies (like JPY) are no longer multiplied by 100.
