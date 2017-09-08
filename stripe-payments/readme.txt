@@ -172,6 +172,9 @@ None
 
 == Changelog ==
 
+= TODO 1.5.9 =
+- Moved "Settings" menu item from WP Settings to "Stripe Orders".
+
 = 1.5.8 =
 - Zero-decimal currencies (like JPY) are no longer multiplied by 100.
 - Added Italian language translation file to the plugin. Translation was submitted by Daniele Oneta.

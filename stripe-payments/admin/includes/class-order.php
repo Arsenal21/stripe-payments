@@ -24,7 +24,7 @@ class ASPOrder {
 			'singular_name'       => _x( 'Order', 'Post Type Singular Name', 'stripe-payments' ),
 			'menu_name'           => __( 'Stripe Orders', 'stripe-payments' ),
 			'parent_item_colon'   => __( 'Parent Order:', 'stripe-payments' ),
-			'all_items'           => __( 'All Orders', 'stripe-payments' ),
+			'all_items'           => __( 'Orders', 'stripe-payments' ),
 			'view_item'           => __( 'View Order', 'stripe-payments' ),
 			'add_new_item'        => __( 'Add New Order', 'stripe-payments' ),
 			'add_new'             => __( 'Add New', 'stripe-payments' ),

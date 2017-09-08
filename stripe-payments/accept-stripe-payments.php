@@ -11,7 +11,6 @@
  */
 //Slug - asp
 //Textdomain - stripe-payments
-
 // If this file is called directly, abort.
 if (!defined('ABSPATH')) {
     exit; //Exit if accessed directly
@@ -65,6 +64,7 @@ if (is_admin()) {
 }
 
 /* Add a link to the settings page in the plugins listing page */
+
 function asp_stripe_add_settings_link($links, $file) {
     if ($file == plugin_basename(__FILE__)) {
         $settings_link = '<a href="options-general.php?page=accept_stripe_payment">Settings</a>';
@@ -74,3 +74,16 @@ function asp_stripe_add_settings_link($links, $file) {
 }
 
 add_filter('plugin_action_links', 'asp_stripe_add_settings_link', 10, 2);
+//check and redirect old Settings page
+add_action('init', 'asp_redirect_settings_page');
+
+function asp_redirect_settings_page() {
+    global $pagenow;
+    if (is_admin()) {
+        if ($pagenow == "options-general.php" && isset($_GET['page']) && $_GET['page'] == 'accept_stripe_payment') {
+            //let's redirect old Settings page to new
+            wp_redirect(get_admin_url() . 'edit.php?post_type=stripe_order&page=settings', 301);
+            exit;
+        }
+    }
+}

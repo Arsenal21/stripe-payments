@@ -176,8 +176,8 @@ class AcceptStripePayments_Admin {
          * - Change 'manage_options' to the capability you see fit
          *   For reference: http://codex.wordpress.org/Roles_and_Capabilities
          */
-        $this->plugin_screen_hook_suffix = add_options_page(
-                __('Accept Stripe Payments', 'stripe-payments'), __('Accept Stripe Payments', 'stripe-payments'), 'manage_options', $this->plugin_slug, array($this, 'display_plugin_admin_page')
+        $this->plugin_screen_hook_suffix = add_submenu_page(
+                'edit.php?post_type=stripe_order', __('Settings', 'stripe-payments'), __('Settings', 'stripe-payments'), 'manage_options', 'settings', array($this, 'display_plugin_admin_page')
         );
         add_action('admin_init', array(&$this, 'register_settings'));
     }
