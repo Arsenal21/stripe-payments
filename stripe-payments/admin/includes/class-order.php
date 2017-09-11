@@ -22,7 +22,7 @@ class ASPOrder {
 		$labels = array(
 			'name'                => _x( 'Orders', 'Post Type General Name', 'stripe-payments' ),
 			'singular_name'       => _x( 'Order', 'Post Type Singular Name', 'stripe-payments' ),
-			'menu_name'           => __( 'Stripe Orders', 'stripe-payments' ),
+			'menu_name'           => __( 'Stripe Payments', 'stripe-payments' ),
 			'parent_item_colon'   => __( 'Parent Order:', 'stripe-payments' ),
 			'all_items'           => __( 'Orders', 'stripe-payments' ),
 			'view_item'           => __( 'View Order', 'stripe-payments' ),
