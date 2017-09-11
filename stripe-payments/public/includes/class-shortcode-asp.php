@@ -130,7 +130,12 @@ class AcceptStripePaymentsShortcode {
 
         $checkout_lang = $this->AcceptStripePayments->get_setting('checkout_lang');
 
+        $allowRememberMe = $this->AcceptStripePayments->get_setting('disable_remember_me');
+
+        $allowRememberMe = ($allowRememberMe === 1) ? false : true;
+
         $data = array(
+            'allowRememberMe' => $allowRememberMe,
             'description' => $description,
             'image' => $item_logo,
             'currency' => $currency,
@@ -176,7 +181,8 @@ class AcceptStripePaymentsShortcode {
           data-key='" . $this->AcceptStripePayments->get_setting('api_publishable_key') . "'
           data-panel-label='Pay'
           data-amount='{$data['amount']}' 
-          data-name='{$data['name']}'";
+          data-name='{$data['name']}'
+          data-allow-remember-me='{$data['allowRememberMe']}'";
         $output .= "data-description='{$data['description']}'";
         $output .= "data-label='{$button_text}'";
         $output .= "data-currency='{$data['currency']}'";

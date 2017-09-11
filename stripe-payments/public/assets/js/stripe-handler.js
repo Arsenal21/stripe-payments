@@ -45,6 +45,7 @@ function wp_asp_add_stripe_handler(data) {
                     billingAddress: data.billingAddress,
                     shippingAddress: data.shippingAddress,
                     url: data.url,
+                    allowRememberMe: data.allowRememberMe,
                     token: function (token, args) {
                         wp_asp_hadnle_token(data, token, args);
                     }
@@ -59,6 +60,7 @@ function wp_asp_add_stripe_handler(data) {
                     currency: data.currency,
                     image: data.image,
                     url: data.url,
+                    allowRememberMe: data.allowRememberMe,
                     token: function (token, args) {
                         wp_asp_hadnle_token(data, token, args);
                     }

@@ -173,6 +173,7 @@ None
 == Changelog ==
 
 = TODO 1.5.9 =
+- Added "Turn Off "Remember me" Option" setting. When enabled, "Remember me" checkbox will be removed from Stripe's checkout popup.
 - Moved "Settings" menu item from WP Settings to a new independent menu called "Stripe Payments".
 
 = 1.5.8 =
