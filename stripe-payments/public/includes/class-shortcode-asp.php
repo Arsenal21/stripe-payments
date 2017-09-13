@@ -239,6 +239,9 @@ class AcceptStripePaymentsShortcode {
         $aspData = array();
         if (isset($_SESSION['asp_data'])) {
             $aspData = $_SESSION['asp_data'];
+        } else {
+            // no session data, let's display nothing for now
+            return;
         }
         if (empty($content)) {
             //this is old shortcode. Let's display the default output for backward compatability
@@ -282,6 +285,9 @@ class AcceptStripePaymentsShortcode {
         $aspData = array();
         if (isset($_SESSION['asp_data'])) {
             $aspData = $_SESSION['asp_data'];
+        } else {
+            // no session data, let's display nothing for now
+            return;
         }
         if (isset($aspData['error_msg']) && !empty($aspData['error_msg'])) {
             //some error occured. Let's display error message
