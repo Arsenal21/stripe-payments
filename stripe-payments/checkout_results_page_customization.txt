@@ -37,6 +37,7 @@ Oops, something went wrong!
 <span style="color: red"><b>{error_msg}</b></span>
 [/accept_stripe_payment_checkout_error]
 
+There is only one tag available, which containts the actual error message - {error_msg}
 It should be put on the same checkout results page. If error occured, only content inside [accept_stripe_payment_checkout_error] shortcode will be displayed.
 If payment was successful, only content inside [accept_stripe_payment_checkout] will be visible for the user.
 
