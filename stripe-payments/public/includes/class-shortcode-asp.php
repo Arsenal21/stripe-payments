@@ -303,6 +303,9 @@ class AcceptStripePaymentsShortcode {
         $vals = array();
 
         foreach ($data as $key => $value) {
+            if ($key == 'stripeEmail') {
+                $key = 'payer_email';
+            }
             $tags[] = '{' . $key . '}';
             $vals[] = $value;
         }
