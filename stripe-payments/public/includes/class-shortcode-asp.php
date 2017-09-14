@@ -306,6 +306,9 @@ class AcceptStripePaymentsShortcode {
             if ($key == 'stripeEmail') {
                 $key = 'payer_email';
             }
+            if ($key == 'txn_id') {
+                $key = 'transaction_id';
+            }
             $tags[] = '{' . $key . '}';
             $vals[] = $value;
         }
