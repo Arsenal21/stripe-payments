@@ -139,7 +139,7 @@ jQuery(function () {
 	</tr>\
 	<tr data-tabid="2">\
             <th scope="row">Checkout Results Page URL</th>\
-            <td><input type="text" name="asp_success_url" id="asp_success_url" class="asp-input-wide">\
+            <td><input type="text" name="asp_checkout_url" id="asp_checkout_url" class="asp-input-wide">\
             <p class="description">Page URL where users will be redirected after the payment is processed. Useful if you want to make a custom "Thank you" page for your item. Leave it blank if you want to use default URL specified in plugin settings.</p>\
             </td>\
 	</tr>\
@@ -198,7 +198,7 @@ jQuery(function () {
         var currency = jQuery('#asp_currency').val();
         var quantity = jQuery('#asp_quantity').val();
         var url = jQuery('#asp_url').val();
-        var success_url = jQuery('#asp_success_url').val();
+        var checkout_url = jQuery('#asp_checkout_url').val();
         var description = jQuery('#asp_description').val();
         var button_text = jQuery('#asp_button_text').val();
         var item_logo = jQuery('#asp_item_logo').val();
@@ -232,8 +232,8 @@ jQuery(function () {
             shortcode += ' url="' + url + '"';
         }
 
-        if (success_url != '') {
-            shortcode += ' success_url="' + success_url + '"';
+        if (checkout_url != '') {
+            shortcode += ' checkout_url="' + checkout_url + '"';
         }
 
         if (description != '') {
