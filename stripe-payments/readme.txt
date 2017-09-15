@@ -51,6 +51,8 @@ https://www.youtube.com/watch?v=upWqk069Khg
 * There is an option to allow the customer to enter a custom price amount for your product or service (customer pays what they want).
 * Option to accept custom donation amount via Stripe payment gateway.
 * Option to save the card data on Stripe.
+* Ability to have custom thank you page on a per product basis.
+* Ability to customize the message on the thank you page using tags.
 
 The setup is very easy. Once you have installed the plugin, all you need to do is enter your Stripe API credentials in the plugin settings (Settings -> Accept Stripe Payments) and your website will be ready to accept credit card payments.
 
