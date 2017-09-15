@@ -127,7 +127,7 @@ jQuery(function () {
 	</tr>\
 	<tr data-tabid="1">\
             <th scope="row">Button Text</th>\
-            <td><input type="text" name="asp_button_text" id="asp_button_text">\
+            <td><input type="text" name="asp_button_text" id="asp_button_text" class="asp-input-wide">\
             <p class="description">Specify text to be displayed on the button. Leave it blank to use button text specified on settings page.</p>\
             </td>\
 	</tr>\
@@ -135,6 +135,12 @@ jQuery(function () {
             <th scope="row">URL</th>\
             <td><input type="text" name="asp_url" id="asp_url" class="asp-input-wide">\
             <p class="description">URL of your product (if you\'re selling digital products).</p>\
+            </td>\
+	</tr>\
+	<tr data-tabid="2">\
+            <th scope="row">Checkout Results Page URL</th>\
+            <td><input type="text" name="asp_checkout_url" id="asp_checkout_url" class="asp-input-wide">\
+            <p class="description">Page URL where users will be redirected after the payment is processed. Useful if you want to make a custom "Thank you" page for your item. Leave it blank if you want to use default URL specified in plugin settings.</p>\
             </td>\
 	</tr>\
 	<tr data-tabid="2">\
@@ -157,13 +163,13 @@ jQuery(function () {
 	</tr>\
 	<tr data-tabid="2">\
             <th scope="row">Item Logo</th>\
-            <td><input type="text" name="asp_item_logo" id="asp_item_logo">\
+            <td><input type="text" name="asp_item_logo" id="asp_item_logo" class="asp-input-wide">\
             <p class="description">You can optionally show an item logo in the Stripe payment window. Specify the logo image URL.</p>\
             </td>\
 	</tr>\
 	<tr data-tabid="2">\
             <th scope="row">Button CSS Class</th>\
-            <td><input type="text" name="asp_css_class" id="asp_css_class">\
+            <td><input type="text" name="asp_css_class" id="asp_css_class" class="asp-input-wide">\
             <p class="description">CSS class to be assigned to the button. This is used for styling purposes. You can get additional information <a href="https://www.tipsandtricks-hq.com/customizing-the-payment-button-styles-of-the-stripe-payments-plugin-9071" target="_blank">in this tutorial</a>.</p>\
             </td>\
 	</tr>\
@@ -192,6 +198,7 @@ jQuery(function () {
         var currency = jQuery('#asp_currency').val();
         var quantity = jQuery('#asp_quantity').val();
         var url = jQuery('#asp_url').val();
+        var checkout_url = jQuery('#asp_checkout_url').val();
         var description = jQuery('#asp_description').val();
         var button_text = jQuery('#asp_button_text').val();
         var item_logo = jQuery('#asp_item_logo').val();
@@ -223,6 +230,10 @@ jQuery(function () {
 
         if (url != '') {
             shortcode += ' url="' + url + '"';
+        }
+
+        if (checkout_url != '') {
+            shortcode += ' checkout_url="' + checkout_url + '"';
         }
 
         if (description != '') {

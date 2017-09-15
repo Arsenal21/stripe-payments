@@ -11,6 +11,8 @@
  */
 class AcceptStripePayments {
 
+    var $zeroCents = array('JPY', 'MGA', 'VND', 'KRW');
+
     /**
      * Plugin version, used for cache-busting of style and script file references.
      *
@@ -32,7 +34,7 @@ class AcceptStripePayments {
      *
      * @var      string
      */
-    protected $plugin_slug = 'accept_stripe_payment';//Do not change this value.
+    protected $plugin_slug = 'accept_stripe_payment'; //Do not change this value.
 
     /**
      * Instance of this class.
@@ -56,6 +58,9 @@ class AcceptStripePayments {
         // Load plugin text domain
         add_action('init', array($this, 'load_plugin_textdomain'));
 
+        //Check if IPN submitted
+        add_action('init', array($this, 'asp_check_ipn'));
+
         // Activate plugin when new blog is added
         add_action('wpmu_new_blog', array($this, 'activate_new_site'));
 
@@ -63,6 +68,14 @@ class AcceptStripePayments {
         // add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles' ) );
         // add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
         add_action('after_switch_theme', array($this, 'rewrite_flush'));
+    }
+
+    public function asp_check_ipn() {
+        if (isset($_POST['asp_action'])) {
+            if ($_POST['asp_action'] == 'process_ipn') {
+                require_once(WP_ASP_PLUGIN_PATH . 'includes/process_ipn.php');
+            }
+        }
     }
 
     public function get_setting($field) {
@@ -215,7 +228,7 @@ class AcceptStripePayments {
         // Check if its a first install
         $default = array(
             'is_live' => 0,
-            'dont_save_card' =>0,
+            'dont_save_card' => 0,
             'currency_code' => 'USD',
             'button_text' => 'Buy Now',
             'use_new_button_method' => 0,
@@ -240,10 +253,10 @@ class AcceptStripePayments {
         if (empty($opt)) {
             add_option('AcceptStripePayments-settings', $default);
         } else { //lets add default values for some settings that were added after plugin update
-            $opt_diff=array_diff_key($default, $opt);
+            $opt_diff = array_diff_key($default, $opt);
             if (!empty($opt_diff)) {
-                foreach ($opt_diff as $key=>$value) {
-                    $opt[$key]=$default[$key];
+                foreach ($opt_diff as $key => $value) {
+                    $opt[$key] = $default[$key];
                 }
                 update_option('AcceptStripePayments-settings', $opt);
             }
@@ -316,4 +329,5 @@ class AcceptStripePayments {
     public function rewrite_flush() {
         flush_rewrite_rules();
     }
+
 }

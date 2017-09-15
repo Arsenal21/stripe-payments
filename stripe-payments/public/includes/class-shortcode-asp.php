@@ -3,7 +3,6 @@
 class AcceptStripePaymentsShortcode {
 
     var $AcceptStripePayments = null;
-    var $zeroCents = array('JPY', 'MGA', 'VND', 'KRW');
 
     /**
      * Instance of this class.
@@ -21,6 +20,7 @@ class AcceptStripePaymentsShortcode {
 
         add_shortcode('accept_stripe_payment', array(&$this, 'shortcode_accept_stripe_payment'));
         add_shortcode('accept_stripe_payment_checkout', array(&$this, 'shortcode_accept_stripe_payment_checkout'));
+        add_shortcode('accept_stripe_payment_checkout_error', array(&$this, 'shortcode_accept_stripe_payment_checkout_error'));
         if (!is_admin()) {
             add_filter('widget_text', 'do_shortcode');
         }
@@ -79,6 +79,7 @@ class AcceptStripePaymentsShortcode {
             'quantity' => '1',
             'description' => '',
             'url' => '',
+            'checkout_url' => '',
             'item_logo' => '',
             'billing_address' => '',
             'shipping_address' => '',
@@ -99,6 +100,13 @@ class AcceptStripePaymentsShortcode {
         } else {
             $url = '';
         }
+
+        if (!empty($checkout_url)) {
+            $checkout_url = base64_encode($checkout_url);
+        } else {
+            $checkout_url = '';
+        }
+
         if (!is_numeric($quantity)) {
             $quantity = strtoupper($quantity);
         }
@@ -109,7 +117,7 @@ class AcceptStripePaymentsShortcode {
         $button_id = 'stripe_button_' . $uniq_id;
         self::$payment_buttons[] = $button_id;
         $paymentAmount = ("$quantity" === "NA" ? $price : ($price * $quantity));
-        if (in_array($currency, $this->zeroCents)) {
+        if (in_array($currency, $this->AcceptStripePayments->zeroCents)) {
             //this is zero-cents currency, amount shouldn't be multiplied by 100
             $priceInCents = $paymentAmount;
         } else {
@@ -130,7 +138,12 @@ class AcceptStripePaymentsShortcode {
 
         $checkout_lang = $this->AcceptStripePayments->get_setting('checkout_lang');
 
+        $allowRememberMe = $this->AcceptStripePayments->get_setting('disable_remember_me');
+
+        $allowRememberMe = ($allowRememberMe === 1) ? false : true;
+
         $data = array(
+            'allowRememberMe' => $allowRememberMe,
             'description' => $description,
             'image' => $item_logo,
             'currency' => $currency,
@@ -142,10 +155,10 @@ class AcceptStripePaymentsShortcode {
             'shippingAddress' => (empty($shipping_address) ? false : true),
             'uniq_id' => $uniq_id,
             'variable' => ($price == 0 ? true : false),
-            'zeroCents' => $this->zeroCents,
+            'zeroCents' => $this->AcceptStripePayments->zeroCents,
         );
 
-        $output = "<form id='stripe_form_{$uniq_id}' action='" . $this->AcceptStripePayments->get_setting('checkout_url') . "' METHOD='POST'> ";
+        $output = "<form id='stripe_form_{$uniq_id}' action='' METHOD='POST'> ";
 
         if ($price == 0 || $this->AcceptStripePayments->get_setting('use_new_button_method')) {
             // variable amount or new method option is set in settings
@@ -154,10 +167,12 @@ class AcceptStripePaymentsShortcode {
             // use old method instead
             $output .= $this->get_button_code_old_method($data, $price, $button_text);
         }
+        $output .= '<input type="hidden" name="asp_action" value="process_ipn" />';
         $output .= "<input type='hidden' value='{$name}' name='item_name' />";
         $output .= "<input type = 'hidden' value = '{$quantity}' name = 'item_quantity' />";
         $output .= "<input type = 'hidden' value = '{$currency}' name = 'currency_code' />";
         $output .= "<input type = 'hidden' value = '{$url}' name = 'item_url' />";
+        $output .= "<input type = 'hidden' value = '{$checkout_url}' name = 'checkout_url' />";
         $output .= "<input type = 'hidden' value = '{$description}' name = 'charge_description' />"; //
 
         $trans_name = 'stripe-payments-' . sanitize_title_with_dashes($name); //Create key using the item name.
@@ -176,7 +191,8 @@ class AcceptStripePaymentsShortcode {
           data-key='" . $this->AcceptStripePayments->get_setting('api_publishable_key') . "'
           data-panel-label='Pay'
           data-amount='{$data['amount']}' 
-          data-name='{$data['name']}'";
+          data-name='{$data['name']}'
+          data-allow-remember-me='{$data['allowRememberMe']}'";
         $output .= "data-description='{$data['description']}'";
         $output .= "data-label='{$button_text}'";
         $output .= "data-currency='{$data['currency']}'";
@@ -219,224 +235,86 @@ class AcceptStripePaymentsShortcode {
         return $output;
     }
 
-    /*
-     * This shortcode processes the payment data after the payment.
-     */
-
-    public function shortcode_accept_stripe_payment_checkout($atts = array()) {
-
-        extract(shortcode_atts(array(
-            'currency' => $this->AcceptStripePayments->get_setting('currency_code'),
-                        ), $atts)
-        );
-        //Check nonce
-        $nonce = $_REQUEST['_wpnonce'];
-        if (!wp_verify_nonce($nonce, 'stripe_payments')) {
-            //The user is likely directly viewing this page.
-            echo '<div style="background: #FFF6D5; border: 1px solid #D1B655; color: #3F2502; margin: 10px 0px; padding: 10px;">';
-            echo '<p>The message in this box is ONLY visible to you because you are viewing this page directly. Your customers won\'t see this message.</p>';
-            echo '<p>Your customers will get sent to this page after the transaction. This page will work correctly when customers get redirected here AFTER the payment.</p>';
-            echo '<p>You can edit this page from your admin dashboard and add extra message that your customers will see after the payment.</p>';
-            echo '<p>Nonce Security Check Failed!</p>';
-            echo '</div>';
-            return;
-        }
-        if (!isset($_POST['item_name']) || empty($_POST['item_name'])) {
-            echo ('Invalid Item name');
-            return;
-        }
-        if (!isset($_POST['stripeToken']) || empty($_POST['stripeToken'])) {
-            echo ('Invalid Stripe Token');
-            return;
-        }
-        if (!isset($_POST['stripeTokenType']) || empty($_POST['stripeTokenType'])) {
-            echo ('Invalid Stripe Token Type');
-            return;
-        }
-        if (!isset($_POST['stripeEmail']) || empty($_POST['stripeEmail'])) {
-            echo ('Invalid Request');
-            return;
-        }
-        if (!isset($_POST['currency_code']) || empty($_POST['currency_code'])) {
-            echo ('Invalid Currency Code');
-            return;
-        }
-
-        $item_name = sanitize_text_field($_POST['item_name']);
-        $stripeToken = sanitize_text_field($_POST['stripeToken']);
-        $stripeTokenType = sanitize_text_field($_POST['stripeTokenType']);
-        $stripeEmail = sanitize_email($_POST['stripeEmail']);
-        $item_quantity = sanitize_text_field($_POST['item_quantity']);
-        $item_url = sanitize_text_field($_POST['item_url']);
-        $charge_description = sanitize_text_field($_POST['charge_description']);
-
-        //$item_price = sanitize_text_field($_POST['item_price']);
-        $trans_name = 'stripe-payments-' . sanitize_title_with_dashes($item_name);
-        $item_price = get_transient($trans_name); //Read the price for this item from the system.
-        if (!is_numeric($item_price)) {
-            echo ('Invalid item price');
-            return;
-        }
-        if ($item_price == 0) { //Custom amount
-            $item_price = floatval($_POST['stripeAmount']);
-            if (!is_numeric($item_price)) {
-                echo ('Invalid item price');
-                return;
-            }
-        }
-        $currency_code = sanitize_text_field($_POST['currency_code']);
-        $paymentAmount = ($item_quantity !== "NA" ? ($item_price * $item_quantity) : $item_price);
-
-        $currencyCodeType = strtolower($currency_code);
-
-
-        Stripe::setApiKey($this->AcceptStripePayments->get_setting('api_secret_key'));
-
-
-        $GLOBALS['asp_payment_success'] = false;
-
-        $opt = get_option('AcceptStripePayments-settings');
-
-        if (in_array($currency_code, $this->zeroCents)) {
-            $amount = $paymentAmount;
+    function shortcode_accept_stripe_payment_checkout($atts, $content = '') {
+        $aspData = array();
+        if (isset($_SESSION['asp_data'])) {
+            $aspData = $_SESSION['asp_data'];
         } else {
-            $amount = $paymentAmount * 100;
+            // no session data, let's display nothing for now
+            return;
         }
-
-        ob_start();
-        try {
-
-            if ($opt['dont_save_card'] == 1) {
-                $charge = Stripe_Charge::create(array(
-                            'amount' => $amount,
-                            'currency' => $currencyCodeType,
-                            'description' => $charge_description,
-                            'source' => $stripeToken,
-                ));
-            } else {
-
-                $customer = Stripe_Customer::create(array(
-                            'email' => $stripeEmail,
-                            'card' => $stripeToken
-                ));
-
-                $charge = Stripe_Charge::create(array(
-                            'customer' => $customer->id,
-                            'amount' => $amount,
-                            'currency' => $currencyCodeType,
-                            'description' => $charge_description,
-                ));
+        if (empty($content)) {
+            //this is old shortcode. Let's display the default output for backward compatability
+            if (isset($aspData['error_msg']) && !empty($aspData['error_msg'])) {
+                //some error occured, let's display it
+                return __("System was not able to complete the payment.", "stripe-payments") . ' ' . $aspData['error_msg'];
             }
-            //Grab the charge ID and set it as the transaction ID.
-            $txn_id = $charge->id; //$charge->balance_transaction;
-            //Core transaction data
-            $data = array();
-            $data['item_name'] = $item_name;
-            $data['stripeToken'] = $stripeToken;
-            $data['stripeTokenType'] = $stripeTokenType;
-            $data['stripeEmail'] = $stripeEmail;
-            $data['item_quantity'] = $item_quantity;
-            $data['item_price'] = $item_price;
-            $data['currency_code'] = $currency_code;
-            $data['txn_id'] = $txn_id; //The Stripe charge ID
-            $data['charge_description'] = $charge_description;
+            $output = '';
+            $output .= '<p class="asp-thank-you-page-msg1">' . __("Thank you for your payment.", "stripe-payments") . '</p>';
+            $output .= '<p class="asp-thank-you-page-msg2">' . __("Here's what you purchased: ", "stripe-payments") . '</p>';
+            $output .= '<div class="asp-thank-you-page-product-name">' . __("Product Name: ", "stripe-payments") . $aspData['item_name'] . '</div>';
+            $output .= '<div class="asp-thank-you-page-qty">' . __("Quantity: ", "stripe-payments") . $aspData['item_quantity'] . '</div>';
+            $output .= '<div class="asp-thank-you-page-qty">' . __("Amount: ", "stripe-payments") . $aspData['item_price'] . ' ' . $aspData['currency_code'] . '</div>';
+            $output .= '<div class="asp-thank-you-page-txn-id">' . __("Transaction ID: ", "stripe-payments") . $aspData['txn_id'] . '</div>';
 
-            $post_data = array_map('sanitize_text_field', $data);
-
-            //Billing address data (if any)
-            $billing_address = "";
-            $billing_address .= sanitize_text_field((isset($_POST['stripeBillingName']) ? $_POST['stripeBillingName'] : '')) . "\n";
-            $billing_address .= sanitize_text_field((isset($_POST['stripeBillingAddressLine1']) ? $_POST['stripeBillingAddressLine1'] : '')) . sanitize_text_field(isset($_POST['stripeBillingAddressApt']) ? ' ' . $_POST['stripeBillingAddressApt'] : '') . "\n";
-            $billing_address .= sanitize_text_field((isset($_POST['stripeBillingAddressZip']) ? $_POST['stripeBillingAddressZip'] : '')) . "\n";
-            $billing_address .= sanitize_text_field((isset($_POST['stripeBillingAddressCity']) ? $_POST['stripeBillingAddressCity'] : '')) . "\n";
-            $billing_address .= sanitize_text_field((isset($_POST['stripeBillingAddressState']) ? $_POST['stripeBillingAddressState'] : '')) . "\n";
-            $billing_address .= sanitize_text_field((isset($_POST['stripeBillingAddressCountry']) ? $_POST['stripeBillingAddressCountry'] : '')) . "\n";
-            $post_data['billing_address'] = $billing_address;
-
-            //Shipping address data (if any)
-            $shipping_address = "";
-            $shipping_address .= sanitize_text_field((isset($_POST['stripeShippingName']) ? $_POST['stripeShippingName'] : '')) . "\n";
-            $shipping_address .= sanitize_text_field(isset($_POST['stripeShippingAddressLine1']) ? $_POST['stripeShippingAddressLine1'] : '') . sanitize_text_field(isset($_POST['stripeShippingAddressApt']) ? ' ' . $_POST['stripeShippingAddressApt'] : '') . "\n";
-            $shipping_address .= sanitize_text_field((isset($_POST['stripeShippingAddressZip']) ? $_POST['stripeShippingAddressZip'] : '')) . "\n";
-            $shipping_address .= sanitize_text_field((isset($_POST['stripeShippingAddressCity']) ? $_POST['stripeShippingAddressCity'] : '')) . "\n";
-            $shipping_address .= sanitize_text_field((isset($_POST['stripeShippingAddressState']) ? $_POST['stripeShippingAddressState'] : '')) . "\n";
-            $shipping_address .= sanitize_text_field((isset($_POST['stripeShippingAddressCountry']) ? $_POST['stripeShippingAddressCountry'] : '')) . "\n";
-            $post_data['shipping_address'] = $shipping_address;
-
-            //Insert the order data to the custom post
-            $order = ASPOrder::get_instance();
-            $order_post_id = $order->insert($post_data, $charge);
-
-            $post_data['order_post_id'] = $order_post_id;
-
-            //Action hook with the checkout post data parameters.
-            do_action('asp_stripe_payment_completed', $post_data, $charge);
-
-            //Action hook with the order object.
-            do_action('AcceptStripePayments_payment_completed', $order, $charge);
-
-            $GLOBALS['asp_payment_success'] = true;
-            $item_url = base64_decode($item_url);
-            $post_data['item_url'] = $item_url;
-
-            //Let's handle email sending stuff
-
-            if (isset($opt['send_emails_to_buyer'])) {
-                if ($opt['send_emails_to_buyer']) {
-                    $from = $opt['from_email_address'];
-                    $to = $post_data['stripeEmail'];
-                    $subj = $opt['buyer_email_subject'];
-                    $body = $this->apply_dynamic_tags_on_email_body($opt['buyer_email_body'], $post_data);
-                    $headers = 'From: ' . $from . "\r\n";
-
-                    $subj = apply_filters('asp_buyer_email_subject', $subj, $post_data);
-                    $body = apply_filters('asp_buyer_email_body', $body, $post_data);
-                    wp_mail($to, $subj, $body, $headers);
-                }
+            if (!empty($aspData['item_url'])) {
+                $output .= "<div class='asp-thank-you-page-download-link'>";
+                $output .= __("Please ", "stripe-payments") . "<a href='" . $aspData['item_url'] . "'>" . __("click here", "stripe-payments") . "</a>" . __(" to download.", "stripe-payments");
+                $output .= "</div>";
             }
-            if (isset($opt['send_emails_to_seller'])) {
-                if ($opt['send_emails_to_seller']) {
-                    $from = $opt['from_email_address'];
-                    $to = $opt['seller_notification_email'];
-                    $subj = $opt['seller_email_subject'];
-                    $body = $this->apply_dynamic_tags_on_email_body($opt['seller_email_body'], $post_data);
-                    $headers = 'From: ' . $from . "\r\n";
 
-                    $subj = apply_filters('asp_seller_email_subject', $subj, $post_data);
-                    $body = apply_filters('asp_seller_email_body', $body, $post_data);
-                    wp_mail($to, $subj, $body, $headers);
-                }
-            }
-        } catch (Exception $e) {
-            //If the charge fails (payment unsuccessful), this code will get triggered.
-            if (!empty($charge->failure_code))
-                $GLOBALS['asp_error'] = $charge->failure_code . ": " . $charge->failure_message;
-            else {
-                $GLOBALS['asp_error'] = $e->getMessage();
-            }
+            $output = apply_filters('asp_stripe_payments_checkout_page_result', $output, $aspData); //Filter that allows you to modify the output data on the checkout result page
+
+            $wrap = "<div class='asp-thank-you-page-wrap'>";
+            $wrap .= "<div class='asp-thank-you-page-msg-wrap' style='background: #dff0d8; border: 1px solid #C9DEC1; margin: 10px 0px; padding: 15px;'>";
+            $output = $wrap . $output;
+            $output .= "</div>"; //end of .asp-thank-you-page-msg-wrap
+            $output .= "</div>"; //end of .asp-thank-you-page-wrap
+
+            return $output;
         }
-
-        //Show the "payment success" or "payment failure" info on the checkout complete page.
-        include dirname(dirname(__FILE__)) . '/views/checkout.php';
-
-        return ob_get_clean();
+        if (isset($aspData['error_msg']) && !empty($aspData['error_msg'])) {
+            //some error occured. We don't display any content to let the error shortcode handle it
+            return;
+        }
+        $content = $this->apply_content_tags(do_shortcode($content), $aspData);
+        return $content;
     }
 
-    function apply_dynamic_tags_on_email_body($body, $post) {
-        $product_details = __("Product Name: ", "stripe-payments") . $post['item_name'] . "\n";
-        $product_details .= __("Quantity: ", "stripe-payments") . $post['item_quantity'] . "\n";
-        $product_details .= __("Amount: ", "stripe-payments") . $post['item_price'] . ' ' . $post['currency_code'] . "\n";
-        $product_details .= "--------------------------------" . "\n";
-        $product_details .= __("Total Amount: ", "stripe-payments") . ($post['item_price'] * $post['item_quantity']) . ' ' . $post['currency_code'] . "\n";
-        if (!empty($post['item_url']))
-            $product_details .= "\n\n" . __("Download link: ", "stripe-payments") . $post['item_url'];
+    function shortcode_accept_stripe_payment_checkout_error($atts, $content = '') {
+        $aspData = array();
+        if (isset($_SESSION['asp_data'])) {
+            $aspData = $_SESSION['asp_data'];
+        } else {
+            // no session data, let's display nothing for now
+            return;
+        }
+        if (isset($aspData['error_msg']) && !empty($aspData['error_msg'])) {
+            //some error occured. Let's display error message
+            $content = $this->apply_content_tags(do_shortcode($content), $aspData);
+            return $content;
+        }
+        // no error occured - we don't display anything
+        return;
+    }
 
-        $tags = array("{product_details}", "{payer_email}", "{transaction_id}", "{purchase_amt}", "{purchase_date}", "{shipping_address}", "{billing_address}");
-        $vals = array($product_details, $post['stripeEmail'], $post['txn_id'], $post['item_price'], date("F j, Y, g:i a", strtotime('now')), $post['shipping_address'], $post['billing_address']);
+    function apply_content_tags($content, $data) {
+        $tags = array();
+        $vals = array();
 
-        $body = stripslashes(str_replace($tags, $vals, $body));
+        foreach ($data as $key => $value) {
+            if ($key == 'stripeEmail') {
+                $key = 'payer_email';
+            }
+            if ($key == 'txn_id') {
+                $key = 'transaction_id';
+            }
+            $tags[] = '{' . $key . '}';
+            $vals[] = $value;
+        }
 
-        return $body;
+        $content = str_replace($tags, $vals, $content);
+        return $content;
     }
 
 }

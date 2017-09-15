@@ -77,6 +77,10 @@ add_filter('plugin_action_links', 'asp_stripe_add_settings_link', 10, 2);
 //check and redirect old Settings page
 add_action('init', 'asp_redirect_settings_page');
 
+if(session_id() == '') {
+    session_start();
+}
+
 function asp_redirect_settings_page() {
     global $pagenow;
     if (is_admin()) {

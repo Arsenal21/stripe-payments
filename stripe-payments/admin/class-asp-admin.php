@@ -199,6 +199,7 @@ class AcceptStripePayments_Admin {
         add_settings_field('currency_code', 'Currency', array(&$this, 'settings_field_callback'), $this->plugin_slug, 'AcceptStripePayments-global-section', array('field' => 'currency_code', 'desc' => '', 'size' => 10));
         add_settings_field('button_text', 'Button Text', array(&$this, 'settings_field_callback'), $this->plugin_slug, 'AcceptStripePayments-global-section', array('field' => 'button_text', 'desc' => 'Example: Buy Now, Pay Now etc.'));
         add_settings_field('dont_save_card', 'Do Not Save Card Data on Stripe', array(&$this, 'settings_field_callback'), $this->plugin_slug, 'AcceptStripePayments-global-section', array('field' => 'dont_save_card', 'desc' => 'When this checkbox is checked, the transaction won\'t create the customer (no card will be saved for that).'));
+        add_settings_field('disable_remember_me', 'Turn Off "Remember me" Option', array(&$this, 'settings_field_callback'), $this->plugin_slug, 'AcceptStripePayments-global-section', array('field' => 'disable_remember_me', 'desc' => 'When enabled, "Remember me" checkbox will be removed from Stripe\'s checkout popup.'));
         add_settings_field('use_new_button_method', 'Use New Method To Display Buttons', array(&$this, 'settings_field_callback'), $this->plugin_slug, 'AcceptStripePayments-global-section', array('field' => 'use_new_button_method',
             'desc' => 'Use new method to display Stripe buttons. It makes connection to Stripe website only when button is clicked, which makes the page with buttons load faster. A little drawback is that Stripe pop-up is displayed with a small delay after button click. If you have more than one button on a page, enabling this option is highly recommended.'));
         add_settings_field('checkout_lang', 'Stripe Checkout Language', array(&$this, 'settings_field_callback'), $this->plugin_slug, 'AcceptStripePayments-global-section', array('field' => 'checkout_lang', 'desc' => 'Specify language to be used in Stripe checkout pop-up or select "Autodetect" to let Stripe handle it.'));
@@ -360,6 +361,7 @@ class AcceptStripePayments_Admin {
             case 'send_emails_to_buyer':
             case 'use_new_button_method':
             case 'is_live':
+            case 'disable_remember_me':
             case 'dont_save_card':
                 echo "<input type='checkbox' name='AcceptStripePayments-settings[{$field}]' value='1' " . ($field_value ? 'checked=checked' : '') . " /><p class=\"description\">{$desc}</p>";
                 break;
@@ -401,6 +403,8 @@ class AcceptStripePayments_Admin {
         $output['is_live'] = empty($input['is_live']) ? 0 : 1;
 
         $output['dont_save_card'] = empty($input['dont_save_card']) ? 0 : 1;
+
+        $output['disable_remember_me'] = empty($input['disable_remember_me']) ? 0 : 1;
 
         $output['use_new_button_method'] = empty($input['use_new_button_method']) ? 0 : 1;
 

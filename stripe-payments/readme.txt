@@ -173,6 +173,9 @@ None
 == Changelog ==
 
 = TODO 1.5.9 =
+- Extended checkout results page customization using [accept_stripe_payment_checkout] and [accept_stripe_payment_checkout_error] shortcodes.
+- Added "checkout_url" shortcode parameter to specify a custom checkout results page URL for an item.
+- Added "Turn Off "Remember me" Option" setting. When enabled, "Remember me" checkbox will be removed from Stripe's checkout popup.
 - Moved "Settings" menu item from WP Settings to a new independent menu called "Stripe Payments".
 
 = 1.5.8 =
