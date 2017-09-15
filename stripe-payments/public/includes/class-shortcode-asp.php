@@ -79,7 +79,7 @@ class AcceptStripePaymentsShortcode {
             'quantity' => '1',
             'description' => '',
             'url' => '',
-            'checkout_url' => '',
+            'thankyou_page_url' => '',
             'item_logo' => '',
             'billing_address' => '',
             'shipping_address' => '',
@@ -101,10 +101,10 @@ class AcceptStripePaymentsShortcode {
             $url = '';
         }
 
-        if (!empty($checkout_url)) {
-            $checkout_url = base64_encode($checkout_url);
+        if (!empty($thankyou_page_url)) {
+            $thankyou_page_url = base64_encode($thankyou_page_url);
         } else {
-            $checkout_url = '';
+            $thankyou_page_url = '';
         }
 
         if (!is_numeric($quantity)) {
@@ -172,7 +172,7 @@ class AcceptStripePaymentsShortcode {
         $output .= "<input type = 'hidden' value = '{$quantity}' name = 'item_quantity' />";
         $output .= "<input type = 'hidden' value = '{$currency}' name = 'currency_code' />";
         $output .= "<input type = 'hidden' value = '{$url}' name = 'item_url' />";
-        $output .= "<input type = 'hidden' value = '{$checkout_url}' name = 'checkout_url' />";
+        $output .= "<input type = 'hidden' value = '{$thankyou_page_url}' name = 'thankyou_page_url' />";
         $output .= "<input type = 'hidden' value = '{$description}' name = 'charge_description' />"; //
 
         $trans_name = 'stripe-payments-' . sanitize_title_with_dashes($name); //Create key using the item name.
