@@ -15,7 +15,6 @@ class AcceptStripePaymentsShortcode {
     function __construct() {
         $this->AcceptStripePayments = AcceptStripePayments::get_instance();
 
-        add_action('wp_enqueue_scripts', array($this, 'register_stripe_stylesheet'));
         add_action('wp_enqueue_scripts', array($this, 'register_stripe_script'));
 
         add_shortcode('accept_stripe_payment', array(&$this, 'shortcode_accept_stripe_payment'));
@@ -51,11 +50,6 @@ class AcceptStripePaymentsShortcode {
         }
 
         return self::$instance;
-    }
-
-    function register_stripe_stylesheet() {
-        wp_register_style('stripe-stylesheet', 'https://checkout.stripe.com/v3/checkout/button.css', array(), null);
-        //wp_register_style('stripe-button-public', WP_ASP_PLUGIN_URL . 'public/assets/css/public.css');
     }
 
     function register_stripe_script() {
@@ -127,10 +121,6 @@ class AcceptStripePaymentsShortcode {
             //Create a description using quantity and payment amount
             $description = "{$quantity} piece" . ($quantity <> 1 ? "s" : "") . " for {$paymentAmount} {$currency}";
         }
-        //Let's enqueue Stripe default stylesheet only when it's needed
-        if ($class == 'stripe-button-el') {
-            wp_enqueue_style('stripe-stylesheet');
-        }
         //This is public.css stylesheet
         //wp_enqueue_style('stripe-button-public');
 
@@ -158,7 +148,14 @@ class AcceptStripePaymentsShortcode {
             'zeroCents' => $this->AcceptStripePayments->zeroCents,
         );
 
-        $output = "<form id='stripe_form_{$uniq_id}' action='' METHOD='POST'> ";
+        $output = '';
+
+        //Let's insert Stripe default stylesheet only when it's needed
+        if ($class == 'stripe-button-el') {
+            $output = "<link rel='stylesheet' href='https://checkout.stripe.com/v3/checkout/button.css' type='text/css' media='all' />";
+        }
+
+        $output .= "<form id='stripe_form_{$uniq_id}' action='' METHOD='POST'> ";
 
         if ($price == 0 || $this->AcceptStripePayments->get_setting('use_new_button_method')) {
             // variable amount or new method option is set in settings
