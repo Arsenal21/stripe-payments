@@ -14,7 +14,7 @@ $asp_class = AcceptStripePayments::get_instance();
 
 global $aspRedirectURL;
 
-$aspRedirectURL = (isset($_POST['checkout_url']) && empty($_POST['checkout_url'])) ? $asp_class->get_setting('checkout_url') : base64_decode($_POST['checkout_url']);
+$aspRedirectURL = (isset($_POST['thankyou_page_url']) && empty($_POST['thankyou_page_url'])) ? $asp_class->get_setting('checkout_url') : base64_decode($_POST['thankyou_page_url']);
 
 //Check nonce
 $nonce = $_REQUEST['_wpnonce'];

@@ -4,7 +4,7 @@ Donate link: http://www.tipsandtricks-hq.com/
 Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortcode, digital goods, payment gateway, instant payment, commerce, digital downloads, downloads, e-commerce, e-store, ecommerce, eshop, donation
 Requires at least: 4.7
 Tested up to: 4.8
-Stable tag: 1.5.8
+Stable tag: 1.5.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -51,6 +51,8 @@ https://www.youtube.com/watch?v=upWqk069Khg
 * There is an option to allow the customer to enter a custom price amount for your product or service (customer pays what they want).
 * Option to accept custom donation amount via Stripe payment gateway.
 * Option to save the card data on Stripe.
+* Ability to have custom thank you page on a per product basis.
+* Ability to customize the message on the thank you page using tags.
 
 The setup is very easy. Once you have installed the plugin, all you need to do is enter your Stripe API credentials in the plugin settings (Settings -> Accept Stripe Payments) and your website will be ready to accept credit card payments.
 
@@ -172,11 +174,13 @@ None
 
 == Changelog ==
 
-= TODO 1.5.9 =
-- Extended checkout results page customization using [accept_stripe_payment_checkout] and [accept_stripe_payment_checkout_error] shortcodes.
-- Added "checkout_url" shortcode parameter to specify a custom checkout results page URL for an item.
+= 1.5.9 =
 - Added "Turn Off "Remember me" Option" setting. When enabled, "Remember me" checkbox will be removed from Stripe's checkout popup.
 - Moved "Settings" menu item from WP Settings to a new independent menu called "Stripe Payments".
+- Added "thankyou_page_url" shortcode parameter to specify a custom thank you page URL for an item. This can be used to override the default thank you page URL on a per item basis.
+- Extended checkout results page customization using [accept_stripe_payment_checkout] and [accept_stripe_payment_checkout_error] shortcodes.
+- Instructions on how to customize the thank you page using tags can be found at the following URL:
+https://stripe-plugins.com/customize-the-thank-page-message-of-stripe-payments-plugin/  
 
 = 1.5.8 =
 - Zero-decimal currencies (like JPY) are no longer multiplied by 100.
