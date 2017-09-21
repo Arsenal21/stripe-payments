@@ -3,6 +3,7 @@
 class AcceptStripePaymentsShortcode {
 
     var $AcceptStripePayments = null;
+    var $StripeCSSInserted = false;
 
     /**
      * Instance of this class.
@@ -151,8 +152,9 @@ class AcceptStripePaymentsShortcode {
         $output = '';
 
         //Let's insert Stripe default stylesheet only when it's needed
-        if ($class == 'stripe-button-el') {
+        if ($class == 'stripe-button-el' && !($this->StripeCSSInserted)) {
             $output = "<link rel='stylesheet' href='https://checkout.stripe.com/v3/checkout/button.css' type='text/css' media='all' />";
+            $this->StripeCSSInserted = true;
         }
 
         $output .= "<form id='stripe_form_{$uniq_id}' action='' METHOD='POST'> ";
