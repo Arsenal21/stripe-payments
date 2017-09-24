@@ -174,6 +174,9 @@ None
 
 == Changelog ==
 
+= TODO 1.6.0 =
+- Stripe button CSS is now inserted before the form to prevent payment buttons from having default theme style for a second before the CSS file actually loaded.
+
 = 1.5.9 =
 - Added "Turn Off "Remember me" Option" setting. When enabled, "Remember me" checkbox will be removed from Stripe's checkout popup.
 - Moved "Settings" menu item from WP Settings to a new independent menu called "Stripe Payments".
