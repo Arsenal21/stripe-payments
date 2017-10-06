@@ -177,7 +177,7 @@ class AcceptStripePayments_Admin {
          *   For reference: http://codex.wordpress.org/Roles_and_Capabilities
          */
         $this->plugin_screen_hook_suffix = add_submenu_page(
-                'edit.php?post_type=stripe_order', __('Settings', 'stripe-payments'), __('Settings', 'stripe-payments'), 'manage_options', 'settings', array($this, 'display_plugin_admin_page')
+                'edit.php?post_type=stripe_order', __('Settings', 'stripe-payments'), __('Settings', 'stripe-payments'), 'manage_options', 'stripe-payments-settings', array($this, 'display_plugin_admin_page')
         );
         add_action('admin_init', array(&$this, 'register_settings'));
     }

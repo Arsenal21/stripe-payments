@@ -67,7 +67,7 @@ if (is_admin()) {
 
 function asp_stripe_add_settings_link($links, $file) {
     if ($file == plugin_basename(__FILE__)) {
-        $settings_link = '<a href="edit.php?post_type=stripe_order&page=settings">Settings</a>';
+        $settings_link = '<a href="edit.php?post_type=stripe_order&page=stripe-payments-settings">Settings</a>';
         array_unshift($links, $settings_link);
     }
     return $links;
@@ -86,7 +86,7 @@ function asp_redirect_settings_page() {
     if (is_admin()) {
         if ($pagenow == "options-general.php" && isset($_GET['page']) && $_GET['page'] == 'accept_stripe_payment') {
             //let's redirect old Settings page to new
-            wp_redirect(get_admin_url() . 'edit.php?post_type=stripe_order&page=settings', 301);
+            wp_redirect(get_admin_url() . 'edit.php?post_type=stripe_order&page=stripe-payments-settings', 301);
             exit;
         }
     }
