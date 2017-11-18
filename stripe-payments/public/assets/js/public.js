@@ -1,10 +1,10 @@
-(function ( $ ) {
-	"use strict";
+(function ($) {
+    "use strict";
 
-	$(function () {
+    $(function () {
 
-		// Place your public-facing JavaScript here
+	// Place your public-facing JavaScript here
 
-	});
+    });
 
 }(jQuery));
