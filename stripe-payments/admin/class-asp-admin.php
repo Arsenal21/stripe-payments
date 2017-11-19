@@ -80,7 +80,7 @@ class AcceptStripePayments_Admin {
     public function tinymce_ajax_handler() {
 	$opt			 = get_option( 'AcceptStripePayments-settings' );
 	$ret[ 'button_text' ]	 = $opt[ 'button_text' ];
-	$ret[ 'currency_opts' ]	 = $this->get_currency_options( false );
+	$ret[ 'currency_opts' ]	 = AcceptStripePayments_Admin::get_currency_options();
 	echo json_encode( $ret );
 	die();
     }
@@ -176,6 +176,8 @@ class AcceptStripePayments_Admin {
 	 * - Change 'manage_options' to the capability you see fit
 	 *   For reference: http://codex.wordpress.org/Roles_and_Capabilities
 	 */
+	//Products submenu
+//	add_submenu_page( 'edit.php?post_type=stripe_order', __( 'Products', 'stripe-payments' ), __( 'Products', 'stripe-payments' ), 'manage_options', 'edit.php?post_type=stripe_order', array( $this, 'display_plugin_admin_page' ) );
 	$this->plugin_screen_hook_suffix = add_submenu_page(
 	'edit.php?post_type=stripe_order', __( 'Settings', 'stripe-payments' ), __( 'Settings', 'stripe-payments' ), 'manage_options', 'stripe-payments-settings', array( $this, 'display_plugin_admin_page' )
 	);
@@ -272,8 +274,9 @@ class AcceptStripePayments_Admin {
 	<?php
     }
 
-    public function get_currency_options( $selected_value = '' ) {
+    static function get_currency_options( $selected_value = '' ) {
 	$currencies	 = array(
+	    ""	 => "(Default)",
 	    "USD"	 => "US Dollars (USD)",
 	    "EUR"	 => "Euros (EUR)",
 	    "GBP"	 => "Pounds Sterling (GBP)",
@@ -306,7 +309,7 @@ class AcceptStripePayments_Admin {
 	    "VND"	 => "Vietnamese Dong (VND)",
 	);
 	$opt_tpl	 = '<option value="%curr_code%"%selected%>%curr_name%</option>';
-	$opts		 = $selected_value === false ? '<option value="" selected>(Default)</option>' : '';
+	//$opts		 = $selected_value === false ? '<option value="" selected>(Default)</option>' : '';
 	foreach ( $currencies as $key => $value ) {
 	    $selected	 = $selected_value == $key ? ' selected' : '';
 	    $opts		 .= str_replace( array( '%curr_code%', '%curr_name%', '%selected%' ), array( $key, $value, $selected ), $opt_tpl );
@@ -371,7 +374,7 @@ class AcceptStripePayments_Admin {
 		break;
 	    case 'currency_code':
 		echo '<select name="AcceptStripePayments-settings[' . $field . ']">';
-		echo $this->get_currency_options( $field_value );
+		echo AcceptStripePayments_Admin::get_currency_options( $field_value );
 		echo '</select>';
 //              echo "<p class=\"description\">{$desc}</p>";
 		break;

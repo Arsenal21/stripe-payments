@@ -59,6 +59,33 @@ class ASPOrder {
 	);
 
 	register_post_type( 'stripe_order', $args );
+
+	// Products post type
+	$labels = array(
+	    'name'			 => _x( 'Products', 'Post Type General Name', 'stripe_payments' ),
+	    'singular_name'		 => _x( 'Product', 'Post Type Singular Name', 'stripe_payments' ),
+	    'menu_name'		 => __( 'Products', 'stripe_payments' ),
+//	    'parent_item_colon'	 => __( 'Parent Order:', 'stripe_payments' ),
+	    'all_items'		 => __( 'Products', 'stripe_payments' ),
+	    'view_item'		 => __( 'View Product', 'stripe_payments' ),
+	    'add_new_item'		 => __( 'Add New Product', 'stripe_payments' ),
+	    'add_new'		 => __( 'Add New', 'stripe_payments' ),
+	    'edit_item'		 => __( 'Edit Product', 'stripe_payments' ),
+	    'update_item'		 => __( 'Update Products', 'stripe_payments' ),
+	    'search_items'		 => __( 'Search Product', 'stripe_payments' ),
+	    'not_found'		 => __( 'Not found', 'stripe_payments' ),
+	    'not_found_in_trash'	 => __( 'Not found in Trash', 'stripe_payments' ),
+	);
+
+	$args = array(
+	    'labels'		 => $labels,
+	    'capability_type'	 => 'post',
+	    'public'		 => false,
+	    'show_ui'		 => true,
+	    'show_in_menu'		 => 'edit.php?post_type=stripe_order'
+	);
+
+	register_post_type( 'asp_products', $args );
     }
 
     /**

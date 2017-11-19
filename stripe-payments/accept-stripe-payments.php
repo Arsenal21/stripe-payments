@@ -75,19 +75,42 @@ function asp_stripe_add_settings_link( $links, $file ) {
 
 add_filter( 'plugin_action_links', 'asp_stripe_add_settings_link', 10, 2 );
 //check and redirect old Settings page
-add_action( 'init', 'asp_redirect_settings_page' );
+add_action( 'init', 'asp_init_handler' );
 
 if ( session_id() == '' ) {
     session_start();
 }
 
-function asp_redirect_settings_page() {
+function asp_init_handler() {
     global $pagenow;
     if ( is_admin() ) {
+	//check if we need redirect old Settings page
 	if ( $pagenow == "options-general.php" && isset( $_GET[ 'page' ] ) && $_GET[ 'page' ] == 'accept_stripe_payment' ) {
 	    //let's redirect old Settings page to new
 	    wp_redirect( get_admin_url() . 'edit.php?post_type=stripe_order&page=stripe-payments-settings', 301 );
 	    exit;
 	}
+
+	//products meta boxes handler
+	//TODO: only require this file if user is on add\edit product page
+	require_once(WP_ASP_PLUGIN_PATH . 'admin/includes/class-products-meta-boxes.php');
+
+	//products post save action
+	add_action( 'save_post_asp_products', 'asp_save_product_handler', 10, 3 );
+    }
+}
+
+function asp_save_product_handler( $post_id, $post, $update ) {
+    //var_dump( $_POST );
+    if ( ! isset( $_POST[ 'action' ] ) ) {
+	//this is probably not edit or new post creation event
+	return;
+    }
+    if ( isset( $post_id ) ) {
+	update_post_meta( $post_id, 'asp_product_price', sanitize_text_field( $_POST[ 'asp_product_price' ] ) );
+	update_post_meta( $post_id, 'asp_product_currency', sanitize_text_field( $_POST[ 'asp_product_currency' ] ) );
+	update_post_meta( $post_id, 'asp_product_quantity', sanitize_text_field( $_POST[ 'asp_product_quantity' ] ) );
+	update_post_meta( $post_id, 'asp_product_button_text', sanitize_text_field( $_POST[ 'asp_product_button_text' ] ) );
+	update_post_meta( $post_id, 'asp_product_description', sanitize_text_field( $_POST[ 'asp_product_description' ] ) );
     }
 }

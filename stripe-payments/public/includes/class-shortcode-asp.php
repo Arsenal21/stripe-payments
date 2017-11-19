@@ -18,6 +18,7 @@ class AcceptStripePaymentsShortcode {
 
 	add_action( 'wp_enqueue_scripts', array( $this, 'register_stripe_script' ) );
 
+	add_shortcode( 'asp_product', array( &$this, 'shortcode_asp_product' ) );
 	add_shortcode( 'accept_stripe_payment', array( &$this, 'shortcode_accept_stripe_payment' ) );
 	add_shortcode( 'accept_stripe_payment_checkout', array( &$this, 'shortcode_accept_stripe_payment_checkout' ) );
 	add_shortcode( 'accept_stripe_payment_checkout_error', array( &$this, 'shortcode_accept_stripe_payment_checkout_error' ) );
@@ -65,13 +66,39 @@ class AcceptStripePaymentsShortcode {
 	wp_localize_script( 'stripe-handler', 'stripehandler', $loc_data );
     }
 
+    function shortcode_asp_product( $atts ) {
+	if ( ! isset( $atts[ 'id' ] ) || ! is_numeric( $atts[ 'id' ] ) ) {
+	    $error_msg	 = '<div class="stripe_payments_error_msg" style="color: red;">';
+	    $error_msg	 .= "Error: product ID is invalid.";
+	    $error_msg	 .= '</div>';
+	    return $error_msg;
+	}
+	$id	 = $atts[ 'id' ];
+	$post	 = get_post( $id );
+	if ( ! $post || get_post_type( $id ) != 'asp_products' ) {
+	    $error_msg	 = '<div class="stripe_payments_error_msg" style="color: red;">';
+	    $error_msg	 .= "Can't find product with ID " . $id;
+	    $error_msg	 .= '</div>';
+	    return $error_msg;
+	}
+
+	return $this->shortcode_accept_stripe_payment( array(
+	    'name'		 => $post->post_title,
+	    'price'		 => get_post_meta( $id, 'asp_product_price', true ),
+	    'currency'	 => get_post_meta( $id, 'asp_product_currency', true ),
+	    'quantity'	 => get_post_meta( $id, 'asp_product_quantity', true ),
+	    'button_text'	 => get_post_meta( $id, 'asp_product_button_text', true ),
+	    'description'	 => get_post_meta( $id, 'asp_product_description', true ),
+	) );
+    }
+
     function shortcode_accept_stripe_payment( $atts ) {
 
 	extract( shortcode_atts( array(
 	    'name'			 => '',
 	    'class'			 => 'stripe-button-el', //default Stripe button class
 	    'price'			 => '0',
-	    'quantity'		 => '1',
+	    'quantity'		 => '',
 	    'description'		 => '',
 	    'url'			 => '',
 	    'thankyou_page_url'	 => '',
@@ -100,6 +127,10 @@ class AcceptStripePaymentsShortcode {
 	    $thankyou_page_url = base64_encode( $thankyou_page_url );
 	} else {
 	    $thankyou_page_url = '';
+	}
+
+	if ( empty( $quatity ) ) {
+	    $quantity = 1;
 	}
 
 	if ( ! is_numeric( $quantity ) ) {
