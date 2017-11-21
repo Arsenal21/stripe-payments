@@ -25,4 +25,4 @@ function asp_get_template() {
     return $tpl;
 }
 
-wp_enqueue_style( 'asp-products-styles', WP_ASP_PLUGIN_URL . '/public/views/templates/default/style.css', array(), AcceptStripePayments::VERSION );
+wp_enqueue_style( 'asp-products-template-styles' );

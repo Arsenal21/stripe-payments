@@ -26,6 +26,11 @@ class ASPMain {
 
     function __construct() {
 	ASPMain::$products_slug = 'asp-products';
+	add_action( 'wp_enqueue_scripts', array( $this, 'register_frontend_scripts' ) );
+    }
+
+    function register_frontend_scripts() {
+	wp_enqueue_style( 'asp-products-template-styles', WP_ASP_PLUGIN_URL . '/public/views/templates/default/style.css', array(), AcceptStripePayments::VERSION );
     }
 
 }
