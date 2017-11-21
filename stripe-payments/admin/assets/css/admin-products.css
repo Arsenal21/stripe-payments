@@ -1,0 +1,5 @@
+th.column-id, th.column-price { width: 10%; } th.column-thumbnail {width: 15%} th.column-shortcode { width: 20% }
+
+.asp-product-thumbnail-container img {width: 100px; height: 100px}
+.asp-product-thumbnail-container img:hover {box-shadow: 0 0 0 1px #5b9dd9,0 0 2px 1px rgba(30,140,190,.8);}
+.asp-product-thumbnail-container a:focus {box-shadow: none;}

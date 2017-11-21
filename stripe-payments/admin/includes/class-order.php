@@ -20,7 +20,6 @@ class ASPOrder {
 	$labels = array(
 	    'name'			 => _x( 'Orders', 'Post Type General Name', 'stripe-payments' ),
 	    'singular_name'		 => _x( 'Order', 'Post Type Singular Name', 'stripe-payments' ),
-	    'menu_name'		 => __( 'Stripe Payments', 'stripe-payments' ),
 	    'parent_item_colon'	 => __( 'Parent Order:', 'stripe-payments' ),
 	    'all_items'		 => __( 'Orders', 'stripe-payments' ),
 	    'view_item'		 => __( 'View Order', 'stripe-payments' ),
@@ -32,9 +31,7 @@ class ASPOrder {
 	    'not_found'		 => __( 'Not found', 'stripe-payments' ),
 	    'not_found_in_trash'	 => __( 'Not found in Trash', 'stripe-payments' ),
 	);
-
-	$menu_icon	 = WP_ASP_PLUGIN_URL . '/assets/asp-dashboard-menu-icon.png';
-	$args		 = array(
+	$args = array(
 	    'label'			 => __( 'orders', 'stripe-payments' ),
 	    'description'		 => __( 'Stripe Orders', 'stripe-payments' ),
 	    'labels'		 => $labels,
@@ -42,11 +39,7 @@ class ASPOrder {
 	    'hierarchical'		 => false,
 	    'public'		 => false,
 	    'show_ui'		 => true,
-	    'show_in_menu'		 => true,
-	    'show_in_nav_menus'	 => true,
-	    'show_in_admin_bar'	 => true,
-	    'menu_position'		 => 80,
-	    'menu_icon'		 => $menu_icon,
+	    'show_in_menu'		 => 'edit.php?post_type='.ASPMain::$products_slug,
 	    'can_export'		 => true,
 	    'has_archive'		 => false,
 	    'exclude_from_search'	 => true,
@@ -59,33 +52,6 @@ class ASPOrder {
 	);
 
 	register_post_type( 'stripe_order', $args );
-
-	// Products post type
-	$labels = array(
-	    'name'			 => _x( 'Products', 'Post Type General Name', 'stripe_payments' ),
-	    'singular_name'		 => _x( 'Product', 'Post Type Singular Name', 'stripe_payments' ),
-	    'menu_name'		 => __( 'Products', 'stripe_payments' ),
-//	    'parent_item_colon'	 => __( 'Parent Order:', 'stripe_payments' ),
-	    'all_items'		 => __( 'Products', 'stripe_payments' ),
-	    'view_item'		 => __( 'View Product', 'stripe_payments' ),
-	    'add_new_item'		 => __( 'Add New Product', 'stripe_payments' ),
-	    'add_new'		 => __( 'Add New', 'stripe_payments' ),
-	    'edit_item'		 => __( 'Edit Product', 'stripe_payments' ),
-	    'update_item'		 => __( 'Update Products', 'stripe_payments' ),
-	    'search_items'		 => __( 'Search Product', 'stripe_payments' ),
-	    'not_found'		 => __( 'Not found', 'stripe_payments' ),
-	    'not_found_in_trash'	 => __( 'Not found in Trash', 'stripe_payments' ),
-	);
-
-	$args = array(
-	    'labels'		 => $labels,
-	    'capability_type'	 => 'post',
-	    'public'		 => false,
-	    'show_ui'		 => true,
-	    'show_in_menu'		 => 'edit.php?post_type=stripe_order'
-	);
-
-	register_post_type( 'asp_products', $args );
     }
 
     /**

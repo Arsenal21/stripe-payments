@@ -75,21 +75,43 @@ class AcceptStripePaymentsShortcode {
 	}
 	$id	 = $atts[ 'id' ];
 	$post	 = get_post( $id );
-	if ( ! $post || get_post_type( $id ) != 'asp_products' ) {
+	if ( ! $post || get_post_type( $id ) != ASPMain::$products_slug ) {
 	    $error_msg	 = '<div class="stripe_payments_error_msg" style="color: red;">';
 	    $error_msg	 .= "Can't find product with ID " . $id;
 	    $error_msg	 .= '</div>';
 	    return $error_msg;
 	}
 
-	return $this->shortcode_accept_stripe_payment( array(
+	$currency = get_post_meta( $id, 'asp_product_currency', true );
+
+	if ( ! $currency ) {
+	    $currency = $this->AcceptStripePayments->get_setting( 'currency_code' );
+	}
+
+	$button_text = get_post_meta( $id, 'asp_product_button_text', true );
+	if ( ! $button_text ) {
+	    $button_text = $this->AcceptStripePayments->get_setting( 'button_text' );
+	}
+
+	$thumb_img	 = '';
+	$thumb_url	 = get_post_meta( $id, 'asp_product_thumbnail', true );
+
+	if ( $thumb_url ) {
+	    $thumb_img = '<img src="' . $thumb_url . '">';
+	}
+
+	$buy_btn = $this->shortcode_accept_stripe_payment( array(
 	    'name'		 => $post->post_title,
 	    'price'		 => get_post_meta( $id, 'asp_product_price', true ),
-	    'currency'	 => get_post_meta( $id, 'asp_product_currency', true ),
+	    'currency'	 => $currency,
 	    'quantity'	 => get_post_meta( $id, 'asp_product_quantity', true ),
-	    'button_text'	 => get_post_meta( $id, 'asp_product_button_text', true ),
+	    'button_text'	 => $button_text,
 	    'description'	 => get_post_meta( $id, 'asp_product_description', true ),
 	) );
+	require_once(WP_ASP_PLUGIN_PATH . 'public/views/templates/default/template.php');
+	$tpl	 = asp_get_template();
+	$tpl	 = str_replace( array( '%_thumb_img_%', '%_name_%', '%_description_%', '%_buy_btn_%' ), array( $thumb_img, $post->post_title, $post->post_content, $buy_btn ), $tpl );
+	return $tpl;
     }
 
     function shortcode_accept_stripe_payment( $atts ) {

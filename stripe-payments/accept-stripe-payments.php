@@ -20,11 +20,24 @@ define( 'WP_ASP_PLUGIN_VERSION', '1.6.0' );
 define( 'WP_ASP_PLUGIN_URL', plugins_url( '', __FILE__ ) );
 define( 'WP_ASP_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 
+class ASPMain {
+
+    static $products_slug;
+
+    function __construct() {
+	ASPMain::$products_slug = 'asp-products';
+    }
+
+}
+
+$ASPMain = new ASPMain();
+
 /* ----------------------------------------------------------------------------*
  * Public-Facing Functionality
  * ---------------------------------------------------------------------------- */
 require_once( plugin_dir_path( __FILE__ ) . 'public/class-asp.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'public/includes/class-shortcode-asp.php' );
+require_once( WP_ASP_PLUGIN_PATH . 'admin/includes/class-products.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'admin/includes/class-order.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'includes/stripe/lib/Stripe.php' );
 
@@ -77,17 +90,34 @@ add_filter( 'plugin_action_links', 'asp_stripe_add_settings_link', 10, 2 );
 //check and redirect old Settings page
 add_action( 'init', 'asp_init_handler' );
 
+register_activation_hook( __FILE__, 'asp_activation_hook_handler' );
+
+// register custom post type
+$ASPProducts	 = ASPProducts::get_instance();
+add_action( 'init', array( $ASPProducts, 'register_post_type' ), 0 );
+$ASPOrder	 = ASPOrder::get_instance();
+add_action( 'init', array( $ASPOrder, 'register_post_type' ), 0 );
+
 if ( session_id() == '' ) {
     session_start();
+}
+
+function asp_activation_hook_handler() {
+    $ASPProducts	 = ASPProducts::get_instance();
+    $ASPProducts->register_post_type();
+    $ASPOrder	 = ASPOrder::get_instance();
+    $ASPOrder->register_post_type();
+    flush_rewrite_rules();
 }
 
 function asp_init_handler() {
     global $pagenow;
     if ( is_admin() ) {
 	//check if we need redirect old Settings page
-	if ( $pagenow == "options-general.php" && isset( $_GET[ 'page' ] ) && $_GET[ 'page' ] == 'accept_stripe_payment' ) {
+	if ( ($pagenow == "options-general.php" && isset( $_GET[ 'page' ] ) && $_GET[ 'page' ] == 'accept_stripe_payment') ||
+	($pagenow == "edit.php" && (isset( $_GET[ 'post_type' ] ) && $_GET[ 'post_type' ] == 'stripe_order') && (isset( $_GET[ 'page' ] ) && $_GET[ 'page' ] == 'stripe-payments-settings') ) ) {
 	    //let's redirect old Settings page to new
-	    wp_redirect( get_admin_url() . 'edit.php?post_type=stripe_order&page=stripe-payments-settings', 301 );
+	    wp_redirect( get_admin_url() . 'edit.php?post_type=' . ASPMain::$products_slug . '&page=stripe-payments-settings', 301 );
 	    exit;
 	}
 
@@ -96,14 +126,16 @@ function asp_init_handler() {
 	require_once(WP_ASP_PLUGIN_PATH . 'admin/includes/class-products-meta-boxes.php');
 
 	//products post save action
-	add_action( 'save_post_asp_products', 'asp_save_product_handler', 10, 3 );
+	add_action( 'save_post_' . ASPMain::$products_slug, 'asp_save_product_handler', 10, 3 );
     }
 }
 
 function asp_save_product_handler( $post_id, $post, $update ) {
-    //var_dump( $_POST );
     if ( ! isset( $_POST[ 'action' ] ) ) {
 	//this is probably not edit or new post creation event
+	return;
+    }
+    if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
 	return;
     }
     if ( isset( $post_id ) ) {
@@ -112,5 +144,17 @@ function asp_save_product_handler( $post_id, $post, $update ) {
 	update_post_meta( $post_id, 'asp_product_quantity', sanitize_text_field( $_POST[ 'asp_product_quantity' ] ) );
 	update_post_meta( $post_id, 'asp_product_button_text', sanitize_text_field( $_POST[ 'asp_product_button_text' ] ) );
 	update_post_meta( $post_id, 'asp_product_description', sanitize_text_field( $_POST[ 'asp_product_description' ] ) );
+	update_post_meta( $post_id, 'asp_product_upload', sanitize_text_field( $_POST[ 'asp_product_upload' ] ) );
+	update_post_meta( $post_id, 'asp_product_thumbnail', sanitize_text_field( $_POST[ 'asp_product_thumbnail' ] ) );
     }
+}
+
+add_filter( 'the_content', 'asp_filter_post_type_content' );
+
+function asp_filter_post_type_content( $content ) {
+    global $post;
+    if ( $post->post_type == ASPMain::$products_slug ) {//Handle the content for sdm_downloads type post
+	return do_shortcode( '[asp_product id="' . $post->ID . '"]' );
+    }
+    return $content;
 }

@@ -42,10 +42,6 @@ class AcceptStripePayments_Admin {
 	$plugin_basename = plugin_basename( plugin_dir_path( realpath( dirname( __FILE__ ) ) ) . $this->plugin_slug . '.php' );
 	add_filter( 'plugin_action_links_' . $plugin_basename, array( $this, 'add_action_links' ) );
 
-	// register custom post type
-	$ASPOrder = ASPOrder::get_instance();
-	add_action( 'init', array( $ASPOrder, 'register_post_type' ), 0 );
-
 	//Add any required inline JS code in the admin dashboard side.
 	add_action( 'admin_print_scripts', array( $this, 'asp_print_admin_scripts' ) );
 
@@ -179,7 +175,7 @@ class AcceptStripePayments_Admin {
 	//Products submenu
 //	add_submenu_page( 'edit.php?post_type=stripe_order', __( 'Products', 'stripe-payments' ), __( 'Products', 'stripe-payments' ), 'manage_options', 'edit.php?post_type=stripe_order', array( $this, 'display_plugin_admin_page' ) );
 	$this->plugin_screen_hook_suffix = add_submenu_page(
-	'edit.php?post_type=stripe_order', __( 'Settings', 'stripe-payments' ), __( 'Settings', 'stripe-payments' ), 'manage_options', 'stripe-payments-settings', array( $this, 'display_plugin_admin_page' )
+	'edit.php?post_type='.ASPMain::$products_slug, __( 'Settings', 'stripe-payments' ), __( 'Settings', 'stripe-payments' ), 'manage_options', 'stripe-payments-settings', array( $this, 'display_plugin_admin_page' )
 	);
 	add_action( 'admin_init', array( &$this, 'register_settings' ) );
     }
@@ -274,8 +270,8 @@ class AcceptStripePayments_Admin {
 	<?php
     }
 
-    static function get_currency_options( $selected_value = '' ) {
-	$currencies	 = array(
+    static function get_currency_options( $selected_value = '', $show_default = true ) {
+	$currencies = array(
 	    ""	 => "(Default)",
 	    "USD"	 => "US Dollars (USD)",
 	    "EUR"	 => "Euros (EUR)",
@@ -308,8 +304,11 @@ class AcceptStripePayments_Admin {
 	    "TRY"	 => "Turkish Lira (TRY)",
 	    "VND"	 => "Vietnamese Dong (VND)",
 	);
-	$opt_tpl	 = '<option value="%curr_code%"%selected%>%curr_name%</option>';
-	//$opts		 = $selected_value === false ? '<option value="" selected>(Default)</option>' : '';
+	if ( $show_default === false ) {
+	    unset( $currencies[ "" ] );
+	}
+	$opt_tpl = '<option value="%curr_code%"%selected%>%curr_name%</option>';
+	$opts	 = '';
 	foreach ( $currencies as $key => $value ) {
 	    $selected	 = $selected_value == $key ? ' selected' : '';
 	    $opts		 .= str_replace( array( '%curr_code%', '%curr_name%', '%selected%' ), array( $key, $value, $selected ), $opt_tpl );
@@ -374,7 +373,7 @@ class AcceptStripePayments_Admin {
 		break;
 	    case 'currency_code':
 		echo '<select name="AcceptStripePayments-settings[' . $field . ']">';
-		echo AcceptStripePayments_Admin::get_currency_options( $field_value );
+		echo AcceptStripePayments_Admin::get_currency_options( $field_value, false );
 		echo '</select>';
 //              echo "<p class=\"description\">{$desc}</p>";
 		break;
