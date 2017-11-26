@@ -4,6 +4,7 @@ class AcceptStripePaymentsShortcode {
 
     var $AcceptStripePayments	 = null;
     var $StripeCSSInserted	 = false;
+    var $ProductCSSInserted	 = false;
 
     /**
      * Instance of this class.
@@ -62,6 +63,9 @@ class AcceptStripePaymentsShortcode {
 	    'strEnterValidAmount'	 => __( 'Please enter a valid amount', 'stripe-payments' ),
 	    'strMinAmount'		 => __( 'Minimum amount is 0.5', 'stripe-payments' ),
 	    'key'			 => $this->AcceptStripePayments->get_setting( 'api_publishable_key' ),
+	    'strEnterQuantity'	 => __( 'Please enter quantity.', 'stripe-payments' ),
+	    'strQuantityIsZero'	 => __( 'Quantity can\'t be zero.', 'stripe-payments' ),
+	    'strQuantityIsFloat'	 => __( 'Quantity should be integer value.', 'stripe-payments' ),
 	);
 	wp_localize_script( 'stripe-handler', 'stripehandler', $loc_data );
     }
@@ -100,17 +104,30 @@ class AcceptStripePaymentsShortcode {
 	    $thumb_img = '<img src="' . $thumb_url . '">';
 	}
 
-	$buy_btn = $this->shortcode_accept_stripe_payment( array(
-	    'name'		 => $post->post_title,
-	    'price'		 => get_post_meta( $id, 'asp_product_price', true ),
-	    'currency'	 => $currency,
-	    'quantity'	 => get_post_meta( $id, 'asp_product_quantity', true ),
-	    'button_text'	 => $button_text,
-	    'description'	 => get_post_meta( $id, 'asp_product_description', true ),
+	$url = get_post_meta( $id, 'asp_product_upload', true );
+
+	if ( ! $url ) {
+	    $url = '';
+	}
+
+	$template_name	 = 'default'; //this could be made configurable
+	$button_color	 = 'blue'; //this could be made configurable
+
+	$buy_btn			 = $this->shortcode_accept_stripe_payment( array(
+	    'name'			 => $post->post_title,
+	    'price'			 => get_post_meta( $id, 'asp_product_price', true ),
+	    'currency'		 => $currency,
+	    'class'			 => 'asp_product_buy_btn ' . $button_color,
+	    'quantity'		 => get_post_meta( $id, 'asp_product_quantity', true ),
+	    'custom_quantity'	 => get_post_meta( $id, 'asp_product_custom_quantity', true ),
+	    'button_text'		 => $button_text,
+	    'description'		 => get_post_meta( $id, 'asp_product_description', true ),
+	    'url'			 => $url,
 	) );
-	require_once(WP_ASP_PLUGIN_PATH . 'public/views/templates/default/template.php');
-	$tpl	 = asp_get_template();
-	$tpl	 = str_replace( array( '%_thumb_img_%', '%_name_%', '%_description_%', '%_buy_btn_%' ), array( $thumb_img, $post->post_title, $post->post_content, $buy_btn ), $tpl );
+	require_once(WP_ASP_PLUGIN_PATH . 'public/views/templates/' . $template_name . '/template.php');
+	$tpl				 = asp_get_template( $this->ProductCSSInserted );
+	$this->productCSSInserted	 = true;
+	$tpl				 = str_replace( array( '%_thumb_img_%', '%_name_%', '%_description_%', '%_buy_btn_%' ), array( $thumb_img, $post->post_title, $post->post_content, $buy_btn ), $tpl );
 	return $tpl;
     }
 
@@ -121,6 +138,7 @@ class AcceptStripePaymentsShortcode {
 	    'class'			 => 'stripe-button-el', //default Stripe button class
 	    'price'			 => '0',
 	    'quantity'		 => '',
+	    'custom_quantity'	 => false,
 	    'description'		 => '',
 	    'url'			 => '',
 	    'thankyou_page_url'	 => '',
@@ -188,6 +206,8 @@ class AcceptStripePaymentsShortcode {
 
 	$data = array(
 	    'allowRememberMe'	 => $allowRememberMe,
+	    'quantity'		 => $quantity,
+	    'custom_quantity'	 => $custom_quantity,
 	    'description'		 => $description,
 	    'image'			 => $item_logo,
 	    'currency'		 => $currency,
@@ -269,15 +289,24 @@ class AcceptStripePaymentsShortcode {
 	$output = '';
 	if ( $data[ 'amount' ] == 0 ) { //price not specified, let's add an input box for user to specify the amount
 	    $output .= "<p>"
-	    . "<input style='max-width: 10em;' type='text' id='stripeAmount_{$data[ 'uniq_id' ]}' value='' name='stripeAmount' placeholder='" . __( 'Enter amount', 'stripe-payments' ) . "' required/>"
-	    . "<span> {$data[ 'currency' ]}</span>"
+	    . "<input style='max-width: 10em; display: inline-block;' type='text' id='stripeAmount_{$data[ 'uniq_id' ]}' value='' name='stripeAmount' placeholder='" . __( 'Enter amount', 'stripe-payments' ) . "' required/>"
+	    . "<span style='margin-left: 5px; display: inline-block'> {$data[ 'currency' ]}</span>"
 	    . "<span style='display: block;' id='error_explanation_{$data[ 'uniq_id' ]}'></span>"
 	    . "</p>";
 	}
-	$output .= "<input type='hidden' id='stripeToken_{$data[ 'uniq_id' ]}' name='stripeToken' />"
-	. "<input type='hidden' id='stripeTokenType_{$data[ 'uniq_id' ]}' name='stripeTokenType' />"
-	. "<input type='hidden' id='stripeEmail_{$data[ 'uniq_id' ]}' name='stripeEmail' />"
-	. "<input type='hidden' data-stripe-button-uid='{$data[ 'uniq_id' ]}' />";
+	if ( $data[ 'custom_quantity' ] === "1" ) { //we should output input for customer to input custom quantity
+	    $output .= "<p>"
+	    . "<input style='max-width: 10em; display: inline-block;' type='text' id='stripeCustomQuantity_{$data[ 'uniq_id' ]}' value='{$data[ 'quantity' ]}' name='stripeCustomQuantity' placeholder='" . __( 'Enter quantity', 'stripe-payments' ) . "' value='{$data[ 'quantity' ]}' required/>"
+	    . "<span style='margin-left: 5px; display: inline-block'> " . __( 'X items', 'stripe-payments' ) . "</span>"
+	    . "<span style='display: block;' id='error_explanation_quantity_{$data[ 'uniq_id' ]}'></span>"
+	    . "</p>";
+	}
+	if ( $data ) {
+	    $output .= "<input type='hidden' id='stripeToken_{$data[ 'uniq_id' ]}' name='stripeToken' />"
+	    . "<input type='hidden' id='stripeTokenType_{$data[ 'uniq_id' ]}' name='stripeTokenType' />"
+	    . "<input type='hidden' id='stripeEmail_{$data[ 'uniq_id' ]}' name='stripeEmail' />"
+	    . "<input type='hidden' data-stripe-button-uid='{$data[ 'uniq_id' ]}' />";
+	}
 	//Let's enqueue Stripe js
 	wp_enqueue_script( 'stripe-script' );
 	//using nested array in order to ensure boolean values are not converted to strings by wp_localize_script function
@@ -306,7 +335,8 @@ class AcceptStripePaymentsShortcode {
 	    $output	 .= '<p class="asp-thank-you-page-msg2">' . __( "Here's what you purchased: ", "stripe-payments" ) . '</p>';
 	    $output	 .= '<div class="asp-thank-you-page-product-name">' . __( "Product Name: ", "stripe-payments" ) . $aspData[ 'item_name' ] . '</div>';
 	    $output	 .= '<div class="asp-thank-you-page-qty">' . __( "Quantity: ", "stripe-payments" ) . $aspData[ 'item_quantity' ] . '</div>';
-	    $output	 .= '<div class="asp-thank-you-page-qty">' . __( "Amount: ", "stripe-payments" ) . $aspData[ 'item_price' ] . ' ' . $aspData[ 'currency_code' ] . '</div>';
+	    $output	 .= '<div class="asp-thank-you-page-qty">' . __( "Item Price: ", "stripe-payments" ) . $aspData[ 'item_price' ] . ' ' . $aspData[ 'currency_code' ] . '</div>';
+	    $output	 .= '<div class="asp-thank-you-page-qty">' . __( "Total Paid: ", "stripe-payments" ) . $aspData[ 'paid_amount' ] . ' ' . $aspData[ 'currency_code' ] . '</div>';
 	    $output	 .= '<div class="asp-thank-you-page-txn-id">' . __( "Transaction ID: ", "stripe-payments" ) . $aspData[ 'txn_id' ] . '</div>';
 
 	    if ( ! empty( $aspData[ 'item_url' ] ) ) {

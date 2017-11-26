@@ -1,12 +1,10 @@
 var wp_asp_prefetched = false;
-
 jQuery(document).ready(function () {
     jQuery('input[data-stripe-button-uid]').each(function (ind, obj) {
 	uid = jQuery(obj).data('stripeButtonUid');
 	wp_asp_add_stripe_handler(window['stripehandler' + uid].data);
     });
 });
-
 function wp_asp_hadnle_token(data, token, args) {
     jQuery('input#stripeToken_' + data.uniq_id).val(token.id);
     jQuery('input#stripeTokenType_' + data.uniq_id).val(token.type);
@@ -72,30 +70,51 @@ function wp_asp_add_stripe_handler(data) {
     jQuery('#stripe_button_' + data.uniq_id).on('click', function (e) {
 	e.preventDefault();
 	wp_asp_check_handler();
-
-	if (!data.variable) {
+	if (!data.variable && data.custom_quantity !== '1') {
 	    data.handler.open();
 	    return true;
 	}
-	var amount = jQuery('input#stripeAmount_' + data.uniq_id).val();
-	amount = amount.replace(/\$/g, '');
-	amount = amount.replace(/\,/g, '');
-
-	amount = parseFloat(amount);
-
-	if (isNaN(amount)) {
-	    jQuery('#error_explanation_' + data.uniq_id).hide().html(stripehandler.strEnterValidAmount).fadeIn('slow');
-	} else if (amount < 0.5)
-	    jQuery('#error_explanation_' + data.uniq_id).hide().html(stripehandler.strMinAmount).fadeIn('slow');
-	else {
-	    jQuery('#error_explanation_' + data.uniq_id).html('');
-	    jQuery('input#stripeAmount_' + data.uniq_id).val(amount);
-	    if (data.zeroCents.indexOf(data.currency) <= -1) {
-		amount = amount * 100;
+	if (data.variable) {
+	    var amount = jQuery('input#stripeAmount_' + data.uniq_id).val();
+	    amount = amount.replace(/\$/g, '');
+	    amount = amount.replace(/\,/g, '');
+	    amount = parseFloat(amount);
+	    if (isNaN(amount)) {
+		jQuery('#error_explanation_' + data.uniq_id).hide().html(stripehandler.strEnterValidAmount).fadeIn('slow');
+		return false;
+	    } else if (amount < 0.5) {
+		jQuery('#error_explanation_' + data.uniq_id).hide().html(stripehandler.strMinAmount).fadeIn('slow');
+		return false;
+	    } else {
+		jQuery('#error_explanation_' + data.uniq_id).html('');
+		jQuery('input#stripeAmount_' + data.uniq_id).val(amount);
+		if (data.zeroCents.indexOf(data.currency) <= -1) {
+		    amount = amount * 100;
+		}
 	    }
-	    data.handler.open({
-		amount: amount
-	    });
 	}
+	if (data.custom_quantity === "1") {
+	    var custom_quantity_orig = jQuery('input#stripeCustomQuantity_' + data.uniq_id).val();
+	    var custom_quantity = parseInt(custom_quantity_orig);
+	    if (isNaN(custom_quantity)) {
+		jQuery('#error_explanation_quantity_' + data.uniq_id).hide().html(stripehandler.strEnterQuantity).fadeIn('slow');
+		return false;
+	    } else if (custom_quantity === 0) {
+		jQuery('#error_explanation_quantity_' + data.uniq_id).hide().html(stripehandler.strQuantityIsZero).fadeIn('slow');
+		return false;
+	    } else if (custom_quantity_orig % 1 !== 0) {
+		jQuery('#error_explanation_quantity_' + data.uniq_id).hide().html(stripehandler.strQuantityIsFloat).fadeIn('slow');
+		return false;
+	    } else {
+		if (!isNaN(amount)) {
+		    amount = custom_quantity * amount;
+		} else {
+		    amount = custom_quantity * data.amount;
+		}
+	    }
+	}
+	data.handler.open({
+	    amount: amount
+	});
     });
 }

@@ -50,10 +50,13 @@ class asp_products_metaboxes {
     }
 
     function display_quantity_meta_box( $post ) {
-	$current_val = get_post_meta( $post->ID, 'asp_product_quantity', true );
+	$current_val		 = get_post_meta( $post->ID, 'asp_product_quantity', true );
+	$allow_custom_quantity	 = get_post_meta( $post->ID, 'asp_product_custom_quantity', true );
 	?>
 	<input type="text" name="asp_product_quantity" value="<?php echo $current_val; ?>">
 	<p class="description">Specify a custom quantity for the item.</p>
+	<label><input type="checkbox" name="asp_product_custom_quantity" value="1"<?php echo ($allow_custom_quantity === "1") ? ' checked' : ''; ?>><?php echo __( 'Allow users to specify quantity', 'stripe-payments' ); ?> </label>
+	<p class="description"><?php echo __( "When checked, users can enter qunatity they want to buy.", 'stripe-payments' ); ?></p>
 	<?php
     }
 

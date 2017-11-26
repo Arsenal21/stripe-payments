@@ -1,6 +1,6 @@
 <?php
 
-function asp_get_template() {
+function asp_get_template( $css_inserted = false ) {
     ob_start();
     ?>
     <div class="asp_product_item">
@@ -22,7 +22,8 @@ function asp_get_template() {
     </div>
     <?php
     $tpl = ob_get_clean();
+    if ( ! $css_inserted ) {
+	$tpl = "<link rel='stylesheet' href='" . WP_ASP_PLUGIN_URL . '/public/views/templates/default/style.css' . "' type='text/css' media='all' />" . $tpl;
+    }
     return $tpl;
 }
-
-wp_enqueue_style( 'asp-products-template-styles' );

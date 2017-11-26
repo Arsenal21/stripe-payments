@@ -3,7 +3,7 @@
 /**
  * Plugin Name:       Stripe Payments
  * Description:       Easily accept credit card payments via Stripe payment gateway in WordPress.
- * Version:           1.6.0
+ * Version:           1.6.1-testing
  * Author:            Tips and Tricks HQ, wptipsntricks
  * Author URI:        https://www.tipsandtricks-hq.com/
  * Plugin URI:        https://www.tipsandtricks-hq.com/ecommerce/wordpress-stripe-plugin-accept-payments-using-stripe
@@ -26,11 +26,6 @@ class ASPMain {
 
     function __construct() {
 	ASPMain::$products_slug = 'asp-products';
-	add_action( 'wp_enqueue_scripts', array( $this, 'register_frontend_scripts' ) );
-    }
-
-    function register_frontend_scripts() {
-	wp_enqueue_style( 'asp-products-template-styles', WP_ASP_PLUGIN_URL . '/public/views/templates/default/style.css', array(), AcceptStripePayments::VERSION );
     }
 
 }
@@ -147,6 +142,7 @@ function asp_save_product_handler( $post_id, $post, $update ) {
 	update_post_meta( $post_id, 'asp_product_price', sanitize_text_field( $_POST[ 'asp_product_price' ] ) );
 	update_post_meta( $post_id, 'asp_product_currency', sanitize_text_field( $_POST[ 'asp_product_currency' ] ) );
 	update_post_meta( $post_id, 'asp_product_quantity', sanitize_text_field( $_POST[ 'asp_product_quantity' ] ) );
+	update_post_meta( $post_id, 'asp_product_custom_quantity', isset( $_POST[ 'asp_product_custom_quantity' ] ) ? "1" : false  );
 	update_post_meta( $post_id, 'asp_product_button_text', sanitize_text_field( $_POST[ 'asp_product_button_text' ] ) );
 	update_post_meta( $post_id, 'asp_product_description', sanitize_text_field( $_POST[ 'asp_product_description' ] ) );
 	update_post_meta( $post_id, 'asp_product_upload', sanitize_text_field( $_POST[ 'asp_product_upload' ] ) );

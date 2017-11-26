@@ -43,6 +43,7 @@ $stripeToken		 = sanitize_text_field( $_POST[ 'stripeToken' ] );
 $stripeTokenType	 = sanitize_text_field( $_POST[ 'stripeTokenType' ] );
 $stripeEmail		 = sanitize_email( $_POST[ 'stripeEmail' ] );
 $item_quantity		 = sanitize_text_field( $_POST[ 'item_quantity' ] );
+$item_custom_quantity	 = isset( $_POST[ 'stripeCustomQuantity' ] ) ? sanitize_text_field( $_POST[ 'stripeCustomQuantity' ] ) : false;
 $item_url		 = sanitize_text_field( $_POST[ 'item_url' ] );
 $charge_description	 = sanitize_text_field( $_POST[ 'charge_description' ] );
 
@@ -60,6 +61,7 @@ if ( $item_price == 0 ) { //Custom amount
 	asp_ipn_completed();
     }
 }
+
 $currency_code	 = sanitize_text_field( $_POST[ 'currency_code' ] );
 $paymentAmount	 = ($item_quantity !== "NA" ? ($item_price * $item_quantity) : $item_price);
 
@@ -75,6 +77,11 @@ if ( in_array( $currency_code, $asp_class->zeroCents ) ) {
     $amount = $paymentAmount;
 } else {
     $amount = $paymentAmount * 100;
+}
+
+if ( $item_custom_quantity !== false ) {
+    $amount		 = $amount * $item_custom_quantity;
+    $item_quantity	 = $item_custom_quantity;
 }
 
 ob_start();
@@ -109,10 +116,11 @@ try {
     $data[ 'stripeToken' ]		 = $stripeToken;
     $data[ 'stripeTokenType' ]	 = $stripeTokenType;
     $data[ 'stripeEmail' ]		 = $stripeEmail;
-    $data[ 'item_quantity' ]		 = $item_quantity;
+    $data[ 'item_quantity' ]	 = $item_quantity;
     $data[ 'item_price' ]		 = $item_price;
-    $data[ 'currency_code' ]		 = $currency_code;
-    $data[ 'txn_id' ]			 = $txn_id; //The Stripe charge ID
+    $data [ 'paid_amount' ]		 = $data[ 'item_price' ] * $data[ 'item_quantity' ];
+    $data[ 'currency_code' ]	 = $currency_code;
+    $data[ 'txn_id' ]		 = $txn_id; //The Stripe charge ID
     $data[ 'charge_description' ]	 = $charge_description;
 
     $post_data = array_map( 'sanitize_text_field', $data );
@@ -135,7 +143,7 @@ try {
     $shipping_address		 .= sanitize_text_field( (isset( $_POST[ 'stripeShippingAddressCity' ] ) ? $_POST[ 'stripeShippingAddressCity' ] : '' ) ) . "\n";
     $shipping_address		 .= sanitize_text_field( (isset( $_POST[ 'stripeShippingAddressState' ] ) ? $_POST[ 'stripeShippingAddressState' ] : '' ) ) . "\n";
     $shipping_address		 .= sanitize_text_field( (isset( $_POST[ 'stripeShippingAddressCountry' ] ) ? $_POST[ 'stripeShippingAddressCountry' ] : '' ) ) . "\n";
-    $post_data[ 'shipping_address' ]	 = $shipping_address;
+    $post_data[ 'shipping_address' ] = $shipping_address;
 
     //Insert the order data to the custom post
     $order		 = ASPOrder::get_instance();
@@ -150,7 +158,7 @@ try {
     do_action( 'AcceptStripePayments_payment_completed', $order, $charge );
 
     $GLOBALS[ 'asp_payment_success' ]	 = true;
-    $item_url			 = base64_decode( $item_url );
+    $item_url				 = base64_decode( $item_url );
     $post_data[ 'item_url' ]		 = $item_url;
 
     //Let's handle email sending stuff
