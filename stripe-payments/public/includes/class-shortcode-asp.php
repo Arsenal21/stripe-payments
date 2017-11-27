@@ -290,7 +290,28 @@ class AcceptStripePaymentsShortcode {
     }
 
     function get_button_code_new_method( $data ) {
-	$output = '';
+	$output = '<div class="asp_product_buy_button">';
+	if ( ! $this->ProductCSSInserted ) {
+	    // we need to style custom inputs
+	    ob_start();
+	    ?>
+	    <style>
+	        .asp_product_buy_button input {
+	    	max-width: 9em;
+	    	display: inline-block;
+	    	line-height: 1;
+	    	padding: 8px 10px;
+	        }
+
+	        .asp_product_buy_button input::placeholder {
+	    	font-style: italic;
+	    	color: #bbb;
+	        }
+	    </style>
+	    <?php
+
+	    $output .= ob_get_clean();
+	}
 	if ( $data[ 'amount' ] == 0 ) { //price not specified, let's add an input box for user to specify the amount
 	    $output .= "<p>"
 	    . "<input type='text' id='stripeAmount_{$data[ 'uniq_id' ]}' value='' name='stripeAmount' placeholder='" . __( 'Enter amount', 'stripe-payments' ) . "' required/>"
@@ -317,6 +338,7 @@ class AcceptStripePaymentsShortcode {
 	wp_localize_script( 'stripe-handler', 'stripehandler' . $data[ 'uniq_id' ], array( 'data' => $data ) );
 	//enqueue our script that handles the stuff
 	wp_enqueue_script( 'stripe-handler' );
+	$output .= '</div>';
 	return $output;
     }
 
