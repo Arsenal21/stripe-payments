@@ -99,12 +99,13 @@ function wp_asp_add_stripe_handler(data) {
 	    if (isNaN(custom_quantity)) {
 		jQuery('#error_explanation_quantity_' + data.uniq_id).hide().html(stripehandler.strEnterQuantity).fadeIn('slow');
 		return false;
-	    } else if (custom_quantity === 0) {
-		jQuery('#error_explanation_quantity_' + data.uniq_id).hide().html(stripehandler.strQuantityIsZero).fadeIn('slow');
-		return false;
 	    } else if (custom_quantity_orig % 1 !== 0) {
 		jQuery('#error_explanation_quantity_' + data.uniq_id).hide().html(stripehandler.strQuantityIsFloat).fadeIn('slow');
 		return false;
+	    } else if (custom_quantity === 0) {
+		jQuery('#error_explanation_quantity_' + data.uniq_id).hide().html(stripehandler.strQuantityIsZero).fadeIn('slow');
+		return false;
+
 	    } else {
 		if (!isNaN(amount)) {
 		    amount = custom_quantity * amount;
