@@ -193,9 +193,13 @@ class AcceptStripePaymentsShortcode {
 	} else {
 	    $priceInCents = $paymentAmount * 100;
 	}
-	if ( ( ! isset( $description ) || empty( $description )) && $price != 0 ) {
+	if ( empty( $description ) && $custom_quantity !== '1' ) {
 	    //Create a description using quantity and payment amount
-	    $description = "{$quantity} piece" . ($quantity <> 1 ? "s" : "") . " for {$paymentAmount} {$currency}";
+	    if ( ! empty( $price ) || $price !== 0 ) {
+		$description = "{$quantity} piece" . ($quantity <> 1 ? "s" : "") . " for {$paymentAmount} {$currency}";
+	    } else {
+		$description = "{$quantity} piece" . ($quantity <> 1 ? "s" : "");
+	    }
 	}
 	//This is public.css stylesheet
 	//wp_enqueue_style('stripe-button-public');
