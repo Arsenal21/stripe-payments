@@ -155,7 +155,7 @@ add_filter( 'the_content', 'asp_filter_post_type_content' );
 function asp_filter_post_type_content( $content ) {
     global $post;
     if ( $post->post_type == ASPMain::$products_slug ) {//Handle the content for sdm_downloads type post
-	return do_shortcode( '[asp_product id="' . $post->ID . '"]' );
+	return do_shortcode( '[asp_product id="' . $post->ID . '" is_post_tpl="1"]' );
     }
     return $content;
 }

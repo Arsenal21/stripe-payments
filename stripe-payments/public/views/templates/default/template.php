@@ -27,3 +27,34 @@ function asp_get_template( $css_inserted = false ) {
     }
     return $tpl;
 }
+
+function asp_get_post_template( $css_inserted = false ) {
+    ob_start();
+    ?>
+    <div class = "asp_post_item">
+        <div class = "asp_post_item_top">
+    	<div class = "asp_post_item_top_left">
+    	    <div class = "asp_post_thumbnail">
+    		%_thumb_img_%
+    	    </div>
+    	</div>
+    	<div class = "asp_post_item_top_right">
+    	    <div class = "asp_post_title">
+    		%_name_%
+    	    </div>
+    	    <div class = "asp_post_description">
+    		<p>%_description_%</p>
+    	    </div>
+    	    <div class="asp_product_buy_button">
+    		%_buy_btn_%
+    	    </div>
+    	</div>
+        </div>
+    </div>
+    <?php
+    $tpl = ob_get_clean();
+    if ( ! $css_inserted ) {
+	$tpl = "<link rel='stylesheet' href='" . WP_ASP_PLUGIN_URL . '/public/views/templates/default/style.css' . "' type='text/css' media='all' />" . $tpl;
+    }
+    return $tpl;
+}

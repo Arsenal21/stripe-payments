@@ -113,7 +113,7 @@ class AcceptStripePaymentsShortcode {
 	$template_name	 = 'default'; //this could be made configurable
 	$button_color	 = 'blue'; //this could be made configurable
 
-	$buy_btn			 = $this->shortcode_accept_stripe_payment( array(
+	$buy_btn = $this->shortcode_accept_stripe_payment( array(
 	    'name'			 => $post->post_title,
 	    'price'			 => get_post_meta( $id, 'asp_product_price', true ),
 	    'currency'		 => $currency,
@@ -125,7 +125,11 @@ class AcceptStripePaymentsShortcode {
 	    'url'			 => $url,
 	) );
 	require_once(WP_ASP_PLUGIN_PATH . 'public/views/templates/' . $template_name . '/template.php');
-	$tpl				 = asp_get_template( $this->ProductCSSInserted );
+	if ( isset( $atts[ "is_post_tpl" ] ) ) {
+	    $tpl = asp_get_post_template( $this->ProductCSSInserted );
+	} else {
+	    $tpl = asp_get_template( $this->ProductCSSInserted );
+	}
 	$this->productCSSInserted	 = true;
 	$tpl				 = str_replace( array( '%_thumb_img_%', '%_name_%', '%_description_%', '%_buy_btn_%' ), array( $thumb_img, $post->post_title, $post->post_content, $buy_btn ), $tpl );
 	return $tpl;
@@ -232,7 +236,7 @@ class AcceptStripePaymentsShortcode {
 
 	$output .= "<form id='stripe_form_{$uniq_id}' action='' METHOD='POST'> ";
 
-	if ( $price == 0 || $this->AcceptStripePayments->get_setting( 'use_new_button_method' ) ) {
+	if ( $price == 0 || $custom_quantity !== false || $this->AcceptStripePayments->get_setting( 'use_new_button_method' ) ) {
 	    // variable amount or new method option is set in settings
 	    $output .= $this->get_button_code_new_method( $data );
 	} else {
@@ -297,7 +301,7 @@ class AcceptStripePaymentsShortcode {
 	if ( $data[ 'custom_quantity' ] === "1" ) { //we should output input for customer to input custom quantity
 	    $output .= "<p>"
 	    . "<input style='max-width: 10em; display: inline-block;' type='text' id='stripeCustomQuantity_{$data[ 'uniq_id' ]}' value='{$data[ 'quantity' ]}' name='stripeCustomQuantity' placeholder='" . __( 'Enter quantity', 'stripe-payments' ) . "' value='{$data[ 'quantity' ]}' required/>"
-	    . "<span style='margin-left: 5px; display: inline-block'> " . __( 'X items', 'stripe-payments' ) . "</span>"
+	    . "<span style='margin-left: 5px; display: inline-block'> " . __( 'X item(s)', 'stripe-payments' ) . "</span>"
 	    . "<span style='display: block;' id='error_explanation_quantity_{$data[ 'uniq_id' ]}'></span>"
 	    . "</p>";
 	}

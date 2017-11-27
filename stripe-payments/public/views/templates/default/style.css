@@ -84,3 +84,29 @@
     -moz-box-shadow: 0 1px 1px #d5d5d5, inset 0 1px 0 #cae295;
     box-shadow: 0 1px 1px #d5d5d5, inset 0 1px 0 #cae295;
 }
+
+.asp_post_item {
+    width: 90%;
+}
+.asp_post_item_top {
+    display: block;
+}
+.asp_post_item_top_left {
+    width: 40%;
+    float: left;
+    margin-right: 30px;
+}
+.asp_post_item_top_left img {
+    width: 100%;
+    border: 1px solid #e8e4e3;
+    padding: 5px;
+}
+.asp_post_item_top_right {
+    float: left;
+    width: 50%;
+}
+.asp_post_title {
+    font-size: 26px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
