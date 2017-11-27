@@ -131,7 +131,7 @@ class AcceptStripePaymentsShortcode {
 	    $tpl = asp_get_template( $this->ProductCSSInserted );
 	}
 	$this->productCSSInserted	 = true;
-	$tpl				 = str_replace( array( '%_thumb_img_%', '%_name_%', '%_description_%', '%_buy_btn_%' ), array( $thumb_img, $post->post_title, $post->post_content, $buy_btn ), $tpl );
+	$tpl				 = str_replace( array( '%_thumb_img_%', '%_name_%', '%_description_%', '%_buy_btn_%' ), array( $thumb_img, $post->post_title, do_shortcode(wpautop($post->post_content)), $buy_btn ), $tpl );
 	return $tpl;
     }
 
@@ -173,7 +173,7 @@ class AcceptStripePaymentsShortcode {
 	    $thankyou_page_url = '';
 	}
 
-	if ( empty( $quatity ) ) {
+	if ( empty( $quantity ) && $custom_quantity !== "1" ) {
 	    $quantity = 1;
 	}
 
@@ -186,7 +186,7 @@ class AcceptStripePaymentsShortcode {
 	$uniq_id		 = count( self::$payment_buttons );
 	$button_id		 = 'stripe_button_' . $uniq_id;
 	self::$payment_buttons[] = $button_id;
-	$paymentAmount		 = ("$quantity" === "NA" ? $price : ($price * $quantity));
+	$paymentAmount		 = ($custom_quantity === "1" ? $price : ($price * $quantity));
 	if ( in_array( $currency, $this->AcceptStripePayments->zeroCents ) ) {
 	    //this is zero-cents currency, amount shouldn't be multiplied by 100
 	    $priceInCents = $paymentAmount;
@@ -200,7 +200,7 @@ class AcceptStripePaymentsShortcode {
 	//This is public.css stylesheet
 	//wp_enqueue_style('stripe-button-public');
 
-	$button = "<button id='{$button_id}' type='submit' class='{$class}'><span>{$button_text}</span></button>";
+	$button = "<button id = '{$button_id}' type = 'submit' class = '{$class}'><span>{$button_text}</span></button>";
 
 	$checkout_lang = $this->AcceptStripePayments->get_setting( 'checkout_lang' );
 
@@ -230,11 +230,11 @@ class AcceptStripePaymentsShortcode {
 
 	//Let's insert Stripe default stylesheet only when it's needed
 	if ( $class == 'stripe-button-el' && ! ($this->StripeCSSInserted) ) {
-	    $output			 = "<link rel='stylesheet' href='https://checkout.stripe.com/v3/checkout/button.css' type='text/css' media='all' />";
+	    $output			 = "<link rel = 'stylesheet' href = 'https://checkout.stripe.com/v3/checkout/button.css' type = 'text/css' media = 'all' />";
 	    $this->StripeCSSInserted = true;
 	}
 
-	$output .= "<form id='stripe_form_{$uniq_id}' action='' METHOD='POST'> ";
+	$output .= "<form id = 'stripe_form_{$uniq_id}' action = '' METHOD = 'POST'> ";
 
 	if ( $price == 0 || $custom_quantity !== false || $this->AcceptStripePayments->get_setting( 'use_new_button_method' ) ) {
 	    // variable amount or new method option is set in settings
@@ -244,7 +244,7 @@ class AcceptStripePaymentsShortcode {
 	    $output .= $this->get_button_code_old_method( $data, $price, $button_text );
 	}
 	$output	 .= '<input type="hidden" name="asp_action" value="process_ipn" />';
-	$output	 .= "<input type='hidden' value='{$name}' name='item_name' />";
+	$output	 .= "<input type = 'hidden' value = '{$name}' name = 'item_name' />";
 	$output	 .= "<input type = 'hidden' value = '{$quantity}' name = 'item_quantity' />";
 	$output	 .= "<input type = 'hidden' value = '{$currency}' name = 'currency_code' />";
 	$output	 .= "<input type = 'hidden' value = '{$url}' name = 'item_url' />";
@@ -260,28 +260,28 @@ class AcceptStripePaymentsShortcode {
     }
 
     function get_button_code_old_method( $data, $price, $button_text ) {
-	$output	 = "<input type='hidden' value='{$price}' name='item_price' />";
+	$output	 = "<input type = 'hidden' value = '{$price}' name = 'item_price' />";
 	//Lets hide default Stripe button. We'll be using our own instead for styling purposes
-	$output	 .= "<div style='display: none !important'>";
-	$output	 .= "<script src='https://checkout.stripe.com/checkout.js' class='stripe-button'
-          data-key='" . $this->AcceptStripePayments->get_setting( 'api_publishable_key' ) . "'
-          data-panel-label='Pay'
-          data-amount='{$data[ 'amount' ]}'
-          data-name='{$data[ 'name' ]}'
-          data-allow-remember-me='{$data[ 'allowRememberMe' ]}'";
-	$output	 .= "data-description='{$data[ 'description' ]}'";
-	$output	 .= "data-label='{$button_text}'";
-	$output	 .= "data-currency='{$data[ 'currency' ]}'";
-	$output	 .= "data-locale='{$data[ 'locale' ]}'";
+	$output	 .= "<div style = 'display: none !important'>";
+	$output	 .= "<script src = 'https://checkout.stripe.com/checkout.js' class = 'stripe-button'
+	data-key = '" . $this->AcceptStripePayments->get_setting( 'api_publishable_key' ) . "'
+	data-panel-label = 'Pay'
+	data-amount = '{$data[ 'amount' ]}'
+	data-name = '{$data[ 'name' ]}'
+	data-allow-remember-me = '{$data[ 'allowRememberMe' ]}'";
+	$output	 .= "data-description = '{$data[ 'description' ]}'";
+	$output	 .= "data-label = '{$button_text}'";
+	$output	 .= "data-currency = '{$data[ 'currency' ]}'";
+	$output	 .= "data-locale = '{$data[ 'locale' ]}'";
 	if ( ! empty( $data[ 'image' ] ) ) {//Show item logo/thumbnail in the stripe payment window
-	    $output .= "data-image='{$data[ 'image' ]}'";
+	    $output .= "data-image = '{$data[ 'image' ]}'";
 	}
 
 	if ( $data[ 'billingAddress' ] ) {
-	    $output .= "data-billing-address='{$data[ 'billingAddress' ]}'";
+	    $output .= "data-billing-address = '{$data[ 'billingAddress' ]}'";
 	}
 	if ( $data[ 'shippingAddress' ] ) {
-	    $output .= "data-shipping-address='{$data[ 'shippingAddress' ]}'";
+	    $output .= "data-shipping-address = '{$data[ 'shippingAddress' ]}'";
 	}
 	$output	 .= apply_filters( 'asp_additional_stripe_checkout_data_parameters', '' ); //Filter to allow the addition of extra data parameters for stripe checkout.
 	$output	 .= "></script>";
@@ -336,7 +336,17 @@ class AcceptStripePaymentsShortcode {
 	    }
 	    $output	 = '';
 	    $output	 .= '<p class="asp-thank-you-page-msg1">' . __( "Thank you for your payment.", "stripe-payments" ) . '</p>';
-	    $output	 .= '<p class="asp-thank-you-page-msg2">' . __( "Here's what you purchased: ", "stripe-payments" ) . '</p>';
+	    $output	 .= '<                          
+
+	   
+
+	     
+
+	              
+
+	  
+
+	 p   class="asp-thank-you-page-msg2">' . __( "Here's what you purchased: ", "stripe-payments" ) . '</p>';
 	    $output	 .= '<div class="asp-thank-you-page-product-name">' . __( "Product Name: ", "stripe-payments" ) . $aspData[ 'item_name' ] . '</div>';
 	    $output	 .= '<div class="asp-thank-you-page-qty">' . __( "Quantity: ", "stripe-payments" ) . $aspData[ 'item_quantity' ] . '</div>';
 	    $output	 .= '<div class="asp-thank-you-page-qty">' . __( "Item Price: ", "stripe-payments" ) . $aspData[ 'item_price' ] . ' ' . $aspData[ 'currency_code' ] . '</div>';

@@ -43,7 +43,7 @@ function asp_get_post_template( $css_inserted = false ) {
     		%_name_%
     	    </div>
     	    <div class = "asp_post_description">
-    		<p>%_description_%</p>
+    		%_description_%
     	    </div>
     	    <div class="asp_product_buy_button">
     		%_buy_btn_%
