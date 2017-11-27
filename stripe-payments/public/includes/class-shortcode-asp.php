@@ -131,7 +131,7 @@ class AcceptStripePaymentsShortcode {
 	    $tpl = asp_get_template( $this->ProductCSSInserted );
 	}
 	$this->productCSSInserted	 = true;
-	$tpl				 = str_replace( array( '%_thumb_img_%', '%_name_%', '%_description_%', '%_buy_btn_%' ), array( $thumb_img, $post->post_title, do_shortcode(wpautop($post->post_content)), $buy_btn ), $tpl );
+	$tpl				 = str_replace( array( '%_thumb_img_%', '%_name_%', '%_description_%', '%_buy_btn_%' ), array( $thumb_img, $post->post_title, do_shortcode( wpautop( $post->post_content ) ), $buy_btn ), $tpl );
 	return $tpl;
     }
 
@@ -293,14 +293,14 @@ class AcceptStripePaymentsShortcode {
 	$output = '';
 	if ( $data[ 'amount' ] == 0 ) { //price not specified, let's add an input box for user to specify the amount
 	    $output .= "<p>"
-	    . "<input style='max-width: 10em; display: inline-block;' type='text' id='stripeAmount_{$data[ 'uniq_id' ]}' value='' name='stripeAmount' placeholder='" . __( 'Enter amount', 'stripe-payments' ) . "' required/>"
+	    . "<input type='text' id='stripeAmount_{$data[ 'uniq_id' ]}' value='' name='stripeAmount' placeholder='" . __( 'Enter amount', 'stripe-payments' ) . "' required/>"
 	    . "<span style='margin-left: 5px; display: inline-block'> {$data[ 'currency' ]}</span>"
 	    . "<span style='display: block;' id='error_explanation_{$data[ 'uniq_id' ]}'></span>"
 	    . "</p>";
 	}
 	if ( $data[ 'custom_quantity' ] === "1" ) { //we should output input for customer to input custom quantity
 	    $output .= "<p>"
-	    . "<input style='max-width: 10em; display: inline-block;' type='text' id='stripeCustomQuantity_{$data[ 'uniq_id' ]}' value='{$data[ 'quantity' ]}' name='stripeCustomQuantity' placeholder='" . __( 'Enter quantity', 'stripe-payments' ) . "' value='{$data[ 'quantity' ]}' required/>"
+	    . "<input type='text' id='stripeCustomQuantity_{$data[ 'uniq_id' ]}' value='{$data[ 'quantity' ]}' name='stripeCustomQuantity' placeholder='" . __( 'Enter quantity', 'stripe-payments' ) . "' value='{$data[ 'quantity' ]}' required/>"
 	    . "<span style='margin-left: 5px; display: inline-block'> " . __( 'X item(s)', 'stripe-payments' ) . "</span>"
 	    . "<span style='display: block;' id='error_explanation_quantity_{$data[ 'uniq_id' ]}'></span>"
 	    . "</p>";

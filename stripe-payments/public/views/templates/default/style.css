@@ -55,6 +55,18 @@
 
 /* Buttons */
 
+.asp_product_buy_button input {
+    max-width: 9em;
+    display: inline-block;
+    line-height: 1;
+    padding: 8px 10px;
+}
+
+.asp_product_buy_button input::placeholder {
+    font-style: italic;
+    color: #bbb;
+}
+
 .asp_product_buy_button {
     display: block;
 }
