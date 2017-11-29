@@ -362,17 +362,7 @@ class AcceptStripePaymentsShortcode {
 	    }
 	    $output	 = '';
 	    $output	 .= '<p class="asp-thank-you-page-msg1">' . __( "Thank you for your payment.", "stripe-payments" ) . '</p>';
-	    $output	 .= '<                          
-
-	   
-
-	     
-
-	              
-
-	  
-
-	 p   class="asp-thank-you-page-msg2">' . __( "Here's what you purchased: ", "stripe-payments" ) . '</p>';
+	    $output	 .= '<p class="asp-thank-you-page-msg2">' . __( "Here's what you purchased: ", "stripe-payments" ) . '</p>';
 	    $output	 .= '<div class="asp-thank-you-page-product-name">' . __( "Product Name: ", "stripe-payments" ) . $aspData[ 'item_name' ] . '</div>';
 	    $output	 .= '<div class="asp-thank-you-page-qty">' . __( "Quantity: ", "stripe-payments" ) . $aspData[ 'item_quantity' ] . '</div>';
 	    $output	 .= '<div class="asp-thank-you-page-qty">' . __( "Item Price: ", "stripe-payments" ) . $aspData[ 'item_price' ] . ' ' . $aspData[ 'currency_code' ] . '</div>';
