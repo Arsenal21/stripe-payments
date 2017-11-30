@@ -3,7 +3,7 @@
 /**
  * Plugin Name:       Stripe Payments
  * Description:       Easily accept credit card payments via Stripe payment gateway in WordPress.
- * Version:           1.6.1-testing
+ * Version:           1.6.1
  * Author:            Tips and Tricks HQ, wptipsntricks
  * Author URI:        https://www.tipsandtricks-hq.com/
  * Plugin URI:        https://www.tipsandtricks-hq.com/ecommerce/wordpress-stripe-plugin-accept-payments-using-stripe
