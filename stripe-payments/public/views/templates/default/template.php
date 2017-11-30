@@ -33,12 +33,9 @@ function asp_get_post_template( $css_inserted = false ) {
     ?>
     <div class = "asp_post_item">
         <div class = "asp_post_item_top">
-    	<div class = "asp_post_item_top_left">
     	    <div class = "asp_post_thumbnail">
     		%_thumb_img_%
     	    </div>
-    	</div>
-    	<div class = "asp_post_item_top_right">
     	    <div class = "asp_post_title">
     		%_name_%
     	    </div>
@@ -48,7 +45,6 @@ function asp_get_post_template( $css_inserted = false ) {
     	    <div class="asp_product_buy_button">
     		%_buy_btn_%
     	    </div>
-    	</div>
         </div>
     </div>
     <?php
