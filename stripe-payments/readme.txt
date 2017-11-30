@@ -4,7 +4,7 @@ Donate link: http://www.tipsandtricks-hq.com/
 Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortcode, digital goods, payment gateway, instant payment, commerce, digital downloads, downloads, e-commerce, e-store, ecommerce, eshop, donation
 Requires at least: 4.7
 Tested up to: 4.8
-Stable tag: 1.6.0
+Stable tag: 1.6.1-testing
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -12,7 +12,7 @@ Easily accept payments on your WordPress site via Stripe payment gateway.
 
 == Description ==
 
-The Stripe Payments plugin allows you to accept credit card payments via Stripe payment gateway on your WordPress site easily. 
+The Stripe Payments plugin allows you to accept credit card payments via Stripe payment gateway on your WordPress site easily.
 
 It has a simple shortcode that lets you put Stripe "Buy Now" buttons anywhere on your site for a product or service. You can accept donation via Stripe also.
 
@@ -83,7 +83,7 @@ It supports the following parameters in the shortcode -
     (string) (optional) Currency of the price specified.
     Possible Values: 'USD', 'GBP', 'CAD' etc.
     Default: The one set up in Settings area.
-    
+
     url:
     (URL) (optional) URL of the downloadable file.
     Possible Values: http://example.com/my-downloads/product.zip
@@ -106,7 +106,7 @@ It supports the following parameters in the shortcode -
 
 = Specifying a Logo or Thumbnail for the Item Checkout =
 
-You can specify a logo or thumbnail image URL in the shortcode for the item. This image will be shown in the stripe checkout window. 
+You can specify a logo or thumbnail image URL in the shortcode for the item. This image will be shown in the stripe checkout window.
 
 Use the "item_logo" parameter in the shortcode and enter the image URL to use this feature. See example below:
 
@@ -184,7 +184,7 @@ None
 - Added "thankyou_page_url" shortcode parameter to specify a custom thank you page URL for an item. This can be used to override the default thank you page URL on a per item basis.
 - Extended checkout results page customization using [accept_stripe_payment_checkout] and [accept_stripe_payment_checkout_error] shortcodes.
 - Instructions on how to customize the thank you page using tags can be found at the following URL:
-https://stripe-plugins.com/customize-the-thank-page-message-of-stripe-payments-plugin/  
+https://stripe-plugins.com/customize-the-thank-page-message-of-stripe-payments-plugin/
 
 = 1.5.8 =
 - Zero-decimal currencies (like JPY) are no longer multiplied by 100.
@@ -208,7 +208,7 @@ https://stripe-plugins.com/customize-the-thank-page-message-of-stripe-payments-p
 - Added a shortcode inserter button to the TinyMCE editor ("Visual" tab on Edit Post\Page screen).
 - Updated the Stripe Orders dashboard menu icon.
 
-= 1.5.3 = 
+= 1.5.3 =
 - Updated the French language translation file.
 - Updated the translation POT file.
 - The plugin will show an error if the shortcode doesn't have the "name" field present. This is a required field for the plugin to process the checkout.
@@ -247,10 +247,10 @@ https://stripe-plugins.com/customize-the-thank-page-message-of-stripe-payments-p
 * Added more instructions to the checkout result page explaining what that page is for.
 * Added settings link in the plugins listing page.
 
-= 1.0.3 = 
+= 1.0.3 =
 * Added some enhanced security in the form submission.
 
-= 1.0.2 = 
+= 1.0.2 =
 * Updated the payment shortcode parameter.
 
 = 1.0.1 =

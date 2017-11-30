@@ -1,0 +1,127 @@
+.asp_product_item {
+    display: block;
+    border: 1px solid #E7E9EB;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 15px;
+}
+.asp_product_item_thumbnail img {
+    width: 75px;
+    height: 75px;
+    float: left;
+    margin-right: 10px;
+}
+
+.asp_product_name {
+    float: left;
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 75px;
+}
+
+.asp_product_description {
+    margin: 15px 0 15px 0;
+    border-bottom: 1px solid #EEEEEE;
+}
+
+/* Post Item */
+
+.asp_post_item {
+    width: 90%;
+}
+.asp_post_item_top {
+    display: block;
+}
+.asp_post_item_top_left {
+    width: 40%;
+    float: left;
+    margin-right: 30px;
+}
+.asp_post_item_top_left img {
+    width: 100%;
+    border: 1px solid #e8e4e3;
+    padding: 5px;
+}
+.asp_post_item_top_right {
+    float: left;
+    width: 50%;
+}
+.asp_post_title {
+    font-size: 26px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+/* Buttons */
+
+.asp_product_buy_button input {
+    max-width: 9em;
+    display: inline-block;
+    line-height: 1;
+    padding: 8px 10px;
+}
+
+.asp_product_buy_button input::placeholder {
+    font-style: italic;
+    color: #bbb;
+}
+
+.asp_product_buy_button {
+    display: block;
+}
+
+.asp_product_buy_btn{
+    text-decoration: none;
+    font: bold 13px/13px HelveticaNeue, Arial;
+    padding: 8px 13px;
+    text-transform: none;
+}
+.asp_product_buy_btn:hover{
+    transition: none;
+    text-transform: none;
+}
+
+.asp_product_buy_btn.blue {
+    background: #92dbf6;
+    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#abe4f8', endColorstr='#6fcef3'); /*  IE */
+    background: -webkit-gradient(linear, left top, left bottom, from(#abe4f8), to(#6fcef3)); /*  WebKit */
+    background: -moz-linear-gradient(top,  #abe4f8, #6fcef3);
+    border-color: #8dc5da #76b7cf #63abc7;
+    color: #1E4657 !important;
+    text-shadow: 0 1px 0 #b6e6f9;
+    -webkit-box-shadow: 0 1px 1px #d6d6d6, inset 0 1px 0 #c0ebfa;
+    -moz-box-shadow: 0 1px 1px #d6d6d6, inset 0 1px 0 #c0ebfa;
+    box-shadow: 0 1px 1px #d6d6d6, inset 0 1px 0 #c0ebfa;
+}
+.asp_product_buy_btn.blue:hover {
+    background: #92dbf6;
+    border-color: #7caec0 #68a3ba #5a9cb5;
+    text-shadow: 0 1px 0 #bee9fa;
+    -webkit-box-shadow: 0 1px 1px #d6d6d6, inset 0 1px 0 #ade4f8;
+    -moz-box-shadow: 0 1px 1px #d6d6d6, inset 0 1px 0 #ade4f8;
+    box-shadow: 0 1px 1px #d6d6d6, inset 0 1px 0 #ade4f8;
+}
+.asp_product_buy_btn.green {
+    background: #b7d770;
+    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#cae285', endColorstr='#9fcb57'); /*  IE */
+    background: -webkit-gradient(linear, left top, left bottom, from(#cae285), to(#9fcb57)); /*  WebKit */
+    background: -moz-linear-gradient(top,  #cae285, #9fcb57);
+    border-color: #adc671 #98b65b #87aa4a;
+    color: #2F4014 !important;
+    text-shadow: 0 1px 0 #cfe5a4;
+    -webkit-box-shadow: 0 1px 1px #d3d3d3, inset 0 1px 0 #d7e9a4;
+    -moz-box-shadow: 0 1px 1px #d3d3d3, inset 0 1px 0 #d7e9a4;
+    box-shadow: 0 1px 1px #d3d3d3, inset 0 1px 0 #d7e9a4;
+}
+.asp_product_buy_btn.green:hover {
+    background: #b9d972;
+    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#b8d872', endColorstr='#b9d972'); /*  IE */
+    background: -webkit-gradient(linear, left top, left bottom, from(#b8d872), to(#b9d972)); /*  WebKit */
+    background: -moz-linear-gradient(top,  #b8d872, #b9d972);
+    border-color: #8bb14d #83a648 #7d9e45;
+    text-shadow: 0 1px 0 #d5e8aa;
+    -webkit-box-shadow: 0 1px 1px #d5d5d5, inset 0 1px 0 #cae295;
+    -moz-box-shadow: 0 1px 1px #d5d5d5, inset 0 1px 0 #cae295;
+    box-shadow: 0 1px 1px #d5d5d5, inset 0 1px 0 #cae295;
+}

@@ -5,22 +5,27 @@
  * This includes the header, options, and other information that should provide
  * The User Interface to the end user.
  */
-if(!current_user_can('manage_options')){
-    wp_die('You do not have permission to access this settings page.');
+if ( ! current_user_can( 'manage_options' ) ) {
+    wp_die( 'You do not have permission to access this settings page.' );
 }
-?>
 
-<div class="wrap">
+if ( $_GET[ 'page' ] == 'stripe-payments-settings' ) {
+    ?>
 
-	<h2><?php echo esc_html( get_admin_page_title() ); ?></h2>
+    <div class="wrap">
 
-	<form method="post" action="options.php">
+        <h2><?php echo esc_html( get_admin_page_title() ); ?></h2>
 
-		<?php settings_fields( 'AcceptStripePayments-settings-group' ); ?>
+        <form method="post" action="options.php">
 
-		<?php do_settings_sections( 'accept_stripe_payment' ); ?>
+	    <?php settings_fields( 'AcceptStripePayments-settings-group' ); ?>
 
-		<?php submit_button(); ?>
+	    <?php do_settings_sections( 'accept_stripe_payment' ); ?>
 
-	</form>
-</div>
+	    <?php submit_button(); ?>
+
+        </form>
+    </div>
+
+    <?php
+}

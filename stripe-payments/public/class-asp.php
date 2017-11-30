@@ -11,7 +11,7 @@
  */
 class AcceptStripePayments {
 
-    var $zeroCents = array('JPY', 'MGA', 'VND', 'KRW');
+    var $zeroCents = array( 'JPY', 'MGA', 'VND', 'KRW' );
 
     /**
      * Plugin version, used for cache-busting of style and script file references.
@@ -43,8 +43,8 @@ class AcceptStripePayments {
      *
      * @var      object
      */
-    protected static $instance = null;
-    private $settings = null;
+    protected static $instance	 = null;
+    private $settings		 = null;
 
     /**
      * Initialize the plugin by setting localization and loading public scripts
@@ -53,35 +53,35 @@ class AcceptStripePayments {
      * @since     1.0.0
      */
     private function __construct() {
-        $this->settings = (array) get_option('AcceptStripePayments-settings');
+	$this->settings = (array) get_option( 'AcceptStripePayments-settings' );
 
-        // Load plugin text domain
-        add_action('init', array($this, 'load_plugin_textdomain'));
+	// Load plugin text domain
+	add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
 
-        //Check if IPN submitted
-        add_action('init', array($this, 'asp_check_ipn'));
+	//Check if IPN submitted
+	add_action( 'init', array( $this, 'asp_check_ipn' ) );
 
-        // Activate plugin when new blog is added
-        add_action('wpmu_new_blog', array($this, 'activate_new_site'));
+	// Activate plugin when new blog is added
+	add_action( 'wpmu_new_blog', array( $this, 'activate_new_site' ) );
 
-        // Load public-facing style sheet and JavaScript.
-        // add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles' ) );
-        // add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
-        add_action('after_switch_theme', array($this, 'rewrite_flush'));
+	// Load public-facing style sheet and JavaScript.
+	// add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles' ) );
+	// add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+	add_action( 'after_switch_theme', array( $this, 'rewrite_flush' ) );
     }
 
     public function asp_check_ipn() {
-        if (isset($_POST['asp_action'])) {
-            if ($_POST['asp_action'] == 'process_ipn') {
-                require_once(WP_ASP_PLUGIN_PATH . 'includes/process_ipn.php');
-            }
-        }
+	if ( isset( $_POST[ 'asp_action' ] ) ) {
+	    if ( $_POST[ 'asp_action' ] == 'process_ipn' ) {
+		require_once(WP_ASP_PLUGIN_PATH . 'includes/process_ipn.php');
+	    }
+	}
     }
 
-    public function get_setting($field) {
-        if (isset($this->settings[$field]))
-            return $this->settings[$field];
-        return false;
+    public function get_setting( $field ) {
+	if ( isset( $this->settings[ $field ] ) )
+	    return $this->settings[ $field ];
+	return false;
     }
 
     /**
@@ -92,7 +92,7 @@ class AcceptStripePayments {
      * @return    Plugin slug variable.
      */
     public function get_plugin_slug() {
-        return $this->plugin_slug;
+	return $this->plugin_slug;
     }
 
     /**
@@ -104,12 +104,12 @@ class AcceptStripePayments {
      */
     public static function get_instance() {
 
-        // If the single instance hasn't been set, set it now.
-        if (null == self::$instance) {
-            self::$instance = new self;
-        }
+	// If the single instance hasn't been set, set it now.
+	if ( null == self::$instance ) {
+	    self::$instance = new self;
+	}
 
-        return self::$instance;
+	return self::$instance;
     }
 
     /**
@@ -122,27 +122,27 @@ class AcceptStripePayments {
      *                                       WPMU is disabled or plugin is
      *                                       activated on an individual blog.
      */
-    public static function activate($network_wide) {
+    public static function activate( $network_wide ) {
 
-        if (function_exists('is_multisite') && is_multisite()) {
+	if ( function_exists( 'is_multisite' ) && is_multisite() ) {
 
-            if ($network_wide) {
+	    if ( $network_wide ) {
 
-                // Get all blog ids
-                $blog_ids = self::get_blog_ids();
+		// Get all blog ids
+		$blog_ids = self::get_blog_ids();
 
-                foreach ($blog_ids as $blog_id) {
-                    switch_to_blog($blog_id);
-                    self::single_activate();
-                }
+		foreach ( $blog_ids as $blog_id ) {
+		    switch_to_blog( $blog_id );
+		    self::single_activate();
+		}
 
-                restore_current_blog();
-            } else {
-                self::single_activate();
-            }
-        } else {
-            self::single_activate();
-        }
+		restore_current_blog();
+	    } else {
+		self::single_activate();
+	    }
+	} else {
+	    self::single_activate();
+	}
     }
 
     /**
@@ -155,28 +155,28 @@ class AcceptStripePayments {
      *                                       WPMU is disabled or plugin is
      *                                       deactivated on an individual blog.
      */
-    public static function deactivate($network_wide) {
+    public static function deactivate( $network_wide ) {
 
-        if (function_exists('is_multisite') && is_multisite()) {
+	if ( function_exists( 'is_multisite' ) && is_multisite() ) {
 
-            if ($network_wide) {
+	    if ( $network_wide ) {
 
-                // Get all blog ids
-                $blog_ids = self::get_blog_ids();
+		// Get all blog ids
+		$blog_ids = self::get_blog_ids();
 
-                foreach ($blog_ids as $blog_id) {
+		foreach ( $blog_ids as $blog_id ) {
 
-                    switch_to_blog($blog_id);
-                    self::single_deactivate();
-                }
+		    switch_to_blog( $blog_id );
+		    self::single_deactivate();
+		}
 
-                restore_current_blog();
-            } else {
-                self::single_deactivate();
-            }
-        } else {
-            self::single_deactivate();
-        }
+		restore_current_blog();
+	    } else {
+		self::single_deactivate();
+	    }
+	} else {
+	    self::single_deactivate();
+	}
     }
 
     /**
@@ -186,15 +186,15 @@ class AcceptStripePayments {
      *
      * @param    int    $blog_id    ID of the new blog.
      */
-    public function activate_new_site($blog_id) {
+    public function activate_new_site( $blog_id ) {
 
-        if (1 !== did_action('wpmu_new_blog')) {
-            return;
-        }
+	if ( 1 !== did_action( 'wpmu_new_blog' ) ) {
+	    return;
+	}
 
-        switch_to_blog($blog_id);
-        self::single_activate();
-        restore_current_blog();
+	switch_to_blog( $blog_id );
+	self::single_activate();
+	restore_current_blog();
     }
 
     /**
@@ -209,14 +209,14 @@ class AcceptStripePayments {
      */
     private static function get_blog_ids() {
 
-        global $wpdb;
+	global $wpdb;
 
-        // get an array of blog ids
-        $sql = "SELECT blog_id FROM $wpdb->blogs
+	// get an array of blog ids
+	$sql = "SELECT blog_id FROM $wpdb->blogs
 			WHERE archived = '0' AND spam = '0'
 			AND deleted = '0'";
 
-        return $wpdb->get_col($sql);
+	return $wpdb->get_col( $sql );
     }
 
     /**
@@ -225,81 +225,81 @@ class AcceptStripePayments {
      * @since    1.0.0
      */
     private static function single_activate() {
-        // Check if its a first install
-        $default = array(
-            'is_live' => 0,
-            'dont_save_card' => 0,
-            'currency_code' => 'USD',
-            'button_text' => 'Buy Now',
-            'use_new_button_method' => 0,
-            'api_username' => 'xyz.biz_api1.abc.com',
-            'api_password' => '1234567891',
-            'api_signature' => 'xxxxxxx.xxxxxxxxxxxxxxx.xxxxxxxxxxxxxx-xxxxxxx',
-            'checkout_url' => site_url('checkout'),
-            'from_email_address' => get_bloginfo('name') . ' <sales@your-domain.com>',
-            'buyer_email_subject' => 'Thank you for the purchase',
-            'buyer_email_body' => "Hello\r\n\r\n"
-            . "Thank you for your purchase! You ordered the following item(s):\r\n\r\n"
-            . "{product_details}",
-            'seller_notification_email' => get_bloginfo('admin_email'),
-            'seller_email_subject' => 'Notification of product sale',
-            'seller_email_body' => "Dear Seller\r\n\r\n"
-            . "This mail is to notify you of a product sale.\r\n\r\n"
-            . "{product_details}\r\n\r\n"
-            . "The sale was made to {payer_email}\r\n\r\n"
-            . "Thanks",
-        );
-        $opt = get_option('AcceptStripePayments-settings');
-        if (empty($opt)) {
-            add_option('AcceptStripePayments-settings', $default);
-        } else { //lets add default values for some settings that were added after plugin update
-            $opt_diff = array_diff_key($default, $opt);
-            if (!empty($opt_diff)) {
-                foreach ($opt_diff as $key => $value) {
-                    $opt[$key] = $default[$key];
-                }
-                update_option('AcceptStripePayments-settings', $opt);
-            }
-        }
-        //create checkout page           
-        $args = array(
-            'post_type' => 'page'
-        );
-        $pages = get_pages($args);
-        $checkout_page_id = '';
-        foreach ($pages as $page) {
-            if (strpos($page->post_content, 'accept_stripe_payment_checkout') !== false) {
-                $checkout_page_id = $page->ID;
-            }
-        }
-        if ($checkout_page_id == '') {
-            $checkout_page_id = AcceptStripePayments::create_post('page', 'Checkout-Result', 'Stripe-Checkout-Result', '[accept_stripe_payment_checkout]');
-            $checkout_page = get_post($checkout_page_id);
-            $checkout_page_url = $checkout_page->guid;
-            $AcceptStripePayments_settings = get_option('AcceptStripePayments-settings');
-            if (!empty($AcceptStripePayments_settings)) {
-                $AcceptStripePayments_settings['checkout_url'] = $checkout_page_url;
-                update_option('AcceptStripePayments-settings', $AcceptStripePayments_settings);
-            }
-        }
+	// Check if its a first install
+	$default = array(
+	    'is_live'			 => 0,
+	    'dont_save_card'		 => 0,
+	    'currency_code'			 => 'USD',
+	    'button_text'			 => 'Buy Now',
+	    'use_new_button_method'		 => 0,
+	    'api_username'			 => 'xyz.biz_api1.abc.com',
+	    'api_password'			 => '1234567891',
+	    'api_signature'			 => 'xxxxxxx.xxxxxxxxxxxxxxx.xxxxxxxxxxxxxx-xxxxxxx',
+	    'checkout_url'			 => site_url( 'checkout' ),
+	    'from_email_address'		 => get_bloginfo( 'name' ) . ' <sales@your-domain.com>',
+	    'buyer_email_subject'		 => 'Thank you for the purchase',
+	    'buyer_email_body'		 => "Hello\r\n\r\n"
+	    . "Thank you for your purchase! You ordered the following item(s):\r\n\r\n"
+	    . "{product_details}",
+	    'seller_notification_email'	 => get_bloginfo( 'admin_email' ),
+	    'seller_email_subject'		 => 'Notification of product sale',
+	    'seller_email_body'		 => "Dear Seller\r\n\r\n"
+	    . "This mail is to notify you of a product sale.\r\n\r\n"
+	    . "{product_details}\r\n\r\n"
+	    . "The sale was made to {payer_email}\r\n\r\n"
+	    . "Thanks",
+	);
+	$opt	 = get_option( 'AcceptStripePayments-settings' );
+	if ( empty( $opt ) ) {
+	    add_option( 'AcceptStripePayments-settings', $default );
+	} else { //lets add default values for some settings that were added after plugin update
+	    $opt_diff = array_diff_key( $default, $opt );
+	    if ( ! empty( $opt_diff ) ) {
+		foreach ( $opt_diff as $key => $value ) {
+		    $opt[ $key ] = $default[ $key ];
+		}
+		update_option( 'AcceptStripePayments-settings', $opt );
+	    }
+	}
+	//create checkout page
+	$args			 = array(
+	    'post_type' => 'page'
+	);
+	$pages			 = get_pages( $args );
+	$checkout_page_id	 = '';
+	foreach ( $pages as $page ) {
+	    if ( strpos( $page->post_content, 'accept_stripe_payment_checkout' ) !== false ) {
+		$checkout_page_id = $page->ID;
+	    }
+	}
+	if ( $checkout_page_id == '' ) {
+	    $checkout_page_id		 = AcceptStripePayments::create_post( 'page', 'Checkout-Result', 'Stripe-Checkout-Result', '[accept_stripe_payment_checkout]' );
+	    $checkout_page			 = get_post( $checkout_page_id );
+	    $checkout_page_url		 = $checkout_page->guid;
+	    $AcceptStripePayments_settings	 = get_option( 'AcceptStripePayments-settings' );
+	    if ( ! empty( $AcceptStripePayments_settings ) ) {
+		$AcceptStripePayments_settings[ 'checkout_url' ] = $checkout_page_url;
+		update_option( 'AcceptStripePayments-settings', $AcceptStripePayments_settings );
+	    }
+	}
     }
 
-    public static function create_post($postType, $title, $name, $content, $parentId = NULL) {
-        $post = array(
-            'post_title' => $title,
-            'post_name' => $name,
-            'comment_status' => 'closed',
-            'ping_status' => 'closed',
-            'post_content' => $content,
-            'post_status' => 'publish',
-            'post_type' => $postType
-        );
+    public static function create_post( $postType, $title, $name, $content, $parentId = NULL ) {
+	$post = array(
+	    'post_title'	 => $title,
+	    'post_name'	 => $name,
+	    'comment_status' => 'closed',
+	    'ping_status'	 => 'closed',
+	    'post_content'	 => $content,
+	    'post_status'	 => 'publish',
+	    'post_type'	 => $postType
+	);
 
-        if ($parentId !== NULL) {
-            $post['post_parent'] = $parentId;
-        }
-        $postId = wp_insert_post($post);
-        return $postId;
+	if ( $parentId !== NULL ) {
+	    $post[ 'post_parent' ] = $parentId;
+	}
+	$postId = wp_insert_post( $post );
+	return $postId;
     }
 
     /**
@@ -308,7 +308,7 @@ class AcceptStripePayments {
      * @since    1.0.0
      */
     private static function single_deactivate() {
-        // @TODO: Define deactivation functionality here
+	// @TODO: Define deactivation functionality here
     }
 
     /**
@@ -316,18 +316,18 @@ class AcceptStripePayments {
      */
     public function load_plugin_textdomain() {
 
-        $domain = 'stripe-payments';
-        $locale = apply_filters('plugin_locale', get_locale(), $domain);
+	$domain	 = 'stripe-payments';
+	$locale	 = apply_filters( 'plugin_locale', get_locale(), $domain );
 
-        load_textdomain($domain, trailingslashit(WP_LANG_DIR) . $domain . '/' . $domain . '-' . $locale . '.mo');
-        load_plugin_textdomain($domain, FALSE, basename(plugin_dir_path(dirname(__FILE__))) . '/languages/');
+	load_textdomain( $domain, trailingslashit( WP_LANG_DIR ) . $domain . '/' . $domain . '-' . $locale . '.mo' );
+	load_plugin_textdomain( $domain, FALSE, basename( plugin_dir_path( dirname( __FILE__ ) ) ) . '/languages/' );
     }
 
     /**
      * @since    1.0.0
      */
     public function rewrite_flush() {
-        flush_rewrite_rules();
+	flush_rewrite_rules();
     }
 
 }
