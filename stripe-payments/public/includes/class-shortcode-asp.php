@@ -123,26 +123,28 @@ class AcceptStripePaymentsShortcode {
 	    'button_text'		 => $button_text,
 	    'description'		 => get_post_meta( $id, 'asp_product_description', true ),
 	    'url'			 => $url,
+	    'billing_address'	 => get_post_meta( $id, 'asp_product_collect_billing_addr', true ),
+	    'shipping_address'	 => get_post_meta( $id, 'asp_product_collect_shipping_addr', true ),
 	) );
 
 
-        if(isset($atts["fancy"]) && $atts["fancy"] == '0'){
-            //Just show the stripe payment button (no fancy template)
-            $tpl = '<div class="asp_product_buy_button">' . $buy_btn . '</div>';
-            $tpl = "<link rel='stylesheet' href='" . WP_ASP_PLUGIN_URL . '/public/views/templates/default/style.css' . "' type='text/css' media='all' />" . $tpl;
-            $this->productCSSInserted = true;            
-            return $tpl;
-        }
+	if ( isset( $atts[ "fancy" ] ) && $atts[ "fancy" ] == '0' ) {
+	    //Just show the stripe payment button (no fancy template)
+	    $tpl				 = '<div class="asp_product_buy_button">' . $buy_btn . '</div>';
+	    $tpl				 = "<link rel='stylesheet' href='" . WP_ASP_PLUGIN_URL . '/public/views/templates/default/style.css' . "' type='text/css' media='all' />" . $tpl;
+	    $this->productCSSInserted	 = true;
+	    return $tpl;
+	}
 
-        //Show the stripe payment button with fancy style template.
+	//Show the stripe payment button with fancy style template.
 	require_once(WP_ASP_PLUGIN_PATH . 'public/views/templates/' . $template_name . '/template.php');
 	if ( isset( $atts[ "is_post_tpl" ] ) ) {
 	    $tpl = asp_get_post_template( $this->ProductCSSInserted );
 	} else {
 	    $tpl = asp_get_template( $this->ProductCSSInserted );
 	}
-	$this->productCSSInserted = true;
-	$tpl = str_replace( array( '%_thumb_img_%', '%_name_%', '%_description_%', '%_buy_btn_%' ), array( $thumb_img, $post->post_title, do_shortcode( wpautop( $post->post_content ) ), $buy_btn ), $tpl );
+	$this->productCSSInserted	 = true;
+	$tpl				 = str_replace( array( '%_thumb_img_%', '%_name_%', '%_description_%', '%_buy_btn_%' ), array( $thumb_img, $post->post_title, do_shortcode( wpautop( $post->post_content ) ), $buy_btn ), $tpl );
 	return $tpl;
     }
 

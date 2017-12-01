@@ -15,6 +15,7 @@ class asp_products_metaboxes {
 	add_meta_box( 'asp_quantity_meta_box', __( 'Quantity', 'stripe_payments' ), array( $this, 'display_quantity_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 	add_meta_box( 'asp_upload_meta_box', __( 'Download URL', 'stripe_payments' ), array( $this, 'display_upload_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 	add_meta_box( 'asp_thumbnail_meta_box', __( 'Product Thumbnail (optional)', 'stripe_payments' ), array( $this, 'display_thumbnail_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
+	add_meta_box( 'asp_address_meta_box', __( 'Collect Address', 'stripe_payments' ), array( $this, 'display_address_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 	add_meta_box( 'asp_button_text_meta_box', __( 'Button Text', 'stripe_payments' ), array( $this, 'display_button_text_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 	add_meta_box( 'asp_shortcode_meta_box', __( 'Shortcode', 'stripe_payments' ), array( $this, 'display_shortcode_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
     }
@@ -159,6 +160,18 @@ class asp_products_metaboxes {
 		});
 	    });
 	</script>
+	<?php
+    }
+
+    function display_address_meta_box( $post ) {
+	$collect_billing_addr	 = get_post_meta( $post->ID, 'asp_product_collect_billing_addr', true );
+	$collect_shipping_addr	 = get_post_meta( $post->ID, 'asp_product_collect_shipping_addr', true );
+	?>
+	<label><input type="checkbox" name="asp_product_collect_billing_addr" value="1"<?php echo ($collect_billing_addr === "1") ? ' checked' : ''; ?>><?php echo __( 'Collect Shipping Address', 'stripe-payments' ); ?> </label>
+	<p class="description"><?php echo __( "Enable this to collect customer address on checkout.", 'stripe-payments' ); ?></p>
+	<label><input type="radio" name="asp_product_collect_shipping_addr" value="1"<?php echo ($collect_shipping_addr === "1" || $collect_shipping_addr === "") ? ' checked' : ''; ?>><?php echo __( 'Collect Both Billing And Shipping Addresses', 'stripe-payments' ); ?> </label>
+	<p></p>
+	<label><input type="radio" name="asp_product_collect_shipping_addr" value="0"<?php echo ($collect_shipping_addr === "0") ? ' checked' : ''; ?>><?php echo __( 'Collect Billing Address Only', 'stripe-payments' ); ?> </label>
 	<?php
     }
 
