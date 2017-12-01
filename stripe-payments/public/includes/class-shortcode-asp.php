@@ -208,7 +208,7 @@ class AcceptStripePaymentsShortcode {
 	}
 	if ( empty( $description ) && $custom_quantity !== '1' ) {
 	    //Create a description using quantity and payment amount
-	    if ( ! empty( $price ) || $price !== 0 ) {
+	    if ( ! empty( $price ) && $price !== 0 ) {
 		$description = "{$quantity} piece" . ($quantity <> 1 ? "s" : "") . " for {$paymentAmount} {$currency}";
 	    } else {
 		$description = "{$quantity} piece" . ($quantity <> 1 ? "s" : "");
