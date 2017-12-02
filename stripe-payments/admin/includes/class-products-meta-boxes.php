@@ -167,11 +167,13 @@ class asp_products_metaboxes {
 	$collect_billing_addr	 = get_post_meta( $post->ID, 'asp_product_collect_billing_addr', true );
 	$collect_shipping_addr	 = get_post_meta( $post->ID, 'asp_product_collect_shipping_addr', true );
 	?>
-	<label><input type="checkbox" name="asp_product_collect_billing_addr" value="1"<?php echo ($collect_billing_addr === "1") ? ' checked' : ''; ?>><?php echo __( 'Collect Shipping Address', 'stripe-payments' ); ?> </label>
+	<label><input type="checkbox" name="asp_product_collect_billing_addr" value="1"<?php echo ($collect_billing_addr === "1") ? ' checked' : ''; ?>><?php echo __( 'Collect Address on Checkout', 'stripe-payments' ); ?> </label>
 	<p class="description"><?php echo __( "Enable this to collect customer address on checkout.", 'stripe-payments' ); ?></p>
+	<div style="margin-left:30px;">
 	<label><input type="radio" name="asp_product_collect_shipping_addr" value="1"<?php echo ($collect_shipping_addr === "1" || $collect_shipping_addr === "") ? ' checked' : ''; ?>><?php echo __( 'Collect Both Billing And Shipping Addresses', 'stripe-payments' ); ?> </label>
 	<p></p>
 	<label><input type="radio" name="asp_product_collect_shipping_addr" value="0"<?php echo ($collect_shipping_addr === "0") ? ' checked' : ''; ?>><?php echo __( 'Collect Billing Address Only', 'stripe-payments' ); ?> </label>
+	</div>
 	<?php
     }
 
