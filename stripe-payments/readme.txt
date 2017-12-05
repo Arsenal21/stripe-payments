@@ -1,5 +1,5 @@
 === Stripe Payments ===
-Contributors: Tips and Tricks HQ, wptipsntricks
+Contributors: Tips and Tricks HQ, wptipsntricks, alexanderfoxc
 Donate link: http://www.tipsandtricks-hq.com/
 Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortcode, digital goods, payment gateway, instant payment, commerce, digital downloads, downloads, e-commerce, e-store, ecommerce, eshop, donation
 Requires at least: 4.7
@@ -174,9 +174,14 @@ None
 
 == Changelog ==
 
-= TODO 1.6.1 =
-- Added a new interface to add/edit products from the wp admin dashboard.
-- A new shortcode to embed a Stripe payment button for the products you create in the admin dashboard.
+= 1.6.1 =
+- Stripe plugin's admin menu interface has been reworked to facilitate the addition of new features.
+- Added a new interface to add/edit products from the wp admin dashboard. Usage instructions at the following URL:
+  https://stripe-plugins.com/creating-product-stripe-payments-plugin/
+
+- There is a new shortcode to embed a Stripe payment button for the products you create in the admin dashboard.
+- The existing shortcodes will continue to work as is (no change there).
+- The shortcode inserter (in the post/page editor) has been updated. It will allow you to insert both the shortcodes.
 
 = 1.6.0 =
 - Stripe button CSS is now inserted before the form to prevent payment buttons from having default theme style for a second before the CSS file actually loaded.
