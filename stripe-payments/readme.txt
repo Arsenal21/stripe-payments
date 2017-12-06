@@ -24,7 +24,7 @@ The transaction info is also captured in the orders menu of the plugin. You can 
 
 = Setup and Usage Video =
 
-https://www.youtube.com/watch?v=HYarbgMywNM
+https://www.youtube.com/watch?v=yQB6IKz73g4
 
 = Checkout Demo Video =
 
@@ -60,7 +60,14 @@ You can run it in test mode by specifying test API keys in the plugin settings.
 
 = Shortcode Parameters/Attributes =
 
-In order to create a "Buy Now" or "Pay" button, insert the following shortcode into a post/page.
+There are two ways you can use this plugin to create a "Buy Now" or "Pay" button to accept payment.
+
+1) Create a product in the admin dashboard of this plugin then use a shortcode to put a buy button for that product. The following page has step by step instructions:
+https://stripe-plugins.com/creating-product-stripe-payments-plugin/
+
+2) You can specify the item details in a shorcode to dynamically create a payment button.
+
+Insert the following shortcode into a post/page to create a payment button dynamically.
 
 `[accept_stripe_payment]`
 
