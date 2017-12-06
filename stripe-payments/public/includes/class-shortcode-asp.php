@@ -206,12 +206,19 @@ class AcceptStripePaymentsShortcode {
 	} else {
 	    $priceInCents = $paymentAmount * 100;
 	}
-	if ( empty( $description ) && $custom_quantity !== '1' ) {
-	    //Create a description using quantity and payment amount
-	    if ( ! empty( $price ) && $price !== 0 ) {
-		$description = "{$quantity} piece" . ($quantity <> 1 ? "s" : "") . " for {$paymentAmount} {$currency}";
+	
+	//Charge description
+	if(empty($description)){
+	    //Create an appropriate charge description if it hasn't been supplied via the shortcode.
+	    if (empty($price)) {
+		//Description for the donation/custom amount.
+		$description = "";
+	    } else if ($quantity == "NA" || $quantity == "N/A") {
+		//Create an appropriate description when no quantity is set in the shortcode.
+		$description = "{$paymentAmount} {$currency}";
 	    } else {
-		$description = "{$quantity} piece" . ($quantity <> 1 ? "s" : "");
+		//Create a description using quantity and payment amount
+		$description = "{$quantity} piece" . ($quantity <> 1 ? "s" : "") . " for {$paymentAmount} {$currency}";
 	    }
 	}
 	//This is public.css stylesheet

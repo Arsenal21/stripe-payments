@@ -70,10 +70,6 @@ Option 2) You can specify the item details in a shortcode to dynamically create 
 
 [Check this tutorial](https://stripe-plugins.com/creating-payment-button-dynamically-adding-details-shortcode/) for step by step instructions.
 
-= Shortcode Usage Example =
-
-`[accept_stripe_payment name="Cool Script" price="49.90" url="http://example.com/downloads/my-script.zip" button_text="Buy Now"]`
-
 = Detailed Documentation =
 
 For detailed documentation and instructions please check the [WordPress Stripe Payments Plugin](https://www.tipsandtricks-hq.com/ecommerce/wordpress-stripe-plugin-accept-payments-using-stripe) documentation page.
