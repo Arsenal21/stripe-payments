@@ -1,6 +1,6 @@
 === Stripe Payments ===
 Contributors: Tips and Tricks HQ, wptipsntricks, alexanderfoxc
-Donate link: http://www.tipsandtricks-hq.com/
+Donate link: https://stripe-plugins.com
 Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortcode, digital goods, payment gateway, instant payment, commerce, digital downloads, downloads, e-commerce, e-store, ecommerce, eshop, donation
 Requires at least: 4.7
 Tested up to: 4.8
@@ -54,7 +54,7 @@ https://www.youtube.com/watch?v=upWqk069Khg
 * Ability to have custom thank you page on a per product basis.
 * Ability to customize the message on the thank you page using tags.
 
-The setup is very easy. Once you have installed the plugin, all you need to do is enter your Stripe API credentials in the plugin settings (Settings -> Accept Stripe Payments) and your website will be ready to accept credit card payments.
+The setup is very easy. Once you have installed the plugin, all you need to do is enter your Stripe API credentials in the plugin settings and your website will be ready to accept credit card payments.
 
 You can run it in test mode by specifying test API keys in the plugin settings.
 
@@ -62,62 +62,17 @@ You can run it in test mode by specifying test API keys in the plugin settings.
 
 There are two ways you can use this plugin to create a "Buy Now" or "Pay" button to accept payment.
 
-1) Create a product in the admin dashboard of this plugin then use a shortcode to put a buy button for that product. The following page has step by step instructions:
-https://stripe-plugins.com/creating-product-stripe-payments-plugin/
+Option 1) Create a product in the admin dashboard of this plugin then use a shortcode to put a buy button for that product. 
 
-2) You can specify the item details in a shorcode to dynamically create a payment button.
+[Check this tutorial](https://stripe-plugins.com/creating-product-stripe-payments-plugin/) for step by step instructions.
 
-Insert the following shortcode into a post/page to create a payment button dynamically.
+Option 2) You can specify the item details in a shortcode to dynamically create a Stripe payment button.
 
-`[accept_stripe_payment]`
-
-It supports the following parameters in the shortcode -
-
-    name:
-    (string) (required) Name of the product
-    Possible Values: 'Awesome Script', 'My Ebook', 'Wooden Table' etc.
-
-    price:
-    (number) (required) Price of the product or item
-    Possible Values: '9.90', '29.95', '50' etc.
-
-    quantity:
-    (number) (optional) Number of products to be charged.
-    Possible Values: '1', '5' etc.
-    Default: 1
-
-    currency:
-    (string) (optional) Currency of the price specified.
-    Possible Values: 'USD', 'GBP', 'CAD' etc.
-    Default: The one set up in Settings area.
-
-    url:
-    (URL) (optional) URL of the downloadable file.
-    Possible Values: http://example.com/my-downloads/product.zip
-
-    button_text:
-    (string) (optional) Label of the payment button
-    Possible Values: 'Buy Now', 'Pay Now' etc
-
-    billing_address:
-    (string) (optional) Use it to collect billing address for the transaction
-    Possible Value: '1'
-
-    shipping_address:
-    (string) (optional) Use it to collect shipping address for the transaction
-    Possible Value: '1'
+[Check this tutorial](https://stripe-plugins.com/creating-payment-button-dynamically-adding-details-shortcode/) for step by step instructions.
 
 = Shortcode Usage Example =
 
 `[accept_stripe_payment name="Cool Script" price="49.90" url="http://example.com/downloads/my-script.zip" button_text="Buy Now"]`
-
-= Specifying a Logo or Thumbnail for the Item Checkout =
-
-You can specify a logo or thumbnail image URL in the shortcode for the item. This image will be shown in the stripe checkout window.
-
-Use the "item_logo" parameter in the shortcode and enter the image URL to use this feature. See example below:
-
-`[accept_stripe_payment name="Test Product" price="39.00" button_text="Buy Now" item_logo="http://example.com/my-item-logo.png"]`
 
 = Detailed Documentation =
 
