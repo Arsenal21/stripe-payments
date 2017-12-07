@@ -405,7 +405,7 @@ class AcceptStripePayments_Admin {
 	?>
 	<div style="background: none repeat scroll 0 0 #FFF6D5;border: 1px solid #D1B655;color: #3F2502;margin: 10px 0;padding: 5px 5px 5px 10px;text-shadow: 1px 1px #FFFFFF;">
 	    <p>Please read the
-		<a target="_blank" href="https://www.tipsandtricks-hq.com/ecommerce/wordpress-stripe-plugin-accept-payments-using-stripe">WordPress Stripe</a> plugin setup instructions to configure and use it.
+		<a target="_blank" href="https://stripe-plugins.com/stripe-payments-plugin-tutorials/">WordPress Stripe</a> plugin setup instructions to configure and use it.
 	    </p>
 	</div>
 	<?php
@@ -415,7 +415,7 @@ class AcceptStripePayments_Admin {
 	?>
 	<div style="background: none repeat scroll 0 0 #FFF6D5;border: 1px solid #D1B655;color: #3F2502;margin: 10px 0;padding: 5px 5px 5px 10px;text-shadow: 1px 1px #FFFFFF;">
 	    <p>
-		If you need a feature rich and supported plugin for selling your products and services then check out our
+		If you need a feature rich plugin (with good support) for selling your products and services then check out our
 		<a target="_blank" href="https://www.tipsandtricks-hq.com/wordpress-estore-plugin-complete-solution-to-sell-digital-products-from-your-wordpress-blog-securely-1059">WP eStore Plugin</a>.
 	    </p>
 	</div>
