@@ -43,7 +43,7 @@ $stripeToken		 = sanitize_text_field( $_POST[ 'stripeToken' ] );
 $stripeTokenType	 = sanitize_text_field( $_POST[ 'stripeTokenType' ] );
 $stripeEmail		 = sanitize_email( $_POST[ 'stripeEmail' ] );
 $item_quantity		 = sanitize_text_field( $_POST[ 'item_quantity' ] );
-$item_custom_quantity	 = isset( $_POST[ 'stripeCustomQuantity' ] ) ? sanitize_text_field( $_POST[ 'stripeCustomQuantity' ] ) : false;
+$item_custom_quantity	 = isset( $_POST[ 'stripeCustomQuantity' ] ) ? intval( $_POST[ 'stripeCustomQuantity' ] ) : false;
 $item_url		 = sanitize_text_field( $_POST[ 'item_url' ] );
 $charge_description	 = sanitize_text_field( $_POST[ 'charge_description' ] );
 
@@ -62,27 +62,27 @@ if ( $item_price == 0 ) { //Custom amount
     }
 }
 
-$currency_code	 = sanitize_text_field( $_POST[ 'currency_code' ] );
-$paymentAmount	 = ($item_quantity !== "NA" ? ($item_price * $item_quantity) : $item_price);
+$currency_code = strtoupper( sanitize_text_field( $_POST[ 'currency_code' ] ) );
 
 $currencyCodeType = strtolower( $currency_code );
+
+$amount = $item_price;
+
+if ( ! in_array( $currency_code, $asp_class->zeroCents ) ) {
+    $amount = $amount * 100;
+}
+
+if ( $item_custom_quantity !== false ) { //custom quantity
+    $item_quantity = $item_custom_quantity;
+}
+
+$amount = ($item_quantity !== "NA" ? ($amount * $item_quantity) : $amount);
 
 Stripe::setApiKey( $asp_class->get_setting( 'api_secret_key' ) );
 
 $GLOBALS[ 'asp_payment_success' ] = false;
 
 $opt = get_option( 'AcceptStripePayments-settings' );
-
-if ( in_array( $currency_code, $asp_class->zeroCents ) ) {
-    $amount = $paymentAmount;
-} else {
-    $amount = $paymentAmount * 100;
-}
-
-if ( $item_custom_quantity !== false ) {
-    $amount		 = $amount * $item_custom_quantity;
-    $item_quantity	 = $item_custom_quantity;
-}
 
 ob_start();
 try {
