@@ -210,9 +210,9 @@ asp_ipn_completed();
 function asp_apply_dynamic_tags_on_email_body( $body, $post ) {
     $product_details = __( "Product Name: ", "stripe-payments" ) . $post[ 'item_name' ] . "\n";
     $product_details .= __( "Quantity: ", "stripe-payments" ) . $post[ 'item_quantity' ] . "\n";
-    $product_details .= __( "Amount: ", "stripe-payments" ) . $post[ 'item_price' ] . ' ' . $post[ 'currency_code' ] . "\n";
+    $product_details .= __( "Price: ", "stripe-payments" ) . $post[ 'item_price' ] . ' ' . $post[ 'currency_code' ] . "\n";
     $product_details .= "--------------------------------" . "\n";
-    $product_details .= __( "Total Amount: ", "stripe-payments" ) . ($post[ 'item_price' ] * $post[ 'item_quantity' ]) . ' ' . $post[ 'currency_code' ] . "\n";
+    $product_details .= __( "Total Paid: ", "stripe-payments" ) . ($post[ 'item_price' ] * $post[ 'item_quantity' ]) . ' ' . $post[ 'currency_code' ] . "\n";
     if ( ! empty( $post[ 'item_url' ] ) )
 	$product_details .= "\n\n" . __( "Download link: ", "stripe-payments" ) . $post[ 'item_url' ];
 
