@@ -4,7 +4,7 @@ Donate link: https://stripe-plugins.com
 Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortcode, digital goods, payment gateway, instant payment, commerce, digital downloads, downloads, e-commerce, e-store, ecommerce, eshop, donation
 Requires at least: 4.7
 Tested up to: 4.8
-Stable tag: 1.6.1
+Stable tag: 1.6.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -131,6 +131,9 @@ Yes, please visit Settings > Accept Stripe Payments screen for options.
 None
 
 == Changelog ==
+
+= 1.6.2 =
+- Updated the Quantity field box in the product edit interface to add more explanation as to how that field works.
 
 = 1.6.1 =
 - Stripe plugin's admin menu interface has been reworked to facilitate the addition of new features.

@@ -54,10 +54,17 @@ class asp_products_metaboxes {
 	$current_val		 = get_post_meta( $post->ID, 'asp_product_quantity', true );
 	$allow_custom_quantity	 = get_post_meta( $post->ID, 'asp_product_custom_quantity', true );
 	?>
-	<input type="text" name="asp_product_quantity" value="<?php echo $current_val; ?>">
-	<p class="description">Specify a custom quantity for the item.</p>
-	<label><input type="checkbox" name="asp_product_custom_quantity" value="1"<?php echo ($allow_custom_quantity === "1") ? ' checked' : ''; ?>><?php echo __( 'Allow users to specify quantity', 'stripe-payments' ); ?> </label>
+        <p>By default, if you leave this field empty, the product quantity will be set to 1. You can change this behavior by using the following options.</p>
+        
+	<label>
+            <input type="checkbox" name="asp_product_custom_quantity" value="1"<?php echo ($allow_custom_quantity === "1") ? ' checked' : ''; ?>>
+            <?php echo __( 'Allow users to specify quantity', 'stripe-payments' ); ?> 
+        </label>
 	<p class="description"><?php echo __( "When checked, users can enter qunatity they want to buy.", 'stripe-payments' ); ?></p>
+        
+        
+        <div style="margin-top: 20px;">Set Quantity <input type="text" name="asp_product_quantity" value="<?php echo $current_val; ?>"></div>
+	<p class="description">If you want to use a set quanity for this item then enter the value in this field.</p>
 	<?php
     }
 
