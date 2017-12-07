@@ -74,6 +74,9 @@ function wp_asp_add_stripe_handler(data) {
 	    data.handler.open();
 	    return true;
 	}
+
+	var description = data.description;
+
 	if (data.variable) {
 	    var amount = jQuery('input#stripeAmount_' + data.uniq_id).val();
 	    amount = amount.replace(/\$/g, '');
@@ -114,8 +117,30 @@ function wp_asp_add_stripe_handler(data) {
 		}
 	    }
 	}
+
+	if (description === '') {
+
+	    var descr_amount = amount;
+
+	    var descr_quantity = 1;
+
+	    if (typeof custom_quantity !== "undefined") {
+		descr_quantity = custom_quantity;
+	    } else {
+		descr_quantity = data.quantity;
+	    }
+
+	    descr_amount = descr_amount / descr_quantity;
+
+	    if (data.zeroCents.indexOf(data.currency) <= -1) {
+		descr_amount = descr_amount / 100;
+	    }
+	    description = descr_quantity + ' X ' + descr_amount + ' ' + data.currency;
+	}
+
 	data.handler.open({
-	    amount: amount
+	    amount: amount,
+	    description: description,
 	});
     });
 }
