@@ -346,7 +346,7 @@ class AcceptStripePayments_Admin {
 	add_settings_section( 'AcceptStripePayments-credentials-section', 'Credentials', null, $this->plugin_slug );
 	add_settings_section( 'AcceptStripePayments-settings-footer', '', array( &$this, 'general_settings_menu_footer_callback' ), $this->plugin_slug );
 	add_settings_section( 'AcceptStripePayments-email-section', 'Email Settings', null, $this->plugin_slug . '-email' );
-
+	add_settings_section( 'AcceptStripePayments-price-display', 'Price Display Settings', null, $this->plugin_slug . '-advanced' );
 
 // Global section
 	add_settings_field( 'checkout_url', 'Checkout Result Page URL', array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-global-section', array( 'field' => 'checkout_url', 'desc' => 'This is the thank you page. This page is automatically created for you when you install the plugin. Do not delete this page as the plugin will send the customer to this page after the payment.', 'size' => 100 ) );
@@ -401,6 +401,19 @@ class AcceptStripePayments_Admin {
                 <br>{transaction_id} – The unique transaction ID of the purchase
                 <br>{purchase_amt} – The amount paid for the current transaction
                 <br>{purchase_date} – The date of the purchase' )
+	);
+// Price Display section
+	add_settings_field( 'price_currency_pos', 'Currency Position', array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-price-display', array( 'field'	 => 'price_currency_pos',
+	    'desc'	 => 'This controls the position of the currency symbol.' )
+	);
+	add_settings_field( 'price_decimal_sep', 'Decimal Separator', array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-price-display', array( 'field'	 => 'price_decimal_sep',
+	    'desc'	 => 'This sets the decimal separator of the displayed price.' )
+	);
+	add_settings_field( 'price_thousand_sep', 'Thousand Separator', array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-price-display', array( 'field'	 => 'price_thousand_sep',
+	    'desc'	 => 'This sets the thousand separator of the displayed price.' )
+	);
+	add_settings_field( 'price_decimals_num', 'Number of Decimals', array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-price-display', array( 'field'	 => 'price_decimals_num',
+	    'desc'	 => 'This sets the number of decimal points shown in the displayed price.' )
 	);
     }
 
@@ -539,10 +552,15 @@ class AcceptStripePayments_Admin {
 		echo '</select>';
 		echo "<p class=\"description\">{$desc}</p>";
 		break;
-	    // case 'button_text':
-	    // case 'api_username':
-	    // case 'api_password':
-	    // case 'api_signature':
+	    case 'price_currency_pos':
+		?>
+		<select name="AcceptStripePayments-settings[<?php echo $field; ?>]">
+		    <option value="left"<?php echo ($field_value === "left") ? ' selected' : ''; ?>>Left</option>
+		    <option value="right"<?php echo ($field_value === "right") ? ' selected' : ''; ?>>Right</option>
+		</select>
+		<p class="description"><?php echo $desc; ?></p>
+		<?php
+		break;
 	    default:
 		echo "<input type='text' name='AcceptStripePayments-settings[{$field}]' value='{$field_value}' size='{$size}' /> <p class=\"description\">{$desc}</p>";
 		break;
@@ -625,6 +643,27 @@ class AcceptStripePayments_Admin {
 	    $output[ 'seller_email_body' ] = $input[ 'seller_email_body' ];
 	else
 	    add_settings_error( 'AcceptStripePayments-settings', 'invalid-seller-email-body', 'You must fill in seller email body.' );
+
+// Price display
+
+	$output[ 'price_currency_pos' ] = $input[ 'price_currency_pos' ];
+
+	if ( ! empty( $input[ 'price_decimal_sep' ] ) )
+	    $output[ 'price_decimal_sep' ] = esc_attr( $input[ 'price_decimal_sep' ] );
+	else
+	    add_settings_error( 'AcceptStripePayments-settings', 'empty-price-decimals-sep', 'Price decimal separator can\'t be empty.' );
+
+	if ( ! empty( $input[ 'price_thousand_sep' ] ) )
+	    $output[ 'price_thousand_sep' ] = esc_attr( $input[ 'price_thousand_sep' ] );
+	else
+	    add_settings_error( 'AcceptStripePayments-settings', 'empty-price-thousand-sep', 'Price thousand separator can\'t be empty.' );
+
+	if ( ! empty( $input[ 'price_decimals_num' ] ) )
+	    $output[ 'price_decimals_num' ] = esc_attr( $input[ 'price_decimals_num' ] );
+	else
+	    add_settings_error( 'AcceptStripePayments-settings', 'invalid-price-decimals-num', 'Price number of decimals can\'t be empty.' );
+
+
 
 	if ( isset( $_POST[ 'wp-asp-urlHash' ] ) ) {
 	    set_transient( 'wp-asp-urlHash', $_POST[ 'wp-asp-urlHash' ], 300 );

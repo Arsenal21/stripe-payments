@@ -37,6 +37,7 @@ if ( $_GET[ 'page' ] == 'stripe-payments-settings' ) {
     	<h2 class="nav-tab-wrapper">
     	    <a href="#general" data-tab-name="general" class="nav-tab">General Settings</a>
     	    <a href="#email" data-tab-name="email" class="nav-tab">Email Settings</a>
+    	    <a href="#advanced" data-tab-name="advanced" class="nav-tab">Advanced Settings</a>
     	</h2>
 
     	<div class="wp-asp-tab-container" data-tab-name="general">
@@ -45,6 +46,9 @@ if ( $_GET[ 'page' ] == 'stripe-payments-settings' ) {
     	</div>
     	<div class="wp-asp-tab-container" data-tab-name="email">
 		<?php do_settings_sections( 'accept_stripe_payment-email' ); ?>
+    	</div>
+    	<div class="wp-asp-tab-container" data-tab-name="advanced">
+		<?php do_settings_sections( 'accept_stripe_payment-advanced' ); ?>
     	</div>
 	    <?php submit_button(); ?>
 
