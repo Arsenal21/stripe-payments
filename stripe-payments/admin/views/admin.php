@@ -10,22 +10,72 @@ if ( ! current_user_can( 'manage_options' ) ) {
 }
 
 if ( $_GET[ 'page' ] == 'stripe-payments-settings' ) {
+
+    $tab = get_transient( 'wp-asp-urlHash' );
+
+    if ( $tab ) {
+	delete_transient( 'wp-asp-urlHash' );
+    }
     ?>
+    <style>
+        div.wp-asp-tab-container {
+    	display: none;
+        }
+    </style>
 
     <div class="wrap">
 
         <h2><?php echo esc_html( get_admin_page_title() ); ?></h2>
 
+	<?php settings_errors(); ?>
+
         <form method="post" action="options.php">
+    	<input type="hidden" id="wp-asp-urlHash" name="wp-asp-urlHash" value="">
 
 	    <?php settings_fields( 'AcceptStripePayments-settings-group' ); ?>
 
-	    <?php do_settings_sections( 'accept_stripe_payment' ); ?>
+    	<h2 class="nav-tab-wrapper">
+    	    <a href="#general" data-tab-name="general" class="nav-tab">General Settings</a>
+    	    <a href="#email" data-tab-name="email" class="nav-tab">Email Settings</a>
+    	</h2>
 
+    	<div class="wp-asp-tab-container" data-tab-name="general">
+		<?php do_settings_sections( 'accept_stripe_payment-docs' ); ?>
+		<?php do_settings_sections( 'accept_stripe_payment' ); ?>
+    	</div>
+    	<div class="wp-asp-tab-container" data-tab-name="email">
+		<?php do_settings_sections( 'accept_stripe_payment-email' ); ?>
+    	</div>
 	    <?php submit_button(); ?>
 
         </form>
     </div>
+    <script>
+        var wp_asp_urlHash = window.location.hash.substr(1);
+        var wp_asp_transHash = '<?php echo esc_attr( $tab ); ?>';
+
+        if (wp_asp_urlHash === '') {
+    	if (wp_asp_transHash !== '') {
+    	    wp_asp_urlHash = wp_asp_transHash;
+    	} else {
+    	    wp_asp_urlHash = 'general';
+    	}
+        }
+        jQuery(function ($) {
+    	var wp_asp_activeTab = "";
+    	$('a.nav-tab').click(function (e) {
+    	    if ($(this).attr('data-tab-name') !== wp_asp_activeTab) {
+    		$('div.wp-asp-tab-container[data-tab-name="' + wp_asp_activeTab + '"]').hide();
+    		$('a.nav-tab[data-tab-name="' + wp_asp_activeTab + '"]').removeClass('nav-tab-active');
+    		wp_asp_activeTab = $(this).attr('data-tab-name');
+    		$('div.wp-asp-tab-container[data-tab-name="' + wp_asp_activeTab + '"]').show();
+    		$(this).addClass('nav-tab-active');
+    		$('input#wp-asp-urlHash').val(wp_asp_activeTab);
+    	    }
+    	});
+    	$('a.nav-tab[data-tab-name="' + wp_asp_urlHash + '"]').trigger('click');
+        });
+    </script>
 
     <?php
 }
