@@ -75,6 +75,9 @@ if ( $_GET[ 'page' ] == 'stripe-payments-settings' ) {
     		$('div.wp-asp-tab-container[data-tab-name="' + wp_asp_activeTab + '"]').show();
     		$(this).addClass('nav-tab-active');
     		$('input#wp-asp-urlHash').val(wp_asp_activeTab);
+    		if (window.location.hash !== wp_asp_activeTab) {
+    		    window.location.hash = wp_asp_activeTab;
+    		}
     	    }
     	});
     	$('a.nav-tab[data-tab-name="' + wp_asp_urlHash + '"]').trigger('click');
