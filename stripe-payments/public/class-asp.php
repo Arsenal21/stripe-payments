@@ -232,9 +232,6 @@ class AcceptStripePayments {
 	    'currency_code'			 => 'USD',
 	    'button_text'			 => 'Buy Now',
 	    'use_new_button_method'		 => 0,
-	    'api_username'			 => 'xyz.biz_api1.abc.com',
-	    'api_password'			 => '1234567891',
-	    'api_signature'			 => 'xxxxxxx.xxxxxxxxxxxxxxx.xxxxxxxxxxxxxx-xxxxxxx',
 	    'checkout_url'			 => site_url( 'checkout' ),
 	    'from_email_address'		 => get_bloginfo( 'name' ) . ' <sales@your-domain.com>',
 	    'buyer_email_subject'		 => 'Thank you for the purchase',
@@ -248,6 +245,10 @@ class AcceptStripePayments {
 	    . "{product_details}\r\n\r\n"
 	    . "The sale was made to {payer_email}\r\n\r\n"
 	    . "Thanks",
+	    'price_currency_pos'		 => 'left',
+	    'price_decimal_sep'		 => '.',
+	    'price_thousand_sep'		 => ',',
+	    'price_decimals_num'		 => '2',
 	);
 	$opt	 = get_option( 'AcceptStripePayments-settings' );
 	if ( empty( $opt ) ) {
