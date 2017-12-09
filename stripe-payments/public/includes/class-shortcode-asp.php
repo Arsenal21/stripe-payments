@@ -113,9 +113,11 @@ class AcceptStripePaymentsShortcode {
 	$template_name	 = 'default'; //this could be made configurable
 	$button_color	 = 'blue'; //this could be made configurable
 
+	$price = get_post_meta( $id, 'asp_product_price', true );
+
 	$buy_btn = $this->shortcode_accept_stripe_payment( array(
 	    'name'			 => $post->post_title,
-	    'price'			 => get_post_meta( $id, 'asp_product_price', true ),
+	    'price'			 => $price,
 	    'currency'		 => $currency,
 	    'class'			 => 'asp_product_buy_btn ' . $button_color,
 	    'quantity'		 => get_post_meta( $id, 'asp_product_quantity', true ),
@@ -144,7 +146,7 @@ class AcceptStripePaymentsShortcode {
 	    $tpl = asp_get_template( $this->ProductCSSInserted );
 	}
 	$this->productCSSInserted	 = true;
-	$tpl				 = str_replace( array( '%_thumb_img_%', '%_name_%', '%_description_%', '%_buy_btn_%' ), array( $thumb_img, $post->post_title, do_shortcode( wpautop( $post->post_content ) ), $buy_btn ), $tpl );
+	$tpl				 = str_replace( array( '%_thumb_img_%', '%_name_%', '%_description_%', '%_price_%', '%_buy_btn_%' ), array( $thumb_img, $post->post_title, do_shortcode( wpautop( $post->post_content ) ), AcceptStripePayments::formatted_price( $price, $currency ), $buy_btn ), $tpl );
 	return $tpl;
     }
 
@@ -378,8 +380,8 @@ class AcceptStripePaymentsShortcode {
 	    $output	 .= '<p class="asp-thank-you-page-msg2">' . __( "Here's what you purchased: ", "stripe-payments" ) . '</p>';
 	    $output	 .= '<div class="asp-thank-you-page-product-name">' . __( "Product Name: ", "stripe-payments" ) . $aspData[ 'item_name' ] . '</div>';
 	    $output	 .= '<div class="asp-thank-you-page-qty">' . __( "Quantity: ", "stripe-payments" ) . $aspData[ 'item_quantity' ] . '</div>';
-	    $output	 .= '<div class="asp-thank-you-page-qty">' . __( "Item Price: ", "stripe-payments" ) . $aspData[ 'item_price' ] . ' ' . $aspData[ 'currency_code' ] . '</div>';
-	    $output	 .= '<div class="asp-thank-you-page-qty">' . __( "Total Paid: ", "stripe-payments" ) . $aspData[ 'paid_amount' ] . ' ' . $aspData[ 'currency_code' ] . '</div>';
+	    $output	 .= '<div class="asp-thank-you-page-qty">' . __( "Item Price: ", "stripe-payments" ) . AcceptStripePayments::formatted_price( $aspData[ 'item_price' ], $aspData[ 'currency_code' ] ) . '</div>';
+	    $output	 .= '<div class="asp-thank-you-page-qty">' . __( "Total Amount: ", "stripe-payments" ) . AcceptStripePayments::formatted_price( $aspData[ 'paid_amount' ], $aspData[ 'currency_code' ] ) . '</div>';
 	    $output	 .= '<div class="asp-thank-you-page-txn-id">' . __( "Transaction ID: ", "stripe-payments" ) . $aspData[ 'txn_id' ] . '</div>';
 
 	    if ( ! empty( $aspData[ 'item_url' ] ) ) {

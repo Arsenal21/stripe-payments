@@ -25,6 +25,10 @@
     border-bottom: 1px solid #EEEEEE;
 }
 
+.asp_price_container {
+    font-weight: bold;
+}
+
 /* Post Item */
 
 .asp_post_item {

@@ -109,7 +109,9 @@ class ASPProducts {
 			$asp		 = AcceptStripePayments::get_instance();
 			$currency	 = $asp->get_setting( 'currency_code' );
 		    }
-		    echo $price . ' ' . $currency;
+		    echo AcceptStripePayments::formatted_price($price,$currency);
+		} else {
+		    echo "Custom";
 		}
 		break;
 	    case 'shortcode':

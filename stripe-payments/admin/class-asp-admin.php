@@ -439,39 +439,9 @@ class AcceptStripePayments_Admin {
     }
 
     static function get_currency_options( $selected_value = '', $show_default = true ) {
-	$currencies = array(
-	    ""	 => "(Default)",
-	    "USD"	 => "US Dollars (USD)",
-	    "EUR"	 => "Euros (EUR)",
-	    "GBP"	 => "Pounds Sterling (GBP)",
-	    "AUD"	 => "Australian Dollars (AUD)",
-	    "BRL"	 => "Brazilian Real (BRL)",
-	    "CAD"	 => "Canadian Dollars (CAD)",
-	    "CNY"	 => "Chinese Yuan (CNY)",
-	    "CZK"	 => "Czech Koruna (CZK)",
-	    "DKK"	 => "Danish Krone (DKK)",
-	    "HKD"	 => "Hong Kong Dollar (HKD)",
-	    "HUF"	 => "Hungarian Forint (HUF)",
-	    "INR"	 => "Indian Rupee (INR)",
-	    "IDR"	 => "Indonesia Rupiah (IDR)",
-	    "ILS"	 => "Israeli Shekel (ILS)",
-	    "JPY"	 => "Japanese Yen (JPY)",
-	    "MYR"	 => "Malaysian Ringgits (MYR)",
-	    "MXN"	 => "Mexican Peso (MXN)",
-	    "NZD"	 => "New Zealand Dollar (NZD)",
-	    "NOK"	 => "Norwegian Krone (NOK)",
-	    "PHP"	 => "Philippine Pesos (PHP)",
-	    "PLN"	 => "Polish Zloty (PLN)",
-	    "SGD"	 => "Singapore Dollar (SGD)",
-	    "ZAR"	 => "South African Rand (ZAR)",
-	    "KRW"	 => "South Korean Won (KRW)",
-	    "SEK"	 => "Swedish Krona (SEK)",
-	    "CHF"	 => "Swiss Franc (CHF)",
-	    "TWD"	 => "Taiwan New Dollars (TWD)",
-	    "THB"	 => "Thai Baht (THB)",
-	    "TRY"	 => "Turkish Lira (TRY)",
-	    "VND"	 => "Vietnamese Dong (VND)",
-	);
+
+	$currencies = AcceptStripePayments::get_currencies();
+
 	if ( $show_default === false ) {
 	    unset( $currencies[ "" ] );
 	}
@@ -479,7 +449,7 @@ class AcceptStripePayments_Admin {
 	$opts	 = '';
 	foreach ( $currencies as $key => $value ) {
 	    $selected	 = $selected_value == $key ? ' selected' : '';
-	    $opts		 .= str_replace( array( '%curr_code%', '%curr_name%', '%selected%' ), array( $key, $value, $selected ), $opt_tpl );
+	    $opts		 .= str_replace( array( '%curr_code%', '%curr_name%', '%selected%' ), array( $key, $value[ 0 ], $selected ), $opt_tpl );
 	}
 
 	return $opts;
