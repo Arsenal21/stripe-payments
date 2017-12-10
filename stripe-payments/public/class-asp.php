@@ -283,6 +283,22 @@ class AcceptStripePayments {
 		update_option( 'AcceptStripePayments-settings', $AcceptStripePayments_settings );
 	    }
 	}
+
+	//create products page
+
+	$args			 = array(
+	    'post_type' => 'page'
+	);
+	$pages			 = get_pages( $args );
+	$products_page_id	 = '';
+	foreach ( $pages as $page ) {
+	    if ( strpos( $page->post_content, '[asp_show_all_products' ) !== false ) {
+		$products_page_id = $page->ID;
+	    }
+	}
+	if ( $products_page_id == '' ) {
+	    $products_page_id = AcceptStripePayments::create_post( 'page', 'Products', 'Products', '[asp_show_all_products]' );
+	}
     }
 
     public static function create_post( $postType, $title, $name, $content, $parentId = NULL ) {
