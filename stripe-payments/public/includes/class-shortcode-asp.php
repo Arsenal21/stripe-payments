@@ -459,7 +459,7 @@ class AcceptStripePaymentsShortcode {
 	    }
 	}
 
-	if ( ! $params[ 'search_box' ] === '1' ) {
+	if ( $params[ 'search_box' ] !== '1' ) {
 	    $tpl[ 'search_box' ] = '';
 	} else {
 	    if ( $search !== false ) {
