@@ -19,6 +19,7 @@ class AcceptStripePaymentsShortcode {
 
 	add_action( 'wp_enqueue_scripts', array( $this, 'register_stripe_script' ) );
 
+	add_shortcode( 'asp_show_all_products', array( &$this, 'shortcode_show_all_products' ) );
 	add_shortcode( 'asp_product', array( &$this, 'shortcode_asp_product' ) );
 	add_shortcode( 'accept_stripe_payment', array( &$this, 'shortcode_accept_stripe_payment' ) );
 	add_shortcode( 'accept_stripe_payment_checkout', array( &$this, 'shortcode_accept_stripe_payment_checkout' ) );
@@ -423,6 +424,127 @@ class AcceptStripePaymentsShortcode {
 	}
 	// no error occured - we don't display anything
 	return;
+    }
+
+    function shortcode_show_all_products( $params ) {
+
+	include_once(WP_ASP_PLUGIN_PATH . 'public/views/all-products/default/template.php');
+
+	$page = isset( $_GET[ 'asp_page' ] ) && ! empty( $_GET[ 'asp_page' ] ) ? intval( $_GET[ 'asp_page' ] ) : 1;
+
+	$q = array(
+	    'post_type'	 => ASPMain::$products_slug,
+	    'post_status'	 => 'publish',
+	    'posts_per_page' => $params[ 'items_per_page' ],
+	    'paged'		 => $page,
+	    'orderby'	 => $params[ 'sort_by' ],
+	    'order'		 => strtoupper( $params[ 'sort_order' ] ),
+	);
+
+	//handle search
+
+	$search = isset( $_GET[ 'asp_search' ] ) && ! empty( $_GET[ 'asp_search' ] ) ? sanitize_text_field( $_GET[ 'asp_search' ] ) : false;
+
+	if ( $search !== false ) {
+	    $q[ 's' ] = $search;
+	}
+
+	$products = new WP_Query( $q );
+
+	if ( ! $products->have_posts() ) {
+	    //query returned no results. Let's see if that was a search query
+	    if ( $search === false ) {
+		//that wasn't search query. That means there is no products configured
+		return 'No products have been configured yet';
+	    }
+	}
+
+	if ( ! $params[ 'search_box' ] === '1' ) {
+	    $tpl[ 'search_box' ] = '';
+	} else {
+	    if ( $search !== false ) {
+		$tpl[ 'clear_search_url' ]	 = esc_url( remove_query_arg( array( 'asp_search', 'asp_page' ) ) );
+		$tpl[ 'search_result_text' ]	 = $products->found_posts === 0 ? 'Nothing found for "%s".' : 'Search results for "%s".';
+		$tpl[ 'search_result_text' ]	 = sprintf( $tpl[ 'search_result_text' ], htmlentities( $search ) );
+		$tpl[ 'search_term' ]		 = htmlentities( $search );
+	    } else {
+		$tpl[ 'search_result_text' ]	 = '';
+		$tpl[ 'clear_search_button' ]	 = '';
+		$tpl[ 'search_term' ]		 = '';
+	    }
+	}
+
+	$tpl[ 'products_list' ]	 .= $tpl[ 'products_row_start' ];
+	$i			 = $tpl[ 'products_per_row' ]; //items per row
+
+	while ( $products->have_posts() ) {
+	    $products->the_post();
+	    $i --;
+	    if ( $i < 0 ) { //new row
+		$tpl[ 'products_list' ]	 .= $tpl[ 'products_row_end' ];
+		$tpl[ 'products_list' ]	 .= $tpl[ 'products_row_start' ];
+		$i			 = $tpl[ 'products_per_row' ];
+	    }
+
+	    $id = get_the_ID();
+
+	    $thumb_url = get_post_meta( $id, 'asp_product_thumbnail', true );
+	    if ( ! $thumb_url ) {
+		$thumb_url = WP_ASP_PLUGIN_URL . '/assets/product-thumb-placeholder.png';
+	    }
+
+	    $view_btn = str_replace( '%[product_url]%', get_permalink(), $tpl[ 'view_product_btn' ] );
+
+	    $price	 = get_post_meta( $id, 'asp_product_price', true );
+	    $curr	 = get_post_meta( $id, 'asp_product_currency', true );
+	    $price	 = AcceptStripePayments::formatted_price( $price, $curr );
+	    if ( empty( $price ) ) {
+		$price = '&nbsp';
+	    }
+
+	    $item			 = str_replace(
+	    array(
+		'%[product_id]%', '%[product_name]%', '%[product_thumb]%', '%[view_product_btn]%', '%[product_price]%'
+	    ), array(
+		$id, get_the_title(), $thumb_url, $view_btn, $price
+	    ), $tpl[ 'products_item' ] );
+	    $tpl[ 'products_list' ]	 .= $item;
+	}
+
+	$tpl[ 'products_list' ] .= $tpl[ 'products_row_end' ];
+
+	//pagination
+
+	$tpl[ 'pagination_items' ] = '';
+
+	$pages = $products->max_num_pages;
+
+	if ( $pages > 1 ) {
+	    $i = 1;
+
+	    while ( $i <= $pages ) {
+		if ( $i != $page ) {
+		    $url	 = esc_url( add_query_arg( 'asp_page', $i ) );
+		    $str	 = str_replace( array( '%[url]%', '%[page_num]%' ), array( $url, $i ), $tpl[ 'pagination_item' ] );
+		} else
+		    $str				 = str_replace( '%[page_num]%', $i, $tpl[ 'pagination_item_current' ] );
+		$tpl[ 'pagination_items' ]	 .= $str;
+		$i ++;
+	    }
+	}
+
+	if ( empty( $tpl[ 'pagination_items' ] ) ) {
+	    $tpl[ 'pagination' ] = '';
+	}
+
+	wp_reset_postdata();
+
+	//Build template
+	foreach ( $tpl as $key => $value ) {
+	    $tpl[ 'page' ] = str_replace( '_%' . $key . '%_', $value, $tpl[ 'page' ] );
+	}
+
+	return $tpl[ 'page' ];
     }
 
     function apply_content_tags( $content, $data ) {
