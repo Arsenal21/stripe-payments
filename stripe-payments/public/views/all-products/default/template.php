@@ -68,6 +68,6 @@ $tpl[ 'pagination_item' ]		 = '<li><a href="%[url]%">%[page_num]%</a></li>';
 $tpl[ 'pagination_item_current' ]	 = '<li><span>%[page_num]%</span></li>';
 
 //Profile button
-$tpl[ 'view_product_btn' ] = '<div class="wp-asp-view-product-btn"><a href="%[product_url]%" class="wp-asp-view-product-lnk" target="_blank"><button>View Product</button></a></div>';
+$tpl[ 'view_product_btn' ] = '<div class="wp-asp-view-product-btn"><a href="%[product_url]%" class="wp-asp-view-product-lnk"><button>View Product</button></a></div>';
 
 
