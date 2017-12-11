@@ -10,6 +10,8 @@ function asp_ipn_completed( $errMsg = '' ) {
     exit;
 }
 
+unset( $_SESSION[ 'asp_data' ] );
+
 $asp_class = AcceptStripePayments::get_instance();
 
 global $aspRedirectURL;
@@ -50,16 +52,12 @@ $charge_description	 = sanitize_text_field( $_POST[ 'charge_description' ] );
 //$item_price = sanitize_text_field($_POST['item_price']);
 $trans_name	 = 'stripe-payments-' . sanitize_title_with_dashes( $item_name );
 $item_price	 = get_transient( $trans_name ); //Read the price for this item from the system.
-if ( ! is_numeric( $item_price ) ) {
-    echo ('Invalid item price');
-    asp_ipn_completed();
-}
-if ( $item_price == 0 ) { //Custom amount
+if ( $item_price === 0 || $item_price === '' ) { //Custom amount
     $item_price = floatval( $_POST[ 'stripeAmount' ] );
-    if ( ! is_numeric( $item_price ) ) {
-	echo ('Invalid item price');
-	asp_ipn_completed();
-    }
+}
+
+if ( ! is_numeric( $item_price ) ) {
+    asp_ipn_completed( 'Invalid item price: ' . $item_price );
 }
 
 $currency_code = strtoupper( sanitize_text_field( $_POST[ 'currency_code' ] ) );
@@ -210,9 +208,9 @@ asp_ipn_completed();
 function asp_apply_dynamic_tags_on_email_body( $body, $post ) {
     $product_details = __( "Product Name: ", "stripe-payments" ) . $post[ 'item_name' ] . "\n";
     $product_details .= __( "Quantity: ", "stripe-payments" ) . $post[ 'item_quantity' ] . "\n";
-    $product_details .= __( "Price: ", "stripe-payments" ) . $post[ 'item_price' ] . ' ' . $post[ 'currency_code' ] . "\n";
+    $product_details .= __( "Price: ", "stripe-payments" ) . AcceptStripePayments::formatted_price( $post[ 'item_price' ], $post[ 'currency_code' ] ) . "\n";
     $product_details .= "--------------------------------" . "\n";
-    $product_details .= __( "Total Paid: ", "stripe-payments" ) . ($post[ 'item_price' ] * $post[ 'item_quantity' ]) . ' ' . $post[ 'currency_code' ] . "\n";
+    $product_details .= __( "Total Amount: ", "stripe-payments" ) . AcceptStripePayments::formatted_price( ($post[ 'item_price' ] * $post[ 'item_quantity' ] ), $post[ 'currency_code' ] ) . "\n";
     if ( ! empty( $post[ 'item_url' ] ) )
 	$product_details .= "\n\n" . __( "Download link: ", "stripe-payments" ) . $post[ 'item_url' ];
 

@@ -340,11 +340,15 @@ class AcceptStripePayments_Admin {
     public function register_settings( $value = '' ) {
 	register_setting( 'AcceptStripePayments-settings-group', 'AcceptStripePayments-settings', array( &$this, 'settings_sanitize_field_callback' ) );
 
-	add_settings_section( 'AcceptStripePayments-documentation', 'Plugin Documentation', array( &$this, 'general_documentation_callback' ), $this->plugin_slug );
+	add_settings_section( 'AcceptStripePayments-documentation', 'Plugin Documentation', array( &$this, 'general_documentation_callback' ), $this->plugin_slug . '-docs' );
 
 	add_settings_section( 'AcceptStripePayments-global-section', 'Global Settings', null, $this->plugin_slug );
 	add_settings_section( 'AcceptStripePayments-credentials-section', 'Credentials', null, $this->plugin_slug );
+	add_settings_section( 'AcceptStripePayments-settings-footer', '', array( &$this, 'general_settings_menu_footer_callback' ), $this->plugin_slug );
+	add_settings_section( 'AcceptStripePayments-email-section', 'Email Settings', null, $this->plugin_slug . '-email' );
+	add_settings_section( 'AcceptStripePayments-price-display', 'Price Display Settings', null, $this->plugin_slug . '-advanced' );
 
+// Global section
 	add_settings_field( 'checkout_url', 'Checkout Result Page URL', array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-global-section', array( 'field' => 'checkout_url', 'desc' => 'This is the thank you page. This page is automatically created for you when you install the plugin. Do not delete this page as the plugin will send the customer to this page after the payment.', 'size' => 100 ) );
 	add_settings_field( 'currency_code', 'Currency', array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-global-section', array( 'field' => 'currency_code', 'desc' => '', 'size' => 10 ) );
 	add_settings_field( 'button_text', 'Button Text', array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-global-section', array( 'field' => 'button_text', 'desc' => 'Example: Buy Now, Pay Now etc.' ) );
@@ -354,21 +358,22 @@ class AcceptStripePayments_Admin {
 	    'desc'	 => 'Use new method to display Stripe buttons. It makes connection to Stripe website only when button is clicked, which makes the page with buttons load faster. A little drawback is that Stripe pop-up is displayed with a small delay after button click. If you have more than one button on a page, enabling this option is highly recommended.' . '<br /><b>Note:</b> old method doesn\'t support custom price and quantity. If your shortcode or product is using one of those features, the new method will be used automatically for that entity.' ) );
 	add_settings_field( 'checkout_lang', 'Stripe Checkout Language', array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-global-section', array( 'field' => 'checkout_lang', 'desc' => 'Specify language to be used in Stripe checkout pop-up or select "Autodetect" to let Stripe handle it.' ) );
 
+// Credentials section
 	add_settings_field( 'is_live', 'Live Mode', array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-credentials-section', array( 'field' => 'is_live', 'desc' => 'Check this to run the transaction in live mode. When unchecked it will run in test mode.' ) );
 	add_settings_field( 'api_publishable_key', 'Stripe Publishable Key', array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-credentials-section', array( 'field' => 'api_publishable_key', 'desc' => '' ) );
 	add_settings_field( 'api_secret_key', 'Stripe Secret Key', array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-credentials-section', array( 'field' => 'api_secret_key', 'desc' => '' ) );
 
-	add_settings_section( 'AcceptStripePayments-email-section', 'Email Settings', null, $this->plugin_slug );
-	add_settings_field( 'send_emails_to_buyer', 'Send Emails to Buyer After Purchase', array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-email-section', array( 'field'	 => 'send_emails_to_buyer',
+// Email section
+	add_settings_field( 'send_emails_to_buyer', 'Send Emails to Buyer After Purchase', array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-email', 'AcceptStripePayments-email-section', array( 'field'	 => 'send_emails_to_buyer',
 	    'desc'	 => 'If checked the plugin will send an email to the buyer with the sale details. If digital goods are purchased then the email will contain the download links for the purchased products.' )
 	);
-	add_settings_field( 'from_email_address', 'From Email Address', array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-email-section', array( 'field'	 => 'from_email_address',
+	add_settings_field( 'from_email_address', 'From Email Address', array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-email', 'AcceptStripePayments-email-section', array( 'field'	 => 'from_email_address',
 	    'desc'	 => 'Example: Your Name &lt;sales@your-domain.com&gt; This is the email address that will be used to send the email to the buyer. This name and email address will appear in the from field of the email.' )
 	);
-	add_settings_field( 'buyer_email_subject', 'Buyer Email Subject', array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-email-section', array( 'field'	 => 'buyer_email_subject',
+	add_settings_field( 'buyer_email_subject', 'Buyer Email Subject', array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-email', 'AcceptStripePayments-email-section', array( 'field'	 => 'buyer_email_subject',
 	    'desc'	 => 'This is the subject of the email that will be sent to the buyer.' )
 	);
-	add_settings_field( 'buyer_email_body', 'Buyer Email Body', array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-email-section', array( 'field'	 => 'buyer_email_body',
+	add_settings_field( 'buyer_email_body', 'Buyer Email Body', array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-email', 'AcceptStripePayments-email-section', array( 'field'	 => 'buyer_email_body',
 	    'desc'	 => 'This is the body of the email that will be sent to the buyer. Do not change the text within the braces {}. You can use the following email tags in this email body field:
                 <br>{payer_email} – Email Address of the buyer
                 <br>{shipping_address} – Shipping address of the buyer
@@ -378,16 +383,16 @@ class AcceptStripePayments_Admin {
                 <br>{purchase_amt} – The amount paid for the current transaction
                 <br>{purchase_date} – The date of the purchase' )
 	);
-	add_settings_field( 'send_emails_to_seller', 'Send Emails to Seller After Purchase', array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-email-section', array( 'field'	 => 'send_emails_to_seller',
+	add_settings_field( 'send_emails_to_seller', 'Send Emails to Seller After Purchase', array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-email', 'AcceptStripePayments-email-section', array( 'field'	 => 'send_emails_to_seller',
 	    'desc'	 => 'If checked the plugin will send an email to the seller with the sale details.' )
 	);
-	add_settings_field( 'seller_notification_email', 'Notification Email Address', array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-email-section', array( 'field'	 => 'seller_notification_email',
+	add_settings_field( 'seller_notification_email', 'Notification Email Address', array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-email', 'AcceptStripePayments-email-section', array( 'field'	 => 'seller_notification_email',
 	    'desc'	 => 'This is the email address where the seller will be notified of product sales. You can put multiple email addresses separated by comma (,) in the above field to send the notification to multiple email addresses.' )
 	);
-	add_settings_field( 'seller_email_subject', 'Seller Email Subject', array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-email-section', array( 'field'	 => 'seller_email_subject',
+	add_settings_field( 'seller_email_subject', 'Seller Email Subject', array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-email', 'AcceptStripePayments-email-section', array( 'field'	 => 'seller_email_subject',
 	    'desc'	 => 'This is the subject of the email that will be sent to the seller for record.' )
 	);
-	add_settings_field( 'seller_email_body', 'Seller Email Body', array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-email-section', array( 'field'	 => 'seller_email_body',
+	add_settings_field( 'seller_email_body', 'Seller Email Body', array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-email', 'AcceptStripePayments-email-section', array( 'field'	 => 'seller_email_body',
 	    'desc'	 => 'This is the body of the email that will be sent to the seller. Do not change the text within the braces {}. You can use the following email tags in this email body field:
                 <br>{payer_email} – Email Address of the buyer
                 <br>{shipping_address} – Shipping address of the buyer
@@ -397,8 +402,19 @@ class AcceptStripePayments_Admin {
                 <br>{purchase_amt} – The amount paid for the current transaction
                 <br>{purchase_date} – The date of the purchase' )
 	);
-
-	add_settings_section( 'AcceptStripePayments-settings-footer', '', array( &$this, 'general_settings_menu_footer_callback' ), $this->plugin_slug );
+// Price Display section
+	add_settings_field( 'price_currency_pos', 'Currency Position', array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-price-display', array( 'field'	 => 'price_currency_pos',
+	    'desc'	 => 'This controls the position of the currency symbol.' )
+	);
+	add_settings_field( 'price_decimal_sep', 'Decimal Separator', array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-price-display', array( 'field'	 => 'price_decimal_sep',
+	    'desc'	 => 'This sets the decimal separator of the displayed price.' )
+	);
+	add_settings_field( 'price_thousand_sep', 'Thousand Separator', array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-price-display', array( 'field'	 => 'price_thousand_sep',
+	    'desc'	 => 'This sets the thousand separator of the displayed price.' )
+	);
+	add_settings_field( 'price_decimals_num', 'Number of Decimals', array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-price-display', array( 'field'	 => 'price_decimals_num',
+	    'desc'	 => 'This sets the number of decimal points shown in the displayed price.' )
+	);
     }
 
     public function general_documentation_callback( $args ) {
@@ -423,39 +439,9 @@ class AcceptStripePayments_Admin {
     }
 
     static function get_currency_options( $selected_value = '', $show_default = true ) {
-	$currencies = array(
-	    ""	 => "(Default)",
-	    "USD"	 => "US Dollars (USD)",
-	    "EUR"	 => "Euros (EUR)",
-	    "GBP"	 => "Pounds Sterling (GBP)",
-	    "AUD"	 => "Australian Dollars (AUD)",
-	    "BRL"	 => "Brazilian Real (BRL)",
-	    "CAD"	 => "Canadian Dollars (CAD)",
-	    "CNY"	 => "Chinese Yuan (CNY)",
-	    "CZK"	 => "Czech Koruna (CZK)",
-	    "DKK"	 => "Danish Krone (DKK)",
-	    "HKD"	 => "Hong Kong Dollar (HKD)",
-	    "HUF"	 => "Hungarian Forint (HUF)",
-	    "INR"	 => "Indian Rupee (INR)",
-	    "IDR"	 => "Indonesia Rupiah (IDR)",
-	    "ILS"	 => "Israeli Shekel (ILS)",
-	    "JPY"	 => "Japanese Yen (JPY)",
-	    "MYR"	 => "Malaysian Ringgits (MYR)",
-	    "MXN"	 => "Mexican Peso (MXN)",
-	    "NZD"	 => "New Zealand Dollar (NZD)",
-	    "NOK"	 => "Norwegian Krone (NOK)",
-	    "PHP"	 => "Philippine Pesos (PHP)",
-	    "PLN"	 => "Polish Zloty (PLN)",
-	    "SGD"	 => "Singapore Dollar (SGD)",
-	    "ZAR"	 => "South African Rand (ZAR)",
-	    "KRW"	 => "South Korean Won (KRW)",
-	    "SEK"	 => "Swedish Krona (SEK)",
-	    "CHF"	 => "Swiss Franc (CHF)",
-	    "TWD"	 => "Taiwan New Dollars (TWD)",
-	    "THB"	 => "Thai Baht (THB)",
-	    "TRY"	 => "Turkish Lira (TRY)",
-	    "VND"	 => "Vietnamese Dong (VND)",
-	);
+
+	$currencies = AcceptStripePayments::get_currencies();
+
 	if ( $show_default === false ) {
 	    unset( $currencies[ "" ] );
 	}
@@ -463,7 +449,7 @@ class AcceptStripePayments_Admin {
 	$opts	 = '';
 	foreach ( $currencies as $key => $value ) {
 	    $selected	 = $selected_value == $key ? ' selected' : '';
-	    $opts		 .= str_replace( array( '%curr_code%', '%curr_name%', '%selected%' ), array( $key, $value, $selected ), $opt_tpl );
+	    $opts		 .= str_replace( array( '%curr_code%', '%curr_name%', '%selected%' ), array( $key, $value[ 0 ], $selected ), $opt_tpl );
 	}
 
 	return $opts;
@@ -536,10 +522,15 @@ class AcceptStripePayments_Admin {
 		echo '</select>';
 		echo "<p class=\"description\">{$desc}</p>";
 		break;
-	    // case 'button_text':
-	    // case 'api_username':
-	    // case 'api_password':
-	    // case 'api_signature':
+	    case 'price_currency_pos':
+		?>
+		<select name="AcceptStripePayments-settings[<?php echo $field; ?>]">
+		    <option value="left"<?php echo ($field_value === "left") ? ' selected' : ''; ?>>Left</option>
+		    <option value="right"<?php echo ($field_value === "right") ? ' selected' : ''; ?>>Right</option>
+		</select>
+		<p class="description"><?php echo $desc; ?></p>
+		<?php
+		break;
 	    default:
 		echo "<input type='text' name='AcceptStripePayments-settings[{$field}]' value='{$field_value}' size='{$size}' /> <p class=\"description\">{$desc}</p>";
 		break;
@@ -622,6 +613,31 @@ class AcceptStripePayments_Admin {
 	    $output[ 'seller_email_body' ] = $input[ 'seller_email_body' ];
 	else
 	    add_settings_error( 'AcceptStripePayments-settings', 'invalid-seller-email-body', 'You must fill in seller email body.' );
+
+// Price display
+
+	$output[ 'price_currency_pos' ] = $input[ 'price_currency_pos' ];
+
+	if ( ! empty( $input[ 'price_decimal_sep' ] ) )
+	    $output[ 'price_decimal_sep' ] = esc_attr( $input[ 'price_decimal_sep' ] );
+	else
+	    add_settings_error( 'AcceptStripePayments-settings', 'empty-price-decimals-sep', 'Price decimal separator can\'t be empty.' );
+
+	if ( ! empty( $input[ 'price_thousand_sep' ] ) )
+	    $output[ 'price_thousand_sep' ] = esc_attr( $input[ 'price_thousand_sep' ] );
+	else
+	    add_settings_error( 'AcceptStripePayments-settings', 'empty-price-thousand-sep', 'Price thousand separator can\'t be empty.' );
+
+	if ( ! empty( $input[ 'price_decimals_num' ] ) )
+	    $output[ 'price_decimals_num' ] = esc_attr( $input[ 'price_decimals_num' ] );
+	else
+	    add_settings_error( 'AcceptStripePayments-settings', 'invalid-price-decimals-num', 'Price number of decimals can\'t be empty.' );
+
+
+
+	if ( isset( $_POST[ 'wp-asp-urlHash' ] ) ) {
+	    set_transient( 'wp-asp-urlHash', $_POST[ 'wp-asp-urlHash' ], 300 );
+	}
 
 	return $output;
     }

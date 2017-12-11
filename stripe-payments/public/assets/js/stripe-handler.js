@@ -26,10 +26,10 @@ function wp_asp_add_stripe_handler(data) {
 
     if (!wp_asp_prefetched) {
 	wp_asp_prefetched = true;
-	wp_asp_check_handler();
+	wp_asp_check_handler(data);
     }
 
-    function wp_asp_check_handler() {
+    function wp_asp_check_handler(data) {
 	if (typeof (data.handler) == "undefined") {
 	    if (data.billingAddress) {
 		data.handler = StripeCheckout.configure({
@@ -69,7 +69,7 @@ function wp_asp_add_stripe_handler(data) {
 
     jQuery('#stripe_button_' + data.uniq_id).on('click', function (e) {
 	e.preventDefault();
-	wp_asp_check_handler();
+	wp_asp_check_handler(data);
 	if (!data.variable && data.custom_quantity !== '1') {
 	    data.handler.open();
 	    return true;

@@ -1,0 +1,200 @@
+.wp-asp-grid button {
+    background: #409ddb;
+    color: white;
+    padding: 10px 15px;
+    font-weight: normal;
+    line-height: normal;
+}
+
+.wp-asp-grid button:hover {
+    background: #308dcb;
+}
+
+.wp-asp-grid {
+    font-family: Tahoma,Verdana,Segoe,sans-serif;
+}
+
+.wp-asp-grid a,.wp-asp-grid a:hover,.wp-asp-grid a:active,.wp-asp-grid a:focus {
+    text-decoration: none;
+    box-shadow: none;
+    border: none;
+}
+
+.wp-asp-grid a, .wp-asp-grid button {
+    outline: 0;
+}
+
+.wp-asp-grid-item {
+    width: auto;
+    border: none;
+    background: #ededed;
+    position: relative;
+    margin: 0px 1% 10px 0px;
+    padding: 7px;
+}
+
+.wp-asp-grid-row {
+    width: 100%;
+    clear: both;
+    margin: 5px 0;
+    margin-bottom: 20px;
+    padding: 0;
+}
+
+.wp-asp-post-grid {
+    display: inline-block;
+    clear: both;
+    width: 100%;
+}
+
+.wp-asp-product-name {
+    text-align: center;
+    font-weight: bold;
+    font-size: 1em;
+    margin: 5px;
+    padding-bottom: 60px;
+}
+
+.wp-asp-product-thumb {
+    text-align: center;
+    margin: 15px 10px 5px 10px;
+}
+.wp-asp-product-thumb img {
+    border-radius: 4px;
+    margin: 0 auto;
+    min-height: 128px;
+    min-width: 128px;
+    width: 100%;
+    max-width: 100%;
+}
+.wp-asp-product-price {
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 0.9em;
+}
+
+.wp-asp-view-product-btn {
+    bottom: 15px;
+    left: 0;
+    position: absolute;
+    width: 100%;
+    text-align: center;
+}
+
+.wp-asp-view-product-btn button {
+    border-radius: 4px;
+    border: none;
+    background: #409ddb;
+    color: white;
+    text-transform: none;
+    font-family: Tahoma,Verdana,Segoe,sans-serif;
+    font-size: 1em;
+    line-height: 1em;
+}
+
+/* Search */
+
+#wp-asp-search-form{
+    text-align: center;
+    margin-bottom: 20px;
+}
+.wp-asp-listing-search-field{
+    width: 90%;
+    max-width: 90%;
+    text-align: center;
+    position: relative;
+    height: 35px;
+    margin: 0 auto;
+}
+.wp-asp-listing-search-field input {
+    vertical-align: middle;
+    height: 35px;
+    padding: 5px;
+    box-sizing: border-box;
+    width: 100%;
+    display: inline-block;
+    line-height: normal;
+}
+.wp-asp-listing-search-field button {
+    box-sizing: border-box;
+    vertical-align: middle;
+    padding: 5px 5px;
+    height: 35px;
+    width: 35px;
+    margin: 0;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+.wp-asp-listing-search-submit button span {
+    font-size: 20px;
+    height: 20px;
+    width: 20px;
+}
+.wp-asp-search-res-text {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.wp-asp-search-res-text a {
+    color: #000;
+}
+
+.wp-asp-search-res-text a:hover, .wp-asp-search-res-text a:focus, .wp-asp-search-res-text a:active {
+    border-bottom: 1px solid grey;
+}
+
+/* Pagination */
+
+.wp-asp-pagination {
+    clear: both;
+    text-align: center;
+}
+
+.wp-asp-pagination ul {
+    font-weight: normal;
+    list-style: none;
+}
+
+.wp-asp-pagination li {
+    margin: 0 5px;
+    display: inline;
+}
+
+.wp-asp-pagination span {
+    padding: 5px 10px;
+    background: #409ddb;
+    color: white;
+}
+
+.wp-asp-pagination a {
+    opacity: 0.7;
+    color: black;
+    padding: 5px 10px;
+    text-decoration: none;
+    border: none;
+    box-shadow: none;
+}
+
+.wp-asp-pagination a:hover,.wp-asp-pagination a:active,.wp-asp-pagination a:focus {
+    background: #c0c0c0;
+}
+
+@media (min-width: 768px) {
+    .wp-asp-grid-row {
+        display: flex;
+    }
+    .wp-asp-listing-search-field{
+        width: 70%;
+        max-width: 70%;
+    }
+    .wp-asp-grid-item {
+        width: 30%;
+        margin-right: 1.5%;
+        margin-left: 1.5%;
+	display: inline-block;
+        position: relative;
+        box-sizing: border-box;
+        align-items: stretch;
+    }
+}

@@ -17,7 +17,7 @@ class ASPOrder {
     }
 
     public function register_post_type() {
-	$labels = array(
+	$labels	 = array(
 	    'name'			 => _x( 'Orders', 'Post Type General Name', 'stripe-payments' ),
 	    'singular_name'		 => _x( 'Order', 'Post Type Singular Name', 'stripe-payments' ),
 	    'parent_item_colon'	 => __( 'Parent Order:', 'stripe-payments' ),
@@ -31,7 +31,7 @@ class ASPOrder {
 	    'not_found'		 => __( 'Not found', 'stripe-payments' ),
 	    'not_found_in_trash'	 => __( 'Not found in Trash', 'stripe-payments' ),
 	);
-	$args = array(
+	$args	 = array(
 	    'label'			 => __( 'orders', 'stripe-payments' ),
 	    'description'		 => __( 'Stripe Orders', 'stripe-payments' ),
 	    'labels'		 => $labels,
@@ -39,7 +39,7 @@ class ASPOrder {
 	    'hierarchical'		 => false,
 	    'public'		 => false,
 	    'show_ui'		 => true,
-	    'show_in_menu'		 => 'edit.php?post_type='.ASPMain::$products_slug,
+	    'show_in_menu'		 => 'edit.php?post_type=' . ASPMain::$products_slug,
 	    'can_export'		 => true,
 	    'has_archive'		 => false,
 	    'exclude_from_search'	 => true,
@@ -104,9 +104,9 @@ class ASPOrder {
 	$output	 .= "--------------------------------" . "\n";
 	$output	 .= __( "Product Name: ", "stripe-payments" ) . $order_details[ 'item_name' ] . "\n";
 	$output	 .= __( "Quantity: ", "stripe-payments" ) . $order_details[ 'item_quantity' ] . "\n";
-	$output	 .= __( "Amount: ", "stripe-payments" ) . $order_details[ 'item_price' ] . ' ' . $order_details[ 'currency_code' ] . "\n";
+	$output	 .= __( "Price: ", "stripe-payments" ) . AcceptStripePayments::formatted_price( $order_details[ 'item_price' ], $order_details[ 'currency_code' ] ) . "\n";
 	$output	 .= "--------------------------------" . "\n";
-	$output	 .= __( "Total Amount: ", "stripe-payments" ) . ($order_details[ 'item_price' ] * $order_details[ 'item_quantity' ]) . ' ' . $order_details[ 'currency_code' ] . "\n";
+	$output	 .= __( "Total Amount: ", "stripe-payments" ) . AcceptStripePayments::formatted_price( ($order_details[ 'item_price' ] * $order_details[ 'item_quantity' ] ), $order_details[ 'currency_code' ] ) . "\n";
 
 
 	$output .= "\n\n";

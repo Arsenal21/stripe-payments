@@ -232,9 +232,6 @@ class AcceptStripePayments {
 	    'currency_code'			 => 'USD',
 	    'button_text'			 => 'Buy Now',
 	    'use_new_button_method'		 => 0,
-	    'api_username'			 => 'xyz.biz_api1.abc.com',
-	    'api_password'			 => '1234567891',
-	    'api_signature'			 => 'xxxxxxx.xxxxxxxxxxxxxxx.xxxxxxxxxxxxxx-xxxxxxx',
 	    'checkout_url'			 => site_url( 'checkout' ),
 	    'from_email_address'		 => get_bloginfo( 'name' ) . ' <sales@your-domain.com>',
 	    'buyer_email_subject'		 => 'Thank you for the purchase',
@@ -248,6 +245,10 @@ class AcceptStripePayments {
 	    . "{product_details}\r\n\r\n"
 	    . "The sale was made to {payer_email}\r\n\r\n"
 	    . "Thanks",
+	    'price_currency_pos'		 => 'left',
+	    'price_decimals_sep'		 => '.',
+	    'price_thousand_sep'		 => ',',
+	    'price_decimals_num'		 => '2',
 	);
 	$opt	 = get_option( 'AcceptStripePayments-settings' );
 	if ( empty( $opt ) ) {
@@ -281,6 +282,22 @@ class AcceptStripePayments {
 		$AcceptStripePayments_settings[ 'checkout_url' ] = $checkout_page_url;
 		update_option( 'AcceptStripePayments-settings', $AcceptStripePayments_settings );
 	    }
+	}
+
+	//create products page
+
+	$args			 = array(
+	    'post_type' => 'page'
+	);
+	$pages			 = get_pages( $args );
+	$products_page_id	 = '';
+	foreach ( $pages as $page ) {
+	    if ( strpos( $page->post_content, '[asp_show_all_products' ) !== false ) {
+		$products_page_id = $page->ID;
+	    }
+	}
+	if ( $products_page_id == '' ) {
+	    $products_page_id = AcceptStripePayments::create_post( 'page', 'Products', 'Products', '[asp_show_all_products]' );
 	}
     }
 
@@ -328,6 +345,80 @@ class AcceptStripePayments {
      */
     public function rewrite_flush() {
 	flush_rewrite_rules();
+    }
+
+    static function get_currencies() {
+	$currencies = array(
+	    ""	 => array( "(Default)", "" ),
+	    "USD"	 => array( "US Dollars (USD)", "$" ),
+	    "EUR"	 => array( "Euros (EUR)", "€" ),
+	    "GBP"	 => array( "Pounds Sterling (GBP)", "£" ),
+	    "AUD"	 => array( "Australian Dollars (AUD)", "$" ),
+	    "BRL"	 => array( "Brazilian Real (BRL)", "R$" ),
+	    "CAD"	 => array( "Canadian Dollars (CAD)", "$" ),
+	    "CNY"	 => array( "Chinese Yuan (CNY)", "CN￥" ),
+	    "CZK"	 => array( "Czech Koruna (CZK)", "Kč" ),
+	    "DKK"	 => array( "Danish Krone (DKK)", "kr" ),
+	    "HKD"	 => array( "Hong Kong Dollar (HKD)", "$" ),
+	    "HUF"	 => array( "Hungarian Forint (HUF)", "Ft" ),
+	    "INR"	 => array( "Indian Rupee (INR)", "₹" ),
+	    "IDR"	 => array( "Indonesia Rupiah (IDR)", "Rp" ),
+	    "ILS"	 => array( "Israeli Shekel (ILS)", "₪" ),
+	    "JPY"	 => array( "Japanese Yen (JPY)", "¥" ),
+	    "MYR"	 => array( "Malaysian Ringgits (MYR)", "RM" ),
+	    "MXN"	 => array( "Mexican Peso (MXN)", "$" ),
+	    "NZD"	 => array( "New Zealand Dollar (NZD)", "$" ),
+	    "NOK"	 => array( "Norwegian Krone (NOK)", "kr" ),
+	    "PHP"	 => array( "Philippine Pesos (PHP)", "₱" ),
+	    "PLN"	 => array( "Polish Zloty (PLN)", "zł" ),
+	    "SGD"	 => array( "Singapore Dollar (SGD)", "$" ),
+	    "ZAR"	 => array( "South African Rand (ZAR)", "R" ),
+	    "KRW"	 => array( "South Korean Won (KRW)", "₩" ),
+	    "SEK"	 => array( "Swedish Krona (SEK)", "kr" ),
+	    "CHF"	 => array( "Swiss Franc (CHF)", "CHF" ),
+	    "TWD"	 => array( "Taiwan New Dollars (TWD)", "NT$" ),
+	    "THB"	 => array( "Thai Baht (THB)", "฿" ),
+	    "TRY"	 => array( "Turkish Lira (TRY)", "₺" ),
+	    "VND"	 => array( "Vietnamese Dong (VND)", "₫" ),
+	);
+	return $currencies;
+    }
+
+    static function formatted_price( $price, $curr = '' ) {
+
+	if ( empty( $price ) ) {
+	    return '';
+	}
+
+	$opts = get_option( 'AcceptStripePayments-settings' );
+
+	if ( empty( $curr ) ) {
+	    //if currency not specified, let's use default currency set in options
+	    $curr = $opts[ 'currency_code' ];
+	}
+	$currencies = AcceptStripePayments::get_currencies();
+	if ( isset( $currencies[ $curr ] ) ) {
+	    $curr_sym = $currencies[ $curr ][ 1 ];
+	} else {
+	    //no currency code found, let's just use currency code instead of symbol
+	    $curr_sym = $curr;
+	}
+
+	$out = number_format( $price, $opts[ 'price_decimals_num' ], $opts[ 'price_decimal_sep' ], $opts[ 'price_thousand_sep' ] );
+
+	switch ( $opts[ 'price_currency_pos' ] ) {
+	    case "left":
+		$out	 = $curr_sym . '' . $out;
+		break;
+	    case "right":
+		$out	 .= '' . $curr_sym;
+		break;
+	    default:
+		$out	 .= '' . $curr_sym;
+		break;
+	}
+
+	return $out;
     }
 
 }
