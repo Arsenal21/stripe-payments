@@ -317,7 +317,6 @@ class AcceptStripePaymentsShortcode {
 	    ?>
 	    <style>
 	        .asp_product_buy_button input {
-	    	max-width: 9em;
 	    	display: inline-block;
 	    	line-height: 1;
 	    	padding: 8px 10px;
@@ -340,11 +339,15 @@ class AcceptStripePaymentsShortcode {
 	    . "</p>";
 	}
 	if ( $data[ 'custom_quantity' ] === "1" ) { //we should output input for customer to input custom quantity
-	    $output .= "<p>"
-	    . "<input type='text' id='stripeCustomQuantity_{$data[ 'uniq_id' ]}' value='{$data[ 'quantity' ]}' name='stripeCustomQuantity' placeholder='" . __( 'Enter quantity', 'stripe-payments' ) . "' value='{$data[ 'quantity' ]}' required/>"
-	    . "<span style='margin-left: 5px; display: inline-block'> " . __( 'X item(s)', 'stripe-payments' ) . "</span>"
+	    if (empty($data[ 'quantity' ])){
+		//If quantity option is enabled and the value is empty then set default quantity to 1 so the number field type can handle it better.
+		$data[ 'quantity' ] = 1;
+	    }
+	    $output .= "<div class='asp_product_item_qty_input_container'>"
+	    . "<input type='number' min='1' size='6' class='asp_product_item_qty_input' id='stripeCustomQuantity_{$data[ 'uniq_id' ]}' value='{$data[ 'quantity' ]}' name='stripeCustomQuantity' placeholder='" . __( 'Enter quantity', 'stripe-payments' ) . "' value='{$data[ 'quantity' ]}' required/>"
+	    . "<span class='asp_product_item_qty_label' style='margin-left: 5px; display: inline-block'> " . __( 'X item(s)', 'stripe-payments' ) . "</span>"
 	    . "<span style='display: block;' id='error_explanation_quantity_{$data[ 'uniq_id' ]}'></span>"
-	    . "</p>";
+	    . "</div>";
 	}
 	if ( $data ) {
 	    $output .= "<input type='hidden' id='stripeToken_{$data[ 'uniq_id' ]}' name='stripeToken' />"
