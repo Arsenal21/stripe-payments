@@ -274,23 +274,23 @@ class AcceptStripePayments {
 	    }
 	}
 	if ( $checkout_page_id == '' ) {
-	    $checkout_page_id		 = AcceptStripePayments::create_post( 'page', 'Checkout-Result', 'Stripe-Checkout-Result', '[accept_stripe_payment_checkout]' );
-	    $checkout_page			 = get_post( $checkout_page_id );
-	    $checkout_page_url		 = $checkout_page->guid;
-	    $AcceptStripePayments_settings	 = get_option( 'AcceptStripePayments-settings' );
+	    $checkout_page_id = AcceptStripePayments::create_post( 'page', 'Checkout-Result', 'Stripe-Checkout-Result', '[accept_stripe_payment_checkout]' );
+	    $checkout_page = get_post( $checkout_page_id );
+	    $checkout_page_url = $checkout_page->guid;
+	    $AcceptStripePayments_settings = get_option( 'AcceptStripePayments-settings' );
 	    if ( ! empty( $AcceptStripePayments_settings ) ) {
 		$AcceptStripePayments_settings[ 'checkout_url' ] = $checkout_page_url;
+		$AcceptStripePayments_settings[ 'checkout_page_id' ] = $checkout_page_id;
 		update_option( 'AcceptStripePayments-settings', $AcceptStripePayments_settings );
 	    }
 	}
 
-	//create products page
-
-	$args			 = array(
+	//Create all products/shop page
+	$args = array(
 	    'post_type' => 'page'
 	);
-	$pages			 = get_pages( $args );
-	$products_page_id	 = '';
+	$pages = get_pages( $args );
+	$products_page_id = '';
 	foreach ( $pages as $page ) {
 	    if ( strpos( $page->post_content, '[asp_show_all_products' ) !== false ) {
 		$products_page_id = $page->ID;
@@ -298,6 +298,13 @@ class AcceptStripePayments {
 	}
 	if ( $products_page_id == '' ) {
 	    $products_page_id = AcceptStripePayments::create_post( 'page', 'Products', 'Products', '[asp_show_all_products]' );
+	    
+	    //Save the newly created products page ID so it can be used later.
+	    $AcceptStripePayments_settings = get_option( 'AcceptStripePayments-settings' );
+	    if ( ! empty( $AcceptStripePayments_settings ) ) {
+		$AcceptStripePayments_settings[ 'products_page_id' ] = $products_page_id;
+		update_option( 'AcceptStripePayments-settings', $AcceptStripePayments_settings );
+	    }
 	}
     }
 
