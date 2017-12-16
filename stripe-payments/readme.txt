@@ -137,6 +137,9 @@ None
 
 == Changelog ==
 
+= 1.6.5 =
+- Fixed improper handling of custom amount (thanks to triode33 for reporting)
+
 = 1.6.4 =
 - The email related settings options have been moved to a separate tab in the settings menu.
 - Added a new configuration option to allow customization of the price display settings in the advanced settings tab.
