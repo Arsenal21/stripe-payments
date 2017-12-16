@@ -326,7 +326,36 @@ class AcceptStripePaymentsShortcode {
 	    	font-style: italic;
 	    	color: #bbb;
 	        }
+@keyframes blink {
+    0% {
+      opacity: .2;
+    }
+    20% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+}
+.asp-processing-cont {
+    display: none;
+}
+.asp-processing i {
+    animation-name: blink;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+}
+
+.asp-processing i:nth-child(2) {
+    animation-delay: .1s;
+}
+
+.asp-processing i:nth-child(3) {
+    animation-delay: .2s;
+}
 	    </style>
+            <div class="asp-processing-cont"><span class="asp-processing">Processing <i>.</i><i>.</i><i>.</i></span></div>
 	    <?php
 
 	    $output .= ob_get_clean();
