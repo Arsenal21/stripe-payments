@@ -47,11 +47,11 @@ ob_start();
     %[view_product_btn]%
 </div>
 <?php
-$tpl[ 'products_item' ]		 = ob_get_clean();
-$tpl[ 'products_list' ]		 = '';
-$tpl[ 'products_per_row' ]		 = 3;
-$tpl[ 'products_row_start' ]	 = '<div class="wp-asp-grid-row">';
-$tpl[ 'products_row_end' ]		 = '</div>';
+$tpl[ 'products_item' ] = ob_get_clean();
+$tpl[ 'products_list' ] = '';
+$tpl[ 'products_per_row' ] = 3;
+$tpl[ 'products_row_start' ] = '<div class="wp-asp-grid-row">';
+$tpl[ 'products_row_end' ] = '</div>';
 ob_start();
 //Pagination
 ?>
@@ -68,6 +68,6 @@ $tpl[ 'pagination_item' ]		 = '<li><a href="%[url]%">%[page_num]%</a></li>';
 $tpl[ 'pagination_item_current' ]	 = '<li><span>%[page_num]%</span></li>';
 
 //Profile button
-$tpl[ 'view_product_btn' ] = '<div class="wp-asp-view-product-btn"><a href="%[product_url]%" class="wp-asp-view-product-lnk" target="_blank"><button>View Product</button></a></div>';
+$tpl[ 'view_product_btn' ] = '<div class="wp-asp-view-product-btn"><a href="%[product_url]%" class="wp-asp-view-product-lnk"><button>View Item</button></a></div>';
 
 

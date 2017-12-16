@@ -3,8 +3,8 @@ Contributors: Tips and Tricks HQ, wptipsntricks, alexanderfoxc
 Donate link: https://stripe-plugins.com
 Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortcode, digital goods, payment gateway, instant payment, commerce, digital downloads, downloads, e-commerce, e-store, ecommerce, eshop, donation
 Requires at least: 4.7
-Tested up to: 4.8
-Stable tag: 1.6.3
+Tested up to: 4.9
+Stable tag: 1.6.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -53,6 +53,7 @@ https://www.youtube.com/watch?v=upWqk069Khg
 * Option to save the card data on Stripe.
 * Ability to have custom thank you page on a per product basis.
 * Ability to customize the message on the thank you page using tags.
+* Ability to customize the price display with currency symbol.
 
 The setup is very easy. Once you have installed the plugin, all you need to do is enter your Stripe API credentials in the plugin settings and your website will be ready to accept credit card payments.
 
@@ -110,11 +111,15 @@ Yes, you can.
 
 = Can I specify quantity of the item? =
 
-Yes, please use "quantity" attribute.
+Yes, you can configure it in the product configuration interface.
 
 = Can I change the button label? =
 
-Yes, please use "button_text" attribute
+Yes, you can the "button_text" attribute in the shortcode to customize it.
+
+= Will the customers receive an email after purchase? =
+
+Yes, you can configure the email settings options in the settings menu of the plugin.
 
 = Can It be tested before going live? =
 
@@ -131,6 +136,12 @@ Yes, please visit Settings > Accept Stripe Payments screen for options.
 None
 
 == Changelog ==
+
+= 1.6.4 =
+- The email related settings options have been moved to a separate tab in the settings menu.
+- Added a new configuration option to allow customization of the price display settings in the advanced settings tab.
+- The price of the item now gets displayed in the product description.
+- The plugin automatically creates a "products" page where all your Stripe items/products are listed in a grid display.
 
 = 1.6.3 =
 - Improved the description that gets shown in the stripe checkout window when a product has no "short description" specified for it.

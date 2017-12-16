@@ -27,10 +27,21 @@
 
 .asp_price_container {
     font-weight: bold;
+    margin: 5px 0px;
+}
+
+.asp_product_item_amount_input_container{
+    margin: 5px 0 10px 0;
+}
+
+.asp_product_item_qty_input_container{
+    margin: 10px 0;
+}
+.asp_product_item_qty_input{
+    max-width: 50px;
 }
 
 /* Post Item */
-
 .asp_post_item {
     width: 90%;
 }
@@ -53,7 +64,6 @@
 /* Buttons */
 
 .asp_product_buy_button input {
-    max-width: 9em;
     display: inline-block;
     line-height: 1;
     padding: 8px 10px;

@@ -348,8 +348,10 @@ class AcceptStripePayments_Admin {
 	add_settings_section( 'AcceptStripePayments-email-section', 'Email Settings', null, $this->plugin_slug . '-email' );
 	add_settings_section( 'AcceptStripePayments-price-display', 'Price Display Settings', null, $this->plugin_slug . '-advanced' );
 
-// Global section
+	// Global section
 	add_settings_field( 'checkout_url', 'Checkout Result Page URL', array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-global-section', array( 'field' => 'checkout_url', 'desc' => 'This is the thank you page. This page is automatically created for you when you install the plugin. Do not delete this page as the plugin will send the customer to this page after the payment.', 'size' => 100 ) );
+	add_settings_field( 'products_page_id', 'Products Page URL', array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-global-section', array( 'field' => 'products_page_id', 'desc' => 'All your products will be listed here in a grid display. When you create new products, they will show up in this page. This page is automatically created for you when you install the plugin. You can add this page to your navigation menu if you want the site visitors to find it easily.', 'size' => 100 ) );
+	
 	add_settings_field( 'currency_code', 'Currency', array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-global-section', array( 'field' => 'currency_code', 'desc' => '', 'size' => 10 ) );
 	add_settings_field( 'button_text', 'Button Text', array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-global-section', array( 'field' => 'button_text', 'desc' => 'Example: Buy Now, Pay Now etc.' ) );
 	add_settings_field( 'dont_save_card', 'Do Not Save Card Data on Stripe', array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-global-section', array( 'field' => 'dont_save_card', 'desc' => 'When this checkbox is checked, the transaction won\'t create the customer (no card will be saved for that).' ) );
@@ -358,12 +360,12 @@ class AcceptStripePayments_Admin {
 	    'desc'	 => 'Use new method to display Stripe buttons. It makes connection to Stripe website only when button is clicked, which makes the page with buttons load faster. A little drawback is that Stripe pop-up is displayed with a small delay after button click. If you have more than one button on a page, enabling this option is highly recommended.' . '<br /><b>Note:</b> old method doesn\'t support custom price and quantity. If your shortcode or product is using one of those features, the new method will be used automatically for that entity.' ) );
 	add_settings_field( 'checkout_lang', 'Stripe Checkout Language', array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-global-section', array( 'field' => 'checkout_lang', 'desc' => 'Specify language to be used in Stripe checkout pop-up or select "Autodetect" to let Stripe handle it.' ) );
 
-// Credentials section
+	// Credentials section
 	add_settings_field( 'is_live', 'Live Mode', array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-credentials-section', array( 'field' => 'is_live', 'desc' => 'Check this to run the transaction in live mode. When unchecked it will run in test mode.' ) );
 	add_settings_field( 'api_publishable_key', 'Stripe Publishable Key', array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-credentials-section', array( 'field' => 'api_publishable_key', 'desc' => '' ) );
 	add_settings_field( 'api_secret_key', 'Stripe Secret Key', array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-credentials-section', array( 'field' => 'api_secret_key', 'desc' => '' ) );
 
-// Email section
+	// Email section
 	add_settings_field( 'send_emails_to_buyer', 'Send Emails to Buyer After Purchase', array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-email', 'AcceptStripePayments-email-section', array( 'field'	 => 'send_emails_to_buyer',
 	    'desc'	 => 'If checked the plugin will send an email to the buyer with the sale details. If digital goods are purchased then the email will contain the download links for the purchased products.' )
 	);
@@ -402,7 +404,8 @@ class AcceptStripePayments_Admin {
                 <br>{purchase_amt} – The amount paid for the current transaction
                 <br>{purchase_date} – The date of the purchase' )
 	);
-// Price Display section
+	
+	// Price Display section
 	add_settings_field( 'price_currency_pos', 'Currency Position', array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-price-display', array( 'field'	 => 'price_currency_pos',
 	    'desc'	 => 'This controls the position of the currency symbol.' )
 	);
@@ -483,8 +486,6 @@ class AcceptStripePayments_Admin {
 
     /**
      * Settings HTML
-     *
-     * @since    1.0.0
      */
     public function settings_field_callback( $args ) {
 	$settings = (array) get_option( 'AcceptStripePayments-settings' );
@@ -509,11 +510,18 @@ class AcceptStripePayments_Admin {
 	    case 'seller_email_body':
 		echo "<textarea cols='70' rows='7' name='AcceptStripePayments-settings[{$field}]'>{$field_value}</textarea><p class=\"description\">{$desc}</p>";
 		break;
+	    case 'products_page_id':
+		//We save the products page ID internally but we show the URL of that page to the user (its user-friendly).
+		$products_page_id = $field_value;
+		$products_page_url = get_permalink($products_page_id);
+		//show the URL in a text field for display purpose. This field's value can't be updated as we store the page ID internally.
+		echo "<input type='text' name='asp_products_page_url_value' value='{$products_page_url}' size='{$size}' /> <p class=\"description\">{$desc}</p>";		
+		break;	    
 	    case 'currency_code':
 		echo '<select name="AcceptStripePayments-settings[' . $field . ']">';
 		echo AcceptStripePayments_Admin::get_currency_options( $field_value, false );
 		echo '</select>';
-//              echo "<p class=\"description\">{$desc}</p>";
+		//echo "<p class=\"description\">{$desc}</p>";
 		break;
 	    case 'checkout_lang':
 		// list of supported languages can be found here: https://stripe.com/docs/checkout#supported-languages
