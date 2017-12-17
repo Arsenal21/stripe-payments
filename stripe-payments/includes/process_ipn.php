@@ -52,7 +52,8 @@ $charge_description	 = sanitize_text_field( $_POST[ 'charge_description' ] );
 //$item_price = sanitize_text_field($_POST['item_price']);
 $trans_name	 = 'stripe-payments-' . sanitize_title_with_dashes( $item_name );
 $item_price	 = get_transient( $trans_name ); //Read the price for this item from the system.
-if ( $item_price === 0 || $item_price === '' ) { //Custom amount
+
+if ( $item_price === '0' || $item_price === '') { //Custom amount
     $item_price = floatval( $_POST[ 'stripeAmount' ] );
 }
 
