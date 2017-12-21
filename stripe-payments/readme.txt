@@ -138,7 +138,7 @@ None
 == Changelog ==
 
 = 1.6.5 =
-- Fixed improper handling of custom amount (thanks to triode33 for reporting).
+- Fixed improper handling of custom amount feature (thanks to triode33 for reporting).
 - Added "Processing.." text to payment button to let user know the payment is being processed.
 
 = 1.6.4 =
