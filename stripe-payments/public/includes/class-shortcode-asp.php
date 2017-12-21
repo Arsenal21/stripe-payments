@@ -202,7 +202,7 @@ class AcceptStripePaymentsShortcode {
 	$uniq_id		 = count( self::$payment_buttons );
 	$button_id		 = 'stripe_button_' . $uniq_id;
 	self::$payment_buttons[] = $button_id;
-	$paymentAmount		 = ($custom_quantity === "1" ? $price : ($price * $quantity));
+	$paymentAmount		 = ($custom_quantity == "1" ? $price : (intval($price) * $quantity));
 	if ( in_array( $currency, $this->AcceptStripePayments->zeroCents ) ) {
 	    //this is zero-cents currency, amount shouldn't be multiplied by 100
 	    $priceInCents = $paymentAmount;
