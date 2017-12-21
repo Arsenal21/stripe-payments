@@ -246,7 +246,7 @@ class AcceptStripePayments {
 	    . "The sale was made to {payer_email}\r\n\r\n"
 	    . "Thanks",
 	    'price_currency_pos'		 => 'left',
-	    'price_decimals_sep'		 => '.',
+	    'price_decimal_sep'		 => '.',
 	    'price_thousand_sep'		 => ',',
 	    'price_decimals_num'		 => '2',
 	);
