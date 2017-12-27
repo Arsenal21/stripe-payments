@@ -60,10 +60,17 @@ class AcceptStripePaymentsShortcode {
 	wp_register_script( 'stripe-script', 'https://checkout.stripe.com/checkout.js', array(), null );
 	wp_register_script( 'stripe-handler', WP_ASP_PLUGIN_URL . '/public/assets/js/stripe-handler.js', array( 'jquery' ), WP_ASP_PLUGIN_VERSION );
 	//localization data and Stripe API key
+	if ( $this->AcceptStripePayments->get_setting( 'is_live' ) == 0 ) {
+	    //use test keys
+	    $key = $this->AcceptStripePayments->get_setting( 'api_publishable_key_test' );
+	} else {
+	    //use live keys
+	    $key = $this->AcceptStripePayments->get_setting( 'api_publishable_key' );
+	}
 	$loc_data = array(
 	    'strEnterValidAmount'	 => __( 'Please enter a valid amount', 'stripe-payments' ),
 	    'strMinAmount'		 => __( 'Minimum amount is 0.5', 'stripe-payments' ),
-	    'key'			 => $this->AcceptStripePayments->get_setting( 'api_publishable_key' ),
+	    'key'			 => $key,
 	    'strEnterQuantity'	 => __( 'Please enter quantity.', 'stripe-payments' ),
 	    'strQuantityIsZero'	 => __( 'Quantity can\'t be zero.', 'stripe-payments' ),
 	    'strQuantityIsFloat'	 => __( 'Quantity should be integer value.', 'stripe-payments' ),
@@ -201,8 +208,9 @@ class AcceptStripePaymentsShortcode {
 	}
 	$uniq_id		 = count( self::$payment_buttons );
 	$button_id		 = 'stripe_button_' . $uniq_id;
+	$button_key		 = md5( uniqid() );
 	self::$payment_buttons[] = $button_id;
-	$paymentAmount		 = ($custom_quantity == "1" ? $price : (intval($price) * $quantity));
+	$paymentAmount		 = ($custom_quantity == "1" ? $price : (intval( $price ) * $quantity));
 	if ( in_array( $currency, $this->AcceptStripePayments->zeroCents ) ) {
 	    //this is zero-cents currency, amount shouldn't be multiplied by 100
 	    $priceInCents = $paymentAmount;
@@ -229,6 +237,7 @@ class AcceptStripePaymentsShortcode {
 	$allowRememberMe = ($allowRememberMe === 1) ? false : true;
 
 	$data = array(
+	    'button_key'		 => $button_key,
 	    'allowRememberMe'	 => $allowRememberMe,
 	    'quantity'		 => $quantity,
 	    'custom_quantity'	 => $custom_quantity,
@@ -271,7 +280,7 @@ class AcceptStripePaymentsShortcode {
 	$output	 .= "<input type = 'hidden' value = '{$thankyou_page_url}' name = 'thankyou_page_url' />";
 	$output	 .= "<input type = 'hidden' value = '{$description}' name = 'charge_description' />"; //
 
-	$trans_name	 = 'stripe-payments-' . sanitize_title_with_dashes( $name ); //Create key using the item name.
+	$trans_name	 = 'stripe-payments-' . $button_key; //Create key using the item name.
 	set_transient( $trans_name, $price, 2 * 3600 ); //Save the price for this item for 2 hours.
 	$output		 .= wp_nonce_field( 'stripe_payments', '_wpnonce', true, false );
 	$output		 .= $button;
@@ -280,18 +289,26 @@ class AcceptStripePaymentsShortcode {
     }
 
     function get_button_code_old_method( $data, $price, $button_text ) {
+	if ( $this->AcceptStripePayments->get_setting( 'is_live' ) == 0 ) {
+	    //use test keys
+	    $key = $this->AcceptStripePayments->get_setting( 'api_publishable_key_test' );
+	} else {
+	    //use live keys
+	    $key = $this->AcceptStripePayments->get_setting( 'api_publishable_key' );
+	}
 	$output	 = "<input type = 'hidden' value = '{$price}' name = 'item_price' />";
+	$output	 .= "<input type = 'hidden' value = '{$data[ 'button_key' ]}' name='stripeButtonKey'>";
 	//Lets hide default Stripe button. We'll be using our own instead for styling purposes
 	$output	 .= "<div style = 'display: none !important'>";
 	$output	 .= "<script src = 'https://checkout.stripe.com/checkout.js' class = 'stripe-button'
-	data-key = '" . $this->AcceptStripePayments->get_setting( 'api_publishable_key' ) . "'
+	data-key = '" . $key . "'
 	data-panel-label = 'Pay'
 	data-amount = '{$data[ 'amount' ]}'
 	data-name = '{$data[ 'name' ]}'
-	data-allow-remember-me = '{$data[ 'allowRememberMe' ]}'";
-	$output	 .= "data-description = '{$data[ 'description' ]}'";
-	$output	 .= "data-label = '{$button_text}'";
-	$output	 .= "data-currency = '{$data[ 'currency' ]}'";
+	data-allow-remember-me = '{$data[ 'allowRememberMe' ]}'
+	data-description = '{$data[ 'description' ]}'
+	data-label = '{$button_text}'
+	data-currency = '{$data[ 'currency' ]}'";
 	$output	 .= "data-locale = '{$data[ 'locale' ]}'";
 	if ( ! empty( $data[ 'image' ] ) ) {//Show item logo/thumbnail in the stripe payment window
 	    $output .= "data-image = '{$data[ 'image' ]}'";
@@ -326,36 +343,36 @@ class AcceptStripePaymentsShortcode {
 	    	font-style: italic;
 	    	color: #bbb;
 	        }
-@keyframes blink {
-    0% {
-      opacity: .2;
-    }
-    20% {
-      opacity: 1;
-    }
-    100% {
-      opacity: 0;
-    }
-}
-.asp-processing-cont {
-    display: none;
-}
-.asp-processing i {
-    animation-name: blink;
-    animation-duration: 1s;
-    animation-iteration-count: infinite;
-    animation-fill-mode: both;
-}
+	        @keyframes blink {
+	    	0% {
+	    	    opacity: .2;
+	    	}
+	    	20% {
+	    	    opacity: 1;
+	    	}
+	    	100% {
+	    	    opacity: 0;
+	    	}
+	        }
+	        .asp-processing-cont {
+	    	display: none;
+	        }
+	        .asp-processing i {
+	    	animation-name: blink;
+	    	animation-duration: 1s;
+	    	animation-iteration-count: infinite;
+	    	animation-fill-mode: both;
+	        }
 
-.asp-processing i:nth-child(2) {
-    animation-delay: .1s;
-}
+	        .asp-processing i:nth-child(2) {
+	    	animation-delay: .1s;
+	        }
 
-.asp-processing i:nth-child(3) {
-    animation-delay: .2s;
-}
+	        .asp-processing i:nth-child(3) {
+	    	animation-delay: .2s;
+	        }
 	    </style>
-            <div class="asp-processing-cont"><span class="asp-processing">Processing <i>.</i><i>.</i><i>.</i></span></div>
+	    <div class="asp-processing-cont"><span class="asp-processing">Processing <i>.</i><i>.</i><i>.</i></span></div>
 	    <?php
 
 	    $output .= ob_get_clean();
@@ -368,7 +385,7 @@ class AcceptStripePaymentsShortcode {
 	    . "</div>";
 	}
 	if ( $data[ 'custom_quantity' ] === "1" ) { //we should output input for customer to input custom quantity
-	    if (empty($data[ 'quantity' ])){
+	    if ( empty( $data[ 'quantity' ] ) ) {
 		//If quantity option is enabled and the value is empty then set default quantity to 1 so the number field type can handle it better.
 		$data[ 'quantity' ] = 1;
 	    }
@@ -382,6 +399,7 @@ class AcceptStripePaymentsShortcode {
 	    $output .= "<input type='hidden' id='stripeToken_{$data[ 'uniq_id' ]}' name='stripeToken' />"
 	    . "<input type='hidden' id='stripeTokenType_{$data[ 'uniq_id' ]}' name='stripeTokenType' />"
 	    . "<input type='hidden' id='stripeEmail_{$data[ 'uniq_id' ]}' name='stripeEmail' />"
+	    . "<input type='hidden' name='stripeButtonKey' value='{$data[ 'button_key' ]}' />"
 	    . "<input type='hidden' data-stripe-button-uid='{$data[ 'uniq_id' ]}' />";
 	}
 	//Let's enqueue Stripe js

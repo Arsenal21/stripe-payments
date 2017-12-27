@@ -48,12 +48,13 @@ $item_quantity		 = sanitize_text_field( $_POST[ 'item_quantity' ] );
 $item_custom_quantity	 = isset( $_POST[ 'stripeCustomQuantity' ] ) ? intval( $_POST[ 'stripeCustomQuantity' ] ) : false;
 $item_url		 = sanitize_text_field( $_POST[ 'item_url' ] );
 $charge_description	 = sanitize_text_field( $_POST[ 'charge_description' ] );
+$button_key		 = sanitize_text_field( $_POST[ 'stripeButtonKey' ] );
 
 //$item_price = sanitize_text_field($_POST['item_price']);
-$trans_name	 = 'stripe-payments-' . sanitize_title_with_dashes( $item_name );
+$trans_name	 = 'stripe-payments-' . $button_key;
 $item_price	 = get_transient( $trans_name ); //Read the price for this item from the system.
 
-if ( $item_price === '0' || $item_price === '') { //Custom amount
+if ( $item_price === '0' || $item_price === '' ) { //Custom amount
     $item_price = floatval( $_POST[ 'stripeAmount' ] );
 }
 
@@ -77,7 +78,15 @@ if ( $item_custom_quantity !== false ) { //custom quantity
 
 $amount = ($item_quantity !== "NA" ? ($amount * $item_quantity) : $amount);
 
-Stripe::setApiKey( $asp_class->get_setting( 'api_secret_key' ) );
+if ( $asp_class->get_setting( 'is_live' ) == 0 ) {
+    //use test keys
+    $key = $asp_class->get_setting( 'api_secret_key_test' );
+} else {
+    //use live keys
+    $key = $asp_class->get_setting( 'api_secret_key' );
+}
+
+Stripe::setApiKey( $key );
 
 $GLOBALS[ 'asp_payment_success' ] = false;
 
