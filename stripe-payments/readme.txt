@@ -4,7 +4,7 @@ Donate link: https://stripe-plugins.com
 Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortcode, digital goods, payment gateway, instant payment, commerce, digital downloads, downloads, e-commerce, e-store, ecommerce, eshop, donation
 Requires at least: 4.7
 Tested up to: 4.9
-Stable tag: 1.6.5
+Stable tag: 1.6.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -136,6 +136,11 @@ Yes, please visit Settings > Accept Stripe Payments screen for options.
 None
 
 == Changelog ==
+
+= 1.6.6 =
+- Separate fields for Stripe Test keys added to the settings page.
+- Plugin will now properly handle buttons with same name but different price (thanks to nourrirsafoi for reporting).
+- Fixed "Warning: A non-numeric value encountered" when custom amount is used (thanks to rogbiz for reporting).
 
 = 1.6.5 =
 - Fixed improper handling of custom amount feature (thanks to triode33 for reporting).

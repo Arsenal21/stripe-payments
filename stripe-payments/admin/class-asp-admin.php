@@ -351,7 +351,7 @@ class AcceptStripePayments_Admin {
 	// Global section
 	add_settings_field( 'checkout_url', 'Checkout Result Page URL', array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-global-section', array( 'field' => 'checkout_url', 'desc' => 'This is the thank you page. This page is automatically created for you when you install the plugin. Do not delete this page as the plugin will send the customer to this page after the payment.', 'size' => 100 ) );
 	add_settings_field( 'products_page_id', 'Products Page URL', array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-global-section', array( 'field' => 'products_page_id', 'desc' => 'All your products will be listed here in a grid display. When you create new products, they will show up in this page. This page is automatically created for you when you install the plugin. You can add this page to your navigation menu if you want the site visitors to find it easily.', 'size' => 100 ) );
-	
+
 	add_settings_field( 'currency_code', 'Currency', array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-global-section', array( 'field' => 'currency_code', 'desc' => '', 'size' => 10 ) );
 	add_settings_field( 'button_text', 'Button Text', array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-global-section', array( 'field' => 'button_text', 'desc' => 'Example: Buy Now, Pay Now etc.' ) );
 	add_settings_field( 'dont_save_card', 'Do Not Save Card Data on Stripe', array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-global-section', array( 'field' => 'dont_save_card', 'desc' => 'When this checkbox is checked, the transaction won\'t create the customer (no card will be saved for that).' ) );
@@ -364,6 +364,8 @@ class AcceptStripePayments_Admin {
 	add_settings_field( 'is_live', 'Live Mode', array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-credentials-section', array( 'field' => 'is_live', 'desc' => 'Check this to run the transaction in live mode. When unchecked it will run in test mode.' ) );
 	add_settings_field( 'api_publishable_key', 'Stripe Publishable Key', array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-credentials-section', array( 'field' => 'api_publishable_key', 'desc' => '' ) );
 	add_settings_field( 'api_secret_key', 'Stripe Secret Key', array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-credentials-section', array( 'field' => 'api_secret_key', 'desc' => '' ) );
+	add_settings_field( 'api_publishable_key_test', 'Test Stripe Publishable Key', array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-credentials-section', array( 'field' => 'api_publishable_key_test', 'desc' => '' ) );
+	add_settings_field( 'api_secret_key_test', 'Test Stripe Secret Key', array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-credentials-section', array( 'field' => 'api_secret_key_test', 'desc' => '' ) );
 
 	// Email section
 	add_settings_field( 'send_emails_to_buyer', 'Send Emails to Buyer After Purchase', array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-email', 'AcceptStripePayments-email-section', array( 'field'	 => 'send_emails_to_buyer',
@@ -404,7 +406,7 @@ class AcceptStripePayments_Admin {
                 <br>{purchase_amt} – The amount paid for the current transaction
                 <br>{purchase_date} – The date of the purchase' )
 	);
-	
+
 	// Price Display section
 	add_settings_field( 'price_currency_pos', 'Currency Position', array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-price-display', array( 'field'	 => 'price_currency_pos',
 	    'desc'	 => 'This controls the position of the currency symbol.' )
@@ -512,11 +514,11 @@ class AcceptStripePayments_Admin {
 		break;
 	    case 'products_page_id':
 		//We save the products page ID internally but we show the URL of that page to the user (its user-friendly).
-		$products_page_id = $field_value;
-		$products_page_url = get_permalink($products_page_id);
+		$products_page_id	 = $field_value;
+		$products_page_url	 = get_permalink( $products_page_id );
 		//show the URL in a text field for display purpose. This field's value can't be updated as we store the page ID internally.
-		echo "<input type='text' name='asp_products_page_url_value' value='{$products_page_url}' size='{$size}' /> <p class=\"description\">{$desc}</p>";		
-		break;	    
+		echo "<input type='text' name='asp_products_page_url_value' value='{$products_page_url}' size='{$size}' /> <p class=\"description\">{$desc}</p>";
+		break;
 	    case 'currency_code':
 		echo '<select name="AcceptStripePayments-settings[' . $field . ']">';
 		echo AcceptStripePayments_Admin::get_currency_options( $field_value, false );
@@ -565,8 +567,14 @@ class AcceptStripePayments_Admin {
 
 	$output[ 'send_emails_to_seller' ] = empty( $input[ 'send_emails_to_seller' ] ) ? 0 : 1;
 
-	if ( empty( $input[ 'api_secret_key' ] ) || empty( $input[ 'api_publishable_key' ] ) ) {
-	    add_settings_error( 'AcceptStripePayments-settings', 'invalid-credentials', 'You must fill all API credentials for plugin to work correctly.' );
+	if ( $output[ 'is_live' ] != 0 ) {
+	    if ( empty( $input[ 'api_secret_key' ] ) || empty( $input[ 'api_publishable_key' ] ) ) {
+		add_settings_error( 'AcceptStripePayments-settings', 'invalid-credentials', 'You must fill Live API credentials for plugin to work correctly.' );
+	    }
+	} else {
+	    if ( empty( $input[ 'api_secret_key_test' ] ) || empty( $input[ 'api_publishable_key_test' ] ) ) {
+		add_settings_error( 'AcceptStripePayments-settings', 'invalid-credentials', 'You must fill Test API credentials for plugin to work correctly.' );
+	    }
 	}
 
 	if ( ! empty( $input[ 'checkout_url' ] ) )
@@ -586,11 +594,13 @@ class AcceptStripePayments_Admin {
 
 	$output[ 'checkout_lang' ] = $input[ 'checkout_lang' ];
 
-	if ( ! empty( $input[ 'api_publishable_key' ] ) )
-	    $output[ 'api_publishable_key' ] = $input[ 'api_publishable_key' ];
+	$output[ 'api_publishable_key' ] = $input[ 'api_publishable_key' ];
 
-	if ( ! empty( $input[ 'api_secret_key' ] ) )
-	    $output[ 'api_secret_key' ] = $input[ 'api_secret_key' ];
+	$output[ 'api_secret_key' ] = $input[ 'api_secret_key' ];
+
+	$output[ 'api_publishable_key_test' ] = $input[ 'api_publishable_key_test' ];
+
+	$output[ 'api_secret_key_test' ] = $input[ 'api_secret_key_test' ];
 
 	if ( ! empty( $input[ 'from_email_address' ] ) )
 	    $output[ 'from_email_address' ] = $input[ 'from_email_address' ];

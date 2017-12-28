@@ -246,21 +246,36 @@ class AcceptStripePayments {
 	    . "The sale was made to {payer_email}\r\n\r\n"
 	    . "Thanks",
 	    'price_currency_pos'		 => 'left',
-	    'price_decimals_sep'		 => '.',
+	    'price_decimal_sep'		 => '.',
 	    'price_thousand_sep'		 => ',',
 	    'price_decimals_num'		 => '2',
+	    'api_keys_separated'		 => true,
 	);
 	$opt	 = get_option( 'AcceptStripePayments-settings' );
 	if ( empty( $opt ) ) {
 	    add_option( 'AcceptStripePayments-settings', $default );
 	} else { //lets add default values for some settings that were added after plugin update
+	    //let's separate Test and Live API keys (introduced in version 1.6.6)
+	    if ( $opt[ 'is_live' ] == 0 && ! isset( $opt[ 'api_keys_separated' ] ) ) {
+		//current keys are test keys. Let's set them and clear the old values
+		if ( isset( $opt[ 'api_secret_key' ] ) ) {
+		    $opt[ 'api_secret_key_test' ]	 = $opt[ 'api_secret_key' ];
+		    $opt[ 'api_secret_key' ]	 = '';
+		}
+		if ( isset( $opt[ 'api_publishable_key' ] ) ) {
+		    $opt[ 'api_publishable_key_test' ]	 = $opt[ 'api_publishable_key' ];
+		    $opt[ 'api_publishable_key' ]		 = '';
+		}
+		//let's also set an indicator value in order for the plugin to not do that anymore
+		$opt[ 'api_keys_separated' ] = true;
+	    }
 	    $opt_diff = array_diff_key( $default, $opt );
 	    if ( ! empty( $opt_diff ) ) {
 		foreach ( $opt_diff as $key => $value ) {
 		    $opt[ $key ] = $default[ $key ];
 		}
-		update_option( 'AcceptStripePayments-settings', $opt );
 	    }
+	    update_option( 'AcceptStripePayments-settings', $opt );
 	}
 	//create checkout page
 	$args			 = array(
@@ -274,23 +289,23 @@ class AcceptStripePayments {
 	    }
 	}
 	if ( $checkout_page_id == '' ) {
-	    $checkout_page_id = AcceptStripePayments::create_post( 'page', 'Checkout-Result', 'Stripe-Checkout-Result', '[accept_stripe_payment_checkout]' );
-	    $checkout_page = get_post( $checkout_page_id );
-	    $checkout_page_url = $checkout_page->guid;
-	    $AcceptStripePayments_settings = get_option( 'AcceptStripePayments-settings' );
+	    $checkout_page_id		 = AcceptStripePayments::create_post( 'page', 'Checkout-Result', 'Stripe-Checkout-Result', '[accept_stripe_payment_checkout]' );
+	    $checkout_page			 = get_post( $checkout_page_id );
+	    $checkout_page_url		 = $checkout_page->guid;
+	    $AcceptStripePayments_settings	 = get_option( 'AcceptStripePayments-settings' );
 	    if ( ! empty( $AcceptStripePayments_settings ) ) {
-		$AcceptStripePayments_settings[ 'checkout_url' ] = $checkout_page_url;
-		$AcceptStripePayments_settings[ 'checkout_page_id' ] = $checkout_page_id;
+		$AcceptStripePayments_settings[ 'checkout_url' ]	 = $checkout_page_url;
+		$AcceptStripePayments_settings[ 'checkout_page_id' ]	 = $checkout_page_id;
 		update_option( 'AcceptStripePayments-settings', $AcceptStripePayments_settings );
 	    }
 	}
 
 	//Create all products/shop page
-	$args = array(
+	$args			 = array(
 	    'post_type' => 'page'
 	);
-	$pages = get_pages( $args );
-	$products_page_id = '';
+	$pages			 = get_pages( $args );
+	$products_page_id	 = '';
 	foreach ( $pages as $page ) {
 	    if ( strpos( $page->post_content, '[asp_show_all_products' ) !== false ) {
 		$products_page_id = $page->ID;
@@ -298,7 +313,7 @@ class AcceptStripePayments {
 	}
 	if ( $products_page_id == '' ) {
 	    $products_page_id = AcceptStripePayments::create_post( 'page', 'Products', 'Products', '[asp_show_all_products]' );
-	    
+
 	    //Save the newly created products page ID so it can be used later.
 	    $AcceptStripePayments_settings = get_option( 'AcceptStripePayments-settings' );
 	    if ( ! empty( $AcceptStripePayments_settings ) ) {
