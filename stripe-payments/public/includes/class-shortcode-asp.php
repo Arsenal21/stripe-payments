@@ -208,7 +208,6 @@ class AcceptStripePaymentsShortcode {
 	}
 	$uniq_id		 = count( self::$payment_buttons );
 	$button_id		 = 'stripe_button_' . $uniq_id;
-	$button_key		 = md5( uniqid() );
 	self::$payment_buttons[] = $button_id;
 	$paymentAmount		 = ($custom_quantity == "1" ? $price : (floatval( $price ) * $quantity));
 	if ( in_array( $currency, $this->AcceptStripePayments->zeroCents ) ) {
@@ -217,6 +216,8 @@ class AcceptStripePaymentsShortcode {
 	} else {
 	    $priceInCents = $paymentAmount * 100;
 	}
+
+	$button_key = md5( $name . intval( $priceInCents ) );
 
 	//Charge description
 	//We only generate it if it's empty and if custom qunatity and price is not used
@@ -296,7 +297,7 @@ class AcceptStripePaymentsShortcode {
 	    //use live keys
 	    $key = $this->AcceptStripePayments->get_setting( 'api_publishable_key' );
 	}
-	$output	 = "<input type = 'hidden' value = '{$price}' name = 'item_price' />";
+	$output	 = "<input type = 'hidden' value = '{$data[ 'amount' ]}' name = 'stripeItemPrice' />";
 	$output	 .= "<input type = 'hidden' value = '{$data[ 'button_key' ]}' name='stripeButtonKey'>";
 	//Lets hide default Stripe button. We'll be using our own instead for styling purposes
 	$output	 .= "<div style = 'display: none !important'>";
@@ -400,6 +401,7 @@ class AcceptStripePaymentsShortcode {
 	    . "<input type='hidden' id='stripeTokenType_{$data[ 'uniq_id' ]}' name='stripeTokenType' />"
 	    . "<input type='hidden' id='stripeEmail_{$data[ 'uniq_id' ]}' name='stripeEmail' />"
 	    . "<input type='hidden' name='stripeButtonKey' value='{$data[ 'button_key' ]}' />"
+	    . "<input type='hidden' name='stripeItemPrice' value='{$data[ 'amount' ]}' />"
 	    . "<input type='hidden' data-stripe-button-uid='{$data[ 'uniq_id' ]}' />";
 	}
 	//Let's enqueue Stripe js

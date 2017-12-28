@@ -49,8 +49,13 @@ $item_custom_quantity	 = isset( $_POST[ 'stripeCustomQuantity' ] ) ? intval( $_P
 $item_url		 = sanitize_text_field( $_POST[ 'item_url' ] );
 $charge_description	 = sanitize_text_field( $_POST[ 'charge_description' ] );
 $button_key		 = sanitize_text_field( $_POST[ 'stripeButtonKey' ] );
+$reported_price		 = intval( $_POST[ 'stripeItemPrice' ] );
 
 //$item_price = sanitize_text_field($_POST['item_price']);
+$calculated_button_key = md5( $item_name . $reported_price );
+if ( $button_key !== $calculated_button_key ) {
+    asp_ipn_completed( 'Button Key mismatch. Expected ' . $button_key . ', calculated: ' . $calculated_button_key );
+}
 $trans_name	 = 'stripe-payments-' . $button_key;
 $item_price	 = get_transient( $trans_name ); //Read the price for this item from the system.
 
