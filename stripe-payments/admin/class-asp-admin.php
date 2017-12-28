@@ -362,8 +362,8 @@ class AcceptStripePayments_Admin {
 
 	// Credentials section
 	add_settings_field( 'is_live', 'Live Mode', array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-credentials-section', array( 'field' => 'is_live', 'desc' => 'Check this to run the transaction in live mode. When unchecked it will run in test mode.' ) );
-	add_settings_field( 'api_publishable_key', 'Stripe Publishable Key', array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-credentials-section', array( 'field' => 'api_publishable_key', 'desc' => '' ) );
-	add_settings_field( 'api_secret_key', 'Stripe Secret Key', array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-credentials-section', array( 'field' => 'api_secret_key', 'desc' => '' ) );
+	add_settings_field( 'api_publishable_key', 'Live Stripe Publishable Key', array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-credentials-section', array( 'field' => 'api_publishable_key', 'desc' => '' ) );
+	add_settings_field( 'api_secret_key', 'Live Stripe Secret Key', array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-credentials-section', array( 'field' => 'api_secret_key', 'desc' => '' ) );
 	add_settings_field( 'api_publishable_key_test', 'Test Stripe Publishable Key', array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-credentials-section', array( 'field' => 'api_publishable_key_test', 'desc' => '' ) );
 	add_settings_field( 'api_secret_key_test', 'Test Stripe Secret Key', array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-credentials-section', array( 'field' => 'api_secret_key_test', 'desc' => '' ) );
 
