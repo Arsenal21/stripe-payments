@@ -82,7 +82,11 @@ class ASPOrder {
     public function insert( $order_details, $charge_details ) {
 	$post			 = array();
 	$post[ 'post_title' ]	 = $order_details[ 'item_quantity' ] . ' x ' . $order_details[ 'item_name' ] . ' - ' . $order_details[ 'paid_amount' ] . ' ' . $order_details[ 'currency_code' ];
-	$post[ 'post_status' ]	 = 'pending';
+	if ( $order_details[ 'is_live' ] == 0 ) {
+	    //Test Mode is on, we should add this to post title
+	    $post[ 'post_title' ] = '[Test Mode] ' . $post[ 'post_title' ];
+	}
+	$post[ 'post_status' ] = 'pending';
 
 	$output = '';
 

@@ -125,6 +125,7 @@ try {
     $txn_id				 = $charge->id; //$charge->balance_transaction;
     //Core transaction data
     $data				 = array();
+    $data[ 'is_live' ]		 = $asp_class->get_setting( 'is_live' );
     $data[ 'item_name' ]		 = $item_name;
     $data[ 'stripeToken' ]		 = $stripeToken;
     $data[ 'stripeTokenType' ]	 = $stripeTokenType;
