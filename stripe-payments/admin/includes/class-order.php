@@ -100,7 +100,7 @@ class ASPOrder {
 	    $post[ 'post_status' ] = 'publish';
 	}
 
-	$output	 .= __( "<h2>Order Details</h2>", "stripe-payments" ) . "\n";
+	$output	 .= "<h2>" . __( "Order Details", "stripe-payments" ) . "</h2>\n";
 	$output	 .= __( "Order Time: ", "stripe-payments" ) . date( "F j, Y, g:i a", strtotime( 'now' ) ) . "\n";
 	$output	 .= __( "Transaction ID: ", "stripe-payments" ) . $charge_details->id . "\n";
 	$output	 .= __( "Stripe Token: ", "stripe-payments" ) . $order_details[ 'stripeToken' ] . "\n";
@@ -115,18 +115,18 @@ class ASPOrder {
 
 	$output .= "\n\n";
 
-	$output	 .= __( "<h2>Customer Details</h2>", "stripe-payments" ) . "\n";
+	$output	 .= "<h2>" . __( "Customer Details", "stripe-payments" ) . "</h2>\n";
 	$output	 .= __( "E-Mail Address: ", "stripe-payments" ) . $order_details[ 'stripeEmail' ] . "\n";
 
 	//Billing address data (if any)
 	if ( strlen( $order_details[ 'billing_address' ] ) > 5 ) {
-	    $output	 .= __( "<h2>Billing Address</h2>", "stripe-payments" ) . "\n";
+	    $output	 .= "<h2>" . __( "Billing Address", "stripe-payments" ) . "</h2>\n";
 	    $output	 .= $order_details[ 'billing_address' ];
 	}
 
 	//Shipping address data (if any)
 	if ( strlen( $order_details[ 'shipping_address' ] ) > 5 ) {
-	    $output	 .= __( "<h2>Shipping Address</h2>", "stripe-payments" ) . "\n";
+	    $output	 .= "<h2>" . __( "Shipping Address", "stripe-payments" ) . "</h2>\n";
 	    $output	 .= $order_details[ 'shipping_address' ];
 	}
 

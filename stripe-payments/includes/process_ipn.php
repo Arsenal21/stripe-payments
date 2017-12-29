@@ -139,24 +139,28 @@ try {
 
     $post_data = array_map( 'sanitize_text_field', $data );
 
+    $_POST = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
+
     //Billing address data (if any)
     $billing_address		 = "";
-    $billing_address		 .= sanitize_text_field( (isset( $_POST[ 'stripeBillingName' ] ) ? $_POST[ 'stripeBillingName' ] : '' ) ) . "\n";
-    $billing_address		 .= sanitize_text_field( (isset( $_POST[ 'stripeBillingAddressLine1' ] ) ? $_POST[ 'stripeBillingAddressLine1' ] : '' ) ) . sanitize_text_field( isset( $_POST[ 'stripeBillingAddressApt' ] ) ? ' ' . $_POST[ 'stripeBillingAddressApt' ] : '' ) . "\n";
-    $billing_address		 .= sanitize_text_field( (isset( $_POST[ 'stripeBillingAddressZip' ] ) ? $_POST[ 'stripeBillingAddressZip' ] : '' ) ) . "\n";
-    $billing_address		 .= sanitize_text_field( (isset( $_POST[ 'stripeBillingAddressCity' ] ) ? $_POST[ 'stripeBillingAddressCity' ] : '' ) ) . "\n";
-    $billing_address		 .= sanitize_text_field( (isset( $_POST[ 'stripeBillingAddressState' ] ) ? $_POST[ 'stripeBillingAddressState' ] : '' ) ) . "\n";
-    $billing_address		 .= sanitize_text_field( (isset( $_POST[ 'stripeBillingAddressCountry' ] ) ? $_POST[ 'stripeBillingAddressCountry' ] : '' ) ) . "\n";
+    $billing_address		 .= isset( $_POST[ 'stripeBillingName' ] ) ? $_POST[ 'stripeBillingName' ] . "\n" : '';
+    $billing_address		 .= isset( $_POST[ 'stripeBillingAddressLine1' ] ) ? $_POST[ 'stripeBillingAddressLine1' ] . "\n" : '';
+    $billing_address		 .= isset( $_POST[ 'stripeBillingAddressApt' ] ) ? $_POST[ 'stripeBillingAddressApt' ] . "\n" : '';
+    $billing_address		 .= isset( $_POST[ 'stripeBillingAddressZip' ] ) ? $_POST[ 'stripeBillingAddressZip' ] . "\n" : '';
+    $billing_address		 .= isset( $_POST[ 'stripeBillingAddressCity' ] ) ? $_POST[ 'stripeBillingAddressCity' ] . "\n" : '';
+    $billing_address		 .= isset( $_POST[ 'stripeBillingAddressState' ] ) ? $_POST[ 'stripeBillingAddressState' ] . "\n" : '';
+    $billing_address		 .= isset( $_POST[ 'stripeBillingAddressCountry' ] ) ? $_POST[ 'stripeBillingAddressCountry' ] . "\n" : '';
     $post_data[ 'billing_address' ]	 = $billing_address;
 
     //Shipping address data (if any)
     $shipping_address		 = "";
-    $shipping_address		 .= sanitize_text_field( (isset( $_POST[ 'stripeShippingName' ] ) ? $_POST[ 'stripeShippingName' ] : '' ) ) . "\n";
-    $shipping_address		 .= sanitize_text_field( isset( $_POST[ 'stripeShippingAddressLine1' ] ) ? $_POST[ 'stripeShippingAddressLine1' ] : '' ) . sanitize_text_field( isset( $_POST[ 'stripeShippingAddressApt' ] ) ? ' ' . $_POST[ 'stripeShippingAddressApt' ] : '' ) . "\n";
-    $shipping_address		 .= sanitize_text_field( (isset( $_POST[ 'stripeShippingAddressZip' ] ) ? $_POST[ 'stripeShippingAddressZip' ] : '' ) ) . "\n";
-    $shipping_address		 .= sanitize_text_field( (isset( $_POST[ 'stripeShippingAddressCity' ] ) ? $_POST[ 'stripeShippingAddressCity' ] : '' ) ) . "\n";
-    $shipping_address		 .= sanitize_text_field( (isset( $_POST[ 'stripeShippingAddressState' ] ) ? $_POST[ 'stripeShippingAddressState' ] : '' ) ) . "\n";
-    $shipping_address		 .= sanitize_text_field( (isset( $_POST[ 'stripeShippingAddressCountry' ] ) ? $_POST[ 'stripeShippingAddressCountry' ] : '' ) ) . "\n";
+    $shipping_address		 .= isset( $_POST[ 'stripeShippingName' ] ) ? $_POST[ 'stripeShippingName' ] . "\n" : '';
+    $shipping_address		 .= isset( $_POST[ 'stripeShippingAddressLine1' ] ) ? $_POST[ 'stripeShippingAddressLine1' ] . "\n" : '';
+    $shipping_address		 .= isset( $_POST[ 'stripeShippingAddressApt' ] ) ? $_POST[ 'stripeShippingAddressApt' ] . "\n" : '';
+    $shipping_address		 .= isset( $_POST[ 'stripeShippingAddressZip' ] ) ? $_POST[ 'stripeShippingAddressZip' ] . "\n" : '';
+    $shipping_address		 .= isset( $_POST[ 'stripeShippingAddressCity' ] ) ? $_POST[ 'stripeShippingAddressCity' ] . "\n" : '';
+    $shipping_address		 .= isset( $_POST[ 'stripeShippingAddressState' ] ) ? $_POST[ 'stripeShippingAddressState' ] . "\n" : '';
+    $shipping_address		 .= isset( $_POST[ 'stripeShippingAddressCountry' ] ) ? $_POST[ 'stripeShippingAddressCountry' ] . "\n" : '';
     $post_data[ 'shipping_address' ] = $shipping_address;
 
     //Insert the order data to the custom post
