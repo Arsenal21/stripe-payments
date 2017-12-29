@@ -138,6 +138,7 @@ None
 == Changelog ==
 
 = 1.6.7 =
+- Amount in order title is formatted corresponding to Price Display Settings.
 - Added [Test Mode] to the order title if payment was made in Test mode.
 - Notice added to the settings regrading caching plugins.
 - A small bug introduced in previous version has been fixed.
