@@ -340,25 +340,33 @@ class AcceptStripePayments_Admin {
     public function register_settings( $value = '' ) {
 	register_setting( 'AcceptStripePayments-settings-group', 'AcceptStripePayments-settings', array( &$this, 'settings_sanitize_field_callback' ) );
 
-	add_settings_section( 'AcceptStripePayments-documentation', 'Plugin Documentation', array( &$this, 'general_documentation_callback' ), $this->plugin_slug . '-docs' );
+	add_settings_section( 'AcceptStripePayments-documentation', __( 'Plugin Documentation', 'stripe-payments' ), array( &$this, 'general_documentation_callback' ), $this->plugin_slug . '-docs' );
 
-	add_settings_section( 'AcceptStripePayments-global-section', 'Global Settings', null, $this->plugin_slug );
-	add_settings_section( 'AcceptStripePayments-credentials-section', 'Credentials', null, $this->plugin_slug );
+	add_settings_section( 'AcceptStripePayments-global-section', __( 'Global Settings', 'stripe-payments' ), null, $this->plugin_slug );
+	add_settings_section( 'AcceptStripePayments-credentials-section', __( 'Credentials', 'stripe-payments' ), null, $this->plugin_slug );
 	add_settings_section( 'AcceptStripePayments-settings-footer', '', array( &$this, 'general_settings_menu_footer_callback' ), $this->plugin_slug );
-	add_settings_section( 'AcceptStripePayments-email-section', 'Email Settings', null, $this->plugin_slug . '-email' );
-	add_settings_section( 'AcceptStripePayments-price-display', 'Price Display Settings', null, $this->plugin_slug . '-advanced' );
+	add_settings_section( 'AcceptStripePayments-email-section', __( 'Email Settings', 'stripe-payments' ), null, $this->plugin_slug . '-email' );
+	add_settings_section( 'AcceptStripePayments-price-display', __( 'Price Display Settings', 'stripe-payments' ), null, $this->plugin_slug . '-advanced' );
 
 	// Global section
-	add_settings_field( 'checkout_url', 'Checkout Result Page URL', array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-global-section', array( 'field' => 'checkout_url', 'desc' => 'This is the thank you page. This page is automatically created for you when you install the plugin. Do not delete this page as the plugin will send the customer to this page after the payment.', 'size' => 100 ) );
-	add_settings_field( 'products_page_id', 'Products Page URL', array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-global-section', array( 'field' => 'products_page_id', 'desc' => 'All your products will be listed here in a grid display. When you create new products, they will show up in this page. This page is automatically created for you when you install the plugin. You can add this page to your navigation menu if you want the site visitors to find it easily.', 'size' => 100 ) );
+	add_settings_field( 'checkout_url', __( 'Checkout Result Page URL', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-global-section', array( 'field'	 => 'checkout_url',
+	    'desc'	 => __( 'This is the thank you page. This page is automatically created for you when you install the plugin. Do not delete this page as the plugin will send the customer to this page after the payment.', 'stripe-payments' ) . '<br /><b><i>' . __( 'Important Notice:', 'stripe-payments' ) . '</i></b> ' . __( 'if you are using caching plugins on your site (similar to W3 Total Cache, WP Rocket etc), you must exclude checkout results page from caching. Failing to do so will result in unpredictable checkout results output.', 'stripe-payments' ),
+	    'size'	 => 100 ) );
+	add_settings_field( 'products_page_id', 'Products Page URL', array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-global-section', array( 'field'	 => 'products_page_id',
+	    'desc'	 => __( 'All your products will be listed here in a grid display. When you create new products, they will show up in this page. This page is automatically created for you when you install the plugin. You can add this page to your navigation menu if you want the site visitors to find it easily.', 'stripe-payments' ),
+	    'size'	 => 100 ) );
 
-	add_settings_field( 'currency_code', 'Currency', array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-global-section', array( 'field' => 'currency_code', 'desc' => '', 'size' => 10 ) );
-	add_settings_field( 'button_text', 'Button Text', array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-global-section', array( 'field' => 'button_text', 'desc' => 'Example: Buy Now, Pay Now etc.' ) );
-	add_settings_field( 'dont_save_card', 'Do Not Save Card Data on Stripe', array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-global-section', array( 'field' => 'dont_save_card', 'desc' => 'When this checkbox is checked, the transaction won\'t create the customer (no card will be saved for that).' ) );
-	add_settings_field( 'disable_remember_me', 'Turn Off "Remember me" Option', array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-global-section', array( 'field' => 'disable_remember_me', 'desc' => 'When enabled, "Remember me" checkbox will be removed from Stripe\'s checkout popup.' ) );
-	add_settings_field( 'use_new_button_method', 'Use New Method To Display Buttons', array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-global-section', array( 'field'	 => 'use_new_button_method',
-	    'desc'	 => 'Use new method to display Stripe buttons. It makes connection to Stripe website only when button is clicked, which makes the page with buttons load faster. A little drawback is that Stripe pop-up is displayed with a small delay after button click. If you have more than one button on a page, enabling this option is highly recommended.' . '<br /><b>Note:</b> old method doesn\'t support custom price and quantity. If your shortcode or product is using one of those features, the new method will be used automatically for that entity.' ) );
-	add_settings_field( 'checkout_lang', 'Stripe Checkout Language', array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-global-section', array( 'field' => 'checkout_lang', 'desc' => 'Specify language to be used in Stripe checkout pop-up or select "Autodetect" to let Stripe handle it.' ) );
+	add_settings_field( 'currency_code', __( 'Currency', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-global-section', array( 'field' => 'currency_code', 'desc' => '', 'size' => 10 ) );
+	add_settings_field( 'button_text', __( 'Button Text', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-global-section', array( 'field'	 => 'button_text',
+	    'desc'	 => __( 'Example: Buy Now, Pay Now etc.', 'stripe-payments' ) ) );
+	add_settings_field( 'dont_save_card', __( 'Do Not Save Card Data on Stripe', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-global-section', array( 'field'	 => 'dont_save_card',
+	    'desc'	 => __( 'When this checkbox is checked, the transaction won\'t create the customer (no card will be saved for that).', 'stripe-payments' ) ) );
+	add_settings_field( 'disable_remember_me', __( 'Turn Off "Remember me" Option', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-global-section', array( 'field'	 => 'disable_remember_me',
+	    'desc'	 => __( 'When enabled, "Remember me" checkbox will be removed from Stripe\'s checkout popup.', 'stripe-payments' ) ) );
+	add_settings_field( 'use_new_button_method', __( 'Use New Method To Display Buttons', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-global-section', array( 'field'	 => 'use_new_button_method',
+	    'desc'	 => __( 'Use new method to display Stripe buttons. It makes connection to Stripe website only when button is clicked, which makes the page with buttons load faster. A little drawback is that Stripe pop-up is displayed with a small delay after button click. If you have more than one button on a page, enabling this option is highly recommended.', 'stripe-payments' ) . '<br /><b>' . __( 'Note:', 'stripe-payments' ) . '</b> ' . __( 'old method doesn\'t support custom price and quantity. If your shortcode or product is using one of those features, the new method will be used automatically for that entity.', 'stripe-payments' ) ) );
+	add_settings_field( 'checkout_lang', __( 'Stripe Checkout Language', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-global-section', array( 'field'	 => 'checkout_lang',
+	    'desc'	 => __( 'Specify language to be used in Stripe checkout pop-up or select "Autodetect" to let Stripe handle it.', 'stripe-payments' ) ) );
 
 	// Credentials section
 	add_settings_field( 'is_live', 'Live Mode', array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-credentials-section', array( 'field' => 'is_live', 'desc' => 'Check this to run the transaction in live mode. When unchecked it will run in test mode.' ) );

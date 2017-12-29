@@ -35,9 +35,9 @@ if ( $_GET[ 'page' ] == 'stripe-payments-settings' ) {
 	    <?php settings_fields( 'AcceptStripePayments-settings-group' ); ?>
 
     	<h2 class="nav-tab-wrapper">
-    	    <a href="#general" data-tab-name="general" class="nav-tab">General Settings</a>
-    	    <a href="#email" data-tab-name="email" class="nav-tab">Email Settings</a>
-    	    <a href="#advanced" data-tab-name="advanced" class="nav-tab">Advanced Settings</a>
+    	    <a href="#general" data-tab-name="general" class="nav-tab"><?php echo __( 'General Settings', 'stripe-payments' ); ?></a>
+    	    <a href="#email" data-tab-name="email" class="nav-tab"><?php echo __( 'Email Settings', 'stripe-payments' ); ?></a>
+    	    <a href="#advanced" data-tab-name="advanced" class="nav-tab"><?php echo __( 'Advanced Settings', 'stripe-payments' ); ?></a>
     	</h2>
 
     	<div class="wp-asp-tab-container" data-tab-name="general">
