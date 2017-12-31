@@ -217,7 +217,7 @@ class AcceptStripePaymentsShortcode {
 	    $priceInCents = $paymentAmount * 100;
 	}
 
-	$button_key = md5( $name . intval( $priceInCents ) );
+	$button_key = md5( $name . $priceInCents );
 
 	//Charge description
 	//We only generate it if it's empty and if custom qunatity and price is not used
