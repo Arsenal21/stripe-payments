@@ -121,22 +121,24 @@ class AcceptStripePaymentsShortcode {
 	$template_name	 = 'default'; //this could be made configurable
 	$button_color	 = 'blue'; //this could be made configurable
 
-	$price = get_post_meta( $id, 'asp_product_price', true );
-
-	$buy_btn = $this->shortcode_accept_stripe_payment( array(
-	    'name'			 => $post->post_title,
-	    'price'			 => $price,
-	    'currency'		 => $currency,
-	    'class'			 => 'asp_product_buy_btn ' . $button_color,
-	    'quantity'		 => get_post_meta( $id, 'asp_product_quantity', true ),
-	    'custom_quantity'	 => get_post_meta( $id, 'asp_product_custom_quantity', true ),
-	    'button_text'		 => $button_text,
-	    'description'		 => get_post_meta( $id, 'asp_product_description', true ),
-	    'url'			 => $url,
-	    'billing_address'	 => get_post_meta( $id, 'asp_product_collect_billing_addr', true ),
-	    'shipping_address'	 => get_post_meta( $id, 'asp_product_collect_shipping_addr', true ),
-	) );
-
+	$price	 = get_post_meta( $id, 'asp_product_price', true );
+	$buy_btn = '';
+	//Let's only output buy button if we're in the loop. Since the_content hook could be called several times (for example, by a plugin like Yoast SEO for its purposes), we should only output the button only when it's actually needed.
+	if ( ! isset($atts[ 'in_the_loop' ]) || $atts[ 'in_the_loop' ] === "1" ) {
+	    $buy_btn = $this->shortcode_accept_stripe_payment( array(
+		'name'			 => $post->post_title,
+		'price'			 => $price,
+		'currency'		 => $currency,
+		'class'			 => 'asp_product_buy_btn ' . $button_color,
+		'quantity'		 => get_post_meta( $id, 'asp_product_quantity', true ),
+		'custom_quantity'	 => get_post_meta( $id, 'asp_product_custom_quantity', true ),
+		'button_text'		 => $button_text,
+		'description'		 => get_post_meta( $id, 'asp_product_description', true ),
+		'url'			 => $url,
+		'billing_address'	 => get_post_meta( $id, 'asp_product_collect_billing_addr', true ),
+		'shipping_address'	 => get_post_meta( $id, 'asp_product_collect_shipping_addr', true ),
+	    ) );
+	}
 
 	if ( isset( $atts[ "fancy" ] ) && $atts[ "fancy" ] == '0' ) {
 	    //Just show the stripe payment button (no fancy template)
@@ -328,7 +330,7 @@ class AcceptStripePaymentsShortcode {
     }
 
     function get_button_code_new_method( $data ) {
-	$output = '<div class="asp_product_buy_button">';
+	$output = '';
 	if ( ! $this->ProductCSSInserted ) {
 	    // we need to style custom inputs
 	    ob_start();
@@ -410,7 +412,6 @@ class AcceptStripePaymentsShortcode {
 	wp_localize_script( 'stripe-handler', 'stripehandler' . $data[ 'uniq_id' ], array( 'data' => $data ) );
 	//enqueue our script that handles the stuff
 	wp_enqueue_script( 'stripe-handler' );
-	$output .= '</div>';
 	return $output;
     }
 
