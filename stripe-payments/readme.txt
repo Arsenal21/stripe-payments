@@ -4,7 +4,7 @@ Donate link: https://stripe-plugins.com
 Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortcode, digital goods, payment gateway, instant payment, commerce, digital downloads, downloads, e-commerce, e-store, ecommerce, eshop, donation
 Requires at least: 4.7
 Tested up to: 4.9
-Stable tag: 1.6.8_testing
+Stable tag: 1.6.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -137,8 +137,10 @@ None
 
 == Changelog ==
 
-= 1.6.8_testing =
+= 1.6.8 =
+- Added language text-domain to the plugin file header.
 - Hopefully fixed plugin conflict with Yoast SEO (thanks to rogbiz for reporting and helping out).
+- Added sanitization to the button output. Thanks to Mikko.
 
 = 1.6.7 =
 - Amount in order title is formatted corresponding to Price Display Settings.

@@ -1,16 +1,19 @@
 <?php
 
 /**
- * Plugin Name:       Stripe Payments
- * Description:       Easily accept credit card payments via Stripe payment gateway in WordPress.
- * Version:           1.6.8_testing
- * Author:            Tips and Tricks HQ, wptipsntricks
- * Author URI:        https://www.tipsandtricks-hq.com/
- * Plugin URI:        https://stripe-plugins.com
- * License:           GPLv2 or later
+ * Plugin Name: Stripe Payments
+ * Description: Easily accept credit card payments via Stripe payment gateway in WordPress.
+ * Version: 1.6.8
+ * Author: Tips and Tricks HQ, wptipsntricks
+ * Author URI: https://www.tipsandtricks-hq.com/
+ * Plugin URI: https://stripe-plugins.com
+ * License: GPLv2 or later
+ * Text Domain: stripe-payments
+ * Domain Path: /languages/
  */
+
 //Slug - asp
-//Textdomain - stripe-payments
+
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
     exit; //Exit if accessed directly

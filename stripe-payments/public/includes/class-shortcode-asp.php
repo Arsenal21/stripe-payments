@@ -231,7 +231,8 @@ class AcceptStripePaymentsShortcode {
 	//This is public.css stylesheet
 	//wp_enqueue_style('stripe-button-public');
 
-	$button = "<button id = '{$button_id}' type = 'submit' class = '{$class}'><span>{$button_text}</span></button>";
+	//$button = "<button id = '{$button_id}' type = 'submit' class = '{$class}'><span>{$button_text}</span></button>";
+        $button = sprintf( '<button id="%s" type="submit" class="%s"><span>%s</span></button>', esc_attr($button_id), esc_attr($class), sanitize_text_field( $button_text ) );
 
 	$checkout_lang = $this->AcceptStripePayments->get_setting( 'checkout_lang' );
 
