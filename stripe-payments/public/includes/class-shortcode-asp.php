@@ -76,6 +76,8 @@ class AcceptStripePaymentsShortcode {
 	    'strQuantityIsFloat'	 => __( 'Quantity should be integer value.', 'stripe-payments' ),
 	);
 	wp_localize_script( 'stripe-handler', 'stripehandler', $loc_data );
+	// addons can register their scripts if needed
+	do_action( 'asp-button-output-register-script' );
     }
 
     function shortcode_asp_product( $atts ) {
@@ -124,7 +126,7 @@ class AcceptStripePaymentsShortcode {
 	$price	 = get_post_meta( $id, 'asp_product_price', true );
 	$buy_btn = '';
 	//Let's only output buy button if we're in the loop. Since the_content hook could be called several times (for example, by a plugin like Yoast SEO for its purposes), we should only output the button only when it's actually needed.
-	if ( ! isset($atts[ 'in_the_loop' ]) || $atts[ 'in_the_loop' ] === "1" ) {
+	if ( ! isset( $atts[ 'in_the_loop' ] ) || $atts[ 'in_the_loop' ] === "1" ) {
 	    $buy_btn = $this->shortcode_accept_stripe_payment( array(
 		'name'			 => $post->post_title,
 		'price'			 => $price,
@@ -230,9 +232,8 @@ class AcceptStripePaymentsShortcode {
 	}
 	//This is public.css stylesheet
 	//wp_enqueue_style('stripe-button-public');
-
 	//$button = "<button id = '{$button_id}' type = 'submit' class = '{$class}'><span>{$button_text}</span></button>";
-        $button = sprintf( '<button id="%s" type="submit" class="%s"><span>%s</span></button>', esc_attr($button_id), esc_attr($class), sanitize_text_field( $button_text ) );
+	$button = sprintf( '<button id="%s" type="submit" class="%s"><span>%s</span></button>', esc_attr( $button_id ), esc_attr( $class ), sanitize_text_field( $button_text ) );
 
 	$checkout_lang = $this->AcceptStripePayments->get_setting( 'checkout_lang' );
 
@@ -288,6 +289,8 @@ class AcceptStripePaymentsShortcode {
 	set_transient( $trans_name, $price, 2 * 3600 ); //Save the price for this item for 2 hours.
 	$output		 .= wp_nonce_field( 'stripe_payments', '_wpnonce', true, false );
 	$output		 .= $button;
+	//after button filter
+	$output		 = apply_filters( 'asp-button-output-after-button', $output,$data );
 	$output		 .= "</form>";
 	return $output;
     }
@@ -376,10 +379,15 @@ class AcceptStripePaymentsShortcode {
 	    	animation-delay: .2s;
 	        }
 	    </style>
+	    <?php
+	    $output	 .= ob_get_clean();
+	    //addons can output their styles if needed
+	    $output	 = apply_filters( 'asp-button-output-additional-styles', $output );
+	    ob_start();
+	    ?>
 	    <div class="asp-processing-cont"><span class="asp-processing">Processing <i>.</i><i>.</i><i>.</i></span></div>
 	    <?php
-
-	    $output .= ob_get_clean();
+	    $output	 .= ob_get_clean();
 	}
 	if ( $data[ 'amount' ] == 0 ) { //price not specified, let's add an input box for user to specify the amount
 	    $output .= "<div class='asp_product_item_amount_input_container'>"
@@ -413,6 +421,8 @@ class AcceptStripePaymentsShortcode {
 	wp_localize_script( 'stripe-handler', 'stripehandler' . $data[ 'uniq_id' ], array( 'data' => $data ) );
 	//enqueue our script that handles the stuff
 	wp_enqueue_script( 'stripe-handler' );
+	//addons can enqueue their scripts if needed
+	do_action( 'asp-button-output-enqueue-script' );
 	return $output;
     }
 
