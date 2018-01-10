@@ -5,6 +5,7 @@ class AcceptStripePaymentsShortcode {
     var $AcceptStripePayments	 = null;
     var $StripeCSSInserted	 = false;
     var $ProductCSSInserted	 = false;
+    var $ButtonCSSInserted	 = false;
 
     /**
      * Instance of this class.
@@ -338,10 +339,12 @@ class AcceptStripePaymentsShortcode {
 
     function get_button_code_new_method( $data ) {
 	$output = '';
-	if ( ! $this->ProductCSSInserted ) {
+	if ( ! $this->ButtonCSSInserted ) {
+	    $this->ButtonCSSInserted = true;
 	    // we need to style custom inputs
 	    ob_start();
 	    ?>
+
 	    <style>
 	        .asp_product_buy_button input {
 	    	display: inline-block;
@@ -373,24 +376,22 @@ class AcceptStripePaymentsShortcode {
 	    	animation-iteration-count: infinite;
 	    	animation-fill-mode: both;
 	        }
-
 	        .asp-processing i:nth-child(2) {
 	    	animation-delay: .1s;
 	        }
-
 	        .asp-processing i:nth-child(3) {
 	    	animation-delay: .2s;
 	        }
 	    </style>
 	    <?php
-	    $output	 .= ob_get_clean();
+	    $output			 .= ob_get_clean();
 	    //addons can output their styles if needed
-	    $output	 = apply_filters( 'asp-button-output-additional-styles', $output );
+	    $output			 = apply_filters( 'asp-button-output-additional-styles', $output );
 	    ob_start();
 	    ?>
 	    <div class="asp-processing-cont"><span class="asp-processing">Processing <i>.</i><i>.</i><i>.</i></span></div>
 	    <?php
-	    $output	 .= ob_get_clean();
+	    $output			 .= ob_get_clean();
 	}
 	if ( $data[ 'amount' ] == 0 ) { //price not specified, let's add an input box for user to specify the amount
 	    $output .= "<div class='asp_product_item_amount_input_container'>"
