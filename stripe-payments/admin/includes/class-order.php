@@ -116,7 +116,8 @@ class ASPOrder {
 	$output .= "\n\n";
 
 	$output	 .= "<h2>" . __( "Customer Details", "stripe-payments" ) . "</h2>\n";
-	$output	 .= __( "E-Mail Address: ", "stripe-payments" ) . $order_details[ 'stripeEmail' ] . "\n";
+	$output	 .= sprintf( __( "E-Mail Address: %s", "stripe-payments" ), $order_details[ 'stripeEmail' ] ) . "\n";
+	$output	 .= sprintf( __( "Payment Source: %s", "stripe-payments" ), $order_details[ 'stripeTokenType' ] ) . "\n";
 
 	//Billing address data (if any)
 	if ( strlen( $order_details[ 'billing_address' ] ) > 5 ) {
