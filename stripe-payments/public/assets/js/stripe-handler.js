@@ -55,39 +55,35 @@ function wp_asp_add_stripe_handler(data) {
 
     function wp_asp_check_handler(data) {
 	if (typeof (data.handler) == "undefined") {
+
+	    var handler_opts = {
+		key: stripehandler.key,
+		amount: data.amount,
+		locale: data.locale,
+		description: data.description,
+		name: data.name,
+		currency: data.currency,
+		image: data.image,
+		url: data.url,
+		allowRememberMe: data.allowRememberMe,
+		token: function (token, args) {
+		    wp_asp_hadnle_token(data, token, args);
+		}
+	    };
+
 	    if (data.billingAddress) {
-		data.handler = StripeCheckout.configure({
-		    key: stripehandler.key,
-		    amount: data.amount,
-		    locale: data.locale,
-		    description: data.description,
-		    name: data.name,
-		    currency: data.currency,
-		    image: data.image,
-		    billingAddress: data.billingAddress,
-		    shippingAddress: data.shippingAddress,
-		    url: data.url,
-		    allowRememberMe: data.allowRememberMe,
-		    token: function (token, args) {
-			wp_asp_hadnle_token(data, token, args);
-		    }
-		});
-	    } else { //workaround for Stripe to not display warning when billingAddress and shippingAddress are both set to false
-		data.handler = StripeCheckout.configure({
-		    key: stripehandler.key,
-		    amount: data.amount,
-		    locale: data.locale,
-		    description: data.description,
-		    name: data.name,
-		    currency: data.currency,
-		    image: data.image,
-		    url: data.url,
-		    allowRememberMe: data.allowRememberMe,
-		    token: function (token, args) {
-			wp_asp_hadnle_token(data, token, args);
+		handler_opts.billingAddress = data.billingAddress;
+		handler_opts.shippingAddress = data.shippingAddress;
+	    }
+
+	    if (data.addonHooks) {
+		data.addonHooks.forEach(function (hookName) {
+		    if (typeof window["wp_asp_before_handler_configure_" + hookName] === "function") {
+			handler_opts = window["wp_asp_before_handler_configure_" + hookName](handler_opts);
 		    }
 		});
 	    }
+	    data.handler = StripeCheckout.configure(handler_opts);
 	}
     }
 

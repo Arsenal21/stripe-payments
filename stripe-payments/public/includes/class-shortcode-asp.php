@@ -258,7 +258,10 @@ class AcceptStripePaymentsShortcode {
 	    'uniq_id'		 => $uniq_id,
 	    'variable'		 => ($price == 0 ? true : false),
 	    'zeroCents'		 => $this->AcceptStripePayments->zeroCents,
+	    'addonHooks'		 => array(),
 	);
+
+	$data = apply_filters( 'asp-button-output-data-ready', $data );
 
 	$output = '';
 
@@ -290,7 +293,7 @@ class AcceptStripePaymentsShortcode {
 	$output		 .= wp_nonce_field( 'stripe_payments', '_wpnonce', true, false );
 	$output		 .= $button;
 	//after button filter
-	$output		 = apply_filters( 'asp-button-output-after-button', $output,$data );
+	$output		 = apply_filters( 'asp-button-output-after-button', $output, $data );
 	$output		 .= "</form>";
 	return $output;
     }
