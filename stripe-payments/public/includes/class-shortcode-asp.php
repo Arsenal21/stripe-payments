@@ -262,7 +262,7 @@ class AcceptStripePaymentsShortcode {
 	    'addonHooks'		 => array(),
 	);
 
-	$data = apply_filters( 'asp-button-output-data-ready', $data );
+	$data = apply_filters( 'asp-button-output-data-ready', $data, $atts );
 
 	$output = '';
 
@@ -272,7 +272,7 @@ class AcceptStripePaymentsShortcode {
 	    $this->StripeCSSInserted = true;
 	}
 
-	$output .= "<form id = 'stripe_form_{$uniq_id}' action = '' METHOD = 'POST'> ";
+	$output .= "<form id = 'stripe_form_{$uniq_id}' class='asp-stripe-form' action = '' METHOD = 'POST'> ";
 
 	if ( $price == 0 || $custom_quantity !== false || $this->AcceptStripePayments->get_setting( 'use_new_button_method' ) ) {
 	    // variable amount or new method option is set in settings

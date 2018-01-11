@@ -508,9 +508,16 @@ class AcceptStripePayments_Admin {
 	$field_value = esc_attr( isset( $settings[ $field ] ) ? $settings[ $field ] : '' );
 
 	if ( empty( $size ) )
-	    $size = 40;
-
+	    $size		 = 40;
+	$addon_field	 = apply_filters( 'asp-admin-settings-addon-field-display', $field );
+	if ( ! empty( $addon_field ) ) {
+	    $field		 = $addon_field[ 'field' ];
+	    $field_name	 = $addon_field[ 'field_name' ];
+	}
 	switch ( $field ) {
+	    case 'checkbox':
+		echo "<input type='checkbox' name='AcceptStripePayments-settings[{$field_name}]' value='1' " . ($field_value ? 'checked=checked' : '') . " /><p class=\"description\">{$desc}</p>";
+		break;
 	    case 'send_emails_to_seller':
 	    case 'send_emails_to_buyer':
 	    case 'stripe_receipt_email':
@@ -566,6 +573,8 @@ class AcceptStripePayments_Admin {
      */
     public function settings_sanitize_field_callback( $input ) {
 	$output = get_option( 'AcceptStripePayments-settings' );
+
+	$output = apply_filters( 'apm-admin-settings-sanitize-field', $output, $input );
 
 	$output[ 'is_live' ] = empty( $input[ 'is_live' ] ) ? 0 : 1;
 

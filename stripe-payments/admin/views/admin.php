@@ -22,7 +22,9 @@ if ( $_GET[ 'page' ] == 'stripe-payments-settings' ) {
     	display: none;
         }
     </style>
-
+    <?php
+    do_action( 'asp-settings-page-after-styles' );
+    ?>
     <div class="wrap">
 
         <h2><?php echo esc_html( get_admin_page_title() ); ?></h2>
@@ -38,6 +40,9 @@ if ( $_GET[ 'page' ] == 'stripe-payments-settings' ) {
     	    <a href="#general" data-tab-name="general" class="nav-tab"><?php echo __( 'General Settings', 'stripe-payments' ); ?></a>
     	    <a href="#email" data-tab-name="email" class="nav-tab"><?php echo __( 'Email Settings', 'stripe-payments' ); ?></a>
     	    <a href="#advanced" data-tab-name="advanced" class="nav-tab"><?php echo __( 'Advanced Settings', 'stripe-payments' ); ?></a>
+		<?php
+		do_action( 'asp-settings-page-after-tabs-menu' );
+		?>
     	</h2>
 
     	<div class="wp-asp-tab-container" data-tab-name="general">
@@ -50,6 +55,9 @@ if ( $_GET[ 'page' ] == 'stripe-payments-settings' ) {
     	<div class="wp-asp-tab-container" data-tab-name="advanced">
 		<?php do_settings_sections( 'accept_stripe_payment-advanced' ); ?>
     	</div>
+	    <?php
+	    do_action( 'asp-settings-page-after-tabs' );
+	    ?>
 	    <?php submit_button(); ?>
 
         </form>

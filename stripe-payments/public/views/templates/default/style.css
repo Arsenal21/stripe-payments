@@ -81,12 +81,31 @@
 .asp_product_buy_btn{
     text-decoration: none;
     font: bold 13px/13px HelveticaNeue, Arial;
-    padding: 8px 13px;
+    padding: 8px 15px;
     text-transform: none;
+    height: 32px;
+    border-radius: 4px;
+    vertical-align: middle;
 }
 .asp_product_buy_btn:hover{
     transition: none;
     text-transform: none;
+}
+
+.asp_product_buy_btn span {
+    vertical-align: middle;
+}
+
+@media (max-width: 500px) {
+    .asp_product_buy_btn {
+	min-width: 130px;
+    }
+    .asp-stripe-form {
+	text-align: center;
+    }
+    .asp_price_container {
+	text-align: center;
+    }
 }
 
 .asp_product_buy_btn.blue {

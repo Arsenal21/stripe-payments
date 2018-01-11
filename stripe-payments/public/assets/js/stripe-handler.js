@@ -1,4 +1,11 @@
 var wp_asp_prefetched = false;
+
+stripehandler.log = (function ($mod, $msg) {
+    if (this.debug) {
+	console.log('[StripePayments]' + $mod + ': ' + $msg);
+    }
+});
+
 jQuery(document).ready(function () {
     jQuery('input[data-stripe-button-uid]').each(function (ind, obj) {
 	uid = jQuery(obj).data('stripeButtonUid');
@@ -79,7 +86,7 @@ function wp_asp_add_stripe_handler(data) {
 	    if (data.addonHooks) {
 		data.addonHooks.forEach(function (hookName) {
 		    if (typeof window["wp_asp_before_handler_configure_" + hookName] === "function") {
-			handler_opts = window["wp_asp_before_handler_configure_" + hookName](handler_opts);
+			handler_opts = window["wp_asp_before_handler_configure_" + hookName](handler_opts, data);
 		    }
 		});
 	    }
