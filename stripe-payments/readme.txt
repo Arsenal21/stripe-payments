@@ -137,6 +137,9 @@ None
 
 == Changelog ==
 
+= 1.6.9 =
+- Added "Send Receipt Email From Stripe" option.
+
 = 1.6.8 =
 - Added language text-domain to the plugin file header.
 - Hopefully fixed plugin conflict with Yoast SEO (thanks to rogbiz for reporting and helping out).

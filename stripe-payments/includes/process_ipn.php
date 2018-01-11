@@ -100,13 +100,20 @@ $opt = get_option( 'AcceptStripePayments-settings' );
 ob_start();
 try {
 
+    $charge_opts = array(
+	'amount'	 => $amount,
+	'currency'	 => $currencyCodeType,
+	'description'	 => $charge_description,
+    );
+
+    //Check if we need to add Receipt Email parameter
+    if ( isset( $opt[ 'stripe_receipt_email' ] ) && $opt[ 'stripe_receipt_email' ] == 1 ) {
+	$charge_opts[ 'receipt_email' ] = $stripeEmail;
+    }
+
+    //Check if we need to add Don't Save Card parameter
     if ( $opt[ 'dont_save_card' ] == 1 ) {
-	$charge = Stripe_Charge::create( array(
-	    'amount'	 => $amount,
-	    'currency'	 => $currencyCodeType,
-	    'description'	 => $charge_description,
-	    'source'	 => $stripeToken,
-	) );
+	$charge_opts[ 'source' ] = $stripeToken;
     } else {
 
 	$customer = Stripe_Customer::create( array(
@@ -114,13 +121,10 @@ try {
 	    'card'	 => $stripeToken
 	) );
 
-	$charge = Stripe_Charge::create( array(
-	    'customer'	 => $customer->id,
-	    'amount'	 => $amount,
-	    'currency'	 => $currencyCodeType,
-	    'description'	 => $charge_description,
-	) );
+	$charge_opts[ 'customer' ] = $customer->id;
     }
+
+    $charge				 = Stripe_Charge::create( $charge_opts );
     //Grab the charge ID and set it as the transaction ID.
     $txn_id				 = $charge->id; //$charge->balance_transaction;
     //Core transaction data

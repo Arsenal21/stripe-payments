@@ -250,6 +250,7 @@ class AcceptStripePayments {
 	    'price_thousand_sep'		 => ',',
 	    'price_decimals_num'		 => '2',
 	    'api_keys_separated'		 => true,
+	    'stripe_receipt_email'		 => 0,
 	);
 	$opt	 = get_option( 'AcceptStripePayments-settings' );
 	if ( empty( $opt ) ) {

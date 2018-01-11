@@ -376,6 +376,9 @@ class AcceptStripePayments_Admin {
 	add_settings_field( 'api_secret_key_test', 'Test Stripe Secret Key', array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-credentials-section', array( 'field' => 'api_secret_key_test', 'desc' => '' ) );
 
 	// Email section
+	add_settings_field( 'stripe_receipt_email', 'Send Receipt Email From Stripe', array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-email', 'AcceptStripePayments-email-section', array( 'field'	 => 'stripe_receipt_email',
+	    'desc'	 => 'If checked, Stripe will send email receipts to your customers whenever they make successful payment.<br /><b>Note:</b> Receipts are not sent in test mode.' )
+	);
 	add_settings_field( 'send_emails_to_buyer', 'Send Emails to Buyer After Purchase', array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-email', 'AcceptStripePayments-email-section', array( 'field'	 => 'send_emails_to_buyer',
 	    'desc'	 => 'If checked the plugin will send an email to the buyer with the sale details. If digital goods are purchased then the email will contain the download links for the purchased products.' )
 	);
@@ -510,6 +513,7 @@ class AcceptStripePayments_Admin {
 	switch ( $field ) {
 	    case 'send_emails_to_seller':
 	    case 'send_emails_to_buyer':
+	    case 'stripe_receipt_email':
 	    case 'use_new_button_method':
 	    case 'is_live':
 	    case 'disable_remember_me':
@@ -572,6 +576,8 @@ class AcceptStripePayments_Admin {
 	$output[ 'use_new_button_method' ] = empty( $input[ 'use_new_button_method' ] ) ? 0 : 1;
 
 	$output[ 'send_emails_to_buyer' ] = empty( $input[ 'send_emails_to_buyer' ] ) ? 0 : 1;
+
+	$output[ 'stripe_receipt_email' ] = empty( $input[ 'stripe_receipt_email' ] ) ? 0 : 1;
 
 	$output[ 'send_emails_to_seller' ] = empty( $input[ 'send_emails_to_seller' ] ) ? 0 : 1;
 
