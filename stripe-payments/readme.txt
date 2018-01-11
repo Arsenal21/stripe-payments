@@ -139,6 +139,7 @@ None
 
 = 1.6.9 =
 - Added "Send Receipt Email From Stripe" option.
+- [asp_product] shortcode now supports "class" parameter that allows to assign CSS class to the payment button.
 
 = 1.6.8 =
 - Added language text-domain to the plugin file header.
