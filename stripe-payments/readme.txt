@@ -4,7 +4,7 @@ Donate link: https://stripe-plugins.com
 Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortcode, digital goods, payment gateway, instant payment, commerce, digital downloads, downloads, e-commerce, e-store, ecommerce, eshop, donation
 Requires at least: 4.7
 Tested up to: 4.9
-Stable tag: 1.6.8
+Stable tag: 1.6.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -54,6 +54,7 @@ https://www.youtube.com/watch?v=upWqk069Khg
 * Ability to have custom thank you page on a per product basis.
 * Ability to customize the message on the thank you page using tags.
 * Ability to customize the price display with currency symbol.
+* Option to send receipt email to your customers from Stripe for each transaction.
 
 The setup is very easy. Once you have installed the plugin, all you need to do is enter your Stripe API credentials in the plugin settings and your website will be ready to accept credit card payments.
 
@@ -138,7 +139,7 @@ None
 == Changelog ==
 
 = 1.6.9 =
-- Added "Send Receipt Email From Stripe" option.
+- Added "Send Receipt Email From Stripe" option. You can find this option under the "Email Settings" menu of the plugin.
 - [asp_product] shortcode now supports "class" parameter that allows to assign CSS class to the payment button.
 
 = 1.6.8 =
