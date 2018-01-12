@@ -4,7 +4,7 @@ Donate link: https://stripe-plugins.com
 Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortcode, digital goods, payment gateway, instant payment, commerce, digital downloads, downloads, e-commerce, e-store, ecommerce, eshop, donation
 Requires at least: 4.7
 Tested up to: 4.9
-Stable tag: 1.6.9
+Stable tag: 1.7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -137,6 +137,9 @@ Yes, please visit Settings > Accept Stripe Payments screen for options.
 None
 
 == Changelog ==
+
+= 1.7.0 =
+- Fixed a PHP warning in the settings menu of the plugin.
 
 = 1.6.9 =
 - Added "Send Receipt Email From Stripe" option. You can find this option under the "Email Settings" menu of the plugin.
