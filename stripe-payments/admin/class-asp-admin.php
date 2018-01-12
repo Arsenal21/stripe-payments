@@ -507,10 +507,17 @@ class AcceptStripePayments_Admin {
 
 	$field_value = esc_attr( isset( $settings[ $field ] ) ? $settings[ $field ] : '' );
 
-	if ( empty( $size ) ){
+	if ( empty( $size ) ) {
 	    $size = 40;
 	}
-	
+
+	$addon_field = apply_filters( 'asp-admin-settings-addon-field-display', $field );
+
+	if ( is_array( $addon_field ) ) {
+	    $field		 = $addon_field[ 'field' ];
+	    $field_name	 = $addon_field[ 'field_name' ];
+	}
+
 	switch ( $field ) {
 	    case 'checkbox':
 		echo "<input type='checkbox' name='AcceptStripePayments-settings[{$field_name}]' value='1' " . ($field_value ? 'checked=checked' : '') . " /><p class=\"description\">{$desc}</p>";
