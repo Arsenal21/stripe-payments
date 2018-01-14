@@ -280,13 +280,13 @@ class AcceptStripePaymentsShortcode {
 
 	$output .= "<form id = 'stripe_form_{$uniq_id}' class='asp-stripe-form' action = '' METHOD = 'POST'> ";
 
-	if ( $price == 0 || $custom_quantity !== false || $this->AcceptStripePayments->get_setting( 'use_new_button_method' ) ) {
-	    // variable amount or new method option is set in settings
-	    $output .= $this->get_button_code_new_method( $data );
-	} else {
-	    // use old method instead
-	    $output .= $this->get_button_code_old_method( $data, $price, $button_text );
-	}
+//	if ( $price == 0 || $custom_quantity !== false || $this->AcceptStripePayments->get_setting( 'use_new_button_method' ) ) {
+	// variable amount or new method option is set in settings
+	$output	 .= $this->get_button_code_new_method( $data );
+//	} else {
+	// use old method instead
+//	    $output .= $this->get_button_code_old_method( $data, $price, $button_text );
+//	}
 	$output	 .= '<input type="hidden" name="asp_action" value="process_ipn" />';
 	$output	 .= "<input type = 'hidden' value = '{$name}' name = 'item_name' />";
 	$output	 .= "<input type = 'hidden' value = '{$quantity}' name = 'item_quantity' />";
