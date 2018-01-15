@@ -228,7 +228,7 @@ class AcceptStripePaymentsShortcode {
 	    $priceInCents = $paymentAmount * 100;
 	}
 
-	$button_key = md5( $name . $priceInCents );
+	$button_key = md5( htmlspecialchars_decode($name) . $priceInCents );
 
 	//Charge description
 	//We only generate it if it's empty and if custom qunatity and price is not used
@@ -257,7 +257,7 @@ class AcceptStripePaymentsShortcode {
 	    'image'			 => $item_logo,
 	    'currency'		 => $currency,
 	    'locale'		 => (empty( $checkout_lang ) ? 'auto' : $checkout_lang),
-	    'name'			 => $name,
+	    'name'			 => htmlspecialchars_decode($name),
 	    'url'			 => $url,
 	    'amount'		 => $priceInCents,
 	    'billingAddress'	 => (empty( $billing_address ) ? false : true),

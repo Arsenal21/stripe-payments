@@ -48,11 +48,12 @@ $item_quantity		 = sanitize_text_field( $_POST[ 'item_quantity' ] );
 $item_custom_quantity	 = isset( $_POST[ 'stripeCustomQuantity' ] ) ? intval( $_POST[ 'stripeCustomQuantity' ] ) : false;
 $item_url		 = sanitize_text_field( $_POST[ 'item_url' ] );
 $charge_description	 = sanitize_text_field( $_POST[ 'charge_description' ] );
-$button_key		 = sanitize_text_field( $_POST[ 'stripeButtonKey' ] );
+$button_key		 = $_POST[ 'stripeButtonKey' ];
 $reported_price		 = $_POST[ 'stripeItemPrice' ];
 
 //$item_price = sanitize_text_field($_POST['item_price']);
-$calculated_button_key = md5( $_POST[ 'item_name' ] . $reported_price );
+$calculated_button_key = md5( htmlspecialchars_decode( $_POST[ 'item_name' ] ) . $reported_price );
+
 if ( $button_key !== $calculated_button_key ) {
     asp_ipn_completed( 'Button Key mismatch. Expected ' . $button_key . ', calculated: ' . $calculated_button_key );
 }
