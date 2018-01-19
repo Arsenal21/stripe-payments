@@ -251,6 +251,11 @@ class AcceptStripePayments {
 	    'price_decimals_num'		 => '2',
 	    'api_keys_separated'		 => true,
 	    'stripe_receipt_email'		 => 0,
+	    'custom_field_enabled'		 => 0,
+	    'custom_field_name'		 => '',
+	    'custom_field_descr'		 => '',
+	    'custom_field_type'		 => 'text',
+	    'custom_field_mandatory'	 => 0,
 	);
 	$opt	 = get_option( 'AcceptStripePayments-settings' );
 	if ( empty( $opt ) ) {

@@ -142,6 +142,11 @@ try {
     $data[ 'txn_id' ]		 = $txn_id; //The Stripe charge ID
     $data[ 'charge_description' ]	 = $charge_description;
 
+    if ( isset( $_POST[ 'stripeCustomField' ] ) ) {
+	$data[ 'custom_field_value' ]	 = $_POST[ 'stripeCustomField' ];
+	$data[ 'custom_field_name' ]	 = $_POST[ 'stripeCustomFieldName' ];
+    }
+
     $post_data = array_map( 'sanitize_text_field', $data );
 
     $_POST = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
@@ -239,8 +244,13 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post ) {
     if ( ! empty( $post[ 'item_url' ] ) )
 	$product_details .= "\n\n" . __( "Download link: ", "stripe-payments" ) . $post[ 'item_url' ];
 
-    $tags	 = array( "{product_details}", "{payer_email}", "{transaction_id}", "{purchase_amt}", "{purchase_date}", "{shipping_address}", "{billing_address}" );
-    $vals	 = array( $product_details, $post[ 'stripeEmail' ], $post[ 'txn_id' ], $post[ 'item_price' ], date( "F j, Y, g:i a", strtotime( 'now' ) ), $post[ 'shipping_address' ], $post[ 'billing_address' ] );
+    $custom_field = '';
+    if ( isset( $post[ 'custom_field_value' ] ) ) {
+	$custom_field = $post[ 'custom_field_name' ] . ': ' . $post[ 'custom_field_value' ];
+    }
+
+    $tags	 = array( "{product_details}", "{payer_email}", "{transaction_id}", "{purchase_amt}", "{purchase_date}", "{shipping_address}", "{billing_address}", '{custom_field}' );
+    $vals	 = array( $product_details, $post[ 'stripeEmail' ], $post[ 'txn_id' ], $post[ 'item_price' ], date( "F j, Y, g:i a", strtotime( 'now' ) ), $post[ 'shipping_address' ], $post[ 'billing_address' ], $custom_field );
 
     $body = stripslashes( str_replace( $tags, $vals, $body ) );
 

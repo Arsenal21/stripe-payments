@@ -228,7 +228,7 @@ class AcceptStripePaymentsShortcode {
 	    $priceInCents = $paymentAmount * 100;
 	}
 
-	$button_key = md5( htmlspecialchars_decode($name) . $priceInCents );
+	$button_key = md5( htmlspecialchars_decode( $name ) . $priceInCents );
 
 	//Charge description
 	//We only generate it if it's empty and if custom qunatity and price is not used
@@ -248,6 +248,11 @@ class AcceptStripePaymentsShortcode {
 
 	$allowRememberMe = ($allowRememberMe === 1) ? false : true;
 
+	$custom_field = $this->AcceptStripePayments->get_setting( 'custom_field_enabled' );
+	if ( isset( $atts[ 'custom_field' ] ) ) {
+	    $custom_field = $atts[ 'custom_field' ];
+	}
+
 	$data = array(
 	    'button_key'		 => $button_key,
 	    'allowRememberMe'	 => $allowRememberMe,
@@ -257,7 +262,7 @@ class AcceptStripePaymentsShortcode {
 	    'image'			 => $item_logo,
 	    'currency'		 => $currency,
 	    'locale'		 => (empty( $checkout_lang ) ? 'auto' : $checkout_lang),
-	    'name'			 => htmlspecialchars_decode($name),
+	    'name'			 => htmlspecialchars_decode( $name ),
 	    'url'			 => $url,
 	    'amount'		 => $priceInCents,
 	    'billingAddress'	 => (empty( $billing_address ) ? false : true),
@@ -266,6 +271,7 @@ class AcceptStripePaymentsShortcode {
 	    'variable'		 => ($price == 0 ? true : false),
 	    'zeroCents'		 => $this->AcceptStripePayments->zeroCents,
 	    'addonHooks'		 => array(),
+	    'custom_field'		 => $custom_field,
 	);
 
 	$data = apply_filters( 'asp-button-output-data-ready', $data, $atts );
@@ -416,6 +422,24 @@ class AcceptStripePaymentsShortcode {
 	    . "<span class='asp_product_item_qty_label' style='margin-left: 5px; display: inline-block'> " . __( 'X item(s)', 'stripe-payments' ) . "</span>"
 	    . "<span style='display: block;' id='error_explanation_quantity_{$data[ 'uniq_id' ]}'></span>"
 	    . "</div>";
+	}
+	if ( $data[ 'custom_field' ] == 1 ) {
+	    $field_type	 = $this->AcceptStripePayments->get_setting( 'custom_field_type' );
+	    $field_name	 = $this->AcceptStripePayments->get_setting( 'custom_field_name' );
+	    $field_descr	 = $this->AcceptStripePayments->get_setting( 'custom_field_descr' );
+	    $mandatory	 = $this->AcceptStripePayments->get_setting( 'custom_field_mandatory' );
+	    $output		 .= "<div class='asp_product_custom_field_input_container'>";
+	    $output		 .= '<input type="hidden" name="stripeCustomFieldName" value="' . esc_attr( $field_name ) . '">';
+	    switch ( $field_type ) {
+		case 'text':
+		    $output	 .= '<label class="asp_product_custom_field_label">' . $field_name . '</label><input id="asp-custom-field-' . $data[ 'uniq_id' ] . '" class="asp_product_custom_field_input" type="text"' . ($mandatory ? ' data-asp-custom-mandatory' : '') . ' name="stripeCustomField" placeholder="' . $field_descr . '"' . ($mandatory ? ' required' : '' ) . '>';
+		    break;
+		case 'checkbox':
+		    $output	 .= '<label class="asp_product_custom_field_label"><input id="asp-custom-field-' . $data[ 'uniq_id' ] . '" class="asp_product_custom_field_input" type="checkbox"' . ($mandatory ? ' data-asp-custom-mandatory' : '') . ' name="stripeCustomField"' . ($mandatory ? ' required' : '' ) . '>' . $field_descr . '</label>';
+		    break;
+	    }
+	    $output .= "<span style='display: block;' id='custom_field_error_explanation_{$data[ 'uniq_id' ]}'></span>" .
+	    "</div>";
 	}
 	if ( $data ) {
 	    $output .= "<input type='hidden' id='stripeToken_{$data[ 'uniq_id' ]}' name='stripeToken' />"

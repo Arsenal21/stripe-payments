@@ -347,6 +347,7 @@ class AcceptStripePayments_Admin {
 	add_settings_section( 'AcceptStripePayments-settings-footer', '', array( &$this, 'general_settings_menu_footer_callback' ), $this->plugin_slug );
 	add_settings_section( 'AcceptStripePayments-email-section', __( 'Email Settings', 'stripe-payments' ), null, $this->plugin_slug . '-email' );
 	add_settings_section( 'AcceptStripePayments-price-display', __( 'Price Display Settings', 'stripe-payments' ), null, $this->plugin_slug . '-advanced' );
+	add_settings_section( 'AcceptStripePayments-custom-field', __( 'Custom Field Settings', 'stripe-payments' ), null, $this->plugin_slug . '-advanced' );
 
 	// Global section
 	add_settings_field( 'checkout_url', __( 'Checkout Result Page URL', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-global-section', array( 'field'	 => 'checkout_url',
@@ -396,7 +397,8 @@ class AcceptStripePayments_Admin {
                 <br>{product_details} – The item details of the purchased product (this will include the download link for digital items).
                 <br>{transaction_id} – The unique transaction ID of the purchase
                 <br>{purchase_amt} – The amount paid for the current transaction
-                <br>{purchase_date} – The date of the purchase' )
+                <br>{purchase_date} – The date of the purchase
+		<br>{custom_field} – Custom field name and value (if enabled)' )
 	);
 	add_settings_field( 'send_emails_to_seller', 'Send Emails to Seller After Purchase', array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-email', 'AcceptStripePayments-email-section', array( 'field'	 => 'send_emails_to_seller',
 	    'desc'	 => 'If checked the plugin will send an email to the seller with the sale details.' )
@@ -415,7 +417,8 @@ class AcceptStripePayments_Admin {
                 <br>{product_details} – The item details of the purchased product (this will include the download link for digital items).
                 <br>{transaction_id} – The unique transaction ID of the purchase
                 <br>{purchase_amt} – The amount paid for the current transaction
-                <br>{purchase_date} – The date of the purchase' )
+                <br>{purchase_date} – The date of the purchase
+		<br>{custom_field} – Custom field name and value (if enabled)' )
 	);
 
 	// Price Display section
@@ -430,6 +433,25 @@ class AcceptStripePayments_Admin {
 	);
 	add_settings_field( 'price_decimals_num', 'Number of Decimals', array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-price-display', array( 'field'	 => 'price_decimals_num',
 	    'desc'	 => 'This sets the number of decimal points shown in the displayed price.' )
+	);
+
+	// Custom Field section
+	add_settings_field( 'custom_field_enabled', __( 'Enable For All Buttons and Products', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-custom-field', array( 'field'	 => 'custom_field_enabled',
+	    'desc'	 => __( 'If enabled, makes the field enabled by default for all buttons and products.', 'stripe-payments' ) . '<br />' .
+	    sprintf( __( 'You can control per-product or per-button behaviour by using following shortcode parameter: %s to enable it for particular button or product and %s to disable it.', 'stripe-payments' ), '<span>custom_field = "1"</span>', '<span>custom_field = "0"</span>' ) . '<br />' .
+	    __( 'When shorcode parameter is used, it overrides this setting.', 'stripe-payments' ) )
+	);
+	add_settings_field( 'custom_field_name', __( 'Field Name', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-custom-field', array( 'field'	 => 'custom_field_name',
+	    'desc'	 => __( 'Enter name for the field. It will be displayed in order info and emails.', 'stripe-payments' ) )
+	);
+	add_settings_field( 'custom_field_descr', __( 'Field Description', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-custom-field', array( 'field'	 => 'custom_field_descr',
+	    'desc'	 => __( 'Enter field description. It will be displayed for users to let them know what is required from them.', 'stripe-payments' ) )
+	);
+	add_settings_field( 'custom_field_type', __( 'Filed Type', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-custom-field', array( 'field'	 => 'custom_field_type',
+	    'desc'	 => __( 'Select custom field type.', 'stripe-payments' ) )
+	);
+	add_settings_field( 'custom_field_mandatory', __( 'Mandatory', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-custom-field', array( 'field'	 => 'custom_field_mandatory',
+	    'desc'	 => __( "If enabled, makes the field mandatory - user can't proceed with the payment before it's filled.", 'stripe-payments' ) )
 	);
     }
 
@@ -526,6 +548,13 @@ class AcceptStripePayments_Admin {
 		echo $addon_field[ 'field_data' ];
 		echo "<p class=\"description\">{$desc}</p>";
 		break;
+	    case 'custom_field_type':
+		echo "<select name='AcceptStripePayments-settings[{$field}]'>'";
+		echo "<option value='text'" . ($field_value === 'text' ? ' selected' : '') . ">Text</option>";
+		echo "<option value='checkbox'" . ($field_value === 'checkbox' ? ' selected' : '') . ">Checkbox</option>";
+		echo "</select>";
+		echo "<p class=\"description\">{$desc}</p>";
+		break;
 	    case 'send_emails_to_seller':
 	    case 'send_emails_to_buyer':
 	    case 'stripe_receipt_email':
@@ -533,6 +562,8 @@ class AcceptStripePayments_Admin {
 	    case 'is_live':
 	    case 'disable_remember_me':
 	    case 'dont_save_card':
+	    case 'custom_field_mandatory':
+	    case 'custom_field_enabled':
 		echo "<input type='checkbox' name='AcceptStripePayments-settings[{$field}]' value='1' " . ($field_value ? 'checked=checked' : '') . " /><p class=\"description\">{$desc}</p>";
 		break;
 	    case 'buyer_email_body':
@@ -583,6 +614,16 @@ class AcceptStripePayments_Admin {
 	$output = get_option( 'AcceptStripePayments-settings' );
 
 	$output = apply_filters( 'apm-admin-settings-sanitize-field', $output, $input );
+
+	$output[ 'custom_field_enabled' ] = empty( $input[ 'custom_field_enabled' ] ) ? 0 : 1;
+
+	$output[ 'custom_field_type' ] = empty( $input[ 'custom_field_type' ] ) ? 'text' : sanitize_text_field( $input[ 'custom_field_type' ] );
+
+	$output[ 'custom_field_name' ] = empty( $input[ 'custom_field_name' ] ) ? '' : sanitize_text_field( $input[ 'custom_field_name' ] );
+
+	$output[ 'custom_field_descr' ] = empty( $input[ 'custom_field_descr' ] ) ? '' : $input[ 'custom_field_descr' ];
+
+	$output[ 'custom_field_mandatory' ] = empty( $input[ 'custom_field_mandatory' ] ) ? 0 : 1;
 
 	$output[ 'is_live' ] = empty( $input[ 'is_live' ] ) ? 0 : 1;
 

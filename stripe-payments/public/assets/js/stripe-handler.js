@@ -106,7 +106,7 @@ function wp_asp_add_stripe_handler(data) {
     jQuery('#stripe_button_' + data.uniq_id).on('click', function (e) {
 	e.preventDefault();
 	wp_asp_check_handler(data);
-	if (!data.variable && data.custom_quantity !== '1') {
+	if (!data.variable && data.custom_quantity !== '1' && data.custom_field != 1) {
 	    data.handler.open();
 	    return true;
 	}
@@ -160,6 +160,21 @@ function wp_asp_add_stripe_handler(data) {
 		descr_amount = descr_amount / 100;
 	    }
 	    description = descr_quantity + ' X ' + descr_amount + ' ' + data.currency;
+	}
+
+	if (data.custom_field != '0') {
+
+	    var customInput = jQuery('#asp-custom-field-' + data.uniq_id);
+	    if (typeof (customInput.attr('data-asp-custom-mandatory')) !== "undefined") {
+		if (customInput.attr('type') === 'text' && customInput.val() === '') {
+		    jQuery('#custom_field_error_explanation_' + data.uniq_id).hide().html('Please fill in this field.').fadeIn('slow');
+		    return false;
+		}
+		if (customInput.attr('type') === 'checkbox' && customInput.prop('checked') !== true) {
+		    jQuery('#custom_field_error_explanation_' + data.uniq_id).hide().html('Please check this checkbox.').fadeIn('slow');
+		    return false;
+		}
+	    }
 	}
 
 	data.handler.open({

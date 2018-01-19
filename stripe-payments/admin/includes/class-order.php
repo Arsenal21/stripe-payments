@@ -131,6 +131,11 @@ class ASPOrder {
 	    $output	 .= $order_details[ 'shipping_address' ];
 	}
 
+	//Custom Field (if set)
+	if ( isset( $order_details[ 'custom_field' ] ) ) {
+	    $output .= $order_details[ 'custom_field_name' ] . ': ' . $order_details[ 'custom_field_value' ];
+	}
+
 	$post[ 'post_content' ]	 = $output;
 	$post[ 'post_type' ]	 = 'stripe_order';
 

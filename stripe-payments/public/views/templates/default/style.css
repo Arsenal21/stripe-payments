@@ -30,7 +30,7 @@
     margin: 5px 0px;
 }
 
-.asp_product_item_amount_input_container{
+.asp_product_item_amount_input_container, .asp_product_custom_field_input_container{
     margin: 5px 0 10px 0;
 }
 

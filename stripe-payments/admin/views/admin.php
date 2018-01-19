@@ -21,6 +21,13 @@ if ( $_GET[ 'page' ] == 'stripe-payments-settings' ) {
         div.wp-asp-tab-container {
     	display: none;
         }
+
+        div.wp-asp-tab-container p.description span {
+    	font-style: normal;
+    	background: #e3e3e3;
+    	padding: 2px 5px;
+        }
+
     </style>
     <?php
     do_action( 'asp-settings-page-after-styles' );
