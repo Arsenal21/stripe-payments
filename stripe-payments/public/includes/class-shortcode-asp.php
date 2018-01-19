@@ -300,7 +300,7 @@ class AcceptStripePaymentsShortcode {
 	$output		 .= wp_nonce_field( 'stripe_payments', '_wpnonce', true, false );
 	$output		 .= $button;
 	//after button filter
-	$output		 = apply_filters( 'asp-button-output-after-button', $output, $data );
+	$output		 = apply_filters( 'asp-button-output-after-button', $output, $data, $class );
 	$output		 .= "</form>";
 	return $output;
     }

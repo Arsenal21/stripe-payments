@@ -50,6 +50,15 @@ function wp_asp_hadnle_token(data, token, args) {
     }
     jQuery('#stripe_button_' + data.uniq_id).html(jQuery('.asp-processing-cont').html());
     jQuery('#stripe_button_' + data.uniq_id).prop('disabled', true);
+
+    if (data.addonHooks) {
+	data.addonHooks.forEach(function (hookName) {
+	    if (typeof window["wp_asp_before_form_submit_" + hookName] === "function") {
+		window["wp_asp_before_form_submit_" + hookName](data);
+	    }
+	});
+    }
+
     form.submit();
 }
 
