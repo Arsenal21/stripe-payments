@@ -8,16 +8,17 @@ class asp_products_metaboxes {
     }
 
     function add_meta_boxes() {
-	add_meta_box( 'wsp_content', __( 'Description', 'stripe_payments' ), array( $this, 'display_description_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
-	add_meta_box( 'asp_short_description_meta_box', __( 'Short Description', 'stripe_payments' ), array( $this, 'display_short_description_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
-	add_meta_box( 'asp_price_meta_box', __( 'Price', 'stripe_payments' ), array( $this, 'display_price_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
-	add_meta_box( 'asp_currency_meta_box', __( 'Currency', 'stripe_payments' ), array( $this, 'display_currency_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
-	add_meta_box( 'asp_quantity_meta_box', __( 'Quantity', 'stripe_payments' ), array( $this, 'display_quantity_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
-	add_meta_box( 'asp_upload_meta_box', __( 'Download URL', 'stripe_payments' ), array( $this, 'display_upload_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
-	add_meta_box( 'asp_thumbnail_meta_box', __( 'Product Thumbnail (optional)', 'stripe_payments' ), array( $this, 'display_thumbnail_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
-	add_meta_box( 'asp_address_meta_box', __( 'Collect Address', 'stripe_payments' ), array( $this, 'display_address_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
-	add_meta_box( 'asp_button_text_meta_box', __( 'Button Text', 'stripe_payments' ), array( $this, 'display_button_text_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
-	add_meta_box( 'asp_shortcode_meta_box', __( 'Shortcode', 'stripe_payments' ), array( $this, 'display_shortcode_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
+	add_meta_box( 'wsp_content', __( 'Description', 'stripe-payments' ), array( $this, 'display_description_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
+	add_meta_box( 'asp_short_description_meta_box', __( 'Short Description', 'stripe-payments' ), array( $this, 'display_short_description_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
+	add_meta_box( 'asp_price_meta_box', __( 'Price', 'stripe-payments' ), array( $this, 'display_price_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
+	add_meta_box( 'asp_currency_meta_box', __( 'Currency', 'stripe-payments' ), array( $this, 'display_currency_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
+	add_meta_box( 'asp_quantity_meta_box', __( 'Quantity', 'stripe-payments' ), array( $this, 'display_quantity_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
+	add_meta_box( 'asp_upload_meta_box', __( 'Download URL', 'stripe-payments' ), array( $this, 'display_upload_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
+	add_meta_box( 'asp_thumbnail_meta_box', __( 'Product Thumbnail (optional)', 'stripe-payments' ), array( $this, 'display_thumbnail_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
+	add_meta_box( 'asp_address_meta_box', __( 'Collect Address', 'stripe-payments' ), array( $this, 'display_address_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
+	add_meta_box( 'asp_button_text_meta_box', __( 'Button Text', 'stripe-payments' ), array( $this, 'display_button_text_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
+	add_meta_box( 'asp_custom_field_meta_box', __( 'Custom Field', 'stripe-payments' ), array( $this, 'display_custom_field_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
+	add_meta_box( 'asp_shortcode_meta_box', __( 'Shortcode', 'stripe-payments' ), array( $this, 'display_shortcode_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
     }
 
     function display_description_meta_box( $post ) {
@@ -30,7 +31,7 @@ class asp_products_metaboxes {
 	$current_val = get_post_meta( $post->ID, 'asp_product_description', true );
 	?>
 	<input type="text" name="asp_product_description" size="50" value="<?php echo $current_val; ?>">
-	<p class="description"><?php echo __( 'You can optionally add a custom short description for the item/product/service that will get shown in the stripe checkout/payment window of the item.', 'stripe_payments' ); ?></p>
+	<p class="description"><?php echo __( 'You can optionally add a custom short description for the item/product/service that will get shown in the stripe checkout/payment window of the item.', 'stripe-payments' ); ?></p>
 	<?php
     }
 
@@ -54,16 +55,16 @@ class asp_products_metaboxes {
 	$current_val		 = get_post_meta( $post->ID, 'asp_product_quantity', true );
 	$allow_custom_quantity	 = get_post_meta( $post->ID, 'asp_product_custom_quantity', true );
 	?>
-        <p>By default, if you leave this field empty, the product quantity will be set to 1. You can change this behavior by using the following options.</p>
-        
+	<p>By default, if you leave this field empty, the product quantity will be set to 1. You can change this behavior by using the following options.</p>
+
 	<label>
-            <input type="checkbox" name="asp_product_custom_quantity" value="1"<?php echo ($allow_custom_quantity === "1") ? ' checked' : ''; ?>>
-            <?php echo __( 'Allow users to specify quantity', 'stripe-payments' ); ?> 
-        </label>
+	    <input type="checkbox" name="asp_product_custom_quantity" value="1"<?php echo ($allow_custom_quantity === "1") ? ' checked' : ''; ?>>
+	    <?php echo __( 'Allow users to specify quantity', 'stripe-payments' ); ?>
+	</label>
 	<p class="description"><?php echo __( "When checked, users can enter qunatity they want to buy.", 'stripe-payments' ); ?></p>
-        
-        
-        <div style="margin-top: 20px;">Set Quantity <input type="text" name="asp_product_quantity" value="<?php echo $current_val; ?>"></div>
+
+
+	<div style="margin-top: 20px;">Set Quantity <input type="text" name="asp_product_quantity" value="<?php echo $current_val; ?>"></div>
 	<p class="description">If you want to use a set quanity for this item then enter the value in this field.</p>
 	<?php
     }
@@ -177,9 +178,9 @@ class asp_products_metaboxes {
 	<label><input type="checkbox" name="asp_product_collect_billing_addr" value="1"<?php echo ($collect_billing_addr === "1") ? ' checked' : ''; ?>><?php echo __( 'Collect Address on Checkout', 'stripe-payments' ); ?> </label>
 	<p class="description"><?php echo __( "Enable this to collect customer address on checkout.", 'stripe-payments' ); ?></p>
 	<div style="margin-left:30px;">
-	<label><input type="radio" name="asp_product_collect_shipping_addr" value="1"<?php echo ($collect_shipping_addr === "1" || $collect_shipping_addr === "") ? ' checked' : ''; ?>><?php echo __( 'Collect Both Billing And Shipping Addresses', 'stripe-payments' ); ?> </label>
-	<p></p>
-	<label><input type="radio" name="asp_product_collect_shipping_addr" value="0"<?php echo ($collect_shipping_addr === "0") ? ' checked' : ''; ?>><?php echo __( 'Collect Billing Address Only', 'stripe-payments' ); ?> </label>
+	    <label><input type="radio" name="asp_product_collect_shipping_addr" value="1"<?php echo ($collect_shipping_addr === "1" || $collect_shipping_addr === "") ? ' checked' : ''; ?>><?php echo __( 'Collect Both Billing And Shipping Addresses', 'stripe-payments' ); ?> </label>
+	    <p></p>
+	    <label><input type="radio" name="asp_product_collect_shipping_addr" value="0"<?php echo ($collect_shipping_addr === "0") ? ' checked' : ''; ?>><?php echo __( 'Collect Billing Address Only', 'stripe-payments' ); ?> </label>
 	</div>
 	<?php
     }
@@ -189,6 +190,16 @@ class asp_products_metaboxes {
 	?>
 	<input type="text" name="asp_product_button_text" size="50" value="<?php echo $current_val; ?>">
 	<p class="description">Specify text to be displayed on the button. Leave it blank to use button text specified on settings page.</p>
+	<?php
+    }
+
+    function display_custom_field_meta_box( $post ) {
+	$current_val = get_post_meta( $post->ID, 'asp_product_custom_field', true );
+	?>
+	<p><?php _e( 'Select how Custom Field display should be handled for this product.', 'stripe-payments' ); ?></p>
+	<label><input type="radio" name="asp_product_custom_field" value="2"<?php echo ($current_val === "2" || $current_val === "") ? ' checked' : ''; ?>><?php echo __( 'Use Global Setting', 'stripe-payments' ); ?> </label>
+	<label><input type="radio" name="asp_product_custom_field" value="1"<?php echo ($current_val === "1") ? ' checked' : ''; ?>><?php echo __( 'Enabled', 'stripe-payments' ); ?> </label>
+	<label><input type="radio" name="asp_product_custom_field" value="0"<?php echo ($current_val === "0") ? ' checked' : ''; ?>><?php echo __( 'Disabled', 'stripe-payments' ); ?> </label>
 	<?php
     }
 

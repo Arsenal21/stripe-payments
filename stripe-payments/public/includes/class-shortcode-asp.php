@@ -129,6 +129,17 @@ class AcceptStripePaymentsShortcode {
 
 	$class = isset( $atts[ 'class' ] ) ? $atts[ 'class' ] : 'asp_product_buy_btn ' . $button_color;
 
+	$custom_field = get_post_meta( $id, 'asp_product_custom_field', true );
+	var_dump($custom_field);
+	if ( ( $custom_field==="" ) || $custom_field === "2" ) {
+	    $custom_field = $this->AcceptStripePayments->get_setting( 'custom_field_enabled' );
+	    echo 'ya';
+	} else {
+	    $custom_field = intval( $custom_field );
+	}
+
+	var_dump( $custom_field );
+
 	//Let's only output buy button if we're in the loop. Since the_content hook could be called several times (for example, by a plugin like Yoast SEO for its purposes), we should only output the button only when it's actually needed.
 	if ( ! isset( $atts[ 'in_the_loop' ] ) || $atts[ 'in_the_loop' ] === "1" ) {
 	    $sc_params	 = array(
@@ -143,6 +154,7 @@ class AcceptStripePaymentsShortcode {
 		'url'			 => $url,
 		'billing_address'	 => get_post_meta( $id, 'asp_product_collect_billing_addr', true ),
 		'shipping_address'	 => get_post_meta( $id, 'asp_product_collect_shipping_addr', true ),
+		'custom_field'		 => $custom_field,
 	    );
 	    //this would pass additional shortcode parameters from asp_product shortcode
 	    $sc_params	 = array_merge( $atts, $sc_params );

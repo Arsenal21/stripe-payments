@@ -11,9 +11,7 @@
  * Text Domain: stripe-payments
  * Domain Path: /languages/
  */
-
 //Slug - asp
-
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
     exit; //Exit if accessed directly
@@ -147,6 +145,7 @@ function asp_save_product_handler( $post_id, $post, $update ) {
 	update_post_meta( $post_id, 'asp_product_currency', sanitize_text_field( $_POST[ 'asp_product_currency' ] ) );
 	update_post_meta( $post_id, 'asp_product_quantity', sanitize_text_field( $_POST[ 'asp_product_quantity' ] ) );
 	update_post_meta( $post_id, 'asp_product_custom_quantity', isset( $_POST[ 'asp_product_custom_quantity' ] ) ? "1" : false  );
+	update_post_meta( $post_id, 'asp_product_custom_field', sanitize_text_field( $_POST[ 'asp_product_custom_field' ] ) );
 	update_post_meta( $post_id, 'asp_product_button_text', sanitize_text_field( $_POST[ 'asp_product_button_text' ] ) );
 	update_post_meta( $post_id, 'asp_product_description', sanitize_text_field( $_POST[ 'asp_product_description' ] ) );
 	update_post_meta( $post_id, 'asp_product_upload', sanitize_text_field( $_POST[ 'asp_product_upload' ] ) );
