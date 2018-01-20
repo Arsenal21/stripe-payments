@@ -8,7 +8,7 @@ stripehandler.log = (function ($mod, $msg) {
 
 jQuery(document).ready(function () {
     jQuery('input[data-stripe-button-uid]').each(function (ind, obj) {
-	uid = jQuery(obj).data('stripeButtonUid');
+	var uid = jQuery(obj).data('stripeButtonUid');
 	wp_asp_add_stripe_handler(window['stripehandler' + uid].data);
     });
 });

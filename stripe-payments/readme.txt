@@ -4,7 +4,7 @@ Donate link: https://stripe-plugins.com
 Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortcode, digital goods, payment gateway, instant payment, commerce, digital downloads, downloads, e-commerce, e-store, ecommerce, eshop, donation
 Requires at least: 4.7
 Tested up to: 4.9
-Stable tag: 1.7.2_testing1
+Stable tag: 1.7.2_testing2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -140,9 +140,10 @@ None
 
 = 1.7.2 =
 - Added Custom Field to the settings. Custom Field can be used to add an additional text field or checkbox to your buttons.
+- Fixed scripts were called to early, which rarely resulted in conflicts with other plugins and themes (thanks to mmeida for reporting and helping out).
 
 = 1.7.1 =
-- Fixed "Button key mismatch" error when special characters (like '&') are used in button name (thanks to damhnait for reporting).
+- Fixed "Button key mismatch" error when special characters (like '&') are used in button name (thanks to damhnait for reporting and helping out).
 - Removed "Use New Method To Display Buttons" setting. Now all buttons are displayed using the new method.
 
 = 1.7.0 =

@@ -58,8 +58,8 @@ class AcceptStripePaymentsShortcode {
     }
 
     function register_stripe_script() {
-	wp_register_script( 'stripe-script', 'https://checkout.stripe.com/checkout.js', array(), null );
-	wp_register_script( 'stripe-handler', WP_ASP_PLUGIN_URL . '/public/assets/js/stripe-handler.js', array( 'jquery' ), WP_ASP_PLUGIN_VERSION );
+	wp_register_script( 'stripe-script', 'https://checkout.stripe.com/checkout.js', array(), null, true );
+	wp_register_script( 'stripe-handler', WP_ASP_PLUGIN_URL . '/public/assets/js/stripe-handler.js', array( 'jquery' ), WP_ASP_PLUGIN_VERSION, true );
 	//localization data and Stripe API key
 	if ( $this->AcceptStripePayments->get_setting( 'is_live' ) == 0 ) {
 	    //use test keys
