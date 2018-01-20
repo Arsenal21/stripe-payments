@@ -132,7 +132,7 @@ class ASPOrder {
 	}
 
 	//Custom Field (if set)
-	if ( isset( $order_details[ 'custom_field' ] ) ) {
+	if ( isset( $order_details[ 'custom_field_value' ] ) ) {
 	    $output .= $order_details[ 'custom_field_name' ] . ': ' . $order_details[ 'custom_field_value' ];
 	}
 
