@@ -140,7 +140,7 @@ None
 
 = 1.7.2 =
 - Added Custom Field to the settings. Custom Field can be used to add an additional text field or checkbox to your buttons.
-- Fixed scripts were called to early, which rarely resulted in conflicts with other plugins and themes (thanks to mmeida for reporting and helping out).
+- Fixed scripts were called too early, which rarely resulted in conflicts with other plugins and themes (thanks to mmeida for reporting and helping out).
 
 = 1.7.1 =
 - Fixed "Button key mismatch" error when special characters (like '&') are used in button name (thanks to damhnait for reporting and helping out).
