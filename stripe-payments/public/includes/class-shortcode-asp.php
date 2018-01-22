@@ -434,18 +434,18 @@ class AcceptStripePaymentsShortcode {
 	    . "</div>";
 	}
 	if ( $data[ 'custom_field' ] == 1 ) {
-	    $field_type	 = $this->AcceptStripePayments->get_setting( 'custom_field_type' );
-	    $field_name	 = $this->AcceptStripePayments->get_setting( 'custom_field_name' );
-	    $field_descr	 = $this->AcceptStripePayments->get_setting( 'custom_field_descr' );
-	    $mandatory	 = $this->AcceptStripePayments->get_setting( 'custom_field_mandatory' );
-	    $output		 .= "<div class='asp_product_custom_field_input_container'>";
-	    $output		 .= '<input type="hidden" name="stripeCustomFieldName" value="' . esc_attr( $field_name ) . '">';
+	    $field_type = $this->AcceptStripePayments->get_setting( 'custom_field_type' );
+	    $field_name = $this->AcceptStripePayments->get_setting( 'custom_field_name' );
+	    $field_descr = $this->AcceptStripePayments->get_setting( 'custom_field_descr' );
+	    $mandatory = $this->AcceptStripePayments->get_setting( 'custom_field_mandatory' );
+	    $output .= "<div class='asp_product_custom_field_input_container'>";
+	    $output .= '<input type="hidden" name="stripeCustomFieldName" value="' . esc_attr( $field_name ) . '">';
 	    switch ( $field_type ) {
 		case 'text':
-		    $output	 .= '<label class="asp_product_custom_field_label">' . $field_name . '</label><input id="asp-custom-field-' . $data[ 'uniq_id' ] . '" class="asp_product_custom_field_input" type="text"' . ($mandatory ? ' data-asp-custom-mandatory' : '') . ' name="stripeCustomField" placeholder="' . $field_descr . '"' . ($mandatory ? ' required' : '' ) . '>';
+		    $output .= '<label class="asp_product_custom_field_label">' . $field_name . ' ' . '</label><input id="asp-custom-field-' . $data[ 'uniq_id' ] . '" class="asp_product_custom_field_input" type="text"' . ($mandatory ? ' data-asp-custom-mandatory' : '') . ' name="stripeCustomField" placeholder="' . $field_descr . '"' . ($mandatory ? ' required' : '' ) . '>';
 		    break;
 		case 'checkbox':
-		    $output	 .= '<label class="asp_product_custom_field_label"><input id="asp-custom-field-' . $data[ 'uniq_id' ] . '" class="asp_product_custom_field_input" type="checkbox"' . ($mandatory ? ' data-asp-custom-mandatory' : '') . ' name="stripeCustomField"' . ($mandatory ? ' required' : '' ) . '>' . $field_descr . '</label>';
+		    $output .= '<label class="asp_product_custom_field_label"><input id="asp-custom-field-' . $data[ 'uniq_id' ] . '" class="asp_product_custom_field_input" type="checkbox"' . ($mandatory ? ' data-asp-custom-mandatory' : '') . ' name="stripeCustomField"' . ($mandatory ? ' required' : '' ) . '>' . $field_descr . '</label>';
 		    break;
 	    }
 	    $output .= "<span style='display: block;' id='custom_field_error_explanation_{$data[ 'uniq_id' ]}'></span>" .
