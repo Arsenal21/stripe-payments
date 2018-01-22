@@ -195,6 +195,20 @@ class asp_products_metaboxes {
 
     function display_custom_field_meta_box( $post ) {
 	$current_val = get_post_meta( $post->ID, 'asp_product_custom_field', true );
+	
+	$show_custom_field_settings = '';
+	$asp_settings = AcceptStripePayments::get_instance();
+	$field_name = $asp_settings->get_setting( 'custom_field_name' );
+	if (!empty($field_name)){//Custom field configured so show product specific settings
+	    $show_custom_field_settings = '1';
+	}
+	$show_custom_field_settings = apply_filters('asp_show_product_custom_field_settings', $show_custom_field_settings);//Filter to allow addon to override this
+	if(empty($show_custom_field_settings)){
+	    //Custom field isn't configured. Don't show the seettings
+	    _e( 'Custom field is disabled. Configure custom field in the settings menu of this plugin to enable it.', 'stripe-payments' );
+	    return;
+	}
+	
 	?>
 	<p><?php _e( 'Select how Custom Field display should be handled for this product.', 'stripe-payments' ); ?></p>
 	<label><input type="radio" name="asp_product_custom_field" value="2"<?php echo ($current_val === "2" || $current_val === "") ? ' checked' : ''; ?>><?php echo __( 'Use Global Setting', 'stripe-payments' ); ?> </label>

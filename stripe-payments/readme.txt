@@ -4,7 +4,7 @@ Donate link: https://stripe-plugins.com
 Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortcode, digital goods, payment gateway, instant payment, commerce, digital downloads, downloads, e-commerce, e-store, ecommerce, eshop, donation
 Requires at least: 4.7
 Tested up to: 4.9
-Stable tag: 1.7.2_testing2
+Stable tag: 1.7.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -55,6 +55,7 @@ https://www.youtube.com/watch?v=upWqk069Khg
 * Ability to customize the message on the thank you page using tags.
 * Ability to customize the price display with currency symbol.
 * Option to send receipt email to your customers from Stripe for each transaction.
+* Option to collect a custom input from your customers for products (useful if you are selling products that need special instructions from the customers).
 
 The setup is very easy. Once you have installed the plugin, all you need to do is enter your Stripe API credentials in the plugin settings and your website will be ready to accept credit card payments.
 
@@ -139,7 +140,7 @@ None
 == Changelog ==
 
 = 1.7.2 =
-- Added Custom Field to the settings. Custom Field can be used to add an additional text field or checkbox to your buttons.
+- Added Custom Field to the advanced settings. Custom Field can be used to add an additional text field or checkbox to your buttons to collect an input from your customer.
 - Fixed scripts were called too early, which rarely resulted in conflicts with other plugins and themes (thanks to mmeida for reporting and helping out).
 
 = 1.7.1 =
