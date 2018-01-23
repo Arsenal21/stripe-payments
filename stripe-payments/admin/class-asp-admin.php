@@ -370,77 +370,70 @@ class AcceptStripePayments_Admin {
 	    'desc'	 => __( 'Specify language to be used in Stripe checkout pop-up or select "Autodetect" to let Stripe handle it.', 'stripe-payments' ) ) );
 
 	// Credentials section
-	add_settings_field( 'is_live', 'Live Mode', array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-credentials-section', array( 'field' => 'is_live', 'desc' => 'Check this to run the transaction in live mode. When unchecked it will run in test mode.' ) );
-	add_settings_field( 'api_publishable_key', 'Live Stripe Publishable Key', array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-credentials-section', array( 'field' => 'api_publishable_key', 'desc' => '' ) );
-	add_settings_field( 'api_secret_key', 'Live Stripe Secret Key', array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-credentials-section', array( 'field' => 'api_secret_key', 'desc' => '' ) );
-	add_settings_field( 'api_publishable_key_test', 'Test Stripe Publishable Key', array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-credentials-section', array( 'field' => 'api_publishable_key_test', 'desc' => '' ) );
-	add_settings_field( 'api_secret_key_test', 'Test Stripe Secret Key', array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-credentials-section', array( 'field' => 'api_secret_key_test', 'desc' => '' ) );
+	add_settings_field( 'is_live', __( 'Live Mode', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-credentials-section', array( 'field' => 'is_live', 'desc' => __( 'Check this to run the transaction in live mode. When unchecked it will run in test mode.', 'stripe-payments' ) ) );
+	add_settings_field( 'api_publishable_key', __( 'Live Stripe Publishable Key', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-credentials-section', array( 'field' => 'api_publishable_key', 'desc' => '' ) );
+	add_settings_field( 'api_secret_key', __( 'Live Stripe Secret Key', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-credentials-section', array( 'field' => 'api_secret_key', 'desc' => '' ) );
+	add_settings_field( 'api_publishable_key_test', __( 'Test Stripe Publishable Key', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-credentials-section', array( 'field' => 'api_publishable_key_test', 'desc' => '' ) );
+	add_settings_field( 'api_secret_key_test', __( 'Test Stripe Secret Key', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-credentials-section', array( 'field' => 'api_secret_key_test', 'desc' => '' ) );
 
 	// Email section
-	add_settings_field( 'stripe_receipt_email', 'Send Receipt Email From Stripe', array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-email', 'AcceptStripePayments-email-section', array( 'field'	 => 'stripe_receipt_email',
-	    'desc'	 => 'If checked, Stripe will send email receipts to your customers whenever they make successful payment.<br /><b>Note:</b> Receipts are not sent in test mode.' )
+	add_settings_field( 'stripe_receipt_email', __( 'Send Receipt Email From Stripe', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-email', 'AcceptStripePayments-email-section', array( 'field'	 => 'stripe_receipt_email',
+	    'desc'	 => __( 'If checked, Stripe will send email receipts to your customers whenever they make successful payment.<br /><b>Note:</b> Receipts are not sent in test mode.', 'stripe-payments' ) )
 	);
-	add_settings_field( 'send_emails_to_buyer', 'Send Emails to Buyer After Purchase', array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-email', 'AcceptStripePayments-email-section', array( 'field'	 => 'send_emails_to_buyer',
-	    'desc'	 => 'If checked the plugin will send an email to the buyer with the sale details. If digital goods are purchased then the email will contain the download links for the purchased products.' )
+	add_settings_field( 'send_emails_to_buyer', __( 'Send Emails to Buyer After Purchase', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-email', 'AcceptStripePayments-email-section', array( 'field'	 => 'send_emails_to_buyer',
+	    'desc'	 => __( 'If checked the plugin will send an email to the buyer with the sale details. If digital goods are purchased then the email will contain the download links for the purchased products.', 'stripe-payments' ) )
 	);
-	add_settings_field( 'from_email_address', 'From Email Address', array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-email', 'AcceptStripePayments-email-section', array( 'field'	 => 'from_email_address',
-	    'desc'	 => 'Example: Your Name &lt;sales@your-domain.com&gt; This is the email address that will be used to send the email to the buyer. This name and email address will appear in the from field of the email.' )
+	add_settings_field( 'from_email_address', __( 'From Email Address', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-email', 'AcceptStripePayments-email-section', array( 'field'	 => 'from_email_address',
+	    'desc'	 => __( 'Example: Your Name &lt;sales@your-domain.com&gt; This is the email address that will be used to send the email to the buyer. This name and email address will appear in the from field of the email.', 'stripe-payments' ) )
 	);
-	add_settings_field( 'buyer_email_subject', 'Buyer Email Subject', array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-email', 'AcceptStripePayments-email-section', array( 'field'	 => 'buyer_email_subject',
-	    'desc'	 => 'This is the subject of the email that will be sent to the buyer.' )
+	add_settings_field( 'buyer_email_subject', __( 'Buyer Email Subject', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-email', 'AcceptStripePayments-email-section', array( 'field'	 => 'buyer_email_subject',
+	    'desc'	 => __( 'This is the subject of the email that will be sent to the buyer.', 'stripe-payments' ) )
 	);
-	add_settings_field( 'buyer_email_body', 'Buyer Email Body', array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-email', 'AcceptStripePayments-email-section', array( 'field'	 => 'buyer_email_body',
-	    'desc'	 => 'This is the body of the email that will be sent to the buyer. Do not change the text within the braces {}. You can use the following email tags in this email body field:
-                <br>{payer_email} – Email Address of the buyer
-                <br>{shipping_address} – Shipping address of the buyer
-                <br>{billing_address} – Billing address of the buyer
-                <br>{product_details} – The item details of the purchased product (this will include the download link for digital items).
-                <br>{transaction_id} – The unique transaction ID of the purchase
-                <br>{purchase_amt} – The amount paid for the current transaction
-                <br>{purchase_date} – The date of the purchase
-		<br>{custom_field} – Custom field name and value (if enabled)' )
+
+	$email_tags_descr = "<br>{payer_email} – " . __( 'Email Address of the buyer', 'stripe-payments' ) . "
+                <br>{shipping_address} – " . __( 'Shipping address of the buyer', 'stripe-payments' ) . "
+                <br>{billing_address} – " . __( 'Billing address of the buyer', 'stripe-payments' ) . "
+                <br>{product_details} – " . __( 'The item details of the purchased product (this will include the download link for digital items).', 'stripe-payments' ) . "
+                <br>{transaction_id} – " . __( 'The unique transaction ID of the purchase', 'stripe-payments' ) . "
+                <br>{purchase_amt} – " . __( 'The amount paid for the current transaction', 'stripe-payments' ) . "
+                <br>{purchase_date} – " . __( 'The date of the purchase', 'stripe-payments' ) . "
+		<br>{custom_field} – " . __( 'Custom field name and value (if enabled)', 'stripe-payments' );
+
+	add_settings_field( 'buyer_email_body', __( 'Buyer Email Body', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-email', 'AcceptStripePayments-email-section', array( 'field'	 => 'buyer_email_body',
+	    'desc'	 => __( 'This is the body of the email that will be sent to the buyer.', 'stripe-payments' ) . __( 'Do not change the text within the braces {}. You can use the following email tags in this email body field:', 'stripe-payments' ) . $email_tags_descr )
 	);
-	add_settings_field( 'send_emails_to_seller', 'Send Emails to Seller After Purchase', array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-email', 'AcceptStripePayments-email-section', array( 'field'	 => 'send_emails_to_seller',
-	    'desc'	 => 'If checked the plugin will send an email to the seller with the sale details.' )
+	add_settings_field( 'send_emails_to_seller', __( 'Send Emails to Seller After Purchase', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-email', 'AcceptStripePayments-email-section', array( 'field'	 => 'send_emails_to_seller',
+	    'desc'	 => __( 'If checked the plugin will send an email to the seller with the sale details.', 'stripe-payments' ) )
 	);
-	add_settings_field( 'seller_notification_email', 'Notification Email Address', array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-email', 'AcceptStripePayments-email-section', array( 'field'	 => 'seller_notification_email',
-	    'desc'	 => 'This is the email address where the seller will be notified of product sales. You can put multiple email addresses separated by comma (,) in the above field to send the notification to multiple email addresses.' )
+	add_settings_field( 'seller_notification_email', __( 'Notification Email Address', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-email', 'AcceptStripePayments-email-section', array( 'field'	 => 'seller_notification_email',
+	    'desc'	 => __( 'This is the email address where the seller will be notified of product sales. You can put multiple email addresses separated by comma (,) in the above field to send the notification to multiple email addresses.', 'stripe-payments' ) )
 	);
-	add_settings_field( 'seller_email_subject', 'Seller Email Subject', array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-email', 'AcceptStripePayments-email-section', array( 'field'	 => 'seller_email_subject',
-	    'desc'	 => 'This is the subject of the email that will be sent to the seller for record.' )
+	add_settings_field( 'seller_email_subject', __( 'Seller Email Subject', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-email', 'AcceptStripePayments-email-section', array( 'field'	 => 'seller_email_subject',
+	    'desc'	 => __( 'This is the subject of the email that will be sent to the seller for record.', 'stripe-payments' ) )
 	);
-	add_settings_field( 'seller_email_body', 'Seller Email Body', array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-email', 'AcceptStripePayments-email-section', array( 'field'	 => 'seller_email_body',
-	    'desc'	 => 'This is the body of the email that will be sent to the seller. Do not change the text within the braces {}. You can use the following email tags in this email body field:
-                <br>{payer_email} – Email Address of the buyer
-                <br>{shipping_address} – Shipping address of the buyer
-                <br>{billing_address} – Billing address of the buyer
-                <br>{product_details} – The item details of the purchased product (this will include the download link for digital items).
-                <br>{transaction_id} – The unique transaction ID of the purchase
-                <br>{purchase_amt} – The amount paid for the current transaction
-                <br>{purchase_date} – The date of the purchase
-		<br>{custom_field} – Custom field name and value (if enabled)' )
+	add_settings_field( 'seller_email_body', __( 'Seller Email Body', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-email', 'AcceptStripePayments-email-section', array( 'field'	 => 'seller_email_body',
+	    'desc'	 => __( 'This is the body of the email that will be sent to the seller.', 'stripe-payments' ) . __( 'Do not change the text within the braces {}. You can use the following email tags in this email body field:', 'stripe-payments' ) . $email_tags_descr )
 	);
 
 	// Price Display section
-	add_settings_field( 'price_currency_pos', 'Currency Position', array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-price-display', array( 'field'	 => 'price_currency_pos',
-	    'desc'	 => 'This controls the position of the currency symbol.' )
+	add_settings_field( 'price_currency_pos', __( 'Currency Position', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-price-display', array( 'field'	 => 'price_currency_pos',
+	    'desc'	 => __( 'This controls the position of the currency symbol.', 'stripe-payments' ) )
 	);
-	add_settings_field( 'price_decimal_sep', 'Decimal Separator', array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-price-display', array( 'field'	 => 'price_decimal_sep',
-	    'desc'	 => 'This sets the decimal separator of the displayed price.' )
+	add_settings_field( 'price_decimal_sep', __( 'Decimal Separator', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-price-display', array( 'field'	 => 'price_decimal_sep',
+	    'desc'	 => __( 'This sets the decimal separator of the displayed price.', 'stripe-payments' ) )
 	);
-	add_settings_field( 'price_thousand_sep', 'Thousand Separator', array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-price-display', array( 'field'	 => 'price_thousand_sep',
-	    'desc'	 => 'This sets the thousand separator of the displayed price.' )
+	add_settings_field( 'price_thousand_sep', __( 'Thousand Separator', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-price-display', array( 'field'	 => 'price_thousand_sep',
+	    'desc'	 => __( 'This sets the thousand separator of the displayed price.', 'stripe-payments' ) )
 	);
 	add_settings_field( 'price_decimals_num', 'Number of Decimals', array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-price-display', array( 'field'	 => 'price_decimals_num',
-	    'desc'	 => 'This sets the number of decimal points shown in the displayed price.' )
+	    'desc'	 => __( 'This sets the number of decimal points shown in the displayed price.', 'stripe-payments' ) )
 	);
 
 	// Custom Field section
-	//TODO add a link to the documentation
 	add_settings_field( 'custom_field_enabled', __( 'Enable For All Buttons and Products', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-custom-field', array( 'field'	 => 'custom_field_enabled',
-	    'desc'	 => __( 'If enabled, makes the following field enabled by default for all buttons and products.', 'stripe-payments' ) . '<br />' .	    
+	    'desc'	 => __( 'If enabled, makes the following field enabled by default for all buttons and products.', 'stripe-payments' ) . '<br />' .
 	    __( 'You can control per-product or per-button behaviour by editing the product and selecting enabled or disabled option under the Custom Field section.', 'stripe-payments' ) . '<br />' .
-	    __( 'View the custom field <a href="https://stripe-plugins.com/custom-field-settings-feature-stripe-payments-plugin/" target="_blank">usage documentation</a>.', 'stripe-payments' ))
+	    __( 'View the custom field <a href="https://stripe-plugins.com/custom-field-settings-feature-stripe-payments-plugin/" target="_blank">usage documentation</a>.', 'stripe-payments' ) )
 	);
 	add_settings_field( 'custom_field_name', __( 'Field Name', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-custom-field', array( 'field'	 => 'custom_field_name',
 	    'desc'	 => __( 'Enter name for the field. It will be displayed in order info and emails.', 'stripe-payments' ) )
