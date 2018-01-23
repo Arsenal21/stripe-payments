@@ -4,7 +4,7 @@ Donate link: https://stripe-plugins.com
 Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortcode, digital goods, payment gateway, instant payment, commerce, digital downloads, downloads, e-commerce, e-store, ecommerce, eshop, donation
 Requires at least: 4.7
 Tested up to: 4.9
-Stable tag: 1.7.2
+Stable tag: 1.7.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -138,6 +138,9 @@ Yes, please visit Settings > Accept Stripe Payments screen for options.
 None
 
 == Changelog ==
+
+= 1.7.3 =
+- Stripe PHP Library updated to v5.8.0.
 
 = 1.7.2 =
 - Added Custom Field to the advanced settings. Custom Field can be used to add an additional text field or checkbox to your buttons to collect an input from your customer.

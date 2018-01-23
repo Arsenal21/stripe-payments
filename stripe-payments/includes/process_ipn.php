@@ -92,7 +92,9 @@ if ( $asp_class->get_setting( 'is_live' ) == 0 ) {
     $key = $asp_class->get_setting( 'api_secret_key' );
 }
 
-Stripe::setApiKey( $key );
+ASPMain::load_stripe_lib();
+
+\Stripe\Stripe::setApiKey( $key );
 
 $GLOBALS[ 'asp_payment_success' ] = false;
 
@@ -117,7 +119,7 @@ try {
 	$charge_opts[ 'source' ] = $stripeToken;
     } else {
 
-	$customer = Stripe_Customer::create( array(
+	$customer = \Stripe\Customer::create( array(
 	    'email'	 => $stripeEmail,
 	    'card'	 => $stripeToken
 	) );
@@ -125,7 +127,7 @@ try {
 	$charge_opts[ 'customer' ] = $customer->id;
     }
 
-    $charge				 = Stripe_Charge::create( $charge_opts );
+    $charge				 = \Stripe\Charge::create( $charge_opts );
     //Grab the charge ID and set it as the transaction ID.
     $txn_id				 = $charge->id; //$charge->balance_transaction;
     //Core transaction data
