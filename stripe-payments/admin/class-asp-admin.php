@@ -439,7 +439,8 @@ class AcceptStripePayments_Admin {
 	//TODO add a link to the documentation
 	add_settings_field( 'custom_field_enabled', __( 'Enable For All Buttons and Products', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-custom-field', array( 'field'	 => 'custom_field_enabled',
 	    'desc'	 => __( 'If enabled, makes the following field enabled by default for all buttons and products.', 'stripe-payments' ) . '<br />' .	    
-	    __( 'You can control per-product or per-button behaviour by editing the product and selecting enabled or disabled option under the Custom Field section.', 'stripe-payments' ) )
+	    __( 'You can control per-product or per-button behaviour by editing the product and selecting enabled or disabled option under the Custom Field section.', 'stripe-payments' ) . '<br />' .
+	    __( 'View the custom field <a href="https://stripe-plugins.com/custom-field-settings-feature-stripe-payments-plugin/" target="_blank">usage documentation</a>.', 'stripe-payments' ))
 	);
 	add_settings_field( 'custom_field_name', __( 'Field Name', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-custom-field', array( 'field'	 => 'custom_field_name',
 	    'desc'	 => __( 'Enter name for the field. It will be displayed in order info and emails.', 'stripe-payments' ) )
