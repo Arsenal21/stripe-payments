@@ -12,7 +12,6 @@
  * Domain Path: /languages/
  */
 //Slug - asp
-
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
     exit; //Exit if accessed directly
@@ -164,8 +163,10 @@ add_filter( 'the_content', 'asp_filter_post_type_content' );
 
 function asp_filter_post_type_content( $content ) {
     global $post;
-    if ( $post->post_type == ASPMain::$products_slug ) {//Handle the content for product type post
-	return do_shortcode( '[asp_product id="' . $post->ID . '" is_post_tpl="1" in_the_loop="' . +in_the_loop() . '"]' );
+    if ( isset( $post ) ) {
+	if ( $post->post_type == ASPMain::$products_slug ) {//Handle the content for product type post
+	    return do_shortcode( '[asp_product id="' . $post->ID . '" is_post_tpl="1" in_the_loop="' . +in_the_loop() . '"]' );
+	}
     }
     return $content;
 }
