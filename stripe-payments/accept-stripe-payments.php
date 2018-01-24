@@ -33,6 +33,7 @@ class ASPMain {
     static function load_stripe_lib() {
 	if ( ! class_exists( '\Stripe\Stripe' ) ) {
 	    require_once( plugin_dir_path( __FILE__ ) . 'includes/stripe/init.php' );
+	    \Stripe\Stripe::setAppInfo( "Stripe Payments", WP_ASP_PLUGIN_VERSION, "https://wordpress.org/plugins/stripe-payments/" );
 	}
     }
 
