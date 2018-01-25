@@ -141,6 +141,7 @@ None
 
 = 1.7.3 =
 - Stripe PHP Library updated to v5.8.0.
+- Minimum PHP version required is PHP5.3.
 
 = 1.7.2 =
 - Added Custom Field to the advanced settings. Custom Field can be used to add an additional text field or checkbox to your buttons to collect an input from your customer.

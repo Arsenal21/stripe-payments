@@ -471,6 +471,8 @@ class AcceptStripePaymentsShortcode {
     }
 
     function shortcode_accept_stripe_payment_checkout( $atts, $content = '' ) {
+	define('DONOTCACHEPAGE', TRUE);//Cache plugin compatibility
+	
 	$aspData = array();
 	if ( isset( $_SESSION[ 'asp_data' ] ) ) {
 	    $aspData = $_SESSION[ 'asp_data' ];
