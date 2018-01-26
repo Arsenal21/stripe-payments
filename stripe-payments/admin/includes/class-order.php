@@ -86,6 +86,7 @@ class ASPOrder {
 	    //Test Mode is on, we should add this to post title
 	    $post[ 'post_title' ] = '[Test Mode] ' . $post[ 'post_title' ];
 	}
+
 	$post[ 'post_status' ] = 'pending';
 
 	$output = '';
@@ -138,6 +139,8 @@ class ASPOrder {
 
 	$post[ 'post_content' ]	 = $output;
 	$post[ 'post_type' ]	 = 'stripe_order';
+
+	$post = apply_filters( 'asp_order_before_insert', $post, $order_details, $charge_details );
 
 	return wp_insert_post( $post ); //Return post ID
     }

@@ -143,6 +143,7 @@ try {
     $data[ 'currency_code' ]	 = $currency_code;
     $data[ 'txn_id' ]		 = $txn_id; //The Stripe charge ID
     $data[ 'charge_description' ]	 = $charge_description;
+    $data[ 'addonName' ]		 = isset( $_POST[ 'stripeAddonName' ] ) ? sanitize_text_field( $_POST[ 'stripeAddonName' ] ) : '';
 
     if ( isset( $_POST[ 'stripeCustomField' ] ) ) {
 	$data[ 'custom_field_value' ]	 = $_POST[ 'stripeCustomField' ];
