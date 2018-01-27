@@ -225,6 +225,10 @@ class AcceptStripePayments {
      * @since    1.0.0
      */
     private static function single_activate() {
+	$admin_email = get_option( 'admin_email' );
+	if ( ! $admin_email ) {
+	    $admin_email = '';
+	}
 	// Check if its a first install
 	$default = array(
 	    'is_live'			 => 0,
@@ -256,10 +260,17 @@ class AcceptStripePayments {
 	    'custom_field_descr'		 => '',
 	    'custom_field_type'		 => 'text',
 	    'custom_field_mandatory'	 => 0,
+	    'send_email_on_error'		 => 0,
+	    'send_email_on_error_to'	 => $admin_email,
 	);
 	$opt	 = get_option( 'AcceptStripePayments-settings' );
+	if ( ! is_array( $opt ) ) {
+	    $opt = $default;
+	}
+	$opt = array_merge( $default, $opt );
+	update_option( 'AcceptStripePayments-settings', $opt );
 	if ( empty( $opt ) ) {
-	    add_option( 'AcceptStripePayments-settings', $default );
+//	    add_option( 'AcceptStripePayments-settings', $default );
 	} else { //lets add default values for some settings that were added after plugin update
 	    //let's separate Test and Live API keys (introduced in version 1.6.6)
 	    if ( $opt[ 'is_live' ] == 0 && ! isset( $opt[ 'api_keys_separated' ] ) ) {

@@ -4,6 +4,19 @@ function asp_ipn_completed( $errMsg = '' ) {
     if ( ! empty( $errMsg ) ) {
 	$aspData		 = array( 'error_msg' => $errMsg );
 	$_SESSION[ 'asp_data' ]	 = $aspData;
+	//send email to notify site admin (if option enabled)
+	$opt			 = get_option( 'AcceptStripePayments-settings' );
+	if ( isset( $opt[ 'send_email_on_error' ] ) && $opt[ 'send_email_on_error' ] ) {
+	    $to		 = $opt[ 'send_email_on_error_to' ];
+	    $from		 = get_option( 'admin_email' );
+	    $headers	 = 'From: ' . $from . "\r\n";
+	    $subj		 = __( 'Stripe Payments Error', 'stripe-payments' );
+	    $body		 = __( 'Following error occured during payment processing:', 'stripe-payments' ) . "\r\n\r\n";
+	    $body		 .= $errMsg . "\r\n\r\n";
+	    $body		 .= __( 'Debug data:', 'stripe-payments' ) . "\r\n";
+	    $body		 .= json_encode( $_POST );
+	    wp_mail( $to, $subj, $body, $headers );
+	}
     }
     global $aspRedirectURL;
     wp_redirect( $aspRedirectURL );

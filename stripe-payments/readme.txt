@@ -140,6 +140,7 @@ None
 == Changelog ==
 
 = 1.7.4 =
+- Added "Send Email On Payment Failure" option to notify admin if payment failed.
 - Fixed plugin conflict with WordPress Themes Editor (thanks to natecarlson1 for reporting).
 
 = 1.7.3 =

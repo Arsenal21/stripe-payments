@@ -380,6 +380,12 @@ class AcceptStripePayments_Admin {
 	add_settings_field( 'stripe_receipt_email', __( 'Send Receipt Email From Stripe', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-email', 'AcceptStripePayments-email-section', array( 'field'	 => 'stripe_receipt_email',
 	    'desc'	 => __( 'If checked, Stripe will send email receipts to your customers whenever they make successful payment.<br /><b>Note:</b> Receipts are not sent in test mode.', 'stripe-payments' ) )
 	);
+	add_settings_field( 'send_email_on_error', __( 'Send Email On Payment Failure', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-email', 'AcceptStripePayments-email-section', array( 'field'	 => 'send_email_on_error',
+	    'desc'	 => __( 'If checked, plugin will send email when error occured during payment processing. The email will be sent to the address specified below.', 'stripe-payments' ) )
+	);
+	add_settings_field( 'send_email_on_error_to', __( 'Send Error Email To', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-email', 'AcceptStripePayments-email-section', array( 'field'	 => 'send_email_on_error_to',
+	    'desc'	 => __( 'Enter recepient address of error email.', 'stripe-payments' ) )
+	);
 	add_settings_field( 'send_emails_to_buyer', __( 'Send Emails to Buyer After Purchase', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-email', 'AcceptStripePayments-email-section', array( 'field'	 => 'send_emails_to_buyer',
 	    'desc'	 => __( 'If checked the plugin will send an email to the buyer with the sale details. If digital goods are purchased then the email will contain the download links for the purchased products.', 'stripe-payments' ) )
 	);
@@ -552,6 +558,7 @@ class AcceptStripePayments_Admin {
 	    case 'send_emails_to_seller':
 	    case 'send_emails_to_buyer':
 	    case 'stripe_receipt_email':
+	    case 'send_email_on_error':
 	    case 'use_new_button_method':
 	    case 'is_live':
 	    case 'disable_remember_me':
@@ -631,7 +638,11 @@ class AcceptStripePayments_Admin {
 
 	$output[ 'stripe_receipt_email' ] = empty( $input[ 'stripe_receipt_email' ] ) ? 0 : 1;
 
+	$output[ 'send_email_on_error' ] = empty( $input[ 'send_email_on_error' ] ) ? 0 : 1;
+
 	$output[ 'send_emails_to_seller' ] = empty( $input[ 'send_emails_to_seller' ] ) ? 0 : 1;
+
+	$output[ 'send_email_on_error_to' ] = sanitize_email( $input[ 'send_email_on_error_to' ] );
 
 	if ( $output[ 'is_live' ] != 0 ) {
 	    if ( empty( $input[ 'api_secret_key' ] ) || empty( $input[ 'api_publishable_key' ] ) ) {
