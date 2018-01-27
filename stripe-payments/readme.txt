@@ -139,6 +139,9 @@ None
 
 == Changelog ==
 
+= 1.7.4 =
+- Fixed plugin conflict with WordPress Themes Editor (thanks to natecarlson1 for reporting).
+
 = 1.7.3 =
 - Stripe PHP Library updated to v5.8.0.
 - Minimum PHP version required is PHP5.3.

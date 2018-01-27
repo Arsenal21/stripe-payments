@@ -105,7 +105,7 @@ add_action( 'init', array( $ASPProducts, 'register_post_type' ), 0 );
 $ASPOrder	 = ASPOrder::get_instance();
 add_action( 'init', array( $ASPOrder, 'register_post_type' ), 0 );
 
-if ( session_id() == '' ) {
+if ( session_id() == '' && ! wp_doing_ajax() ) {
     session_start();
 }
 
