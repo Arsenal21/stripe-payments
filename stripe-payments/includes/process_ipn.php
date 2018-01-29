@@ -7,14 +7,14 @@ function asp_ipn_completed( $errMsg = '' ) {
 	//send email to notify site admin (if option enabled)
 	$opt			 = get_option( 'AcceptStripePayments-settings' );
 	if ( isset( $opt[ 'send_email_on_error' ] ) && $opt[ 'send_email_on_error' ] ) {
-	    $to		 = $opt[ 'send_email_on_error_to' ];
-	    $from		 = get_option( 'admin_email' );
-	    $headers	 = 'From: ' . $from . "\r\n";
-	    $subj		 = __( 'Stripe Payments Error', 'stripe-payments' );
-	    $body		 = __( 'Following error occured during payment processing:', 'stripe-payments' ) . "\r\n\r\n";
-	    $body		 .= $errMsg . "\r\n\r\n";
-	    $body		 .= __( 'Debug data:', 'stripe-payments' ) . "\r\n";
-	    $body		 .= json_encode( $_POST );
+	    $to	 = $opt[ 'send_email_on_error_to' ];
+	    $from	 = get_option( 'admin_email' );
+	    $headers = 'From: ' . $from . "\r\n";
+	    $subj	 = __( 'Stripe Payments Error', 'stripe-payments' );
+	    $body	 = __( 'Following error occured during payment processing:', 'stripe-payments' ) . "\r\n\r\n";
+	    $body	 .= $errMsg . "\r\n\r\n";
+	    $body	 .= __( 'Debug data:', 'stripe-payments' ) . "\r\n";
+	    $body	 .= json_encode( $_POST );
 	    wp_mail( $to, $subj, $body, $headers );
 	}
     }
@@ -157,6 +157,7 @@ try {
     $data[ 'txn_id' ]		 = $txn_id; //The Stripe charge ID
     $data[ 'charge_description' ]	 = $charge_description;
     $data[ 'addonName' ]		 = isset( $_POST[ 'stripeAddonName' ] ) ? sanitize_text_field( $_POST[ 'stripeAddonName' ] ) : '';
+    $data[ 'button_key' ]		 = $button_key;
 
     if ( isset( $_POST[ 'stripeCustomField' ] ) ) {
 	$data[ 'custom_field_value' ]	 = $_POST[ 'stripeCustomField' ];
@@ -195,15 +196,18 @@ try {
 
     $post_data[ 'order_post_id' ] = $order_post_id;
 
+    // handle download item url
+    $item_url		 = apply_filters( 'asp_item_url_process', $item_url, $post_data );
+    $item_url		 = base64_decode( $item_url );
+    $post_data[ 'item_url' ] = $item_url;
+
     //Action hook with the checkout post data parameters.
     do_action( 'asp_stripe_payment_completed', $post_data, $charge );
 
     //Action hook with the order object.
     do_action( 'AcceptStripePayments_payment_completed', $order, $charge );
 
-    $GLOBALS[ 'asp_payment_success' ]	 = true;
-    $item_url				 = base64_decode( $item_url );
-    $post_data[ 'item_url' ]		 = $item_url;
+    $GLOBALS[ 'asp_payment_success' ] = true;
 
     //Let's handle email sending stuff
 

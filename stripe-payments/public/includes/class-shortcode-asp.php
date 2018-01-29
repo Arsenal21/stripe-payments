@@ -304,12 +304,12 @@ class AcceptStripePaymentsShortcode {
 //	    $output .= $this->get_button_code_old_method( $data, $price, $button_text );
 //	}
 	$output	 .= '<input type="hidden" name="asp_action" value="process_ipn" />';
-	$output	 .= "<input type = 'hidden' value = '{$name}' name = 'item_name' />";
-	$output	 .= "<input type = 'hidden' value = '{$quantity}' name = 'item_quantity' />";
-	$output	 .= "<input type = 'hidden' value = '{$currency}' name = 'currency_code' />";
-	$output	 .= "<input type = 'hidden' value = '{$url}' name = 'item_url' />";
+	$output	 .= "<input type = 'hidden' value = '{$data[ 'name' ]}' name = 'item_name' />";
+	$output	 .= "<input type = 'hidden' value = '{$data[ 'quantity' ]}' name = 'item_quantity' />";
+	$output	 .= "<input type = 'hidden' value = '{$data[ 'currency' ]}' name = 'currency_code' />";
+	$output	 .= "<input type = 'hidden' value = '{$data[ 'url' ]}' name = 'item_url' />";
 	$output	 .= "<input type = 'hidden' value = '{$thankyou_page_url}' name = 'thankyou_page_url' />";
-	$output	 .= "<input type = 'hidden' value = '{$description}' name = 'charge_description' />"; //
+	$output	 .= "<input type = 'hidden' value = '{$data[ 'description' ]}' name = 'charge_description' />"; //
 
 	$trans_name	 = 'stripe-payments-' . $button_key; //Create key using the item name.
 	set_transient( $trans_name, $price, 2 * 3600 ); //Save the price for this item for 2 hours.
