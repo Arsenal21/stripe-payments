@@ -104,9 +104,30 @@ function wp_asp_add_stripe_handler(data) {
     }
 
     jQuery('#stripe_button_' + data.uniq_id).on('click', function (e) {
+
+	function button_clicked_hooks(data) {
+	    if (data.addonHooks) {
+		data.addonHooks.forEach(function (hookName) {
+		    if (typeof window["wp_asp_button_clicked_" + hookName] === "function") {
+			data.executingHook = "wp_asp_button_clicked_" + hookName;
+			data = window["wp_asp_button_clicked_" + hookName](data);
+			data.executingHook = "";
+		    }
+		});
+	    }
+	    return data;
+	}
+
 	e.preventDefault();
+
+	data.canProceed = true;
+
 	wp_asp_check_handler(data);
 	if (!data.variable && data.custom_quantity !== '1' && data.custom_field != 1) {
+	    data = button_clicked_hooks(data);
+	    if (!data.canProceed) {
+		return false;
+	    }
 	    data.handler.open();
 	    return true;
 	}
@@ -175,6 +196,12 @@ function wp_asp_add_stripe_handler(data) {
 		    return false;
 		}
 	    }
+	}
+
+	data = button_clicked_hooks(data);
+
+	if (!data.canProceed) {
+	    return false;
 	}
 
 	data.handler.open({

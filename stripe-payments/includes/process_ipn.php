@@ -31,6 +31,14 @@ global $aspRedirectURL;
 
 $aspRedirectURL = (isset( $_POST[ 'thankyou_page_url' ] ) && empty( $_POST[ 'thankyou_page_url' ] )) ? $asp_class->get_setting( 'checkout_url' ) : base64_decode( $_POST[ 'thankyou_page_url' ] );
 
+$process_result = apply_filters( 'asp_before_payment_processing', array(), $_POST );
+
+if ( isset( $process_result ) && ! empty( $process_result ) ) {
+    if ( isset( $process_result[ 'error' ] ) && ! empty( $process_result[ 'error' ] ) ) {
+	asp_ipn_completed( $process_result[ 'error' ] );
+    }
+}
+
 //Check nonce
 $nonce = $_REQUEST[ '_wpnonce' ];
 if ( ! wp_verify_nonce( $nonce, 'stripe_payments' ) ) {
