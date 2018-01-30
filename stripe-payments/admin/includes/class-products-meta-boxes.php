@@ -39,7 +39,10 @@ class asp_products_metaboxes {
 	$current_val = get_post_meta( $post->ID, 'asp_product_price', true );
 	?>
 	<input type="text" name="asp_product_price" value="<?php echo $current_val; ?>">
-	<p class="description">Item price. Numbers only, no need to put currency symbol. Example: 99.95<br>Leave it blank if you want your customers to enter the amount themselves (e.g. for donation button). </p>
+	<p class="description"><?php
+	    echo __( 'Item price. Numbers only, no need to put currency symbol. Example: 99.95', 'stripe-payments' ) .
+	    '<br>' . __( 'Leave it blank if you want your customers to enter the amount themselves (e.g. for donation button).', 'stripe-payments' );
+	    ?></p>
 	<?php
     }
 
@@ -47,7 +50,7 @@ class asp_products_metaboxes {
 	$current_val = get_post_meta( $post->ID, 'asp_product_currency', true );
 	?>
 	<select name="asp_product_currency" id="asp_currency_select"><?php echo AcceptStripePayments_Admin::get_currency_options( $current_val ); ?>></select>
-	<p class = "description">Leave "(Default)" option selected if you want to use currency specified on settings page.</p>
+	<p class = "description"><?php echo __( 'Leave "(Default)" option selected if you want to use currency specified on settings page.', 'stripe-payments' ); ?></p>
 	<?php
     }
 
@@ -55,7 +58,7 @@ class asp_products_metaboxes {
 	$current_val		 = get_post_meta( $post->ID, 'asp_product_quantity', true );
 	$allow_custom_quantity	 = get_post_meta( $post->ID, 'asp_product_custom_quantity', true );
 	?>
-	<p>By default, if you leave this field empty, the product quantity will be set to 1. You can change this behavior by using the following options.</p>
+	<p><?php echo __( 'By default, if you leave this field empty, the product quantity will be set to 1. You can change this behavior by using the following options.', 'stripe-payments' ); ?></p>
 
 	<label>
 	    <input type="checkbox" name="asp_product_custom_quantity" value="1"<?php echo ($allow_custom_quantity === "1") ? ' checked' : ''; ?>>
@@ -64,8 +67,11 @@ class asp_products_metaboxes {
 	<p class="description"><?php echo __( "When checked, users can enter qunatity they want to buy.", 'stripe-payments' ); ?></p>
 
 
-	<div style="margin-top: 20px;">Set Quantity <input type="text" name="asp_product_quantity" value="<?php echo $current_val; ?>"></div>
-	<p class="description">If you want to use a set quanity for this item then enter the value in this field.</p>
+	<div style="margin-top: 20px;"><label><?php _e( 'Set Quantity:', 'stripe-payments' ); ?>
+		<input type="text" name="asp_product_quantity" value="<?php echo $current_val; ?>">
+	    </label>
+	</div>
+	<p class="description"><?php _e( 'If you want to use a set quanity for this item then enter the value in this field.', 'stripe-payments' ); ?></p>
 	<?php
     }
 
@@ -75,21 +81,21 @@ class asp_products_metaboxes {
 	<p><?php echo __( 'URL of your product (if you\'re selling digital products).', 'stripe-payments' ); ?></p>
 
 	<div>
-	    <input id="asp_product_upload" type="text" size="100" name="asp_product_upload" value="<?php echo esc_attr( $current_val ); ?>" placeholder="http://..." />
+	    <input id="asp_product_upload" type="text" style="width: 100%" name="asp_product_upload" value="<?php echo esc_attr( $current_val ); ?>" placeholder="http://..." />
 
 	    <p class="description">
-		Manually enter a valid URL of the file in the text box below, or click "Select File" button to upload (or choose) the downloadable file.
+		<?php _e( 'Manually enter a valid URL of the file in the text box below, or click "Select File" button to upload (or choose) the downloadable file.', 'stripe-payments' ); ?>
 	    </p>
 	</div>
 	<p>
 	    <input id="asp_select_upload_btn" type="button" class="button" value="<?php echo __( 'Select File', 'stripe-payments' ); ?>" />
 	</p>
 	<div>
-	    Steps to upload a file or choose one from your media library:
+	    <?php _e( 'Steps to upload a file or choose one from your media library:', 'stripe-payments' ); ?>
 	    <ol>
-		<li>Hit the "Select File" button.</li>
-		<li>Upload a new file or choose an existing one from your media library.</li>
-		<li>Click the "Insert" button, this will populate the uploaded file's URL in the above text field.</li>
+		<li><?php _e( 'Hit the "Select File" button.', 'stripe-payments' ); ?></li>
+		<li><?php _e( 'Upload a new file or choose an existing one from your media library.', 'stripe-payments' ) ?></li>
+		<li><?php _e( 'Click the "Insert" button, this will populate the uploaded file\'s URL in the above text field.', 'stripe-payments' ) ?></li>
 	    </ol>
 	</div>
 	<script>
@@ -122,7 +128,7 @@ class asp_products_metaboxes {
 	$current_val = get_post_meta( $post->ID, 'asp_product_thumbnail', true );
 	?>
 	<div>
-	    <input id="asp_product_thumbnail" type="text" size="100" name="asp_product_thumbnail" value="<?php echo esc_attr( $current_val ); ?>" placeholder="http://..." />
+	    <input id="asp_product_thumbnail" type="text" style="width: 100%" name="asp_product_thumbnail" value="<?php echo esc_attr( $current_val ); ?>" placeholder="http://..." />
 
 	    <p class="description">
 		<?php echo __( 'Manually enter a valid URL, or click "Select Image" to upload (or choose) the file thumbnail image.', 'stripe-payments' ); ?>
@@ -189,26 +195,25 @@ class asp_products_metaboxes {
 	$current_val = get_post_meta( $post->ID, 'asp_product_button_text', true );
 	?>
 	<input type="text" name="asp_product_button_text" size="50" value="<?php echo $current_val; ?>">
-	<p class="description">Specify text to be displayed on the button. Leave it blank to use button text specified on settings page.</p>
+	<p class="description"><?php _e( 'Specify text to be displayed on the button. Leave it blank to use button text specified on settings page.', 'stripe-payments' ); ?></p>
 	<?php
     }
 
     function display_custom_field_meta_box( $post ) {
 	$current_val = get_post_meta( $post->ID, 'asp_product_custom_field', true );
-	
-	$show_custom_field_settings = '';
-	$asp_settings = AcceptStripePayments::get_instance();
-	$field_name = $asp_settings->get_setting( 'custom_field_name' );
-	if (!empty($field_name)){//Custom field configured so show product specific settings
+
+	$show_custom_field_settings	 = '';
+	$asp_settings			 = AcceptStripePayments::get_instance();
+	$field_name			 = $asp_settings->get_setting( 'custom_field_name' );
+	if ( ! empty( $field_name ) ) {//Custom field configured so show product specific settings
 	    $show_custom_field_settings = '1';
 	}
-	$show_custom_field_settings = apply_filters('asp_show_product_custom_field_settings', $show_custom_field_settings);//Filter to allow addon to override this
-	if(empty($show_custom_field_settings)){
+	$show_custom_field_settings = apply_filters( 'asp_show_product_custom_field_settings', $show_custom_field_settings ); //Filter to allow addon to override this
+	if ( empty( $show_custom_field_settings ) ) {
 	    //Custom field isn't configured. Don't show the seettings
 	    _e( 'Custom field is disabled. Configure custom field in the settings menu of this plugin to enable it.', 'stripe-payments' );
 	    return;
 	}
-	
 	?>
 	<p><?php _e( 'Select how Custom Field display should be handled for this product.', 'stripe-payments' ); ?></p>
 	<label><input type="radio" name="asp_product_custom_field" value="2"<?php echo ($current_val === "2" || $current_val === "") ? ' checked' : ''; ?>><?php echo __( 'Use Global Setting', 'stripe-payments' ); ?> </label>
@@ -221,7 +226,7 @@ class asp_products_metaboxes {
 	$current_val = get_post_meta( $post->ID, 'asp_product_button_text', true );
 	?>
 	<input type="text" name="asp_product_shortcode" size="50" readonly value="[asp_product id=&quot;<?php echo $post->ID; ?>&quot;]">
-	<p class="description">Use this shortcode to display button for your product.</p>
+	<p class="description"><?php _e( 'Use this shortcode to display button for your product.', 'stripe-payments' ); ?></p>
 	<?php
     }
 

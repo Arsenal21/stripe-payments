@@ -139,6 +139,10 @@ None
 
 == Changelog ==
 
+= 1.7.5 =
+- Made additional strings available for translation via translate.wordpress.org.
+[Click here](https://translate.wordpress.org/projects/wp-plugins/stripe-payments) if you want to help in translating plugin to your language.
+
 = 1.7.4 =
 - Added "Send Email On Payment Failure" option to notify admin if payment failed.
 - Fixed plugin conflict with WordPress Themes Editor (thanks to natecarlson1 for reporting).

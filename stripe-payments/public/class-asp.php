@@ -234,21 +234,21 @@ class AcceptStripePayments {
 	    'is_live'			 => 0,
 	    'dont_save_card'		 => 0,
 	    'currency_code'			 => 'USD',
-	    'button_text'			 => 'Buy Now',
+	    'button_text'			 => __( 'Buy Now', 'stripe-payments' ),
 	    'use_new_button_method'		 => 0,
 	    'checkout_url'			 => site_url( 'checkout' ),
 	    'from_email_address'		 => get_bloginfo( 'name' ) . ' <sales@your-domain.com>',
-	    'buyer_email_subject'		 => 'Thank you for the purchase',
-	    'buyer_email_body'		 => "Hello\r\n\r\n"
-	    . "Thank you for your purchase! You ordered the following item(s):\r\n\r\n"
+	    'buyer_email_subject'		 => __( 'Thank you for the purchase', 'strip-payments' ),
+	    'buyer_email_body'		 => __( "Hello", 'stripe-payments' ) . "\r\n\r\n"
+	    . __( "Thank you for your purchase! You ordered the following item(s):", 'stripe-payments' ) . "\r\n\r\n"
 	    . "{product_details}",
 	    'seller_notification_email'	 => get_bloginfo( 'admin_email' ),
-	    'seller_email_subject'		 => 'Notification of product sale',
-	    'seller_email_body'		 => "Dear Seller\r\n\r\n"
-	    . "This mail is to notify you of a product sale.\r\n\r\n"
+	    'seller_email_subject'		 => __( 'Notification of product sale', 'stripe-payments' ),
+	    'seller_email_body'		 => __( "Dear Seller", 'stripe-payments' ) . "\r\n\r\n"
+	    . __( "This mail is to notify you of a product sale.", 'stripe-payments' ) . "\r\n\r\n"
 	    . "{product_details}\r\n\r\n"
-	    . "The sale was made to {payer_email}\r\n\r\n"
-	    . "Thanks",
+	    . __( "The sale was made to", 'stripe-payments' ) . " {payer_email}\r\n\r\n"
+	    . __("Thanks",'stripe-payments'),
 	    'price_currency_pos'		 => 'left',
 	    'price_decimal_sep'		 => '.',
 	    'price_thousand_sep'		 => ',',

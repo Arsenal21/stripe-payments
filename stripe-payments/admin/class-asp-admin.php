@@ -346,10 +346,10 @@ class AcceptStripePayments_Admin {
 	add_settings_section( 'AcceptStripePayments-global-section', __( 'Global Settings', 'stripe-payments' ), null, $this->plugin_slug );
 	add_settings_section( 'AcceptStripePayments-credentials-section', __( 'Credentials', 'stripe-payments' ), null, $this->plugin_slug );
 	add_settings_section( 'AcceptStripePayments-settings-footer', '', array( &$this, 'general_settings_menu_footer_callback' ), $this->plugin_slug );
-	
+
 	add_settings_section( 'AcceptStripePayments-email-section', __( 'Email Settings', 'stripe-payments' ), null, $this->plugin_slug . '-email' );
 	add_settings_section( 'AcceptStripePayments-error-email-section', __( 'Transaction Error Email Settings', 'stripe-payments' ), null, $this->plugin_slug . '-email' );
-	
+
 	add_settings_section( 'AcceptStripePayments-price-display', __( 'Price Display Settings', 'stripe-payments' ), null, $this->plugin_slug . '-advanced' );
 	add_settings_section( 'AcceptStripePayments-custom-field', __( 'Custom Field Settings', 'stripe-payments' ), null, $this->plugin_slug . '-advanced' );
 
@@ -426,7 +426,7 @@ class AcceptStripePayments_Admin {
 	add_settings_field( 'send_email_on_error_to', __( 'Send Error Email To', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-email', 'AcceptStripePayments-error-email-section', array( 'field'	 => 'send_email_on_error_to',
 	    'desc'	 => __( 'Enter recipient address of error email.', 'stripe-payments' ) )
 	);
-	
+
 	// Price Display section
 	add_settings_field( 'price_currency_pos', __( 'Currency Position', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-price-display', array( 'field'	 => 'price_currency_pos',
 	    'desc'	 => __( 'This controls the position of the currency symbol.', 'stripe-payments' ) )
@@ -652,28 +652,28 @@ class AcceptStripePayments_Admin {
 
 	if ( $output[ 'is_live' ] != 0 ) {
 	    if ( empty( $input[ 'api_secret_key' ] ) || empty( $input[ 'api_publishable_key' ] ) ) {
-		add_settings_error( 'AcceptStripePayments-settings', 'invalid-credentials', 'You must fill Live API credentials for plugin to work correctly.' );
+		add_settings_error( 'AcceptStripePayments-settings', 'invalid-credentials', __( 'You must fill Live API credentials for plugin to work correctly.', 'stripe-payments' ) );
 	    }
 	} else {
 	    if ( empty( $input[ 'api_secret_key_test' ] ) || empty( $input[ 'api_publishable_key_test' ] ) ) {
-		add_settings_error( 'AcceptStripePayments-settings', 'invalid-credentials', 'You must fill Test API credentials for plugin to work correctly.' );
+		add_settings_error( 'AcceptStripePayments-settings', 'invalid-credentials', __( 'You must fill Test API credentials for plugin to work correctly.', 'stripe-payments' ) );
 	    }
 	}
 
 	if ( ! empty( $input[ 'checkout_url' ] ) )
 	    $output[ 'checkout_url' ] = $input[ 'checkout_url' ];
 	else
-	    add_settings_error( 'AcceptStripePayments-settings', 'invalid-checkout_url', 'Please specify a checkout page.' );
+	    add_settings_error( 'AcceptStripePayments-settings', 'invalid-checkout_url', __( 'Please specify a checkout page.', 'stripe-payments' ) );
 
 	if ( ! empty( $input[ 'button_text' ] ) )
 	    $output[ 'button_text' ] = $input[ 'button_text' ];
 	else
-	    add_settings_error( 'AcceptStripePayments-settings', 'invalid-button-text', 'Button text should not be empty.' );
+	    add_settings_error( 'AcceptStripePayments-settings', 'invalid-button-text', __( 'Button text should not be empty.', 'stripe-payments' ) );
 
 	if ( ! empty( $input[ 'currency_code' ] ) )
 	    $output[ 'currency_code' ] = $input[ 'currency_code' ];
 	else
-	    add_settings_error( 'AcceptStripePayments-settings', 'invalid-currency-code', 'You must specify payment currency.' );
+	    add_settings_error( 'AcceptStripePayments-settings', 'invalid-currency-code', __( 'You must specify payment currency.', 'stripe-payments' ) );
 
 	$output[ 'checkout_lang' ] = $input[ 'checkout_lang' ];
 
@@ -688,32 +688,32 @@ class AcceptStripePayments_Admin {
 	if ( ! empty( $input[ 'from_email_address' ] ) )
 	    $output[ 'from_email_address' ] = $input[ 'from_email_address' ];
 	else
-	    add_settings_error( 'AcceptStripePayments-settings', 'invalid-from-email-address', 'You must specify from email address.' );
+	    add_settings_error( 'AcceptStripePayments-settings', 'invalid-from-email-address', __( 'You must specify from email address.', 'stripe-payments' ) );
 
 	if ( ! empty( $input[ 'buyer_email_subject' ] ) )
 	    $output[ 'buyer_email_subject' ] = $input[ 'buyer_email_subject' ];
 	else
-	    add_settings_error( 'AcceptStripePayments-settings', 'invalid-buyer-email-subject', 'You must specify buyer email subject.' );
+	    add_settings_error( 'AcceptStripePayments-settings', 'invalid-buyer-email-subject', __( 'You must specify buyer email subject.', 'stripe-payments' ) );
 
 	if ( ! empty( $input[ 'buyer_email_body' ] ) )
 	    $output[ 'buyer_email_body' ] = $input[ 'buyer_email_body' ];
 	else
-	    add_settings_error( 'AcceptStripePayments-settings', 'invalid-buyer-email-body', 'You must fill in buyer email body.' );
+	    add_settings_error( 'AcceptStripePayments-settings', 'invalid-buyer-email-body', __( 'You must fill in buyer email body.', 'stripe-payments' ) );
 
 	if ( ! empty( $input[ 'seller_notification_email' ] ) )
 	    $output[ 'seller_notification_email' ] = $input[ 'seller_notification_email' ];
 	else
-	    add_settings_error( 'AcceptStripePayments-settings', 'invalid-seller-notification-email', 'You must specify seller notification email address.' );
+	    add_settings_error( 'AcceptStripePayments-settings', 'invalid-seller-notification-email', __( 'You must specify seller notification email address.', 'stripe-payments' ) );
 
 	if ( ! empty( $input[ 'seller_email_subject' ] ) )
 	    $output[ 'seller_email_subject' ] = $input[ 'seller_email_subject' ];
 	else
-	    add_settings_error( 'AcceptStripePayments-settings', 'invalid-seller-email-subject', 'You must specify seller email subject.' );
+	    add_settings_error( 'AcceptStripePayments-settings', 'invalid-seller-email-subject', __( 'You must specify seller email subject.', 'stripe-payments' ) );
 
 	if ( ! empty( $input[ 'seller_email_body' ] ) )
 	    $output[ 'seller_email_body' ] = $input[ 'seller_email_body' ];
 	else
-	    add_settings_error( 'AcceptStripePayments-settings', 'invalid-seller-email-body', 'You must fill in seller email body.' );
+	    add_settings_error( 'AcceptStripePayments-settings', 'invalid-seller-email-body', __( 'You must fill in seller email body.', 'stripe-payments' ) );
 
 // Price display
 
@@ -722,17 +722,17 @@ class AcceptStripePayments_Admin {
 	if ( ! empty( $input[ 'price_decimal_sep' ] ) )
 	    $output[ 'price_decimal_sep' ] = esc_attr( $input[ 'price_decimal_sep' ] );
 	else
-	    add_settings_error( 'AcceptStripePayments-settings', 'empty-price-decimals-sep', 'Price decimal separator can\'t be empty.' );
+	    add_settings_error( 'AcceptStripePayments-settings', 'empty-price-decimals-sep', __( 'Price decimal separator can\'t be empty.', 'stripe-payments' ) );
 
 	if ( ! empty( $input[ 'price_thousand_sep' ] ) )
 	    $output[ 'price_thousand_sep' ] = esc_attr( $input[ 'price_thousand_sep' ] );
 	else
-	    add_settings_error( 'AcceptStripePayments-settings', 'empty-price-thousand-sep', 'Price thousand separator can\'t be empty.' );
+	    add_settings_error( 'AcceptStripePayments-settings', 'empty-price-thousand-sep', __( 'Price thousand separator can\'t be empty.', 'stripe-payments' ) );
 
 	if ( ! empty( $input[ 'price_decimals_num' ] ) )
 	    $output[ 'price_decimals_num' ] = esc_attr( $input[ 'price_decimals_num' ] );
 	else
-	    add_settings_error( 'AcceptStripePayments-settings', 'invalid-price-decimals-num', 'Price number of decimals can\'t be empty.' );
+	    add_settings_error( 'AcceptStripePayments-settings', 'invalid-price-decimals-num', __( 'Price number of decimals can\'t be empty.', 'stripe-payments' ) );
 
 
 
