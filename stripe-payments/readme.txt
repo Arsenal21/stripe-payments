@@ -140,6 +140,7 @@ None
 == Changelog ==
 
 = 1.7.5 =
+- Changed some currencies symbols to be more distinctive (e.g. Australian Dollar was using '$' symbol before, now is using 'AU$').
 - Made additional strings available for translation via translate.wordpress.org.
 [Click here](https://translate.wordpress.org/projects/wp-plugins/stripe-payments) if you want to help in translating plugin to your language.
 
