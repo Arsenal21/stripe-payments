@@ -56,7 +56,7 @@ class AcceptStripePayments {
 	$this->settings = (array) get_option( 'AcceptStripePayments-settings' );
 
 	// Load plugin text domain
-	add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
+	add_action( 'init', array( $this, 'load_asp_plugin_textdomain' ) );
 
 	//Check if IPN submitted
 	add_action( 'init', array( $this, 'asp_check_ipn' ) );
@@ -368,7 +368,7 @@ class AcceptStripePayments {
     /**
      * Load the plugin text domain for translation.
      */
-    public function load_plugin_textdomain() {
+    public function load_asp_plugin_textdomain() {
 
 	$domain	 = 'stripe-payments';
 	$locale	 = apply_filters( 'plugin_locale', get_locale(), $domain );
