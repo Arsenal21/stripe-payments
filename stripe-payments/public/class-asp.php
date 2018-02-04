@@ -56,7 +56,7 @@ class AcceptStripePayments {
 	$this->settings = (array) get_option( 'AcceptStripePayments-settings' );
 
 	// Load plugin text domain
-	add_action( 'init', array( $this, 'load_asp_plugin_textdomain' ) );
+	add_action( 'plugins_loaded', array( $this, 'load_asp_plugin_textdomain' ) );
 
 	//Check if IPN submitted
 	add_action( 'init', array( $this, 'asp_check_ipn' ) );
@@ -248,7 +248,7 @@ class AcceptStripePayments {
 	    . __( "This mail is to notify you of a product sale.", 'stripe-payments' ) . "\r\n\r\n"
 	    . "{product_details}\r\n\r\n"
 	    . __( "The sale was made to", 'stripe-payments' ) . " {payer_email}\r\n\r\n"
-	    . __("Thanks",'stripe-payments'),
+	    . __( "Thanks", 'stripe-payments' ),
 	    'price_currency_pos'		 => 'left',
 	    'price_decimal_sep'		 => '.',
 	    'price_thousand_sep'		 => ',',
@@ -369,12 +369,7 @@ class AcceptStripePayments {
      * Load the plugin text domain for translation.
      */
     public function load_asp_plugin_textdomain() {
-
-	$domain	 = 'stripe-payments';
-	$locale	 = apply_filters( 'plugin_locale', get_locale(), $domain );
-
-	load_textdomain( $domain, trailingslashit( WP_LANG_DIR ) . $domain . '/' . $domain . '-' . $locale . '.mo' );
-	load_plugin_textdomain( $domain, FALSE, basename( plugin_dir_path( dirname( __FILE__ ) ) ) . '/languages/' );
+	load_plugin_textdomain( 'stripe-payments', FALSE, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
     }
 
     /**
