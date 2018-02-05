@@ -141,6 +141,7 @@ class AcceptStripePaymentsShortcode {
 	//Let's only output buy button if we're in the loop. Since the_content hook could be called several times (for example, by a plugin like Yoast SEO for its purposes), we should only output the button only when it's actually needed.
 	if ( ! isset( $atts[ 'in_the_loop' ] ) || $atts[ 'in_the_loop' ] === "1" ) {
 	    $sc_params	 = array(
+		'product_id'		 => $id,
 		'name'			 => $post->post_title,
 		'price'			 => $price,
 		'currency'		 => $currency,

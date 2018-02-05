@@ -19,6 +19,8 @@ class asp_products_metaboxes {
 	add_meta_box( 'asp_button_text_meta_box', __( 'Button Text', 'stripe-payments' ), array( $this, 'display_button_text_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 	add_meta_box( 'asp_custom_field_meta_box', __( 'Custom Field', 'stripe-payments' ), array( $this, 'display_custom_field_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 	add_meta_box( 'asp_shortcode_meta_box', __( 'Shortcode', 'stripe-payments' ), array( $this, 'display_shortcode_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
+
+	do_action( 'asp_edit_product_metabox' );
     }
 
     function display_description_meta_box( $post ) {
