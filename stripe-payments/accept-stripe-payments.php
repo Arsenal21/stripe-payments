@@ -153,8 +153,8 @@ function asp_save_product_handler( $post_id, $post, $update ) {
 	update_post_meta( $post_id, 'asp_product_custom_field', isset( $_POST[ 'asp_product_custom_field' ] ) ? sanitize_text_field( $_POST[ 'asp_product_custom_field' ] ) : "0"  );
 	update_post_meta( $post_id, 'asp_product_button_text', sanitize_text_field( $_POST[ 'asp_product_button_text' ] ) );
 	update_post_meta( $post_id, 'asp_product_description', sanitize_text_field( $_POST[ 'asp_product_description' ] ) );
-	update_post_meta( $post_id, 'asp_product_upload', sanitize_text_field( $_POST[ 'asp_product_upload' ] ) );
-	update_post_meta( $post_id, 'asp_product_thumbnail', sanitize_text_field( $_POST[ 'asp_product_thumbnail' ] ) );
+	update_post_meta( $post_id, 'asp_product_upload', esc_url( $_POST[ 'asp_product_upload' ] ) );
+	update_post_meta( $post_id, 'asp_product_thumbnail', esc_url( $_POST[ 'asp_product_thumbnail' ] ) );
 	$shipping_addr = false;
 	if ( isset( $_POST[ 'asp_product_collect_shipping_addr' ] ) ) {
 	    $shipping_addr = $_POST[ 'asp_product_collect_shipping_addr' ];
