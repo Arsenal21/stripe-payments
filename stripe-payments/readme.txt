@@ -4,7 +4,7 @@ Donate link: https://stripe-plugins.com
 Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortcode, digital goods, payment gateway, instant payment, commerce, digital downloads, downloads, e-commerce, e-store, ecommerce, eshop, donation
 Requires at least: 4.7
 Tested up to: 4.9
-Stable tag: 1.7.7_testing1
+Stable tag: 1.7.7_testing2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -138,6 +138,9 @@ Yes, please visit Settings > Accept Stripe Payments screen for options.
 None
 
 == Changelog ==
+
+= 1.7.7 =
+- Added debug log to the settings.
 
 = 1.7.6 =
 - Fixed PHP warning displayed upon saving product when custom field is not configured (thanks to falcon13 for reporting).

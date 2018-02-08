@@ -3,6 +3,7 @@
 function asp_ipn_completed( $errMsg = '' ) {
     if ( ! empty( $errMsg ) ) {
 	$aspData		 = array( 'error_msg' => $errMsg );
+	ASPMAIN::log( $errMsg );
 	$_SESSION[ 'asp_data' ]	 = $aspData;
 	//send email to notify site admin (if option enabled)
 	$opt			 = get_option( 'AcceptStripePayments-settings' );
@@ -17,6 +18,8 @@ function asp_ipn_completed( $errMsg = '' ) {
 	    $body	 .= json_encode( $_POST );
 	    wp_mail( $to, $subj, $body, $headers );
 	}
+    } else {
+	ASPMain::log( 'Payment has been processed successfully.' );
     }
     global $aspRedirectURL;
     wp_redirect( $aspRedirectURL );
@@ -28,6 +31,8 @@ unset( $_SESSION[ 'asp_data' ] );
 $asp_class = AcceptStripePayments::get_instance();
 
 global $aspRedirectURL;
+
+ASPMAin::log( "\r\n" . 'Payment processing started.' );
 
 $aspRedirectURL = (isset( $_POST[ 'thankyou_page_url' ] ) && empty( $_POST[ 'thankyou_page_url' ] )) ? $asp_class->get_setting( 'checkout_url' ) : base64_decode( $_POST[ 'thankyou_page_url' ] );
 

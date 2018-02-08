@@ -95,6 +95,25 @@ if ( $_GET[ 'page' ] == 'stripe-payments-settings' ) {
     		}
     	    }
     	});
+
+    	$('#asp_clear_log_btn').click(function (e) {
+    	    e.preventDefault();
+    	    if (confirm("<?php _e( 'Are you sure want to clear log?', 'stripe-payments' ); ?>")) {
+    		var req = jQuery.ajax({
+    		    url: ajaxurl,
+    		    type: "post",
+    		    data: {action: "asp_clear_log"}
+    		});
+    		req.done(function (data) {
+    		    if (data === '1') {
+    			alert("<?php _e( 'Log cleared.', 'stripe-payments' ); ?>");
+    		    } else {
+    			alert("Error occured: " + data);
+    		    }
+    		});
+    	    }
+    	});
+
     	$('a.nav-tab[data-tab-name="' + wp_asp_urlHash + '"]').trigger('click');
         });
     </script>

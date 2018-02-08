@@ -45,10 +45,22 @@ class AcceptStripePayments_Admin {
 	//Add any required inline JS code in the admin dashboard side.
 	add_action( 'admin_print_scripts', array( $this, 'asp_print_admin_scripts' ) );
 
+	add_action( 'admin_init', array( $this, 'admin_init' ) );
+
 	//TinyMCE button related
 	add_action( 'init', array( $this, 'tinymce_shortcode_button' ) );
 	add_action( 'current_screen', array( $this, 'check_current_screen' ) );
 	add_action( 'wp_ajax_asp_tinymce_get_settings', array( $this, 'tinymce_ajax_handler' ) ); // Add ajax action handler for tinymce
+    }
+
+    function admin_init() {
+	add_action( 'wp_ajax_asp_clear_log', array( 'ASPMain', 'clear_log' ) );
+	//view log file
+	if ( isset( $_GET[ 'asp_action' ] ) ) {
+	    if ( $_GET[ 'asp_action' ] === 'view_log' ) {
+		ASPMain::view_log();
+	    }
+	}
     }
 
     public function check_current_screen() {
@@ -345,6 +357,7 @@ class AcceptStripePayments_Admin {
 
 	add_settings_section( 'AcceptStripePayments-global-section', __( 'Global Settings', 'stripe-payments' ), null, $this->plugin_slug );
 	add_settings_section( 'AcceptStripePayments-credentials-section', __( 'Credentials', 'stripe-payments' ), null, $this->plugin_slug );
+	add_settings_section( 'AcceptStripePayments-debug-section', __( 'Debug', 'stripe-payments' ), null, $this->plugin_slug );
 	add_settings_section( 'AcceptStripePayments-settings-footer', '', array( &$this, 'general_settings_menu_footer_callback' ), $this->plugin_slug );
 
 	add_settings_section( 'AcceptStripePayments-email-section', __( 'Email Settings', 'stripe-payments' ), null, $this->plugin_slug . '-email' );
@@ -379,6 +392,10 @@ class AcceptStripePayments_Admin {
 	add_settings_field( 'api_secret_key', __( 'Live Stripe Secret Key', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-credentials-section', array( 'field' => 'api_secret_key', 'desc' => '' ) );
 	add_settings_field( 'api_publishable_key_test', __( 'Test Stripe Publishable Key', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-credentials-section', array( 'field' => 'api_publishable_key_test', 'desc' => '' ) );
 	add_settings_field( 'api_secret_key_test', __( 'Test Stripe Secret Key', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-credentials-section', array( 'field' => 'api_secret_key_test', 'desc' => '' ) );
+
+	//Debug section
+	add_settings_field( 'debug_log_enable', __( 'Enable Debug Log', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-debug-section', array( 'field'	 => 'debug_log_enable', 'desc'	 => __( 'Enable debug log.', 'stripe-payments' ) .
+	    '<br /><a href="' . admin_url() . '?asp_action=view_log" target="_blank">' . __( 'View Log', 'stripe-payments' ) . '</a> | <a style="color: red;" id="asp_clear_log_btn" href="#0">' . __( 'Clear Log', 'stripe-payments' ) . '</a>' ) );
 
 	// Email section
 	add_settings_field( 'stripe_receipt_email', __( 'Send Receipt Email From Stripe', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-email', 'AcceptStripePayments-email-section', array( 'field'	 => 'stripe_receipt_email',
@@ -561,6 +578,7 @@ class AcceptStripePayments_Admin {
 		echo "</select>";
 		echo "<p class=\"description\">{$desc}</p>";
 		break;
+	    case 'debug_log_enable':
 	    case 'send_emails_to_seller':
 	    case 'send_emails_to_buyer':
 	    case 'stripe_receipt_email':
@@ -633,6 +651,8 @@ class AcceptStripePayments_Admin {
 	$output[ 'custom_field_mandatory' ] = empty( $input[ 'custom_field_mandatory' ] ) ? 0 : 1;
 
 	$output[ 'is_live' ] = empty( $input[ 'is_live' ] ) ? 0 : 1;
+
+	$output[ 'debug_log_enable' ] = empty( $input[ 'debug_log_enable' ] ) ? 0 : 1;
 
 	$output[ 'dont_save_card' ] = empty( $input[ 'dont_save_card' ] ) ? 0 : 1;
 

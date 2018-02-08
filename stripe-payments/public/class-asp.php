@@ -232,6 +232,7 @@ class AcceptStripePayments {
 	// Check if its a first install
 	$default = array(
 	    'is_live'			 => 0,
+	    'debug_log_enable'		 => 0,
 	    'dont_save_card'		 => 0,
 	    'currency_code'			 => 'USD',
 	    'button_text'			 => __( 'Buy Now', 'stripe-payments' ),
