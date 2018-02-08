@@ -394,7 +394,7 @@ class AcceptStripePayments_Admin {
 	add_settings_field( 'api_secret_key_test', __( 'Test Stripe Secret Key', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-credentials-section', array( 'field' => 'api_secret_key_test', 'desc' => '' ) );
 
 	//Debug section
-	add_settings_field( 'debug_log_enable', __( 'Enable Debug Log', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-debug-section', array( 'field'	 => 'debug_log_enable', 'desc'	 => __( 'Enable debug log.', 'stripe-payments' ) .
+	add_settings_field( 'debug_log_enable', __( 'Enable Debug Log', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-debug-section', array( 'field'	 => 'debug_log_enable', 'desc'	 => __( 'Check this option to enable debug logging. This is useful for troubleshooting post payment failures.', 'stripe-payments' ) .
 	    '<br /><a href="' . admin_url() . '?asp_action=view_log" target="_blank">' . __( 'View Log', 'stripe-payments' ) . '</a> | <a style="color: red;" id="asp_clear_log_btn" href="#0">' . __( 'Clear Log', 'stripe-payments' ) . '</a>' ) );
 
 	// Email section
