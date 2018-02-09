@@ -54,7 +54,7 @@ class AcceptStripePayments_Admin {
     }
 
     function admin_init() {
-	add_action( 'wp_ajax_asp_clear_log', array( 'ASPMain', 'clear_log' ) );
+	add_action( 'wp_ajax_asp_clear_log', array( 'ASP_Debug_Logger', 'clear_log' ) );
 	//view log file
 	if ( isset( $_GET[ 'asp_action' ] ) ) {
 	    if ( $_GET[ 'asp_action' ] === 'view_log' ) {
