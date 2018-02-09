@@ -37,58 +37,6 @@ class ASPMain {
 	}
     }
 
-    static function log( $msg, $success = true, $addon_name = '', $overwrite = false ) {
-	$opts = get_option( 'AcceptStripePayments-settings' );
-	if ( ! $opts[ 'debug_log_enable' ] && ! $overwrite ) {
-	    return true;
-	}
-	$log_file = get_option( 'asp_log_file_name' );
-	if ( ! $log_file ) {
-	    //let's generate new log file name
-	    $log_file = uniqid() . '_debug_log.txt';
-	    update_option( 'asp_log_file_name', $log_file );
-	}
-
-	if ( ! $success ) {
-	    $msg = 'FAILURE: ' . $msg;
-	}
-
-	if ( ! empty( $addon_name ) ) {
-	    $msg = '[' . $addon_name . '] ' . $msg;
-	}
-
-	if ( ! file_put_contents( plugin_dir_path( __FILE__ ) . $log_file, $msg . "\r\n", ( ! $overwrite ? FILE_APPEND : 0 ) ) ) {
-	    return false;
-	}
-
-	return true;
-    }
-
-    static function view_log() {
-	$log_file = get_option( 'asp_log_file_name' );
-	if ( ! file_exists( plugin_dir_path( __FILE__ ) . $log_file ) ) {
-	    if ( ASPMain::log( "Stripe Payments debug log file\r\n\r\n" ) === false ) {
-		wp_die( 'Can\'t write to log file. Check if plugin directory  (' . plugin_dir_path( __FILE__ ) . ') is writeable.' );
-	    };
-	}
-	$logfile = fopen( plugin_dir_path( __FILE__ ) . $log_file, 'rb' );
-	if ( ! $logfile ) {
-	    wp_die( 'Can\'t open log file.' );
-	}
-	header( 'Content-Type: text/plain' );
-	fpassthru( $logfile );
-	die;
-    }
-
-    static function clear_log() {
-	if ( ASPMAIN::log( "Stripe Payments debug log file\r\n\r\n", true, '', true ) !== false ) {
-	    echo '1';
-	} else {
-	    echo 'Can\'t clear log - log file is not writeable.';
-	}
-	wp_die();
-    }
-
 }
 
 $ASPMain = new ASPMain();
@@ -96,10 +44,11 @@ $ASPMain = new ASPMain();
 /* ----------------------------------------------------------------------------*
  * Public-Facing Functionality
  * ---------------------------------------------------------------------------- */
-require_once( plugin_dir_path( __FILE__ ) . 'public/class-asp.php' );
-require_once( plugin_dir_path( __FILE__ ) . 'public/includes/class-shortcode-asp.php' );
+require_once( WP_ASP_PLUGIN_PATH . 'includes/class-debug-logger.php' );
+require_once( WP_ASP_PLUGIN_PATH . 'public/class-asp.php' );
+require_once( WP_ASP_PLUGIN_PATH . 'public/includes/class-shortcode-asp.php' );
 require_once( WP_ASP_PLUGIN_PATH . 'admin/includes/class-products.php' );
-require_once( plugin_dir_path( __FILE__ ) . 'admin/includes/class-order.php' );
+require_once( WP_ASP_PLUGIN_PATH . 'admin/includes/class-order.php' );
 
 /*
  * Register hooks that are fired when the plugin is activated or deactivated.
