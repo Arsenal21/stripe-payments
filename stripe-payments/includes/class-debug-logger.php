@@ -35,7 +35,7 @@ class ASP_Debug_Logger {
 	//Final debug output msg
 	$output = $output . $msg;
 	
-	if (!file_put_contents(plugin_dir_path(__FILE__) . $log_file, $output . "\r\n", (!$overwrite ? FILE_APPEND : 0))) {
+	if (!file_put_contents(WP_ASP_PLUGIN_PATH . $log_file, $output . "\r\n", (!$overwrite ? FILE_APPEND : 0))) {
 	    return false;
 	}
 
@@ -44,12 +44,12 @@ class ASP_Debug_Logger {
 
     static function view_log() {
 	$log_file = get_option('asp_log_file_name');
-	if (!file_exists(plugin_dir_path(__FILE__) . $log_file)) {
+	if (!file_exists(WP_ASP_PLUGIN_PATH . $log_file)) {
 	    if (ASP_Debug_Logger::log("Stripe Payments debug log file\r\n") === false) {
-		wp_die('Can\'t write to log file. Check if plugin directory  (' . plugin_dir_path(__FILE__) . ') is writeable.');
+		wp_die('Can\'t write to log file. Check if plugin directory  (' . WP_ASP_PLUGIN_PATH . ') is writeable.');
 	    };
 	}
-	$logfile = fopen(plugin_dir_path(__FILE__) . $log_file, 'rb');
+	$logfile = fopen(WP_ASP_PLUGIN_PATH . $log_file, 'rb');
 	if (!$logfile) {
 	    wp_die('Can\'t open log file.');
 	}
