@@ -22,14 +22,14 @@ class ASP_Debug_Logger {
 	//Timestamp it
 	$output	 .= '[' . date( 'm/d/Y g:i A' ) . '] - ';
 
-	//Flag failure (if applicable)
-	if ( ! $success ) {
-	    $output .= 'FAILURE: ';
-	}
-
 	//Add the addon's name (if applicable)
 	if ( ! empty( $addon_name ) ) {
 	    $output .= '[' . $addon_name . '] ';
+	}
+
+	//Flag failure (if applicable)
+	if ( ! $success ) {
+	    $output .= 'FAILURE: ';
 	}
 
 	//Final debug output msg
