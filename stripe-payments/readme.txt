@@ -140,7 +140,7 @@ None
 == Changelog ==
 
 = 1.7.7 =
-- Added debug log to the settings.
+- Added debug logging option to the settings.
 
 = 1.7.6 =
 - Fixed PHP warning displayed upon saving product when custom field is not configured (thanks to falcon13 for reporting).
