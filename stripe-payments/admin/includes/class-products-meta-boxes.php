@@ -69,7 +69,7 @@ class asp_products_metaboxes {
 	    <input type="checkbox" name="asp_product_custom_quantity" value="1"<?php echo ($allow_custom_quantity === "1") ? ' checked' : ''; ?>>
 	    <?php echo __( 'Allow users to specify quantity', 'stripe-payments' ); ?>
 	</label>
-	<p class="description"><?php echo __( "When checked, users can enter qunatity they want to buy.", 'stripe-payments' ); ?></p>
+	<p class="description"><?php echo __( "When checked, users can enter quantity they want to buy.", 'stripe-payments' ); ?></p>
 
 
 	<div style="margin-top: 20px;"><label><?php _e( 'Set Quantity:', 'stripe-payments' ); ?>
