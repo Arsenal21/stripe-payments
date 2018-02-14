@@ -16,6 +16,7 @@ class asp_products_metaboxes {
 	add_meta_box( 'asp_upload_meta_box', __( 'Download URL', 'stripe-payments' ), array( $this, 'display_upload_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 	add_meta_box( 'asp_thumbnail_meta_box', __( 'Product Thumbnail (optional)', 'stripe-payments' ), array( $this, 'display_thumbnail_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 	add_meta_box( 'asp_address_meta_box', __( 'Collect Address', 'stripe-payments' ), array( $this, 'display_address_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
+	add_meta_box( 'asp_thankyou_page_meta_box', __( 'Thank You Page URL', 'stripe-payments' ), array( $this, 'display_thankyou_page_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 	add_meta_box( 'asp_button_text_meta_box', __( 'Button Text', 'stripe-payments' ), array( $this, 'display_button_text_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 	add_meta_box( 'asp_custom_field_meta_box', __( 'Custom Field', 'stripe-payments' ), array( $this, 'display_custom_field_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 	add_meta_box( 'asp_shortcode_meta_box', __( 'Shortcode', 'stripe-payments' ), array( $this, 'display_shortcode_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
@@ -190,6 +191,17 @@ class asp_products_metaboxes {
 	    <p></p>
 	    <label><input type="radio" name="asp_product_collect_shipping_addr" value="0"<?php echo ($collect_shipping_addr === "0") ? ' checked' : ''; ?>><?php echo __( 'Collect Billing Address Only', 'stripe-payments' ); ?> </label>
 	</div>
+	<?php
+    }
+
+    function display_thankyou_page_meta_box( $post ) {
+	$current_val = get_post_meta( $post->ID, 'asp_product_thankyou_page', true );
+	?>
+	<input type="text" name="asp_product_thankyou_page" style="width: 100%;" value="<?php echo ! empty( $current_val ) ? $current_val : ''; ?>">
+	<p class="description"><?php _e( 'Enter Thank You page URL. Leave it blank if you want ot use default Thank You page.', 'stripe-payments' ); ?>
+	    <br />
+	    <?php _e( 'You can read how to customize messages on Thank You page <a href="https://stripe-plugins.com/customize-the-thank-page-message-of-stripe-payments-plugin/" target="_blank">in the documentation</a>.', 'stripe-payments' ); ?>
+	</p>
 	<?php
     }
 

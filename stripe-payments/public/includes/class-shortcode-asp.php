@@ -137,6 +137,7 @@ class AcceptStripePaymentsShortcode {
 	    $custom_field = intval( $custom_field );
 	}
 
+	$thankyou_page = get_post_meta( $id, 'asp_product_thankyou_page', true );
 
 	//Let's only output buy button if we're in the loop. Since the_content hook could be called several times (for example, by a plugin like Yoast SEO for its purposes), we should only output the button only when it's actually needed.
 	if ( ! isset( $atts[ 'in_the_loop' ] ) || $atts[ 'in_the_loop' ] === "1" ) {
@@ -151,6 +152,7 @@ class AcceptStripePaymentsShortcode {
 		'button_text'		 => $button_text,
 		'description'		 => get_post_meta( $id, 'asp_product_description', true ),
 		'url'			 => $url,
+		'thankyou_page_url'	 => $thankyou_page,
 		'billing_address'	 => get_post_meta( $id, 'asp_product_collect_billing_addr', true ),
 		'shipping_address'	 => get_post_meta( $id, 'asp_product_collect_shipping_addr', true ),
 		'custom_field'		 => $custom_field,
