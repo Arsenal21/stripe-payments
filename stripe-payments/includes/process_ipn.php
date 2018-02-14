@@ -3,11 +3,11 @@
 function asp_ipn_completed( $errMsg = '' ) {
     if ( ! empty( $errMsg ) ) {
 	$aspData		 = array( 'error_msg' => $errMsg );
-	ASP_Debug_Logger::log( $errMsg, false);//Log the error	
+	ASP_Debug_Logger::log( $errMsg . "\r\n", false ); //Log the error
 	$_SESSION[ 'asp_data' ]	 = $aspData;
-	
+
 	//send email to notify site admin (if option enabled)
-	$opt			 = get_option( 'AcceptStripePayments-settings' );
+	$opt = get_option( 'AcceptStripePayments-settings' );
 	if ( isset( $opt[ 'send_email_on_error' ] ) && $opt[ 'send_email_on_error' ] ) {
 	    $to	 = $opt[ 'send_email_on_error_to' ];
 	    $from	 = get_option( 'admin_email' );
@@ -20,7 +20,7 @@ function asp_ipn_completed( $errMsg = '' ) {
 	    wp_mail( $to, $subj, $body, $headers );
 	}
     } else {
-	ASP_Debug_Logger::log( 'Payment has been processed successfully.' );
+	ASP_Debug_Logger::log( 'Payment has been processed successfully.' . "\r\n" );
     }
     global $aspRedirectURL;
     wp_redirect( $aspRedirectURL );
@@ -33,10 +33,11 @@ $asp_class = AcceptStripePayments::get_instance();
 
 global $aspRedirectURL;
 
-ASP_Debug_Logger::log('Payment processing started.' );
+ASP_Debug_Logger::log( 'Payment processing started.' );
 
 $aspRedirectURL = (isset( $_POST[ 'thankyou_page_url' ] ) && empty( $_POST[ 'thankyou_page_url' ] )) ? $asp_class->get_setting( 'checkout_url' ) : base64_decode( $_POST[ 'thankyou_page_url' ] );
 
+ASP_Debug_Logger::log( 'Triggering hook for addons to process posted data if needed.' );
 $process_result = apply_filters( 'asp_before_payment_processing', array(), $_POST );
 
 if ( isset( $process_result ) && ! empty( $process_result ) ) {
@@ -46,11 +47,13 @@ if ( isset( $process_result ) && ! empty( $process_result ) ) {
 }
 
 //Check nonce
+ASP_Debug_Logger::log( 'Checking received data.' );
 $nonce = $_REQUEST[ '_wpnonce' ];
 if ( ! wp_verify_nonce( $nonce, 'stripe_payments' ) ) {
     //nonce check failed
     asp_ipn_completed( "Nonce check failed." );
 }
+
 if ( ! isset( $_POST[ 'item_name' ] ) || empty( $_POST[ 'item_name' ] ) ) {
     asp_ipn_completed( 'Invalid Item name' );
 }
@@ -79,6 +82,7 @@ $button_key		 = $_POST[ 'stripeButtonKey' ];
 $reported_price		 = $_POST[ 'stripeItemPrice' ];
 
 //$item_price = sanitize_text_field($_POST['item_price']);
+ASP_Debug_Logger::log( 'Checking price consistency.' );
 $calculated_button_key = md5( htmlspecialchars_decode( $_POST[ 'item_name' ] ) . $reported_price );
 
 if ( $button_key !== $calculated_button_key ) {
@@ -110,6 +114,8 @@ if ( $item_custom_quantity !== false ) { //custom quantity
 }
 
 $amount = ($item_quantity !== "NA" ? ($amount * $item_quantity) : $amount);
+
+ASP_Debug_Logger::log( 'Getting API keys and trying to create a charge.' );
 
 if ( $asp_class->get_setting( 'is_live' ) == 0 ) {
     //use test keys
@@ -214,6 +220,8 @@ try {
     $item_url		 = apply_filters( 'asp_item_url_process', $item_url, $post_data );
     $item_url		 = base64_decode( $item_url );
     $post_data[ 'item_url' ] = $item_url;
+
+    ASP_Debug_Logger::log( 'Firing post-payment hooks.' );
 
     //Action hook with the checkout post data parameters.
     do_action( 'asp_stripe_payment_completed', $post_data, $charge );
