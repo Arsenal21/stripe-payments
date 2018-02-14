@@ -128,43 +128,8 @@ function asp_init_handler() {
 	    wp_redirect( get_admin_url() . 'edit.php?post_type=' . ASPMain::$products_slug . '&page=stripe-payments-settings', 301 );
 	    exit;
 	}
-
 	//products meta boxes handler
-	//TODO: only require this file if user is on add\edit product page
 	require_once(WP_ASP_PLUGIN_PATH . 'admin/includes/class-products-meta-boxes.php');
-
-	//products post save action
-	add_action( 'save_post_' . ASPMain::$products_slug, 'asp_save_product_handler', 10, 3 );
-    }
-}
-
-function asp_save_product_handler( $post_id, $post, $update ) {
-    if ( ! isset( $_POST[ 'action' ] ) ) {
-	//this is probably not edit or new post creation event
-	return;
-    }
-    if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
-	return;
-    }
-    if ( isset( $post_id ) ) {
-	update_post_meta( $post_id, 'asp_product_price', sanitize_text_field( $_POST[ 'asp_product_price' ] ) );
-	update_post_meta( $post_id, 'asp_product_currency', sanitize_text_field( $_POST[ 'asp_product_currency' ] ) );
-	update_post_meta( $post_id, 'asp_product_quantity', sanitize_text_field( $_POST[ 'asp_product_quantity' ] ) );
-	update_post_meta( $post_id, 'asp_product_custom_quantity', isset( $_POST[ 'asp_product_custom_quantity' ] ) ? "1" : false  );
-	update_post_meta( $post_id, 'asp_product_custom_field', isset( $_POST[ 'asp_product_custom_field' ] ) ? sanitize_text_field( $_POST[ 'asp_product_custom_field' ] ) : "0"  );
-	update_post_meta( $post_id, 'asp_product_button_text', sanitize_text_field( $_POST[ 'asp_product_button_text' ] ) );
-	update_post_meta( $post_id, 'asp_product_description', sanitize_text_field( $_POST[ 'asp_product_description' ] ) );
-	update_post_meta( $post_id, 'asp_product_upload', esc_url( $_POST[ 'asp_product_upload' ] ) );
-	update_post_meta( $post_id, 'asp_product_thumbnail', esc_url( $_POST[ 'asp_product_thumbnail' ] ) );
-	update_post_meta( $post_id, 'asp_product_thankyou_page', isset( $_POST[ 'asp_product_thankyou_page' ] ) && ! empty( $_POST[ 'asp_product_thankyou_page' ] ) ? esc_url( $_POST[ 'asp_product_thankyou_page' ] ) : ''  );
-	$shipping_addr = false;
-	if ( isset( $_POST[ 'asp_product_collect_shipping_addr' ] ) ) {
-	    $shipping_addr = $_POST[ 'asp_product_collect_shipping_addr' ];
-	}
-	update_post_meta( $post_id, 'asp_product_collect_shipping_addr', $shipping_addr );
-	update_post_meta( $post_id, 'asp_product_collect_billing_addr', isset( $_POST[ 'asp_product_collect_billing_addr' ] ) ? "1" : false  );
-
-	do_action( 'asp_save_product_handler', $post_id, $post, $update );
     }
 }
 
