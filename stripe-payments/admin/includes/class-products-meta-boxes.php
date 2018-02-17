@@ -19,7 +19,7 @@ class asp_products_metaboxes {
 	add_meta_box( 'asp_thumbnail_meta_box', __( 'Product Thumbnail (optional)', 'stripe-payments' ), array( $this, 'display_thumbnail_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 	add_meta_box( 'asp_address_meta_box', __( 'Collect Address', 'stripe-payments' ), array( $this, 'display_address_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 	add_meta_box( 'asp_thankyou_page_meta_box', __( 'Thank You Page URL', 'stripe-payments' ), array( $this, 'display_thankyou_page_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
-	add_meta_box( 'asp_button_text_meta_box', __( 'Button Text', 'stripe-payments' ), array( $this, 'display_button_text_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
+	add_meta_box( 'asp_appearance_meta_box', __( 'Appearance', 'stripe-payments' ), array( $this, 'display_appearance_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 	add_meta_box( 'asp_custom_field_meta_box', __( 'Custom Field', 'stripe-payments' ), array( $this, 'display_custom_field_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 	add_meta_box( 'asp_shortcode_meta_box', __( 'Shortcode', 'stripe-payments' ), array( $this, 'display_shortcode_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 
@@ -207,11 +207,21 @@ class asp_products_metaboxes {
 	<?php
     }
 
-    function display_button_text_meta_box( $post ) {
-	$current_val = get_post_meta( $post->ID, 'asp_product_button_text', true );
+    function display_appearance_meta_box( $post ) {
+	$button_txt	 = get_post_meta( $post->ID, 'asp_product_button_text', true );
+	$button_class	 = get_post_meta( $post->ID, 'asp_product_button_class', true );
+	$button_only	 = get_post_meta( $post->ID, 'asp_product_button_only', true );
 	?>
-	<input type="text" name="asp_product_button_text" size="50" value="<?php echo $current_val; ?>">
+	<label><?php _e( 'Button Text', 'stripe-payments' ); ?></label>
+	<br/>
+	<input type="text" name="asp_product_button_text" size="50" value="<?php echo $button_txt; ?>">
 	<p class="description"><?php _e( 'Specify text to be displayed on the button. Leave it blank to use button text specified on settings page.', 'stripe-payments' ); ?></p>
+	<label><?php _e( 'Button CSS Class', 'stripe-payments' ); ?></label>
+	<br/>
+	<input type="text" name="asp_product_button_class" size="50" value="<?php echo $button_class; ?>">
+	<p class="description"><?php _e( 'CSS class to be assigned to the button. This is used for styling purposes. You can get additional information <a href="https://www.tipsandtricks-hq.com/customizing-the-payment-button-styles-of-the-stripe-payments-plugin-9071" target="_blank">in this tutorial</a>.', 'stripe-payments' ); ?></p>
+	<label><input type="checkbox" name="asp_product_button_only" value="1"<?php echo ($button_only == 1) ? " checked" : ""; ?>> <?php _e( 'Show Button Only', 'stripe-payments' ); ?></label>
+	<p class="description"><?php _e( 'Check this box if you just want to show the button only without any additional product info.', 'stripe-payments' ); ?></p>
 	<?php
     }
 
@@ -261,6 +271,8 @@ class asp_products_metaboxes {
 	    update_post_meta( $post_id, 'asp_product_custom_quantity', isset( $_POST[ 'asp_product_custom_quantity' ] ) ? "1" : false  );
 	    update_post_meta( $post_id, 'asp_product_custom_field', isset( $_POST[ 'asp_product_custom_field' ] ) ? sanitize_text_field( $_POST[ 'asp_product_custom_field' ] ) : "0"  );
 	    update_post_meta( $post_id, 'asp_product_button_text', sanitize_text_field( $_POST[ 'asp_product_button_text' ] ) );
+	    update_post_meta( $post_id, 'asp_product_button_class', sanitize_text_field( $_POST[ 'asp_product_button_class' ] ) );
+	    update_post_meta( $post_id, 'asp_product_button_only', isset( $_POST[ 'asp_product_button_only' ] ) ? 1 : 0  );
 	    update_post_meta( $post_id, 'asp_product_description', sanitize_text_field( $_POST[ 'asp_product_description' ] ) );
 	    update_post_meta( $post_id, 'asp_product_upload', esc_url( $_POST[ 'asp_product_upload' ] ) );
 	    update_post_meta( $post_id, 'asp_product_thumbnail', esc_url( $_POST[ 'asp_product_thumbnail' ] ) );

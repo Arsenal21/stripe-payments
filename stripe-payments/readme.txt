@@ -140,6 +140,7 @@ None
 == Changelog ==
 
 = 1.7.7 =
+- Added "Button CSS Class" and "Show Button Only" parameters to product edit page.
 - Added "Thank You Page URL" field to product edit page.
 - Added debug logging option to the settings.
 

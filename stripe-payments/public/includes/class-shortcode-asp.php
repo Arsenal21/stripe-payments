@@ -127,7 +127,11 @@ class AcceptStripePaymentsShortcode {
 	$price	 = get_post_meta( $id, 'asp_product_price', true );
 	$buy_btn = '';
 
-	$class = isset( $atts[ 'class' ] ) ? $atts[ 'class' ] : 'asp_product_buy_btn ' . $button_color;
+	$button_class = get_post_meta( $id, 'asp_product_button_class', true );
+
+	$class = ! empty( $button_class ) ? $button_class : 'asp_product_buy_btn ' . $button_color;
+
+	$class = isset( $atts[ 'class' ] ) ? $atts[ 'class' ] : $class;
 
 	$custom_field = get_post_meta( $id, 'asp_product_custom_field', true );
 
@@ -162,7 +166,9 @@ class AcceptStripePaymentsShortcode {
 	    $buy_btn	 = $this->shortcode_accept_stripe_payment( $sc_params );
 	}
 
-	if ( isset( $atts[ "fancy" ] ) && $atts[ "fancy" ] == '0' ) {
+	$button_only = get_post_meta( $id, 'asp_product_button_only', true );
+
+	if ( (isset( $atts[ "fancy" ] ) && $atts[ "fancy" ] == '0') || $button_only == 1 ) {
 	    //Just show the stripe payment button (no fancy template)
 	    $tpl				 = '<div class="asp_product_buy_button">' . $buy_btn . '</div>';
 	    $tpl				 = "<link rel='stylesheet' href='" . WP_ASP_PLUGIN_URL . '/public/views/templates/default/style.css' . "' type='text/css' media='all' />" . $tpl;
