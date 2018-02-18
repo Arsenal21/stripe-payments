@@ -46,6 +46,7 @@ https://www.youtube.com/watch?v=upWqk069Khg
 * Ability to collect billing and shipping address of the customer.
 * Ability to specify a logo or thumbnail image for the item that will get shown in the stripe payment window.
 * Ability to customize the Stripe buy now button text from the shortcode.
+* Ability to customize the Stripe buy now button appearance using custom CSS code.
 * Ability to specify a custom description for the item/product (this info is captured with the order).
 * Option to configure a notification email to be sent to the buyer and seller after the purchase.
 * There is an option to allow the customer to enter a custom price amount for your product or service (customer pays what they want).
