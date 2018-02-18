@@ -212,7 +212,7 @@ class AcceptStripePayments_Admin {
 		<tr data-tabid="2">
 		    <th scope="row">Button CSS Class</th>
 		    <td><input type="text" name="asp_css_class" id="asp_css_class" class="asp-input-wide">
-			<p class="description">CSS class to be assigned to the button. This is used for styling purposes. You can get additional information <a href="https://www.tipsandtricks-hq.com/customizing-the-payment-button-styles-of-the-stripe-payments-plugin-9071" target="_blank">in this tutorial</a>.</p>
+			<p class="description">CSS class to be assigned to the button. This is used for styling purposes. You can get additional information <a href="https://stripe-plugins.com/customize-stripe-payment-button-appearance-using-css/" target="_blank">in this tutorial</a>.</p>
 		    </td>
 		</tr>
 	    </table>

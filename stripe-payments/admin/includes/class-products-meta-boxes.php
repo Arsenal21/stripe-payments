@@ -219,7 +219,7 @@ class asp_products_metaboxes {
 	<label><?php _e( 'Button CSS Class', 'stripe-payments' ); ?></label>
 	<br/>
 	<input type="text" name="asp_product_button_class" size="50" value="<?php echo $button_class; ?>">
-	<p class="description"><?php _e( 'CSS class to be assigned to the button. This is used for styling purposes. You can get additional information <a href="https://www.tipsandtricks-hq.com/customizing-the-payment-button-styles-of-the-stripe-payments-plugin-9071" target="_blank">in this tutorial</a>.', 'stripe-payments' ); ?></p>
+	<p class="description"><?php _e( 'CSS class to be assigned to the button. This is used for styling purposes. You can get additional information <a href="https://stripe-plugins.com/customize-stripe-payment-button-appearance-using-css/" target="_blank">in this tutorial</a>.', 'stripe-payments' ); ?></p>
 	<label><input type="checkbox" name="asp_product_button_only" value="1"<?php echo ($button_only == 1) ? " checked" : ""; ?>> <?php _e( 'Show Button Only', 'stripe-payments' ); ?></label>
 	<p class="description"><?php _e( 'Check this box if you just want to show the button only without any additional product info.', 'stripe-payments' ); ?></p>
 	<?php
