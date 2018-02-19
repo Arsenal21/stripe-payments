@@ -274,7 +274,6 @@ class AcceptStripePaymentsShortcode {
 	    //let's apply tax if needed
 	    if ( ! empty( $tax ) ) {
 		$tax_amount	 = round( ($priceInCents * $tax / 100 ) );
-		var_dump( $tax_amount );
 		$priceInCents	 = $priceInCents + $tax_amount;
 	    }
 
