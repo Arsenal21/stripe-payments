@@ -12,8 +12,7 @@ class asp_products_metaboxes {
     function add_meta_boxes() {
 	add_meta_box( 'wsp_content', __( 'Description', 'stripe-payments' ), array( $this, 'display_description_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 	add_meta_box( 'asp_short_description_meta_box', __( 'Short Description', 'stripe-payments' ), array( $this, 'display_short_description_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
-	add_meta_box( 'asp_price_meta_box', __( 'Price', 'stripe-payments' ), array( $this, 'display_price_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
-	add_meta_box( 'asp_currency_meta_box', __( 'Currency', 'stripe-payments' ), array( $this, 'display_currency_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
+	add_meta_box( 'asp_price_meta_box', __( 'Price & Currency', 'stripe-payments' ), array( $this, 'display_price_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 	add_meta_box( 'asp_quantity_meta_box', __( 'Quantity', 'stripe-payments' ), array( $this, 'display_quantity_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 	add_meta_box( 'asp_upload_meta_box', __( 'Download URL', 'stripe-payments' ), array( $this, 'display_upload_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 	add_meta_box( 'asp_thumbnail_meta_box', __( 'Product Thumbnail (optional)', 'stripe-payments' ), array( $this, 'display_thumbnail_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
@@ -41,20 +40,19 @@ class asp_products_metaboxes {
     }
 
     function display_price_meta_box( $post ) {
-	$current_val = get_post_meta( $post->ID, 'asp_product_price', true );
+	$current_price	 = get_post_meta( $post->ID, 'asp_product_price', true );
+	$current_curr	 = get_post_meta( $post->ID, 'asp_product_currency', true );
 	?>
-	<input type="text" name="asp_product_price" value="<?php echo $current_val; ?>">
+	<label><?php _e( 'Price', 'stripe-payments' ); ?></label>
+	<br/>
+	<input type="text" name="asp_product_price" value="<?php echo $current_price; ?>">
 	<p class="description"><?php
 	    echo __( 'Item price. Numbers only, no need to put currency symbol. Example: 99.95', 'stripe-payments' ) .
 	    '<br>' . __( 'Leave it blank if you want your customers to enter the amount themselves (e.g. for donation button).', 'stripe-payments' );
 	    ?></p>
-	<?php
-    }
-
-    function display_currency_meta_box( $post ) {
-	$current_val = get_post_meta( $post->ID, 'asp_product_currency', true );
-	?>
-	<select name="asp_product_currency" id="asp_currency_select"><?php echo AcceptStripePayments_Admin::get_currency_options( $current_val ); ?>></select>
+	<label><?php _e( 'Currency', 'stripe-payments' ); ?></label>
+	<br/>
+	<select name="asp_product_currency" id="asp_currency_select"><?php echo AcceptStripePayments_Admin::get_currency_options( $current_curr ); ?>></select>
 	<p class = "description"><?php echo __( 'Leave "(Default)" option selected if you want to use currency specified on settings page.', 'stripe-payments' ); ?></p>
 	<?php
     }
