@@ -6,6 +6,17 @@ stripehandler.log = (function ($mod, $msg) {
     }
 });
 
+stripehandler.apply_tax_and_shipping = (function (amount, data) {
+    if (data.tax !== 0) {
+	var tax = Math.round(amount * parseInt(data.tax) / 100);
+	amount = parseInt(amount) + parseInt(tax);
+    }
+    if (data.shipping !== 0) {
+	amount = amount + parseInt(data.shipping);
+    }
+    return amount;
+});
+
 jQuery(document).ready(function () {
     jQuery('input[data-stripe-button-uid]').each(function (ind, obj) {
 	var uid = jQuery(obj).data('stripeButtonUid');
@@ -31,6 +42,7 @@ function wp_asp_validate_custom_amount(data) {
 	    amount = Math.round(amount * 100);
 	}
     }
+    amount = stripehandler.apply_tax_and_shipping(amount, data);
     return amount;
 }
 
@@ -138,14 +150,6 @@ function wp_asp_add_stripe_handler(data) {
 	    var amount = wp_asp_validate_custom_amount(data);
 	    if (amount === false) {
 		return false;
-	    }
-	    var clean_amount = amount;
-	    if (data.tax !== 0) {
-		var tax = Math.round(amount * parseInt(data.tax) / 100);
-		amount = parseInt(amount) + parseInt(tax);
-	    }
-	    if (data.shipping !== 0) {
-		amount = amount + parseInt(data.shipping);
 	    }
 	}
 
