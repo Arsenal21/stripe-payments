@@ -141,6 +141,7 @@ None
 == Changelog ==
 
 = 1.7.8 =
+- Added Shipping and Tax support for products.
 - Merged Price and Currency sections on product edit page.
 
 = 1.7.7 =

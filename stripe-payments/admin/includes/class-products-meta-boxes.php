@@ -13,6 +13,7 @@ class asp_products_metaboxes {
 	add_meta_box( 'wsp_content', __( 'Description', 'stripe-payments' ), array( $this, 'display_description_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 	add_meta_box( 'asp_short_description_meta_box', __( 'Short Description', 'stripe-payments' ), array( $this, 'display_short_description_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 	add_meta_box( 'asp_price_meta_box', __( 'Price & Currency', 'stripe-payments' ), array( $this, 'display_price_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
+	add_meta_box( 'asp_shipping_tax_meta_box', __( 'Shipping & Tax', 'stripe-payments' ), array( $this, 'display_shipping_tax_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 	add_meta_box( 'asp_quantity_meta_box', __( 'Quantity', 'stripe-payments' ), array( $this, 'display_quantity_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 	add_meta_box( 'asp_upload_meta_box', __( 'Download URL', 'stripe-payments' ), array( $this, 'display_upload_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 	add_meta_box( 'asp_thumbnail_meta_box', __( 'Product Thumbnail (optional)', 'stripe-payments' ), array( $this, 'display_thumbnail_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
@@ -54,6 +55,31 @@ class asp_products_metaboxes {
 	<br/>
 	<select name="asp_product_currency" id="asp_currency_select"><?php echo AcceptStripePayments_Admin::get_currency_options( $current_curr ); ?>></select>
 	<p class = "description"><?php echo __( 'Leave "(Default)" option selected if you want to use currency specified on settings page.', 'stripe-payments' ); ?></p>
+	<?php
+    }
+
+    function display_shipping_tax_meta_box( $post ) {
+	$current_shipping	 = get_post_meta( $post->ID, 'asp_product_shipping', true );
+	$current_tax		 = get_post_meta( $post->ID, 'asp_product_tax', true );
+	?>
+	<label><?php _e( 'Shipping Cost', 'stripe-payments' ); ?></label>
+	<br/>
+	<input type="text" name="asp_product_shipping" value="<?php echo $current_shipping; ?>">
+	<p class="description">
+	    <?php
+	    echo __( 'Numbers only, no need to put currency symbol. Example: 99.95', 'stripe-payments' ) .
+	    '<br>' . __( 'Leave it blank if you are not shipping your product or not charging additional shipping costs.', 'stripe-payments' );
+	    ?>
+	</p>
+	<label><?php _e( 'Tax (%)', 'stripe-payments' ); ?></label>
+	<br/>
+	<input type="text" name="asp_product_tax" value="<?php echo $current_tax; ?>">
+	<p class = "description">
+	    <?php
+	    echo __( 'Enter tax (in percents) which should be added to product price during purchase.', 'stripe-payments' ) .
+	    '<br>' . __( 'Leave it blank if you don\'t want to apply tax.', 'stripe-payments' );
+	    ?>
+	</p>
 	<?php
     }
 
@@ -265,6 +291,8 @@ class asp_products_metaboxes {
 	if ( isset( $post_id ) ) {
 	    update_post_meta( $post_id, 'asp_product_price', sanitize_text_field( $_POST[ 'asp_product_price' ] ) );
 	    update_post_meta( $post_id, 'asp_product_currency', sanitize_text_field( $_POST[ 'asp_product_currency' ] ) );
+	    update_post_meta( $post_id, 'asp_product_shipping', sanitize_text_field( $_POST[ 'asp_product_shipping' ] ) );
+	    update_post_meta( $post_id, 'asp_product_tax', sanitize_text_field( $_POST[ 'asp_product_tax' ] ) );
 	    update_post_meta( $post_id, 'asp_product_quantity', sanitize_text_field( $_POST[ 'asp_product_quantity' ] ) );
 	    update_post_meta( $post_id, 'asp_product_custom_quantity', isset( $_POST[ 'asp_product_custom_quantity' ] ) ? "1" : false  );
 	    update_post_meta( $post_id, 'asp_product_custom_field', isset( $_POST[ 'asp_product_custom_field' ] ) ? sanitize_text_field( $_POST[ 'asp_product_custom_field' ] ) : "0"  );
