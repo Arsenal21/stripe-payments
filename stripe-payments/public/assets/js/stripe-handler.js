@@ -216,9 +216,16 @@ function wp_asp_add_stripe_handler(data) {
 	    return false;
 	}
 
-	data.handler.open({
-	    amount: amount,
-	    description: description,
-	});
+	if (typeof (amount) === "undefined") {
+	    data.handler.open({
+		description: description,
+	    });
+	} else {
+	    data.handler.open({
+		amount: amount,
+		description: description,
+	    });
+	}
+
     });
 }
