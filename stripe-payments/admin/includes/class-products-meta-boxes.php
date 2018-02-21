@@ -154,7 +154,8 @@ class asp_products_metaboxes {
     }
 
     public function display_thumbnail_meta_box( $post ) {
-	$current_val = get_post_meta( $post->ID, 'asp_product_thumbnail', true );
+	$current_val		 = get_post_meta( $post->ID, 'asp_product_thumbnail', true );
+	$current_no_popup_thumb	 = get_post_meta( $post->ID, 'asp_product_no_popup_thumbnail', true );
 	?>
 	<div>
 	    <input id="asp_product_thumbnail" type="text" style="width: 100%" name="asp_product_thumbnail" value="<?php echo esc_attr( $current_val ); ?>" placeholder="http://..." />
@@ -174,6 +175,10 @@ class asp_products_metaboxes {
 		<?php } ?>
 	    </span>
 	</div>
+	<label><input type="checkbox" name="asp_product_no_popup_thumbnail" value="1"<?php echo ($current_no_popup_thumb === "1") ? ' checked' : ''; ?>/> <?php _e( "Don't use product thumbnail in Stripe pop-up", 'stripe-payments' ); ?></label>
+	<p class="description">
+	    <?php _e( "When enabled, product thumbnail is not showing in Stripe popup.", 'stripe-payments' ); ?>
+	</p>
 	<script>
 	    jQuery(document).ready(function ($) {
 		var asp_selectFileFrame;
@@ -302,6 +307,7 @@ class asp_products_metaboxes {
 	    update_post_meta( $post_id, 'asp_product_description', sanitize_text_field( $_POST[ 'asp_product_description' ] ) );
 	    update_post_meta( $post_id, 'asp_product_upload', esc_url( $_POST[ 'asp_product_upload' ] ) );
 	    update_post_meta( $post_id, 'asp_product_thumbnail', esc_url( $_POST[ 'asp_product_thumbnail' ] ) );
+	    update_post_meta( $post_id, 'asp_product_no_popup_thumbnail', isset( $_POST[ 'asp_product_no_popup_thumbnail' ] ) ? "1" : false  );
 	    update_post_meta( $post_id, 'asp_product_thankyou_page', isset( $_POST[ 'asp_product_thankyou_page' ] ) && ! empty( $_POST[ 'asp_product_thankyou_page' ] ) ? esc_url( $_POST[ 'asp_product_thankyou_page' ] ) : ''  );
 	    $shipping_addr = false;
 	    if ( isset( $_POST[ 'asp_product_collect_shipping_addr' ] ) ) {

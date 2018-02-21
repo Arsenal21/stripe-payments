@@ -154,6 +154,11 @@ class AcceptStripePaymentsShortcode {
 	if ( ! $tax ) {
 	    $tax = 0;
 	}
+	if ( get_post_meta( $id, 'asp_product_no_popup_thumbnail', true ) != 1 ) {
+	    $item_logo = get_post_meta( $id, 'asp_product_thumbnail', true );
+	} else {
+	    $item_logo = '';
+	}
 
 	//Let's only output buy button if we're in the loop. Since the_content hook could be called several times (for example, by a plugin like Yoast SEO for its purposes), we should only output the button only when it's actually needed.
 	if ( ! isset( $atts[ 'in_the_loop' ] ) || $atts[ 'in_the_loop' ] === "1" ) {
@@ -171,6 +176,7 @@ class AcceptStripePaymentsShortcode {
 		'description'		 => get_post_meta( $id, 'asp_product_description', true ),
 		'url'			 => $url,
 		'thankyou_page_url'	 => $thankyou_page,
+		'item_logo'		 => $item_logo,
 		'billing_address'	 => get_post_meta( $id, 'asp_product_collect_billing_addr', true ),
 		'shipping_address'	 => get_post_meta( $id, 'asp_product_collect_shipping_addr', true ),
 		'custom_field'		 => $custom_field,

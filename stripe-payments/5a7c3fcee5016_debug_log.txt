@@ -1,0 +1,18 @@
+[02/09/2018 11:52 PM] - Stripe Payments debug log reset
+
+[02/14/2018 12:41 PM] - Payment processing started.
+[02/14/2018 12:41 PM] - Triggering hook for addons to process posted data if needed.
+[02/14/2018 12:41 PM] - Checking received data.
+[02/14/2018 12:41 PM] - Checking price consistency.
+[02/14/2018 12:41 PM] - Getting API keys and trying to create a charge.
+[02/14/2018 12:41 PM] - Firing post-payment hooks.
+[02/14/2018 12:41 PM] - [MailChimp] Starting MailChimp signup process.
+[02/14/2018 12:41 PM] - [MailChimp] FAILURE: Product ID not set or invalid. This is normal message if product has no MailChimp list specified.
+[02/14/2018 12:41 PM] - Payment has been processed successfully.
+
+[02/14/2018 12:42 PM] - Payment processing started.
+[02/14/2018 12:42 PM] - Triggering hook for addons to process posted data if needed.
+[02/14/2018 12:42 PM] - Checking received data.
+[02/14/2018 12:42 PM] - Checking price consistency.
+[02/14/2018 12:42 PM] - FAILURE: Button Key mismatch. Expected 5f4726cdc1b8b6f905, calculated: 8cbcf152fbd679fec8fe4cf27112f808
+

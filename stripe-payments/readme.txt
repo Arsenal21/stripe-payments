@@ -143,6 +143,7 @@ None
 = 1.7.8 =
 - Added Shipping and Tax support for products.
 - Merged Price and Currency sections on product edit page.
+- Product thumbnail is now displayed in Stripe pop-up. This can be disabled using corresponding option on product edit page.
 
 = 1.7.7 =
 - Added "Button CSS Class" and "Show Button Only" parameters to product edit page.
