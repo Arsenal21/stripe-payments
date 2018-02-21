@@ -238,6 +238,7 @@ class AcceptStripePaymentsShortcode {
     function shortcode_accept_stripe_payment( $atts ) {
 
 	extract( shortcode_atts( array(
+	    'product_id'		 => 0,
 	    'name'			 => '',
 	    'class'			 => 'stripe-button-el', //default Stripe button class
 	    'price'			 => '0',
@@ -347,6 +348,7 @@ class AcceptStripePaymentsShortcode {
 	}
 
 	$data = array(
+	    'product_id'		 => $product_id,
 	    'button_key'		 => $button_key,
 	    'allowRememberMe'	 => $allowRememberMe,
 	    'quantity'		 => $quantity,
@@ -537,6 +539,9 @@ class AcceptStripePaymentsShortcode {
 	    "</div>";
 	}
 	if ( $data ) {
+	    if ( $data[ 'product_id' ] !== 0 ) {
+		$output .= "<input type='hidden' id='stripeProductId_{$data[ 'uniq_id' ]}' name='stripeProductId' value='{$data[ 'product_id' ]}' />";
+	    }
 	    $output .= "<input type='hidden' id='stripeToken_{$data[ 'uniq_id' ]}' name='stripeToken' />"
 	    . "<input type='hidden' id='stripeTokenType_{$data[ 'uniq_id' ]}' name='stripeTokenType' />"
 	    . "<input type='hidden' id='stripeEmail_{$data[ 'uniq_id' ]}' name='stripeEmail' />"

@@ -454,4 +454,19 @@ class AcceptStripePayments {
 	return $out;
     }
 
+    static function apply_tax( $price, $tax ) {
+	if ( ! empty( $tax ) ) {
+	    $tax_amount	 = round( ($price * $tax / 100 ), 2 );
+	    $price		 += $tax_amount;
+	}
+	return $price;
+    }
+
+    static function apply_shipping( $price, $shipping ) {
+	if ( ! empty( $shipping ) ) {
+	    $price += $shipping;
+	}
+	return $price;
+    }
+
 }

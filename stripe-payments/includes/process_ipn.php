@@ -54,42 +54,99 @@ if ( ! wp_verify_nonce( $nonce, 'stripe_payments' ) ) {
     asp_ipn_completed( "Nonce check failed." );
 }
 
-if ( ! isset( $_POST[ 'item_name' ] ) || empty( $_POST[ 'item_name' ] ) ) {
-    asp_ipn_completed( 'Invalid Item name' );
-}
 if ( ! isset( $_POST[ 'stripeToken' ] ) || empty( $_POST[ 'stripeToken' ] ) ) {
     asp_ipn_completed( 'Invalid Stripe Token' );
 }
 if ( ! isset( $_POST[ 'stripeTokenType' ] ) || empty( $_POST[ 'stripeTokenType' ] ) ) {
     asp_ipn_completed( 'Invalid Stripe Token Type' );
 }
+
 if ( ! isset( $_POST[ 'stripeEmail' ] ) || empty( $_POST[ 'stripeEmail' ] ) ) {
     asp_ipn_completed( 'Invalid Request' );
 }
-if ( ! isset( $_POST[ 'currency_code' ] ) || empty( $_POST[ 'currency_code' ] ) ) {
-    asp_ipn_completed( 'Invalid Currency Code' );
+
+$got_product_data_from_db = false;
+
+if ( isset( $_POST[ 'stripeProductId' ] ) && ! empty( $_POST[ 'stripeProductId' ] ) ) {
+    //got product ID. Let's try to get required data from database instead of $_POST data
+    $id	 = intval( $_POST[ 'stripeProductId' ] );
+    ASP_Debug_Logger::log( 'Got product ID: ' . $id . '. Trying to get info from database.' );
+    $post	 = get_post( $id );
+    if ( ! $post || get_post_type( $id ) != ASPMain::$products_slug ) {
+	//this is not Stripe Payments product
+	asp_ipn_completed( 'Invalid product ID: ' . $id );
+    }
+    $item_name	 = $post->post_title;
+    $item_url	 = get_post_meta( $id, 'asp_product_upload', true );
+
+    if ( ! empty( $item_url ) ) {
+	$item_url = base64_encode( $item_url );
+    } else {
+	$item_url = '';
+    }
+
+    $currency_code = get_post_meta( $id, 'asp_product_currency', true );
+
+    if ( ! $currency_code ) {
+	$currency_code = $asp_class->get_setting( 'currency_code' );
+    }
+
+    $item_quantity = get_post_meta( $id, 'asp_product_quantity', true );
+
+    $item_custom_quantity = get_post_meta( $id, 'asp_product_custom_quantity', true );
+
+    if ( $item_custom_quantity ) {
+	//custom quantity. Let's get the value from $_POST data
+	$item_custom_quantity = intval( $_POST[ 'stripeCustomQuantity' ] );
+    } else {
+	$item_custom_quantity = false;
+    }
+
+    $item_price = get_post_meta( $id, 'asp_product_price', true );
+
+    //apply tax and shipping if needed
+
+    $tax = get_post_meta( $id, 'asp_product_tax', true );
+
+    $item_price = AcceptStripePayments::apply_tax( $item_price, $tax );
+
+    $shipping = get_post_meta( $id, 'asp_product_shipping', true );
+
+    $item_price = AcceptStripePayments::apply_shipping( $item_price, $shipping );
+
+    $got_product_data_from_db = true;
+    ASP_Debug_Logger::log( 'Got required product info from database.' );
 }
 
-$item_name		 = sanitize_text_field( $_POST[ 'item_name' ] );
-$stripeToken		 = sanitize_text_field( $_POST[ 'stripeToken' ] );
-$stripeTokenType	 = sanitize_text_field( $_POST[ 'stripeTokenType' ] );
-$stripeEmail		 = sanitize_email( $_POST[ 'stripeEmail' ] );
-$item_quantity		 = sanitize_text_field( $_POST[ 'item_quantity' ] );
-$item_custom_quantity	 = isset( $_POST[ 'stripeCustomQuantity' ] ) ? intval( $_POST[ 'stripeCustomQuantity' ] ) : false;
-$item_url		 = sanitize_text_field( $_POST[ 'item_url' ] );
-$charge_description	 = sanitize_text_field( $_POST[ 'charge_description' ] );
-$button_key		 = $_POST[ 'stripeButtonKey' ];
-$reported_price		 = $_POST[ 'stripeItemPrice' ];
+if ( ! $got_product_data_from_db ) {
+    //couldn't get data from database by product ID for some reason. Getting data from $_POST instead
 
-//$item_price = sanitize_text_field($_POST['item_price']);
-ASP_Debug_Logger::log( 'Checking price consistency.' );
-$calculated_button_key = md5( htmlspecialchars_decode( $_POST[ 'item_name' ] ) . $reported_price );
+    if ( ! isset( $_POST[ 'item_name' ] ) || empty( $_POST[ 'item_name' ] ) ) {
+	asp_ipn_completed( 'Invalid Item name' );
+    }
 
-if ( $button_key !== $calculated_button_key ) {
-    asp_ipn_completed( 'Button Key mismatch. Expected ' . $button_key . ', calculated: ' . $calculated_button_key );
+    if ( ! isset( $_POST[ 'currency_code' ] ) || empty( $_POST[ 'currency_code' ] ) ) {
+	asp_ipn_completed( 'Invalid Currency Code' );
+    }
+
+    $item_name		 = sanitize_text_field( $_POST[ 'item_name' ] );
+    $item_quantity		 = sanitize_text_field( $_POST[ 'item_quantity' ] );
+    $item_custom_quantity	 = isset( $_POST[ 'stripeCustomQuantity' ] ) ? intval( $_POST[ 'stripeCustomQuantity' ] ) : false;
+    $item_url		 = sanitize_text_field( $_POST[ 'item_url' ] );
+    $button_key		 = $_POST[ 'stripeButtonKey' ];
+    $reported_price		 = $_POST[ 'stripeItemPrice' ];
+
+    ASP_Debug_Logger::log( 'Checking price consistency.' );
+    $calculated_button_key = md5( htmlspecialchars_decode( $_POST[ 'item_name' ] ) . $reported_price );
+
+    if ( $button_key !== $calculated_button_key ) {
+	asp_ipn_completed( 'Button Key mismatch. Expected ' . $button_key . ', calculated: ' . $calculated_button_key );
+    }
+    $trans_name	 = 'stripe-payments-' . $button_key;
+    $item_price	 = get_transient( $trans_name ); //Read the price for this item from the system.
+
+    $currency_code = strtoupper( sanitize_text_field( $_POST[ 'currency_code' ] ) );
 }
-$trans_name	 = 'stripe-payments-' . $button_key;
-$item_price	 = get_transient( $trans_name ); //Read the price for this item from the system.
 
 if ( $item_price === '0' || $item_price === '' ) { //Custom amount
     $item_price = floatval( $_POST[ 'stripeAmount' ] );
@@ -99,9 +156,12 @@ if ( ! is_numeric( $item_price ) ) {
     asp_ipn_completed( 'Invalid item price: ' . $item_price );
 }
 
-$currency_code = strtoupper( sanitize_text_field( $_POST[ 'currency_code' ] ) );
-
 $currencyCodeType = strtolower( $currency_code );
+
+$stripeToken		 = sanitize_text_field( $_POST[ 'stripeToken' ] );
+$stripeTokenType	 = sanitize_text_field( $_POST[ 'stripeTokenType' ] );
+$stripeEmail		 = sanitize_email( $_POST[ 'stripeEmail' ] );
+$charge_description	 = sanitize_text_field( $_POST[ 'charge_description' ] );
 
 $amount = $item_price;
 
