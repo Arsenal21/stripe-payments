@@ -154,6 +154,33 @@ class AcceptStripePaymentsShortcode {
 	if ( ! $tax ) {
 	    $tax = 0;
 	}
+
+	$under_price_line	 = '';
+	$tot_price		 = $price;
+
+	if ( $tax !== 0 ) {
+	    if ( ! empty( $price ) ) {
+		$tax_amount		 = round( ($price * $tax / 100 ), 2 );
+		$tot_price		 += $tax_amount;
+		$under_price_line	 = AcceptStripePayments::formatted_price( $tax_amount, $currency ) . ' (' . $tax . '% tax)';
+	    } else {
+		$under_price_line = $tax . '% tax';
+	    }
+	}
+	if ( $shipping !== 0 ) {
+	    $tot_price	 += $shipping;
+	    $shipping_line	 = AcceptStripePayments::formatted_price( $shipping, $currency ) . ' (shipping)';
+	    if ( ! empty( $under_price_line ) ) {
+		$under_price_line .= ' + ' . $shipping_line;
+	    } else {
+		$under_price_line = $shipping_line;
+	    }
+	}
+
+	if ( ! empty( $price ) && ! empty( $under_price_line ) ) {
+	    $under_price_line .= '<br />Total: ' . AcceptStripePayments::formatted_price( $tot_price, $currency );
+	}
+
 	if ( get_post_meta( $id, 'asp_product_no_popup_thumbnail', true ) != 1 ) {
 	    $item_logo = get_post_meta( $id, 'asp_product_thumbnail', true );
 	} else {
@@ -204,7 +231,7 @@ class AcceptStripePaymentsShortcode {
 	    $tpl = asp_get_template( $this->ProductCSSInserted );
 	}
 	$this->productCSSInserted	 = true;
-	$tpl				 = str_replace( array( '%_thumb_img_%', '%_name_%', '%_description_%', '%_price_%', '%_buy_btn_%' ), array( $thumb_img, $post->post_title, do_shortcode( wpautop( $post->post_content ) ), AcceptStripePayments::formatted_price( $price, $currency ), $buy_btn ), $tpl );
+	$tpl				 = str_replace( array( '%_thumb_img_%', '%_name_%', '%_description_%', '%_price_%', '%_under_price_line_%', '%_buy_btn_%' ), array( $thumb_img, $post->post_title, do_shortcode( wpautop( $post->post_content ) ), AcceptStripePayments::formatted_price( $price, $currency ), $under_price_line, $buy_btn ), $tpl );
 	return $tpl;
     }
 
