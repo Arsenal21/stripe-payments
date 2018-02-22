@@ -65,6 +65,8 @@ if ( ! isset( $_POST[ 'stripeEmail' ] ) || empty( $_POST[ 'stripeEmail' ] ) ) {
     asp_ipn_completed( 'Invalid Request' );
 }
 
+$button_key = $_POST[ 'stripeButtonKey' ];
+
 $got_product_data_from_db = false;
 
 if ( isset( $_POST[ 'stripeProductId' ] ) && ! empty( $_POST[ 'stripeProductId' ] ) ) {
@@ -133,7 +135,6 @@ if ( ! $got_product_data_from_db ) {
     $item_quantity		 = sanitize_text_field( $_POST[ 'item_quantity' ] );
     $item_custom_quantity	 = isset( $_POST[ 'stripeCustomQuantity' ] ) ? intval( $_POST[ 'stripeCustomQuantity' ] ) : false;
     $item_url		 = sanitize_text_field( $_POST[ 'item_url' ] );
-    $button_key		 = $_POST[ 'stripeButtonKey' ];
     $reported_price		 = $_POST[ 'stripeItemPrice' ];
 
     ASP_Debug_Logger::log( 'Checking price consistency.' );
