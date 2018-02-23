@@ -4,7 +4,7 @@ Donate link: https://stripe-plugins.com
 Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortcode, digital goods, payment gateway, instant payment, commerce, digital downloads, downloads, e-commerce, e-store, ecommerce, eshop, donation
 Requires at least: 4.7
 Tested up to: 4.9
-Stable tag: 1.7.8_testing1
+Stable tag: 1.7.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -51,6 +51,8 @@ https://www.youtube.com/watch?v=upWqk069Khg
 * Option to configure a notification email to be sent to the buyer and seller after the purchase.
 * There is an option to allow the customer to enter a custom price amount for your product or service (customer pays what they want).
 * Option to accept custom donation amount via Stripe payment gateway.
+* Option to collect tax for your products (if applicable).
+* Option to collect shipping for your tangible products.
 * Option to save the card data on Stripe.
 * Ability to have custom thank you page on a per product basis.
 * Ability to customize the message on the thank you page using tags.

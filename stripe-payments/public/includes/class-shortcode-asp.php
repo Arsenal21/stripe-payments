@@ -162,23 +162,23 @@ class AcceptStripePaymentsShortcode {
 	    if ( ! empty( $price ) ) {
 		$tax_amount		 = round( ($price * $tax / 100 ), 2 );
 		$tot_price		 += $tax_amount;
-		$under_price_line	 = AcceptStripePayments::formatted_price( $tax_amount, $currency ) . ' (' . $tax . '% tax)';
+		$under_price_line	 = '<span class="asp_price_tax_section">' . AcceptStripePayments::formatted_price( $tax_amount, $currency ) . __( ' (tax)', 'stripe-payments' ) . '</span>';
 	    } else {
-		$under_price_line = $tax . '% tax';
+		$under_price_line = '<span class="asp_price_tax_section">' . $tax . '% tax' . '</span>';
 	    }
 	}
 	if ( $shipping !== 0 ) {
 	    $tot_price	 += $shipping;
-	    $shipping_line	 = AcceptStripePayments::formatted_price( $shipping, $currency ) . ' (shipping)';
+	    $shipping_line	 = AcceptStripePayments::formatted_price( $shipping, $currency ) . __( ' (shipping)', 'stripe-payments' );;
 	    if ( ! empty( $under_price_line ) ) {
-		$under_price_line .= ' + ' . $shipping_line;
+		$under_price_line .= '<span class="asp_price_shipping_section">' . ' + ' . $shipping_line . '</span>';
 	    } else {
-		$under_price_line = $shipping_line;
+		$under_price_line = '<span class="asp_price_shipping_section">' .$shipping_line . '</span>';
 	    }
 	}
 
 	if ( ! empty( $price ) && ! empty( $under_price_line ) ) {
-	    $under_price_line .= '<br />Total: ' . AcceptStripePayments::formatted_price( $tot_price, $currency );
+	    $under_price_line .= '<div class="asp_price_full_total">Total: ' . AcceptStripePayments::formatted_price( $tot_price, $currency ) . '</div>';
 	}
 
 	if ( get_post_meta( $id, 'asp_product_no_popup_thumbnail', true ) != 1 ) {

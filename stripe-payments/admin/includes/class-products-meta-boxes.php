@@ -13,11 +13,11 @@ class asp_products_metaboxes {
 	add_meta_box( 'wsp_content', __( 'Description', 'stripe-payments' ), array( $this, 'display_description_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 	add_meta_box( 'asp_short_description_meta_box', __( 'Short Description', 'stripe-payments' ), array( $this, 'display_short_description_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 	add_meta_box( 'asp_price_meta_box', __( 'Price & Currency', 'stripe-payments' ), array( $this, 'display_price_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
-	add_meta_box( 'asp_shipping_tax_meta_box', __( 'Shipping & Tax', 'stripe-payments' ), array( $this, 'display_shipping_tax_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 	add_meta_box( 'asp_quantity_meta_box', __( 'Quantity', 'stripe-payments' ), array( $this, 'display_quantity_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 	add_meta_box( 'asp_upload_meta_box', __( 'Download URL', 'stripe-payments' ), array( $this, 'display_upload_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 	add_meta_box( 'asp_thumbnail_meta_box', __( 'Product Thumbnail (optional)', 'stripe-payments' ), array( $this, 'display_thumbnail_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 	add_meta_box( 'asp_address_meta_box', __( 'Collect Address', 'stripe-payments' ), array( $this, 'display_address_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
+	add_meta_box( 'asp_shipping_tax_meta_box', __( 'Shipping & Tax', 'stripe-payments' ), array( $this, 'display_shipping_tax_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );	
 	add_meta_box( 'asp_thankyou_page_meta_box', __( 'Thank You Page URL', 'stripe-payments' ), array( $this, 'display_thankyou_page_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 	add_meta_box( 'asp_appearance_meta_box', __( 'Appearance', 'stripe-payments' ), array( $this, 'display_appearance_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 	add_meta_box( 'asp_custom_field_meta_box', __( 'Custom Field', 'stripe-payments' ), array( $this, 'display_custom_field_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
@@ -67,7 +67,7 @@ class asp_products_metaboxes {
 	<input type="text" name="asp_product_shipping" value="<?php echo $current_shipping; ?>">
 	<p class="description">
 	    <?php
-	    echo __( 'Numbers only, no need to put currency symbol. Example: 99.95', 'stripe-payments' ) .
+	    echo __( 'Numbers only, no need to put currency symbol. Example: 5.90', 'stripe-payments' ) .
 	    '<br>' . __( 'Leave it blank if you are not shipping your product or not charging additional shipping costs.', 'stripe-payments' );
 	    ?>
 	</p>
@@ -177,7 +177,7 @@ class asp_products_metaboxes {
 	</div>
 	<label><input type="checkbox" name="asp_product_no_popup_thumbnail" value="1"<?php echo ($current_no_popup_thumb === "1") ? ' checked' : ''; ?>/> <?php _e( "Don't use product thumbnail in Stripe pop-up", 'stripe-payments' ); ?></label>
 	<p class="description">
-	    <?php _e( "When enabled, product thumbnail is not showing in Stripe popup.", 'stripe-payments' ); ?>
+	    <?php _e( "Use this checkbox if you do not want to show the product thumbnail in Stripe checkout popup.", 'stripe-payments' ); ?>
 	</p>
 	<script>
 	    jQuery(document).ready(function ($) {
