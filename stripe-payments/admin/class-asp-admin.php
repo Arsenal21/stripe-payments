@@ -668,7 +668,7 @@ class AcceptStripePayments_Admin {
 
 	$output[ 'send_emails_to_seller' ] = empty( $input[ 'send_emails_to_seller' ] ) ? 0 : 1;
 
-	$output[ 'send_email_on_error_to' ] = sanitize_email( $input[ 'send_email_on_error_to' ] );
+	$output[ 'send_email_on_error_to' ] = sanitize_text_field( $input[ 'send_email_on_error_to' ] );
 
 	if ( $output[ 'is_live' ] != 0 ) {
 	    if ( empty( $input[ 'api_secret_key' ] ) || empty( $input[ 'api_publishable_key' ] ) ) {
