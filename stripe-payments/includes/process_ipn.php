@@ -225,6 +225,7 @@ try {
     $txn_id				 = $charge->id; //$charge->balance_transaction;
     //Core transaction data
     $data				 = array();
+    $data[ 'product_id' ]		 = isset( $_POST[ 'stripeProductId' ] ) && ! empty( $_POST[ 'stripeProductId' ] ) ? intval( $_POST[ 'stripeProductId' ] ) : '';
     $data[ 'is_live' ]		 = $asp_class->get_setting( 'is_live' );
     $data[ 'item_name' ]		 = $item_name;
     $data[ 'stripeToken' ]		 = $stripeToken;
@@ -237,7 +238,7 @@ try {
     $data[ 'txn_id' ]		 = $txn_id; //The Stripe charge ID
     $data[ 'charge_description' ]	 = $charge_description;
     $data[ 'addonName' ]		 = isset( $_POST[ 'stripeAddonName' ] ) ? sanitize_text_field( $_POST[ 'stripeAddonName' ] ) : '';
-    $data[ 'button_key' ]		 = $button_key;
+    $data[ 'button_key' ]		 = isset( $button_key ) ? $button_key : '';
 
     if ( isset( $_POST[ 'stripeCustomField' ] ) ) {
 	$data[ 'custom_field_value' ]	 = $_POST[ 'stripeCustomField' ];
