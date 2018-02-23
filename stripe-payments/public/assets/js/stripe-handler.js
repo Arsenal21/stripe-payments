@@ -104,6 +104,10 @@ function wp_asp_add_stripe_handler(data) {
 		handler_opts.shippingAddress = data.shippingAddress;
 	    }
 
+	    if (data.customer_email !== '') {
+		handler_opts.email = data.customer_email;
+	    }
+
 	    if (data.addonHooks) {
 		data.addonHooks.forEach(function (hookName) {
 		    if (typeof window["wp_asp_before_handler_configure_" + hookName] === "function") {

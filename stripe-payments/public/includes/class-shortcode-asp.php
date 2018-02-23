@@ -169,11 +169,12 @@ class AcceptStripePaymentsShortcode {
 	}
 	if ( $shipping !== 0 ) {
 	    $tot_price	 += $shipping;
-	    $shipping_line	 = AcceptStripePayments::formatted_price( $shipping, $currency ) . __( ' (shipping)', 'stripe-payments' );;
+	    $shipping_line	 = AcceptStripePayments::formatted_price( $shipping, $currency ) . __( ' (shipping)', 'stripe-payments' );
+	    ;
 	    if ( ! empty( $under_price_line ) ) {
 		$under_price_line .= '<span class="asp_price_shipping_section">' . ' + ' . $shipping_line . '</span>';
 	    } else {
-		$under_price_line = '<span class="asp_price_shipping_section">' .$shipping_line . '</span>';
+		$under_price_line = '<span class="asp_price_shipping_section">' . $shipping_line . '</span>';
 	    }
 	}
 
@@ -252,6 +253,7 @@ class AcceptStripePaymentsShortcode {
 	    'item_logo'		 => '',
 	    'billing_address'	 => '',
 	    'shipping_address'	 => '',
+	    'customer_email'	 => '',
 	    'currency'		 => $this->AcceptStripePayments->get_setting( 'currency_code' ),
 	    'button_text'		 => $this->AcceptStripePayments->get_setting( 'button_text' ),
 	), $atts ) );
@@ -364,6 +366,7 @@ class AcceptStripePaymentsShortcode {
 	    'amount'		 => $priceInCents,
 	    'billingAddress'	 => (empty( $billing_address ) ? false : true),
 	    'shippingAddress'	 => (empty( $shipping_address ) ? false : true),
+	    'customer_email'	 => $customer_email,
 	    'uniq_id'		 => $uniq_id,
 	    'variable'		 => ($price == 0 ? true : false),
 	    'zeroCents'		 => $this->AcceptStripePayments->zeroCents,

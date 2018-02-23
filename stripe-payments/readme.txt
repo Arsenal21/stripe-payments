@@ -68,7 +68,7 @@ You can run it in test mode by specifying test API keys in the plugin settings.
 
 There are two ways you can use this plugin to create a "Buy Now" or "Pay" button to accept payment.
 
-Option 1) Create a product in the admin dashboard of this plugin then use a shortcode to put a buy button for that product. 
+Option 1) Create a product in the admin dashboard of this plugin then use a shortcode to put a buy button for that product.
 
 [Check this tutorial](https://stripe-plugins.com/creating-product-stripe-payments-plugin/) for step by step instructions.
 
@@ -120,15 +120,19 @@ Yes, you can configure it in the product configuration interface.
 
 = Can I change the button label? =
 
-Yes, you can the "button_text" attribute in the shortcode to customize it.
+Yes, you can specify the "button_text" attribute in the shortcode to customize it.
 
 = Will the customers receive an email after purchase? =
 
 Yes, you can configure the email settings options in the settings menu of the plugin.
 
+= Is it possible to get notified if payment failed for some reason?
+
+Yes. Go to Stripe Payments > Settings, Email Settings tab and check "Send Email On Payment Failure" option.
+
 = Can It be tested before going live? =
 
-Yes, please visit Settings > Accept Stripe Payments screen for options.
+Yes, please visit Stripe Payments > Settings screen for options.
 
 
 == Screenshots ==
@@ -143,6 +147,7 @@ None
 == Changelog ==
 
 = 1.7.9 =
+- Added customer_email shortcode parameter which allows to specify customer email in Stripe pop-up (userful if you're dynamically generating payment buttons via do_shortcode() function).
 - Minor bug fixes (mostly related to addons).
 
 = 1.7.8 =
