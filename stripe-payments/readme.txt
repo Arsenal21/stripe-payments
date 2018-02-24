@@ -4,7 +4,7 @@ Donate link: https://stripe-plugins.com
 Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortcode, digital goods, payment gateway, instant payment, commerce, digital downloads, downloads, e-commerce, e-store, ecommerce, eshop, donation
 Requires at least: 4.7
 Tested up to: 4.9
-Stable tag: 1.7.9
+Stable tag: 1.7.9.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -145,6 +145,9 @@ Yes, please visit Stripe Payments > Settings screen for options.
 None
 
 == Changelog ==
+
+= 1.7.9.1 =
+- Fixed minor bug related to product quantity.
 
 = 1.7.9 =
 - "Send Error Email To" field now accepts coma-separated emails (thanks to pitfallindimate3746 for reporting).

@@ -173,6 +173,10 @@ if ( $item_custom_quantity !== false ) { //custom quantity
     $item_quantity = $item_custom_quantity;
 }
 
+if ( empty( $item_quantity ) ) {
+    $item_quantity = 1;
+}
+
 $amount = ($item_quantity !== "NA" ? ($amount * $item_quantity) : $amount);
 
 ASP_Debug_Logger::log( 'Getting API keys and trying to create a charge.' );
