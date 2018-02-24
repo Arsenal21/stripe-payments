@@ -170,7 +170,6 @@ class AcceptStripePaymentsShortcode {
 	if ( $shipping !== 0 ) {
 	    $tot_price	 += $shipping;
 	    $shipping_line	 = AcceptStripePayments::formatted_price( $shipping, $currency ) . __( ' (shipping)', 'stripe-payments' );
-	    ;
 	    if ( ! empty( $under_price_line ) ) {
 		$under_price_line .= '<span class="asp_price_shipping_section">' . ' + ' . $shipping_line . '</span>';
 	    } else {
