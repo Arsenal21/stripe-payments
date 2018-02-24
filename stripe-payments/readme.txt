@@ -151,7 +151,7 @@ None
 
 = 1.7.9 =
 - "Send Error Email To" field now accepts coma-separated emails (thanks to pitfallindimate3746 for reporting).
-- Added customer_email shortcode parameter which allows to specify customer email in Stripe pop-up (userful if you're dynamically generating payment buttons via do_shortcode() function).
+- Added customer_email shortcode parameter which allows to specify customer email in Stripe pop-up (useful if you're dynamically generating payment buttons via do_shortcode() function).
 - Minor bug fixes (mostly related to addons).
 
 = 1.7.8 =
