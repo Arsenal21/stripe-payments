@@ -108,6 +108,12 @@ class AcceptStripePaymentsShortcode {
 	    $button_text = $this->AcceptStripePayments->get_setting( 'button_text' );
 	}
 
+	//check if we have button_text shortcode parameter. If it's not empty, this should be our button text
+
+	if ( isset( $atts[ 'button_text' ] ) && ! empty( $atts[ 'button_text' ] ) ) {
+	    $button_text = esc_attr( $atts[ 'button_text' ] );
+	}
+
 	$thumb_img	 = '';
 	$thumb_url	 = get_post_meta( $id, 'asp_product_thumbnail', true );
 
