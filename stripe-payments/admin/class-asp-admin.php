@@ -375,6 +375,7 @@ class AcceptStripePayments_Admin {
 	    'size'	 => 100 ) );
 
 	add_settings_field( 'currency_code', __( 'Currency', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-global-section', array( 'field' => 'currency_code', 'desc' => '', 'size' => 10 ) );
+	add_settings_field( 'currency_symbol', __( 'Currency Symbol', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-global-section', array( 'field' => 'currency_symbol', 'desc' => '', 'size' => 10 ) );
 	add_settings_field( 'button_text', __( 'Button Text', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-global-section', array( 'field'	 => 'button_text',
 	    'desc'	 => __( 'Example: Buy Now, Pay Now etc.', 'stripe-payments' ) ) );
 	add_settings_field( 'dont_save_card', __( 'Do Not Save Card Data on Stripe', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-global-section', array( 'field'	 => 'dont_save_card',
@@ -603,10 +604,13 @@ class AcceptStripePayments_Admin {
 		echo "<input type='text' name='asp_products_page_url_value' value='{$products_page_url}' size='{$size}' /> <p class=\"description\">{$desc}</p>";
 		break;
 	    case 'currency_code':
-		echo '<select name="AcceptStripePayments-settings[' . $field . ']">';
+		echo '<select name="AcceptStripePayments-settings[' . $field . ']" id="wp_asp_curr_code">';
 		echo AcceptStripePayments_Admin::get_currency_options( $field_value, false );
 		echo '</select>';
 		//echo "<p class=\"description\">{$desc}</p>";
+		break;
+	    case 'currency_symbol':
+		echo '<input type="text" name="AcceptStripePayments-settings[' . $field . ']" value="" id="wp_asp_curr_symb"?>';
 		break;
 	    case 'checkout_lang':
 		// list of supported languages can be found here: https://stripe.com/docs/checkout#supported-languages
@@ -690,9 +694,24 @@ class AcceptStripePayments_Admin {
 	else
 	    add_settings_error( 'AcceptStripePayments-settings', 'invalid-button-text', __( 'Button text should not be empty.', 'stripe-payments' ) );
 
-	if ( ! empty( $input[ 'currency_code' ] ) )
-	    $output[ 'currency_code' ] = $input[ 'currency_code' ];
-	else
+	if ( ! empty( $input[ 'currency_code' ] ) ) {
+	    $output[ 'currency_code' ]	 = $input[ 'currency_code' ];
+	    $currencies			 = AcceptStripePayments::get_currencies();
+	    $opts				 = get_option( 'AcceptStripePayments-settings' );
+	    if ( isset( $opts[ 'custom_currency_symbols' ] ) && is_array( $opts[ 'custom_currency_symbols' ] ) ) {
+		$custom_curr_symb = $opts[ 'custom_currency_symbols' ];
+	    } else {
+		$custom_curr_symb = array();
+	    }
+	    if ( $currencies[ $output[ 'currency_code' ] ][ 1 ] !== $input[ 'currency_symbol' ] ) {
+		$custom_curr_symb[ $output[ 'currency_code' ] ] = array(  $currencies[$output[ 'currency_code' ]][0], $input[ 'currency_symbol' ] );
+	    } else {
+		if ( isset( $custom_curr_symb[ 'currency_code' ] ) ) {
+		    unset( $custom_curr_symb[ 'currency_code' ] );
+		}
+	    }
+	    $output[ 'custom_currency_symbols' ] = $custom_curr_symb;
+	} else
 	    add_settings_error( 'AcceptStripePayments-settings', 'invalid-currency-code', __( 'You must specify payment currency.', 'stripe-payments' ) );
 
 	$output[ 'checkout_lang' ] = $input[ 'checkout_lang' ];

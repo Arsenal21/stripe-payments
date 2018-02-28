@@ -69,9 +69,14 @@ if ( $_GET[ 'page' ] == 'stripe-payments-settings' ) {
 
         </form>
     </div>
+    <?php
+    json_encode( AcceptStripePayments::get_currencies() );
+    ?>
     <script>
         var wp_asp_urlHash = window.location.hash.substr(1);
         var wp_asp_transHash = '<?php echo esc_attr( $tab ); ?>';
+
+        var wp_asp_currencies = JSON.parse('<?php echo json_encode( AcceptStripePayments::get_currencies() ); ?>');
 
         if (wp_asp_urlHash === '') {
     	if (wp_asp_transHash !== '') {
@@ -113,6 +118,12 @@ if ( $_GET[ 'page' ] == 'stripe-payments-settings' ) {
     		});
     	    }
     	});
+
+    	$('#wp_asp_curr_code').change(function () {
+    	    $('#wp_asp_curr_symb').val(wp_asp_currencies[$('#wp_asp_curr_code').val()][1]);
+    	});
+
+	$('#wp_asp_curr_code').change();
 
     	$('a.nav-tab[data-tab-name="' + wp_asp_urlHash + '"]').trigger('click');
         });

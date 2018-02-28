@@ -381,7 +381,7 @@ class AcceptStripePayments {
     }
 
     static function get_currencies() {
-	$currencies = array(
+	$currencies	 = array(
 	    ""	 => array( "(Default)", "" ),
 	    "USD"	 => array( "US Dollars (USD)", "$" ),
 	    "EUR"	 => array( "Euros (EUR)", "€" ),
@@ -414,6 +414,11 @@ class AcceptStripePayments {
 	    "TRY"	 => array( "Turkish Lira (TRY)", "₺" ),
 	    "VND"	 => array( "Vietnamese Dong (VND)", "₫" ),
 	);
+	$opts		 = get_option( 'AcceptStripePayments-settings' );
+	if ( isset( $opts[ 'custom_currency_symbols' ] ) && is_array( $opts[ 'custom_currency_symbols' ] ) ) {
+	    $currencies = array_merge( $currencies, $opts[ 'custom_currency_symbols' ] );
+	}
+
 	return $currencies;
     }
 
