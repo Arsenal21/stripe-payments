@@ -232,4 +232,5 @@ function wp_asp_add_stripe_handler(data) {
 	}
 
     });
+    jQuery('#stripe_button_' + data.uniq_id).prop("disabled",false);
 }

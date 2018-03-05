@@ -4,7 +4,7 @@ Donate link: https://stripe-plugins.com
 Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortcode, digital goods, payment gateway, instant payment, commerce, digital downloads, downloads, e-commerce, e-store, ecommerce, eshop, donation
 Requires at least: 4.7
 Tested up to: 4.9
-Stable tag: 1.7.9.2t2
+Stable tag: 1.7.9.2t3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -147,6 +147,7 @@ None
 == Changelog ==
 
 = 1.7.9.2 =
+- Payment buttons are not clickable until Javascript libraries are loaded on page view. This prevents "Invalid Stripe Token" errors on some configurations.
 - You can customize currency symbol on settings page now.
 - Prioritized button_text parameter for product shortcode (useful if you want to have several buttons with different text for same product).
 

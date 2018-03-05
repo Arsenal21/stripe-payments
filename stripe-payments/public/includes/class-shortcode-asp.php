@@ -341,7 +341,9 @@ class AcceptStripePaymentsShortcode {
 	//This is public.css stylesheet
 	//wp_enqueue_style('stripe-button-public');
 	//$button = "<button id = '{$button_id}' type = 'submit' class = '{$class}'><span>{$button_text}</span></button>";
-	$button = sprintf( '<button id="%s" type="submit" class="%s"><span>%s</span></button>', esc_attr( $button_id ), esc_attr( $class ), sanitize_text_field( $button_text ) );
+	$button	 = sprintf( '<button id="%s" type="submit" class="%s" disabled><span>%s</span></button>', esc_attr( $button_id ), esc_attr( $class ), sanitize_text_field( $button_text ) );
+	//add message if no javascript is enabled
+	$button	 .= '<noscript>' . __( 'Stripe Payments requires Javascript to be supported by the browser in order to operate.', 'stripe-payments' ) . '</noscript>';
 
 	$checkout_lang = $this->AcceptStripePayments->get_setting( 'checkout_lang' );
 
