@@ -762,6 +762,10 @@ class AcceptStripePaymentsShortcode {
 	$tags	 = array();
 	$vals	 = array();
 
+	if ( isset( $data[ 'custom_field_value' ] ) ) {
+	    $data['custom_field'] = $data[ 'custom_field_name' ] . ': ' . $data[ 'custom_field_value' ];
+	}
+
 	foreach ( $data as $key => $value ) {
 	    if ( $key == 'stripeEmail' ) {
 		$key = 'payer_email';
