@@ -148,7 +148,7 @@ None
 
 = 1.7.9.2 =
 - Fixed variable price was improperly handled for products in some cases.
-- Payment buttons are not clickable until Javascript libraries are loaded on page view. This prevents "Invalid Stripe Token" errors on some configurations.
+- Added option to make payment buttons not clickable until Javascript libraries are loaded on page view. This prevents "Invalid Stripe Token" errors on some configurations.
 - You can customize currency symbol on settings page now.
 - Prioritized button_text parameter for product shortcode (useful if you want to have several buttons with different text for same product).
 - {custom_field} tag is now supported on custom Thank You page.

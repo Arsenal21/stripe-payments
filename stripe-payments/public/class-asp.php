@@ -263,6 +263,7 @@ class AcceptStripePayments {
 	    'custom_field_mandatory'	 => 0,
 	    'send_email_on_error'		 => 0,
 	    'send_email_on_error_to'	 => $admin_email,
+	    'disable_buttons_before_js_loads' => 0,
 	);
 	$opt	 = get_option( 'AcceptStripePayments-settings' );
 	if ( ! is_array( $opt ) ) {

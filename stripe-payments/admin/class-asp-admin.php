@@ -365,6 +365,7 @@ class AcceptStripePayments_Admin {
 
 	add_settings_section( 'AcceptStripePayments-price-display', __( 'Price Display Settings', 'stripe-payments' ), null, $this->plugin_slug . '-advanced' );
 	add_settings_section( 'AcceptStripePayments-custom-field', __( 'Custom Field Settings', 'stripe-payments' ), null, $this->plugin_slug . '-advanced' );
+	add_settings_section( 'AcceptStripePayments-additional-settings', __( 'Additional Settings', 'stripe-payments' ), null, $this->plugin_slug . '-advanced' );
 
 	// Global section
 	add_settings_field( 'checkout_url', __( 'Checkout Result Page URL', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-global-section', array( 'field'	 => 'checkout_url',
@@ -477,6 +478,11 @@ class AcceptStripePayments_Admin {
 	add_settings_field( 'custom_field_mandatory', __( 'Mandatory', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-custom-field', array( 'field'	 => 'custom_field_mandatory',
 	    'desc'	 => __( "If enabled, makes the field mandatory - user can't proceed with the payment before it's filled.", 'stripe-payments' ) )
 	);
+
+	// Additional Settings
+	add_settings_field( 'disable_buttons_before_js_loads', __( 'Disable Buttons Before Javascript Loads', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-additional-settings', array( 'field'	 => 'disable_buttons_before_js_loads',
+	    'desc'	 => __( "If enabled, payment buttons are not clickable until Javascript libraries are loaded on page view. This prevents \"Invalid Stripe Token\" errors on some configurations.", 'stripe-payments' ) )
+	);
     }
 
     public function general_documentation_callback( $args ) {
@@ -587,6 +593,7 @@ class AcceptStripePayments_Admin {
 	    case 'use_new_button_method':
 	    case 'is_live':
 	    case 'disable_remember_me':
+	    case 'disable_buttons_before_js_loads':
 	    case 'dont_save_card':
 	    case 'custom_field_mandatory':
 	    case 'custom_field_enabled':
@@ -674,6 +681,8 @@ class AcceptStripePayments_Admin {
 
 	$output[ 'send_email_on_error_to' ] = sanitize_text_field( $input[ 'send_email_on_error_to' ] );
 
+	$output[ 'disable_buttons_before_js_loads' ] = empty( $input[ 'disable_buttons_before_js_loads' ] ) ? 0 : 1;
+
 	if ( $output[ 'is_live' ] != 0 ) {
 	    if ( empty( $input[ 'api_secret_key' ] ) || empty( $input[ 'api_publishable_key' ] ) ) {
 		add_settings_error( 'AcceptStripePayments-settings', 'invalid-credentials', __( 'You must fill Live API credentials for plugin to work correctly.', 'stripe-payments' ) );
@@ -704,7 +713,7 @@ class AcceptStripePayments_Admin {
 		$custom_curr_symb = array();
 	    }
 	    if ( $currencies[ $output[ 'currency_code' ] ][ 1 ] !== $input[ 'currency_symbol' ] ) {
-		$custom_curr_symb[ $output[ 'currency_code' ] ] = array(  $currencies[$output[ 'currency_code' ]][0], $input[ 'currency_symbol' ] );
+		$custom_curr_symb[ $output[ 'currency_code' ] ] = array( $currencies[ $output[ 'currency_code' ] ][ 0 ], $input[ 'currency_symbol' ] );
 	    } else {
 		if ( isset( $custom_curr_symb[ 'currency_code' ] ) ) {
 		    unset( $custom_curr_symb[ 'currency_code' ] );
