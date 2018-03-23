@@ -224,6 +224,15 @@ try {
 	$charge_opts[ 'customer' ] = $customer->id;
     }
 
+    //Check if we need to include custom field in metadata
+    if ( isset( $_POST[ 'stripeCustomField' ] ) ) {
+	$metadata			 = array(
+	    'custom_field_value'	 => isset( $_POST[ 'stripeCustomField' ] ) ? $_POST[ 'stripeCustomField' ] : '',
+	    'custom_field_name'	 => $_POST[ 'stripeCustomFieldName' ],
+	);
+	$charge_opts[ 'metadata' ]	 = $metadata;
+    }
+
     $charge				 = \Stripe\Charge::create( $charge_opts );
     //Grab the charge ID and set it as the transaction ID.
     $txn_id				 = $charge->id; //$charge->balance_transaction;

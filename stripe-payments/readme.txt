@@ -151,6 +151,7 @@ None
 - You can customize currency symbol on settings page now.
 - Prioritized button_text parameter for product shortcode (useful if you want to have several buttons with different text for same product).
 - {custom_field} tag is now supported on custom Thank You page.
+- Custom field name and value are now added to Stripe metadata.
 
 = 1.7.9.1 =
 - Fixed minor bug related to product quantity.
