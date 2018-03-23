@@ -104,6 +104,11 @@ if ( isset( $_POST[ 'stripeProductId' ] ) && ! empty( $_POST[ 'stripeProductId' 
 
     $item_price = get_post_meta( $id, 'asp_product_price', true );
 
+    if ( empty( $item_price ) ) {
+	//this is probably custom price
+	$item_price = floatval( $_POST[ 'stripeAmount' ] );
+    }
+
     //apply tax and shipping if needed
 
     $tax = get_post_meta( $id, 'asp_product_tax', true );
