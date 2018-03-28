@@ -6,6 +6,7 @@ class AcceptStripePaymentsShortcode {
     var $StripeCSSInserted	 = false;
     var $ProductCSSInserted	 = false;
     var $ButtonCSSInserted	 = false;
+    var $CompatMode		 = false;
 
     /**
      * Instance of this class.
@@ -57,9 +58,7 @@ class AcceptStripePaymentsShortcode {
 	return self::$instance;
     }
 
-    function register_stripe_script() {
-	wp_register_script( 'stripe-script', 'https://checkout.stripe.com/checkout.js', array(), null, true );
-	wp_register_script( 'stripe-handler', WP_ASP_PLUGIN_URL . '/public/assets/js/stripe-handler.js', array( 'jquery' ), WP_ASP_PLUGIN_VERSION, true );
+    function get_loc_data() {
 	//localization data and Stripe API key
 	if ( $this->AcceptStripePayments->get_setting( 'is_live' ) == 0 ) {
 	    //use test keys
@@ -76,7 +75,14 @@ class AcceptStripePaymentsShortcode {
 	    'strQuantityIsZero'	 => __( 'Quantity can\'t be zero.', 'stripe-payments' ),
 	    'strQuantityIsFloat'	 => __( 'Quantity should be integer value.', 'stripe-payments' ),
 	);
-	wp_localize_script( 'stripe-handler', 'stripehandler', $loc_data );
+	return $loc_data;
+    }
+
+    function register_stripe_script() {
+	wp_register_script( 'stripe-script', 'https://checkout.stripe.com/checkout.js', array(), null, true );
+	wp_register_script( 'stripe-handler', WP_ASP_PLUGIN_URL . '/public/assets/js/stripe-handler.js', array( 'jquery' ), WP_ASP_PLUGIN_VERSION, true );
+
+	wp_localize_script( 'stripe-handler', 'stripehandler', $this->get_loc_data() );
 	// addons can register their scripts if needed
 	do_action( 'asp-button-output-register-script' );
     }
@@ -193,6 +199,10 @@ class AcceptStripePaymentsShortcode {
 	    $item_logo = '';
 	}
 
+	$compat_mode = isset( $atts[ 'compat_mode' ] ) ? 1 : 0;
+
+	$this->CompatMode = ($compat_mode) ? true : false;
+
 	//Let's only output buy button if we're in the loop. Since the_content hook could be called several times (for example, by a plugin like Yoast SEO for its purposes), we should only output the button only when it's actually needed.
 	if ( ! isset( $atts[ 'in_the_loop' ] ) || $atts[ 'in_the_loop' ] === "1" ) {
 	    $sc_params	 = array(
@@ -213,6 +223,7 @@ class AcceptStripePaymentsShortcode {
 		'billing_address'	 => get_post_meta( $id, 'asp_product_collect_billing_addr', true ),
 		'shipping_address'	 => get_post_meta( $id, 'asp_product_collect_shipping_addr', true ),
 		'custom_field'		 => $custom_field,
+		'compat_mode'		 => $compat_mode,
 	    );
 	    //this would pass additional shortcode parameters from asp_product shortcode
 	    $sc_params	 = array_merge( $atts, $sc_params );
@@ -223,9 +234,11 @@ class AcceptStripePaymentsShortcode {
 
 	if ( (isset( $atts[ "fancy" ] ) && $atts[ "fancy" ] == '0') || $button_only == 1 ) {
 	    //Just show the stripe payment button (no fancy template)
-	    $tpl				 = '<div class="asp_product_buy_button">' . $buy_btn . '</div>';
-	    $tpl				 = "<link rel='stylesheet' href='" . WP_ASP_PLUGIN_URL . '/public/views/templates/default/style.css' . "' type='text/css' media='all' />" . $tpl;
-	    $this->productCSSInserted	 = true;
+	    $tpl	 = '<div class="asp_product_buy_button">' . $buy_btn . '</div>';
+	    $tpl	 = "<link rel='stylesheet' href='" . WP_ASP_PLUGIN_URL . '/public/views/templates/default/style.css' . "' type='text/css' media='all' />" . $tpl;
+	    if ( ! $this->CompatMode ) {
+		$this->productCSSInserted = true;
+	    }
 	    return $tpl;
 	}
 
@@ -236,8 +249,10 @@ class AcceptStripePaymentsShortcode {
 	} else {
 	    $tpl = asp_get_template( $this->ProductCSSInserted );
 	}
-	$this->productCSSInserted	 = true;
-	$tpl				 = str_replace( array( '%_thumb_img_%', '%_name_%', '%_description_%', '%_price_%', '%_under_price_line_%', '%_buy_btn_%' ), array( $thumb_img, $post->post_title, do_shortcode( wpautop( $post->post_content ) ), AcceptStripePayments::formatted_price( $price, $currency ), $under_price_line, $buy_btn ), $tpl );
+	if ( ! $this->CompatMode ) {
+	    $this->productCSSInserted = true;
+	}
+	$tpl = str_replace( array( '%_thumb_img_%', '%_name_%', '%_description_%', '%_price_%', '%_under_price_line_%', '%_buy_btn_%' ), array( $thumb_img, $post->post_title, do_shortcode( wpautop( $post->post_content ) ), AcceptStripePayments::formatted_price( $price, $currency ), $under_price_line, $buy_btn ), $tpl );
 	return $tpl;
     }
 
@@ -261,7 +276,10 @@ class AcceptStripePaymentsShortcode {
 	    'customer_email'	 => '',
 	    'currency'		 => $this->AcceptStripePayments->get_setting( 'currency_code' ),
 	    'button_text'		 => $this->AcceptStripePayments->get_setting( 'button_text' ),
+	    'compat_mode'		 => 0,
 	), $atts ) );
+
+	$this->CompatMode = ($compat_mode) ? true : false;
 
 	if ( empty( $name ) ) {
 	    $error_msg	 = '<div class="stripe_payments_error_msg" style="color: red;">';
@@ -393,7 +411,7 @@ class AcceptStripePaymentsShortcode {
 	$output = '';
 
 	//Let's insert Stripe default stylesheet only when it's needed
-	if ( $class == 'stripe-button-el' && ! ($this->StripeCSSInserted) ) {
+	if ( $class == 'stripe-button-el' && ! ( ! $this->CompatMode && $this->StripeCSSInserted) ) {
 	    $output			 = "<link rel = 'stylesheet' href = 'https://checkout.stripe.com/v3/checkout/button.css' type = 'text/css' media = 'all' />";
 	    $this->StripeCSSInserted = true;
 	}
@@ -465,7 +483,7 @@ class AcceptStripePaymentsShortcode {
 
     function get_button_code_new_method( $data ) {
 	$output = '';
-	if ( ! $this->ButtonCSSInserted ) {
+	if ( ! $this->ButtonCSSInserted || $this->CompatMode ) {
 	    $this->ButtonCSSInserted = true;
 	    // we need to style custom inputs
 	    ob_start();
@@ -566,12 +584,29 @@ class AcceptStripePaymentsShortcode {
 	    . "<input type='hidden' name='stripeItemPrice' value='{$data[ 'amount' ]}' />"
 	    . "<input type='hidden' data-stripe-button-uid='{$data[ 'uniq_id' ]}' />";
 	}
-	//Let's enqueue Stripe js
-	wp_enqueue_script( 'stripe-script' );
-	//using nested array in order to ensure boolean values are not converted to strings by wp_localize_script function
-	wp_localize_script( 'stripe-handler', 'stripehandler' . $data[ 'uniq_id' ], array( 'data' => $data ) );
-	//enqueue our script that handles the stuff
-	wp_enqueue_script( 'stripe-handler' );
+
+	if ( $this->CompatMode ) {
+	    ob_start();
+	    ?>
+
+	    <script type='text/javascript'>
+	        var stripehandler = <?php echo json_encode( $this->get_loc_data() ); ?>;
+	    </script>
+	    <script type='text/javascript'>
+	        var stripehandler<?php echo $data[ 'uniq_id' ]; ?> = <?php echo json_encode( array( 'data' => $data ) ); ?>;
+	    </script>
+	    <script type='text/javascript' src='https://checkout.stripe.com/checkout.js'></script>
+	    <script type='text/javascript' src='<?php echo WP_ASP_PLUGIN_URL; ?>/public/assets/js/stripe-handler.js?ver=<?php echo WP_ASP_PLUGIN_VERSION; ?>'></script>
+	    <?php
+	    $output .= ob_get_clean();
+	} else {
+	    //Let's enqueue Stripe js
+	    wp_enqueue_script( 'stripe-script' );
+	    //using nested array in order to ensure boolean values are not converted to strings by wp_localize_script function
+	    wp_localize_script( 'stripe-handler', 'stripehandler' . $data[ 'uniq_id' ], array( 'data' => $data ) );
+	    //enqueue our script that handles the stuff
+	    wp_enqueue_script( 'stripe-handler' );
+	}
 	//addons can enqueue their scripts if needed
 	do_action( 'asp-button-output-enqueue-script' );
 	return $output;

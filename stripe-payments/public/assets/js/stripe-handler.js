@@ -20,7 +20,12 @@ stripehandler.apply_tax_and_shipping = (function (amount, data) {
 jQuery(document).ready(function () {
     jQuery('input[data-stripe-button-uid]').each(function (ind, obj) {
 	var uid = jQuery(obj).data('stripeButtonUid');
-	wp_asp_add_stripe_handler(window['stripehandler' + uid].data);
+	if (typeof (window['stripehandler' + uid]) !== 'undefined') {
+	    if (!window['stripehandler' + uid].data.core_attached) {
+		wp_asp_add_stripe_handler(window['stripehandler' + uid].data);
+		window['stripehandler' + uid].data.core_attached = true;
+	    }
+	}
     });
 });
 
@@ -232,5 +237,5 @@ function wp_asp_add_stripe_handler(data) {
 	}
 
     });
-    jQuery('#stripe_button_' + data.uniq_id).prop("disabled",false);
+    jQuery('#stripe_button_' + data.uniq_id).prop("disabled", false);
 }
