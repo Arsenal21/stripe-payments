@@ -370,12 +370,52 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post ) {
 	$custom_field = $post[ 'custom_field_name' ] . ': ' . $post[ 'custom_field_value' ];
     }
 
+    $curr = $post[ 'currency_code' ];
+
+    $currencies = AcceptStripePayments::get_currencies();
+    if ( isset( $currencies[ $curr ] ) ) {
+	$curr_sym = $currencies[ $curr ][ 1 ];
+    } else {
+	$curr_sym = '';
+    }
+
+    $item_price = AcceptStripePayments::formatted_price( $post[ 'item_price' ], false );
+
+    $item_price_curr = AcceptStripePayments::formatted_price( $post[ 'item_price' ], $post[ 'currency_code' ] );
+
     $purchase_amt = AcceptStripePayments::formatted_price( $post[ 'item_price' ] * $post[ 'item_quantity' ], false );
 
-    $purchase_amt_fmt = AcceptStripePayments::formatted_price( $post[ 'item_price' ] * $post[ 'item_quantity' ], $post[ 'currency_code' ] );
+    $purchase_amt_curr = AcceptStripePayments::formatted_price( $post[ 'item_price' ] * $post[ 'item_quantity' ], $post[ 'currency_code' ] );
 
-    $tags	 = array( "{product_details}", "{payer_email}", "{transaction_id}", "{purchase_amt}", "{purchase_amt_fmt}", "{purchase_date}", "{shipping_address}", "{billing_address}", '{custom_field}' );
-    $vals	 = array( $product_details, $post[ 'stripeEmail' ], $post[ 'txn_id' ], $purchase_amt, $purchase_amt_fmt, date( "F j, Y, g:i a", strtotime( 'now' ) ), $post[ 'shipping_address' ], $post[ 'billing_address' ], $custom_field );
+    $tags	 = array(
+	"{product_details}",
+	"{payer_email}",
+	"{transaction_id}",
+	"{item_price}",
+	"{item_price_curr}",
+	"{purchase_amt}",
+	"{purchase_amt_curr}",
+	"{currency}",
+	"{currency_code}",
+	"{purchase_date}",
+	"{shipping_address}",
+	"{billing_address}",
+	'{custom_field}'
+    );
+    $vals	 = array(
+	$product_details,
+	$post[ 'stripeEmail' ],
+	$post[ 'txn_id' ],
+	$item_price,
+	$item_price_curr,
+	$purchase_amt,
+	$purchase_amt_curr,
+	$curr_sym,
+	$curr,
+	date( "F j, Y, g:i a", strtotime( 'now' ) ),
+	$post[ 'shipping_address' ],
+	$post[ 'billing_address' ],
+	$custom_field );
 
     $body = stripslashes( str_replace( $tags, $vals, $body ) );
 

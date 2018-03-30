@@ -27,6 +27,16 @@ if ( $_GET[ 'page' ] == 'stripe-payments-settings' ) {
     	background: #e3e3e3;
     	padding: 2px 5px;
         }
+        a.wp-asp-toggle {
+    	text-decoration: none;
+    	border-bottom: 1px dashed;
+        }
+        a.wp-asp-toggle.toggled-on::after {
+    	content: " ↑";
+        }
+        a.wp-asp-toggle.toggled-off::after {
+    	content: " ↓";
+        }
 
     </style>
     <?php
@@ -101,6 +111,19 @@ if ( $_GET[ 'page' ] == 'stripe-payments-settings' ) {
     	    }
     	});
 
+    	$('a.wp-asp-toggle').click(function (e) {
+    	    e.preventDefault();
+    	    div = $(this).siblings('div');
+    	    if (div.is(":visible")) {
+    		$(this).removeClass('toggled-on');
+    		$(this).addClass('toggled-off');
+    	    } else {
+    		$(this).removeClass('toggled-off');
+    		$(this).addClass('toggled-on');
+    	    }
+    	    div.slideToggle('fast');
+    	});
+
     	$('#asp_clear_log_btn').click(function (e) {
     	    e.preventDefault();
     	    if (confirm("<?php _e( 'Are you sure want to clear log?', 'stripe-payments' ); ?>")) {
@@ -123,7 +146,7 @@ if ( $_GET[ 'page' ] == 'stripe-payments-settings' ) {
     	    $('#wp_asp_curr_symb').val(wp_asp_currencies[$('#wp_asp_curr_code').val()][1]);
     	});
 
-	$('#wp_asp_curr_code').change();
+    	$('#wp_asp_curr_code').change();
 
     	$('a.nav-tab[data-tab-name="' + wp_asp_urlHash + '"]').trigger('click');
         });

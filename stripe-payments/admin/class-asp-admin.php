@@ -414,17 +414,32 @@ class AcceptStripePayments_Admin {
 	    'desc'	 => __( 'This is the subject of the email that will be sent to the buyer.', 'stripe-payments' ) )
 	);
 
-	$email_tags_descr = "<br>{payer_email} – " . __( 'Email Address of the buyer', 'stripe-payments' ) . "
-                <br>{shipping_address} – " . __( 'Shipping address of the buyer', 'stripe-payments' ) . "
-                <br>{billing_address} – " . __( 'Billing address of the buyer', 'stripe-payments' ) . "
-                <br>{product_details} – " . __( 'The item details of the purchased product (this will include the download link for digital items).', 'stripe-payments' ) . "
-                <br>{transaction_id} – " . __( 'The unique transaction ID of the purchase', 'stripe-payments' ) . "
-                <br>{purchase_amt} – " . __( 'The amount paid for the current transaction', 'stripe-payments' ) . "
-                <br>{purchase_date} – " . __( 'The date of the purchase', 'stripe-payments' ) . "
-		<br>{custom_field} – " . __( 'Custom field name and value (if enabled)', 'stripe-payments' );
+	$email_tags = array(
+	    "{shipping_address}"	 => 'Shipping address of the buyer',
+	    "{billing_address}"	 => 'Billing address of the buyer',
+	    "{product_details}"	 => 'The item details of the purchased product (this will include the download link for digital items)',
+	    "{transaction_id}"	 => 'The unique transaction ID of the purchase',
+	    "{payer_email}"		 => 'Email Address of the buyer',
+	    "{purchase_amt}"	 => 'The amount paid for the current transaction. Example: 1,000.00',
+	    "{purchase_amt_curr}"	 => 'The amount paid for the current transaction with currency symbol. Example: $1,000.00',
+	    "{item_price}"		 => 'Item price. Example: 1000,00',
+	    "{item_price_curr}"	 => 'Item price with currency symbol. Example: $1,000.00',
+	    "{currency}"		 => 'Currency symbol. Example: $',
+	    "{currency_code}"	 => '3-letter currency code. Example: USD',
+	    "{purchase_date}"	 => 'The date of the purchase',
+	    "{custom_field}"	 => 'Custom field name and value (if enabled)',
+	);
+
+	$email_tags_descr = '';
+
+	foreach ( $email_tags as $tag => $descr ) {
+	    $email_tags_descr .= '<br>' . $tag . ' - ' . __( $descr, 'stripe-payments' );
+	}
+
+	$email_tags_descr = '<div><a class="wp-asp-toggle toggled-off" href="#0">'.__('Click here to toggle tags hint','stripe-payments').'</a><div class="hidden">' . $email_tags_descr . '</div></div>';
 
 	add_settings_field( 'buyer_email_body', __( 'Buyer Email Body', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-email', 'AcceptStripePayments-email-section', array( 'field'	 => 'buyer_email_body',
-	    'desc'	 => __( 'This is the body of the email that will be sent to the buyer.', 'stripe-payments' ) . __( 'Do not change the text within the braces {}. You can use the following email tags in this email body field:', 'stripe-payments' ) . $email_tags_descr )
+	    'desc'	 => __( 'This is the body of the email that will be sent to the buyer.', 'stripe-payments' ) . ' ' . __( 'Do not change the text within the braces {}. You can use the following email tags in this email body field:', 'stripe-payments' ) . $email_tags_descr )
 	);
 	add_settings_field( 'send_emails_to_seller', __( 'Send Emails to Seller After Purchase', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-email', 'AcceptStripePayments-email-section', array( 'field'	 => 'send_emails_to_seller',
 	    'desc'	 => __( 'If checked the plugin will send an email to the seller with the sale details.', 'stripe-payments' ) )
@@ -436,7 +451,7 @@ class AcceptStripePayments_Admin {
 	    'desc'	 => __( 'This is the subject of the email that will be sent to the seller for record.', 'stripe-payments' ) )
 	);
 	add_settings_field( 'seller_email_body', __( 'Seller Email Body', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-email', 'AcceptStripePayments-email-section', array( 'field'	 => 'seller_email_body',
-	    'desc'	 => __( 'This is the body of the email that will be sent to the seller.', 'stripe-payments' ) . __( 'Do not change the text within the braces {}. You can use the following email tags in this email body field:', 'stripe-payments' ) . $email_tags_descr )
+	    'desc'	 => __( 'This is the body of the email that will be sent to the seller.', 'stripe-payments' ) . ' ' . __( 'Do not change the text within the braces {}. You can use the following email tags in this email body field:', 'stripe-payments' ) . $email_tags_descr )
 	);
 
 	add_settings_field( 'send_email_on_error', __( 'Send Email On Payment Failure', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-email', 'AcceptStripePayments-error-email-section', array( 'field'	 => 'send_email_on_error',
