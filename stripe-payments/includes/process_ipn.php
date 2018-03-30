@@ -370,8 +370,12 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post ) {
 	$custom_field = $post[ 'custom_field_name' ] . ': ' . $post[ 'custom_field_value' ];
     }
 
-    $tags	 = array( "{product_details}", "{payer_email}", "{transaction_id}", "{purchase_amt}", "{purchase_date}", "{shipping_address}", "{billing_address}", '{custom_field}' );
-    $vals	 = array( $product_details, $post[ 'stripeEmail' ], $post[ 'txn_id' ], $post[ 'item_price' ], date( "F j, Y, g:i a", strtotime( 'now' ) ), $post[ 'shipping_address' ], $post[ 'billing_address' ], $custom_field );
+    $purchase_amt = $post[ 'item_price' ] * $post[ 'item_quantity' ];
+
+    $purchase_amt_fmt = AcceptStripePayments::formatted_price( $purchase_amt, $post[ 'currency_code' ] );
+
+    $tags	 = array( "{product_details}", "{payer_email}", "{transaction_id}", "{purchase_amt}", "{purchase_amt_fmt}", "{purchase_date}", "{shipping_address}", "{billing_address}", '{custom_field}' );
+    $vals	 = array( $product_details, $post[ 'stripeEmail' ], $post[ 'txn_id' ], $purchase_amt, $purchase_amt_fmt, date( "F j, Y, g:i a", strtotime( 'now' ) ), $post[ 'shipping_address' ], $post[ 'billing_address' ], $custom_field );
 
     $body = stripslashes( str_replace( $tags, $vals, $body ) );
 
