@@ -231,39 +231,39 @@ class AcceptStripePayments {
 	}
 	// Check if its a first install
 	$default = array(
-	    'is_live'			 => 0,
-	    'debug_log_enable'		 => 0,
-	    'dont_save_card'		 => 0,
-	    'currency_code'			 => 'USD',
-	    'button_text'			 => __( 'Buy Now', 'stripe-payments' ),
-	    'use_new_button_method'		 => 0,
-	    'checkout_url'			 => site_url( 'checkout' ),
-	    'from_email_address'		 => get_bloginfo( 'name' ) . ' <sales@your-domain.com>',
-	    'buyer_email_subject'		 => __( 'Thank you for the purchase', 'strip-payments' ),
-	    'buyer_email_body'		 => __( "Hello", 'stripe-payments' ) . "\r\n\r\n"
+	    'is_live'				 => 0,
+	    'debug_log_enable'			 => 0,
+	    'dont_save_card'			 => 0,
+	    'currency_code'				 => 'USD',
+	    'button_text'				 => __( 'Buy Now', 'stripe-payments' ),
+	    'use_new_button_method'			 => 0,
+	    'checkout_url'				 => site_url( 'checkout' ),
+	    'from_email_address'			 => get_bloginfo( 'name' ) . ' <sales@your-domain.com>',
+	    'buyer_email_subject'			 => __( 'Thank you for the purchase', 'strip-payments' ),
+	    'buyer_email_body'			 => __( "Hello", 'stripe-payments' ) . "\r\n\r\n"
 	    . __( "Thank you for your purchase! You ordered the following item(s):", 'stripe-payments' ) . "\r\n\r\n"
 	    . "{product_details}",
-	    'seller_notification_email'	 => get_bloginfo( 'admin_email' ),
-	    'seller_email_subject'		 => __( 'Notification of product sale', 'stripe-payments' ),
-	    'seller_email_body'		 => __( "Dear Seller", 'stripe-payments' ) . "\r\n\r\n"
+	    'seller_notification_email'		 => get_bloginfo( 'admin_email' ),
+	    'seller_email_subject'			 => __( 'Notification of product sale', 'stripe-payments' ),
+	    'seller_email_body'			 => __( "Dear Seller", 'stripe-payments' ) . "\r\n\r\n"
 	    . __( "This mail is to notify you of a product sale.", 'stripe-payments' ) . "\r\n\r\n"
 	    . "{product_details}\r\n\r\n"
 	    . __( "The sale was made to", 'stripe-payments' ) . " {payer_email}\r\n\r\n"
 	    . __( "Thanks", 'stripe-payments' ),
-	    'price_currency_pos'		 => 'left',
-	    'price_decimal_sep'		 => '.',
-	    'price_thousand_sep'		 => ',',
-	    'price_decimals_num'		 => '2',
-	    'api_keys_separated'		 => true,
-	    'stripe_receipt_email'		 => 0,
-	    'custom_field_enabled'		 => 0,
-	    'custom_field_name'		 => '',
-	    'custom_field_descr'		 => '',
-	    'custom_field_type'		 => 'text',
-	    'custom_field_mandatory'	 => 0,
-	    'send_email_on_error'		 => 0,
-	    'send_email_on_error_to'	 => $admin_email,
-	    'disable_buttons_before_js_loads' => 0,
+	    'price_currency_pos'			 => 'left',
+	    'price_decimal_sep'			 => '.',
+	    'price_thousand_sep'			 => ',',
+	    'price_decimals_num'			 => '2',
+	    'api_keys_separated'			 => true,
+	    'stripe_receipt_email'			 => 0,
+	    'custom_field_enabled'			 => 0,
+	    'custom_field_name'			 => '',
+	    'custom_field_descr'			 => '',
+	    'custom_field_type'			 => 'text',
+	    'custom_field_mandatory'		 => 0,
+	    'send_email_on_error'			 => 0,
+	    'send_email_on_error_to'		 => $admin_email,
+	    'disable_buttons_before_js_loads'	 => 0,
 	);
 	$opt	 = get_option( 'AcceptStripePayments-settings' );
 	if ( ! is_array( $opt ) ) {
@@ -431,16 +431,22 @@ class AcceptStripePayments {
 
 	$opts = get_option( 'AcceptStripePayments-settings' );
 
-	if ( empty( $curr ) ) {
-	    //if currency not specified, let's use default currency set in options
-	    $curr = $opts[ 'currency_code' ];
-	}
-	$currencies = AcceptStripePayments::get_currencies();
-	if ( isset( $currencies[ $curr ] ) ) {
-	    $curr_sym = $currencies[ $curr ][ 1 ];
+	if ( $curr === false ) {
+	    //if curr set to false, we format price without currency symbol or code
+	    $curr_sym = '';
 	} else {
-	    //no currency code found, let's just use currency code instead of symbol
-	    $curr_sym = $curr;
+
+	    if ( $curr === '' ) {
+		//if currency not specified, let's use default currency set in options
+		$curr = $opts[ 'currency_code' ];
+	    }
+	    $currencies = AcceptStripePayments::get_currencies();
+	    if ( isset( $currencies[ $curr ] ) ) {
+		$curr_sym = $currencies[ $curr ][ 1 ];
+	    } else {
+		//no currency code found, let's just use currency code instead of symbol
+		$curr_sym = $curr;
+	    }
 	}
 
 	$out = number_format( $price, $opts[ 'price_decimals_num' ], $opts[ 'price_decimal_sep' ], $opts[ 'price_thousand_sep' ] );

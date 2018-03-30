@@ -147,8 +147,8 @@ None
 == Changelog ==
 
 = 1.8.1t1 =
-- Added {purchase_amt_fmt} email tag to display formatted amount with currency symbol.
-- Fixed {purchase_amt} email tag wasn't showing total purchase amount (was showing item price instead).
+- Added {purchase_amt_curr} email tag to display formatted amount with currency symbol.
+- Fixed {purchase_amt} email tag wasn't showing total purchase amount (was showing item price instead). Also made {purchase_amt} to be formatted according to Price Display Settings.
 - New shortcode parameter added: compat_mode="1". Useful if you get "Invalid Stripe Token" error if using visual page builders.
 
 = 1.8.0 =
