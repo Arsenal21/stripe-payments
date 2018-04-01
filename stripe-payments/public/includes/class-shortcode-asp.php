@@ -60,13 +60,8 @@ class AcceptStripePaymentsShortcode {
 
     function get_loc_data() {
 	//localization data and Stripe API key
-	if ( $this->AcceptStripePayments->get_setting( 'is_live' ) == 0 ) {
-	    //use test keys
-	    $key = $this->AcceptStripePayments->get_setting( 'api_publishable_key_test' );
-	} else {
-	    //use live keys
-	    $key = $this->AcceptStripePayments->get_setting( 'api_publishable_key' );
-	}
+	$key = $this->AcceptStripePayments->APIPubKey;
+
 	$loc_data = array(
 	    'strEnterValidAmount'	 => __( 'Please enter a valid amount', 'stripe-payments' ),
 	    'strMinAmount'		 => __( 'Minimum amount is 0.5', 'stripe-payments' ),
@@ -416,15 +411,12 @@ class AcceptStripePaymentsShortcode {
 	    $this->StripeCSSInserted = true;
 	}
 
+	$output .= $this->get_styles();
+
 	$output .= "<form id = 'stripe_form_{$uniq_id}' class='asp-stripe-form' action = '' METHOD = 'POST'> ";
 
-//	if ( $price == 0 || $custom_quantity !== false || $this->AcceptStripePayments->get_setting( 'use_new_button_method' ) ) {
-	// variable amount or new method option is set in settings
-	$output	 .= $this->get_button_code_new_method( $data );
-//	} else {
-	// use old method instead
-//	    $output .= $this->get_button_code_old_method( $data, $price, $button_text );
-//	}
+	$output .= $this->get_button_code_new_method( $data );
+
 	$output	 .= '<input type="hidden" name="asp_action" value="process_ipn" />';
 	$output	 .= "<input type = 'hidden' value = '{$data[ 'name' ]}' name = 'item_name' />";
 	$output	 .= "<input type = 'hidden' value = '{$data[ 'quantity' ]}' name = 'item_quantity' />";
@@ -440,48 +432,13 @@ class AcceptStripePaymentsShortcode {
 	//after button filter
 	$output		 = apply_filters( 'asp-button-output-after-button', $output, $data, $class );
 	$output		 .= "</form>";
+
+	$output .= $this->get_scripts( $data );
+
 	return $output;
     }
 
-    function get_button_code_old_method( $data, $price, $button_text ) {
-	if ( $this->AcceptStripePayments->get_setting( 'is_live' ) == 0 ) {
-	    //use test keys
-	    $key = $this->AcceptStripePayments->get_setting( 'api_publishable_key_test' );
-	} else {
-	    //use live keys
-	    $key = $this->AcceptStripePayments->get_setting( 'api_publishable_key' );
-	}
-	$output	 = "<input type = 'hidden' value = '{$data[ 'amount' ]}' name = 'stripeItemPrice' />";
-	$output	 .= "<input type = 'hidden' value = '{$data[ 'button_key' ]}' name='stripeButtonKey'>";
-	//Lets hide default Stripe button. We'll be using our own instead for styling purposes
-	$output	 .= "<div style = 'display: none !important'>";
-	$output	 .= "<script src = 'https://checkout.stripe.com/checkout.js' class = 'stripe-button'
-	data-key = '" . $key . "'
-	data-panel-label = 'Pay'
-	data-amount = '{$data[ 'amount' ]}'
-	data-name = '{$data[ 'name' ]}'
-	data-allow-remember-me = '{$data[ 'allowRememberMe' ]}'
-	data-description = '{$data[ 'description' ]}'
-	data-label = '{$button_text}'
-	data-currency = '{$data[ 'currency' ]}'";
-	$output	 .= "data-locale = '{$data[ 'locale' ]}'";
-	if ( ! empty( $data[ 'image' ] ) ) {//Show item logo/thumbnail in the stripe payment window
-	    $output .= "data-image = '{$data[ 'image' ]}'";
-	}
-
-	if ( $data[ 'billingAddress' ] ) {
-	    $output .= "data-billing-address = '{$data[ 'billingAddress' ]}'";
-	}
-	if ( $data[ 'shippingAddress' ] ) {
-	    $output .= "data-shipping-address = '{$data[ 'shippingAddress' ]}'";
-	}
-	$output	 .= apply_filters( 'asp_additional_stripe_checkout_data_parameters', '' ); //Filter to allow the addition of extra data parameters for stripe checkout.
-	$output	 .= "></script>";
-	$output	 .= '</div>';
-	return $output;
-    }
-
-    function get_button_code_new_method( $data ) {
+    function get_styles() {
 	$output = '';
 	if ( ! $this->ButtonCSSInserted || $this->CompatMode ) {
 	    $this->ButtonCSSInserted = true;
@@ -537,6 +494,41 @@ class AcceptStripePaymentsShortcode {
 	    <?php
 	    $output			 .= ob_get_clean();
 	}
+	return $output;
+    }
+
+    function get_scripts( $data ) {
+	$output = '';
+	if ( $this->CompatMode ) {
+	    ob_start();
+	    ?>
+
+	    <script type='text/javascript'>
+	        var stripehandler = <?php echo json_encode( $this->get_loc_data() ); ?>;
+	    </script>
+	    <script type='text/javascript'>
+	        var stripehandler<?php echo $data[ 'uniq_id' ]; ?> = <?php echo json_encode( array( 'data' => $data ) ); ?>;
+	    </script>
+	    <script type='text/javascript' src='https://checkout.stripe.com/checkout.js'></script>
+	    <script type='text/javascript' src='<?php echo WP_ASP_PLUGIN_URL; ?>/public/assets/js/stripe-handler.js?ver=<?php echo WP_ASP_PLUGIN_VERSION; ?>'></script>
+	    <?php
+	    $output .= ob_get_clean();
+	} else {
+	    //Let's enqueue Stripe js
+	    wp_enqueue_script( 'stripe-script' );
+	    //using nested array in order to ensure boolean values are not converted to strings by wp_localize_script function
+	    wp_localize_script( 'stripe-handler', 'stripehandler' . $data[ 'uniq_id' ], array( 'data' => $data ) );
+	    //enqueue our script that handles the stuff
+	    wp_enqueue_script( 'stripe-handler' );
+	}
+	//addons can enqueue their scripts if needed
+	do_action( 'asp-button-output-enqueue-script' );
+	return $output;
+    }
+
+    function get_button_code_new_method( $data ) {
+	$output = '';
+
 	if ( $data[ 'amount' ] == 0 ) { //price not specified, let's add an input box for user to specify the amount
 	    $output .= "<div class='asp_product_item_amount_input_container'>"
 	    . "<input type='text' size='10' class='asp_product_item_amount_input' id='stripeAmount_{$data[ 'uniq_id' ]}' value='' name='stripeAmount' placeholder='" . __( 'Enter amount', 'stripe-payments' ) . "' required/>"
@@ -585,30 +577,6 @@ class AcceptStripePaymentsShortcode {
 	    . "<input type='hidden' data-stripe-button-uid='{$data[ 'uniq_id' ]}' />";
 	}
 
-	if ( $this->CompatMode ) {
-	    ob_start();
-	    ?>
-
-	    <script type='text/javascript'>
-	        var stripehandler = <?php echo json_encode( $this->get_loc_data() ); ?>;
-	    </script>
-	    <script type='text/javascript'>
-	        var stripehandler<?php echo $data[ 'uniq_id' ]; ?> = <?php echo json_encode( array( 'data' => $data ) ); ?>;
-	    </script>
-	    <script type='text/javascript' src='https://checkout.stripe.com/checkout.js'></script>
-	    <script type='text/javascript' src='<?php echo WP_ASP_PLUGIN_URL; ?>/public/assets/js/stripe-handler.js?ver=<?php echo WP_ASP_PLUGIN_VERSION; ?>'></script>
-	    <?php
-	    $output .= ob_get_clean();
-	} else {
-	    //Let's enqueue Stripe js
-	    wp_enqueue_script( 'stripe-script' );
-	    //using nested array in order to ensure boolean values are not converted to strings by wp_localize_script function
-	    wp_localize_script( 'stripe-handler', 'stripehandler' . $data[ 'uniq_id' ], array( 'data' => $data ) );
-	    //enqueue our script that handles the stuff
-	    wp_enqueue_script( 'stripe-handler' );
-	}
-	//addons can enqueue their scripts if needed
-	do_action( 'asp-button-output-enqueue-script' );
 	return $output;
     }
 

@@ -11,7 +11,9 @@
  */
 class AcceptStripePayments {
 
-    var $zeroCents = array( 'JPY', 'MGA', 'VND', 'KRW' );
+    var $zeroCents	 = array( 'JPY', 'MGA', 'VND', 'KRW' );
+    var $APISecKey	 = '';
+    var $APIPubKey	 = '';
 
     /**
      * Plugin version, used for cache-busting of style and script file references.
@@ -54,6 +56,14 @@ class AcceptStripePayments {
      */
     private function __construct() {
 	$this->settings = (array) get_option( 'AcceptStripePayments-settings' );
+
+	if ( $this->get_setting( 'is_live' ) == 0 ) {
+	    //use test keys
+	    $this->APIPubKey = $this->get_setting( 'api_publishable_key_test' );
+	} else {
+	    //use live keys
+	    $this->APIPubKey = $this->get_setting( 'api_publishable_key' );
+	}
 
 	// Load plugin text domain
 	add_action( 'plugins_loaded', array( $this, 'load_asp_plugin_textdomain' ) );
