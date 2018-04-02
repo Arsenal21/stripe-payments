@@ -441,7 +441,7 @@ class AcceptStripePaymentsShortcode {
     function get_styles() {
 	$output = '';
 	if ( ! $this->ButtonCSSInserted || $this->CompatMode ) {
-	    $this->ButtonCSSInserted = true;
+//	    $this->ButtonCSSInserted = true;
 	    // we need to style custom inputs
 	    ob_start();
 	    ?>
@@ -485,14 +485,14 @@ class AcceptStripePaymentsShortcode {
 	        }
 	    </style>
 	    <?php
-	    $output			 .= ob_get_clean();
+	    $output	 .= ob_get_clean();
 	    //addons can output their styles if needed
-	    $output			 = apply_filters( 'asp-button-output-additional-styles', $output );
+	    $output	 = apply_filters( 'asp-button-output-additional-styles', $output );
 	    ob_start();
 	    ?>
 	    <div class="asp-processing-cont"><span class="asp-processing">Processing <i>.</i><i>.</i><i>.</i></span></div>
 	    <?php
-	    $output			 .= ob_get_clean();
+	    $output	 .= ob_get_clean();
 	}
 	return $output;
     }
