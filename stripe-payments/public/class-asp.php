@@ -60,9 +60,11 @@ class AcceptStripePayments {
 	if ( $this->get_setting( 'is_live' ) == 0 ) {
 	    //use test keys
 	    $this->APIPubKey = $this->get_setting( 'api_publishable_key_test' );
+	    $this->APISecKey = $this->get_setting( 'api_secret_key_test' );
 	} else {
 	    //use live keys
 	    $this->APIPubKey = $this->get_setting( 'api_publishable_key' );
+	    $this->APISecKey = $this->get_setting( 'api_secret_key' );
 	}
 
 	// Load plugin text domain
@@ -481,7 +483,7 @@ class AcceptStripePayments {
 	    $tax_amount	 = round( ($price * $tax / 100 ), 2 );
 	    $price		 += $tax_amount;
 	}
-	return $price;
+	return round( $price );
     }
 
     static function apply_shipping( $price, $shipping ) {

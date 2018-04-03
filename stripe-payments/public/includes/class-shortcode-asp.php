@@ -69,6 +69,9 @@ class AcceptStripePaymentsShortcode {
 	    'strEnterQuantity'	 => __( 'Please enter quantity.', 'stripe-payments' ),
 	    'strQuantityIsZero'	 => __( 'Quantity can\'t be zero.', 'stripe-payments' ),
 	    'strQuantityIsFloat'	 => __( 'Quantity should be integer value.', 'stripe-payments' ),
+	    'strTax'		 => __( 'Tax', 'stripe-payments' ),
+	    'strShipping'		 => __( 'Shipping', 'stripe-payments' ),
+	    'strTotal'		 => __( 'Total: ', 'stripe-payments' ),
 	);
 	return $loc_data;
     }
@@ -309,12 +312,14 @@ class AcceptStripePaymentsShortcode {
 	$uniq_id		 = count( self::$payment_buttons );
 	$button_id		 = 'stripe_button_' . $uniq_id;
 	self::$payment_buttons[] = $button_id;
+	$item_price		 = $price;
 	$paymentAmount		 = ($custom_quantity == "1" ? $price : (floatval( $price ) * $quantity));
 	if ( in_array( $currency, $this->AcceptStripePayments->zeroCents ) ) {
 	    //this is zero-cents currency, amount shouldn't be multiplied by 100
 	    $priceInCents = $paymentAmount;
 	} else {
-	    $priceInCents = $paymentAmount * 100;
+	    $priceInCents	 = $paymentAmount * 100;
+	    $item_price	 = $price * 100;
 	}
 
 	if ( ! empty( $shipping ) ) {
@@ -379,6 +384,7 @@ class AcceptStripePaymentsShortcode {
 	$data = array(
 	    'product_id'		 => $product_id,
 	    'button_key'		 => $button_key,
+	    'item_price'		 => isset( $item_price ) ? $item_price : 0,
 	    'allowRememberMe'	 => $allowRememberMe,
 	    'quantity'		 => $quantity,
 	    'custom_quantity'	 => $custom_quantity,

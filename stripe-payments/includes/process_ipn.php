@@ -186,166 +186,168 @@ $amount = ($item_quantity !== "NA" ? ($amount * $item_quantity) : $amount);
 
 ASP_Debug_Logger::log( 'Getting API keys and trying to create a charge.' );
 
-if ( $asp_class->get_setting( 'is_live' ) == 0 ) {
-    //use test keys
-    $key = $asp_class->get_setting( 'api_secret_key_test' );
-} else {
-    //use live keys
-    $key = $asp_class->get_setting( 'api_secret_key' );
-}
-
 ASPMain::load_stripe_lib();
 
-\Stripe\Stripe::setApiKey( $key );
+\Stripe\Stripe::setApiKey( $asp_class->APISecKey );
 
 $GLOBALS[ 'asp_payment_success' ] = false;
 
 $opt = get_option( 'AcceptStripePayments-settings' );
 
+$data				 = array();
+$data[ 'product_id' ]		 = isset( $_POST[ 'stripeProductId' ] ) && ! empty( $_POST[ 'stripeProductId' ] ) ? intval( $_POST[ 'stripeProductId' ] ) : '';
+$data[ 'is_live' ]		 = $asp_class->get_setting( 'is_live' );
+$data[ 'item_name' ]		 = $item_name;
+$data[ 'stripeToken' ]		 = $stripeToken;
+$data[ 'stripeTokenType' ]	 = $stripeTokenType;
+$data[ 'stripeEmail' ]		 = $stripeEmail;
+$data[ 'item_quantity' ]	 = $item_quantity;
+$data[ 'item_price' ]		 = $item_price;
+$data [ 'paid_amount' ]		 = $data[ 'item_price' ] * $data[ 'item_quantity' ];
+$data[ 'currency_code' ]	 = $currency_code;
+$data[ 'charge_description' ]	 = $charge_description;
+$data[ 'addonName' ]		 = isset( $_POST[ 'stripeAddonName' ] ) ? sanitize_text_field( $_POST[ 'stripeAddonName' ] ) : '';
+$data[ 'button_key' ]		 = isset( $button_key ) ? $button_key : '';
+if ( isset( $_POST[ 'stripeCustomField' ] ) ) {
+    $data[ 'custom_field_value' ]	 = $_POST[ 'stripeCustomField' ];
+    $data[ 'custom_field_name' ]	 = $_POST[ 'stripeCustomFieldName' ];
+}
+
 ob_start();
-try {
 
-    $charge_opts = array(
-	'amount'	 => $amount,
-	'currency'	 => $currencyCodeType,
-	'description'	 => $charge_description,
-    );
+//let addons process payment if needed
+ASP_Debug_Logger::log( 'Firing pre-payment hook.' );
+$data = apply_filters( 'asp-process-charge', $data );
 
-    //Check if we need to add Receipt Email parameter
-    if ( isset( $opt[ 'stripe_receipt_email' ] ) && $opt[ 'stripe_receipt_email' ] == 1 ) {
-	$charge_opts[ 'receipt_email' ] = $stripeEmail;
-    }
+if ( empty( $data['charge'] ) ) {
+    ASP_Debug_Logger::log( 'Processing payment.' );
 
-    //Check if we need to add Don't Save Card parameter
-    if ( $opt[ 'dont_save_card' ] == 1 ) {
-	$charge_opts[ 'source' ] = $stripeToken;
-    } else {
+    try {
 
-	$customer = \Stripe\Customer::create( array(
-	    'email'	 => $stripeEmail,
-	    'card'	 => $stripeToken
-	) );
-
-	$charge_opts[ 'customer' ] = $customer->id;
-    }
-
-    //Check if we need to include custom field in metadata
-    if ( isset( $_POST[ 'stripeCustomField' ] ) ) {
-	$metadata			 = array(
-	    'custom_field_value'	 => isset( $_POST[ 'stripeCustomField' ] ) ? $_POST[ 'stripeCustomField' ] : '',
-	    'custom_field_name'	 => $_POST[ 'stripeCustomFieldName' ],
+	$charge_opts = array(
+	    'amount'	 => $amount,
+	    'currency'	 => $currencyCodeType,
+	    'description'	 => $charge_description,
 	);
-	$charge_opts[ 'metadata' ]	 = $metadata;
-    }
 
-    $charge				 = \Stripe\Charge::create( $charge_opts );
-    //Grab the charge ID and set it as the transaction ID.
-    $txn_id				 = $charge->id; //$charge->balance_transaction;
-    //Core transaction data
-    $data				 = array();
-    $data[ 'product_id' ]		 = isset( $_POST[ 'stripeProductId' ] ) && ! empty( $_POST[ 'stripeProductId' ] ) ? intval( $_POST[ 'stripeProductId' ] ) : '';
-    $data[ 'is_live' ]		 = $asp_class->get_setting( 'is_live' );
-    $data[ 'item_name' ]		 = $item_name;
-    $data[ 'stripeToken' ]		 = $stripeToken;
-    $data[ 'stripeTokenType' ]	 = $stripeTokenType;
-    $data[ 'stripeEmail' ]		 = $stripeEmail;
-    $data[ 'item_quantity' ]	 = $item_quantity;
-    $data[ 'item_price' ]		 = $item_price;
-    $data [ 'paid_amount' ]		 = $data[ 'item_price' ] * $data[ 'item_quantity' ];
-    $data[ 'currency_code' ]	 = $currency_code;
-    $data[ 'txn_id' ]		 = $txn_id; //The Stripe charge ID
-    $data[ 'charge_description' ]	 = $charge_description;
-    $data[ 'addonName' ]		 = isset( $_POST[ 'stripeAddonName' ] ) ? sanitize_text_field( $_POST[ 'stripeAddonName' ] ) : '';
-    $data[ 'button_key' ]		 = isset( $button_key ) ? $button_key : '';
-
-    if ( isset( $_POST[ 'stripeCustomField' ] ) ) {
-	$data[ 'custom_field_value' ]	 = $_POST[ 'stripeCustomField' ];
-	$data[ 'custom_field_name' ]	 = $_POST[ 'stripeCustomFieldName' ];
-    }
-
-    $post_data = array_map( 'sanitize_text_field', $data );
-
-    $_POST = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
-
-    //Billing address data (if any)
-    $billing_address		 = "";
-    $billing_address		 .= isset( $_POST[ 'stripeBillingName' ] ) ? $_POST[ 'stripeBillingName' ] . "\n" : '';
-    $billing_address		 .= isset( $_POST[ 'stripeBillingAddressLine1' ] ) ? $_POST[ 'stripeBillingAddressLine1' ] . "\n" : '';
-    $billing_address		 .= isset( $_POST[ 'stripeBillingAddressApt' ] ) ? $_POST[ 'stripeBillingAddressApt' ] . "\n" : '';
-    $billing_address		 .= isset( $_POST[ 'stripeBillingAddressZip' ] ) ? $_POST[ 'stripeBillingAddressZip' ] . "\n" : '';
-    $billing_address		 .= isset( $_POST[ 'stripeBillingAddressCity' ] ) ? $_POST[ 'stripeBillingAddressCity' ] . "\n" : '';
-    $billing_address		 .= isset( $_POST[ 'stripeBillingAddressState' ] ) ? $_POST[ 'stripeBillingAddressState' ] . "\n" : '';
-    $billing_address		 .= isset( $_POST[ 'stripeBillingAddressCountry' ] ) ? $_POST[ 'stripeBillingAddressCountry' ] . "\n" : '';
-    $post_data[ 'billing_address' ]	 = $billing_address;
-
-    //Shipping address data (if any)
-    $shipping_address		 = "";
-    $shipping_address		 .= isset( $_POST[ 'stripeShippingName' ] ) ? $_POST[ 'stripeShippingName' ] . "\n" : '';
-    $shipping_address		 .= isset( $_POST[ 'stripeShippingAddressLine1' ] ) ? $_POST[ 'stripeShippingAddressLine1' ] . "\n" : '';
-    $shipping_address		 .= isset( $_POST[ 'stripeShippingAddressApt' ] ) ? $_POST[ 'stripeShippingAddressApt' ] . "\n" : '';
-    $shipping_address		 .= isset( $_POST[ 'stripeShippingAddressZip' ] ) ? $_POST[ 'stripeShippingAddressZip' ] . "\n" : '';
-    $shipping_address		 .= isset( $_POST[ 'stripeShippingAddressCity' ] ) ? $_POST[ 'stripeShippingAddressCity' ] . "\n" : '';
-    $shipping_address		 .= isset( $_POST[ 'stripeShippingAddressState' ] ) ? $_POST[ 'stripeShippingAddressState' ] . "\n" : '';
-    $shipping_address		 .= isset( $_POST[ 'stripeShippingAddressCountry' ] ) ? $_POST[ 'stripeShippingAddressCountry' ] . "\n" : '';
-    $post_data[ 'shipping_address' ] = $shipping_address;
-
-    //Insert the order data to the custom post
-    $order		 = ASPOrder::get_instance();
-    $order_post_id	 = $order->insert( $post_data, $charge );
-
-    $post_data[ 'order_post_id' ] = $order_post_id;
-
-    // handle download item url
-    $item_url		 = apply_filters( 'asp_item_url_process', $item_url, $post_data );
-    $item_url		 = base64_decode( $item_url );
-    $post_data[ 'item_url' ] = $item_url;
-
-    ASP_Debug_Logger::log( 'Firing post-payment hooks.' );
-
-    //Action hook with the checkout post data parameters.
-    do_action( 'asp_stripe_payment_completed', $post_data, $charge );
-
-    //Action hook with the order object.
-    do_action( 'AcceptStripePayments_payment_completed', $order, $charge );
-
-    $GLOBALS[ 'asp_payment_success' ] = true;
-
-    //Let's handle email sending stuff
-
-    if ( isset( $opt[ 'send_emails_to_buyer' ] ) ) {
-	if ( $opt[ 'send_emails_to_buyer' ] ) {
-	    $from	 = $opt[ 'from_email_address' ];
-	    $to	 = $post_data[ 'stripeEmail' ];
-	    $subj	 = $opt[ 'buyer_email_subject' ];
-	    $body	 = asp_apply_dynamic_tags_on_email_body( $opt[ 'buyer_email_body' ], $post_data );
-	    $headers = 'From: ' . $from . "\r\n";
-
-	    $subj	 = apply_filters( 'asp_buyer_email_subject', $subj, $post_data );
-	    $body	 = apply_filters( 'asp_buyer_email_body', $body, $post_data );
-	    wp_mail( $to, $subj, $body, $headers );
+	//Check if we need to add Receipt Email parameter
+	if ( isset( $opt[ 'stripe_receipt_email' ] ) && $opt[ 'stripe_receipt_email' ] == 1 ) {
+	    $charge_opts[ 'receipt_email' ] = $stripeEmail;
 	}
-    }
-    if ( isset( $opt[ 'send_emails_to_seller' ] ) ) {
-	if ( $opt[ 'send_emails_to_seller' ] ) {
-	    $from	 = $opt[ 'from_email_address' ];
-	    $to	 = $opt[ 'seller_notification_email' ];
-	    $subj	 = $opt[ 'seller_email_subject' ];
-	    $body	 = asp_apply_dynamic_tags_on_email_body( $opt[ 'seller_email_body' ], $post_data );
-	    $headers = 'From: ' . $from . "\r\n";
 
-	    $subj	 = apply_filters( 'asp_seller_email_subject', $subj, $post_data );
-	    $body	 = apply_filters( 'asp_seller_email_body', $body, $post_data );
-	    wp_mail( $to, $subj, $body, $headers );
+	//Check if we need to add Don't Save Card parameter
+	if ( $opt[ 'dont_save_card' ] == 1 ) {
+	    $charge_opts[ 'source' ] = $stripeToken;
+	} else {
+
+	    $customer = \Stripe\Customer::create( array(
+		'email'	 => $stripeEmail,
+		'card'	 => $stripeToken
+	    ) );
+
+	    $charge_opts[ 'customer' ] = $customer->id;
 	}
+
+	//Check if we need to include custom field in metadata
+	if ( isset( $_POST[ 'stripeCustomField' ] ) ) {
+	    $metadata			 = array(
+		'custom_field_value'	 => isset( $_POST[ 'stripeCustomField' ] ) ? $_POST[ 'stripeCustomField' ] : '',
+		'custom_field_name'	 => $_POST[ 'stripeCustomFieldName' ],
+	    );
+	    $charge_opts[ 'metadata' ]	 = $metadata;
+	}
+
+	$data['charge'] = \Stripe\Charge::create( $charge_opts );
+    } catch ( Exception $e ) {
+	//If the charge fails (payment unsuccessful), this code will get triggered.
+	if ( ! empty( $charge->failure_code ) )
+	    $GLOBALS[ 'asp_error' ] = $charge->failure_code . ": " . $charge->failure_message;
+	else {
+	    $GLOBALS[ 'asp_error' ] = $e->getMessage();
+	}
+	asp_ipn_completed( $GLOBALS[ 'asp_error' ] );
     }
-} catch ( Exception $e ) {
-    //If the charge fails (payment unsuccessful), this code will get triggered.
-    if ( ! empty( $charge->failure_code ) )
-	$GLOBALS[ 'asp_error' ] = $charge->failure_code . ": " . $charge->failure_message;
-    else {
-	$GLOBALS[ 'asp_error' ] = $e->getMessage();
+}
+
+//Grab the charge ID and set it as the transaction ID.
+$txn_id			 = $data['charge']->id; //$charge->balance_transaction;
+//Core transaction data
+$data[ 'txn_id' ]	 = $txn_id; //The Stripe charge ID
+
+$post_data = array_map( 'sanitize_text_field', $data );
+
+$_POST = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
+
+//Billing address data (if any)
+$billing_address		 = "";
+$billing_address		 .= isset( $_POST[ 'stripeBillingName' ] ) ? $_POST[ 'stripeBillingName' ] . "\n" : '';
+$billing_address		 .= isset( $_POST[ 'stripeBillingAddressLine1' ] ) ? $_POST[ 'stripeBillingAddressLine1' ] . "\n" : '';
+$billing_address		 .= isset( $_POST[ 'stripeBillingAddressApt' ] ) ? $_POST[ 'stripeBillingAddressApt' ] . "\n" : '';
+$billing_address		 .= isset( $_POST[ 'stripeBillingAddressZip' ] ) ? $_POST[ 'stripeBillingAddressZip' ] . "\n" : '';
+$billing_address		 .= isset( $_POST[ 'stripeBillingAddressCity' ] ) ? $_POST[ 'stripeBillingAddressCity' ] . "\n" : '';
+$billing_address		 .= isset( $_POST[ 'stripeBillingAddressState' ] ) ? $_POST[ 'stripeBillingAddressState' ] . "\n" : '';
+$billing_address		 .= isset( $_POST[ 'stripeBillingAddressCountry' ] ) ? $_POST[ 'stripeBillingAddressCountry' ] . "\n" : '';
+$post_data[ 'billing_address' ]	 = $billing_address;
+
+//Shipping address data (if any)
+$shipping_address		 = "";
+$shipping_address		 .= isset( $_POST[ 'stripeShippingName' ] ) ? $_POST[ 'stripeShippingName' ] . "\n" : '';
+$shipping_address		 .= isset( $_POST[ 'stripeShippingAddressLine1' ] ) ? $_POST[ 'stripeShippingAddressLine1' ] . "\n" : '';
+$shipping_address		 .= isset( $_POST[ 'stripeShippingAddressApt' ] ) ? $_POST[ 'stripeShippingAddressApt' ] . "\n" : '';
+$shipping_address		 .= isset( $_POST[ 'stripeShippingAddressZip' ] ) ? $_POST[ 'stripeShippingAddressZip' ] . "\n" : '';
+$shipping_address		 .= isset( $_POST[ 'stripeShippingAddressCity' ] ) ? $_POST[ 'stripeShippingAddressCity' ] . "\n" : '';
+$shipping_address		 .= isset( $_POST[ 'stripeShippingAddressState' ] ) ? $_POST[ 'stripeShippingAddressState' ] . "\n" : '';
+$shipping_address		 .= isset( $_POST[ 'stripeShippingAddressCountry' ] ) ? $_POST[ 'stripeShippingAddressCountry' ] . "\n" : '';
+$post_data[ 'shipping_address' ] = $shipping_address;
+
+//Insert the order data to the custom post
+$order		 = ASPOrder::get_instance();
+$order_post_id	 = $order->insert( $post_data, $charge );
+
+$post_data[ 'order_post_id' ] = $order_post_id;
+
+// handle download item url
+$item_url		 = apply_filters( 'asp_item_url_process', $item_url, $post_data );
+$item_url		 = base64_decode( $item_url );
+$post_data[ 'item_url' ] = $item_url;
+
+ASP_Debug_Logger::log( 'Firing post-payment hooks.' );
+
+//Action hook with the checkout post data parameters.
+do_action( 'asp_stripe_payment_completed', $post_data, $charge );
+
+//Action hook with the order object.
+do_action( 'AcceptStripePayments_payment_completed', $order, $charge );
+
+$GLOBALS[ 'asp_payment_success' ] = true;
+
+//Let's handle email sending stuff
+
+if ( isset( $opt[ 'send_emails_to_buyer' ] ) ) {
+    if ( $opt[ 'send_emails_to_buyer' ] ) {
+	$from	 = $opt[ 'from_email_address' ];
+	$to	 = $post_data[ 'stripeEmail' ];
+	$subj	 = $opt[ 'buyer_email_subject' ];
+	$body	 = asp_apply_dynamic_tags_on_email_body( $opt[ 'buyer_email_body' ], $post_data );
+	$headers = 'From: ' . $from . "\r\n";
+
+	$subj	 = apply_filters( 'asp_buyer_email_subject', $subj, $post_data );
+	$body	 = apply_filters( 'asp_buyer_email_body', $body, $post_data );
+	wp_mail( $to, $subj, $body, $headers );
     }
-    asp_ipn_completed( $GLOBALS[ 'asp_error' ] );
+}
+if ( isset( $opt[ 'send_emails_to_seller' ] ) ) {
+    if ( $opt[ 'send_emails_to_seller' ] ) {
+	$from	 = $opt[ 'from_email_address' ];
+	$to	 = $opt[ 'seller_notification_email' ];
+	$subj	 = $opt[ 'seller_email_subject' ];
+	$body	 = asp_apply_dynamic_tags_on_email_body( $opt[ 'seller_email_body' ], $post_data );
+	$headers = 'From: ' . $from . "\r\n";
+
+	$subj	 = apply_filters( 'asp_seller_email_subject', $subj, $post_data );
+	$body	 = apply_filters( 'asp_seller_email_body', $body, $post_data );
+	wp_mail( $to, $subj, $body, $headers );
+    }
 }
 
 $_SESSION[ 'asp_data' ] = $post_data;
