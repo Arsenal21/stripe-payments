@@ -6,11 +6,16 @@ stripehandler.log = (function ($mod, $msg) {
     }
 });
 
-stripehandler.apply_tax_and_shipping = (function (amount, data) {
+stripehandler.apply_tax = (function (amount, data) {
     if (data.tax !== 0) {
 	var tax = Math.round(amount * parseInt(data.tax) / 100);
 	amount = parseInt(amount) + parseInt(tax);
     }
+    return amount;
+});
+
+stripehandler.apply_tax_and_shipping = (function (amount, data) {
+    amount = stripehandler.apply_tax(amount, data);
     if (data.shipping !== 0) {
 	amount = amount + parseInt(data.shipping);
     }
@@ -29,7 +34,7 @@ jQuery(document).ready(function () {
     });
 });
 
-function wp_asp_validate_custom_amount(data) {
+function wp_asp_validate_custom_amount(data, noTaxAndShipping = false) {
     var amount = jQuery('input#stripeAmount_' + data.uniq_id).val();
     amount = amount.replace(/\$/g, '');
     amount = amount.replace(/\,/g, '');
@@ -47,7 +52,9 @@ function wp_asp_validate_custom_amount(data) {
 	    amount = Math.round(amount * 100);
 	}
     }
-    amount = stripehandler.apply_tax_and_shipping(amount, data);
+    if (!noTaxAndShipping) {
+	amount = stripehandler.apply_tax_and_shipping(amount, data);
+    }
     return amount;
 }
 
@@ -71,6 +78,7 @@ function wp_asp_can_proceed(data, openHandler = true) {
 	if (amount === false) {
 	    return false;
 	}
+	data.item_price = wp_asp_validate_custom_amount(data, true);
     }
 
     if (data.custom_quantity === "1") {
@@ -85,13 +93,9 @@ function wp_asp_can_proceed(data, openHandler = true) {
 	} else if (custom_quantity === 0) {
 	    jQuery('#error_explanation_quantity_' + data.uniq_id).hide().html(stripehandler.strQuantityIsZero).fadeIn('slow');
 	    return false;
-
 	} else {
-	    if (!isNaN(amount)) {
-		amount = custom_quantity * amount;
-	    } else {
-		amount = custom_quantity * data.amount;
-	    }
+	    amount = custom_quantity * data.item_price;
+	    amount = stripehandler.apply_tax_and_shipping(amount, data);
 	}
     }
 

@@ -165,12 +165,14 @@ class AcceptStripePaymentsShortcode {
 	    $tax = 0;
 	}
 
+	$quantity = get_post_meta( $id, 'asp_product_quantity', true );
+
 	$under_price_line	 = '';
-	$tot_price		 = $price;
+	$tot_price		 = $quantity ? $price * $quantity : $price;
 
 	if ( $tax !== 0 ) {
 	    if ( ! empty( $price ) ) {
-		$tax_amount		 = round( ($price * $tax / 100 ), 2 );
+		$tax_amount		 = round( ($tot_price * $tax / 100 ), 2 );
 		$tot_price		 += $tax_amount;
 		$under_price_line	 = '<span class="asp_price_tax_section">' . AcceptStripePayments::formatted_price( $tax_amount, $currency ) . __( ' (tax)', 'stripe-payments' ) . '</span>';
 	    } else {
@@ -250,7 +252,14 @@ class AcceptStripePaymentsShortcode {
 	if ( ! $this->CompatMode ) {
 	    $this->productCSSInserted = true;
 	}
-	$tpl = str_replace( array( '%_thumb_img_%', '%_name_%', '%_description_%', '%_price_%', '%_under_price_line_%', '%_buy_btn_%' ), array( $thumb_img, $post->post_title, do_shortcode( wpautop( $post->post_content ) ), AcceptStripePayments::formatted_price( $price, $currency ), $under_price_line, $buy_btn ), $tpl );
+
+	$price_line = AcceptStripePayments::formatted_price( $price, $currency );
+
+	if ( $quantity && $quantity != 1 ) {
+	    $price_line = AcceptStripePayments::formatted_price( $price, $currency ) . ' x ' . $quantity;
+	}
+
+	$tpl = str_replace( array( '%_thumb_img_%', '%_name_%', '%_description_%', '%_price_%', '%_under_price_line_%', '%_buy_btn_%' ), array( $thumb_img, $post->post_title, do_shortcode( wpautop( $post->post_content ) ), $price_line, $under_price_line, $buy_btn ), $tpl );
 	return $tpl;
     }
 
