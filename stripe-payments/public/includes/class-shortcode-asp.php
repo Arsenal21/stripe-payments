@@ -71,7 +71,7 @@ class AcceptStripePaymentsShortcode {
 	    'strQuantityIsFloat'	 => __( 'Quantity should be integer value.', 'stripe-payments' ),
 	    'strTax'		 => __( 'Tax', 'stripe-payments' ),
 	    'strShipping'		 => __( 'Shipping', 'stripe-payments' ),
-	    'strTotal'		 => __( 'Total: ', 'stripe-payments' ),
+	    'strTotal'		 => __( 'Total:', 'stripe-payments' ),
 	);
 	return $loc_data;
     }
@@ -190,7 +190,7 @@ class AcceptStripePaymentsShortcode {
 	}
 
 	if ( ! empty( $price ) && ! empty( $under_price_line ) ) {
-	    $under_price_line .= '<div class="asp_price_full_total">Total: ' . AcceptStripePayments::formatted_price( $tot_price, $currency ) . '</div>';
+	    $under_price_line .= '<div class="asp_price_full_total">' . __( 'Total:', 'stripe-payments' ) . ' ' . AcceptStripePayments::formatted_price( $tot_price, $currency ) . '</div>';
 	}
 
 	if ( get_post_meta( $id, 'asp_product_no_popup_thumbnail', true ) != 1 ) {
@@ -259,7 +259,21 @@ class AcceptStripePaymentsShortcode {
 	    $price_line = AcceptStripePayments::formatted_price( $price, $currency ) . ' x ' . $quantity;
 	}
 
-	$tpl = str_replace( array( '%_thumb_img_%', '%_name_%', '%_description_%', '%_price_%', '%_under_price_line_%', '%_buy_btn_%' ), array( $thumb_img, $post->post_title, do_shortcode( wpautop( $post->post_content ) ), $price_line, $under_price_line, $buy_btn ), $tpl );
+	$product_tags = array(
+	    'thumb_img'		 => $thumb_img,
+	    'name'			 => $post->post_title,
+	    'description'		 => do_shortcode( wpautop( $post->post_content ) ),
+	    'price'			 => $price_line,
+	    'under_price_line'	 => $under_price_line,
+	    'buy_btn'		 => $buy_btn,
+	);
+
+	$product_tags = apply_filters( 'asp_product_tpl_tags_arr', $product_tags, $id );
+
+	foreach ( $product_tags as $tag => $repl ) {
+	    $tpl = str_replace( '%_' . $tag . '_%', $repl, $tpl );
+	}
+
 	return $tpl;
     }
 

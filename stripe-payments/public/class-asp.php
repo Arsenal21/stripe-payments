@@ -452,6 +452,9 @@ class AcceptStripePayments {
 		//if currency not specified, let's use default currency set in options
 		$curr = $opts[ 'currency_code' ];
 	    }
+
+	    $curr = strtoupper( $curr );
+
 	    $currencies = AcceptStripePayments::get_currencies();
 	    if ( isset( $currencies[ $curr ] ) ) {
 		$curr_sym = $currencies[ $curr ][ 1 ];

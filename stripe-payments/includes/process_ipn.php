@@ -217,9 +217,9 @@ ob_start();
 
 //let addons process payment if needed
 ASP_Debug_Logger::log( 'Firing pre-payment hook.' );
-$data = apply_filters( 'asp-process-charge', $data );
+$data = apply_filters( 'asp_process_charge', $data );
 
-if ( empty( $data['charge'] ) ) {
+if ( empty( $data[ 'charge' ] ) ) {
     ASP_Debug_Logger::log( 'Processing payment.' );
 
     try {
@@ -257,7 +257,7 @@ if ( empty( $data['charge'] ) ) {
 	    $charge_opts[ 'metadata' ]	 = $metadata;
 	}
 
-	$data['charge'] = \Stripe\Charge::create( $charge_opts );
+	$data[ 'charge' ] = \Stripe\Charge::create( $charge_opts );
     } catch ( Exception $e ) {
 	//If the charge fails (payment unsuccessful), this code will get triggered.
 	if ( ! empty( $charge->failure_code ) )
@@ -270,7 +270,7 @@ if ( empty( $data['charge'] ) ) {
 }
 
 //Grab the charge ID and set it as the transaction ID.
-$txn_id			 = $data['charge']->id; //$charge->balance_transaction;
+$txn_id			 = $data[ 'charge' ]->id; //$charge->balance_transaction;
 //Core transaction data
 $data[ 'txn_id' ]	 = $txn_id; //The Stripe charge ID
 
