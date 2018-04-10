@@ -147,6 +147,7 @@ None
 == Changelog ==
 
 = 1.8.2 =
+- Added proper check for minimum amount for following currencies: DKK (2.50-kr.), GPB (£0.30), HKD ($4.00), JPY (¥50), MXN ($10), NOK (3.00-kr.), SEK (3.00-kr.).
 - Fixed products page was displaying incorrect number of products per row.
 - Fixed product template was improperly displaying price if quantity was greater than 1.
 - Fixed tax and shipping being improperly calculated when custom quantity was enabled.

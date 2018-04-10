@@ -20,7 +20,7 @@ class AcceptStripePayments {
 	'CHF'	 => 50,
 	'DKK'	 => 250,
 	'EUR'	 => 50,
-	'GPB'	 => 30,
+	'GBP'	 => 30,
 	'HKD'	 => 400,
 	'JPY'	 => 50,
 	'MXN'	 => 1000,
