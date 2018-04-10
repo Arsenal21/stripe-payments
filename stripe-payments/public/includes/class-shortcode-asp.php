@@ -705,7 +705,7 @@ class AcceptStripePaymentsShortcode {
 	    //query returned no results. Let's see if that was a search query
 	    if ( $search === false ) {
 		//that wasn't search query. That means there is no products configured
-		return 'No products have been configured yet';
+		return __('No products have been configured yet','stripe-payments');
 	    }
 	}
 
@@ -714,7 +714,7 @@ class AcceptStripePaymentsShortcode {
 	} else {
 	    if ( $search !== false ) {
 		$tpl[ 'clear_search_url' ]	 = esc_url( remove_query_arg( array( 'asp_search', 'asp_page' ) ) );
-		$tpl[ 'search_result_text' ]	 = $products->found_posts === 0 ? 'Nothing found for "%s".' : 'Search results for "%s".';
+		$tpl[ 'search_result_text' ]	 = $products->found_posts === 0 ? __('Nothing found for','stripe-payments').' "%s".' : __('Search results for','stripe-payments').' "%s".';
 		$tpl[ 'search_result_text' ]	 = sprintf( $tpl[ 'search_result_text' ], htmlentities( $search ) );
 		$tpl[ 'search_term' ]		 = htmlentities( $search );
 	    } else {
@@ -733,7 +733,7 @@ class AcceptStripePaymentsShortcode {
 	    if ( $i < 0 ) { //new row
 		$tpl[ 'products_list' ]	 .= $tpl[ 'products_row_end' ];
 		$tpl[ 'products_list' ]	 .= $tpl[ 'products_row_start' ];
-		$i			 = $tpl[ 'products_per_row' ];
+		$i			 = $tpl[ 'products_per_row' ]-1;
 	    }
 
 	    $id = get_the_ID();
