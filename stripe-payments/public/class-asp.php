@@ -12,6 +12,23 @@
 class AcceptStripePayments {
 
     var $zeroCents	 = array( 'JPY', 'MGA', 'VND', 'KRW' );
+    var $minAmounts	 = array(
+	'USD'	 => 50,
+	'AUD'	 => 50,
+	'BRL'	 => 50,
+	'CAD'	 => 50,
+	'CHF'	 => 50,
+	'DKK'	 => 250,
+	'EUR'	 => 50,
+	'GPB'	 => 30,
+	'HKD'	 => 400,
+	'JPY'	 => 50,
+	'MXN'	 => 1000,
+	'NOK'	 => 300,
+	'NZD'	 => 50,
+	'SEK'	 => 300,
+	'SGD'	 => 50,
+    );
     var $APISecKey	 = '';
     var $APIPubKey	 = '';
 

@@ -60,11 +60,13 @@ class AcceptStripePaymentsShortcode {
 
     function get_loc_data() {
 	//localization data and Stripe API key
-	$key = $this->AcceptStripePayments->APIPubKey;
+	$key		 = $this->AcceptStripePayments->APIPubKey;
+	$minAmounts	 = $this->AcceptStripePayments->minAmounts;
+	$zeroCents	 = $this->AcceptStripePayments->zeroCents;
 
 	$loc_data = array(
 	    'strEnterValidAmount'	 => __( 'Please enter a valid amount', 'stripe-payments' ),
-	    'strMinAmount'		 => __( 'Minimum amount is 0.5', 'stripe-payments' ),
+	    'strMinAmount'		 => __( 'Minimum amount is', 'stripe-payments' ),
 	    'key'			 => $key,
 	    'strEnterQuantity'	 => __( 'Please enter quantity.', 'stripe-payments' ),
 	    'strQuantityIsZero'	 => __( 'Quantity can\'t be zero.', 'stripe-payments' ),
@@ -72,6 +74,8 @@ class AcceptStripePaymentsShortcode {
 	    'strTax'		 => __( 'Tax', 'stripe-payments' ),
 	    'strShipping'		 => __( 'Shipping', 'stripe-payments' ),
 	    'strTotal'		 => __( 'Total:', 'stripe-payments' ),
+	    'minAmounts'		 => $minAmounts,
+	    'zeroCents'		 => $zeroCents,
 	);
 	return $loc_data;
     }
@@ -705,7 +709,7 @@ class AcceptStripePaymentsShortcode {
 	    //query returned no results. Let's see if that was a search query
 	    if ( $search === false ) {
 		//that wasn't search query. That means there is no products configured
-		return __('No products have been configured yet','stripe-payments');
+		return __( 'No products have been configured yet', 'stripe-payments' );
 	    }
 	}
 
@@ -714,7 +718,7 @@ class AcceptStripePaymentsShortcode {
 	} else {
 	    if ( $search !== false ) {
 		$tpl[ 'clear_search_url' ]	 = esc_url( remove_query_arg( array( 'asp_search', 'asp_page' ) ) );
-		$tpl[ 'search_result_text' ]	 = $products->found_posts === 0 ? __('Nothing found for','stripe-payments').' "%s".' : __('Search results for','stripe-payments').' "%s".';
+		$tpl[ 'search_result_text' ]	 = $products->found_posts === 0 ? __( 'Nothing found for', 'stripe-payments' ) . ' "%s".' : __( 'Search results for', 'stripe-payments' ) . ' "%s".';
 		$tpl[ 'search_result_text' ]	 = sprintf( $tpl[ 'search_result_text' ], htmlentities( $search ) );
 		$tpl[ 'search_term' ]		 = htmlentities( $search );
 	    } else {
@@ -733,7 +737,7 @@ class AcceptStripePaymentsShortcode {
 	    if ( $i < 0 ) { //new row
 		$tpl[ 'products_list' ]	 .= $tpl[ 'products_row_end' ];
 		$tpl[ 'products_list' ]	 .= $tpl[ 'products_row_start' ];
-		$i			 = $tpl[ 'products_per_row' ]-1;
+		$i			 = $tpl[ 'products_per_row' ] - 1;
 	    }
 
 	    $id = get_the_ID();

@@ -22,6 +22,13 @@ stripehandler.apply_tax_and_shipping = (function (amount, data) {
     return amount;
 });
 
+stripehandler.cents_to_amount = (function (amount, curr) {
+    if (typeof stripehandler.zeroCents[curr] !== 'undefined') {
+	amount = amount / 100;
+    }
+    return amount;
+});
+
 jQuery(document).ready(function () {
     jQuery('input[data-stripe-button-uid]').each(function (ind, obj) {
 	var uid = jQuery(obj).data('stripeButtonUid');
@@ -42,15 +49,16 @@ function wp_asp_validate_custom_amount(data, noTaxAndShipping = false) {
     if (isNaN(amount)) {
 	jQuery('#error_explanation_' + data.uniq_id).hide().html(stripehandler.strEnterValidAmount).fadeIn('slow');
 	return false;
-    } else if (amount < 0.5) {
-	jQuery('#error_explanation_' + data.uniq_id).hide().html(stripehandler.strMinAmount).fadeIn('slow');
-	return false;
     } else {
-	jQuery('#error_explanation_' + data.uniq_id).html('');
-	jQuery('input#stripeAmount_' + data.uniq_id).val(amount);
 	if (data.zeroCents.indexOf(data.currency) <= -1) {
 	    amount = Math.round(amount * 100);
 	}
+	if (typeof stripehandler.minAmounts[data.currency] !== 'undefined' && stripehandler.minAmounts[data.currency] > amount) {
+	    jQuery('#error_explanation_' + data.uniq_id).hide().html(stripehandler.strMinAmount + ' ' + stripehandler.cents_to_amount(stripehandler.minAmounts[data.currency], data.currency)).fadeIn('slow');
+	    return false;
+	}
+	jQuery('#error_explanation_' + data.uniq_id).html('');
+	jQuery('input#stripeAmount_' + data.uniq_id).val(amount);
     }
     if (!noTaxAndShipping) {
 	amount = stripehandler.apply_tax_and_shipping(amount, data);
