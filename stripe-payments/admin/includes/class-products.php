@@ -101,23 +101,29 @@ class ASPProducts {
 		<?php
 		break;
 	    case 'price':
+		//let's apply filter to let addons change price if needed
+		// addons haven't provided any info, so let's get and display price and currency
 		$price		 = get_post_meta( $post_id, 'asp_product_price', true );
-		if ( $price ) {
-		    $currency = get_post_meta( $post_id, 'asp_product_currency', true );
-		    if ( ! $currency ) {
-			//we need to use default currency
-			$asp		 = AcceptStripePayments::get_instance();
-			$currency	 = $asp->get_setting( 'currency_code' );
-		    }
-		    echo AcceptStripePayments::formatted_price($price,$currency);
-		} else {
-		    echo "Custom";
+		$currency	 = get_post_meta( $post_id, 'asp_product_currency', true );
+		if ( ! $currency ) {
+		    //we need to use default currency
+		    $asp		 = AcceptStripePayments::get_instance();
+		    $currency	 = $asp->get_setting( 'currency_code' );
 		}
+		if ( $price ) {
+
+		    $output = AcceptStripePayments::formatted_price( $price, $currency );
+		} else {
+		    $output = "Custom";
+		}
+		$output = apply_filters( 'asp_products_table_price_column', $output, $price, $currency, $post_id );
+		echo $output;
 		break;
 	    case 'shortcode':
 		?>
 		<input type="text" name="asp_product_shortcode" class="asp-select-on-click" readonly value="[asp_product id=&quot;<?php echo $post_id; ?>&quot;]">
-	    <?php
+		<?php
+		break;
 	}
     }
 

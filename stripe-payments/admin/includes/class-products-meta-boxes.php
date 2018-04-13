@@ -17,7 +17,7 @@ class asp_products_metaboxes {
 	add_meta_box( 'asp_upload_meta_box', __( 'Download URL', 'stripe-payments' ), array( $this, 'display_upload_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 	add_meta_box( 'asp_thumbnail_meta_box', __( 'Product Thumbnail (optional)', 'stripe-payments' ), array( $this, 'display_thumbnail_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 	add_meta_box( 'asp_address_meta_box', __( 'Collect Address', 'stripe-payments' ), array( $this, 'display_address_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
-	add_meta_box( 'asp_shipping_tax_meta_box', __( 'Shipping & Tax', 'stripe-payments' ), array( $this, 'display_shipping_tax_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );	
+	add_meta_box( 'asp_shipping_tax_meta_box', __( 'Shipping & Tax', 'stripe-payments' ), array( $this, 'display_shipping_tax_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 	add_meta_box( 'asp_thankyou_page_meta_box', __( 'Thank You Page URL', 'stripe-payments' ), array( $this, 'display_thankyou_page_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 	add_meta_box( 'asp_appearance_meta_box', __( 'Appearance', 'stripe-payments' ), array( $this, 'display_appearance_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 	add_meta_box( 'asp_custom_field_meta_box', __( 'Custom Field', 'stripe-payments' ), array( $this, 'display_custom_field_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
@@ -43,6 +43,7 @@ class asp_products_metaboxes {
     function display_price_meta_box( $post ) {
 	$current_price	 = get_post_meta( $post->ID, 'asp_product_price', true );
 	$current_curr	 = get_post_meta( $post->ID, 'asp_product_currency', true );
+	do_action( 'asp_product_price_metabox_before_content', $post );
 	?>
 	<label><?php _e( 'Price', 'stripe-payments' ); ?></label>
 	<br/>
@@ -56,6 +57,7 @@ class asp_products_metaboxes {
 	<select name="asp_product_currency" id="asp_currency_select"><?php echo AcceptStripePayments_Admin::get_currency_options( $current_curr ); ?>></select>
 	<p class = "description"><?php echo __( 'Leave "(Default)" option selected if you want to use currency specified on settings page.', 'stripe-payments' ); ?></p>
 	<?php
+	do_action( 'asp_product_price_metabox_after_content', $post );
     }
 
     function display_shipping_tax_meta_box( $post ) {
