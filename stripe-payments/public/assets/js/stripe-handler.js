@@ -117,8 +117,6 @@ function wp_asp_can_proceed(data, openHandler = true) {
 
     if (description === '') {
 
-	var descr_amount = amount;
-
 	var descr_quantity = 1;
 
 	if (typeof custom_quantity !== "undefined") {
@@ -127,12 +125,7 @@ function wp_asp_can_proceed(data, openHandler = true) {
 	    descr_quantity = data.quantity;
 	}
 
-	descr_amount = descr_amount / descr_quantity;
-
-	if (data.zeroCents.indexOf(data.currency) <= -1) {
-	    descr_amount = descr_amount / 100;
-	}
-	description = descr_quantity + ' X ' + descr_amount + ' ' + data.currency;
+	description = ' X ' + descr_quantity;
     }
 
     if (data.custom_field != '0') {
