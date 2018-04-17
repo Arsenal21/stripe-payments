@@ -113,11 +113,7 @@ if ( isset( $_POST[ 'stripeProductId' ] ) && ! empty( $_POST[ 'stripeProductId' 
 
     $tax = get_post_meta( $id, 'asp_product_tax', true );
 
-    $item_price = AcceptStripePayments::apply_tax( $item_price, $tax );
-
-    $shipping = get_post_meta( $id, 'asp_product_shipping', true );
-
-    $item_price = AcceptStripePayments::apply_shipping( $item_price, $shipping );
+    $shipping = floatval( get_post_meta( $id, 'asp_product_shipping', true ) );
 
     $got_product_data_from_db = true;
     ASP_Debug_Logger::log( 'Got required product info from database.' );
@@ -148,9 +144,18 @@ if ( ! $got_product_data_from_db ) {
 	asp_ipn_completed( 'Button Key mismatch. Expected ' . $button_key . ', calculated: ' . $calculated_button_key );
     }
     $trans_name	 = 'stripe-payments-' . $button_key;
-    $item_price	 = get_transient( $trans_name ); //Read the price for this item from the system.
+    $trans		 = get_transient( $trans_name ); //Read the price for this item from the system.
+    $item_price	 = $trans[ 'price' ];
+
+    $tax = isset( $trans[ 'tax' ] ) ? $trans[ 'tax' ] : 0;
+
+    $shipping = isset( $trans[ 'shipping' ] ) ? $trans[ 'shipping' ] : 0;
 
     $currency_code = strtoupper( sanitize_text_field( $_POST[ 'currency_code' ] ) );
+
+    if ( ! in_array( $currency_code, $asp_class->zeroCents ) ) {
+	$shipping = $shipping / 100;
+    }
 }
 
 if ( $item_price === '0' || $item_price === '' ) { //Custom amount
@@ -170,9 +175,8 @@ $charge_description	 = sanitize_text_field( $_POST[ 'charge_description' ] );
 
 $amount = $item_price;
 
-if ( ! in_array( $currency_code, $asp_class->zeroCents ) ) {
-    $amount = $amount * 100;
-}
+//apply tax if needed
+$amount = AcceptStripePayments::apply_tax( $amount, $tax );
 
 if ( $item_custom_quantity !== false ) { //custom quantity
     $item_quantity = $item_custom_quantity;
@@ -183,6 +187,15 @@ if ( empty( $item_quantity ) ) {
 }
 
 $amount = ($item_quantity !== "NA" ? ($amount * $item_quantity) : $amount);
+
+//add shipping cost
+$amount = AcceptStripePayments::apply_shipping( $amount, $shipping );
+
+$amount_in_cents = $amount;
+
+if ( ! in_array( $currency_code, $asp_class->zeroCents ) ) {
+    $amount_in_cents = $amount_in_cents * 100;
+}
 
 ASP_Debug_Logger::log( 'Getting API keys and trying to create a charge.' );
 
@@ -203,7 +216,7 @@ $data[ 'stripeTokenType' ]	 = $stripeTokenType;
 $data[ 'stripeEmail' ]		 = $stripeEmail;
 $data[ 'item_quantity' ]	 = $item_quantity;
 $data[ 'item_price' ]		 = $item_price;
-$data [ 'paid_amount' ]		 = $data[ 'item_price' ] * $data[ 'item_quantity' ];
+$data[ 'paid_amount' ]		 = $amount;
 $data[ 'currency_code' ]	 = $currency_code;
 $data[ 'charge_description' ]	 = $charge_description;
 $data[ 'addonName' ]		 = isset( $_POST[ 'stripeAddonName' ] ) ? sanitize_text_field( $_POST[ 'stripeAddonName' ] ) : '';
@@ -225,7 +238,7 @@ if ( empty( $data[ 'charge' ] ) ) {
     try {
 
 	$charge_opts = array(
-	    'amount'	 => $amount,
+	    'amount'	 => $amount_in_cents,
 	    'currency'	 => $currencyCodeType,
 	    'description'	 => $charge_description,
 	);
@@ -260,8 +273,8 @@ if ( empty( $data[ 'charge' ] ) ) {
 	$data[ 'charge' ] = \Stripe\Charge::create( $charge_opts );
     } catch ( Exception $e ) {
 	//If the charge fails (payment unsuccessful), this code will get triggered.
-	if ( ! empty( $charge->failure_code ) )
-	    $GLOBALS[ 'asp_error' ] = $charge->failure_code . ": " . $charge->failure_message;
+	if ( ! empty( $data[ 'charge' ]->failure_code ) )
+	    $GLOBALS[ 'asp_error' ] = $data[ 'charge' ]->failure_code . ": " . $data[ 'charge' ]->failure_message;
 	else {
 	    $GLOBALS[ 'asp_error' ] = $e->getMessage();
 	}
@@ -300,9 +313,23 @@ $shipping_address		 .= isset( $_POST[ 'stripeShippingAddressState' ] ) ? $_POST[
 $shipping_address		 .= isset( $_POST[ 'stripeShippingAddressCountry' ] ) ? $_POST[ 'stripeShippingAddressCountry' ] . "\n" : '';
 $post_data[ 'shipping_address' ] = $shipping_address;
 
+$post_data[ 'additional_items' ] = array();
+
+if ( isset( $tax ) && ! empty( $tax ) ) {
+    $tax_amt								 = AcceptStripePayments::get_tax_amount( $post_data[ 'item_price' ], $tax );
+    $post_data[ 'additional_items' ][ __( 'Tax', 'stripe-payments' ) ]	 = $tax_amt;
+    $post_data[ 'tax_perc' ]						 = $tax;
+    $post_data[ 'tax' ]							 = $tax_amt;
+}
+
+if ( isset( $shipping ) && ! empty( $shipping ) ) {
+    $post_data[ 'additional_items' ][ __( 'Shipping', 'stripe-payments' ) ]	 = $shipping;
+    $post_data[ 'shipping' ]						 = $shipping;
+}
+
 //Insert the order data to the custom post
 $order		 = ASPOrder::get_instance();
-$order_post_id	 = $order->insert( $post_data, $charge );
+$order_post_id	 = $order->insert( $post_data, $data[ 'charge' ] );
 
 $post_data[ 'order_post_id' ] = $order_post_id;
 
@@ -314,10 +341,10 @@ $post_data[ 'item_url' ] = $item_url;
 ASP_Debug_Logger::log( 'Firing post-payment hooks.' );
 
 //Action hook with the checkout post data parameters.
-do_action( 'asp_stripe_payment_completed', $post_data, $charge );
+do_action( 'asp_stripe_payment_completed', $post_data, $data[ 'charge' ] );
 
 //Action hook with the order object.
-do_action( 'AcceptStripePayments_payment_completed', $order, $charge );
+do_action( 'AcceptStripePayments_payment_completed', $order, $data[ 'charge' ] );
 
 $GLOBALS[ 'asp_payment_success' ] = true;
 
@@ -361,11 +388,18 @@ asp_ipn_completed();
 function asp_apply_dynamic_tags_on_email_body( $body, $post ) {
     $product_details = __( "Product Name: ", "stripe-payments" ) . $post[ 'item_name' ] . "\n";
     $product_details .= __( "Quantity: ", "stripe-payments" ) . $post[ 'item_quantity' ] . "\n";
-    $product_details .= __( "Price: ", "stripe-payments" ) . AcceptStripePayments::formatted_price( $post[ 'item_price' ], $post[ 'currency_code' ] ) . "\n";
+    $product_details .= __( "Item Price: ", "stripe-payments" ) . AcceptStripePayments::formatted_price( $post[ 'item_price' ], $post[ 'currency_code' ] ) . "\n";
+    //check if there are any additional items available like tax and shipping cost
+    if ( ! empty( $post[ 'additional_items' ] ) ) {
+	foreach ( $post[ 'additional_items' ] as $item => $price ) {
+	    $product_details .= $item . ": " . AcceptStripePayments::formatted_price( $price, $post[ 'currency_code' ] ) . "\n";
+	}
+    }
     $product_details .= "--------------------------------" . "\n";
-    $product_details .= __( "Total Amount: ", "stripe-payments" ) . AcceptStripePayments::formatted_price( ($post[ 'item_price' ] * $post[ 'item_quantity' ] ), $post[ 'currency_code' ] ) . "\n";
-    if ( ! empty( $post[ 'item_url' ] ) )
+    $product_details .= __( "Total Amount: ", "stripe-payments" ) . AcceptStripePayments::formatted_price( $post[ 'paid_amount' ], $post[ 'currency_code' ] ) . "\n";
+    if ( ! empty( $post[ 'item_url' ] ) ) {
 	$product_details .= "\n\n" . __( "Download link: ", "stripe-payments" ) . $post[ 'item_url' ];
+    }
 
     $custom_field = '';
     if ( isset( $post[ 'custom_field_value' ] ) ) {
@@ -385,9 +419,24 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post ) {
 
     $item_price_curr = AcceptStripePayments::formatted_price( $post[ 'item_price' ], $post[ 'currency_code' ] );
 
-    $purchase_amt = AcceptStripePayments::formatted_price( $post[ 'item_price' ] * $post[ 'item_quantity' ], false );
+    $purchase_amt = AcceptStripePayments::formatted_price( $post[ 'paid_amount' ], false );
 
-    $purchase_amt_curr = AcceptStripePayments::formatted_price( $post[ 'item_price' ] * $post[ 'item_quantity' ], $post[ 'currency_code' ] );
+    $purchase_amt_curr = AcceptStripePayments::formatted_price( $post[ 'paid_amount' ], $post[ 'currency_code' ] );
+
+
+    $tax		 = 0;
+    $tax_amt	 = 0;
+    $shipping	 = 0;
+
+    if ( isset( $post[ 'tax_perc' ] ) && ! empty( $post[ 'tax_perc' ] ) ) {
+	$tax = $post[ 'tax_perc' ] . '%';
+    }
+    if ( isset( $post[ 'tax' ] ) && ! empty( $post[ 'tax' ] ) ) {
+	$tax_amt = AcceptStripePayments::formatted_price( $post[ 'tax' ], $post[ 'currency_code' ] );
+    }
+    if ( isset( $post[ 'shipping' ] ) && ! empty( $post[ 'shipping' ] ) ) {
+	$shipping = AcceptStripePayments::formatted_price( $post[ 'shipping' ], $post[ 'currency_code' ] );
+    }
 
     $tags	 = array(
 	"{product_details}",
@@ -397,6 +446,9 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post ) {
 	"{item_price_curr}",
 	"{purchase_amt}",
 	"{purchase_amt_curr}",
+	"{tax}",
+	"{tax_amt}",
+	"{shipping_amt}",
 	"{currency}",
 	"{currency_code}",
 	"{purchase_date}",
@@ -412,6 +464,9 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post ) {
 	$item_price_curr,
 	$purchase_amt,
 	$purchase_amt_curr,
+	$tax,
+	$tax_amt,
+	$shipping,
 	$curr_sym,
 	$curr,
 	date( "F j, Y, g:i a", strtotime( 'now' ) ),

@@ -503,14 +503,23 @@ class AcceptStripePayments {
 	    $tax_amount	 = round( ($price * $tax / 100 ), 2 );
 	    $price		 += $tax_amount;
 	}
-	return round( $price );
+	return $price;
     }
 
     static function apply_shipping( $price, $shipping ) {
 	if ( ! empty( $shipping ) ) {
-	    $price += $shipping;
+	    $price += floatval( $shipping );
 	}
 	return $price;
+    }
+
+    static function get_tax_amount( $price, $tax ) {
+	if ( ! empty( $tax ) ) {
+	    $tax_amount = round( ($price * $tax / 100 ), 2 );
+	    return $tax_amount;
+	} else {
+	    return 0;
+	}
     }
 
 }

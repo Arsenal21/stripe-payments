@@ -458,13 +458,16 @@ class AcceptStripePaymentsShortcode {
 	$output	 .= "<input type = 'hidden' value = '{$thankyou_page_url}' name = 'thankyou_page_url' />";
 	$output	 .= "<input type = 'hidden' value = '{$data[ 'description' ]}' name = 'charge_description' />"; //
 
-	$trans_name	 = 'stripe-payments-' . $button_key; //Create key using the item name.
-	set_transient( $trans_name, $price, 2 * 3600 ); //Save the price for this item for 2 hours.
-	$output		 .= wp_nonce_field( 'stripe_payments', '_wpnonce', true, false );
-	$output		 .= $button;
+	$trans_name		 = 'stripe-payments-' . $button_key; //Create key using the item name.
+	$trans[ 'tax' ]		 = $tax;
+	$trans[ 'shipping' ]	 = $shipping;
+	$trans[ 'price' ]	 = $price;
+	set_transient( $trans_name, $trans, 2 * 3600 ); //Save the price for this item for 2 hours.
+	$output			 .= wp_nonce_field( 'stripe_payments', '_wpnonce', true, false );
+	$output			 .= $button;
 	//after button filter
-	$output		 = apply_filters( 'asp-button-output-after-button', $output, $data, $class );
-	$output		 .= "</form>";
+	$output			 = apply_filters( 'asp-button-output-after-button', $output, $data, $class );
+	$output			 .= "</form>";
 
 	$output .= $this->get_scripts( $data );
 
@@ -607,7 +610,10 @@ class AcceptStripePaymentsShortcode {
 	    . "<input type='hidden' id='stripeEmail_{$data[ 'uniq_id' ]}' name='stripeEmail' />"
 	    . "<input type='hidden' name='stripeButtonKey' value='{$data[ 'button_key' ]}' />"
 	    . "<input type='hidden' name='stripeItemPrice' value='{$data[ 'amount' ]}' />"
-	    . "<input type='hidden' data-stripe-button-uid='{$data[ 'uniq_id' ]}' />";
+	    . "<input type='hidden' data-stripe-button-uid='{$data[ 'uniq_id' ]}' />"
+	    . "<input type='hidden' name='stripeTax' value='{$data[ 'tax' ]}' />"
+	    . "<input type='hidden' name='stripeShipping' value='{$data[ 'shipping' ]}' />"
+	    . "<input type='hidden' name='stripeItemCost' value='{$data[ 'item_price' ]}' />";
 	}
 
 	return $output;
@@ -636,7 +642,15 @@ class AcceptStripePaymentsShortcode {
 	    $output	 .= '<div class="asp-thank-you-page-product-name">' . __( "Product Name: ", "stripe-payments" ) . $aspData[ 'item_name' ] . '</div>';
 	    $output	 .= '<div class="asp-thank-you-page-qty">' . __( "Quantity: ", "stripe-payments" ) . $aspData[ 'item_quantity' ] . '</div>';
 	    $output	 .= '<div class="asp-thank-you-page-qty">' . __( "Item Price: ", "stripe-payments" ) . AcceptStripePayments::formatted_price( $aspData[ 'item_price' ], $aspData[ 'currency_code' ] ) . '</div>';
+	    //check if there are any additional items available like tax and shipping cost
+	    if ( ! empty( $aspData[ 'additional_items' ] ) ) {
+		foreach ( $aspData[ 'additional_items' ] as $item => $price ) {
+		    $output .= $item . ": " . AcceptStripePayments::formatted_price( $price, $aspData[ 'currency_code' ] ) . "<br />";
+		}
+	    }
+	    $output	 .= '<hr />';
 	    $output	 .= '<div class="asp-thank-you-page-qty">' . __( "Total Amount: ", "stripe-payments" ) . AcceptStripePayments::formatted_price( $aspData[ 'paid_amount' ], $aspData[ 'currency_code' ] ) . '</div>';
+	    $output	 .= '<br />';
 	    $output	 .= '<div class="asp-thank-you-page-txn-id">' . __( "Transaction ID: ", "stripe-payments" ) . $aspData[ 'txn_id' ] . '</div>';
 
 	    if ( ! empty( $aspData[ 'item_url' ] ) ) {

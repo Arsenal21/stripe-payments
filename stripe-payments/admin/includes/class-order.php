@@ -109,9 +109,15 @@ class ASPOrder {
 	$output	 .= "--------------------------------" . "\n";
 	$output	 .= __( "Product Name: ", "stripe-payments" ) . $order_details[ 'item_name' ] . "\n";
 	$output	 .= __( "Quantity: ", "stripe-payments" ) . $order_details[ 'item_quantity' ] . "\n";
-	$output	 .= __( "Price: ", "stripe-payments" ) . AcceptStripePayments::formatted_price( $order_details[ 'item_price' ], $order_details[ 'currency_code' ] ) . "\n";
+	$output	 .= __( "Item Price: ", "stripe-payments" ) . AcceptStripePayments::formatted_price( $order_details[ 'item_price' ], $order_details[ 'currency_code' ] ) . "\n";
+	//check if there are any additional items available like tax and shipping cost
+	if ( ! empty( $order_details[ 'additional_items' ] ) ) {
+	    foreach ( $order_details[ 'additional_items' ] as $item => $price ) {
+		$output .= $item . ": " . AcceptStripePayments::formatted_price( $price, $order_details[ 'currency_code' ] ) . "\n";
+	    }
+	}
 	$output	 .= "--------------------------------" . "\n";
-	$output	 .= __( "Total Amount: ", "stripe-payments" ) . AcceptStripePayments::formatted_price( ($order_details[ 'item_price' ] * $order_details[ 'item_quantity' ] ), $order_details[ 'currency_code' ] ) . "\n";
+	$output	 .= __( "Total Amount: ", "stripe-payments" ) . AcceptStripePayments::formatted_price( ($order_details[ 'paid_amount' ] ), $order_details[ 'currency_code' ] ) . "\n";
 
 
 	$output .= "\n\n";
@@ -142,7 +148,13 @@ class ASPOrder {
 
 	$post = apply_filters( 'asp_order_before_insert', $post, $order_details, $charge_details );
 
-	return wp_insert_post( $post ); //Return post ID
+	$post_id = wp_insert_post( $post );
+
+	//let's save order and charge details in post meta data
+	update_post_meta( $post_id, 'order_details', $order_details );
+	update_post_meta( $post_id, 'charge_details', $charge_details );
+
+	return $post_id;
     }
 
 }

@@ -41,6 +41,23 @@ jQuery(document).ready(function () {
     });
 });
 
+function wp_asp_validate_custom_quantity(data) {
+    var custom_quantity_orig = jQuery('input#stripeCustomQuantity_' + data.uniq_id).val();
+    var custom_quantity = parseInt(custom_quantity_orig);
+    if (isNaN(custom_quantity)) {
+	jQuery('#error_explanation_quantity_' + data.uniq_id).hide().html(stripehandler.strEnterQuantity).fadeIn('slow');
+	return false;
+    } else if (custom_quantity_orig % 1 !== 0) {
+	jQuery('#error_explanation_quantity_' + data.uniq_id).hide().html(stripehandler.strQuantityIsFloat).fadeIn('slow');
+	return false;
+    } else if (custom_quantity === 0) {
+	jQuery('#error_explanation_quantity_' + data.uniq_id).hide().html(stripehandler.strQuantityIsZero).fadeIn('slow');
+	return false;
+    } else {
+	return custom_quantity;
+    }
+}
+
 function wp_asp_validate_custom_amount(data, noTaxAndShipping = false) {
     var amount = jQuery('input#stripeAmount_' + data.uniq_id).val();
     amount = amount.replace(/\$/g, '');
@@ -96,20 +113,12 @@ function wp_asp_can_proceed(data, openHandler = true) {
     }
 
     if (data.custom_quantity === "1") {
-	var custom_quantity_orig = jQuery('input#stripeCustomQuantity_' + data.uniq_id).val();
-	var custom_quantity = parseInt(custom_quantity_orig);
-	if (isNaN(custom_quantity)) {
-	    jQuery('#error_explanation_quantity_' + data.uniq_id).hide().html(stripehandler.strEnterQuantity).fadeIn('slow');
-	    return false;
-	} else if (custom_quantity_orig % 1 !== 0) {
-	    jQuery('#error_explanation_quantity_' + data.uniq_id).hide().html(stripehandler.strQuantityIsFloat).fadeIn('slow');
-	    return false;
-	} else if (custom_quantity === 0) {
-	    jQuery('#error_explanation_quantity_' + data.uniq_id).hide().html(stripehandler.strQuantityIsZero).fadeIn('slow');
-	    return false;
-	} else {
+	var custom_quantity = wp_asp_validate_custom_quantity(data);
+	if (custom_quantity !== false) {
 	    amount = custom_quantity * data.item_price;
 	    amount = stripehandler.apply_tax_and_shipping(amount, data);
+	} else {
+	    return false;
 	}
     }
 

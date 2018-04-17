@@ -421,6 +421,9 @@ class AcceptStripePayments_Admin {
 	    "{transaction_id}"	 => 'The unique transaction ID of the purchase',
 	    "{payer_email}"		 => 'Email Address of the buyer',
 	    "{purchase_amt}"	 => 'The amount paid for the current transaction. Example: 1,000.00',
+	    "{tax}"			 => 'Tax in percents. Example: 10%',
+	    "{tax_amt}"		 => 'Formatted tax amount for single item. Example: $0.25',
+	    "{shipping_amt}"	 => 'Formatted shipping amount. Example: $2.50',
 	    "{purchase_amt_curr}"	 => 'The amount paid for the current transaction with currency symbol. Example: $1,000.00',
 	    "{item_price}"		 => 'Item price. Example: 1000,00',
 	    "{item_price_curr}"	 => 'Item price with currency symbol. Example: $1,000.00',
@@ -436,7 +439,7 @@ class AcceptStripePayments_Admin {
 	    $email_tags_descr .= '<br>' . $tag . ' - ' . __( $descr, 'stripe-payments' );
 	}
 
-	$email_tags_descr = '<div><a class="wp-asp-toggle toggled-off" href="#0">'.__('Click here to toggle tags hint','stripe-payments').'</a><div class="hidden">' . $email_tags_descr . '</div></div>';
+	$email_tags_descr = '<div><a class="wp-asp-toggle toggled-off" href="#0">' . __( 'Click here to toggle tags hint', 'stripe-payments' ) . '</a><div class="hidden">' . $email_tags_descr . '</div></div>';
 
 	add_settings_field( 'buyer_email_body', __( 'Buyer Email Body', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-email', 'AcceptStripePayments-email-section', array( 'field'	 => 'buyer_email_body',
 	    'desc'	 => __( 'This is the body of the email that will be sent to the buyer.', 'stripe-payments' ) . ' ' . __( 'Do not change the text within the braces {}. You can use the following email tags in this email body field:', 'stripe-payments' ) . $email_tags_descr )

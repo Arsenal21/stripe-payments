@@ -4,7 +4,7 @@ Donate link: https://stripe-plugins.com
 Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortcode, digital goods, payment gateway, instant payment, commerce, digital downloads, downloads, e-commerce, e-store, ecommerce, eshop, donation
 Requires at least: 4.7
 Tested up to: 4.9
-Stable tag: 1.8.2t3
+Stable tag: 1.8.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -147,10 +147,13 @@ None
 == Changelog ==
 
 = 1.8.2 =
+- Tax and shipping info is now displayed in standard checkout result page, emails and order info (if applicable).
+- New email tags added: {tax}, {tax_amt}, {shipping_amt}.
 - Added proper check for minimum amount for following currencies: DKK (2.50-kr.), GPB (£0.30), HKD ($4.00), JPY (¥50), MXN ($10), NOK (3.00-kr.), SEK (3.00-kr.).
 - Fixed products page was displaying incorrect number of products per row.
 - Fixed product template was improperly displaying price if quantity was greater than 1.
 - Fixed tax and shipping being improperly calculated when custom quantity was enabled.
+- Various small bugfixes and improvements.
 
 = 1.8.1 =
 - New shortcode parameter added: compat_mode="1". Useful if you get "Invalid Stripe Token" error if using visual page builders.
