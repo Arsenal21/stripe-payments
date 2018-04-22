@@ -336,6 +336,7 @@ class AcceptStripePaymentsShortcode {
 	if ( $quantity == "N/A" ) {
 	    $quantity = "NA";
 	}
+	$price			 = floatval( $price );
 	$uniq_id		 = count( self::$payment_buttons );
 	$button_id		 = 'stripe_button_' . $uniq_id;
 	self::$payment_buttons[] = $button_id;
