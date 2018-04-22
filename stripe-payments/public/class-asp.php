@@ -31,6 +31,9 @@ class AcceptStripePayments {
     );
     var $APISecKey	 = '';
     var $APIPubKey	 = '';
+    var $APISecKeyLive	 = '';
+    var $APISecKeyTest	 = '';
+    var $is_live		 = false;
 
     /**
      * Plugin version, used for cache-busting of style and script file references.
@@ -76,13 +79,17 @@ class AcceptStripePayments {
 
 	if ( $this->get_setting( 'is_live' ) == 0 ) {
 	    //use test keys
+	    $this->is_live	 = false;
 	    $this->APIPubKey = $this->get_setting( 'api_publishable_key_test' );
 	    $this->APISecKey = $this->get_setting( 'api_secret_key_test' );
 	} else {
 	    //use live keys
+	    $this->is_live	 = true;
 	    $this->APIPubKey = $this->get_setting( 'api_publishable_key' );
 	    $this->APISecKey = $this->get_setting( 'api_secret_key' );
 	}
+	$this->APISecKeyLive	 = $this->get_setting( 'api_secret_key' );
+	$this->APISecKeyTest	 = $this->get_setting( 'api_secret_key_test' );
 
 	// Load plugin text domain
 	add_action( 'plugins_loaded', array( $this, 'load_asp_plugin_textdomain' ) );
