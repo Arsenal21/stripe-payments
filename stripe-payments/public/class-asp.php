@@ -459,11 +459,13 @@ class AcceptStripePayments {
 	return $currencies;
     }
 
-    static function formatted_price( $price, $curr = '' ) {
+    static function formatted_price( $price, $curr = '', $price_is_cents = false ) {
 
 	if ( empty( $price ) ) {
 	    return '';
 	}
+
+	$zeroCents = array( 'JPY', 'MGA', 'VND', 'KRW' );
 
 	$opts = get_option( 'AcceptStripePayments-settings' );
 
@@ -486,6 +488,11 @@ class AcceptStripePayments {
 		//no currency code found, let's just use currency code instead of symbol
 		$curr_sym = $curr;
 	    }
+	}
+
+	//check if price is in cents
+	if ( $price_is_cents && ! in_array( $curr, $zeroCents ) ) {
+	    $price = intval( $price ) / 100;
 	}
 
 	$out = number_format( $price, $opts[ 'price_decimals_num' ], $opts[ 'price_decimal_sep' ], $opts[ 'price_thousand_sep' ] );
