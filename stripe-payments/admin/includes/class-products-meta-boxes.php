@@ -64,15 +64,17 @@ class asp_products_metaboxes {
 	$current_shipping	 = get_post_meta( $post->ID, 'asp_product_shipping', true );
 	$current_tax		 = get_post_meta( $post->ID, 'asp_product_tax', true );
 	?>
-	<label><?php _e( 'Shipping Cost', 'stripe-payments' ); ?></label>
-	<br/>
-	<input type="text" name="asp_product_shipping" value="<?php echo $current_shipping; ?>">
-	<p class="description">
-	    <?php
-	    echo __( 'Numbers only, no need to put currency symbol. Example: 5.90', 'stripe-payments' ) .
-	    '<br>' . __( 'Leave it blank if you are not shipping your product or not charging additional shipping costs.', 'stripe-payments' );
-	    ?>
-	</p>
+	<div id="asp_shipping_cost_container">
+	    <label><?php _e( 'Shipping Cost', 'stripe-payments' ); ?></label>
+	    <br/>
+	    <input type="text" name="asp_product_shipping" value="<?php echo $current_shipping; ?>">
+	    <p class="description">
+		<?php
+		echo __( 'Numbers only, no need to put currency symbol. Example: 5.90', 'stripe-payments' ) .
+		'<br>' . __( 'Leave it blank if you are not shipping your product or not charging additional shipping costs.', 'stripe-payments' );
+		?>
+	    </p>
+	</div>
 	<label><?php _e( 'Tax (%)', 'stripe-payments' ); ?></label>
 	<br/>
 	<input type="text" name="asp_product_tax" value="<?php echo $current_tax; ?>">
