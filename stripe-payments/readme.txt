@@ -4,7 +4,7 @@ Donate link: https://stripe-plugins.com
 Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortcode, digital goods, payment gateway, instant payment, commerce, digital downloads, downloads, e-commerce, e-store, ecommerce, eshop, donation
 Requires at least: 4.7
 Tested up to: 4.9
-Stable tag: 1.8.3t1
+Stable tag: 1.8.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -146,8 +146,8 @@ None
 
 == Changelog ==
 
-= 1.8.3t1 =
-- Some additions for better addons support.
+= 1.8.3 =
+- Added some more hooks for better addons support.
 
 = 1.8.2 =
 - Tax and shipping info is now displayed in standard checkout result page, emails and order info (if applicable).

@@ -341,7 +341,10 @@ class AcceptStripePayments_Admin {
 	$this->plugin_screen_hook_suffix = add_submenu_page(
 	'edit.php?post_type=' . ASPMain::$products_slug, __( 'Settings', 'stripe-payments' ), __( 'Settings', 'stripe-payments' ), 'manage_options', 'stripe-payments-settings', array( $this, 'display_plugin_admin_page' )
 	);
-	add_action( 'admin_init', array( &$this, 'register_settings' ) );
+        
+        add_submenu_page('edit.php?post_type=' . ASPMain::$products_slug, __( 'Add-ons', 'stripe-payments' ), __( 'Add-ons', 'stripe-payments' ), 'manage_options', 'stripe-payments-addons', array( $this, 'display_addons_menu_page' ));
+	
+        add_action( 'admin_init', array( &$this, 'register_settings' ) );
     }
 
     /**
@@ -818,6 +821,10 @@ class AcceptStripePayments_Admin {
 	include_once( 'views/admin.php' );
     }
 
+    public function display_addons_menu_page() {
+	include_once( 'views/addons-listing.php' );
+    }
+    
     /**
      * Add settings action link to the plugins page.
      *
