@@ -822,6 +822,8 @@ class AcceptStripePaymentsShortcode {
 
 	if ( isset( $data[ 'custom_field_value' ] ) ) {
 	    $data[ 'custom_field' ] = $data[ 'custom_field_name' ] . ': ' . $data[ 'custom_field_value' ];
+	} else {
+	    $data[ 'custom_field' ] = '';
 	}
 
 	foreach ( $data as $key => $value ) {
@@ -832,7 +834,7 @@ class AcceptStripePaymentsShortcode {
 		$key = 'transaction_id';
 	    }
 	    $tags[]	 = '{' . $key . '}';
-	    $vals[]	 = $value;
+	    $vals[]	 = is_array( $value ) ? '' : $value;
 	}
 
 	$content = str_replace( $tags, $vals, $content );
