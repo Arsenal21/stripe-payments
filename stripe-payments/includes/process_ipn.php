@@ -158,7 +158,7 @@ if ( ! $got_product_data_from_db ) {
     }
 }
 
-if ( $item_price === '0' || $item_price === '' ) { //Custom amount
+if ( empty( $item_price ) ) { //Custom amount
     $item_price = floatval( $_POST[ 'stripeAmount' ] );
 }
 
