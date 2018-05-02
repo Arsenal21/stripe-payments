@@ -92,7 +92,7 @@ function wp_asp_validate_custom_amount(data, noTaxAndShipping) {
     return amount;
 }
 
-function wp_asp_can_proceed(data, openHandler = true) {
+function wp_asp_can_proceed(data, openHandler) {
 
     function button_clicked_hooks(data) {
 	if (data.addonHooks) {
@@ -169,12 +169,12 @@ function wp_asp_can_proceed(data, openHandler = true) {
 
     if (typeof (amount) === "undefined") {
 	data.handler.open({
-	    description: description,
+	    description: description
 	});
     } else {
 	data.handler.open({
 	    amount: amount,
-	    description: description,
+	    description: description
 	});
     }
 
@@ -198,7 +198,7 @@ function wp_asp_hadnle_token(data, token, args) {
     jQuery('#stripe_button_' + data.uniq_id).html(jQuery('.asp-processing-cont').html());
     jQuery('#stripe_button_' + data.uniq_id).prop('disabled', true);
 
-    if (data.addonHooks) {
+    if (data.addonHooks.length!==0) {
 	data.addonHooks.forEach(function (hookName) {
 	    if (typeof window["wp_asp_before_form_submit_" + hookName] === "function") {
 		window["wp_asp_before_form_submit_" + hookName](data);
@@ -243,7 +243,7 @@ function wp_asp_add_stripe_handler(data) {
 		handler_opts.email = data.customer_email;
 	    }
 
-	    if (data.addonHooks) {
+	    if (data.addonHooks.length!==0) {
 		data.addonHooks.forEach(function (hookName) {
 		    if (typeof window["wp_asp_before_handler_configure_" + hookName] === "function") {
 			handler_opts = window["wp_asp_before_handler_configure_" + hookName](handler_opts, data);
@@ -260,7 +260,7 @@ function wp_asp_add_stripe_handler(data) {
 
 	wp_asp_check_handler(data);
 
-	return wp_asp_can_proceed(data);
+	return wp_asp_can_proceed(data, true);
 
     });
     jQuery('#stripe_button_' + data.uniq_id).prop("disabled", false);
