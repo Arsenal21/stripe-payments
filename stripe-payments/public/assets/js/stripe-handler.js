@@ -108,7 +108,7 @@ function wp_asp_can_proceed(data, openHandler = true) {
     }
 
     if (data.variable) {
-	var amount = wp_asp_validate_custom_amount(data);
+	var amount = wp_asp_validate_custom_amount(data, false);
 	if (amount === false) {
 	    return false;
 	}
