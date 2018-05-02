@@ -4,7 +4,7 @@ Donate link: https://stripe-plugins.com
 Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortcode, digital goods, payment gateway, instant payment, commerce, digital downloads, downloads, e-commerce, e-store, ecommerce, eshop, donation
 Requires at least: 4.7
 Tested up to: 4.9
-Stable tag: 1.8.4
+Stable tag: 1.8.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -145,6 +145,9 @@ Yes, please visit Stripe Payments > Settings screen for options.
 None
 
 == Changelog ==
+
+= 1.8.5 =
+- Fixed "Invalid Stripe token" error in Safari on iPad (thanks to temparcweb for reporting and helping to debug).
 
 = 1.8.4 =
 - Fixed "Invalid positive integer" error when price is set to 0 in [accept_stripe_payment name] shortcode.

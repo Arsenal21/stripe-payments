@@ -58,7 +58,7 @@ function wp_asp_validate_custom_quantity(data) {
     }
 }
 
-function wp_asp_validate_custom_amount(data, noTaxAndShipping = false) {
+function wp_asp_validate_custom_amount(data, noTaxAndShipping) {
     var amount = jQuery('input#stripeAmount_' + data.uniq_id).val();
     amount = amount.replace(/\$/g, '');
     amount = amount.replace(/\,/g, '');
@@ -82,6 +82,9 @@ function wp_asp_validate_custom_amount(data, noTaxAndShipping = false) {
 	}
 	jQuery('#error_explanation_' + data.uniq_id).html('');
 	jQuery('input#stripeAmount_' + data.uniq_id).val(displayAmount);
+    }
+    if (typeof noTaxAndShipping === 'undefined') {
+	noTaxAndShipping = false;
     }
     if (!noTaxAndShipping) {
 	amount = stripehandler.apply_tax_and_shipping(amount, data);
