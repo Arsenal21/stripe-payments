@@ -147,6 +147,7 @@ None
 == Changelog ==
 
 = 1.8.5 =
+- Fixed IE11 incompatibility (thanks to temparcweb).
 - Fixed "Invalid Stripe token" error in Safari on iPad (thanks to temparcweb for reporting and helping to debug).
 
 = 1.8.4 =
