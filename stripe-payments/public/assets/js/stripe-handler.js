@@ -95,7 +95,7 @@ function wp_asp_validate_custom_amount(data, noTaxAndShipping) {
 function wp_asp_can_proceed(data, openHandler) {
 
     function button_clicked_hooks(data) {
-	if (data.addonHooks) {
+	if (data.addonHooks.length!==0) {
 	    data.addonHooks.forEach(function (hookName) {
 		if (typeof window["wp_asp_button_clicked_" + hookName] === "function") {
 		    data.executingHook = "wp_asp_button_clicked_" + hookName;
