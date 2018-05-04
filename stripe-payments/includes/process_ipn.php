@@ -2,9 +2,21 @@
 
 function asp_ipn_completed( $errMsg = '' ) {
     if ( ! empty( $errMsg ) ) {
-	$aspData		 = array( 'error_msg' => $errMsg );
-	ASP_Debug_Logger::log( $errMsg . "\r\n", false ); //Log the error
-	$_SESSION[ 'asp_data' ]	 = $aspData;
+	$aspData = array( 'error_msg' => $errMsg );
+	ASP_Debug_Logger::log( $errMsg, false ); //Log the error
+
+	$msg_before_process	 = __( "Error occured before user interacted with payment popup. This might be caused by JavaScript errors on page.", 'stripe-payments' );
+	$msg_after_process	 = __( "Error occured after user interacted with popup.", 'stripe-payments' );
+
+	if ( isset( $_POST[ 'clickProcessed' ] ) ) {
+	    $additional_msg = $msg_after_process . "\r\n";
+	} else {
+	    $additional_msg = $msg_before_process . "\r\n";
+	}
+
+	ASP_Debug_Logger::log( $additional_msg, false );
+
+	$_SESSION[ 'asp_data' ] = $aspData;
 
 	//send email to notify site admin (if option enabled)
 	$opt = get_option( 'AcceptStripePayments-settings' );
@@ -15,15 +27,20 @@ function asp_ipn_completed( $errMsg = '' ) {
 	    $subj	 = __( 'Stripe Payments Error', 'stripe-payments' );
 	    $body	 = __( 'Following error occured during payment processing:', 'stripe-payments' ) . "\r\n\r\n";
 	    $body	 .= $errMsg . "\r\n\r\n";
+	    $body	 .= $additional_msg . "\r\n";
 	    $body	 .= __( 'Debug data:', 'stripe-payments' ) . "\r\n";
-	    $body	 .= json_encode( $_POST );
+	    foreach ( $_POST as $key => $value ) {
+		$body .= $key . ': ' . $value . "\r\n";
+	    }
 	    wp_mail( $to, $subj, $body, $headers );
+	    $asp_class = AcceptStripePayments::get_instance();
+	    wp_redirect( $asp_class->get_setting( 'checkout_url' ) );
 	}
     } else {
 	ASP_Debug_Logger::log( 'Payment has been processed successfully.' . "\r\n" );
+	global $aspRedirectURL;
+	wp_redirect( $aspRedirectURL );
     }
-    global $aspRedirectURL;
-    wp_redirect( $aspRedirectURL );
     exit;
 }
 

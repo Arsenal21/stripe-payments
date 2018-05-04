@@ -147,8 +147,10 @@ None
 == Changelog ==
 
 = 1.8.5 =
-- Fixed IE11 incompatibility (thanks to temparcweb).
 - Fixed "Invalid Stripe token" error in Safari on iPad (thanks to temparcweb for reporting and helping to debug).
+- Fixed IE11 incompatibility (thanks to temparcweb).
+- Additional information is put into debug log and error email if error occurs.
+- Customer no longer redirected to download URL if error occurs during payment process.
 
 = 1.8.4 =
 - Fixed "Invalid positive integer" error when price is set to 0 in [accept_stripe_payment name] shortcode.
