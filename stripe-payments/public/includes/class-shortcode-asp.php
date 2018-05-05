@@ -433,6 +433,7 @@ class AcceptStripePaymentsShortcode {
 	    'zeroCents'		 => $this->AcceptStripePayments->zeroCents,
 	    'addonHooks'		 => array(),
 	    'custom_field'		 => $custom_field,
+	    'button_text'		 => esc_attr( $button_text )
 	);
 
 	$data = apply_filters( 'asp-button-output-data-ready', $data, $atts );
