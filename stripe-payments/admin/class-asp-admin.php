@@ -356,7 +356,7 @@ class AcceptStripePayments_Admin {
 	register_setting( 'AcceptStripePayments-settings-group', 'AcceptStripePayments-settings', array( &$this, 'settings_sanitize_field_callback' ) );
 
 	// Add/define the various section/groups (the fields will go under these sections).
-	add_settings_section( 'AcceptStripePayments-documentation', __( 'Plugin Documentation', 'stripe-payments' ), array( &$this, 'general_documentation_callback' ), $this->plugin_slug . '-docs' );
+	//add_settings_section( 'AcceptStripePayments-documentation', __( 'Plugin Documentation', 'stripe-payments' ), array( &$this, 'general_documentation_callback' ), $this->plugin_slug . '-docs' );
 
 	add_settings_section( 'AcceptStripePayments-global-section', __( 'Global Settings', 'stripe-payments' ), null, $this->plugin_slug );
 	add_settings_section( 'AcceptStripePayments-credentials-section', __( 'Credentials', 'stripe-payments' ), null, $this->plugin_slug );
