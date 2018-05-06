@@ -234,6 +234,7 @@ $data[ 'stripeEmail' ]		 = $stripeEmail;
 $data[ 'item_quantity' ]	 = $item_quantity;
 $data[ 'item_price' ]		 = $item_price;
 $data[ 'paid_amount' ]		 = $amount;
+$data[ 'amount_in_cents' ]	 = $amount_in_cents;
 $data[ 'currency_code' ]	 = $currency_code;
 $data[ 'charge_description' ]	 = $charge_description;
 $data[ 'addonName' ]		 = isset( $_POST[ 'stripeAddonName' ] ) ? sanitize_text_field( $_POST[ 'stripeAddonName' ] ) : '';
