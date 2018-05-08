@@ -466,10 +466,10 @@ class AcceptStripePaymentsShortcode {
 	$trans[ 'price' ]	 = $price;
 	set_transient( $trans_name, $trans, 2 * 3600 ); //Save the price for this item for 2 hours.
 	$output			 .= wp_nonce_field( 'stripe_payments', '_wpnonce', true, false );
+	$output			 .= "</form>";
 	$output			 .= $button;
 	//after button filter
 	$output			 = apply_filters( 'asp-button-output-after-button', $output, $data, $class );
-	$output			 .= "</form>";
 
 	$output .= $this->get_scripts( $data );
 
