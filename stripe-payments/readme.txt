@@ -59,6 +59,7 @@ https://www.youtube.com/watch?v=upWqk069Khg
 * Ability to customize the price display with currency symbol.
 * Option to send receipt email to your customers from Stripe for each transaction.
 * Option to collect a custom input from your customers for products (useful if you are selling products that need special instructions from the customers).
+* Stock control option. You can limit the number of quantity available for a product.
 
 The setup is very easy. Once you have installed the plugin, all you need to do is enter your Stripe API credentials in the plugin settings and your website will be ready to accept credit card payments.
 
@@ -142,10 +143,7 @@ Yes, please visit Stripe Payments > Settings screen for options.
 3. Stripe Plugin Orders Menu
 
 == Upgrade Notice ==
-= 1.8.6 =
-Added basic products stock control.
-Some changes necessary for Alipay payment method support.
-Added some options for custom field customization, fixed minor issues.
+None.
 
 == Changelog ==
 

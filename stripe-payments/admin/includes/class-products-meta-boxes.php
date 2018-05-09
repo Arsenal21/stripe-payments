@@ -113,12 +113,12 @@ class asp_products_metaboxes {
 	    <input type="checkbox" name="asp_product_enable_stock" value="1"<?php echo ($enable_stock === "1") ? ' checked' : ''; ?>>
 	    <?php echo __( 'Enable stock control', 'stripe-payments' ); ?>
 	</label>
-	<p class="description"><?php echo __( "When enabled, you can specify number of items available in stock. It will be decreased each time customer purchases this product. When stock reaches 0, \"Out of stcok\" message will be displayed instead of Buy button.", 'stripe-payments' ); ?></p>
+	<p class="description"><?php echo __( "When enabled, you can specify the quantity available for this product. It will be decreased each time the item is purchased. When stock reaches zero, an \"Out of stock\" message will be displayed instead of the buy button.", 'stripe-payments' ); ?></p>
 
-	<div style="margin-top: 20px;"><label><?php _e( 'Items available:', 'stripe-payments' ); ?>
+	<div style="margin-top: 20px;"><label><?php _e( 'Quantity Available:', 'stripe-payments' ); ?>
 		<input type="number" name="asp_product_stock_items" value="<?php echo ! $stock_items ? 0 : $stock_items; ?>">
 	    </label>
-	    <p class="description"><?php _e( 'Specify number of items available in stock.', 'stripe-payments' ); ?></p>
+	    <p class="description"><?php _e( 'Specify the quantity available for this product.', 'stripe-payments' ); ?></p>
 	</div>
 
 	<?php
