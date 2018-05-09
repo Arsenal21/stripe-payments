@@ -95,7 +95,7 @@ function wp_asp_validate_custom_amount(data, noTaxAndShipping) {
 function wp_asp_can_proceed(data, openHandler) {
 
     function button_clicked_hooks(data) {
-	if (data.addonHooks.length!==0) {
+	if (data.addonHooks.length !== 0) {
 	    data.addonHooks.forEach(function (hookName) {
 		if (typeof window["wp_asp_button_clicked_" + hookName] === "function") {
 		    data.executingHook = "wp_asp_button_clicked_" + hookName;
@@ -198,7 +198,7 @@ function wp_asp_hadnle_token(data, token, args) {
     jQuery('#stripe_button_' + data.uniq_id).html(jQuery('.asp-processing-cont').html());
     jQuery('#stripe_button_' + data.uniq_id).prop('disabled', true);
 
-    if (data.addonHooks.length!==0) {
+    if (data.addonHooks.length !== 0) {
 	data.addonHooks.forEach(function (hookName) {
 	    if (typeof window["wp_asp_before_form_submit_" + hookName] === "function") {
 		window["wp_asp_before_form_submit_" + hookName](data);
@@ -207,7 +207,7 @@ function wp_asp_hadnle_token(data, token, args) {
     }
 
     form.append('<input type="hidden" name="clickProcessed" value="1">');
-
+    form.off('submit');
     form.submit();
 }
 
@@ -245,7 +245,7 @@ function wp_asp_add_stripe_handler(data) {
 		handler_opts.email = data.customer_email;
 	    }
 
-	    if (data.addonHooks.length!==0) {
+	    if (data.addonHooks.length !== 0) {
 		data.addonHooks.forEach(function (hookName) {
 		    if (typeof window["wp_asp_before_handler_configure_" + hookName] === "function") {
 			handler_opts = window["wp_asp_before_handler_configure_" + hookName](handler_opts, data);
@@ -255,6 +255,11 @@ function wp_asp_add_stripe_handler(data) {
 	    data.handler = StripeCheckout.configure(handler_opts);
 	}
     }
+
+    jQuery('#stripe_form_' + data.uniq_id).on('submit', function (e) {
+	e.preventDefault();
+	jQuery('#stripe_button_' + data.uniq_id).click();
+    });
 
     jQuery('#stripe_button_' + data.uniq_id).on('click', function (e) {
 
