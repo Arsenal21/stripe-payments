@@ -341,10 +341,10 @@ class AcceptStripePayments_Admin {
 	$this->plugin_screen_hook_suffix = add_submenu_page(
 	'edit.php?post_type=' . ASPMain::$products_slug, __( 'Settings', 'stripe-payments' ), __( 'Settings', 'stripe-payments' ), 'manage_options', 'stripe-payments-settings', array( $this, 'display_plugin_admin_page' )
 	);
-        
-        add_submenu_page('edit.php?post_type=' . ASPMain::$products_slug, __( 'Add-ons', 'stripe-payments' ), __( 'Add-ons', 'stripe-payments' ), 'manage_options', 'stripe-payments-addons', array( $this, 'display_addons_menu_page' ));
-	
-        add_action( 'admin_init', array( &$this, 'register_settings' ) );
+
+	add_submenu_page( 'edit.php?post_type=' . ASPMain::$products_slug, __( 'Add-ons', 'stripe-payments' ), __( 'Add-ons', 'stripe-payments' ), 'manage_options', 'stripe-payments-addons', array( $this, 'display_addons_menu_page' ) );
+
+	add_action( 'admin_init', array( &$this, 'register_settings' ) );
     }
 
     /**
@@ -491,7 +491,10 @@ class AcceptStripePayments_Admin {
 	    'desc'	 => __( 'Enter name for the field. It will be displayed in order info and emails.', 'stripe-payments' ) )
 	);
 	add_settings_field( 'custom_field_descr', __( 'Field Description', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-custom-field', array( 'field'	 => 'custom_field_descr',
-	    'desc'	 => __( 'Enter field description. It will be displayed for users to let them know what is required from them.', 'stripe-payments' ) )
+	    'desc'	 => __( 'Enter field description. It will be displayed for users to let them know what is required from them. Leave it blank if you don\'t want to display description.', 'stripe-payments' ) )
+	);
+	add_settings_field( 'custom_field_descr_location', __( 'Text Field Description Location', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-custom-field', array( 'field'	 => 'custom_field_descr_location',
+	    'desc'	 => __( 'Select field description location. Placeholder: description is displayed inside text input (default). Below Input: description is displayed below text input.', 'stripe-payments' ) )
 	);
 	add_settings_field( 'custom_field_type', __( 'Field Type', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-custom-field', array( 'field'	 => 'custom_field_type',
 	    'desc'	 => __( 'Select custom field type.', 'stripe-payments' ) )
@@ -606,6 +609,13 @@ class AcceptStripePayments_Admin {
 		echo "</select>";
 		echo "<p class=\"description\">{$desc}</p>";
 		break;
+	    case 'custom_field_descr_location':
+		echo "<select name='AcceptStripePayments-settings[{$field}]'>'";
+		echo "<option value='placeholder'" . ($field_value === 'placeholder' ? ' selected' : '') . ">" . __( 'Placeholder', 'stripe-payments' ) . "</option>";
+		echo "<option value='below'" . ($field_value === 'below' ? ' selected' : '') . ">" . __( 'Below Input', 'stripe-payments' ) . "</option>";
+		echo "</select>";
+		echo "<p class=\"description\">{$desc}</p>";
+		break;
 	    case 'debug_log_enable':
 	    case 'send_emails_to_seller':
 	    case 'send_emails_to_buyer':
@@ -679,6 +689,8 @@ class AcceptStripePayments_Admin {
 	$output[ 'custom_field_name' ] = empty( $input[ 'custom_field_name' ] ) ? '' : sanitize_text_field( $input[ 'custom_field_name' ] );
 
 	$output[ 'custom_field_descr' ] = empty( $input[ 'custom_field_descr' ] ) ? '' : $input[ 'custom_field_descr' ];
+
+	$output[ 'custom_field_descr_location' ] = empty( $input[ 'custom_field_descr_location' ] ) ? 'placeholder' : $input[ 'custom_field_descr_location' ];
 
 	$output[ 'custom_field_mandatory' ] = empty( $input[ 'custom_field_mandatory' ] ) ? 0 : 1;
 
@@ -824,7 +836,7 @@ class AcceptStripePayments_Admin {
     public function display_addons_menu_page() {
 	include_once( 'views/addons-listing.php' );
     }
-    
+
     /**
      * Add settings action link to the plugins page.
      *

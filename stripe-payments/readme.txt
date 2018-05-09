@@ -4,7 +4,7 @@ Donate link: https://stripe-plugins.com
 Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortcode, digital goods, payment gateway, instant payment, commerce, digital downloads, downloads, e-commerce, e-store, ecommerce, eshop, donation
 Requires at least: 4.7
 Tested up to: 4.9
-Stable tag: 1.8.6t1
+Stable tag: 1.8.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -142,11 +142,14 @@ Yes, please visit Stripe Payments > Settings screen for options.
 3. Stripe Plugin Orders Menu
 
 == Upgrade Notice ==
-None
+= 1.8.6 =
+Some changes for Alipay payment method support.
+Fixed some minor issues, added some options.
 
 == Changelog ==
 
 = 1.8.6 =
+- Added option to select custom text field description location (placeholder or below input).
 - Added links to documentation and add-ons on Settings page.
 
 = 1.8.5 =
