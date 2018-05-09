@@ -143,12 +143,14 @@ Yes, please visit Stripe Payments > Settings screen for options.
 
 == Upgrade Notice ==
 = 1.8.6 =
-Some changes for Alipay payment method support.
-Fixed some minor issues, added some options.
+Added basic products stock control.
+Some changes necessary for Alipay payment method support.
+Added some options for custom field customization, fixed minor issues.
 
 == Changelog ==
 
 = 1.8.6 =
+- Added basic products stock control functionality.
 - Added option to select custom text field description location (placeholder or below input).
 - Added links to documentation and add-ons on Settings page.
 

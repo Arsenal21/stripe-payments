@@ -13,7 +13,7 @@ class asp_products_metaboxes {
 	add_meta_box( 'wsp_content', __( 'Description', 'stripe-payments' ), array( $this, 'display_description_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 	add_meta_box( 'asp_short_description_meta_box', __( 'Short Description', 'stripe-payments' ), array( $this, 'display_short_description_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 	add_meta_box( 'asp_price_meta_box', __( 'Price & Currency', 'stripe-payments' ), array( $this, 'display_price_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
-	add_meta_box( 'asp_quantity_meta_box', __( 'Quantity', 'stripe-payments' ), array( $this, 'display_quantity_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
+	add_meta_box( 'asp_quantity_meta_box', __( 'Quantity & Stock', 'stripe-payments' ), array( $this, 'display_quantity_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 	add_meta_box( 'asp_upload_meta_box', __( 'Download URL', 'stripe-payments' ), array( $this, 'display_upload_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 	add_meta_box( 'asp_thumbnail_meta_box', __( 'Product Thumbnail (optional)', 'stripe-payments' ), array( $this, 'display_thumbnail_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 	add_meta_box( 'asp_address_meta_box', __( 'Collect Address', 'stripe-payments' ), array( $this, 'display_address_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
@@ -90,6 +90,8 @@ class asp_products_metaboxes {
     function display_quantity_meta_box( $post ) {
 	$current_val		 = get_post_meta( $post->ID, 'asp_product_quantity', true );
 	$allow_custom_quantity	 = get_post_meta( $post->ID, 'asp_product_custom_quantity', true );
+	$enable_stock		 = get_post_meta( $post->ID, 'asp_product_enable_stock', true );
+	$stock_items		 = get_post_meta( $post->ID, 'asp_product_stock_items', true );
 	?>
 	<p><?php echo __( 'By default, if you leave this field empty, the product quantity will be set to 1. You can change this behavior by using the following options.', 'stripe-payments' ); ?></p>
 
@@ -99,12 +101,26 @@ class asp_products_metaboxes {
 	</label>
 	<p class="description"><?php echo __( "When checked, users can enter quantity they want to buy.", 'stripe-payments' ); ?></p>
 
-
 	<div style="margin-top: 20px;"><label><?php _e( 'Set Quantity:', 'stripe-payments' ); ?>
 		<input type="text" name="asp_product_quantity" value="<?php echo $current_val; ?>">
 	    </label>
+	    <p class="description"><?php _e( 'If you want to use a set quanity for this item then enter the value in this field.', 'stripe-payments' ); ?></p>
 	</div>
-	<p class="description"><?php _e( 'If you want to use a set quanity for this item then enter the value in this field.', 'stripe-payments' ); ?></p>
+
+	<hr />
+
+	<label>
+	    <input type="checkbox" name="asp_product_enable_stock" value="1"<?php echo ($enable_stock === "1") ? ' checked' : ''; ?>>
+	    <?php echo __( 'Enable stock control', 'stripe-payments' ); ?>
+	</label>
+	<p class="description"><?php echo __( "When enabled, you can specify number of items available in stock. It will be decreased each time customer purchases this product. When stock reaches 0, \"Out of stcok\" message will be displayed instead of Buy button.", 'stripe-payments' ); ?></p>
+
+	<div style="margin-top: 20px;"><label><?php _e( 'Items available:', 'stripe-payments' ); ?>
+		<input type="number" name="asp_product_stock_items" value="<?php echo ! $stock_items ? 0 : $stock_items; ?>">
+	    </label>
+	    <p class="description"><?php _e( 'Specify number of items available in stock.', 'stripe-payments' ); ?></p>
+	</div>
+
 	<?php
     }
 
@@ -304,6 +320,9 @@ class asp_products_metaboxes {
 	    update_post_meta( $post_id, 'asp_product_tax', sanitize_text_field( $_POST[ 'asp_product_tax' ] ) );
 	    update_post_meta( $post_id, 'asp_product_quantity', sanitize_text_field( $_POST[ 'asp_product_quantity' ] ) );
 	    update_post_meta( $post_id, 'asp_product_custom_quantity', isset( $_POST[ 'asp_product_custom_quantity' ] ) ? "1" : false  );
+	    update_post_meta( $post_id, 'asp_product_enable_stock', isset( $_POST[ 'asp_product_enable_stock' ] ) ? "1" : false  );
+	    update_post_meta( $post_id, 'asp_product_stock_items', sanitize_text_field( intval( $_POST[ 'asp_product_stock_items' ] ) ) );
+
 	    update_post_meta( $post_id, 'asp_product_custom_field', isset( $_POST[ 'asp_product_custom_field' ] ) ? sanitize_text_field( $_POST[ 'asp_product_custom_field' ] ) : "0"  );
 	    update_post_meta( $post_id, 'asp_product_button_text', sanitize_text_field( $_POST[ 'asp_product_button_text' ] ) );
 	    update_post_meta( $post_id, 'asp_product_button_class', sanitize_text_field( $_POST[ 'asp_product_button_class' ] ) );

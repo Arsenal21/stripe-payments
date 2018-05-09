@@ -394,9 +394,21 @@ class AcceptStripePaymentsShortcode {
 	//This is public.css stylesheet
 	//wp_enqueue_style('stripe-button-public');
 	//$button = "<button id = '{$button_id}' type = 'submit' class = '{$class}'><span>{$button_text}</span></button>";
-	$button	 = sprintf( '<button id="%s" type="submit" class="%s"%s><span>%s</span></button>', esc_attr( $button_id ), esc_attr( $class ), $is_disabled, sanitize_text_field( $button_text ) );
+	$button = sprintf( '<button id="%s" type="submit" class="%s"%s><span>%s</span></button>', esc_attr( $button_id ), esc_attr( $class ), $is_disabled, sanitize_text_field( $button_text ) );
+
+	$out_of_stock = false;
+	//check if stock enabled
+	if ( isset( $product_id ) && get_post_meta( $product_id, 'asp_product_enable_stock', true ) ) {
+	    //check if product is not out of stock
+	    $stock_items = get_post_meta( $product_id, 'asp_product_stock_items', true );
+	    if ( empty( $stock_items ) ) {
+		$button		 = '<div class="asp_out_of_stock">' . __( "Out of stock", 'stripe-payments' ) . '</div>';
+		$out_of_stock	 = true;
+	    }
+	}
+
 	//add message if no javascript is enabled
-	$button	 .= '<noscript>' . __( 'Stripe Payments requires Javascript to be supported by the browser in order to operate.', 'stripe-payments' ) . '</noscript>';
+	$button .= '<noscript>' . __( 'Stripe Payments requires Javascript to be supported by the browser in order to operate.', 'stripe-payments' ) . '</noscript>';
 
 	$checkout_lang = $this->AcceptStripePayments->get_setting( 'checkout_lang' );
 
@@ -433,7 +445,8 @@ class AcceptStripePaymentsShortcode {
 	    'zeroCents'		 => $this->AcceptStripePayments->zeroCents,
 	    'addonHooks'		 => array(),
 	    'custom_field'		 => $custom_field,
-	    'button_text'		 => esc_attr( $button_text )
+	    'button_text'		 => esc_attr( $button_text ),
+	    'out_of_stock'		 => $out_of_stock,
 	);
 
 	$data = apply_filters( 'asp-button-output-data-ready', $data, $atts );
@@ -469,8 +482,9 @@ class AcceptStripePaymentsShortcode {
 	$output			 .= "</form>";
 	$output			 .= $button;
 	//after button filter
-	$output			 = apply_filters( 'asp-button-output-after-button', $output, $data, $class );
-
+	if ( ! $out_of_stock ) {
+	    $output = apply_filters( 'asp-button-output-after-button', $output, $data, $class );
+	}
 	$output .= $this->get_scripts( $data );
 
 	return $output;
@@ -485,6 +499,9 @@ class AcceptStripePaymentsShortcode {
 	    ?>
 
 	    <style>
+	        .asp_out_of_stock {
+	    	font-weight: bold;
+	        }
 	        .asp_product_buy_button input {
 	    	display: inline-block;
 	    	line-height: 1;
@@ -567,47 +584,50 @@ class AcceptStripePaymentsShortcode {
     function get_button_code_new_method( $data ) {
 	$output = '';
 
-	if ( $data[ 'amount' ] == 0 ) { //price not specified, let's add an input box for user to specify the amount
-	    $output .= "<div class='asp_product_item_amount_input_container'>"
-	    . "<input type='text' size='10' class='asp_product_item_amount_input' id='stripeAmount_{$data[ 'uniq_id' ]}' value='' name='stripeAmount' placeholder='" . __( 'Enter amount', 'stripe-payments' ) . "' required/>"
-	    . "<span class='asp_product_item_amount_currency_label' style='margin-left: 5px; display: inline-block'> {$data[ 'currency' ]}</span>"
-	    . "<span style='display: block;' id='error_explanation_{$data[ 'uniq_id' ]}'></span>"
-	    . "</div>";
-	}
-	if ( $data[ 'custom_quantity' ] === "1" ) { //we should output input for customer to input custom quantity
-	    if ( empty( $data[ 'quantity' ] ) ) {
-		//If quantity option is enabled and the value is empty then set default quantity to 1 so the number field type can handle it better.
-		$data[ 'quantity' ] = 1;
+	if ( ! $data[ 'out_of_stock' ] ) {
+
+	    if ( $data[ 'amount' ] == 0 ) { //price not specified, let's add an input box for user to specify the amount
+		$output .= "<div class='asp_product_item_amount_input_container'>"
+		. "<input type='text' size='10' class='asp_product_item_amount_input' id='stripeAmount_{$data[ 'uniq_id' ]}' value='' name='stripeAmount' placeholder='" . __( 'Enter amount', 'stripe-payments' ) . "' required/>"
+		. "<span class='asp_product_item_amount_currency_label' style='margin-left: 5px; display: inline-block'> {$data[ 'currency' ]}</span>"
+		. "<span style='display: block;' id='error_explanation_{$data[ 'uniq_id' ]}'></span>"
+		. "</div>";
 	    }
-	    $output .= "<div class='asp_product_item_qty_input_container'>"
-	    . "<input type='number' min='1' size='6' class='asp_product_item_qty_input' id='stripeCustomQuantity_{$data[ 'uniq_id' ]}' value='{$data[ 'quantity' ]}' name='stripeCustomQuantity' placeholder='" . __( 'Enter quantity', 'stripe-payments' ) . "' value='{$data[ 'quantity' ]}' required/>"
-	    . "<span class='asp_product_item_qty_label' style='margin-left: 5px; display: inline-block'> " . __( 'X item(s)', 'stripe-payments' ) . "</span>"
-	    . "<span style='display: block;' id='error_explanation_quantity_{$data[ 'uniq_id' ]}'></span>"
-	    . "</div>";
-	}
-	if ( $data[ 'custom_field' ] == 1 ) {
-	    $field_type	 = $this->AcceptStripePayments->get_setting( 'custom_field_type' );
-	    $field_name	 = $this->AcceptStripePayments->get_setting( 'custom_field_name' );
-	    $field_descr	 = $this->AcceptStripePayments->get_setting( 'custom_field_descr' );
-	    $descr_loc	 = $this->AcceptStripePayments->get_setting( 'custom_field_descr_location' );
-	    $mandatory	 = $this->AcceptStripePayments->get_setting( 'custom_field_mandatory' );
-	    $output		 .= "<div class='asp_product_custom_field_input_container'>";
-	    $output		 .= '<input type="hidden" name="stripeCustomFieldName" value="' . esc_attr( $field_name ) . '">';
-	    switch ( $field_type ) {
-		case 'text':
-		    if ( $descr_loc !== 'below' ) {
-			$output .= '<label class="asp_product_custom_field_label">' . $field_name . ' ' . '</label><input id="asp-custom-field-' . $data[ 'uniq_id' ] . '" class="asp_product_custom_field_input" type="text"' . ($mandatory ? ' data-asp-custom-mandatory' : '') . ' name="stripeCustomField" placeholder="' . $field_descr . '"' . ($mandatory ? ' required' : '' ) . '>';
-		    } else {
-			$output	 .= '<label class="asp_product_custom_field_label">' . $field_name . ' ' . '</label><input id="asp-custom-field-' . $data[ 'uniq_id' ] . '" class="asp_product_custom_field_input" type="text"' . ($mandatory ? ' data-asp-custom-mandatory' : '') . ' name="stripeCustomField"' . ($mandatory ? ' required' : '' ) . '>';
-			$output	 .= '<div class="asp_product_custom_field_descr">' . $field_descr . '</div>';
-		    }
-		    break;
-		case 'checkbox':
-		    $output .= '<label class="asp_product_custom_field_label"><input id="asp-custom-field-' . $data[ 'uniq_id' ] . '" class="asp_product_custom_field_input" type="checkbox"' . ($mandatory ? ' data-asp-custom-mandatory' : '') . ' name="stripeCustomField"' . ($mandatory ? ' required' : '' ) . '>' . $field_descr . '</label>';
-		    break;
+	    if ( $data[ 'custom_quantity' ] === "1" ) { //we should output input for customer to input custom quantity
+		if ( empty( $data[ 'quantity' ] ) ) {
+		    //If quantity option is enabled and the value is empty then set default quantity to 1 so the number field type can handle it better.
+		    $data[ 'quantity' ] = 1;
+		}
+		$output .= "<div class='asp_product_item_qty_input_container'>"
+		. "<input type='number' min='1' size='6' class='asp_product_item_qty_input' id='stripeCustomQuantity_{$data[ 'uniq_id' ]}' value='{$data[ 'quantity' ]}' name='stripeCustomQuantity' placeholder='" . __( 'Enter quantity', 'stripe-payments' ) . "' value='{$data[ 'quantity' ]}' required/>"
+		. "<span class='asp_product_item_qty_label' style='margin-left: 5px; display: inline-block'> " . __( 'X item(s)', 'stripe-payments' ) . "</span>"
+		. "<span style='display: block;' id='error_explanation_quantity_{$data[ 'uniq_id' ]}'></span>"
+		. "</div>";
 	    }
-	    $output .= "<span style='display: block;' id='custom_field_error_explanation_{$data[ 'uniq_id' ]}'></span>" .
-	    "</div>";
+	    if ( $data[ 'custom_field' ] == 1 ) {
+		$field_type	 = $this->AcceptStripePayments->get_setting( 'custom_field_type' );
+		$field_name	 = $this->AcceptStripePayments->get_setting( 'custom_field_name' );
+		$field_descr	 = $this->AcceptStripePayments->get_setting( 'custom_field_descr' );
+		$descr_loc	 = $this->AcceptStripePayments->get_setting( 'custom_field_descr_location' );
+		$mandatory	 = $this->AcceptStripePayments->get_setting( 'custom_field_mandatory' );
+		$output		 .= "<div class='asp_product_custom_field_input_container'>";
+		$output		 .= '<input type="hidden" name="stripeCustomFieldName" value="' . esc_attr( $field_name ) . '">';
+		switch ( $field_type ) {
+		    case 'text':
+			if ( $descr_loc !== 'below' ) {
+			    $output .= '<label class="asp_product_custom_field_label">' . $field_name . ' ' . '</label><input id="asp-custom-field-' . $data[ 'uniq_id' ] . '" class="asp_product_custom_field_input" type="text"' . ($mandatory ? ' data-asp-custom-mandatory' : '') . ' name="stripeCustomField" placeholder="' . $field_descr . '"' . ($mandatory ? ' required' : '' ) . '>';
+			} else {
+			    $output	 .= '<label class="asp_product_custom_field_label">' . $field_name . ' ' . '</label><input id="asp-custom-field-' . $data[ 'uniq_id' ] . '" class="asp_product_custom_field_input" type="text"' . ($mandatory ? ' data-asp-custom-mandatory' : '') . ' name="stripeCustomField"' . ($mandatory ? ' required' : '' ) . '>';
+			    $output	 .= '<div class="asp_product_custom_field_descr">' . $field_descr . '</div>';
+			}
+			break;
+		    case 'checkbox':
+			$output .= '<label class="asp_product_custom_field_label"><input id="asp-custom-field-' . $data[ 'uniq_id' ] . '" class="asp_product_custom_field_input" type="checkbox"' . ($mandatory ? ' data-asp-custom-mandatory' : '') . ' name="stripeCustomField"' . ($mandatory ? ' required' : '' ) . '>' . $field_descr . '</label>';
+			break;
+		}
+		$output .= "<span style='display: block;' id='custom_field_error_explanation_{$data[ 'uniq_id' ]}'></span>" .
+		"</div>";
+	    }
 	}
 	if ( $data ) {
 	    if ( $data[ 'product_id' ] !== 0 ) {

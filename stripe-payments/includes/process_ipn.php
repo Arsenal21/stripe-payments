@@ -366,6 +366,17 @@ do_action( 'AcceptStripePayments_payment_completed', $order, $data[ 'charge' ] )
 
 $GLOBALS[ 'asp_payment_success' ] = true;
 
+//check if we need to deal with stock
+if ( ! empty( $data[ 'product_id' ] ) && get_post_meta( $data[ 'product_id' ], 'asp_product_enable_stock', true ) ) {
+    $stock_items	 = intval( get_post_meta( $data[ 'product_id' ], 'asp_product_stock_items', true ) );
+    $stock_items	 = $stock_items - $data[ 'item_quantity' ];
+    if ( $stock_items < 0 ) {
+	$stock_items = 0;
+    }
+    update_post_meta( $data[ 'product_id' ], 'asp_product_stock_items', $stock_items );
+    $data[ 'stock_items' ] = $stock_items;
+}
+
 //Let's handle email sending stuff
 
 if ( isset( $opt[ 'send_emails_to_buyer' ] ) ) {

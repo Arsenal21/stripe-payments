@@ -74,6 +74,7 @@ class ASPProducts {
 	    "title"		 => __( 'Product Name', 'stripe-payments' ),
 	    "id"		 => __( "ID", 'stripe-payments' ),
 	    "price"		 => __( "Price", 'stripe-payments' ),
+	    "stock"		 => __( 'Stock', 'stripe-payments' ),
 	    "shortcode"	 => __( "Shortcode", 'stripe-payments' ),
 	    "date"		 => __( "Date", 'stripe-payments' ),
 	);
@@ -84,6 +85,14 @@ class ASPProducts {
 	switch ( $column ) {
 	    case 'id':
 		echo $post_id;
+		break;
+	    case 'stock':
+		if ( get_post_meta( $post_id, 'asp_product_enable_stock', true ) ) {
+		    $stock_items = get_post_meta( $post_id, 'asp_product_stock_items', true );
+		    echo ! $stock_items ? __( 'Out of stock', 'stripe-payments' ) : $stock_items;
+		} else {
+		    echo '—';
+		}
 		break;
 	    case 'thumbnail':
 		$thumb_url = get_post_meta( $post_id, 'asp_product_thumbnail', true );
@@ -130,6 +139,7 @@ class ASPProducts {
     function manage_sortable_columns( $columns ) {
 	$columns[ 'id' ]	 = 'id';
 	$columns[ 'price' ]	 = 'price';
+	$columns[ 'stock' ]	 = 'stock';
 	return $columns;
     }
 
