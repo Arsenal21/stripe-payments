@@ -4,7 +4,7 @@ Donate link: https://stripe-plugins.com
 Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortcode, digital goods, payment gateway, instant payment, commerce, digital downloads, downloads, e-commerce, e-store, ecommerce, eshop, donation
 Requires at least: 4.7
 Tested up to: 4.9
-Stable tag: 1.8.6
+Stable tag: 1.8.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -60,6 +60,7 @@ https://www.youtube.com/watch?v=upWqk069Khg
 * Option to send receipt email to your customers from Stripe for each transaction.
 * Option to collect a custom input from your customers for products (useful if you are selling products that need special instructions from the customers).
 * Stock control option. You can limit the number of quantity available for a product.
+* Option to enable Alipay payments. So your customers can pay using their Alipay accounts.
 
 The setup is very easy. Once you have installed the plugin, all you need to do is enter your Stripe API credentials in the plugin settings and your website will be ready to accept credit card payments.
 
@@ -146,6 +147,10 @@ Yes, please visit Stripe Payments > Settings screen for options.
 None.
 
 == Changelog ==
+
+= 1.8.7 =
+- Added some debug logging message after the notification email is sent by the plugin. This will be useful for troubleshooting email related issue.
+- Added Alipay payment option as a free addon - https://stripe-plugins.com/alipay-addon-stripe-payments-plugin/
 
 = 1.8.6 =
 - Added basic products stock control functionality.

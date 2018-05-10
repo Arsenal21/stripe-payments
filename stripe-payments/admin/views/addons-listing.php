@@ -56,15 +56,23 @@ echo '<link type="text/css" rel="stylesheet" href="' . WP_ASP_PLUGIN_URL . '/adm
                 "description" => "When you enable this addon, the reCAPTCHA popup will appear when customers click a Stripe payment button.",
                 "page_url" => "https://stripe-plugins.com/stripe-payments-recaptcha-addon/",
             );
-            array_push($addons_data, $addon_5);  
+            array_push($addons_data, $addon_5);
             
             $addon_6 = array(
+                "name" => "Alipay Addon",
+                "thumbnail" => WP_ASP_PLUGIN_URL . "/admin/assets/images/alipay-stripe-payments-addon.png",
+                "description" => "When you enable this addon, it gives you the ability to accept payments via Alipay on your website",
+                "page_url" => "https://stripe-plugins.com/alipay-addon-stripe-payments-plugin/",
+            );
+            array_push($addons_data, $addon_6);
+	    
+            $addon_7 = array(
                 "name" => "WP Affiliate Integration",
                 "thumbnail" => WP_ASP_PLUGIN_URL . "/admin/assets/images/wp-affiliate-integration.png",
                 "description" => "The affiliate plugin will track customers that purchase items and award the affiliate that referred the customer.",
                 "page_url" => "https://stripe-plugins.com/stripe-payments-wp-affiliate-plugin-integration/",
             );
-            array_push($addons_data, $addon_6); 
+            array_push($addons_data, $addon_7); 
             
             /*** Show the addons list ***/
             foreach ($addons_data as $addon) {
