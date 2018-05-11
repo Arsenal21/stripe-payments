@@ -133,7 +133,7 @@ if ( $_GET[ 'page' ] == 'stripe-payments-settings' ) {
     		<div class="postbox" style="min-width: inherit;">
     		    <h3 class="hndle"><label for="title"><?php echo __( 'Rate Us', 'stripe-payments' ); ?></label></h3>
     		    <div class="inside">
-			    <?php echo sprintf( _x( 'Like the plugin? Please give us a %s', '%s is replaced by "rating" link', 'easy-wp-smtp' ), sprintf( '<a href="https://wordpress.org/support/plugin/stripe-payments/reviews/?filter=5" target="_blank">%s</a>', __( 'rating!', 'stripe-payments' ) ) ); ?>
+			    <?php echo sprintf( _x( 'Like the plugin? Please give us a %s', '%s is replaced by "rating" link', 'stripe-payments' ), sprintf( '<a href="https://wordpress.org/support/plugin/stripe-payments/reviews/?filter=5" target="_blank">%s</a>', __( 'rating!', 'stripe-payments' ) ) ); ?>
     			<div class="wp-asp-stars-container">
     			    <a href="https://wordpress.org/support/plugin/stripe-payments/reviews/?filter=5" target="_blank">
     				<span class="dashicons dashicons-star-filled"></span>
