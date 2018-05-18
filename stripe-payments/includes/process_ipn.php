@@ -119,11 +119,14 @@ if ( isset( $_POST[ 'stripeProductId' ] ) && ! empty( $_POST[ 'stripeProductId' 
 	$item_custom_quantity = false;
     }
 
+    $variable = false;
+
     $item_price = get_post_meta( $id, 'asp_product_price', true );
 
     if ( empty( $item_price ) ) {
 	//this is probably custom price
-	$item_price = floatval( $_POST[ 'stripeAmount' ] );
+	$variable	 = true;
+	$item_price	 = floatval( $_POST[ 'stripeAmount' ] );
     }
 
     //apply tax and shipping if needed
@@ -131,6 +134,13 @@ if ( isset( $_POST[ 'stripeProductId' ] ) && ! empty( $_POST[ 'stripeProductId' 
     $tax = get_post_meta( $id, 'asp_product_tax', true );
 
     $shipping = floatval( get_post_meta( $id, 'asp_product_shipping', true ) );
+
+    //let's apply filter so addons can change price, currency and shipping if needed
+    $price_arr	 = array( 'price' => $item_price, 'currency' => $currency_code, 'shipping' => empty( $shipping ) ? false : $shipping, 'variable' => $variable );
+    $price_arr	 = apply_filters( 'asp_modify_price_currency_shipping', $price_arr );
+    extract( $price_arr, EXTR_OVERWRITE );
+    $item_price	 = $price;
+    $currency_code	 = $currency;
 
     $got_product_data_from_db = true;
     ASP_Debug_Logger::log( 'Got required product info from database.' );
@@ -170,7 +180,7 @@ if ( ! $got_product_data_from_db ) {
 
     $currency_code = strtoupper( sanitize_text_field( $_POST[ 'currency_code' ] ) );
 
-    if ( ! in_array( $currency_code, $asp_class->zeroCents ) ) {
+    if ( ! AcceptStripePayments::is_zero_cents( $currency_code ) ) {
 	$shipping = $shipping / 100;
     }
 }
@@ -193,7 +203,7 @@ $charge_description	 = sanitize_text_field( $_POST[ 'charge_description' ] );
 $amount = $item_price;
 
 //apply tax if needed
-$amount = AcceptStripePayments::apply_tax( $amount, $tax );
+$amount = AcceptStripePayments::apply_tax( $amount, $tax, AcceptStripePayments::is_zero_cents( $currency_code ) );
 
 if ( $item_custom_quantity !== false ) { //custom quantity
     $item_quantity = $item_custom_quantity;
@@ -210,7 +220,7 @@ $amount = AcceptStripePayments::apply_shipping( $amount, $shipping );
 
 $amount_in_cents = $amount;
 
-if ( ! in_array( $currency_code, $asp_class->zeroCents ) ) {
+if ( ! AcceptStripePayments::is_zero_cents( $currency_code ) ) {
     $amount_in_cents = $amount_in_cents * 100;
 }
 
@@ -334,7 +344,7 @@ $post_data[ 'shipping_address' ] = $shipping_address;
 $post_data[ 'additional_items' ] = array();
 
 if ( isset( $tax ) && ! empty( $tax ) ) {
-    $tax_amt								 = AcceptStripePayments::get_tax_amount( $post_data[ 'item_price' ], $tax );
+    $tax_amt								 = AcceptStripePayments::get_tax_amount( $post_data[ 'item_price' ], $tax, AcceptStripePayments::is_zero_cents( $currency_code ) );
     $post_data[ 'additional_items' ][ __( 'Tax', 'stripe-payments' ) ]	 = $tax_amt;
     $post_data[ 'tax_perc' ]						 = $tax;
     $post_data[ 'tax' ]							 = $tax_amt;
@@ -390,7 +400,7 @@ if ( isset( $opt[ 'send_emails_to_buyer' ] ) ) {
 	$subj	 = apply_filters( 'asp_buyer_email_subject', $subj, $post_data );
 	$body	 = apply_filters( 'asp_buyer_email_body', $body, $post_data );
 	wp_mail( $to, $subj, $body, $headers );
-        ASP_Debug_Logger::log( 'Notification email sent to buyer: ' . $to . ', From email address used: ' . $from );
+	ASP_Debug_Logger::log( 'Notification email sent to buyer: ' . $to . ', From email address used: ' . $from );
     }
 }
 if ( isset( $opt[ 'send_emails_to_seller' ] ) ) {
@@ -404,7 +414,7 @@ if ( isset( $opt[ 'send_emails_to_seller' ] ) ) {
 	$subj	 = apply_filters( 'asp_seller_email_subject', $subj, $post_data );
 	$body	 = apply_filters( 'asp_seller_email_body', $body, $post_data );
 	wp_mail( $to, $subj, $body, $headers );
-        ASP_Debug_Logger::log( 'Notification email sent to seller: ' . $to . ', From email address used: ' . $from );
+	ASP_Debug_Logger::log( 'Notification email sent to seller: ' . $to . ', From email address used: ' . $from );
     }
 }
 

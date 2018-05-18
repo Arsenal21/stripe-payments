@@ -465,8 +465,6 @@ class AcceptStripePayments {
 	    return '';
 	}
 
-	$zeroCents = array( 'JPY', 'MGA', 'VND', 'KRW' );
-
 	$opts = get_option( 'AcceptStripePayments-settings' );
 
 	if ( $curr === false ) {
@@ -491,7 +489,7 @@ class AcceptStripePayments {
 	}
 
 	//check if price is in cents
-	if ( $price_is_cents && ! in_array( $curr, $zeroCents ) ) {
+	if ( $price_is_cents && ! AcceptStripePayments::is_zero_cents( $curr ) ) {
 	    $price = intval( $price ) / 100;
 	}
 
@@ -512,9 +510,13 @@ class AcceptStripePayments {
 	return $out;
     }
 
-    static function apply_tax( $price, $tax ) {
+    static function apply_tax( $price, $tax, $is_zero_cents = false ) {
 	if ( ! empty( $tax ) ) {
-	    $tax_amount	 = round( ($price * $tax / 100 ), 2 );
+	    $prec = 2;
+	    if ( $is_zero_cents ) {
+		$prec = 0;
+	    }
+	    $tax_amount	 = round( ($price * $tax / 100 ), $prec );
 	    $price		 += $tax_amount;
 	}
 	return $price;
@@ -527,13 +529,22 @@ class AcceptStripePayments {
 	return $price;
     }
 
-    static function get_tax_amount( $price, $tax ) {
+    static function get_tax_amount( $price, $tax, $is_zero_cents = false ) {
 	if ( ! empty( $tax ) ) {
-	    $tax_amount = round( ($price * $tax / 100 ), 2 );
+	    $prec = 2;
+	    if ( $is_zero_cents ) {
+		$prec = 0;
+	    }
+	    $tax_amount = round( ($price * $tax / 100 ), $prec );
 	    return $tax_amount;
 	} else {
 	    return 0;
 	}
+    }
+
+    static function is_zero_cents( $curr ) {
+	$zeroCents = array( 'JPY', 'MGA', 'VND', 'KRW' );
+	return in_array( strtoupper( $curr ), $zeroCents );
     }
 
 }

@@ -138,7 +138,14 @@ class AcceptStripePaymentsShortcode {
 	$template_name	 = 'default'; //this could be made configurable
 	$button_color	 = 'blue'; //this could be made configurable
 
-	$price	 = get_post_meta( $id, 'asp_product_price', true );
+	$price		 = get_post_meta( $id, 'asp_product_price', true );
+	$shipping	 = get_post_meta( $id, 'asp_product_shipping', true );
+
+	//let's apply filter so addons can change price, currency and shipping if needed
+	$price_arr	 = array( 'price' => $price, 'currency' => $currency, 'shipping' => empty( $shipping ) ? false : $shipping );
+	$price_arr	 = apply_filters( 'asp_modify_price_currency_shipping', $price_arr );
+	extract( $price_arr, EXTR_OVERWRITE );
+
 	$buy_btn = '';
 
 	$button_class = get_post_meta( $id, 'asp_product_button_class', true );
@@ -157,8 +164,6 @@ class AcceptStripePaymentsShortcode {
 
 	$thankyou_page = get_post_meta( $id, 'asp_product_thankyou_page', true );
 
-	$shipping = get_post_meta( $id, 'asp_product_shipping', true );
-
 	if ( ! $shipping ) {
 	    $shipping = 0;
 	}
@@ -176,7 +181,7 @@ class AcceptStripePaymentsShortcode {
 
 	if ( $tax !== 0 ) {
 	    if ( ! empty( $price ) ) {
-		$tax_amount		 = round( ($tot_price * $tax / 100 ), 2 );
+		$tax_amount		 = AcceptStripePayments::get_tax_amount( $tot_price, $tax, AcceptStripePayments::is_zero_cents( $currency ) );
 		$tot_price		 += $tax_amount;
 		$under_price_line	 = '<span class="asp_price_tax_section">' . AcceptStripePayments::formatted_price( $tax_amount, $currency ) . __( ' (tax)', 'stripe-payments' ) . '</span>';
 	    } else {
@@ -340,9 +345,10 @@ class AcceptStripePaymentsShortcode {
 	$uniq_id		 = count( self::$payment_buttons );
 	$button_id		 = 'stripe_button_' . $uniq_id;
 	self::$payment_buttons[] = $button_id;
-	$item_price		 = $price;
-	$paymentAmount		 = ($custom_quantity == "1" ? $price : (floatval( $price ) * $quantity));
-	if ( in_array( $currency, $this->AcceptStripePayments->zeroCents ) ) {
+
+	$item_price	 = $price;
+	$paymentAmount	 = ($custom_quantity == "1" ? $price : (floatval( $price ) * $quantity));
+	if ( AcceptStripePayments::is_zero_cents( $currency ) ) {
 	    //this is zero-cents currency, amount shouldn't be multiplied by 100
 	    $priceInCents = $paymentAmount;
 	} else {
@@ -352,7 +358,7 @@ class AcceptStripePaymentsShortcode {
 
 	if ( ! empty( $shipping ) ) {
 	    $shipping = round( $shipping, 2 );
-	    if ( ! in_array( $currency, $this->AcceptStripePayments->zeroCents ) ) {
+	    if ( ! AcceptStripePayments::is_zero_cents( $currency ) ) {
 		$shipping = $shipping * 100;
 	    }
 	}
@@ -378,7 +384,7 @@ class AcceptStripePaymentsShortcode {
 	if ( empty( $description ) && $custom_quantity !== '1' && ( ! empty( $price ) && $price !== 0) ) {
 	    //Create a description using quantity, payment amount and currency
 	    if ( ! empty( $tax ) || ! empty( $shipping ) ) {
-		$formatted_amount = AcceptStripePayments::formatted_price( in_array( $currency, $this->AcceptStripePayments->zeroCents ) ? $priceInCents : $priceInCents / 100, $currency );
+		$formatted_amount = AcceptStripePayments::formatted_price( AcceptStripePayments::is_zero_cents( $currency ) ? $priceInCents : $priceInCents / 100, $currency );
 	    } else {
 		$formatted_amount = AcceptStripePayments::formatted_price( $paymentAmount, $currency );
 	    }
@@ -480,7 +486,11 @@ class AcceptStripePaymentsShortcode {
 	set_transient( $trans_name, $trans, 2 * 3600 ); //Save the price for this item for 2 hours.
 	$output			 .= wp_nonce_field( 'stripe_payments', '_wpnonce', true, false );
 	$output			 .= "</form>";
-	$output			 .= $button;
+	//before button filter
+	if ( ! $out_of_stock ) {
+	    $output = apply_filters( 'asp_button_output_before_button', $output, $data, $class );
+	}
+	$output .= $button;
 	//after button filter
 	if ( ! $out_of_stock ) {
 	    $output = apply_filters( 'asp-button-output-after-button', $output, $data, $class );
