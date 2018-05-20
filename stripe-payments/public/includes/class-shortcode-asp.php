@@ -505,52 +505,8 @@ class AcceptStripePaymentsShortcode {
 	if ( ! $this->ButtonCSSInserted || $this->CompatMode ) {
 //	    $this->ButtonCSSInserted = true;
 	    // we need to style custom inputs
-	    ob_start();
-	    ?>
-
-	    <style>
-	        .asp_out_of_stock {
-	    	font-weight: bold;
-	        }
-	        .asp_product_buy_button input {
-	    	display: inline-block;
-	    	line-height: 1;
-	    	padding: 8px 10px;
-	        }
-
-	        .asp_product_buy_button input::placeholder {
-	    	font-style: italic;
-	    	color: #bbb;
-	        }
-	        @keyframes blink {
-	    	0% {
-	    	    opacity: .2;
-	    	}
-	    	20% {
-	    	    opacity: 1;
-	    	}
-	    	100% {
-	    	    opacity: 0;
-	    	}
-	        }
-	        .asp-processing-cont {
-	    	display: none;
-	        }
-	        .asp-processing i {
-	    	animation-name: blink;
-	    	animation-duration: 1s;
-	    	animation-iteration-count: infinite;
-	    	animation-fill-mode: both;
-	        }
-	        .asp-processing i:nth-child(2) {
-	    	animation-delay: .1s;
-	        }
-	        .asp-processing i:nth-child(3) {
-	    	animation-delay: .2s;
-	        }
-	    </style>
-	    <?php
-	    $output	 .= ob_get_clean();
+	    $style	 = file_get_contents( WP_ASP_PLUGIN_PATH . 'public/assets/css/public.min.css' );
+	    $output	 .= '<style type="text/css">' . $style . '</style>';
 	    //addons can output their styles if needed
 	    $output	 = apply_filters( 'asp-button-output-additional-styles', $output );
 	    ob_start();
