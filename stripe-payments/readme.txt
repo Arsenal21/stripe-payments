@@ -4,7 +4,7 @@ Donate link: https://stripe-plugins.com
 Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortcode, digital goods, payment gateway, instant payment, commerce, digital downloads, downloads, e-commerce, e-store, ecommerce, eshop, donation
 Requires at least: 4.7
 Tested up to: 4.9
-Stable tag: 1.8.8t1
+Stable tag: 1.8.8t3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -150,6 +150,8 @@ None.
 
 = 1.8.8 =
 - Fixed zero-decimal currencies tax value was calculated improperly.
+- In-page CSS is now minified.
+- Some addons-related changes.
 
 = 1.8.7 =
 - Added some debug logging message after the notification email is sent by the plugin. This will be useful for troubleshooting email related issue.
