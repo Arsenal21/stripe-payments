@@ -149,10 +149,10 @@ None.
 == Changelog ==
 
 = 1.8.8 =
-- Added option to add mandatory "I accept Terms and Conditions" checkbox. Should help to comply with upcoming EU GDPR.
+- Added option to add mandatory "I accept Terms and Conditions" checkbox. Should help to comply with upcoming EU GDPR. Go to Settings -> Advanced Settings tab to configure it per your needs.
 - Fixed zero-decimal currencies tax value was calculated improperly.
-- Inline CSS is now minified.
 - More text available for translation. You can help in translating plugin to your language [here](https://translate.wordpress.org/projects/wp-plugins/stripe-payments)
+- Inline CSS is now minified.
 - Some addons-related changes.
 
 = 1.8.7 =

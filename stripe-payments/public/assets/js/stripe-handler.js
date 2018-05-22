@@ -145,11 +145,11 @@ function wp_asp_can_proceed(data, openHandler) {
 	var customInput = jQuery('#asp-custom-field-' + data.uniq_id);
 	if (typeof (customInput.attr('data-asp-custom-mandatory')) !== "undefined") {
 	    if (customInput.attr('type') === 'text' && customInput.val() === '') {
-		jQuery('#custom_field_error_explanation_' + data.uniq_id).hide().html('Please fill in this field.').fadeIn('slow');
+		jQuery('#custom_field_error_explanation_' + data.uniq_id).hide().html(stripehandler.strPleaseFillIn).fadeIn('slow');
 		return false;
 	    }
 	    if (customInput.attr('type') === 'checkbox' && customInput.prop('checked') !== true) {
-		jQuery('#custom_field_error_explanation_' + data.uniq_id).hide().html('Please check this checkbox.').fadeIn('slow');
+		jQuery('#custom_field_error_explanation_' + data.uniq_id).hide().html(stripehandler.strPleaseCheckCheckbox).fadeIn('slow');
 		return false;
 	    }
 	}
