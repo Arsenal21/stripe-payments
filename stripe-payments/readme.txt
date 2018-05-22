@@ -61,6 +61,7 @@ https://www.youtube.com/watch?v=upWqk069Khg
 * Option to collect a custom input from your customers for products (useful if you are selling products that need special instructions from the customers).
 * Stock control option. You can limit the number of quantity available for a product.
 * Option to enable Alipay payments. So your customers can pay using their Alipay accounts.
+* Option to enable Terms and Conditions that your customers have to accept before they can make a purchase.
 
 The setup is very easy. Once you have installed the plugin, all you need to do is enter your Stripe API credentials in the plugin settings and your website will be ready to accept credit card payments.
 
@@ -149,9 +150,9 @@ None.
 == Changelog ==
 
 = 1.8.8 =
-- Added option to add mandatory "I accept Terms and Conditions" checkbox. Should help to comply with upcoming EU GDPR. Go to Settings -> Advanced Settings tab to configure it per your needs.
+- Added option to add mandatory "I accept the Terms and Conditions" checkbox. Should help to comply with the EU GDPR. Go to Settings -> Advanced Settings tab to configure it as per your needs.
 - Fixed zero-decimal currencies tax value was calculated improperly.
-- More text available for translation. You can help in translating plugin to your language [here](https://translate.wordpress.org/projects/wp-plugins/stripe-payments)
+- More text available for translation. You can help in translating the plugin to your language [here](https://translate.wordpress.org/projects/wp-plugins/stripe-payments)
 - Inline CSS is now minified.
 - Some addons-related changes.
 
