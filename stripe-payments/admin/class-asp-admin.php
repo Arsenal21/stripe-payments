@@ -513,7 +513,7 @@ class AcceptStripePayments_Admin {
 	    'desc'	 => __( 'Enable Terms and Conditions checkbox.', 'stripe-payments' ) )
 	);
 	add_settings_field( 'tos_text', __( 'Checkbox Text', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-tos', array( 'field'	 => 'tos_text',
-	    'desc'	 => __( 'Text to be displayed on checkbox. It accepts HTML code so you can put link to your Terms of Service page.', 'stripe-payments' ) )
+	    'desc'	 => __( 'Text to be displayed on checkbox. It accepts HTML code so you can put a link to your terms and conditions page.', 'stripe-payments' ) )
 	);
 
 	// Additional Settings

@@ -82,7 +82,7 @@ class AcceptStripePaymentsShortcode {
 	    'strTotal'		 => __( 'Total:', 'stripe-payments' ),
 	    'strPleaseFillIn'	 => __( 'Please fill in this field.', 'stripe-payments' ),
 	    'strPleaseCheckCheckbox' => __( 'Please check this checkbox.', 'stripe-payments' ),
-	    'strMustAcceptTos'	 => __( 'You must accept Terms and Conditions before you can proceed.', 'stripe-payments' ),
+	    'strMustAcceptTos'	 => __( 'You must accept the terms before you can proceed.', 'stripe-payments' ),
 	    'minAmounts'		 => $minAmounts,
 	    'zeroCents'		 => $zeroCents,
 	    'amountOpts'		 => $amountOpts,
