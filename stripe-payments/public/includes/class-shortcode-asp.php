@@ -74,6 +74,7 @@ class AcceptStripePaymentsShortcode {
 	    'strTax'		 => __( 'Tax', 'stripe-payments' ),
 	    'strShipping'		 => __( 'Shipping', 'stripe-payments' ),
 	    'strTotal'		 => __( 'Total:', 'stripe-payments' ),
+	    'strMustAcceptTos'	 => __( 'You must accept Terms of Service before you can proceed.', 'stripe-payments' ),
 	    'minAmounts'		 => $minAmounts,
 	    'zeroCents'		 => $zeroCents,
 	);
@@ -427,6 +428,8 @@ class AcceptStripePaymentsShortcode {
 	    $custom_field = $atts[ 'custom_field' ];
 	}
 
+	$tos = $this->AcceptStripePayments->get_setting( 'tos_enabled' );
+
 	$data = array(
 	    'product_id'		 => $product_id,
 	    'button_key'		 => $button_key,
@@ -451,6 +454,7 @@ class AcceptStripePaymentsShortcode {
 	    'zeroCents'		 => $this->AcceptStripePayments->zeroCents,
 	    'addonHooks'		 => array(),
 	    'custom_field'		 => $custom_field,
+	    'tos'			 => $tos,
 	    'button_text'		 => esc_attr( $button_text ),
 	    'out_of_stock'		 => $out_of_stock,
 	);
@@ -593,6 +597,14 @@ class AcceptStripePaymentsShortcode {
 		}
 		$output .= "<span style='display: block;' id='custom_field_error_explanation_{$data[ 'uniq_id' ]}'></span>" .
 		"</div>";
+	    }
+	    //Terms and Conditions
+	    if ( $data[ 'tos' ] == 1 ) {
+		$tos_text	 = $this->AcceptStripePayments->get_setting( 'tos_text' );
+		$output		 .= '<div class="asp_product_tos_input_container">';
+		$output		 .= '<label class="asp_product_tos_label"><input id="asp-tos-' . $data[ 'uniq_id' ] . '" class="asp_product_tos_input" type="checkbox" required>' . html_entity_decode( $tos_text ) . '</label>';
+		$output		 .= "<span style='display: block;' id='tos_error_explanation_{$data[ 'uniq_id' ]}'></span>";
+		$output		 .= '</div>';
 	    }
 	}
 	if ( $data ) {

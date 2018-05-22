@@ -368,6 +368,7 @@ class AcceptStripePayments_Admin {
 
 	add_settings_section( 'AcceptStripePayments-price-display', __( 'Price Display Settings', 'stripe-payments' ), null, $this->plugin_slug . '-advanced' );
 	add_settings_section( 'AcceptStripePayments-custom-field', __( 'Custom Field Settings', 'stripe-payments' ), null, $this->plugin_slug . '-advanced' );
+	add_settings_section( 'AcceptStripePayments-tos', __( 'Terms and Conditions', 'stripe-payments' ), array( $this, 'tos_description' ), $this->plugin_slug . '-advanced' );
 	add_settings_section( 'AcceptStripePayments-additional-settings', __( 'Additional Settings', 'stripe-payments' ), null, $this->plugin_slug . '-advanced' );
 
 	// Global section
@@ -503,10 +504,22 @@ class AcceptStripePayments_Admin {
 	    'desc'	 => __( "If enabled, makes the field mandatory - user can't proceed with the payment before it's filled.", 'stripe-payments' ) )
 	);
 
+	//Terms and Conditions
+	add_settings_field( 'tos_enabled', __( 'Enable Terms and Conditions', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-tos', array( 'field'	 => 'tos_enabled',
+	    'desc'	 => __( 'Enable Terms and Conditions checkbox.', 'stripe-payments' ) )
+	);
+	add_settings_field( 'tos_text', __( 'Checkbox Text', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-tos', array( 'field'	 => 'tos_text',
+	    'desc'	 => __( 'Text to be displayed on checkbox. It accepts HTML code so you can put link to your Terms of Service page.', 'stripe-payments' ) )
+	);
+
 	// Additional Settings
 	add_settings_field( 'disable_buttons_before_js_loads', __( 'Disable Buttons Before Javascript Loads', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-additional-settings', array( 'field'	 => 'disable_buttons_before_js_loads',
 	    'desc'	 => __( "If enabled, payment buttons are not clickable until Javascript libraries are loaded on page view. This prevents \"Invalid Stripe Token\" errors on some configurations.", 'stripe-payments' ) )
 	);
+    }
+
+    function tos_description() {
+	echo '<p>' . __( 'This section allows you to configure Terms and Conditions or Privacy Policy that customer must accept before making payment. This, for example, can be used to comply with EU GDPR.', 'stripe-payments' ) . '</p>';
     }
 
     public function general_documentation_callback( $args ) {
@@ -616,6 +629,7 @@ class AcceptStripePayments_Admin {
 		echo "</select>";
 		echo "<p class=\"description\">{$desc}</p>";
 		break;
+	    case 'tos_enabled':
 	    case 'debug_log_enable':
 	    case 'send_emails_to_seller':
 	    case 'send_emails_to_buyer':
@@ -666,6 +680,10 @@ class AcceptStripePayments_Admin {
 		<p class="description"><?php echo $desc; ?></p>
 		<?php
 		break;
+	    case 'tos_text':
+		echo '<textarea name="AcceptStripePayments-settings[tos_text]" rows="4" cols="70">' . $field_value . '</textarea>';
+		echo '<p class="description">' . $desc . '</p>';
+		break;
 	    default:
 		echo "<input type='text' name='AcceptStripePayments-settings[{$field}]' value='{$field_value}' size='{$size}' /> <p class=\"description\">{$desc}</p>";
 		break;
@@ -681,6 +699,10 @@ class AcceptStripePayments_Admin {
 	$output = get_option( 'AcceptStripePayments-settings' );
 
 	$output = apply_filters( 'apm-admin-settings-sanitize-field', $output, $input );
+
+	$output [ 'tos_enabled' ] = empty( $input[ 'tos_enabled' ] ) ? 0 : 1;
+
+	$output[ 'tos_text' ] = ! empty( $input[ 'tos_text' ] ) ? $input[ 'tos_text' ] : '';
 
 	$output[ 'custom_field_enabled' ] = empty( $input[ 'custom_field_enabled' ] ) ? 0 : 1;
 

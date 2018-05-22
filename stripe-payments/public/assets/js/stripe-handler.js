@@ -155,6 +155,13 @@ function wp_asp_can_proceed(data, openHandler) {
 	}
     }
 
+    if (data.tos == 1) {
+	if (jQuery('#asp-tos-' + data.uniq_id).prop('checked') !== true) {
+	    jQuery('#tos_error_explanation_' + data.uniq_id).hide().html(stripehandler.strMustAcceptTos).fadeIn('slow');
+	    return false;
+	}
+    }
+
     data.canProceed = true;
 
     data = button_clicked_hooks(data);

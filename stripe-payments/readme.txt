@@ -4,7 +4,7 @@ Donate link: https://stripe-plugins.com
 Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortcode, digital goods, payment gateway, instant payment, commerce, digital downloads, downloads, e-commerce, e-store, ecommerce, eshop, donation
 Requires at least: 4.7
 Tested up to: 4.9
-Stable tag: 1.8.8t3
+Stable tag: 1.8.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -149,8 +149,10 @@ None.
 == Changelog ==
 
 = 1.8.8 =
+- Added option to add mandatory "I accept Terms and Conditions" checkbox. Should help to comply with upcoming EU GDPR.
 - Fixed zero-decimal currencies tax value was calculated improperly.
-- In-page CSS is now minified.
+- Inline CSS is now minified.
+- More text available for translation. You can help in translating plugin to your language [here](https://translate.wordpress.org/projects/wp-plugins/stripe-payments)
 - Some addons-related changes.
 
 = 1.8.7 =

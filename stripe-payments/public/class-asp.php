@@ -300,6 +300,7 @@ class AcceptStripePayments {
 	    'send_email_on_error'			 => 0,
 	    'send_email_on_error_to'		 => $admin_email,
 	    'disable_buttons_before_js_loads'	 => 0,
+	    'tos_text'				 => __( 'I accept <a href="https://example.com/terms-and-conditions/" target="_blank">Terms and Conditions</a>', 'stripe-payments' ),
 	);
 	$opt	 = get_option( 'AcceptStripePayments-settings' );
 	if ( ! is_array( $opt ) ) {
