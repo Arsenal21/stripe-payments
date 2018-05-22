@@ -4,7 +4,7 @@ Donate link: https://stripe-plugins.com
 Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortcode, digital goods, payment gateway, instant payment, commerce, digital downloads, downloads, e-commerce, e-store, ecommerce, eshop, donation
 Requires at least: 4.7
 Tested up to: 4.9
-Stable tag: 1.8.8
+Stable tag: 1.8.9t1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -147,6 +147,9 @@ Yes, please visit Stripe Payments > Settings screen for options.
 None.
 
 == Changelog ==
+
+= 1.8.9t1 =
+- Added option to apply decimal separator settings to customer input as well.
 
 = 1.8.8 =
 - Added option to add mandatory "I accept Terms and Conditions" checkbox. Should help to comply with upcoming EU GDPR. Go to Settings -> Advanced Settings tab to configure it per your needs.

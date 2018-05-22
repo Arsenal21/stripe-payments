@@ -59,10 +59,16 @@ class AcceptStripePaymentsShortcode {
     }
 
     function get_loc_data() {
-	//localization data and Stripe API key
+	//localization data, some settings and Stripe API key
 	$key		 = $this->AcceptStripePayments->APIPubKey;
 	$minAmounts	 = $this->AcceptStripePayments->minAmounts;
 	$zeroCents	 = $this->AcceptStripePayments->zeroCents;
+
+	$amountOpts = array(
+	    'applySepOpts'	 => $this->AcceptStripePayments->get_setting( 'price_apply_for_input' ),
+	    'decimalSep'	 => $this->AcceptStripePayments->get_setting( 'price_decimal_sep' ),
+	    'thousandSep'	 => $this->AcceptStripePayments->get_setting( 'price_thousand_sep' ),
+	);
 
 	$loc_data = array(
 	    'strEnterValidAmount'	 => __( 'Please enter a valid amount', 'stripe-payments' ),
@@ -79,6 +85,7 @@ class AcceptStripePaymentsShortcode {
 	    'strMustAcceptTos'	 => __( 'You must accept Terms and Conditions before you can proceed.', 'stripe-payments' ),
 	    'minAmounts'		 => $minAmounts,
 	    'zeroCents'		 => $zeroCents,
+	    'amountOpts'		 => $amountOpts,
 	);
 	return $loc_data;
     }

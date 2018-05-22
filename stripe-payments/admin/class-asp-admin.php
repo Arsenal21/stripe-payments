@@ -482,6 +482,10 @@ class AcceptStripePayments_Admin {
 	    'desc'	 => __( 'This sets the number of decimal points shown in the displayed price.', 'stripe-payments' ) )
 	);
 
+	add_settings_field( 'price_apply_for_input', __( 'Apply Separators Settings To Customer Input', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-price-display', array( 'field'	 => 'price_apply_for_input',
+	    'desc'	 => __( 'If enabled, separator settings will be applied to customer input as well. For example, if you have donation button where customers can enter amount and you set "," as decimal separator, customers will need to enter values correspondigly - 12,23 instead of 12.23.', 'stripe-payments' ) )
+	);
+
 	// Custom Field section
 	add_settings_field( 'custom_field_enabled', __( 'Enable For All Buttons and Products', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-custom-field', array( 'field'	 => 'custom_field_enabled',
 	    'desc'	 => __( 'If enabled, makes the following field enabled by default for all buttons and products.', 'stripe-payments' ) . '<br />' .
@@ -629,6 +633,7 @@ class AcceptStripePayments_Admin {
 		echo "</select>";
 		echo "<p class=\"description\">{$desc}</p>";
 		break;
+	    case 'price_apply_for_input':
 	    case 'tos_enabled':
 	    case 'debug_log_enable':
 	    case 'send_emails_to_seller':
@@ -699,6 +704,8 @@ class AcceptStripePayments_Admin {
 	$output = get_option( 'AcceptStripePayments-settings' );
 
 	$output = apply_filters( 'apm-admin-settings-sanitize-field', $output, $input );
+
+	$output [ 'price_apply_for_input' ] = empty( $input[ 'price_apply_for_input' ] ) ? 0 : 1;
 
 	$output [ 'tos_enabled' ] = empty( $input[ 'tos_enabled' ] ) ? 0 : 1;
 
