@@ -72,8 +72,16 @@ echo '<link type="text/css" rel="stylesheet" href="' . WP_ASP_PLUGIN_URL . '/adm
                 "description" => "The affiliate plugin will track customers that purchase items and award the affiliate that referred the customer.",
                 "page_url" => "https://stripe-plugins.com/stripe-payments-wp-affiliate-plugin-integration/",
             );
-            array_push($addons_data, $addon_7); 
+            array_push($addons_data, $addon_7);
             
+            $addon_8 = array(
+                "name" => "Multi-Currency Addon",
+                "thumbnail" => WP_ASP_PLUGIN_URL . "/admin/assets/images/stripe-multi-currency-addon.png",
+                "description" => "The multi-currency addon allows your customers to pick a currency and pay for the item in that currency.",
+                "page_url" => "https://stripe-plugins.com/stripe-payments-multi-currency-addon/",
+            );
+            array_push($addons_data, $addon_8);
+	    
             /*** Show the addons list ***/
             foreach ($addons_data as $addon) {
                 $output .= '<div class="stripe_addon_item_canvas">';
