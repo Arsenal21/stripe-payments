@@ -150,7 +150,7 @@ None.
 == Changelog ==
 
 = 1.8.9 =
-- Fixed "You passed an empty string for ‘referrer’" error which was caused by recent changes in Stripe API.
+- Fixed "You passed an empty string for referrer" error which was caused by recent changes in Stripe API.
 - Added option to apply decimal separator settings to customer input as well.
 
 = 1.8.8 =
