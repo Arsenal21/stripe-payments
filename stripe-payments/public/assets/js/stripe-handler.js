@@ -246,12 +246,15 @@ function wp_asp_add_stripe_handler(data) {
 		name: data.name,
 		currency: data.currency,
 		image: data.image,
-		url: data.url,
 		allowRememberMe: data.allowRememberMe,
 		token: function (token, args) {
 		    wp_asp_hadnle_token(data, token, args);
 		}
 	    };
+
+	    if (data.url !== '') {
+		handler_opts.url = data.url;
+	    }
 
 	    if (data.billingAddress) {
 		handler_opts.billingAddress = data.billingAddress;

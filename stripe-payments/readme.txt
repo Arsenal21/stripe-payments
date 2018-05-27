@@ -4,7 +4,7 @@ Donate link: https://stripe-plugins.com
 Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortcode, digital goods, payment gateway, instant payment, commerce, digital downloads, downloads, e-commerce, e-store, ecommerce, eshop, donation
 Requires at least: 4.7
 Tested up to: 4.9
-Stable tag: 1.8.9t1
+Stable tag: 1.8.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -149,7 +149,8 @@ None.
 
 == Changelog ==
 
-= 1.8.9t1 =
+= 1.8.9 =
+- Fixed "You passed an empty string for ‘referrer’" error which was caused by recent changes in Stripe API.
 - Added option to apply decimal separator settings to customer input as well.
 
 = 1.8.8 =
