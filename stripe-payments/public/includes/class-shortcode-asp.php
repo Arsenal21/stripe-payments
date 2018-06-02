@@ -439,6 +439,8 @@ class AcceptStripePaymentsShortcode {
 
 	$tos = $this->AcceptStripePayments->get_setting( 'tos_enabled' );
 
+	$verifyZip = $this->AcceptStripePayments->get_setting( 'enable_zip_validation' );
+
 	$data = array(
 	    'product_id'		 => $product_id,
 	    'button_key'		 => $button_key,
@@ -466,6 +468,7 @@ class AcceptStripePaymentsShortcode {
 	    'tos'			 => $tos,
 	    'button_text'		 => esc_attr( $button_text ),
 	    'out_of_stock'		 => $out_of_stock,
+	    'verifyZip'		 => ( ! $verifyZip) ? 0 : 1,
 	);
 
 	$data = apply_filters( 'asp-button-output-data-ready', $data, $atts );
