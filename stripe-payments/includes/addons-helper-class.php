@@ -3,6 +3,8 @@
 class ASPAddonsHelper {
 
     var $addon = null;
+    var $section;
+    var $ASPAdmin;
 
     function __construct( $addon ) {
 	$this->addon = $addon;
@@ -55,6 +57,18 @@ class ASPAddonsHelper {
 	$message = sprintf( __( '%s requires Stripe Payments plugin minimum version to be %s (you have version %s installed). Please update Stripe Payments plugin.', 'stripe-payments' ), $this->addon->ADDON_FULL_NAME, $this->addon->MIN_ASP_VER, WP_ASP_PLUGIN_VERSION );
 
 	printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( $class ), esc_html( $message ) );
+    }
+
+    function add_settings_section( $title ) {
+	$this->ASPAdmin = AcceptStripePayments_Admin::get_instance();
+	add_settings_section( 'AcceptStripePayments-' . $this->addon->SETTINGS_TAB_NAME . '-section', $title, null, $this->ASPAdmin->plugin_slug . '-' . $this->addon->SETTINGS_TAB_NAME );
+	$this->section = 'AcceptStripePayments-' . $this->addon->SETTINGS_TAB_NAME . '-section';
+    }
+
+    function add_settings_field( $name, $title, $desc, $size = 10 ) {
+	$this->ASPAdmin = AcceptStripePayments_Admin::get_instance();
+	add_settings_field( $name, $title, array( $this->ASPAdmin, 'settings_field_callback' ), $this->ASPAdmin->plugin_slug . '-' . $this->addon->SETTINGS_TAB_NAME, $this->section, array( 'field' => $name, 'size' => $size, 'desc' => $desc )
+	);
     }
 
 }

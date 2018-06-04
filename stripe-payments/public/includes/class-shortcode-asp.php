@@ -71,18 +71,18 @@ class AcceptStripePaymentsShortcode {
 	);
 
 	$loc_data = array(
-	    'strEnterValidAmount'	 => __( 'Please enter a valid amount', 'stripe-payments' ),
-	    'strMinAmount'		 => __( 'Minimum amount is', 'stripe-payments' ),
-	    'key'			 => $key,
-	    'strEnterQuantity'	 => __( 'Please enter quantity.', 'stripe-payments' ),
-	    'strQuantityIsZero'	 => __( 'Quantity can\'t be zero.', 'stripe-payments' ),
-	    'strQuantityIsFloat'	 => __( 'Quantity should be integer value.', 'stripe-payments' ),
+	    'strEnterValidAmount'	 => apply_filters( 'asp_customize_text_msg', __( 'Please enter a valid amount', 'stripe-payments' ), 'enter_valid_amount' ),
+	    'strMinAmount'		 => apply_filters( 'asp_customize_text_msg', __( 'Minimum amount is', 'stripe-payments' ), 'min_amount_is' ),
+	    'strEnterQuantity'	 => apply_filters( 'asp_customize_text_msg', __( 'Please enter quantity.', 'stripe-payments' ), 'enter_quantity' ),
+	    'strQuantityIsZero'	 => apply_filters( 'asp_customize_text_msg', __( 'Quantity can\'t be zero.', 'stripe-payments' ), 'quantity_is_zero' ),
+	    'strQuantityIsFloat'	 => apply_filters( 'asp_customize_text_msg', __( 'Quantity should be integer value.', 'stripe-payments' ), 'quantity_is_float' ),
 	    'strTax'		 => __( 'Tax', 'stripe-payments' ),
 	    'strShipping'		 => __( 'Shipping', 'stripe-payments' ),
 	    'strTotal'		 => __( 'Total:', 'stripe-payments' ),
-	    'strPleaseFillIn'	 => __( 'Please fill in this field.', 'stripe-payments' ),
+	    'strPleaseFillIn'	 => apply_filters( 'asp_customize_text_msg', __( 'Please fill in this field.', 'stripe-payments' ), 'fill_in_field' ),
 	    'strPleaseCheckCheckbox' => __( 'Please check this checkbox.', 'stripe-payments' ),
-	    'strMustAcceptTos'	 => __( 'You must accept the terms before you can proceed.', 'stripe-payments' ),
+	    'strMustAcceptTos'	 => apply_filters( 'asp_customize_text_msg', __( 'You must accept the terms before you can proceed.', 'stripe-payments' ), 'accept_terms' ),
+	    'key'			 => $key,
 	    'minAmounts'		 => $minAmounts,
 	    'zeroCents'		 => $zeroCents,
 	    'amountOpts'		 => $amountOpts,
@@ -569,8 +569,9 @@ class AcceptStripePaymentsShortcode {
 	if ( ! $data[ 'out_of_stock' ] ) {
 
 	    if ( $data[ 'amount' ] == 0 ) { //price not specified, let's add an input box for user to specify the amount
-		$output .= "<div class='asp_product_item_amount_input_container'>"
-		. "<input type='text' size='10' class='asp_product_item_amount_input' id='stripeAmount_{$data[ 'uniq_id' ]}' value='' name='stripeAmount' placeholder='" . __( 'Enter amount', 'stripe-payments' ) . "' required/>"
+		$str_enter_amount	 = apply_filters( 'asp_customize_text_msg', __( 'Enter amount', 'stripe-payments' ), 'enter_amount' );
+		$output			 .= "<div class='asp_product_item_amount_input_container'>"
+		. "<input type='text' size='10' class='asp_product_item_amount_input' id='stripeAmount_{$data[ 'uniq_id' ]}' value='' name='stripeAmount' placeholder='" . $str_enter_amount . "' required/>"
 		. "<span class='asp_product_item_amount_currency_label' style='margin-left: 5px; display: inline-block'> {$data[ 'currency' ]}</span>"
 		. "<span style='display: block;' id='error_explanation_{$data[ 'uniq_id' ]}'></span>"
 		. "</div>";
