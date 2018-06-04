@@ -328,8 +328,8 @@ class asp_products_metaboxes {
 	    update_post_meta( $post_id, 'asp_product_button_class', sanitize_text_field( $_POST[ 'asp_product_button_class' ] ) );
 	    update_post_meta( $post_id, 'asp_product_button_only', isset( $_POST[ 'asp_product_button_only' ] ) ? 1 : 0  );
 	    update_post_meta( $post_id, 'asp_product_description', sanitize_text_field( $_POST[ 'asp_product_description' ] ) );
-	    update_post_meta( $post_id, 'asp_product_upload', esc_url( $_POST[ 'asp_product_upload' ] ) );
-	    update_post_meta( $post_id, 'asp_product_thumbnail', esc_url( $_POST[ 'asp_product_thumbnail' ] ) );
+	    update_post_meta( $post_id, 'asp_product_upload', esc_url( $_POST[ 'asp_product_upload' ], array( 'http', 'https' ) ) );
+	    update_post_meta( $post_id, 'asp_product_thumbnail', esc_url( $_POST[ 'asp_product_thumbnail' ], array( 'http', 'https' ) ) );
 	    update_post_meta( $post_id, 'asp_product_no_popup_thumbnail', isset( $_POST[ 'asp_product_no_popup_thumbnail' ] ) ? "1" : false  );
 	    update_post_meta( $post_id, 'asp_product_thankyou_page', isset( $_POST[ 'asp_product_thankyou_page' ] ) && ! empty( $_POST[ 'asp_product_thankyou_page' ] ) ? esc_url( $_POST[ 'asp_product_thankyou_page' ] ) : ''  );
 	    $shipping_addr = false;
