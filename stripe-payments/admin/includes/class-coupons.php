@@ -42,7 +42,7 @@ class AcceptStripePayments_CouponsAdmin {
 
     function display_coupons_menu_page() {
 
-	$coupons_tbl = new ASPCouponsTable( );
+	$coupons_tbl = new ASP_Coupons_Table( );
 	$coupons_tbl->prepare_items();
 	?>
 
@@ -67,7 +67,7 @@ class AcceptStripePayments_CouponsAdmin {
 
 }
 
-class ASPCouponsTable extends WP_List_Table {
+class ASP_Coupons_Table extends WP_List_Table {
 
     public function prepare_items() {
 	$columns	 = $this->get_columns();
@@ -124,12 +124,14 @@ class ASPCouponsTable extends WP_List_Table {
     }
 
     public function get_sortable_columns() {
-	return array( 'coupon' => array( 'coupon', false ), 'id' => array( 'id', false ) );
+	return array(
+	    'coupon' => array( 'coupon', false ),
+	    'id'	 => array( 'id', false ) );
     }
 
     private function sort_data( $a, $b ) {
 	// Set defaults
-	$orderby = 'title';
+	$orderby = 'id';
 	$order	 = 'asc';
 	// If orderby is set, use this as the sort column
 	if ( ! empty( $_GET[ 'orderby' ] ) ) {
