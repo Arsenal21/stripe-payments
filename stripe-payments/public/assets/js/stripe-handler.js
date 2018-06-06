@@ -252,10 +252,6 @@ function wp_asp_add_stripe_handler(data) {
 		}
 	    };
 
-	    if (data.url !== '') {
-		handler_opts.url = data.url;
-	    }
-
 	    if (data.billingAddress) {
 		handler_opts.billingAddress = data.billingAddress;
 		handler_opts.shippingAddress = data.shippingAddress;
