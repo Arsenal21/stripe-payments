@@ -425,6 +425,7 @@ class AcceptStripePayments_Admin {
 	    "{billing_address}"	 => 'Billing address of the buyer',
 	    "{product_details}"	 => 'The item details of the purchased product (this will include the download link for digital items)',
 	    "{transaction_id}"	 => 'The unique transaction ID of the purchase',
+	    '{customer_name}'	 => 'Customer name. Available only if collect billing address option enabled',
 	    "{payer_email}"		 => 'Email Address of the buyer',
 	    "{purchase_amt}"	 => 'The amount paid for the current transaction. Example: 1,000.00',
 	    "{tax}"			 => 'Tax in percents. Example: 10%',

@@ -427,6 +427,7 @@ $_SESSION[ 'asp_data' ] = $post_data;
 asp_ipn_completed();
 
 function asp_apply_dynamic_tags_on_email_body( $body, $post ) {
+
     $product_details = __( "Product Name: ", "stripe-payments" ) . $post[ 'item_name' ] . "\n";
     $product_details .= __( "Quantity: ", "stripe-payments" ) . $post[ 'item_quantity' ] . "\n";
     $product_details .= __( "Item Price: ", "stripe-payments" ) . AcceptStripePayments::formatted_price( $post[ 'item_price' ], $post[ 'currency_code' ] ) . "\n";
@@ -479,9 +480,12 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post ) {
 	$shipping = AcceptStripePayments::formatted_price( $post[ 'shipping' ], $post[ 'currency_code' ] );
     }
 
+    $customer_name = isset( $_POST[ 'stripeBillingName' ] ) ? sanitize_text_field( $_POST[ 'stripeBillingName' ] ) : '';
+
     $tags	 = array(
 	"{product_details}",
 	"{payer_email}",
+	"{customer_name}",
 	"{transaction_id}",
 	"{item_price}",
 	"{item_price_curr}",
@@ -500,6 +504,7 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post ) {
     $vals	 = array(
 	$product_details,
 	$post[ 'stripeEmail' ],
+	$customer_name,
 	$post[ 'txn_id' ],
 	$item_price,
 	$item_price_curr,
