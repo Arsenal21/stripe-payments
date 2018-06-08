@@ -22,6 +22,13 @@ stripehandler.apply_tax_and_shipping = (function (amount, data) {
     return amount;
 });
 
+stripehandler.is_zero_cents = (function (curr) {
+    if (stripehandler.zeroCents.indexOf(curr) === -1) {
+	return false;
+    }
+    return true;
+});
+
 stripehandler.cents_to_amount = (function (amount, curr) {
     if (stripehandler.zeroCents.indexOf(curr) === -1) {
 	amount = amount / 100;
@@ -174,6 +181,21 @@ function wp_asp_can_proceed(data, openHandler) {
 
     data.canProceed = true;
 
+    if (typeof data.discount !== "undefined") {
+	if (typeof amount === "undefined") {
+	    amount = data.amount;
+	}
+	if (data.discountType === 'perc') {
+	    amount = amount - Math.round(amount * (data.discount / 100));
+	} else {
+	    var discount = data.discount * 100;
+	    if (stripehandler.is_zero_cents(data.currency)) {
+		discount = discount / 100;
+	    }
+	    amount = Math.round(amount - discount);
+	}
+    }
+
     data = button_clicked_hooks(data);
 
     if (!data.canProceed) {
@@ -230,13 +252,8 @@ function wp_asp_hadnle_token(data, token, args) {
 
 function wp_asp_add_stripe_handler(data) {
 
-    if (!wp_asp_prefetched) {
-	wp_asp_prefetched = true;
-	wp_asp_check_handler(data);
-    }
-
     function wp_asp_check_handler(data) {
-	if (typeof (data.handler) == "undefined") {
+	if (typeof (data.handler) === "undefined") {
 
 	    var handler_opts = {
 		key: stripehandler.key,
@@ -276,9 +293,56 @@ function wp_asp_add_stripe_handler(data) {
 	}
     }
 
+    if (!wp_asp_prefetched) {
+	wp_asp_prefetched = true;
+	wp_asp_check_handler(data);
+    }
+
     jQuery('#stripe_form_' + data.uniq_id).on('submit', function (e) {
 	e.preventDefault();
 	jQuery('#stripe_button_' + data.uniq_id).click();
+    });
+
+    jQuery('input#asp-redeem-coupon-btn-' + data.uniq_id).click(function (e) {
+	e.preventDefault();
+	var couponCode = jQuery(this).siblings('input#asp-coupon-field-' + data.uniq_id).val();
+	if (couponCode === '') {
+	    return false;
+	}
+	var ajaxData = {
+	    'action': 'asp_check_coupon',
+	    'coupon_code': couponCode,
+	    'curr': data.currency
+	};
+	jQuery.post(stripehandler.ajax_url, ajaxData, function (response) {
+	    if (response.success) {
+		data.discount = response.discount;
+		data.discountType = response.discountType;
+		jQuery('div#asp-coupon-info-' + data.uniq_id).html(response.discountStr + ' <a href="#0" id="asp-remove-coupon-' + data.uniq_iq + '" title="' + stripehandler.strRemoveCoupon + '">X</a>');
+		jQuery('input#asp-redeem-coupon-btn-' + data.uniq_id).hide();
+		jQuery('input#asp-coupon-field-' + data.uniq_id).hide();
+		jQuery('#asp-remove-coupon-' + data.uniq_iq).on('click', function (e) {
+		    e.preventDefault();
+		    jQuery('div#asp-coupon-info-' + data.uniq_id).html('');
+		    jQuery('input#asp-coupon-field-' + data.uniq_id).val('');
+		    jQuery('input#asp-coupon-field-' + data.uniq_id).show();
+		    jQuery('input#asp-redeem-coupon-btn-' + data.uniq_id).show();
+		    delete data.discount;
+		    delete data.discountType;
+		});
+	    } else {
+		jQuery('div#asp-coupon-info-' + data.uniq_id).html(response.msg);
+	    }
+	});
+    });
+
+    jQuery('input#asp-coupon-field-' + data.uniq_id).keydown(function (e) {
+	if (e.keyCode === 13)
+	{
+	    e.preventDefault();
+	    jQuery('input#asp-redeem-coupon-btn-' + data.uniq_id).click();
+	    return false;
+	}
     });
 
     jQuery('#stripe_button_' + data.uniq_id).on('click', function (e) {

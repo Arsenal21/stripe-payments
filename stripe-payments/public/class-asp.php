@@ -115,9 +115,8 @@ class AcceptStripePayments {
     }
 
     public function get_setting( $field ) {
-	if ( isset( $this->settings[ $field ] ) )
-	    return $this->settings[ $field ];
-	return false;
+	$this->settings = (array) get_option( 'AcceptStripePayments-settings' );
+	return isset( $this->settings[ $field ] ) ? $this->settings[ $field ] : false;
     }
 
     /**

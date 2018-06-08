@@ -7,6 +7,16 @@
     padding: 8px 10px;
 }
 
+.asp_redeem_coupon_btn {
+    margin-left: 5px;
+}
+
+.asp_product_coupon_field_input {
+    display: inline-block;
+    max-width: 200px;
+    vertical-align: middle;
+}
+
 .asp_product_buy_button input::placeholder {
     font-style: italic;
     color: #bbb;

@@ -82,7 +82,9 @@ class AcceptStripePaymentsShortcode {
 	    'strPleaseFillIn'	 => apply_filters( 'asp_customize_text_msg', __( 'Please fill in this field.', 'stripe-payments' ), 'fill_in_field' ),
 	    'strPleaseCheckCheckbox' => __( 'Please check this checkbox.', 'stripe-payments' ),
 	    'strMustAcceptTos'	 => apply_filters( 'asp_customize_text_msg', __( 'You must accept the terms before you can proceed.', 'stripe-payments' ), 'accept_terms' ),
+	    'strRemoveCoupon'	 => apply_filters( 'asp_customize_text_msg', __( 'Remove coupon', 'stripe-payments' ), 'remove_coupon' ),
 	    'key'			 => $key,
+	    'ajax_url'		 => admin_url( 'admin-ajax.php' ),
 	    'minAmounts'		 => $minAmounts,
 	    'zeroCents'		 => $zeroCents,
 	    'amountOpts'		 => $amountOpts,
@@ -618,6 +620,14 @@ class AcceptStripePaymentsShortcode {
 		$output		 .= '<label class="asp_product_tos_label"><input id="asp-tos-' . $data[ 'uniq_id' ] . '" class="asp_product_tos_input" type="checkbox" required>' . html_entity_decode( $tos_text ) . '</label>';
 		$output		 .= "<span style='display: block;' id='tos_error_explanation_{$data[ 'uniq_id' ]}'></span>";
 		$output		 .= '</div>';
+	    }
+	    //Coupons
+	    if ( $this->AcceptStripePayments->get_setting( 'coupons_enabled' ) ) {
+		$str_coupon_label	 = __( 'Coupon Code', 'stripe-payments' );
+		$output			 .= '<div class="asp_product_coupon_input_container"><label class="asp_product_coupon_field_label">' . $str_coupon_label . ' ' . '</label><input id="asp-coupon-field-' . $data[ 'uniq_id' ] . '" class="asp_product_coupon_field_input" type="text" name="stripeCoupon">'
+		. '<input type="button" id="asp-redeem-coupon-btn-' . $data[ 'uniq_id' ] . '" type="button" class="asp_redeem_coupon_btn" value="Redeem">'
+		. '<div id="asp-coupon-info-' . $data[ 'uniq_id' ] . '" class="asp_product_coupon_info"></div>'
+		. '</div>';
 	    }
 	}
 	if ( $data ) {

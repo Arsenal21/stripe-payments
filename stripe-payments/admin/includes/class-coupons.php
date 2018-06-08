@@ -8,7 +8,74 @@ class AcceptStripePayments_CouponsAdmin {
 	add_action( 'init', array( $this, 'register_post_type' ) );
 	if ( is_admin() ) {
 	    add_action( 'admin_menu', array( $this, 'add_menu' ) );
+	    if ( wp_doing_ajax() ) {
+		add_action( 'wp_ajax_asp_check_coupon', array( $this, 'check_coupon' ) );
+		add_action( 'wp_ajax_nopriv_asp_check_coupon', array( $this, 'check_coupon' ) );
+	    }
 	}
+    }
+
+    function check_coupon() {
+	$out = array();
+	if ( empty( $_POST[ 'coupon_code' ] ) ) {
+	    $out[ 'success' ]	 = false;
+	    $out[ 'msg' ]		 = __( 'Empty coupon code', 'stripe-payments' );
+	    wp_send_json( $out );
+	}
+	$coupon_code	 = strtoupper( $_POST[ 'coupon_code' ] );
+	$curr		 = isset( $_POST[ 'curr' ] ) ? $_POST[ 'curr' ] : '';
+	//let's find coupon
+	$coupon		 = get_posts( array(
+	    'meta_key'	 => 'asp_coupon_code',
+	    'meta_value'	 => $coupon_code,
+	    'posts_per_page' => 1,
+	    'offset'	 => 0,
+	    'post_type'	 => 'asp_coupons',
+	) );
+	if ( empty( $coupon ) ) {
+	    //coupon not found
+	    $out[ 'success' ]	 = false;
+	    $out[ 'msg' ]		 = __( 'Coupon not found.', 'stripe-payments' );
+	    wp_send_json( $out );
+	}
+	$coupon = $coupon[ 0 ];
+	//check if coupon is active
+	if ( ! get_post_meta( $coupon->ID, 'asp_coupon_active', true ) ) {
+	    $out[ 'success' ]	 = false;
+	    $out[ 'msg' ]		 = __( 'Coupon is not active.', 'stripe-payments' );
+	    wp_send_json( $out );
+	}
+	//check if coupon start date has come
+	$start_date = get_post_meta( $coupon->ID, 'asp_coupon_start_date', true );
+	if ( empty( $start_date ) || strtotime( $start_date ) > time() ) {
+	    $out[ 'success' ]	 = false;
+	    $out[ 'msg' ]		 = __( 'Coupon is not available yet.', 'stripe-payments' );
+	    wp_send_json( $out );
+	}
+	//check if coupon has expired
+	$exp_date = get_post_meta( $coupon->ID, 'asp_coupon_exp_date', true );
+	if ( ! empty( $exp_date ) && strtotime( $exp_date ) < time() ) {
+	    $out[ 'success' ]	 = false;
+	    $out[ 'msg' ]		 = __( 'Coupon has expired.', 'stripe-payments' );
+	    wp_send_json( $out );
+	}
+	//check if redemption limit is reached
+	$red_limit	 = get_post_meta( $coupon->ID, 'asp_coupon_red_limit', true );
+	$red_count	 = get_post_meta( $coupon->ID, 'asp_coupon_red_count', true );
+	if ( ! empty( $red_limit ) && intval( $red_count ) >= intval( $red_limit ) ) {
+	    $out[ 'success' ]	 = false;
+	    $out[ 'msg' ]		 = __( 'Coupon redemption limit is reached.', 'stripe-payments' );
+	    wp_send_json( $out );
+	}
+
+	$discount	 = get_post_meta( $coupon->ID, 'asp_coupon_discount', true );
+	$discount_type	 = get_post_meta( $coupon->ID, 'asp_coupon_discount_type', true );
+
+	$out[ 'success' ]	 = true;
+	$out[ 'discount' ]	 = $discount;
+	$out[ 'discountType' ]	 = $discount_type;
+	$out[ 'discountStr' ]	 = $coupon_code . ': - ' . ($discount_type === "perc" ? $discount . '%' : AcceptStripePayments::formatted_price( $discount, $curr ));
+	wp_send_json( $out );
     }
 
     function register_post_type() {
@@ -30,7 +97,21 @@ class AcceptStripePayments_CouponsAdmin {
 	add_submenu_page( 'edit.php?post_type=' . ASPMain::$products_slug, __( 'Coupons', 'stripe-payments' ), __( 'Coupons', 'stripe-payments' ), 'manage_options', 'stripe-payments-coupons', array( $this, 'display_coupons_menu_page' ) );
     }
 
+    function save_settings() {
+	check_admin_referer( 'asp-coupons-settings' );
+	$settings			 = get_option( 'AcceptStripePayments-settings' );
+	$opts				 = $_POST[ 'asp_coupons_opts' ];
+	$settings[ 'coupons_enabled' ]	 = isset( $opts[ 'coupons_enabled' ] ) ? 1 : 0;
+	unregister_setting( 'AcceptStripePayments-settings-group', 'AcceptStripePayments-settings' );
+	update_option( 'AcceptStripePayments-settings', $settings );
+	set_transient( 'asp_coupons_admin_notice', __( 'Settings updated.', 'stripe-payments' ), 60 * 60 );
+    }
+
     function display_coupons_menu_page() {
+
+	if ( isset( $_POST[ 'asp_coupons_opts' ] ) ) {
+	    $this->save_settings();
+	}
 
 	if ( isset( $_GET[ 'action' ] ) ) {
 	    $action = $_GET[ 'action' ];
@@ -67,6 +148,9 @@ class AcceptStripePayments_CouponsAdmin {
 	    <?php
 	}
 
+	$asp_main	 = AcceptStripePayments::get_instance();
+	$coupons_enabled = $asp_main->get_setting( 'coupons_enabled' );
+
 	$coupons_tbl = new ASP_Coupons_Table( );
 	$coupons_tbl->prepare_items();
 	?>
@@ -80,16 +164,20 @@ class AcceptStripePayments_CouponsAdmin {
 	    <?php
 	    ?>
 	    <form method="post">
+		<input type="hidden" name="asp_coupons_opts[_save-settings]" value="1">
 		<table class="form-table">
 		    <tr>
 			<th scope="row"><?php _e( 'Enable Coupons', 'stripe-payments' ); ?></th>
 			<td>
-			    <input type="checkbox" name="asp_coupons_opts[coupons_enabled]">
+			    <input type="checkbox" name="asp_coupons_opts[coupons_enabled]"<?php echo $coupons_enabled ? ' checked' : ''; ?>>
 			    <p class="description"><?php _e( 'Enables Coupons functionality.', 'stripe-payments' ); ?></p>
 			</td>
 		    </tr>
 		</table>
-		<?php submit_button( __( 'Save Settings', 'stripe-payments' ) ); ?>
+		<?php
+		wp_nonce_field( 'asp-coupons-settings' );
+		submit_button( __( 'Save Settings', 'stripe-payments' ) );
+		?>
 	    </form>
 	    <h2><?php _e( 'Coupons', 'stripe-payments' ); ?> <a class="page-title-action" href="?post_type=asp-products&page=stripe-payments-coupons&action=asp_add_edit_coupon">Add A Coupon</a></h2>
 	    <?php $coupons_tbl->display(); ?>
@@ -159,8 +247,8 @@ class AcceptStripePayments_CouponsAdmin {
 			<td>
 			    <input style="vertical-align: middle;" type="text" name="asp_coupon[discount]" value="<?php echo $is_edit ? $coupon[ 'discount' ] : '' ?>">
 			    <select name="asp_coupon[discount_type]">
-				<option value="perc"<?php echo $is_edit && $coupon[ 'discount_type' ] === "perc" ? ' checked' : ''; ?>><?php _e( 'Percents (%)', 'stripe-payments' ); ?></option>
-				<option value="fixed"<?php echo $is_edit && $coupon[ 'discount_type' ] === "fixed" ? ' checked' : ''; ?>><?php _e( 'Fixed amount', 'stripe-payments' ); ?></option>
+				<option value="perc"<?php echo $is_edit && $coupon[ 'discount_type' ] === "perc" ? ' selected' : ''; ?>><?php _e( 'Percents (%)', 'stripe-payments' ); ?></option>
+				<option value="fixed"<?php echo $is_edit && $coupon[ 'discount_type' ] === "fixed" ? ' selected' : ''; ?>><?php _e( 'Fixed amount', 'stripe-payments' ); ?></option>
 			    </select>
 			    <p class="description"><?php _e( 'Select discount amount and type.', 'stripe-payments' ); ?></p>
 			</td>
@@ -194,7 +282,10 @@ class AcceptStripePayments_CouponsAdmin {
 			</td>
 		    </tr>
 		</table>
-		<?php submit_button( $is_edit ? __( 'Update Coupon', 'stripe-payments' ) : __( 'Create Coupon', 'stripe-payments' )  ); ?>
+		<?php
+		wp_nonce_field( 'asp-add-edit-coupon' );
+		submit_button( $is_edit ? __( 'Update Coupon', 'stripe-payments' ) : __( 'Create Coupon', 'stripe-payments' )  );
+		?>
 	    </form>
 	</div>
 	<script>
@@ -237,6 +328,8 @@ class AcceptStripePayments_CouponsAdmin {
 	$coupon_id = isset( $_POST[ 'asp_coupon_id' ] ) ? absint( $_POST[ 'asp_coupon_id' ] ) : false;
 
 	$is_edit = $coupon_id ? true : false;
+
+	check_admin_referer( 'asp-add-edit-coupon' );
 
 	$err_msg = array();
 
@@ -368,8 +461,10 @@ class ASP_Coupons_Table extends WP_List_Table {
 
     public function get_sortable_columns() {
 	return array(
+	    'id'	 => array( 'id', false ),
 	    'coupon' => array( 'coupon', false ),
-	    'id'	 => array( 'id', false ) );
+	    'active' => array( 'active', false ),
+	);
     }
 
     private function sort_data( $a, $b ) {
