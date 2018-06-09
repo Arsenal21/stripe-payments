@@ -218,6 +218,27 @@ $amount = ($item_quantity !== "NA" ? ($amount * $item_quantity) : $amount);
 //add shipping cost
 $amount = AcceptStripePayments::apply_shipping( $amount, $shipping );
 
+//check if we we need to apply coupon
+if ( ! empty( $_POST[ 'stripeCoupon' ] ) ) {
+    $coupon_code	 = strtoupper( $_POST[ 'stripeCoupon' ] );
+    ASP_Debug_Logger::log( sprintf( 'Coupon provided "%s"', $coupon_code ) );
+    $coupon		 = AcceptStripePayments_CouponsAdmin::get_coupon( $coupon_code );
+    if ( $coupon[ 'valid' ] ) {
+	if ( $coupon[ 'discountType' ] === 'perc' ) {
+	    $perc		 = AcceptStripePayments::is_zero_cents( $currency_code ) ? 0 : 2;
+	    $discount_amount = round( $amount * ( $coupon[ 'discount' ] / 100 ), $perc );
+	} else {
+	    $discount_amount = $coupon[ 'discount' ];
+	}
+	ASP_Debug_Logger::log( sprintf( 'Coupon is valid. Discount amount: %s', $discount_amount ) );
+	$coupon[ 'discountAmount' ]	 = $discount_amount;
+	$amount				 = $amount - $discount_amount;
+    } else {
+	ASP_Debug_Logger::log( sprintf( 'Invalid coupon "%s", reason: %s', $coupon_code, $coupon[ 'err_msg' ] ) );
+	unset( $coupon );
+    }
+}
+
 $amount_in_cents = $amount;
 
 if ( ! AcceptStripePayments::is_zero_cents( $currency_code ) ) {
@@ -355,6 +376,15 @@ if ( isset( $shipping ) && ! empty( $shipping ) ) {
     $post_data[ 'shipping' ]						 = $shipping;
 }
 
+//check if we need to increase redeem coupon count
+if ( isset( $coupon ) && $coupon[ 'valid' ] ) {
+    $curr_redeem_cnt											 = get_post_meta( $coupon[ 'id' ], 'asp_coupon_red_count', true );
+    $curr_redeem_cnt ++;
+    update_post_meta( $coupon[ 'id' ], 'asp_coupon_red_count', $curr_redeem_cnt ++  );
+    $post_data[ 'coupon' ]											 = $coupon;
+    $post_data[ 'additional_items' ][ sprintf( __( 'Coupon "%s"', 'stripe-payments' ), $coupon[ 'code' ] ) ] = floatval( '-' . $coupon[ 'discountAmount' ] );
+}
+
 //Insert the order data to the custom post
 $order		 = ASPOrder::get_instance();
 $order_post_id	 = $order->insert( $post_data, $data[ 'charge' ] );
@@ -432,11 +462,7 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post ) {
     $product_details .= __( "Quantity: ", "stripe-payments" ) . $post[ 'item_quantity' ] . "\n";
     $product_details .= __( "Item Price: ", "stripe-payments" ) . AcceptStripePayments::formatted_price( $post[ 'item_price' ], $post[ 'currency_code' ] ) . "\n";
     //check if there are any additional items available like tax and shipping cost
-    if ( ! empty( $post[ 'additional_items' ] ) ) {
-	foreach ( $post[ 'additional_items' ] as $item => $price ) {
-	    $product_details .= $item . ": " . AcceptStripePayments::formatted_price( $price, $post[ 'currency_code' ] ) . "\n";
-	}
-    }
+    $product_details .= AcceptStripePayments::gen_additional_items( $post );
     $product_details .= "--------------------------------" . "\n";
     $product_details .= __( "Total Amount: ", "stripe-payments" ) . AcceptStripePayments::formatted_price( $post[ 'paid_amount' ], $post[ 'currency_code' ] ) . "\n";
     if ( ! empty( $post[ 'item_url' ] ) ) {

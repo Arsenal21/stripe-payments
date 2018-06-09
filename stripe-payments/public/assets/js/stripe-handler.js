@@ -36,6 +36,23 @@ stripehandler.cents_to_amount = (function (amount, curr) {
     return amount;
 });
 
+stripehandler.apply_coupon = (function (amount, data) {
+    var discountAmount = 0;
+    if (typeof data.discount !== "undefined") {
+	if (data.discountType === 'perc') {
+	    discountAmount = Math.round(amount * (data.discount / 100));
+	} else {
+	    discountAmount = data.discount * 100;
+	    if (stripehandler.is_zero_cents(data.currency)) {
+		discountAmount = Math.round(discountAmount / 100);
+	    }
+	}
+	amount = amount - discountAmount;
+	data.discountAmount = discountAmount;
+    }
+    return amount;
+});
+
 jQuery(document).ready(function () {
     jQuery('input[data-stripe-button-uid]').each(function (ind, obj) {
 	var uid = jQuery(obj).data('stripeButtonUid');
@@ -181,19 +198,10 @@ function wp_asp_can_proceed(data, openHandler) {
 
     data.canProceed = true;
 
-    if (typeof data.discount !== "undefined") {
-	if (typeof amount === "undefined") {
-	    amount = data.amount;
-	}
-	if (data.discountType === 'perc') {
-	    amount = amount - Math.round(amount * (data.discount / 100));
-	} else {
-	    var discount = data.discount * 100;
-	    if (stripehandler.is_zero_cents(data.currency)) {
-		discount = discount / 100;
-	    }
-	    amount = Math.round(amount - discount);
-	}
+    if (typeof amount === "undefined") {
+	amount = stripehandler.apply_coupon(data.amount, data);
+    } else {
+	amount = stripehandler.apply_coupon(amount, data);
     }
 
     data = button_clicked_hooks(data);
@@ -318,6 +326,7 @@ function wp_asp_add_stripe_handler(data) {
 	    if (response.success) {
 		data.discount = response.discount;
 		data.discountType = response.discountType;
+		data.couponCode = response.code;
 		jQuery('div#asp-coupon-info-' + data.uniq_id).html(response.discountStr + ' <a href="#0" id="asp-remove-coupon-' + data.uniq_iq + '" title="' + stripehandler.strRemoveCoupon + '">X</a>');
 		jQuery('input#asp-redeem-coupon-btn-' + data.uniq_id).hide();
 		jQuery('input#asp-coupon-field-' + data.uniq_id).hide();
@@ -329,6 +338,7 @@ function wp_asp_add_stripe_handler(data) {
 		    jQuery('input#asp-redeem-coupon-btn-' + data.uniq_id).show();
 		    delete data.discount;
 		    delete data.discountType;
+		    delete data.couponCode;
 		});
 	    } else {
 		jQuery('div#asp-coupon-info-' + data.uniq_id).html(response.msg);

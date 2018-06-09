@@ -111,11 +111,7 @@ class ASPOrder {
 	$output	 .= __( "Quantity: ", "stripe-payments" ) . $order_details[ 'item_quantity' ] . "\n";
 	$output	 .= __( "Item Price: ", "stripe-payments" ) . AcceptStripePayments::formatted_price( $order_details[ 'item_price' ], $order_details[ 'currency_code' ] ) . "\n";
 	//check if there are any additional items available like tax and shipping cost
-	if ( ! empty( $order_details[ 'additional_items' ] ) ) {
-	    foreach ( $order_details[ 'additional_items' ] as $item => $price ) {
-		$output .= $item . ": " . AcceptStripePayments::formatted_price( $price, $order_details[ 'currency_code' ] ) . "\n";
-	    }
-	}
+	$output	 .= AcceptStripePayments::gen_additional_items( $order_details );
 	$output	 .= "--------------------------------" . "\n";
 	$output	 .= __( "Total Amount: ", "stripe-payments" ) . AcceptStripePayments::formatted_price( ($order_details[ 'paid_amount' ] ), $order_details[ 'currency_code' ] ) . "\n";
 

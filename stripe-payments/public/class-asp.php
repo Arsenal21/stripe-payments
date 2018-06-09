@@ -547,4 +547,19 @@ class AcceptStripePayments {
 	return in_array( strtoupper( $curr ), $zeroCents );
     }
 
+    static function gen_additional_items( $data, $sep = "\n" ) {
+	$out = '';
+	if ( ! empty( $data[ 'additional_items' ] ) ) {
+	    foreach ( $data[ 'additional_items' ] as $item => $price ) {
+		if ( $price < 0 ) {
+		    $amnt_str = '-' . AcceptStripePayments::formatted_price( abs( $price ), $data[ 'currency_code' ] );
+		} else {
+		    $amnt_str = AcceptStripePayments::formatted_price( $price, $data[ 'currency_code' ] );
+		}
+		$out .= $item . ": " . $amnt_str . $sep;
+	    }
+	}
+	return $out;
+    }
+
 }

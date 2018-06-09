@@ -9,23 +9,19 @@ class AcceptStripePayments_CouponsAdmin {
 	if ( is_admin() ) {
 	    add_action( 'admin_menu', array( $this, 'add_menu' ) );
 	    if ( wp_doing_ajax() ) {
-		add_action( 'wp_ajax_asp_check_coupon', array( $this, 'check_coupon' ) );
-		add_action( 'wp_ajax_nopriv_asp_check_coupon', array( $this, 'check_coupon' ) );
+		add_action( 'wp_ajax_asp_check_coupon', array( $this, 'frontend_check_coupon' ) );
+		add_action( 'wp_ajax_nopriv_asp_check_coupon', array( $this, 'frontend_check_coupon' ) );
 	    }
 	}
     }
 
-    function check_coupon() {
-	$out = array();
-	if ( empty( $_POST[ 'coupon_code' ] ) ) {
-	    $out[ 'success' ]	 = false;
-	    $out[ 'msg' ]		 = __( 'Empty coupon code', 'stripe-payments' );
-	    wp_send_json( $out );
-	}
-	$coupon_code	 = strtoupper( $_POST[ 'coupon_code' ] );
-	$curr		 = isset( $_POST[ 'curr' ] ) ? $_POST[ 'curr' ] : '';
+    static function get_coupon( $coupon_code ) {
+	$out	 = array(
+	    'code'	 => $coupon_code,
+	    'valid'	 => true,
+	);
 	//let's find coupon
-	$coupon		 = get_posts( array(
+	$coupon	 = get_posts( array(
 	    'meta_key'	 => 'asp_coupon_code',
 	    'meta_value'	 => $coupon_code,
 	    'posts_per_page' => 1,
@@ -34,44 +30,69 @@ class AcceptStripePayments_CouponsAdmin {
 	) );
 	if ( empty( $coupon ) ) {
 	    //coupon not found
-	    $out[ 'success' ]	 = false;
-	    $out[ 'msg' ]		 = __( 'Coupon not found.', 'stripe-payments' );
-	    wp_send_json( $out );
+	    $out[ 'valid' ]		 = false;
+	    $out[ 'err_msg' ]	 = __( 'Coupon not found.', 'stripe-payments' );
+	    return $out;
 	}
 	$coupon = $coupon[ 0 ];
 	//check if coupon is active
 	if ( ! get_post_meta( $coupon->ID, 'asp_coupon_active', true ) ) {
-	    $out[ 'success' ]	 = false;
-	    $out[ 'msg' ]		 = __( 'Coupon is not active.', 'stripe-payments' );
-	    wp_send_json( $out );
+	    $out[ 'valid' ]		 = false;
+	    $out[ 'err_msg' ]	 = __( 'Coupon is not active.', 'stripe-payments' );
+	    return $out;
 	}
 	//check if coupon start date has come
 	$start_date = get_post_meta( $coupon->ID, 'asp_coupon_start_date', true );
 	if ( empty( $start_date ) || strtotime( $start_date ) > time() ) {
-	    $out[ 'success' ]	 = false;
-	    $out[ 'msg' ]		 = __( 'Coupon is not available yet.', 'stripe-payments' );
-	    wp_send_json( $out );
+	    $out[ 'valid' ]		 = false;
+	    $out[ 'err_msg' ]	 = __( 'Coupon is not available yet.', 'stripe-payments' );
+	    return $out;
 	}
 	//check if coupon has expired
 	$exp_date = get_post_meta( $coupon->ID, 'asp_coupon_exp_date', true );
 	if ( ! empty( $exp_date ) && strtotime( $exp_date ) < time() ) {
-	    $out[ 'success' ]	 = false;
-	    $out[ 'msg' ]		 = __( 'Coupon has expired.', 'stripe-payments' );
-	    wp_send_json( $out );
+	    $out[ 'valid' ]		 = false;
+	    $out[ 'err_msg' ]	 = __( 'Coupon has expired.', 'stripe-payments' );
+	    return $out;
 	}
 	//check if redemption limit is reached
 	$red_limit	 = get_post_meta( $coupon->ID, 'asp_coupon_red_limit', true );
 	$red_count	 = get_post_meta( $coupon->ID, 'asp_coupon_red_count', true );
 	if ( ! empty( $red_limit ) && intval( $red_count ) >= intval( $red_limit ) ) {
+	    $out[ 'valid' ]		 = false;
+	    $out[ 'err_msg' ]	 = __( 'Coupon redemption limit is reached.', 'stripe-payments' );
+	    return $out;
+	}
+	$out[ 'id' ]		 = $coupon->ID;
+	$out[ 'discount' ]	 = get_post_meta( $coupon->ID, 'asp_coupon_discount', true );
+	$out[ 'discountType' ]	 = get_post_meta( $coupon->ID, 'asp_coupon_discount_type', true );
+	return $out;
+    }
+
+    function frontend_check_coupon() {
+	$out = array();
+	if ( empty( $_POST[ 'coupon_code' ] ) ) {
 	    $out[ 'success' ]	 = false;
-	    $out[ 'msg' ]		 = __( 'Coupon redemption limit is reached.', 'stripe-payments' );
+	    $out[ 'msg' ]		 = __( 'Empty coupon code', 'stripe-payments' );
+	    wp_send_json( $out );
+	}
+	$coupon_code = strtoupper( $_POST[ 'coupon_code' ] );
+
+	$coupon = self::get_coupon( $coupon_code );
+
+	if ( ! $coupon[ 'valid' ] ) {
+	    $out[ 'success' ]	 = false;
+	    $out[ 'msg' ]		 = $coupon[ 'err_msg' ];
 	    wp_send_json( $out );
 	}
 
-	$discount	 = get_post_meta( $coupon->ID, 'asp_coupon_discount', true );
-	$discount_type	 = get_post_meta( $coupon->ID, 'asp_coupon_discount_type', true );
+	$curr = isset( $_POST[ 'curr' ] ) ? $_POST[ 'curr' ] : '';
+
+	$discount	 = $coupon[ 'discount' ];
+	$discount_type	 = $coupon[ 'discountType' ];
 
 	$out[ 'success' ]	 = true;
+	$out[ 'code' ]		 = $coupon_code;
 	$out[ 'discount' ]	 = $discount;
 	$out[ 'discountType' ]	 = $discount_type;
 	$out[ 'discountStr' ]	 = $coupon_code . ': - ' . ($discount_type === "perc" ? $discount . '%' : AcceptStripePayments::formatted_price( $discount, $curr ));

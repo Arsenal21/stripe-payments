@@ -625,11 +625,14 @@ class AcceptStripePaymentsShortcode {
 	    }
 	    //Coupons
 	    if ( $this->AcceptStripePayments->get_setting( 'coupons_enabled' ) ) {
-		$str_coupon_label	 = __( 'Coupon Code', 'stripe-payments' );
-		$output			 .= '<div class="asp_product_coupon_input_container"><label class="asp_product_coupon_field_label">' . $str_coupon_label . ' ' . '</label><input id="asp-coupon-field-' . $data[ 'uniq_id' ] . '" class="asp_product_coupon_field_input" type="text" name="stripeCoupon">'
-		. '<input type="button" id="asp-redeem-coupon-btn-' . $data[ 'uniq_id' ] . '" type="button" class="asp_redeem_coupon_btn" value="Redeem">'
-		. '<div id="asp-coupon-info-' . $data[ 'uniq_id' ] . '" class="asp_product_coupon_info"></div>'
-		. '</div>';
+		//check if this is subscription product. If it is, we won't display coupons field as its not currently supported
+		if ( isset( $data[ 'product_id' ] ) && ! get_post_meta( $data[ 'product_id' ], 'asp_sub_plan_id', true ) ) {
+		    $str_coupon_label	 = __( 'Coupon Code', 'stripe-payments' );
+		    $output			 .= '<div class="asp_product_coupon_input_container"><label class="asp_product_coupon_field_label">' . $str_coupon_label . ' ' . '</label><input id="asp-coupon-field-' . $data[ 'uniq_id' ] . '" class="asp_product_coupon_field_input" type="text" name="stripeCoupon">'
+		    . '<input type="button" id="asp-redeem-coupon-btn-' . $data[ 'uniq_id' ] . '" type="button" class="asp_redeem_coupon_btn" value="' . __( 'Apply', 'stripe-payments' ) . '">'
+		    . '<div id="asp-coupon-info-' . $data[ 'uniq_id' ] . '" class="asp_product_coupon_info"></div>'
+		    . '</div>';
+		}
 	    }
 	}
 	if ( $data ) {
@@ -674,11 +677,7 @@ class AcceptStripePaymentsShortcode {
 	    $output	 .= '<div class="asp-thank-you-page-qty">' . __( "Quantity: ", "stripe-payments" ) . $aspData[ 'item_quantity' ] . '</div>';
 	    $output	 .= '<div class="asp-thank-you-page-qty">' . __( "Item Price: ", "stripe-payments" ) . AcceptStripePayments::formatted_price( $aspData[ 'item_price' ], $aspData[ 'currency_code' ] ) . '</div>';
 	    //check if there are any additional items available like tax and shipping cost
-	    if ( ! empty( $aspData[ 'additional_items' ] ) ) {
-		foreach ( $aspData[ 'additional_items' ] as $item => $price ) {
-		    $output .= $item . ": " . AcceptStripePayments::formatted_price( $price, $aspData[ 'currency_code' ] ) . "<br />";
-		}
-	    }
+	    $output	 .= AcceptStripePayments::gen_additional_items( $aspData, '<br />' );
 	    $output	 .= '<hr />';
 	    $output	 .= '<div class="asp-thank-you-page-qty">' . __( "Total Amount: ", "stripe-payments" ) . AcceptStripePayments::formatted_price( $aspData[ 'paid_amount' ], $aspData[ 'currency_code' ] ) . '</div>';
 	    $output	 .= '<br />';
