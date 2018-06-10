@@ -190,3 +190,13 @@
 .asp-processing i:nth-child(3) {
     animation-delay: .2s;
 }
+
+@media (max-width: 500px) {
+    .asp_product_buy_btn_container {
+	display: block;
+	margin-left: 0;
+	margin-top: 10px;
+	text-align: center;
+	width: 100%;
+    }
+}
