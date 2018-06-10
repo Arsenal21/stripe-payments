@@ -184,22 +184,29 @@ class AcceptStripePayments_CouponsAdmin {
 	    <h2><?php _e( 'Coupons', 'stripe-payments' ); ?></h2>
 	    <?php
 	    ?>
-	    <form method="post">
-		<input type="hidden" name="asp_coupons_opts[_save-settings]" value="1">
-		<table class="form-table">
-		    <tr>
-			<th scope="row"><?php _e( 'Enable Coupons', 'stripe-payments' ); ?></th>
-			<td>
-			    <input type="checkbox" name="asp_coupons_opts[coupons_enabled]"<?php echo $coupons_enabled ? ' checked' : ''; ?>>
-			    <p class="description"><?php _e( 'Enables Coupons functionality.', 'stripe-payments' ); ?></p>
-			</td>
-		    </tr>
-		</table>
-		<?php
-		wp_nonce_field( 'asp-coupons-settings' );
-		submit_button( __( 'Save Settings', 'stripe-payments' ) );
-		?>
-	    </form>
+	    <div id="poststuff"><div id="post-body">
+		    <div class="postbox">
+			<h3 class="hndle"><label for="title"><?php _e( 'Coupon Settings', 'stripe-payments' ); ?></label></h3>
+			<div class="inside">
+			    <form method="post">
+				<input type="hidden" name="asp_coupons_opts[_save-settings]" value="1">
+				<table class="form-table">
+				    <tr>
+					<th scope="row"><?php _e( 'Enable Coupons', 'stripe-payments' ); ?></th>
+					<td>
+					    <input type="checkbox" name="asp_coupons_opts[coupons_enabled]"<?php echo $coupons_enabled ? ' checked' : ''; ?>>
+					    <p class="description"><?php _e( 'Enables Coupons functionality.', 'stripe-payments' ); ?></p>
+					</td>
+				    </tr>
+				</table>
+				<?php
+				wp_nonce_field( 'asp-coupons-settings' );
+				submit_button( __( 'Save Settings', 'stripe-payments' ) );
+				?>
+			    </form>
+			</div>
+		    </div>
+		</div></div>
 	    <h2><?php _e( 'Coupons', 'stripe-payments' ); ?> <a class="page-title-action" href="?post_type=asp-products&page=stripe-payments-coupons&action=asp_add_edit_coupon">Add A Coupon</a></h2>
 	    <?php $coupons_tbl->display(); ?>
 	</div>
@@ -442,8 +449,8 @@ class ASP_Coupons_Table extends WP_List_Table {
 	    'coupon'	 => __( 'Coupon Code', 'stripe-payments' ),
 	    'active'	 => __( 'Active', 'stripe-payments' ),
 	    'discount'	 => __( 'Discount Value', 'stripe-payments' ),
-	    'red_limit'	 => __( 'Redemption Limit', 'stripe-payments' ),
 	    'red_count'	 => __( 'Redemption Count', 'stripe-payments' ),
+	    'red_limit'	 => __( 'Redemption Limit', 'stripe-payments' ),
 	    'start_date'	 => __( 'Start Date', 'stripe-payments' ),
 	    'exp_date'	 => __( 'Expiry Date', 'stripe-payments' ),
 	);
@@ -475,6 +482,8 @@ class ASP_Coupons_Table extends WP_List_Table {
 		}
 		return $item[ $column_name ];
 		break;
+	    case 'red_limit':
+		return ! empty( $item[ $column_name ] ) ? $item[ $column_name ] : '—';
 	    default:
 		return $item[ $column_name ];
 	}
