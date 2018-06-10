@@ -341,15 +341,27 @@ $post_data = array_map( 'sanitize_text_field', $data );
 $_POST = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
 
 //Billing address data (if any)
-$billing_address		 = "";
-$billing_address		 .= isset( $_POST[ 'stripeBillingName' ] ) ? $_POST[ 'stripeBillingName' ] . "\n" : '';
-$billing_address		 .= isset( $_POST[ 'stripeBillingAddressLine1' ] ) ? $_POST[ 'stripeBillingAddressLine1' ] . "\n" : '';
-$billing_address		 .= isset( $_POST[ 'stripeBillingAddressApt' ] ) ? $_POST[ 'stripeBillingAddressApt' ] . "\n" : '';
-$billing_address		 .= isset( $_POST[ 'stripeBillingAddressZip' ] ) ? $_POST[ 'stripeBillingAddressZip' ] . "\n" : '';
-$billing_address		 .= isset( $_POST[ 'stripeBillingAddressCity' ] ) ? $_POST[ 'stripeBillingAddressCity' ] . "\n" : '';
-$billing_address		 .= isset( $_POST[ 'stripeBillingAddressState' ] ) ? $_POST[ 'stripeBillingAddressState' ] . "\n" : '';
-$billing_address		 .= isset( $_POST[ 'stripeBillingAddressCountry' ] ) ? $_POST[ 'stripeBillingAddressCountry' ] . "\n" : '';
-$post_data[ 'billing_address' ]	 = $billing_address;
+$billing_address = "";
+$billing_address .= isset( $_POST[ 'stripeBillingName' ] ) ? $_POST[ 'stripeBillingName' ] . "\n" : '';
+$billing_address .= isset( $_POST[ 'stripeBillingAddressLine1' ] ) ? $_POST[ 'stripeBillingAddressLine1' ] . "\n" : '';
+$billing_address .= isset( $_POST[ 'stripeBillingAddressApt' ] ) ? $_POST[ 'stripeBillingAddressApt' ] . "\n" : '';
+$billing_address .= isset( $_POST[ 'stripeBillingAddressZip' ] ) ? $_POST[ 'stripeBillingAddressZip' ] . "\n" : '';
+$billing_address .= isset( $_POST[ 'stripeBillingAddressCity' ] ) ? $_POST[ 'stripeBillingAddressCity' ] . "\n" : '';
+$billing_address .= isset( $_POST[ 'stripeBillingAddressState' ] ) ? $_POST[ 'stripeBillingAddressState' ] . "\n" : '';
+$billing_address .= isset( $_POST[ 'stripeBillingAddressCountry' ] ) ? $_POST[ 'stripeBillingAddressCountry' ] . "\n" : '';
+
+if ( empty( $billing_address ) && (isset( $data[ 'product_id' ] ) && get_post_meta( $data[ 'product_id' ], 'asp_product_collect_billing_addr', true )) ) {
+    //let's try to fetch billing address from payment data
+    $billing_address .= ! empty( $data[ 'charge' ]->source->name ) ? $data[ 'charge' ]->source->name . "\n" : '';
+    $billing_address .= ! empty( $data[ 'charge' ]->source->address_line1 ) ? $data[ 'charge' ]->source->address_line1 . "\n" : '';
+    $billing_address .= ! empty( $data[ 'charge' ]->source->address_line2 ) ? $data[ 'charge' ]->source->address_line2 . "\n" : '';
+    $billing_address .= ! empty( $data[ 'charge' ]->source->address_zip ) ? $data[ 'charge' ]->source->address_zip . "\n" : '';
+    $billing_address .= ! empty( $data[ 'charge' ]->source->address_city ) ? $data[ 'charge' ]->source->address_city . "\n" : '';
+    $billing_address .= ! empty( $data[ 'charge' ]->source->address_state ) ? $data[ 'charge' ]->source->address_state . "\n" : '';
+    $billing_address .= ! empty( $data[ 'charge' ]->source->address_country ) ? $data[ 'charge' ]->source->address_country . "\n" : '';
+}
+
+$post_data[ 'billing_address' ] = $billing_address;
 
 //Shipping address data (if any)
 $shipping_address		 = "";

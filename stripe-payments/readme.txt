@@ -151,6 +151,7 @@ None.
 
 = 1.9.1 =
 - Added Coupons functionality. Coupons for subscriptions are not supported at the moment, we're working on it.
+- Advanced Payment Methods addon is now properly collecting Billing and\or shipping addresses.
 
 = 1.9.0 =
 - Added "Validate ZIP code" option. In order for this to work, corresponding option should be enabled in your Stripe Dashboard as well.
