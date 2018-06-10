@@ -160,6 +160,10 @@
     margin-right: 5px;
 }
 
+.asp_product_buy_btn_container {
+    display: inline-block;
+}
+
 .asp_product_buy_button input::placeholder {
     font-style: italic;
     color: #bbb;
