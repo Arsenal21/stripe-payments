@@ -149,6 +149,9 @@ None.
 
 == Changelog ==
 
+= 1.9.1 =
+- Added Coupons functionality. Coupons for subscriptions are not supported at the moment, we're working on it.
+
 = 1.9.0 =
 - Added "Validate ZIP code" option. In order for this to work, corresponding option should be enabled in your Stripe Dashboard as well.
 - Added support for Custom Messages addon. You can use it to customize various text messages displayed by the plugin.
