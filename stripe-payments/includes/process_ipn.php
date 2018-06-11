@@ -460,6 +460,9 @@ if ( isset( $opt[ 'send_emails_to_seller' ] ) ) {
     }
 }
 
+$post_data[ 'charge_date_raw' ] = $data[ 'charge' ]->created;
+$post_data[ 'charge_date' ] = date('Y/m/d H:i:s',$data[ 'charge' ]->created);
+
 $_SESSION[ 'asp_data' ] = $post_data;
 
 //Show the "payment success" or "payment failure" info on the checkout complete page.
