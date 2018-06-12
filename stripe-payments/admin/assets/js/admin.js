@@ -3,7 +3,9 @@
 
     $(function () {
 
-	// Place your administration-specific JavaScript here
+	$('input.asp-select-on-click').click(function (e) {
+	    $(this).select();
+	});
 
     });
 

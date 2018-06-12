@@ -311,8 +311,13 @@ class asp_products_metaboxes {
     function display_shortcode_meta_box( $post ) {
 	$current_val = get_post_meta( $post->ID, 'asp_product_button_text', true );
 	?>
-	<input type="text" name="asp_product_shortcode" size="50" readonly value="[asp_product id=&quot;<?php echo $post->ID; ?>&quot;]">
+	<input type="text" name="asp_product_shortcode" size="50" class="asp-select-on-click" readonly value="[asp_product id=&quot;<?php echo $post->ID; ?>&quot;]">
 	<p class="description"><?php _e( 'Use this shortcode to display button for your product.', 'stripe-payments' ); ?></p>
+	<script>
+	    jQuery('input.asp-select-on-click').click(function () {
+		$(this).select();
+	    });
+	</script>
 	<?php
     }
 

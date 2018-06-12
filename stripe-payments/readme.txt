@@ -153,6 +153,7 @@ None.
 - Added Coupons functionality. Coupons for subscriptions are not supported at the moment, we're working on it.
 - Added {charge_date} checkout result merge tag.
 - Advanced Payment Methods addon is now properly collecting Billing and\or shipping addresses.
+- Clicking on "Shortcode" input on product page now selects the shortcode.
 
 = 1.9.0 =
 - Added "Validate ZIP code" option. In order for this to work, corresponding option should be enabled in your Stripe Dashboard as well.
