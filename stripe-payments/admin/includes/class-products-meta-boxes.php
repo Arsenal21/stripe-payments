@@ -20,6 +20,7 @@ class asp_products_metaboxes {
 	add_meta_box( 'asp_shipping_tax_meta_box', __( 'Shipping & Tax', 'stripe-payments' ), array( $this, 'display_shipping_tax_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 	add_meta_box( 'asp_thankyou_page_meta_box', __( 'Thank You Page URL', 'stripe-payments' ), array( $this, 'display_thankyou_page_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 	add_meta_box( 'asp_appearance_meta_box', __( 'Appearance', 'stripe-payments' ), array( $this, 'display_appearance_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
+	add_meta_box( 'asp_coupons_meta_box', __( 'Coupons Settings', 'stripe-payments' ), array( $this, 'display_coupons_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 	add_meta_box( 'asp_custom_field_meta_box', __( 'Custom Field', 'stripe-payments' ), array( $this, 'display_custom_field_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 	add_meta_box( 'asp_shortcode_meta_box', __( 'Shortcode', 'stripe-payments' ), array( $this, 'display_shortcode_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 
@@ -297,6 +298,16 @@ class asp_products_metaboxes {
 	<?php
     }
 
+    function display_coupons_meta_box( $post ) {
+	$current_val = get_post_meta( $post->ID, 'asp_product_coupons_setting', true );
+	?>
+	<p><?php _e( 'Select how Coupons should be handled for this product.', 'stripe-payments' ); ?></p>
+	<label><input type="radio" name="asp_product_coupons_setting" value="2"<?php echo ($current_val === "2" || $current_val === "") ? ' checked' : ''; ?>><?php echo __( 'Use Global Setting', 'stripe-payments' ); ?> </label>
+	<label><input type="radio" name="asp_product_coupons_setting" value="1"<?php echo ($current_val === "1") ? ' checked' : ''; ?>><?php echo __( 'Enabled', 'stripe-payments' ); ?> </label>
+	<label><input type="radio" name="asp_product_coupons_setting" value="0"<?php echo ($current_val === "0") ? ' checked' : ''; ?>><?php echo __( 'Disabled', 'stripe-payments' ); ?> </label>
+	<?php
+    }
+
     function display_shortcode_meta_box( $post ) {
 	$current_val = get_post_meta( $post->ID, 'asp_product_button_text', true );
 	?>
@@ -323,6 +334,7 @@ class asp_products_metaboxes {
 	    update_post_meta( $post_id, 'asp_product_enable_stock', isset( $_POST[ 'asp_product_enable_stock' ] ) ? "1" : false  );
 	    update_post_meta( $post_id, 'asp_product_stock_items', sanitize_text_field( absint( $_POST[ 'asp_product_stock_items' ] ) ) );
 
+	    update_post_meta( $post_id, 'asp_product_coupons_setting', isset( $_POST[ 'asp_product_custom_field' ] ) ? sanitize_text_field( $_POST[ 'asp_product_coupons_setting' ] ) : "0"  );
 	    update_post_meta( $post_id, 'asp_product_custom_field', isset( $_POST[ 'asp_product_custom_field' ] ) ? sanitize_text_field( $_POST[ 'asp_product_custom_field' ] ) : "0"  );
 	    update_post_meta( $post_id, 'asp_product_button_text', sanitize_text_field( $_POST[ 'asp_product_button_text' ] ) );
 	    update_post_meta( $post_id, 'asp_product_button_class', sanitize_text_field( $_POST[ 'asp_product_button_class' ] ) );

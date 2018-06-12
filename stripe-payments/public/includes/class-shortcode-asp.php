@@ -174,6 +174,12 @@ class AcceptStripePaymentsShortcode {
 	    $custom_field = intval( $custom_field );
 	}
 
+	$coupons_enabled = get_post_meta( $id, 'asp_product_coupons_setting', true );
+
+	if ( ( $coupons_enabled === "" ) || $coupons_enabled === "2" ) {
+	    $coupons_enabled = $this->AcceptStripePayments->get_setting( 'coupons_enabled' );
+	}
+
 	$thankyou_page = get_post_meta( $id, 'asp_product_thankyou_page', true );
 
 	if ( ! $shipping ) {
@@ -244,6 +250,7 @@ class AcceptStripePaymentsShortcode {
 		'billing_address'	 => get_post_meta( $id, 'asp_product_collect_billing_addr', true ),
 		'shipping_address'	 => get_post_meta( $id, 'asp_product_collect_shipping_addr', true ),
 		'custom_field'		 => $custom_field,
+		'coupons_enabled'	 => $coupons_enabled,
 		'compat_mode'		 => $compat_mode,
 	    );
 	    //this would pass additional shortcode parameters from asp_product shortcode
@@ -439,6 +446,11 @@ class AcceptStripePaymentsShortcode {
 	    $custom_field = $atts[ 'custom_field' ];
 	}
 
+	$coupons_enabled = $this->AcceptStripePayments->get_setting( 'coupons_enabled' );
+	if ( isset( $atts[ 'coupons_enabled' ] ) ) {
+	    $coupons_enabled = $atts[ 'coupons_enabled' ];
+	}
+
 	$tos = $this->AcceptStripePayments->get_setting( 'tos_enabled' );
 
 	$verifyZip = $this->AcceptStripePayments->get_setting( 'enable_zip_validation' );
@@ -467,6 +479,7 @@ class AcceptStripePaymentsShortcode {
 	    'zeroCents'		 => $this->AcceptStripePayments->zeroCents,
 	    'addonHooks'		 => array(),
 	    'custom_field'		 => $custom_field,
+	    'coupons_enabled'	 => $coupons_enabled,
 	    'tos'			 => $tos,
 	    'button_text'		 => esc_attr( $button_text ),
 	    'out_of_stock'		 => $out_of_stock,
@@ -624,7 +637,7 @@ class AcceptStripePaymentsShortcode {
 		$output		 .= '</div>';
 	    }
 	    //Coupons
-	    if ( $this->AcceptStripePayments->get_setting( 'coupons_enabled' ) ) {
+	    if ( isset( $data[ 'coupons_enabled' ] ) && $data[ 'coupons_enabled' ] == "1" ) {
 		//check if this is subscription product. If it is, we won't display coupons field as its not currently supported
 		if ( isset( $data[ 'product_id' ] ) && ! get_post_meta( $data[ 'product_id' ], 'asp_sub_plan_id', true ) ) {
 		    $str_coupon_label	 = __( 'Coupon Code', 'stripe-payments' );
