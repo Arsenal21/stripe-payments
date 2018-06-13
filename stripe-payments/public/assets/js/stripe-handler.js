@@ -320,25 +320,32 @@ function wp_asp_add_stripe_handler(data) {
 	var ajaxData = {
 	    'action': 'asp_check_coupon',
 	    'coupon_code': couponCode,
-	    'curr': data.currency
+	    'curr': data.currency,
+	    'amount': data.amount
 	};
 	jQuery.post(stripehandler.ajax_url, ajaxData, function (response) {
 	    if (response.success) {
 		data.discount = response.discount;
 		data.discountType = response.discountType;
 		data.couponCode = response.code;
-		jQuery('div#asp-coupon-info-' + data.uniq_id).html(response.discountStr + ' <a href="#0" id="asp-remove-coupon-' + data.uniq_iq + '" title="' + stripehandler.strRemoveCoupon + '">X</a>');
+		jQuery('div#asp-coupon-info-' + data.uniq_id).html(response.discountStr + ' <input type="button" class="asp_btn_normalize asp_coupon_apply_btn" id="asp-remove-coupon-' + data.uniq_iq + '" title="' + stripehandler.strRemoveCoupon + '" value="' + stripehandler.strRemove + '">');
 		jQuery('input#asp-redeem-coupon-btn-' + data.uniq_id).hide();
 		jQuery('input#asp-coupon-field-' + data.uniq_id).hide();
+		var totalCont = jQuery('input#asp-redeem-coupon-btn-' + data.uniq_id).closest('.asp_product_item').find('.asp_price_full_total');
+		totalCont.children('.asp_current_price').addClass('asp_line_through');
+		totalCont.children('.asp_new_price').html(response.newAmountFmt);
 		jQuery('#asp-remove-coupon-' + data.uniq_iq).on('click', function (e) {
 		    e.preventDefault();
 		    jQuery('div#asp-coupon-info-' + data.uniq_id).html('');
 		    jQuery('input#asp-coupon-field-' + data.uniq_id).val('');
 		    jQuery('input#asp-coupon-field-' + data.uniq_id).show();
 		    jQuery('input#asp-redeem-coupon-btn-' + data.uniq_id).show();
+		    totalCont.children('.asp_current_price').removeClass('asp_line_through');
+		    totalCont.children('.asp_new_price').html('');
 		    delete data.discount;
 		    delete data.discountType;
 		    delete data.couponCode;
+		    delete data.newAmountFmt;
 		});
 	    } else {
 		jQuery('div#asp-coupon-info-' + data.uniq_id).html(response.msg);

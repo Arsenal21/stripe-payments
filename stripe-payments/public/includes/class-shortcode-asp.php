@@ -83,6 +83,7 @@ class AcceptStripePaymentsShortcode {
 	    'strPleaseCheckCheckbox' => __( 'Please check this checkbox.', 'stripe-payments' ),
 	    'strMustAcceptTos'	 => apply_filters( 'asp_customize_text_msg', __( 'You must accept the terms before you can proceed.', 'stripe-payments' ), 'accept_terms' ),
 	    'strRemoveCoupon'	 => apply_filters( 'asp_customize_text_msg', __( 'Remove coupon', 'stripe-payments' ), 'remove_coupon' ),
+	    'strRemove'		 => apply_filters( 'asp_customize_text_msg', __( 'Remove', 'stripe-payments' ), 'remove' ),
 	    'key'			 => $key,
 	    'ajax_url'		 => admin_url( 'admin-ajax.php' ),
 	    'minAmounts'		 => $minAmounts,
@@ -217,7 +218,7 @@ class AcceptStripePaymentsShortcode {
 	}
 
 	if ( ! empty( $price ) && ! empty( $under_price_line ) ) {
-	    $under_price_line .= '<div class="asp_price_full_total">' . __( 'Total:', 'stripe-payments' ) . ' ' . AcceptStripePayments::formatted_price( $tot_price, $currency ) . '</div>';
+	    $under_price_line .= '<div class="asp_price_full_total">' . __( 'Total:', 'stripe-payments' ) . ' <span class="asp_current_price">' . AcceptStripePayments::formatted_price( $tot_price, $currency ) . '</span> <span class="asp_new_price"></span></div>';
 	}
 
 	if ( get_post_meta( $id, 'asp_product_no_popup_thumbnail', true ) != 1 ) {

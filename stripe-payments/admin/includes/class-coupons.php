@@ -91,11 +91,23 @@ class AcceptStripePayments_CouponsAdmin {
 	$discount	 = $coupon[ 'discount' ];
 	$discount_type	 = $coupon[ 'discountType' ];
 
+	$amount = floatval( $_POST[ 'amount' ] );
+
+	if ( $coupon[ 'discountType' ] === 'perc' ) {
+	    $perc		 = AcceptStripePayments::is_zero_cents( $curr ) ? 0 : 2;
+	    $discount_amount = round( $amount * ( $coupon[ 'discount' ] / 100 ), $perc );
+	} else {
+	    $discount_amount = $coupon[ 'discount' ];
+	}
+	$out[ 'discountAmount' ] = $discount_amount;
+	$amount			 = round( ($amount - $discount_amount) / 100, $perc );
+
 	$out[ 'success' ]	 = true;
 	$out[ 'code' ]		 = $coupon_code;
 	$out[ 'discount' ]	 = $discount;
 	$out[ 'discountType' ]	 = $discount_type;
 	$out[ 'discountStr' ]	 = $coupon_code . ': - ' . ($discount_type === "perc" ? $discount . '%' : AcceptStripePayments::formatted_price( $discount, $curr ));
+	$out[ 'newAmountFmt' ]	 = AcceptStripePayments::formatted_price( $amount, $curr );
 	wp_send_json( $out );
     }
 

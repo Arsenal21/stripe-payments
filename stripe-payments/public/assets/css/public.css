@@ -1,3 +1,6 @@
+.asp_line_through {
+    text-decoration: line-through;
+}
 .asp_product_coupon_input_container {
     margin: 5px 0 10px 0;
 }
