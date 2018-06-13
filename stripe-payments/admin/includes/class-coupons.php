@@ -5,7 +5,7 @@ class AcceptStripePayments_CouponsAdmin {
     var $POST_SLUG = 'asp_coupons';
 
     function __construct() {
-	add_action( 'init', array( $this, 'register_post_type' ) );
+	add_action( 'init', array( $this, 'init_handler' ) );
 	if ( is_admin() ) {
 	    add_action( 'admin_menu', array( $this, 'add_menu' ) );
 	    if ( wp_doing_ajax() ) {
@@ -99,7 +99,7 @@ class AcceptStripePayments_CouponsAdmin {
 	wp_send_json( $out );
     }
 
-    function register_post_type() {
+    function init_handler() {
 	$args = array(
 	    'supports'		 => array( '' ),
 	    'hierarchical'		 => false,
@@ -112,6 +112,10 @@ class AcceptStripePayments_CouponsAdmin {
 	    'capability_type'	 => 'post',
 	);
 	register_post_type( $this->POST_SLUG, $args );
+
+	if ( isset( $_POST[ 'asp_coupon' ] ) ) {
+	    $this->save_coupon();
+	}
     }
 
     function add_menu() {
@@ -214,9 +218,6 @@ class AcceptStripePayments_CouponsAdmin {
     }
 
     function display_coupon_add_edit_page() {
-	if ( isset( $_POST[ 'asp_coupon' ] ) ) {
-	    $this->save_coupon();
-	}
 
 	wp_enqueue_script( 'jquery-ui-datepicker' );
 	wp_register_style( 'jquery-ui', '//ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css' );
@@ -346,8 +347,6 @@ class AcceptStripePayments_CouponsAdmin {
 	check_admin_referer( 'delete-coupon_' . $coupon_id );
 	wp_delete_post( $coupon_id, true );
 	set_transient( 'asp_coupons_admin_notice', sprintf( __( 'Coupon #%d has been deleted.', 'stripe-payments' ), $coupon_id ), 60 * 60 );
-	wp_redirect( 'edit.php?post_type=asp-products&page=stripe-payments-coupons' );
-	exit;
     }
 
     function save_coupon() {
@@ -393,7 +392,8 @@ class AcceptStripePayments_CouponsAdmin {
 	    update_post_meta( $coupon_id, 'asp_coupon_' . $key, $value );
 	}
 	set_transient( 'asp_coupons_admin_notice', sprintf( $is_edit ? __( 'Coupon "%s" has been updated.', 'stripe-payments' ) : __( 'Coupon "%s" has been created.', 'stripe-payments' ), $coupon[ 'code' ] ), 60 * 60 );
-	wp_redirect( 'edit.php?post_type=asp-products&page=stripe-payments-coupons' );
+
+	wp_safe_redirect( 'edit.php?post_type=asp-products&page=stripe-payments-coupons' );
 	exit;
     }
 
