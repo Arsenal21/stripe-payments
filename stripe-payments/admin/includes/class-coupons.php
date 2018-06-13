@@ -91,16 +91,17 @@ class AcceptStripePayments_CouponsAdmin {
 	$discount	 = $coupon[ 'discount' ];
 	$discount_type	 = $coupon[ 'discountType' ];
 
-	$amount = floatval( $_POST[ 'amount' ] );
+	$amount = intval( $_POST[ 'amount' ] );
+
+	$perc = AcceptStripePayments::is_zero_cents( $curr ) ? 0 : 2;
 
 	if ( $coupon[ 'discountType' ] === 'perc' ) {
-	    $perc		 = AcceptStripePayments::is_zero_cents( $curr ) ? 0 : 2;
 	    $discount_amount = round( $amount * ( $coupon[ 'discount' ] / 100 ), $perc );
 	} else {
-	    $discount_amount = $coupon[ 'discount' ];
+	    $discount_amount = $coupon[ 'discount' ] * ($perc === 0 ? 1 : 100);
 	}
 	$out[ 'discountAmount' ] = $discount_amount;
-	$amount			 = round( ($amount - $discount_amount) / 100, $perc );
+	$amount			 = round( ($amount - $discount_amount) / ($perc === 0 ? 1 : 100), $perc );
 
 	$out[ 'success' ]	 = true;
 	$out[ 'code' ]		 = $coupon_code;
