@@ -331,7 +331,8 @@ function wp_asp_add_stripe_handler(data) {
 		jQuery('div#asp-coupon-info-' + data.uniq_id).html(response.discountStr + ' <input type="button" class="asp_btn_normalize asp_coupon_apply_btn" id="asp-remove-coupon-' + data.uniq_id + '" title="' + stripehandler.strRemoveCoupon + '" value="' + stripehandler.strRemove + '">');
 		jQuery('input#asp-redeem-coupon-btn-' + data.uniq_id).hide();
 		jQuery('input#asp-coupon-field-' + data.uniq_id).hide();
-		var totalCont = jQuery('input#asp-redeem-coupon-btn-' + data.uniq_id).closest('.asp_product_item').find('.asp_price_full_total');
+		var totalCont = jQuery('form#stripe_form_' + data.uniq_id).parents().children().find('.asp_price_full_total');
+		console.log(totalCont);
 		totalCont.children('.asp_current_price').addClass('asp_line_through');
 		totalCont.children('.asp_new_price').html(response.newAmountFmt);
 		jQuery('#asp-remove-coupon-' + data.uniq_id).on('click', function (e) {
