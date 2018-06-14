@@ -212,7 +212,7 @@ class AcceptStripePayments_CouponsAdmin {
 					<th scope="row"><?php _e( 'Enable Coupons', 'stripe-payments' ); ?></th>
 					<td>
 					    <input type="checkbox" name="asp_coupons_opts[coupons_enabled]"<?php echo $coupons_enabled ? ' checked' : ''; ?>>
-					    <p class="description"><?php _e( 'Enables Coupons functionality.', 'stripe-payments' ); ?></p>
+					    <p class="description"><?php _e( 'Enables the discount coupon functionality.', 'stripe-payments' ); ?></p>
 					</td>
 				    </tr>
 				</table>
@@ -224,7 +224,7 @@ class AcceptStripePayments_CouponsAdmin {
 			</div>
 		    </div>
 		</div></div>
-	    <h2><?php _e( 'Coupons', 'stripe-payments' ); ?> <a class="page-title-action" href="?post_type=asp-products&page=stripe-payments-coupons&action=asp_add_edit_coupon">Add A Coupon</a></h2>
+	    <h2><?php _e( 'Coupons', 'stripe-payments' ); ?> <a class="page-title-action" href="?post_type=asp-products&page=stripe-payments-coupons&action=asp_add_edit_coupon">Add a Coupon</a></h2>
 	    <?php $coupons_tbl->display(); ?>
 	</div>
 	<?php
@@ -264,7 +264,7 @@ class AcceptStripePayments_CouponsAdmin {
 			<th scope="row"><?php _e( 'Active', 'stripe-payments' ); ?></th>
 			<td>
 			    <input type="checkbox" name="asp_coupon[active]"<?php echo ( ! $is_edit) || ($is_edit && $coupon[ 'active' ]) ? "checked" : '' ?>>
-			    <p class="description"><?php _e( 'Check this to make coupon active.', 'stripe-payments' ); ?></p>
+			    <p class="description"><?php _e( 'Use this to enable/disable this coupon.', 'stripe-payments' ); ?></p>
 			</td>
 		    </tr>
 		    <?php if ( $is_edit ) { ?>
@@ -289,10 +289,10 @@ class AcceptStripePayments_CouponsAdmin {
 			<td>
 			    <input style="vertical-align: middle;" type="text" name="asp_coupon[discount]" value="<?php echo $is_edit ? $coupon[ 'discount' ] : '' ?>">
 			    <select name="asp_coupon[discount_type]">
-				<option value="perc"<?php echo $is_edit && $coupon[ 'discount_type' ] === "perc" ? ' selected' : ''; ?>><?php _e( 'Percents (%)', 'stripe-payments' ); ?></option>
+				<option value="perc"<?php echo $is_edit && $coupon[ 'discount_type' ] === "perc" ? ' selected' : ''; ?>><?php _e( 'Percent (%)', 'stripe-payments' ); ?></option>
 				<option value="fixed"<?php echo $is_edit && $coupon[ 'discount_type' ] === "fixed" ? ' selected' : ''; ?>><?php _e( 'Fixed amount', 'stripe-payments' ); ?></option>
 			    </select>
-			    <p class="description"><?php _e( 'Select discount amount and type.', 'stripe-payments' ); ?></p>
+			    <p class="description"><?php _e( 'Select discount amount and type. Enter a numeric value only. Example: 25', 'stripe-payments' ); ?></p>
 			</td>
 		    </tr>
 		    <tr>
@@ -313,14 +313,14 @@ class AcceptStripePayments_CouponsAdmin {
 			<th scope="row"><?php _e( 'Start Date', 'stripe-payments' ); ?></th>
 			<td>
 			    <input class="datepicker-input" type="text" name="asp_coupon[start_date]"value="<?php echo $is_edit ? $coupon[ 'start_date' ] : date( 'Y-m-d' ) ?>">
-			    <p class="description"><?php _e( 'Start date when coupons can be used.', 'stripe-payments' ); ?></p>
+			    <p class="description"><?php _e( 'Start date when this coupon can be used.', 'stripe-payments' ); ?></p>
 			</td>
 		    </tr>
 		    <tr>
 			<th scope="row"><?php _e( 'Expiry Date', 'stripe-payments' ); ?></th>
 			<td>
 			    <input class="datepicker-input" type="text" name="asp_coupon[exp_date]"value="<?php echo $is_edit ? $coupon[ 'exp_date' ] : 0 ?>">
-			    <p class="description"><?php _e( 'Date when coupon is expired. Put 0 to disable expiry check.', 'stripe-payments' ); ?></p>
+			    <p class="description"><?php _e( 'Date when this coupon will expire. Put 0 to disable expiry check.', 'stripe-payments' ); ?></p>
 			</td>
 		    </tr>
 		</table>

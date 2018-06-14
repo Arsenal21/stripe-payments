@@ -81,7 +81,7 @@ class asp_products_metaboxes {
 	<input type="text" name="asp_product_tax" value="<?php echo $current_tax; ?>">
 	<p class = "description">
 	    <?php
-	    echo __( 'Enter tax (in percents) which should be added to product price during purchase.', 'stripe-payments' ) .
+	    echo __( 'Enter tax (in percent) which should be added to product price during purchase.', 'stripe-payments' ) .
 	    '<br>' . __( 'Leave it blank if you don\'t want to apply tax.', 'stripe-payments' );
 	    ?>
 	</p>
