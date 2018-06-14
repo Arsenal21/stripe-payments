@@ -428,7 +428,7 @@ class AcceptStripePayments_Admin {
 	    '{customer_name}'	 => 'Customer name. Available only if collect billing address option enabled',
 	    "{payer_email}"		 => 'Email Address of the buyer',
 	    "{purchase_amt}"	 => 'The amount paid for the current transaction. Example: 1,000.00',
-	    "{tax}"			 => 'Tax in percent. Example: 10%',
+	    "{tax}"			 => 'Tax in percents. Example: 10%',
 	    "{tax_amt}"		 => 'Formatted tax amount for single item. Example: $0.25',
 	    "{shipping_amt}"	 => 'Formatted shipping amount. Example: $2.50',
 	    "{purchase_amt_curr}"	 => 'The amount paid for the current transaction with currency symbol. Example: $1,000.00',
