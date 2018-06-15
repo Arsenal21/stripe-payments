@@ -159,6 +159,12 @@ function wp_asp_can_proceed(data, openHandler) {
 	}
     }
 
+    if (typeof amount === "undefined") {
+	amount = stripehandler.apply_coupon(data.amount, data);
+    } else {
+	amount = stripehandler.apply_coupon(amount, data);
+    }
+
     var description = data.description;
 
     if (description === '') {
@@ -197,12 +203,6 @@ function wp_asp_can_proceed(data, openHandler) {
     }
 
     data.canProceed = true;
-
-    if (typeof amount === "undefined") {
-	amount = stripehandler.apply_coupon(data.amount, data);
-    } else {
-	amount = stripehandler.apply_coupon(amount, data);
-    }
 
     data = button_clicked_hooks(data);
 
@@ -331,21 +331,35 @@ function wp_asp_add_stripe_handler(data) {
 		jQuery('div#asp-coupon-info-' + data.uniq_id).html(response.discountStr + ' <input type="button" class="asp_btn_normalize asp_coupon_apply_btn" id="asp-remove-coupon-' + data.uniq_id + '" title="' + stripehandler.strRemoveCoupon + '" value="' + stripehandler.strRemove + '">');
 		jQuery('input#asp-redeem-coupon-btn-' + data.uniq_id).hide();
 		jQuery('input#asp-coupon-field-' + data.uniq_id).hide();
-		var totalCont = jQuery('form#stripe_form_' + data.uniq_id).parents().children().find('.asp_price_full_total');
-		totalCont.children('.asp_current_price').addClass('asp_line_through');
-		totalCont.children('.asp_new_price').html(response.newAmountFmt);
+		var totalCont = jQuery('form#stripe_form_' + data.uniq_id).parents().children().find('.asp_price_container');
+		var totCurr;
+		var totNew;
+		if (totalCont.find('.asp_price_full_total').length !== 0) {
+		    totCurr = totalCont.children().find('span.asp_tot_current_price').addClass('asp_line_through');
+		    totNew = totalCont.children().find('span.asp_tot_new_price').html(response.newAmountFmt);
+		} else {
+		    totCurr = totalCont.find('span.asp_price_amount').addClass('asp_line_through');
+		    totNew = totalCont.find('span.asp_new_price_amount').html(response.newAmountFmt);
+		}
+		if (data.descrGenerated) {
+		    data.oldDescr = data.description;
+		    data.description = data.quantity + ' X ' + response.newAmountFmt;
+		}
 		jQuery('#asp-remove-coupon-' + data.uniq_id).on('click', function (e) {
 		    e.preventDefault();
 		    jQuery('div#asp-coupon-info-' + data.uniq_id).html('');
 		    jQuery('input#asp-coupon-field-' + data.uniq_id).val('');
 		    jQuery('input#asp-coupon-field-' + data.uniq_id).show();
 		    jQuery('input#asp-redeem-coupon-btn-' + data.uniq_id).show();
-		    totalCont.children('.asp_current_price').removeClass('asp_line_through');
-		    totalCont.children('.asp_new_price').html('');
+		    totCurr.removeClass('asp_line_through');
+		    totNew.html('');
 		    delete data.discount;
 		    delete data.discountType;
 		    delete data.couponCode;
 		    delete data.newAmountFmt;
+		    if (data.descrGenerated) {
+			data.description = data.oldDescr;
+		    }
 		});
 	    } else {
 		jQuery('div#asp-coupon-info-' + data.uniq_id).html(response.msg);
