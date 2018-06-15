@@ -81,6 +81,15 @@ echo '<link type="text/css" rel="stylesheet" href="' . WP_ASP_PLUGIN_URL . '/adm
                 "page_url" => "https://stripe-plugins.com/stripe-payments-multi-currency-addon/",
             );
             array_push($addons_data, $addon_8);
+            
+            $addon_9 = array(
+                "name" => "Custom Messages Addon",
+                "thumbnail" => WP_ASP_PLUGIN_URL . "/admin/assets/images/stripe-custom-messages-addon.png",
+                "description" => "This addon allows you to customize a number of common messages displayed by the Stripe Payments Plugin",
+                "page_url" => "https://stripe-plugins.com/stripe-payments-custom-messages-addon/",
+            );
+            array_push($addons_data, $addon_9);
+            
 	    
             /*** Show the addons list ***/
             foreach ($addons_data as $addon) {
