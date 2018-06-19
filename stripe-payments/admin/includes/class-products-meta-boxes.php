@@ -339,7 +339,7 @@ class asp_products_metaboxes {
 	    update_post_meta( $post_id, 'asp_product_enable_stock', isset( $_POST[ 'asp_product_enable_stock' ] ) ? "1" : false  );
 	    update_post_meta( $post_id, 'asp_product_stock_items', sanitize_text_field( absint( $_POST[ 'asp_product_stock_items' ] ) ) );
 
-	    update_post_meta( $post_id, 'asp_product_coupons_setting', isset( $_POST[ 'asp_product_custom_field' ] ) ? sanitize_text_field( $_POST[ 'asp_product_coupons_setting' ] ) : "0"  );
+	    update_post_meta( $post_id, 'asp_product_coupons_setting', isset( $_POST[ 'asp_product_coupons_setting' ] ) ? sanitize_text_field( $_POST[ 'asp_product_coupons_setting' ] ) : "0"  );
 	    update_post_meta( $post_id, 'asp_product_custom_field', isset( $_POST[ 'asp_product_custom_field' ] ) ? sanitize_text_field( $_POST[ 'asp_product_custom_field' ] ) : "0"  );
 	    update_post_meta( $post_id, 'asp_product_button_text', sanitize_text_field( $_POST[ 'asp_product_button_text' ] ) );
 	    update_post_meta( $post_id, 'asp_product_button_class', sanitize_text_field( $_POST[ 'asp_product_button_class' ] ) );
