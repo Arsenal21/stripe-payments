@@ -441,6 +441,7 @@ class AcceptStripePayments {
 	    "NOK"	 => array( "Norwegian Krone (NOK)", "kr" ),
 	    "PHP"	 => array( "Philippine Pesos (PHP)", "₱" ),
 	    "PLN"	 => array( "Polish Zloty (PLN)", "zł" ),
+	    "RUB"	 => array( "Russian Ruble (RUB)", "₽" ),
 	    "SGD"	 => array( "Singapore Dollar (SGD)", "SG$" ),
 	    "ZAR"	 => array( "South African Rand (ZAR)", "R" ),
 	    "KRW"	 => array( "South Korean Won (KRW)", "₩" ),

@@ -102,6 +102,14 @@ if ( isset( $_POST[ 'stripeProductId' ] ) && ! empty( $_POST[ 'stripeProductId' 
 	$item_url = '';
     }
 
+    $post_item_url = isset( $_POST[ 'item_url' ] ) ? $_POST[ 'item_url' ] : '';
+
+    if ( ! empty( $post_item_url ) ) {
+	if ( $item_url !== $post_item_url ) {
+	    $item_url = apply_filters( 'asp_item_url_process', $post_item_url, array( 'button_key' => $_POST[ 'stripeButtonKey' ] ) );
+	}
+    }
+
     $currency_code = get_post_meta( $id, 'asp_product_currency', true );
 
     if ( ! $currency_code ) {
@@ -460,8 +468,8 @@ if ( isset( $opt[ 'send_emails_to_seller' ] ) ) {
     }
 }
 
-$post_data[ 'charge_date_raw' ] = $data[ 'charge' ]->created;
-$post_data[ 'charge_date' ] = date('Y/m/d H:i:s',$data[ 'charge' ]->created);
+$post_data[ 'charge_date_raw' ]	 = $data[ 'charge' ]->created;
+$post_data[ 'charge_date' ]	 = date( 'Y/m/d H:i:s', $data[ 'charge' ]->created );
 
 $_SESSION[ 'asp_data' ] = $post_data;
 
