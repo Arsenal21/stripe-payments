@@ -466,7 +466,7 @@ class AcceptStripePaymentsShortcode {
 	    'quantity'		 => $quantity,
 	    'custom_quantity'	 => $custom_quantity,
 	    'description'		 => $description,
-	    'descrGenerated' => $descr_generated,
+	    'descrGenerated'	 => $descr_generated,
 	    'shipping'		 => $shipping,
 	    'tax'			 => $tax,
 	    'image'			 => $item_logo,
@@ -863,6 +863,7 @@ class AcceptStripePaymentsShortcode {
     }
 
     function apply_content_tags( $content, $data ) {
+
 	$tags	 = array();
 	$vals	 = array();
 
@@ -871,6 +872,8 @@ class AcceptStripePaymentsShortcode {
 	} else {
 	    $data[ 'custom_field' ] = '';
 	}
+
+	$data[ 'paid_amount_curr' ] = AcceptStripePayments::formatted_price( $data[ 'paid_amount' ], $data[ 'currency_code' ] );
 
 	foreach ( $data as $key => $value ) {
 	    if ( $key == 'stripeEmail' ) {

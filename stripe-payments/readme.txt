@@ -4,7 +4,7 @@ Donate link: https://stripe-plugins.com
 Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortcode, digital goods, payment gateway, instant payment, commerce, digital downloads, downloads, e-commerce, e-store, ecommerce, eshop, donation
 Requires at least: 4.7
 Tested up to: 4.9
-Stable tag: 1.9.1.2
+Stable tag: 1.9.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -149,9 +149,11 @@ None.
 
 == Changelog ==
 
-= 1.9.1.2 =
-- Fixed Secure Downloads addon was showing real download URL for products.
+= 1.9.2 =
 - Added Russian Ruble (RUB) currency.
+- Fixed Secure Downloads addon was showing real download URL for products.
+- Fixed per-product thank you page setting was ignored when payment error occurs.
+- Added {paid_amount_curr} custom checkout result page merge tag. It displays formatted amount with currency code (example: $12.99).
 
 = 1.9.1.1 =
 - Fixed per-product coupons settings were set to "Disabled" in some circumstances (thanks to abelfinance for reporting).
