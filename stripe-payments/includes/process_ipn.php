@@ -33,8 +33,8 @@ function asp_ipn_completed( $errMsg = '' ) {
 		$body .= $key . ': ' . $value . "\r\n";
 	    }
 	    wp_mail( $to, $subj, $body, $headers );
-	    $asp_class = AcceptStripePayments::get_instance();
-	    wp_redirect( $asp_class->get_setting( 'checkout_url' ) );
+	    global $aspRedirectURL;
+	    wp_redirect( $aspRedirectURL );
 	}
     } else {
 	ASP_Debug_Logger::log( 'Payment has been processed successfully.' . "\r\n" );
