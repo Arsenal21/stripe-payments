@@ -106,7 +106,7 @@ if ( isset( $_POST[ 'stripeProductId' ] ) && ! empty( $_POST[ 'stripeProductId' 
 
     if ( ! empty( $post_item_url ) ) {
 	if ( $item_url !== $post_item_url ) {
-	    $item_url = apply_filters( 'asp_item_url_process', $post_item_url, array( 'button_key' => $_POST[ 'stripeButtonKey' ] ) );
+	    $item_url = apply_filters( 'asp_item_url_process', $post_item_url, array( 'product_id' => $id, 'button_key' => $_POST[ 'stripeButtonKey' ] ) );
 	}
     }
 
