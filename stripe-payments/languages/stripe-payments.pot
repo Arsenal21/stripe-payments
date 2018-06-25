@@ -339,7 +339,7 @@ msgstr ""
 
 #: stripe-payments/admin/class-asp-admin.php:448
 msgid ""
-"View the custom field <a href=\"https://stripe-plugins.com/custom-field-"
+"View the custom field <a href=\"https://s-plugins.com/custom-field-"
 "settings-feature-stripe-payments-plugin/\" target=\"_blank\">usage "
 "documentation</a>."
 msgstr ""

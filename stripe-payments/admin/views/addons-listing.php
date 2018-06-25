@@ -22,7 +22,7 @@ echo '<link type="text/css" rel="stylesheet" href="' . WP_ASP_PLUGIN_URL . '/adm
                 "name" => "Subscription Payments",
                 "thumbnail" => WP_ASP_PLUGIN_URL . "/admin/assets/images/subscription-payments.png",
                 "description" => "This addon allows you to configure and sell subscription and recurring payments to your customers.",
-                "page_url" => "https://stripe-plugins.com/stripe-subscription-payments-addon/",
+                "page_url" => "https://s-plugins.com/stripe-subscription-payments-addon/",
             );
             array_push($addons_data, $addon_1);
 
@@ -30,7 +30,7 @@ echo '<link type="text/css" rel="stylesheet" href="' . WP_ASP_PLUGIN_URL . '/adm
                 "name" => "Apple and Google Pay",
                 "thumbnail" => WP_ASP_PLUGIN_URL . "/admin/assets/images/apple-android-pay.png",
                 "description" => "This addon allows you to accept payments from your customers using Apple and Google Pay.",
-                "page_url" => "https://stripe-plugins.com/stripe-additional-payment-methods-addon/",
+                "page_url" => "https://s-plugins.com/stripe-additional-payment-methods-addon/",
             );
             array_push($addons_data, $addon_2);
 
@@ -38,7 +38,7 @@ echo '<link type="text/css" rel="stylesheet" href="' . WP_ASP_PLUGIN_URL . '/adm
                 "name" => "Secure Downloads",
                 "thumbnail" => WP_ASP_PLUGIN_URL . "/admin/assets/images/secure-downloads.png",
                 "description" => "Digital products sold to your customers are secured by an encrypted download link that expires automatically.",
-                "page_url" => "https://stripe-plugins.com/protecting-your-digital-downloads-using-the-secure-downloads-addon/",
+                "page_url" => "https://s-plugins.com/protecting-your-digital-downloads-using-the-secure-downloads-addon/",
             );
             array_push($addons_data, $addon_3);           
                         
@@ -46,7 +46,7 @@ echo '<link type="text/css" rel="stylesheet" href="' . WP_ASP_PLUGIN_URL . '/adm
                 "name" => "MailChimp Integration",
                 "thumbnail" => WP_ASP_PLUGIN_URL . "/admin/assets/images/maichimp-integration.png",
                 "description" => "This extension allows you to add customers to your Mailchimp list after they purchase a product.",
-                "page_url" => "https://stripe-plugins.com/mailchimp-integration-addon-stripe-payments/",
+                "page_url" => "https://s-plugins.com/mailchimp-integration-addon-stripe-payments/",
             );
             array_push($addons_data, $addon_4);   
             
@@ -54,7 +54,7 @@ echo '<link type="text/css" rel="stylesheet" href="' . WP_ASP_PLUGIN_URL . '/adm
                 "name" => "reCAPTCHA Addon",
                 "thumbnail" => WP_ASP_PLUGIN_URL . "/admin/assets/images/google-recaptcha.png",
                 "description" => "When you enable this addon, the reCAPTCHA popup will appear when customers click a Stripe payment button.",
-                "page_url" => "https://stripe-plugins.com/stripe-payments-recaptcha-addon/",
+                "page_url" => "https://s-plugins.com/stripe-payments-recaptcha-addon/",
             );
             array_push($addons_data, $addon_5);
             
@@ -62,7 +62,7 @@ echo '<link type="text/css" rel="stylesheet" href="' . WP_ASP_PLUGIN_URL . '/adm
                 "name" => "Alipay Addon",
                 "thumbnail" => WP_ASP_PLUGIN_URL . "/admin/assets/images/alipay-stripe-payments-addon.png",
                 "description" => "When you enable this addon, it gives you the ability to accept payments via Alipay on your website",
-                "page_url" => "https://stripe-plugins.com/alipay-addon-stripe-payments-plugin/",
+                "page_url" => "https://s-plugins.com/alipay-addon-stripe-payments-plugin/",
             );
             array_push($addons_data, $addon_6);
 	    
@@ -70,7 +70,7 @@ echo '<link type="text/css" rel="stylesheet" href="' . WP_ASP_PLUGIN_URL . '/adm
                 "name" => "WP Affiliate Integration",
                 "thumbnail" => WP_ASP_PLUGIN_URL . "/admin/assets/images/wp-affiliate-integration.png",
                 "description" => "The affiliate plugin will track customers that purchase items and award the affiliate that referred the customer.",
-                "page_url" => "https://stripe-plugins.com/stripe-payments-wp-affiliate-plugin-integration/",
+                "page_url" => "https://s-plugins.com/stripe-payments-wp-affiliate-plugin-integration/",
             );
             array_push($addons_data, $addon_7);
             
@@ -78,7 +78,7 @@ echo '<link type="text/css" rel="stylesheet" href="' . WP_ASP_PLUGIN_URL . '/adm
                 "name" => "Multi-Currency Addon",
                 "thumbnail" => WP_ASP_PLUGIN_URL . "/admin/assets/images/stripe-multi-currency-addon.png",
                 "description" => "The multi-currency addon allows your customers to pick a currency and pay for the item in that currency.",
-                "page_url" => "https://stripe-plugins.com/stripe-payments-multi-currency-addon/",
+                "page_url" => "https://s-plugins.com/stripe-payments-multi-currency-addon/",
             );
             array_push($addons_data, $addon_8);
             
@@ -86,7 +86,7 @@ echo '<link type="text/css" rel="stylesheet" href="' . WP_ASP_PLUGIN_URL . '/adm
                 "name" => "Custom Messages Addon",
                 "thumbnail" => WP_ASP_PLUGIN_URL . "/admin/assets/images/stripe-custom-messages-addon.png",
                 "description" => "This addon allows you to customize a number of common messages displayed by the Stripe Payments Plugin",
-                "page_url" => "https://stripe-plugins.com/stripe-payments-custom-messages-addon/",
+                "page_url" => "https://s-plugins.com/stripe-payments-custom-messages-addon/",
             );
             array_push($addons_data, $addon_9);
             

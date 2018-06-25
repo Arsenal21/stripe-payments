@@ -121,7 +121,7 @@ if ( $_GET[ 'page' ] == 'stripe-payments-settings' ) {
     		<div class="postbox" style="min-width: inherit;">
     		    <h3 class="hndle"><label for="title"><?php echo __( 'Plugin Documentation', 'stripe-payments' ); ?></label></h3>
     		    <div class="inside">
-			    <?php echo sprintf( __( 'Please read the %s plugin setup instructions and tutorials to learn how to configure and use it.', 'stripe-payments' ), '<a target="_blank" href="https://stripe-plugins.com/stripe-payments-plugin-tutorials/">Stripe Payments</a>' ); ?>
+			    <?php echo sprintf( __( 'Please read the %s plugin setup instructions and tutorials to learn how to configure and use it.', 'stripe-payments' ), '<a target="_blank" href="https://s-plugins.com/stripe-payments-plugin-tutorials/">Stripe Payments</a>' ); ?>
     		    </div>
     		</div>
     		<div class="postbox" style="min-width: inherit;">

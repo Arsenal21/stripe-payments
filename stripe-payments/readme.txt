@@ -1,6 +1,6 @@
 === Stripe Payments ===
 Contributors: Tips and Tricks HQ, wptipsntricks, alexanderfoxc
-Donate link: https://stripe-plugins.com
+Donate link: https://s-plugins.com
 Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortcode, digital goods, payment gateway, instant payment, commerce, digital downloads, downloads, e-commerce, e-store, ecommerce, eshop, donation
 Requires at least: 4.7
 Tested up to: 4.9
@@ -73,11 +73,11 @@ There are two ways you can use this plugin to create a "Buy Now" or "Pay" button
 
 Option 1) Create a product in the admin dashboard of this plugin then use a shortcode to put a buy button for that product.
 
-[Check this tutorial](https://stripe-plugins.com/creating-product-stripe-payments-plugin/) for step by step instructions.
+[Check this tutorial](https://s-plugins.com/creating-product-stripe-payments-plugin/) for step by step instructions.
 
 Option 2) You can specify the item details in a shortcode to dynamically create a Stripe payment button.
 
-[Check this tutorial](https://stripe-plugins.com/creating-payment-button-dynamically-adding-details-shortcode/) for step by step instructions.
+[Check this tutorial](https://s-plugins.com/creating-payment-button-dynamically-adding-details-shortcode/) for step by step instructions.
 
 = Detailed Documentation =
 
@@ -182,7 +182,7 @@ None.
 
 = 1.8.7 =
 - Added some debug logging message after the notification email is sent by the plugin. This will be useful for troubleshooting email related issue.
-- Added Alipay payment option as a free addon - https://stripe-plugins.com/alipay-addon-stripe-payments-plugin/
+- Added Alipay payment option as a free addon - https://s-plugins.com/alipay-addon-stripe-payments-plugin/
 
 = 1.8.6 =
 - Added basic products stock control functionality.
@@ -310,7 +310,7 @@ None.
 = 1.6.1 =
 - Stripe plugin's admin menu interface has been reworked to facilitate the addition of new features.
 - Added a new interface to add/edit products from the wp admin dashboard. Usage instructions at the following URL:
-  https://stripe-plugins.com/creating-product-stripe-payments-plugin/
+  https://s-plugins.com/creating-product-stripe-payments-plugin/
 
 - There is a new shortcode to embed a Stripe payment button for the products you create in the admin dashboard.
 - The existing shortcodes will continue to work as is (no change there).
@@ -326,7 +326,7 @@ None.
 - Added "thankyou_page_url" shortcode parameter to specify a custom thank you page URL for an item. This can be used to override the default thank you page URL on a per item basis.
 - Extended checkout results page customization using [accept_stripe_payment_checkout] and [accept_stripe_payment_checkout_error] shortcodes.
 - Instructions on how to customize the thank you page using tags can be found at the following URL:
-https://stripe-plugins.com/customize-the-thank-page-message-of-stripe-payments-plugin/
+https://s-plugins.com/customize-the-thank-page-message-of-stripe-payments-plugin/
 
 = 1.5.8 =
 - Zero-decimal currencies (like JPY) are no longer multiplied by 100.

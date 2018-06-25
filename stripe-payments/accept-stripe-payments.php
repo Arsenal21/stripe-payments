@@ -6,7 +6,7 @@
  * Version: 1.9.2
  * Author: Tips and Tricks HQ, wptipsntricks
  * Author URI: https://www.tipsandtricks-hq.com/
- * Plugin URI: https://stripe-plugins.com
+ * Plugin URI: https://s-plugins.com
  * License: GPLv2 or later
  * Text Domain: stripe-payments
  * Domain Path: /languages

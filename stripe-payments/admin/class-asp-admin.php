@@ -212,7 +212,7 @@ class AcceptStripePayments_Admin {
 		<tr data-tabid="2">
 		    <th scope="row">Button CSS Class</th>
 		    <td><input type="text" name="asp_css_class" id="asp_css_class" class="asp-input-wide">
-			<p class="description">CSS class to be assigned to the button. This is used for styling purposes. You can get additional information <a href="https://stripe-plugins.com/customize-stripe-payment-button-appearance-using-css/" target="_blank">in this tutorial</a>.</p>
+			<p class="description">CSS class to be assigned to the button. This is used for styling purposes. You can get additional information <a href="https://s-plugins.com/customize-stripe-payment-button-appearance-using-css/" target="_blank">in this tutorial</a>.</p>
 		    </td>
 		</tr>
 	    </table>
@@ -493,7 +493,7 @@ class AcceptStripePayments_Admin {
 	add_settings_field( 'custom_field_enabled', __( 'Enable For All Buttons and Products', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-custom-field', array( 'field'	 => 'custom_field_enabled',
 	    'desc'	 => __( 'If enabled, makes the following field enabled by default for all buttons and products.', 'stripe-payments' ) . '<br />' .
 	    __( 'You can control per-product or per-button behaviour by editing the product and selecting enabled or disabled option under the Custom Field section.', 'stripe-payments' ) . '<br />' .
-	    __( 'View the custom field <a href="https://stripe-plugins.com/custom-field-settings-feature-stripe-payments-plugin/" target="_blank">usage documentation</a>.', 'stripe-payments' ) )
+	    __( 'View the custom field <a href="https://s-plugins.com/custom-field-settings-feature-stripe-payments-plugin/" target="_blank">usage documentation</a>.', 'stripe-payments' ) )
 	);
 	add_settings_field( 'custom_field_name', __( 'Field Name', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-custom-field', array( 'field'	 => 'custom_field_name',
 	    'desc'	 => __( 'Enter name for the field. It will be displayed in order info and emails.', 'stripe-payments' ) )
@@ -533,7 +533,7 @@ class AcceptStripePayments_Admin {
 	?>
 	<div style="background: none repeat scroll 0 0 #FFF6D5;border: 1px solid #D1B655;color: #3F2502;margin: 10px 0;padding: 5px 5px 5px 10px;text-shadow: 1px 1px #FFFFFF;">
 	    <p>Please read the
-		<a target="_blank" href="https://stripe-plugins.com/stripe-payments-plugin-tutorials/">WordPress Stripe</a> plugin setup instructions to configure and use it.
+		<a target="_blank" href="https://s-plugins.com/stripe-payments-plugin-tutorials/">WordPress Stripe</a> plugin setup instructions to configure and use it.
 	    </p>
 	</div>
 	<?php
