@@ -642,13 +642,16 @@ class AcceptStripePaymentsShortcode {
 	    }
 	    //Coupons
 	    if ( isset( $data[ 'coupons_enabled' ] ) && $data[ 'coupons_enabled' ] == "1" ) {
-		//check if this is subscription product. If it is, we won't display coupons field as its not currently supported
-		if ( isset( $data[ 'product_id' ] ) && ! get_post_meta( $data[ 'product_id' ], 'asp_sub_plan_id', true ) ) {
-		    $str_coupon_label	 = __( 'Coupon Code', 'stripe-payments' );
-		    $output			 .= '<div class="asp_product_coupon_input_container"><label class="asp_product_coupon_field_label">' . $str_coupon_label . ' ' . '</label><input id="asp-coupon-field-' . $data[ 'uniq_id' ] . '" class="asp_product_coupon_field_input" type="text" name="stripeCoupon">'
-		    . '<input type="button" id="asp-redeem-coupon-btn-' . $data[ 'uniq_id' ] . '" type="button" class="asp_btn_normalize asp_coupon_apply_btn" value="' . __( 'Apply', 'stripe-payments' ) . '">'
-		    . '<div id="asp-coupon-info-' . $data[ 'uniq_id' ] . '" class="asp_product_coupon_info"></div>'
-		    . '</div>';
+		if ( isset( $data[ 'product_id' ] ) ) {
+		    //check if this is subscription product. If it is, we will only display coupon field if subs addon version is >=1.2.5
+		    if ( get_post_meta( $data[ 'product_id' ], 'asp_sub_plan_id', true ) !== false &&
+		    (class_exists( 'ASPSUB_main' ) && version_compare( '1.2.5', ASPSUB_main::ADDON_VER ) >= 0 ) ) {
+			$str_coupon_label	 = __( 'Coupon Code', 'stripe-payments' );
+			$output			 .= '<div class="asp_product_coupon_input_container"><label class="asp_product_coupon_field_label">' . $str_coupon_label . ' ' . '</label><input id="asp-coupon-field-' . $data[ 'uniq_id' ] . '" class="asp_product_coupon_field_input" type="text" name="stripeCoupon">'
+			. '<input type="button" id="asp-redeem-coupon-btn-' . $data[ 'uniq_id' ] . '" type="button" class="asp_btn_normalize asp_coupon_apply_btn" value="' . __( 'Apply', 'stripe-payments' ) . '">'
+			. '<div id="asp-coupon-info-' . $data[ 'uniq_id' ] . '" class="asp_product_coupon_info"></div>'
+			. '</div>';
+		    }
 		}
 	    }
 	}
