@@ -641,7 +641,7 @@ class AcceptStripePaymentsShortcode {
 		$output		 .= '</div>';
 	    }
 	    //Coupons
-	    if ( isset( $data[ 'coupons_enabled' ] ) && $data[ 'coupons_enabled' ] == "1" ) {
+	    if ( isset( $data[ 'coupons_enabled' ] ) && $data[ 'coupons_enabled' ] == "1" && ! $data[ 'variable' ] ) {
 		if ( isset( $data[ 'product_id' ] ) ) {
 		    //check if this is subscription product. If it is, we will only display coupon field if subs addon version is >=1.2.5
 		    if ( get_post_meta( $data[ 'product_id' ], 'asp_sub_plan_id', true ) !== false &&
