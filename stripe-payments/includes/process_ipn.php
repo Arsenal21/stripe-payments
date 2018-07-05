@@ -208,9 +208,34 @@ $stripeTokenType	 = sanitize_text_field( $_POST[ 'stripeTokenType' ] );
 $stripeEmail		 = sanitize_email( $_POST[ 'stripeEmail' ] );
 $charge_description	 = sanitize_text_field( $_POST[ 'charge_description' ] );
 
+$orig_item_price = $item_price;
+
+//check if we we need to apply coupon
+if ( ! empty( $_POST[ 'stripeCoupon' ] ) ) {
+    $coupon_code	 = strtoupper( $_POST[ 'stripeCoupon' ] );
+    ASP_Debug_Logger::log( sprintf( 'Coupon provided "%s"', $coupon_code ) );
+    $coupon		 = AcceptStripePayments_CouponsAdmin::get_coupon( $coupon_code );
+    if ( $coupon[ 'valid' ] ) {
+	if ( $coupon[ 'discountType' ] === 'perc' ) {
+	    $perc		 = AcceptStripePayments::is_zero_cents( $currency_code ) ? 0 : 2;
+	    $discount_amount = round( $item_price * ( $coupon[ 'discount' ] / 100 ), $perc );
+	} else {
+	    $discount_amount = $coupon[ 'discount' ];
+	}
+	ASP_Debug_Logger::log( sprintf( 'Coupon is valid. Discount amount: %s', $discount_amount ) );
+	$coupon[ 'discountAmount' ]	 = $discount_amount;
+	$item_price			 = $item_price - $discount_amount;
+    } else {
+	ASP_Debug_Logger::log( sprintf( 'Invalid coupon "%s", reason: %s', $coupon_code, $coupon[ 'err_msg' ] ) );
+	unset( $coupon );
+    }
+}
+
 $amount = $item_price;
 
 //apply tax if needed
+$tax_amt = AcceptStripePayments::get_tax_amount( $amount, $tax, AcceptStripePayments::is_zero_cents( $currency_code ) );
+
 $amount = AcceptStripePayments::apply_tax( $amount, $tax, AcceptStripePayments::is_zero_cents( $currency_code ) );
 
 if ( $item_custom_quantity !== false ) { //custom quantity
@@ -225,27 +250,6 @@ $amount = ($item_quantity !== "NA" ? ($amount * $item_quantity) : $amount);
 
 //add shipping cost
 $amount = AcceptStripePayments::apply_shipping( $amount, $shipping );
-
-//check if we we need to apply coupon
-if ( ! empty( $_POST[ 'stripeCoupon' ] ) ) {
-    $coupon_code	 = strtoupper( $_POST[ 'stripeCoupon' ] );
-    ASP_Debug_Logger::log( sprintf( 'Coupon provided "%s"', $coupon_code ) );
-    $coupon		 = AcceptStripePayments_CouponsAdmin::get_coupon( $coupon_code );
-    if ( $coupon[ 'valid' ] ) {
-	if ( $coupon[ 'discountType' ] === 'perc' ) {
-	    $perc		 = AcceptStripePayments::is_zero_cents( $currency_code ) ? 0 : 2;
-	    $discount_amount = round( $amount * ( $coupon[ 'discount' ] / 100 ), $perc );
-	} else {
-	    $discount_amount = $coupon[ 'discount' ];
-	}
-	ASP_Debug_Logger::log( sprintf( 'Coupon is valid. Discount amount: %s', $discount_amount ) );
-	$coupon[ 'discountAmount' ]	 = $discount_amount;
-	$amount				 = $amount - $discount_amount;
-    } else {
-	ASP_Debug_Logger::log( sprintf( 'Invalid coupon "%s", reason: %s', $coupon_code, $coupon[ 'err_msg' ] ) );
-	unset( $coupon );
-    }
-}
 
 $amount_in_cents = $amount;
 
@@ -271,7 +275,8 @@ $data[ 'stripeToken' ]		 = $stripeToken;
 $data[ 'stripeTokenType' ]	 = $stripeTokenType;
 $data[ 'stripeEmail' ]		 = $stripeEmail;
 $data[ 'item_quantity' ]	 = $item_quantity;
-$data[ 'item_price' ]		 = $item_price;
+$data[ 'item_price' ]		 = $orig_item_price;
+$data[ 'discount_item_price' ]	 = $item_price;
 $data[ 'paid_amount' ]		 = $amount;
 $data[ 'amount_in_cents' ]	 = $amount_in_cents;
 $data[ 'currency_code' ]	 = $currency_code;
@@ -384,8 +389,17 @@ $post_data[ 'shipping_address' ] = $shipping_address;
 
 $post_data[ 'additional_items' ] = array();
 
+//check if we need to increase redeem coupon count
+if ( isset( $coupon ) && $coupon[ 'valid' ] ) {
+    $curr_redeem_cnt											 = get_post_meta( $coupon[ 'id' ], 'asp_coupon_red_count', true );
+    $curr_redeem_cnt ++;
+    update_post_meta( $coupon[ 'id' ], 'asp_coupon_red_count', $curr_redeem_cnt ++  );
+    $post_data[ 'coupon' ]											 = $coupon;
+    $post_data[ 'additional_items' ][ sprintf( __( 'Coupon "%s"', 'stripe-payments' ), $coupon[ 'code' ] ) ] = floatval( '-' . $coupon[ 'discountAmount' ] );
+    $post_data[ 'additional_items' ][ __( 'Subtotal', 'stripe-payments' ) ]					 = $data[ 'discount_item_price' ];
+}
+
 if ( isset( $tax ) && ! empty( $tax ) ) {
-    $tax_amt								 = AcceptStripePayments::get_tax_amount( $post_data[ 'item_price' ], $tax, AcceptStripePayments::is_zero_cents( $currency_code ) );
     $post_data[ 'additional_items' ][ __( 'Tax', 'stripe-payments' ) ]	 = $tax_amt;
     $post_data[ 'tax_perc' ]						 = $tax;
     $post_data[ 'tax' ]							 = $tax_amt;
@@ -394,15 +408,6 @@ if ( isset( $tax ) && ! empty( $tax ) ) {
 if ( isset( $shipping ) && ! empty( $shipping ) ) {
     $post_data[ 'additional_items' ][ __( 'Shipping', 'stripe-payments' ) ]	 = $shipping;
     $post_data[ 'shipping' ]						 = $shipping;
-}
-
-//check if we need to increase redeem coupon count
-if ( isset( $coupon ) && $coupon[ 'valid' ] ) {
-    $curr_redeem_cnt											 = get_post_meta( $coupon[ 'id' ], 'asp_coupon_red_count', true );
-    $curr_redeem_cnt ++;
-    update_post_meta( $coupon[ 'id' ], 'asp_coupon_red_count', $curr_redeem_cnt ++  );
-    $post_data[ 'coupon' ]											 = $coupon;
-    $post_data[ 'additional_items' ][ sprintf( __( 'Coupon "%s"', 'stripe-payments' ), $coupon[ 'code' ] ) ] = floatval( '-' . $coupon[ 'discountAmount' ] );
 }
 
 //Insert the order data to the custom post

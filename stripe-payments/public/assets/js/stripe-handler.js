@@ -149,21 +149,22 @@ function wp_asp_can_proceed(data, openHandler) {
 	data.item_price = wp_asp_validate_custom_amount(data, true);
     }
 
+    if (typeof amount === "undefined") {
+	amount = stripehandler.apply_coupon(data.item_price, data);
+    } else {
+	amount = stripehandler.apply_coupon(amount, data);
+    }
+
     if (data.custom_quantity === "1") {
 	var custom_quantity = wp_asp_validate_custom_quantity(data);
 	if (custom_quantity !== false) {
-	    amount = custom_quantity * data.item_price;
-	    amount = stripehandler.apply_tax_and_shipping(amount, data);
+	    amount = custom_quantity * amount;
 	} else {
 	    return false;
 	}
     }
 
-    if (typeof amount === "undefined") {
-	amount = stripehandler.apply_coupon(data.amount, data);
-    } else {
-	amount = stripehandler.apply_coupon(amount, data);
-    }
+    amount = stripehandler.apply_tax_and_shipping(amount, data);
 
     var description = data.description;
 
@@ -321,7 +322,9 @@ function wp_asp_add_stripe_handler(data) {
 	    'action': 'asp_check_coupon',
 	    'coupon_code': couponCode,
 	    'curr': data.currency,
-	    'amount': data.amount
+	    'amount': data.item_price,
+	    'tax': data.tax,
+	    'shipping': data.shipping
 	};
 	jQuery.post(stripehandler.ajax_url, ajaxData, function (response) {
 	    if (response.success) {
