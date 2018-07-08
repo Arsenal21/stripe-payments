@@ -150,6 +150,7 @@ None.
 == Changelog ==
 
 = 1.9.3t1 =
+- Added Dropbox support for Secure Downloads addon.
 - Coupon input is no longer displayed for custom amount products.
 
 = 1.9.2 =
