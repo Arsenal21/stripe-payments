@@ -385,6 +385,8 @@ function wp_asp_add_stripe_handler(data) {
 
 	wp_asp_check_handler(data);
 
+	data.buttonClicked = jQuery(this);
+
 	return wp_asp_can_proceed(data, true);
 
     });
