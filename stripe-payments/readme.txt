@@ -149,9 +149,10 @@ None.
 
 == Changelog ==
 
-= 1.9.3t1 =
-- Added Dropbox support for Secure Downloads addon.
+= 1.9.3 =
+- Coupon discount is now applied to the product price, not the total amount.
 - Coupon input is no longer displayed for custom amount products.
+- Added Dropbox support for Secure Downloads addon (requires addon version 1.1.7+).
 
 = 1.9.2 =
 - Added Russian Ruble (RUB) currency.
