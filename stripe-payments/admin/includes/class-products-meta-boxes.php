@@ -24,7 +24,30 @@ class asp_products_metaboxes {
 	add_meta_box( 'asp_custom_field_meta_box', __( 'Custom Field', 'stripe-payments' ), array( $this, 'display_custom_field_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 	add_meta_box( 'asp_shortcode_meta_box', __( 'Shortcode', 'stripe-payments' ), array( $this, 'display_shortcode_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 
+	//check if eStore installed
+	if ( function_exists( 'wp_eMember_install' ) ) {
+	    //if it is, let's add metabox where admin can select membership level
+	    add_meta_box( 'asp_emember_meta_box', __( 'eMember Membership Level', 'stripe-payments' ), array( $this, 'display_emember_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
+	}
+
 	do_action( 'asp_edit_product_metabox' );
+    }
+
+    function display_emember_meta_box( $post ) {
+	$current_val = get_post_meta( $post->ID, 'asp_product_emember_level', true );
+
+	$all_levels	 = dbAccess::findAll( WP_EMEMBER_MEMBERSHIP_LEVEL_TABLE, ' id != 1 ', ' id DESC ' );
+	$levels_str	 = '<option value="">(' . __( 'None', 'stripe-payments' ) . ')</option>' . "\r\n";
+
+	foreach ( $all_levels as $level ) {
+	    $levels_str .= '<option value="' . $level->id . '"' . ($level->id == $current_val ? ' selected' : '') . '>' . stripslashes( $level->alias ) . '</option>' . "\r\n";
+	}
+	?>
+	<p><?php _e( 'Select Membership Level you want this product to stand for.', 'stripe-payments' ); ?></p>
+	<select name="asp_product_emember_level">
+	    <?php echo $levels_str; ?>
+	</select>
+	<?php
     }
 
     function display_description_meta_box( $post ) {
@@ -356,7 +379,8 @@ class asp_products_metaboxes {
 	    }
 	    update_post_meta( $post_id, 'asp_product_collect_shipping_addr', $shipping_addr );
 	    update_post_meta( $post_id, 'asp_product_collect_billing_addr', isset( $_POST[ 'asp_product_collect_billing_addr' ] ) ? "1" : false  );
-	    
+	    update_post_meta( $post_id, 'asp_product_emember_level',  ! empty( $_POST[ 'asp_product_emember_level' ] ) ? intval( $_POST[ 'asp_product_emember_level' ] ) : ""  );
+
 	    do_action( 'asp_save_product_handler', $post_id, $post, $update );
 	}
     }

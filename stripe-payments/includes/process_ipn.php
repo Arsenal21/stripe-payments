@@ -426,22 +426,89 @@ ASP_Debug_Logger::log( 'Firing post-payment hooks.' );
 //Action hook with the checkout post data parameters.
 do_action( 'asp_stripe_payment_completed', $post_data, $data[ 'charge' ] );
 
+//eMember integration - check if this is a product
 //Action hook with the order object.
 do_action( 'AcceptStripePayments_payment_completed', $order, $data[ 'charge' ] );
 
 $GLOBALS[ 'asp_payment_success' ] = true;
 
-//check if we need to deal with stock
-if ( ! empty( $data[ 'product_id' ] ) && get_post_meta( $data[ 'product_id' ], 'asp_product_enable_stock', true ) ) {
-    $stock_items	 = intval( get_post_meta( $data[ 'product_id' ], 'asp_product_stock_items', true ) );
-    $stock_items	 = $stock_items - $data[ 'item_quantity' ];
-    if ( $stock_items < 0 ) {
-	$stock_items = 0;
+if ( ! empty( $data[ 'product_id' ] ) ) {
+    //check if we need to deal with stock
+    if ( get_post_meta( $data[ 'product_id' ], 'asp_product_enable_stock', true ) ) {
+	$stock_items	 = intval( get_post_meta( $data[ 'product_id' ], 'asp_product_stock_items', true ) );
+	$stock_items	 = $stock_items - $data[ 'item_quantity' ];
+	if ( $stock_items < 0 ) {
+	    $stock_items = 0;
+	}
+	update_post_meta( $data[ 'product_id' ], 'asp_product_stock_items', $stock_items );
+	$data[ 'stock_items' ] = $stock_items;
     }
-    update_post_meta( $data[ 'product_id' ], 'asp_product_stock_items', $stock_items );
-    $data[ 'stock_items' ] = $stock_items;
-}
 
+    //eMember integration: let's check if eMember is installed
+    if ( function_exists( 'wp_eMember_install' ) ) {
+	//let's check if Membership Level is set for this product
+	$level_id = get_post_meta( $data[ 'product_id' ], 'asp_product_emember_level', true );
+	if ( ! empty( $level_id ) ) {
+	    //let's form data required for eMember_handle_subsc_signup_stand_alone function and call it
+
+	    $name = isset( $_POST[ 'stripeBillingName' ] ) ? sanitize_text_field( $_POST[ 'stripeBillingName' ] ) : '';
+	    if ( empty( $name ) && ! empty( $data[ 'charge' ]->source->name ) ) {
+		$name = $data[ 'charge' ]->source->name;
+	    }
+	    $first_name	 = '';
+	    $last_name	 = '';
+	    if ( ! empty( $name ) ) {
+		// let's try to create first name and last name from full name
+		$parts		 = explode( " ", $name );
+		$last_name	 = array_pop( $parts );
+		$first_name	 = implode( " ", $parts );
+	    }
+
+	    $addr_street	 = isset( $_POST[ 'stripeBillingAddressLine1' ] ) ? $_POST[ 'stripeBillingAddressLine1' ] : '';
+	    $addr_zip	 = isset( $_POST[ 'stripeBillingAddressZip' ] ) ? $_POST[ 'stripeBillingAddressZip' ] : '';
+	    $addr_city	 = isset( $_POST[ 'stripeBillingAddressCity' ] ) ? $_POST[ 'stripeBillingAddressCity' ] : '';
+	    $addr_state	 = isset( $_POST[ 'stripeBillingAddressState' ] ) ? $_POST[ 'stripeBillingAddressState' ] : '';
+	    $addr_country	 = isset( $_POST[ 'stripeBillingAddressCountry' ] ) ? $_POST[ 'stripeBillingAddressCountry' ] : '';
+
+	    if ( empty( $addr_street ) && ! empty( $data[ 'charge' ]->source->address_line1 ) ) {
+		$addr_street = $data[ 'charge' ]->source->address_line1;
+	    }
+
+	    if ( empty( $addr_zip ) && ! empty( $data[ 'charge' ]->source->address_zip ) ) {
+		$addr_zip = $data[ 'charge' ]->source->address_zip;
+	    }
+
+	    if ( empty( $addr_city ) && ! empty( $data[ 'charge' ]->source->address_city ) ) {
+		$addr_city = $data[ 'charge' ]->source->address_city;
+	    }
+
+	    if ( empty( $addr_state ) && ! empty( $data[ 'charge' ]->source->address_state ) ) {
+		$addr_state = $data[ 'charge' ]->source->address_state;
+	    }
+
+	    if ( empty( $addr_country ) && ! empty( $data[ 'charge' ]->source->address_country ) ) {
+		$addr_country = $data[ 'charge' ]->source->address_country;
+	    }
+
+	    $ipn_data = array(
+		'payer_email'		 => $data[ 'stripeEmail' ],
+		'first_name'		 => $first_name,
+		'last_name'		 => $last_name,
+		'txn_id'		 => $data[ 'txn_id' ],
+		'address_street'	 => $addr_street,
+		'address_city'		 => $addr_city,
+		'address_state'		 => $addr_state,
+		'address_zip'		 => $addr_zip,
+		'address_country'	 => $addr_country,
+	    );
+
+	    ASP_Debug_Logger::log( 'Calling eMember_handle_subsc_signup_stand_alone' );
+
+	    require_once(WP_EMEMBER_PATH . 'ipn/eMember_handle_subsc_ipn_stand_alone.php');
+	    eMember_handle_subsc_signup_stand_alone( $ipn_data, $level_id, '' );
+	}
+    }
+}
 //Let's handle email sending stuff
 
 if ( isset( $opt[ 'send_emails_to_buyer' ] ) ) {
