@@ -444,7 +444,7 @@ if ( ! empty( $data[ 'product_id' ] ) ) {
 	$data[ 'stock_items' ] = $stock_items;
     }
 
-    //eMember integration: let's check if eMember is installed
+    //WP eMember integration: let's check if eMember plugin is installed
     if ( function_exists( 'wp_eMember_install' ) ) {
 	//let's check if Membership Level is set for this product
 	$level_id = get_post_meta( $data[ 'product_id' ], 'asp_product_emember_level', true );
@@ -504,13 +504,22 @@ if ( ! empty( $data[ 'product_id' ] ) ) {
 
 	    ASP_Debug_Logger::log( 'Calling eMember_handle_subsc_signup_stand_alone' );
 
-	    require_once(WP_EMEMBER_PATH . 'ipn/eMember_handle_subsc_ipn_stand_alone.php');
-	    eMember_handle_subsc_signup_stand_alone( $ipn_data, $level_id, '' );
+            $emember_id = '';
+            if (class_exists('Emember_Auth')){
+                //Check if the user is logged in as a member.
+                $emember_auth = Emember_Auth::getInstance();
+                $emember_id = $emember_auth->getUserInfo('member_id');
+            }
+
+            if( defined('WP_EMEMBER_PATH') ){
+                require_once(WP_EMEMBER_PATH . 'ipn/eMember_handle_subsc_ipn_stand_alone.php');
+                eMember_handle_subsc_signup_stand_alone( $ipn_data, $level_id, $data['txn_id'], $emember_id );
+            }
 	}
     }
 }
-//Let's handle email sending stuff
 
+//Let's handle email sending stuff
 if ( isset( $opt[ 'send_emails_to_buyer' ] ) ) {
     if ( $opt[ 'send_emails_to_buyer' ] ) {
 	$from	 = $opt[ 'from_email_address' ];

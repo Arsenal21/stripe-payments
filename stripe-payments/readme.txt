@@ -153,7 +153,7 @@ None.
 - Coupon discount is now applied to the product price, not the total amount.
 - Coupon input is no longer displayed for custom amount products.
 - Added Dropbox support for Secure Downloads addon (requires addon version 1.1.7+).
-- Added eMember integration options.
+- Added WP eMember plugin integration options.
 
 = 1.9.2 =
 - Added Russian Ruble (RUB) currency.

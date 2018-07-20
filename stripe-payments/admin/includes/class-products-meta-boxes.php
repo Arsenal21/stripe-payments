@@ -27,7 +27,7 @@ class asp_products_metaboxes {
 	//check if eStore installed
 	if ( function_exists( 'wp_eMember_install' ) ) {
 	    //if it is, let's add metabox where admin can select membership level
-	    add_meta_box( 'asp_emember_meta_box', __( 'eMember Membership Level', 'stripe-payments' ), array( $this, 'display_emember_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
+	    add_meta_box( 'asp_emember_meta_box', __( 'WP eMember Membership Level', 'stripe-payments' ), array( $this, 'display_emember_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 	}
 
 	do_action( 'asp_edit_product_metabox' );
@@ -43,7 +43,7 @@ class asp_products_metaboxes {
 	    $levels_str .= '<option value="' . $level->id . '"' . ($level->id == $current_val ? ' selected' : '') . '>' . stripslashes( $level->alias ) . '</option>' . "\r\n";
 	}
 	?>
-	<p><?php _e( 'Select Membership Level you want this product to stand for.', 'stripe-payments' ); ?></p>
+	<p><?php _e( 'If you want this product to be connected to a membership level then select the membership Level here.', 'stripe-payments' ); ?></p>
 	<select name="asp_product_emember_level">
 	    <?php echo $levels_str; ?>
 	</select>
