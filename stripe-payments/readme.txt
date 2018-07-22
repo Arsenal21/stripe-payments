@@ -151,6 +151,7 @@ None.
 
 = 1.9.4t1 =
 - Installed add-ons are now marked on Add-ons page and have Settings button displayed.
+- Compressed images to decrease plugin package size.
 
 = 1.9.3 =
 - Coupon discount is now applied to the product price, not the total amount.
