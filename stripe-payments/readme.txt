@@ -152,6 +152,7 @@ None.
 = 1.9.4t1 =
 - Installed add-ons are now marked on Add-ons page and have Settings button displayed.
 - Compressed images to decrease plugin package size.
+- Fixed coupon discount was visually applied on all products on page, not just the one where coupon was entered.
 
 = 1.9.3 =
 - Coupon discount is now applied to the product price, not the total amount.
