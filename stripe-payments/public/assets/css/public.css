@@ -1,3 +1,23 @@
+
+@keyframes asp-spinner {
+    to {transform: rotate(360deg);}
+}
+
+.asp-spinner {
+    text-indent: -9999px;
+    vertical-align: middle;
+    margin-left: 5px;
+    display: inline-block;
+    box-sizing: border-box;
+    position: relative;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid #ccc;
+    border-top-color: #333;
+    animation: asp-spinner .6s linear infinite;
+}
+
 .asp_line_through {
     text-decoration: line-through;
 }

@@ -153,6 +153,7 @@ None.
 - Installed add-ons are now marked on Add-ons page and have Settings button displayed.
 - Compressed images to decrease plugin package size.
 - Fixed coupon discount was visually applied on all products on page, not just the one where coupon was entered.
+- Added spinner after "Apply" coupon button is clicked to indicate that coupon is being checked.
 
 = 1.9.3 =
 - Coupon discount is now applied to the product price, not the total amount.

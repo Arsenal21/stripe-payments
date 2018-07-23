@@ -318,6 +318,10 @@ function wp_asp_add_stripe_handler(data) {
 	if (couponCode === '') {
 	    return false;
 	}
+	var aspCouponBtn = jQuery(this);
+	var aspCouponSpinner = jQuery(jQuery.parseHTML('<div class="asp-spinner">Loading...</div>'));
+	aspCouponBtn.prop('disabled', true);
+	aspCouponBtn.after(aspCouponSpinner);
 	var ajaxData = {
 	    'action': 'asp_check_coupon',
 	    'coupon_code': couponCode,
@@ -367,6 +371,8 @@ function wp_asp_add_stripe_handler(data) {
 	    } else {
 		jQuery('div#asp-coupon-info-' + data.uniq_id).html(response.msg);
 	    }
+	    aspCouponSpinner.remove();
+	    aspCouponBtn.prop('disabled', false);
 	});
     });
 
