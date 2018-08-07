@@ -4,7 +4,7 @@ Donate link: https://s-plugins.com
 Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortcode, digital goods, payment gateway, instant payment, commerce, digital downloads, downloads, e-commerce, e-store, ecommerce, eshop, donation
 Requires at least: 4.7
 Tested up to: 4.9
-Stable tag: 1.9.4t1
+Stable tag: 1.9.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -149,7 +149,7 @@ None.
 
 == Changelog ==
 
-= 1.9.4t1 =
+= 1.9.4 =
 - Added "Debug Log Shareable Link" to share debug log without having to share WP Dashboard credentials.
 - Added error message on product edit page if price is below or above Stripe's allowed min/max for selected currency.
 - Installed add-ons are now marked on Add-ons page and have Settings button displayed.
