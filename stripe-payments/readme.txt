@@ -150,6 +150,7 @@ None.
 == Changelog ==
 
 = 1.9.4t1 =
+- Added error message on product edit page if price is below or above Stripe's allowed min/max for selected currency.
 - Installed add-ons are now marked on Add-ons page and have Settings button displayed.
 - Compressed images to decrease plugin package size.
 - Fixed coupon discount was visually applied on all products on page, not just the one where coupon was entered.

@@ -47,10 +47,33 @@ class AcceptStripePayments_Admin {
 
 	add_action( 'admin_init', array( $this, 'admin_init' ) );
 
+	add_action( 'admin_notices', array( $this, 'show_admin_notices' ), 1 );
+
 	//TinyMCE button related
 	add_action( 'init', array( $this, 'tinymce_shortcode_button' ) );
 	add_action( 'current_screen', array( $this, 'check_current_screen' ) );
 	add_action( 'wp_ajax_asp_tinymce_get_settings', array( $this, 'tinymce_ajax_handler' ) ); // Add ajax action handler for tinymce
+    }
+
+    function show_admin_notices() {
+	$msg_arr = get_transient( 'asp_admin_msg_arr' );
+	if ( ! empty( $msg_arr ) ) {
+	    delete_transient( 'asp_admin_msg_arr' );
+	    $tpl = '<div class="notice notice-%1$s%3$s"><p>%2$s</p></div>';
+	    foreach ( $msg_arr as $msg ) {
+		echo sprintf( $tpl, $msg[ 'type' ], $msg[ 'text' ], $msg[ 'dism' ] === true ? ' is-dismissible' : ''  );
+	    }
+	}
+    }
+
+    static function add_admin_notice( $type, $text, $dism = true ) {
+	$msg_arr	 = get_transient( 'asp_admin_msg_arr' );
+	$msg_arr	 = empty( $msg_arr ) ? array() : $msg_arr;
+	$msg_arr[]	 = array(
+	    'type'	 => $type,
+	    'text'	 => $text,
+	    'dism'	 => $dism );
+	set_transient( 'asp_admin_msg_arr', $msg_arr );
     }
 
     function admin_init() {

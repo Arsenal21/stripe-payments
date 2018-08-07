@@ -354,7 +354,6 @@ class asp_products_metaboxes {
 	    return;
 	}
 	if ( isset( $post_id ) ) {
-	    update_post_meta( $post_id, 'asp_product_price', sanitize_text_field( $_POST[ 'asp_product_price' ] ) );
 	    update_post_meta( $post_id, 'asp_product_currency', sanitize_text_field( $_POST[ 'asp_product_currency' ] ) );
 	    update_post_meta( $post_id, 'asp_product_shipping', sanitize_text_field( $_POST[ 'asp_product_shipping' ] ) );
 	    update_post_meta( $post_id, 'asp_product_tax', sanitize_text_field( $_POST[ 'asp_product_tax' ] ) );
@@ -382,6 +381,43 @@ class asp_products_metaboxes {
 	    update_post_meta( $post_id, 'asp_product_emember_level',  ! empty( $_POST[ 'asp_product_emember_level' ] ) ? intval( $_POST[ 'asp_product_emember_level' ] ) : ""  );
 
 	    do_action( 'asp_save_product_handler', $post_id, $post, $update );
+
+	    //check if this is not subscription product
+	    if ( empty( get_post_meta( $post_id, 'asp_sub_plan_id', true ) ) ) {
+		//check if price is in min-max range for the currency set by Stripe: https://stripe.com/docs/currencies#minimum-and-maximum-charge-amounts
+		$price		 = sanitize_text_field( $_POST[ 'asp_product_price' ] );
+		$currency	 = sanitize_text_field( $_POST[ 'asp_product_currency' ] );
+		if ( ! empty( $price ) ) {
+		    $price		 = AcceptStripePayments::is_zero_cents( $currency ) ? round( $price ) : round( $price * 100 );
+		    //check if we have currency set
+		    $class_asp	 = AcceptStripePayments::get_instance();
+		    if ( empty( $currency ) ) {
+			//we have not. This means default currency should be used
+			$currency = $class_asp->get_setting( 'currency_code' );
+		    }
+		    $currency = strtoupper( $currency );
+		    //let's see if currency has specific minimum set
+		    if ( isset( $class_asp->minAmounts[ $currency ] ) ) {
+			//check if price < minAmount
+			if ( $price < $class_asp->minAmounts[ $currency ] ) {
+			    // it is. Let's add error message
+			    $text = sprintf( __( '<b>Invalid product price</b>: minimum price in %s should be %s, you specified %s', 'stripe-payments' ), $currency, $class_asp->formatted_price( $class_asp->minAmounts[ $currency ], $currency, true ), $class_asp->formatted_price( $price, $currency, true ) );
+			    AcceptStripePayments_Admin::add_admin_notice( 'error', $text, false );
+			    // we don't save invalid price
+			    return false;
+			}
+		    }
+		    //check if value is not above maximum allowed by Stripe (8 digits; e.g. 99999999 in cents)
+		    if ( $price > 99999999 ) {
+			// it is. Let's add error message
+			$text = sprintf( __( '<b>Invalid product price</b>: maximum allowed product price is %s, you specified %s', 'stripe-payments' ), $class_asp->formatted_price( 99999999, $currency, true ), $class_asp->formatted_price( $price, $currency, true ) );
+			AcceptStripePayments_Admin::add_admin_notice( 'error', $text, false );
+			// we don't save invalid price
+			return false;
+		    }
+		}
+	    }
+	    update_post_meta( $post_id, 'asp_product_price', sanitize_text_field( $_POST[ 'asp_product_price' ] ) );
 	}
     }
 
