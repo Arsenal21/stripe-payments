@@ -427,6 +427,7 @@ class AcceptStripePayments_Admin {
 	//Debug section
 	add_settings_field( 'debug_log_enable', __( 'Enable Debug Logging', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-debug-section', array( 'field'	 => 'debug_log_enable', 'desc'	 => __( 'Check this option to enable debug logging. This is useful for troubleshooting post payment failures.', 'stripe-payments' ) .
 	    '<br /><a href="' . admin_url() . '?asp_action=view_log" target="_blank">' . __( 'View Log', 'stripe-payments' ) . '</a> | <a style="color: red;" id="asp_clear_log_btn" href="#0">' . __( 'Clear Log', 'stripe-payments' ) . '</a>' ) );
+	add_settings_field( 'debug_log_link', __( 'Debug Log Shareable Link', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-debug-section', array( 'field' => 'debug_log_link', 'desc' => __( 'For security reasons, there is no access for to the debug log unless you\'re logged in into WP Dashboard as admin. However, in some situations it might be required for support personnel to view it without having admin credentials. You can use the link for these purposes when requested.', 'stripe-payments' ) ) );
 
 	// Email section
 	add_settings_field( 'stripe_receipt_email', __( 'Send Receipt Email From Stripe', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-email', 'AcceptStripePayments-email-section', array( 'field'	 => 'stripe_receipt_email',
@@ -715,6 +716,28 @@ class AcceptStripePayments_Admin {
 	    case 'tos_text':
 		echo '<textarea name="AcceptStripePayments-settings[tos_text]" rows="4" cols="70">' . $field_value . '</textarea>';
 		echo '<p class="description">' . $desc . '</p>';
+		break;
+	    case 'debug_log_link':
+		//check if we have token generated
+		$asp_class		 = AcceptStripePayments::get_instance();
+		$token			 = $asp_class->get_setting( 'debug_log_access_token' );
+		if ( ! $token ) {
+		    //let's generate debug log access token
+		    $token					 = substr( md5( uniqid() ), 16 );
+		    $opts					 = get_option( 'AcceptStripePayments-settings' );
+		    $opts[ 'debug_log_access_token' ]	 = $token;
+		    unregister_setting( 'AcceptStripePayments-settings-group', 'AcceptStripePayments-settings' );
+		    update_option( 'AcceptStripePayments-settings', $opts );
+		}
+		echo '<input type="text" size="50" class="asp-debug-log-link" readonly value="' . admin_url() . '?asp_action=view_log&token=' . $token . '">';
+		echo '<p class="description">' . $desc . '</p>';
+		?>
+		<script>
+		    jQuery('input.asp-debug-log-link').click(function () {
+			jQuery(this).select();
+		    });
+		</script>
+		<?php
 		break;
 	    default:
 		echo "<input type='text' name='AcceptStripePayments-settings[{$field}]' value='{$field_value}' size='{$size}' /> <p class=\"description\">{$desc}</p>";

@@ -94,6 +94,8 @@ class AcceptStripePayments {
 	// Load plugin text domain
 	add_action( 'plugins_loaded', array( $this, 'load_asp_plugin_textdomain' ) );
 
+	add_action( 'plugins_loaded', array( $this, 'plugins_loaded' ) );
+
 	//Check if IPN submitted
 	add_action( 'init', array( $this, 'asp_check_ipn' ) );
 
@@ -104,6 +106,18 @@ class AcceptStripePayments {
 	// add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles' ) );
 	// add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 	add_action( 'after_switch_theme', array( $this, 'rewrite_flush' ) );
+    }
+
+    function plugins_loaded() {
+	//check if we have view_log request with token
+	$action	 = filter_input( INPUT_GET, 'asp_action', FILTER_SANITIZE_STRING );
+	$token	 = filter_input( INPUT_GET, 'token', FILTER_SANITIZE_STRING );
+	if ( isset( $action ) && $action === 'view_log' && isset( $token ) ) {
+	    //let's check token
+	    if ( $this->get_setting( 'debug_log_access_token' ) === $token ) {
+		ASP_Debug_Logger::view_log();
+	    }
+	}
     }
 
     public function asp_check_ipn() {

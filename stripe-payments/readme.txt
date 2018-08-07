@@ -150,6 +150,7 @@ None.
 == Changelog ==
 
 = 1.9.4t1 =
+- Added "Debug Log Shareable Link" to share debug log without having to share WP Dashboard credentials.
 - Added error message on product edit page if price is below or above Stripe's allowed min/max for selected currency.
 - Installed add-ons are now marked on Add-ons page and have Settings button displayed.
 - Compressed images to decrease plugin package size.
