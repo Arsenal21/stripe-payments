@@ -383,7 +383,8 @@ class asp_products_metaboxes {
 	    do_action( 'asp_save_product_handler', $post_id, $post, $update );
 
 	    //check if this is not subscription product
-	    if ( empty( get_post_meta( $post_id, 'asp_sub_plan_id', true ) ) ) {
+            $asp_plan_id = get_post_meta( $post_id, 'asp_sub_plan_id', true );
+	    if ( empty( $asp_plan_id ) ) {
 		//check if price is in min-max range for the currency set by Stripe: https://stripe.com/docs/currencies#minimum-and-maximum-charge-amounts
 		$price		 = sanitize_text_field( $_POST[ 'asp_product_price' ] );
 		$currency	 = sanitize_text_field( $_POST[ 'asp_product_currency' ] );
@@ -401,7 +402,7 @@ class asp_products_metaboxes {
 			//check if price < minAmount
 			if ( $price < $class_asp->minAmounts[ $currency ] ) {
 			    // it is. Let's add error message
-			    $text = sprintf( __( '<b>Invalid product price</b>: minimum price in %s should be %s, you specified %s', 'stripe-payments' ), $currency, $class_asp->formatted_price( $class_asp->minAmounts[ $currency ], $currency, true ), $class_asp->formatted_price( $price, $currency, true ) );
+			    $text = sprintf( __( '<b>Invalid product price</b>: minimum price in %s should be %s, you specified %s. This price limitation comes from Stripe.', 'stripe-payments' ), $currency, $class_asp->formatted_price( $class_asp->minAmounts[ $currency ], $currency, true ), $class_asp->formatted_price( $price, $currency, true ) );
 			    AcceptStripePayments_Admin::add_admin_notice( 'error', $text, false );
 			    // we don't save invalid price
 			    return false;

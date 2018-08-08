@@ -427,7 +427,7 @@ class AcceptStripePayments_Admin {
 	//Debug section
 	add_settings_field( 'debug_log_enable', __( 'Enable Debug Logging', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-debug-section', array( 'field'	 => 'debug_log_enable', 'desc'	 => __( 'Check this option to enable debug logging. This is useful for troubleshooting post payment failures.', 'stripe-payments' ) .
 	    '<br /><a href="' . admin_url() . '?asp_action=view_log" target="_blank">' . __( 'View Log', 'stripe-payments' ) . '</a> | <a style="color: red;" id="asp_clear_log_btn" href="#0">' . __( 'Clear Log', 'stripe-payments' ) . '</a>' ) );
-	add_settings_field( 'debug_log_link', __( 'Debug Log Shareable Link', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-debug-section', array( 'field' => 'debug_log_link', 'desc' => __( 'For security reasons, there is no access for to the debug log unless you\'re logged in into WP Dashboard as admin. However, in some situations it might be required for support personnel to view it without having admin credentials. You can use the link for these purposes when requested.', 'stripe-payments' ) ) );
+	add_settings_field( 'debug_log_link', __( 'Debug Log Shareable Link', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-debug-section', array( 'field' => 'debug_log_link', 'desc' => __( 'Normally, the debug log is only accessible to you if you are logged-in as admin. However, in some situations it might be required for support personnel to view it without having admin credentials. This link can be helpful in that situation.', 'stripe-payments' ) ) );
 
 	// Email section
 	add_settings_field( 'stripe_receipt_email', __( 'Send Receipt Email From Stripe', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-email', 'AcceptStripePayments-email-section', array( 'field'	 => 'stripe_receipt_email',
@@ -729,7 +729,7 @@ class AcceptStripePayments_Admin {
 		    unregister_setting( 'AcceptStripePayments-settings-group', 'AcceptStripePayments-settings' );
 		    update_option( 'AcceptStripePayments-settings', $opts );
 		}
-		echo '<input type="text" size="50" class="asp-debug-log-link" readonly value="' . admin_url() . '?asp_action=view_log&token=' . $token . '">';
+		echo '<input type="text" size="70" class="asp-debug-log-link" readonly value="' . admin_url() . '?asp_action=view_log&token=' . $token . '">';
 		echo '<p class="description">' . $desc . '</p>';
 		?>
 		<script>
