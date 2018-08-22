@@ -101,13 +101,22 @@ echo '<link type="text/css" rel="stylesheet" href="' . WP_ASP_PLUGIN_URL . '/adm
 	    $addon_9 = array(
 		"name"		 => "Custom Messages Addon",
 		"thumbnail"	 => WP_ASP_PLUGIN_URL . "/admin/assets/images/stripe-custom-messages-addon.png",
-		"description"	 => "This addon allows you to customize a number of common messages displayed by the Stripe Payments Plugin",
+		"description"	 => "This addon allows you to customize a number of common messages displayed by the Stripe Payments Plugin.",
 		"page_url"	 => "https://s-plugins.com/stripe-payments-custom-messages-addon/",
 		"settings_url"	 => 'edit.php?post_type=asp-products&page=stripe-payments-settings#custmsg',
 		"installed"	 => class_exists( 'ASPCUSTMSG_main' ) ? true : false
 	    );
 	    array_push( $addons_data, $addon_9 );
 
+	    $addon_10 = array(
+		"name"		 => "AWeber Integration Addon",
+		"thumbnail"	 => WP_ASP_PLUGIN_URL . "/admin/assets/images/aweber-integration-addon.png",
+		"description"	 => "This addon allows you to add customers to your AWeber list after they purchase a product.",
+		"page_url"	 => "https://s-plugins.com/aweber-integration-addon-for-stripe-payments/",
+		"settings_url"	 => 'edit.php?post_type=asp-products&page=stripe-payments-settings#aweber',
+		"installed"	 => class_exists( 'ASPAWEBER_main' ) ? true : false
+	    );
+	    array_push( $addons_data, $addon_10 );            
 
 	    /*	     * * Show the addons list ** */
 	    foreach ( $addons_data as $addon ) {
