@@ -65,8 +65,8 @@ class asp_products_metaboxes {
     }
 
     function display_price_meta_box( $post ) {
-	$current_price	 = get_post_meta( $post->ID, 'asp_product_price', true );
-	$current_curr	 = get_post_meta( $post->ID, 'asp_product_currency', true );
+	$current_price		 = get_post_meta( $post->ID, 'asp_product_price', true );
+	$current_curr		 = get_post_meta( $post->ID, 'asp_product_currency', true );
 	do_action( 'asp_product_price_metabox_before_content', $post );
 	?>
 	<label><?php _e( 'Price', 'stripe-payments' ); ?></label>
@@ -80,6 +80,165 @@ class asp_products_metaboxes {
 	<br/>
 	<select name="asp_product_currency" id="asp_currency_select"><?php echo AcceptStripePayments_Admin::get_currency_options( $current_curr ); ?>></select>
 	<p class = "description"><?php echo __( 'Leave "(Default)" option selected if you want to use currency specified on settings page.', 'stripe-payments' ); ?></p>
+	<hr />
+	<h4><?php _e( 'Variations', 'stripe-payments' ); ?></h4>
+	<p><?php echo sprintf( __( 'You can find documentation on variations here: %s', 'stripe-payments' ), '<a href="https://example.com/variations-docs/" target="_blank">https://example.com/variations-docs/</a>' ); ?></p>
+	<?php
+	$variations_str		 = '';
+	$variations_groups	 = get_post_meta( $post->ID, 'asp_variations_groups', true );
+	$variations_names	 = get_post_meta( $post->ID, 'asp_variations_names', true );
+	$variations_prices	 = get_post_meta( $post->ID, 'asp_variations_prices', true );
+	if ( empty( $variations_groups ) ) {
+	    $variations_str = __( 'No variations configured for this product.', 'stripe-payments' );
+	}
+	?>
+	<style>
+	    .asp-html-tpl {
+		display: none;
+	    }
+	    .asp-variations-group-cont {
+		margin-bottom: 10px;
+		padding: 10px;
+		border: 1px solid #ddd;
+	    }
+	    .asp-variations-group-title {
+		padding: 5px;
+	    }
+	    .asp-variations-group-name {
+		width: 70%;
+		display: inline-block;
+	    }
+	    .asp-variations-tbl {
+		margin-bottom: 5px;
+	    }
+	    .asp-variations-buttons-cont {
+		text-align: right;
+	    }
+	    #asp-variations-cont-main button span.dashicons {
+		vertical-align: middle !important;
+	    }
+	    #asp-variations-cont {
+		margin-bottom: 10px;
+	    }
+	    input.asp-variation-name {
+		width: 100%;
+	    }
+	</style>
+	<div id="asp-variations-cont-main">
+	    <div id="asp-variations-cont">
+		<span class="asp-variations-no-variations-msg"><?php echo $variations_str; ?></span>
+	    </div>
+	    <button type="button" class="button" id="asp-create-variations-group-btn"><span class="dashicons dashicons-welcome-add-page"></span> <?php _e( 'Create Group', 'stripe-payments' ); ?></button>
+	</div>
+	<div class="asp-html-tpl asp-html-tpl-variations-group">
+	    <div class="asp-variations-group-cont">
+		<div class="asp-variations-group-title">
+		    <span><?php _e( 'Group Name: ', 'stripe-payments' ); ?></span>
+		    <input type="text" value="" class="asp-variations-group-name">
+		    <button type="button" class="button alignright asp-variations-delete-group-btn"><span class="dashicons dashicons-trash" title="<?php _e( 'Delete group', 'stripe-payments' ); ?>"></span></button>
+		</div>
+		<table class="widefat asp-variations-tbl">
+		    <tr>
+			<th><?php _e( 'Name', 'stripe-payments' ); ?></th>
+			<th><?php _e( 'Price Mod', 'stripe-payments' ); ?></th>
+		    </tr>
+		</table>
+		<div class="asp-variations-buttons-cont">
+		    <button type="button" class="button asp-variations-add-variation-btn"><span class="dashicons dashicons-plus"></span> <?php _e( 'Add Variation', 'stripe-payments' ); ?></button>
+		</div>
+	    </div>
+	</div>
+	<table class="asp-html-tpl asp-html-tpl-variation-row">
+	    <tbody>
+		<tr>
+		    <td><input type="text" value="" class="asp-variation-name"></td>
+		    <td><input type="text" value="" class="asp-variation-price"><button type="button" class="button alignright asp-variations-delete-variation-btn"><span class="dashicons dashicons-trash" title="<?php _e( 'Delete variation', 'stripe-payments' ); ?>"></span></button></td>
+		</tr>
+	    </tbody>
+	</table>
+	<script>
+	    var aspVariationsGroupds = 0;
+	    var aspVariationsGroups = '<?php echo json_encode( $variations_groups ); ?>';
+	    var aspVariationsNames = '<?php echo json_encode( $variations_names ); ?>';
+	    var aspVariationsPrices = '<?php echo json_encode( $variations_prices ); ?>';
+	    jQuery(document).ready(function ($) {
+		function asp_create_variations_group(groupId, groupName, focus) {
+		    $('span.asp-variations-no-variations-msg').hide();
+		    tpl_html = $('div.asp-html-tpl-variations-group').html();
+		    tpl_html = $.parseHTML(tpl_html);
+		    $(tpl_html).find('input.asp-variations-group-name').attr('name', 'asp-variations-group-names[' + groupId + ']');
+		    $(tpl_html).find('input.asp-variations-group-name').val(groupName);
+		    $(tpl_html).closest('div.asp-variations-group-cont').attr('data-asp-group-id', groupId);
+		    $('div#asp-variations-cont').append(tpl_html);
+		    if (focus) {
+			$(tpl_html).find('input.asp-variations-group-name').focus();
+		    }
+		}
+		function asp_add_variation(groupId, variationName, variationPrice, focus) {
+		    tpl_html = $('table.asp-html-tpl-variation-row tbody').html();
+		    tpl_html = $.parseHTML(tpl_html);
+		    $(tpl_html).find('input.asp-variation-name').attr('name', 'asp-variation-names[' + groupId + '][]');
+		    $(tpl_html).find('input.asp-variation-name').val(variationName);
+		    $(tpl_html).find('input.asp-variation-price').attr('name', 'asp-variation-prices[' + groupId + '][]');
+		    $(tpl_html).find('input.asp-variation-price').val(variationPrice);
+		    $('div.asp-variations-group-cont[data-asp-group-id="' + groupId + '"]').find('table.asp-variations-tbl').append(tpl_html);
+		    if (focus) {
+			$(tpl_html).find('input.asp-variation-name').focus();
+		    }
+		}
+		$('button#asp-create-variations-group-btn').click(function (e) {
+		    e.preventDefault();
+		    asp_create_variations_group(aspVariationsGroupds, '', true);
+		    aspVariationsGroupds++;
+		});
+		$(document).on('click', 'button.asp-variations-delete-group-btn', function (e) {
+		    e.preventDefault();
+		    if (!confirm('<?php
+	$msg	 = __( 'Are you sure want to delete this group?', 'stripe-payments' );
+	$msg	 = esc_js( $msg );
+	echo $msg;
+	?>')) {
+			return false;
+		    }
+		    $(this).closest('div.asp-variations-group-cont').remove();
+		    if ($('div.asp-variations-group-cont').length <= 1) {
+			$('span.asp-variations-no-variations-msg').show();
+		    }
+		});
+		$(document).on('click', 'button.asp-variations-delete-variation-btn', function (e) {
+		    e.preventDefault();
+		    if (!confirm('<?php
+	$msg	 = __( 'Are you sure want to delete this variation?', 'stripe-payments' );
+	$msg	 = esc_js( $msg );
+	echo $msg;
+	?>')) {
+			return false;
+		    }
+		    $(this).closest('tr').remove();
+		});
+		$(document).on('click', 'button.asp-variations-add-variation-btn', function (e) {
+		    e.preventDefault();
+		    groupId = $(this).closest('div.asp-variations-group-cont').data('asp-group-id');
+		    asp_add_variation(groupId, '', 0, true);
+		});
+		aspVariationsGroups = JSON.parse(aspVariationsGroups);
+		aspVariationsNames = JSON.parse(aspVariationsNames);
+		aspVariationsPrices = JSON.parse(aspVariationsPrices);
+		$.each(aspVariationsGroups, function (index, item) {
+		    aspVariationsGroupds = index;
+		    asp_create_variations_group(index, item, false);
+		    if (aspVariationsNames != null) {
+			$.each(aspVariationsNames[index], function (index, item) {
+			    asp_add_variation(aspVariationsGroupds, item, aspVariationsPrices[aspVariationsGroupds][index], false);
+			});
+		    }
+		});
+		if (aspVariationsGroupds !== 0) {
+		    aspVariationsGroupds++;
+		}
+		;
+	    });
+	</script>
 	<?php
 	do_action( 'asp_product_price_metabox_after_content', $post );
     }
@@ -383,7 +542,7 @@ class asp_products_metaboxes {
 	    do_action( 'asp_save_product_handler', $post_id, $post, $update );
 
 	    //check if this is not subscription product
-            $asp_plan_id = get_post_meta( $post_id, 'asp_sub_plan_id', true );
+	    $asp_plan_id = get_post_meta( $post_id, 'asp_sub_plan_id', true );
 	    if ( empty( $asp_plan_id ) ) {
 		//check if price is in min-max range for the currency set by Stripe: https://stripe.com/docs/currencies#minimum-and-maximum-charge-amounts
 		$price		 = sanitize_text_field( $_POST[ 'asp_product_price' ] );
@@ -416,6 +575,21 @@ class asp_products_metaboxes {
 			// we don't save invalid price
 			return false;
 		    }
+		}
+		//handle variations
+		$variations_groups = filter_input( INPUT_POST, 'asp-variations-group-names', FILTER_UNSAFE_RAW, FILTER_REQUIRE_ARRAY );
+		if ( ! empty( $variations_groups ) && is_array( $variations_groups ) ) {
+		    //we got variations groups. Let's process them
+		    update_post_meta( $post_id, 'asp_variations_groups', $variations_groups );
+		    $variations_names	 = filter_input( INPUT_POST, 'asp-variation-names', FILTER_UNSAFE_RAW, FILTER_REQUIRE_ARRAY );
+		    update_post_meta( $post_id, 'asp_variations_names', $variations_names );
+		    $variations_prices	 = filter_input( INPUT_POST, 'asp-variation-prices', FILTER_UNSAFE_RAW, FILTER_REQUIRE_ARRAY );
+		    update_post_meta( $post_id, 'asp_variations_prices', $variations_prices );
+		} else {
+		    //we got no variations groups. Let's clear meta values
+		    update_post_meta( $post_id, 'asp_variations_groups', false );
+		    update_post_meta( $post_id, 'asp_variations_names', false );
+		    update_post_meta( $post_id, 'asp_variations_prices', false );
 		}
 	    }
 	    update_post_meta( $post_id, 'asp_product_price', sanitize_text_field( $_POST[ 'asp_product_price' ] ) );
