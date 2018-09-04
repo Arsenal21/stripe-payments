@@ -606,7 +606,7 @@ class AcceptStripePaymentsShortcode {
 		. "<span style='display: block;' id='error_explanation_quantity_{$data[ 'uniq_id' ]}'></span>"
 		. "</div>";
 	    }
-	    apply_filters( 'asp_button_output_before_custom_field', $output, $data );
+	    $output = apply_filters( 'asp_button_output_before_custom_field', $output, $data );
 	    if ( $data[ 'custom_field' ] == 1 ) {
 		$field_type	 = $this->AcceptStripePayments->get_setting( 'custom_field_type' );
 		$field_name	 = $this->AcceptStripePayments->get_setting( 'custom_field_name' );
@@ -631,7 +631,7 @@ class AcceptStripePaymentsShortcode {
 		$output .= "<span style='display: block;' id='custom_field_error_explanation_{$data[ 'uniq_id' ]}'></span>" .
 		"</div>";
 	    }
-	    apply_filters( 'asp_button_output_before_tos', $output, $data );
+	    $output = apply_filters( 'asp_button_output_before_tos', $output, $data );
 	    //Terms and Conditions
 	    if ( $data[ 'tos' ] == 1 ) {
 		$tos_text	 = $this->AcceptStripePayments->get_setting( 'tos_text' );
