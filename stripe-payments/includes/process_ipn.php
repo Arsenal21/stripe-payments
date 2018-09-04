@@ -315,10 +315,14 @@ if ( empty( $data[ 'charge' ] ) ) {
 	    $charge_opts[ 'source' ] = $stripeToken;
 	} else {
 
-	    $customer = \Stripe\Customer::create( array(
-		'email'	 => $stripeEmail,
-		'card'	 => $stripeToken
-	    ) );
+	    $customer_data = array(
+            'email'	 => $stripeEmail,
+            'card'	 => $stripeToken,
+        );
+
+	    $customer_data = apply_filters('asp_customer_data_before_create', $customer_data);
+
+	    $customer = \Stripe\Customer::create( $customer_data );
 
 	    $charge_opts[ 'customer' ] = $customer->id;
 	}
