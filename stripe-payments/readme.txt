@@ -149,6 +149,9 @@ None.
 
 == Changelog ==
 
+= 1.9.5 =
+- Fixed rare bug when customer wasn't redirected to results page on error if "Send Email On Payment Failure" option is not enabled.
+
 = 1.9.4 =
 - Added "Debug Log Shareable Link" to share debug log without having to share WP Dashboard credentials.
 - Added error message on product edit page if price is below or above Stripe's allowed min/max for selected currency.

@@ -33,9 +33,10 @@ function asp_ipn_completed( $errMsg = '' ) {
 		$body .= $key . ': ' . $value . "\r\n";
 	    }
 	    wp_mail( $to, $subj, $body, $headers );
-	    global $aspRedirectURL;
-	    wp_redirect( $aspRedirectURL );
 	}
+	global $aspRedirectURL;
+	ASP_Debug_Logger::log( sprintf( 'Redirecting to results page "%s"', $aspRedirectURL ) );
+	wp_redirect( $aspRedirectURL );
     } else {
 	ASP_Debug_Logger::log( 'Payment has been processed successfully.' . "\r\n" );
 	global $aspRedirectURL;
@@ -316,11 +317,11 @@ if ( empty( $data[ 'charge' ] ) ) {
 	} else {
 
 	    $customer_data = array(
-            'email'	 => $stripeEmail,
-            'card'	 => $stripeToken,
-        );
+		'email'	 => $stripeEmail,
+		'card'	 => $stripeToken,
+	    );
 
-	    $customer_data = apply_filters('asp_customer_data_before_create', $customer_data);
+	    $customer_data = apply_filters( 'asp_customer_data_before_create', $customer_data );
 
 	    $customer = \Stripe\Customer::create( $customer_data );
 
@@ -508,17 +509,17 @@ if ( ! empty( $data[ 'product_id' ] ) ) {
 
 	    ASP_Debug_Logger::log( 'Calling eMember_handle_subsc_signup_stand_alone' );
 
-            $emember_id = '';
-            if (class_exists('Emember_Auth')){
-                //Check if the user is logged in as a member.
-                $emember_auth = Emember_Auth::getInstance();
-                $emember_id = $emember_auth->getUserInfo('member_id');
-            }
+	    $emember_id = '';
+	    if ( class_exists( 'Emember_Auth' ) ) {
+		//Check if the user is logged in as a member.
+		$emember_auth	 = Emember_Auth::getInstance();
+		$emember_id	 = $emember_auth->getUserInfo( 'member_id' );
+	    }
 
-            if( defined('WP_EMEMBER_PATH') ){
-                require_once(WP_EMEMBER_PATH . 'ipn/eMember_handle_subsc_ipn_stand_alone.php');
-                eMember_handle_subsc_signup_stand_alone( $ipn_data, $level_id, $data['txn_id'], $emember_id );
-            }
+	    if ( defined( 'WP_EMEMBER_PATH' ) ) {
+		require_once(WP_EMEMBER_PATH . 'ipn/eMember_handle_subsc_ipn_stand_alone.php');
+		eMember_handle_subsc_signup_stand_alone( $ipn_data, $level_id, $data[ 'txn_id' ], $emember_id );
+	    }
 	}
     }
 }
