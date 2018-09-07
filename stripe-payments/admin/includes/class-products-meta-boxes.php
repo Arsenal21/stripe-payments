@@ -88,6 +88,7 @@ class asp_products_metaboxes {
 	$variations_groups	 = get_post_meta( $post->ID, 'asp_variations_groups', true );
 	$variations_names	 = get_post_meta( $post->ID, 'asp_variations_names', true );
 	$variations_prices	 = get_post_meta( $post->ID, 'asp_variations_prices', true );
+	$variations_urls	 = get_post_meta( $post->ID, 'asp_variations_urls', true );
 	if ( empty( $variations_groups ) ) {
 	    $variations_str = __( 'No variations configured for this product.', 'stripe-payments' );
 	}
@@ -103,6 +104,7 @@ class asp_products_metaboxes {
 	    }
 	    .asp-variations-group-title {
 		padding: 5px;
+		text-align: center;
 	    }
 	    .asp-variations-group-name {
 		width: 70%;
@@ -120,8 +122,14 @@ class asp_products_metaboxes {
 	    #asp-variations-cont {
 		margin-bottom: 10px;
 	    }
-	    input.asp-variation-name {
+	    .asp-variations-tbl input {
 		width: 100%;
+	    }
+	    .asp-btn-small {
+		padding: 0 5px !important;
+	    }
+	    .asp-btn-small .dashicons {
+		font-size: 18px;
 	    }
 	</style>
 	<div id="asp-variations-cont-main">
@@ -133,14 +141,16 @@ class asp_products_metaboxes {
 	<div class="asp-html-tpl asp-html-tpl-variations-group">
 	    <div class="asp-variations-group-cont">
 		<div class="asp-variations-group-title">
-		    <span><?php _e( 'Group Name: ', 'stripe-payments' ); ?></span>
+		    <span><?php _e( 'Group Name:', 'stripe-payments' ); ?> </span>
 		    <input type="text" value="" class="asp-variations-group-name">
-		    <button type="button" class="button alignright asp-variations-delete-group-btn"><span class="dashicons dashicons-trash" title="<?php _e( 'Delete group', 'stripe-payments' ); ?>"></span></button>
+		    <button type="button" class="button asp-variations-delete-group-btn asp-btn-small"><span class="dashicons dashicons-trash" title="<?php _e( 'Delete group', 'stripe-payments' ); ?>"></span></button>
 		</div>
 		<table class="widefat asp-variations-tbl">
 		    <tr>
-			<th><?php _e( 'Name', 'stripe-payments' ); ?></th>
-			<th><?php _e( 'Price Mod', 'stripe-payments' ); ?></th>
+			<th width="40%"><?php _e( 'Name', 'stripe-payments' ); ?></th>
+			<th width="10%"><?php _e( 'Price Mod', 'stripe-payments' ); ?></th>
+			<th width="40%"><?php _e( 'Product URL', 'stripe-payments' ); ?></th>
+			<th></th>
 		    </tr>
 		</table>
 		<div class="asp-variations-buttons-cont">
@@ -152,15 +162,18 @@ class asp_products_metaboxes {
 	    <tbody>
 		<tr>
 		    <td><input type="text" value="" class="asp-variation-name"></td>
-		    <td><input type="text" value="" class="asp-variation-price"><button type="button" class="button alignright asp-variations-delete-variation-btn"><span class="dashicons dashicons-trash" title="<?php _e( 'Delete variation', 'stripe-payments' ); ?>"></span></button></td>
+		    <td><input type="text" value="" class="asp-variation-price"></td>
+		    <td><input type="text" value="" class="asp-variation-url"></td>
+		    <td><button type="button" class="button asp-variations-delete-variation-btn asp-btn-small"><span class="dashicons dashicons-trash" title="<?php _e( 'Delete variation', 'stripe-payments' ); ?>"></span></button></td>
 		</tr>
 	    </tbody>
 	</table>
 	<script>
-	    var aspVariationsGroupds = 0;
+	    var aspVariationsGroupsId = 0;
 	    var aspVariationsGroups = '<?php echo json_encode( $variations_groups ); ?>';
 	    var aspVariationsNames = '<?php echo json_encode( $variations_names ); ?>';
 	    var aspVariationsPrices = '<?php echo json_encode( $variations_prices ); ?>';
+	    var aspVariationsUrls = '<?php echo json_encode( $variations_urls ); ?>';
 	    jQuery(document).ready(function ($) {
 		function asp_create_variations_group(groupId, groupName, focus) {
 		    $('span.asp-variations-no-variations-msg').hide();
@@ -174,13 +187,15 @@ class asp_products_metaboxes {
 			$(tpl_html).find('input.asp-variations-group-name').focus();
 		    }
 		}
-		function asp_add_variation(groupId, variationName, variationPrice, focus) {
+		function asp_add_variation(groupId, variationName, variationPrice, variationUrl, focus) {
 		    tpl_html = $('table.asp-html-tpl-variation-row tbody').html();
 		    tpl_html = $.parseHTML(tpl_html);
 		    $(tpl_html).find('input.asp-variation-name').attr('name', 'asp-variation-names[' + groupId + '][]');
 		    $(tpl_html).find('input.asp-variation-name').val(variationName);
 		    $(tpl_html).find('input.asp-variation-price').attr('name', 'asp-variation-prices[' + groupId + '][]');
 		    $(tpl_html).find('input.asp-variation-price').val(variationPrice);
+		    $(tpl_html).find('input.asp-variation-url').attr('name', 'asp-variation-urls[' + groupId + '][]');
+		    $(tpl_html).find('input.asp-variation-url').val(variationUrl);
 		    $('div.asp-variations-group-cont[data-asp-group-id="' + groupId + '"]').find('table.asp-variations-tbl').append(tpl_html);
 		    if (focus) {
 			$(tpl_html).find('input.asp-variation-name').focus();
@@ -188,8 +203,8 @@ class asp_products_metaboxes {
 		}
 		$('button#asp-create-variations-group-btn').click(function (e) {
 		    e.preventDefault();
-		    asp_create_variations_group(aspVariationsGroupds, '', true);
-		    aspVariationsGroupds++;
+		    asp_create_variations_group(aspVariationsGroupsId, '', true);
+		    aspVariationsGroupsId++;
 		});
 		$(document).on('click', 'button.asp-variations-delete-group-btn', function (e) {
 		    e.preventDefault();
@@ -219,22 +234,23 @@ class asp_products_metaboxes {
 		$(document).on('click', 'button.asp-variations-add-variation-btn', function (e) {
 		    e.preventDefault();
 		    groupId = $(this).closest('div.asp-variations-group-cont').data('asp-group-id');
-		    asp_add_variation(groupId, '', 0, true);
+		    asp_add_variation(groupId, '', 0, '', true);
 		});
 		aspVariationsGroups = JSON.parse(aspVariationsGroups);
 		aspVariationsNames = JSON.parse(aspVariationsNames);
 		aspVariationsPrices = JSON.parse(aspVariationsPrices);
+		aspVariationsUrls = JSON.parse(aspVariationsUrls);
 		$.each(aspVariationsGroups, function (index, item) {
-		    aspVariationsGroupds = index;
+		    aspVariationsGroupsId = index;
 		    asp_create_variations_group(index, item, false);
 		    if (aspVariationsNames != null) {
 			$.each(aspVariationsNames[index], function (index, item) {
-			    asp_add_variation(aspVariationsGroupds, item, aspVariationsPrices[aspVariationsGroupds][index], false);
+			    asp_add_variation(aspVariationsGroupsId, item, aspVariationsPrices[aspVariationsGroupsId][index], aspVariationsUrls[aspVariationsGroupsId][index], false);
 			});
 		    }
 		});
-		if (aspVariationsGroupds !== 0) {
-		    aspVariationsGroupds++;
+		if (aspVariationsGroupsId !== 0) {
+		    aspVariationsGroupsId++;
 		}
 		;
 	    });
@@ -585,11 +601,14 @@ class asp_products_metaboxes {
 		    update_post_meta( $post_id, 'asp_variations_names', $variations_names );
 		    $variations_prices	 = filter_input( INPUT_POST, 'asp-variation-prices', FILTER_UNSAFE_RAW, FILTER_REQUIRE_ARRAY );
 		    update_post_meta( $post_id, 'asp_variations_prices', $variations_prices );
+		    $variations_urls	 = filter_input( INPUT_POST, 'asp-variation-urls', FILTER_UNSAFE_RAW, FILTER_REQUIRE_ARRAY );
+		    update_post_meta( $post_id, 'asp_variations_urls', $variations_urls );
 		} else {
 		    //we got no variations groups. Let's clear meta values
 		    update_post_meta( $post_id, 'asp_variations_groups', false );
 		    update_post_meta( $post_id, 'asp_variations_names', false );
 		    update_post_meta( $post_id, 'asp_variations_prices', false );
+		    update_post_meta( $post_id, 'asp_variations_urls', false );
 		}
 	    }
 	    update_post_meta( $post_id, 'asp_product_price', sanitize_text_field( $_POST[ 'asp_product_price' ] ) );
