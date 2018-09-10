@@ -7,6 +7,7 @@ class AcceptStripePaymentsShortcode {
     var $ProductCSSInserted	 = false;
     var $ButtonCSSInserted	 = false;
     var $CompatMode		 = false;
+    var $variations		 = array();
 
     /**
      * Instance of this class.
@@ -458,6 +459,29 @@ class AcceptStripePaymentsShortcode {
 
 	$verifyZip = $this->AcceptStripePayments->get_setting( 'enable_zip_validation' );
 
+	//Currency Display settings
+	$display_settings	 = array();
+	$display_settings[ 'c' ] = $this->AcceptStripePayments->get_setting( 'price_decimal_num', 2 );
+	$display_settings[ 'd' ] = $this->AcceptStripePayments->get_setting( 'price_decimal_sep' );
+	$display_settings[ 't' ] = $this->AcceptStripePayments->get_setting( 'price_thousand_sep' );
+
+	$currencies = AcceptStripePayments::get_currencies();
+	if ( isset( $currencies[ $currency ] ) ) {
+	    $curr_sym = $currencies[ $currency ][ 1 ];
+	} else {
+	    //no currency code found, let's just use currency code instead of symbol
+	    $curr_sym = $currencies;
+	}
+
+	$curr_pos = $this->AcceptStripePayments->get_setting( 'price_currency_pos' );
+
+	$display_settings[ 's' ]	 = $curr_sym;
+	$display_settings[ 'pos' ]	 = $curr_pos;
+
+	$displayStr		 = array();
+	$displayStr[ 'tax' ]	 = '%s (tax)';
+	$displayStr[ 'ship' ]	 = '%s (shipping)';
+
 	$data = array(
 	    'product_id'		 => $product_id,
 	    'button_key'		 => $button_key,
@@ -488,6 +512,8 @@ class AcceptStripePaymentsShortcode {
 	    'button_text'		 => esc_attr( $button_text ),
 	    'out_of_stock'		 => $out_of_stock,
 	    'verifyZip'		 => ( ! $verifyZip) ? 0 : 1,
+	    'currencyFormat'	 => $display_settings,
+	    'displayStr'		 => $displayStr,
 	);
 
 	$data = apply_filters( 'asp-button-output-data-ready', $data, $atts );
@@ -505,6 +531,12 @@ class AcceptStripePaymentsShortcode {
 	$output .= "<form id = 'stripe_form_{$uniq_id}' class='asp-stripe-form' action = '' METHOD = 'POST'> ";
 
 	$output .= $this->get_button_code_new_method( $data );
+
+	$data[ 'variations' ] = array();
+
+	if ( ! empty( $this->variations ) ) {
+	    $data[ 'variations' ] = $this->variations;
+	}
 
 	$output	 .= '<input type="hidden" name="asp_action" value="process_ipn" />';
 	$output	 .= "<input type = 'hidden' value = '{$data[ 'name' ]}' name = 'item_name' />";
@@ -631,6 +663,41 @@ class AcceptStripePaymentsShortcode {
 		$output .= "<span style='display: block;' id='custom_field_error_explanation_{$data[ 'uniq_id' ]}'></span>" .
 		"</div>";
 	    }
+	    //Variations
+	    if ( isset( $data[ 'product_id' ] ) ) {
+		$variations_groups = get_post_meta( $data[ 'product_id' ], 'asp_variations_groups', true );
+		if ( ! empty( $variations_groups ) ) {
+		    //we got variations for this product
+		    $variations_str			 = '';
+		    $this->variations[ 'groups' ]	 = $variations_groups;
+		    foreach ( $variations_groups as $grp_id => $group ) {
+			$variations_names = get_post_meta( $data[ 'product_id' ], 'asp_variations_names', true );
+			if ( ! empty( $variations_names ) ) {
+			    $variations_prices		 = get_post_meta( $data[ 'product_id' ], 'asp_variations_prices', true );
+			    $variations_urls		 = get_post_meta( $data[ 'product_id' ], 'asp_variations_urls', true );
+			    $this->variations[ 'names' ]	 = $variations_names;
+			    $this->variations[ 'prices' ]	 = $variations_prices;
+			    $this->variations[ 'urls' ]	 = $variations_urls;
+			    $variations_str			 .= '<div class="asp-product-variations-cont">';
+			    $variations_str			 .= '<label class="asp-product-variations-lavel">' . $group . '</label>';
+			    $variations_str			 .= sprintf( '<select class="asp-product-variations-select" data-asp-variations-group-id="%1$d" name="stripeVariations[%1$d][]">', $grp_id );
+			    foreach ( $variations_names[ $grp_id ] as $var_id => $name ) {
+				$tpl		 = '<option value="%d">%s %s</option>';
+				$price_mod	 = $variations_prices[ $grp_id ][ $var_id ];
+				if ( ! empty( $price_mod ) ) {
+				    $price_mod = '(+' . AcceptStripePayments::formatted_price( $price_mod, $data[ 'currency' ] ) . ')';
+				} else {
+				    $price_mod = '';
+				}
+				$variations_str .= sprintf( $tpl, $var_id, $name, $price_mod );
+			    }
+			    $variations_str .= '</select></div>';
+			}
+		    }
+		    $output .= $variations_str;
+		}
+	    }
+
 	    $output = apply_filters( 'asp_button_output_before_tos', $output, $data );
 	    //Terms and Conditions
 	    if ( $data[ 'tos' ] == 1 ) {
@@ -647,7 +714,7 @@ class AcceptStripePaymentsShortcode {
 //		    if ( get_post_meta( $data[ 'product_id' ], 'asp_sub_plan_id', true ) !== false &&
 //		    (class_exists( 'ASPSUB_main' ) && version_compare( '1.2.5', ASPSUB_main::ADDON_VER ) >= 0 ) ) {
 		    //disable coupons for subscriptions for now
-                    $asp_sub_plan_id = get_post_meta( $data[ 'product_id' ], 'asp_sub_plan_id', true );
+		    $asp_sub_plan_id = get_post_meta( $data[ 'product_id' ], 'asp_sub_plan_id', true );
 		    if ( empty( $asp_sub_plan_id ) ) {
 			$str_coupon_label	 = __( 'Coupon Code', 'stripe-payments' );
 			$output			 .= '<div class="asp_product_coupon_input_container"><label class="asp_product_coupon_field_label">' . $str_coupon_label . ' ' . '</label><input id="asp-coupon-field-' . $data[ 'uniq_id' ] . '" class="asp_product_coupon_field_input" type="text" name="stripeCoupon">'

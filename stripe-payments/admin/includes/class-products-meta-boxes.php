@@ -170,33 +170,33 @@ class asp_products_metaboxes {
 	</table>
 	<script>
 	    var aspVariationsGroupsId = 0;
-	    var aspVariationsGroups = '<?php echo json_encode( $variations_groups ); ?>';
-	    var aspVariationsNames = '<?php echo json_encode( $variations_names ); ?>';
-	    var aspVariationsPrices = '<?php echo json_encode( $variations_prices ); ?>';
-	    var aspVariationsUrls = '<?php echo json_encode( $variations_urls ); ?>';
 	    jQuery(document).ready(function ($) {
-		function asp_create_variations_group(groupId, groupName, focus) {
+		var aspVariationsGroups = '<?php echo ! empty( $variations_groups ) ? json_encode( $variations_groups ) : ''; ?>';
+		var aspVariationsNames = '<?php echo json_encode( $variations_names ); ?>';
+		var aspVariationsPrices = '<?php echo json_encode( $variations_prices ); ?>';
+		var aspVariationsUrls = '<?php echo json_encode( $variations_urls ); ?>';
+		function asp_create_variations_group(aspGroupId, groupName, focus) {
 		    $('span.asp-variations-no-variations-msg').hide();
 		    tpl_html = $('div.asp-html-tpl-variations-group').html();
 		    tpl_html = $.parseHTML(tpl_html);
-		    $(tpl_html).find('input.asp-variations-group-name').attr('name', 'asp-variations-group-names[' + groupId + ']');
+		    $(tpl_html).find('input.asp-variations-group-name').attr('name', 'asp-variations-group-names[' + aspGroupId + ']');
 		    $(tpl_html).find('input.asp-variations-group-name').val(groupName);
-		    $(tpl_html).closest('div.asp-variations-group-cont').attr('data-asp-group-id', groupId);
+		    $(tpl_html).closest('div.asp-variations-group-cont').attr('data-asp-group-id', aspGroupId);
 		    $('div#asp-variations-cont').append(tpl_html);
 		    if (focus) {
 			$(tpl_html).find('input.asp-variations-group-name').focus();
 		    }
 		}
-		function asp_add_variation(groupId, variationName, variationPrice, variationUrl, focus) {
+		function asp_add_variation(aspGroupId, variationName, variationPrice, variationUrl, focus) {
 		    tpl_html = $('table.asp-html-tpl-variation-row tbody').html();
 		    tpl_html = $.parseHTML(tpl_html);
-		    $(tpl_html).find('input.asp-variation-name').attr('name', 'asp-variation-names[' + groupId + '][]');
+		    $(tpl_html).find('input.asp-variation-name').attr('name', 'asp-variation-names[' + aspGroupId + '][]');
 		    $(tpl_html).find('input.asp-variation-name').val(variationName);
-		    $(tpl_html).find('input.asp-variation-price').attr('name', 'asp-variation-prices[' + groupId + '][]');
+		    $(tpl_html).find('input.asp-variation-price').attr('name', 'asp-variation-prices[' + aspGroupId + '][]');
 		    $(tpl_html).find('input.asp-variation-price').val(variationPrice);
-		    $(tpl_html).find('input.asp-variation-url').attr('name', 'asp-variation-urls[' + groupId + '][]');
+		    $(tpl_html).find('input.asp-variation-url').attr('name', 'asp-variation-urls[' + aspGroupId + '][]');
 		    $(tpl_html).find('input.asp-variation-url').val(variationUrl);
-		    $('div.asp-variations-group-cont[data-asp-group-id="' + groupId + '"]').find('table.asp-variations-tbl').append(tpl_html);
+		    $('div.asp-variations-group-cont[data-asp-group-id="' + aspGroupId + '"]').find('table.asp-variations-tbl').append(tpl_html);
 		    if (focus) {
 			$(tpl_html).find('input.asp-variation-name').focus();
 		    }
@@ -233,26 +233,27 @@ class asp_products_metaboxes {
 		});
 		$(document).on('click', 'button.asp-variations-add-variation-btn', function (e) {
 		    e.preventDefault();
-		    groupId = $(this).closest('div.asp-variations-group-cont').data('asp-group-id');
-		    asp_add_variation(groupId, '', 0, '', true);
+		    aspGroupId = $(this).closest('div.asp-variations-group-cont').data('asp-group-id');
+		    asp_add_variation(aspGroupId, '', 0, '', true);
 		});
-		aspVariationsGroups = JSON.parse(aspVariationsGroups);
-		aspVariationsNames = JSON.parse(aspVariationsNames);
-		aspVariationsPrices = JSON.parse(aspVariationsPrices);
-		aspVariationsUrls = JSON.parse(aspVariationsUrls);
-		$.each(aspVariationsGroups, function (index, item) {
-		    aspVariationsGroupsId = index;
-		    asp_create_variations_group(index, item, false);
-		    if (aspVariationsNames != null) {
-			$.each(aspVariationsNames[index], function (index, item) {
-			    asp_add_variation(aspVariationsGroupsId, item, aspVariationsPrices[aspVariationsGroupsId][index], aspVariationsUrls[aspVariationsGroupsId][index], false);
-			});
+		if (aspVariationsGroups.length !== 0) {
+		    aspVariationsGroups = JSON.parse(aspVariationsGroups);
+		    aspVariationsNames = JSON.parse(aspVariationsNames);
+		    aspVariationsPrices = JSON.parse(aspVariationsPrices);
+		    aspVariationsUrls = JSON.parse(aspVariationsUrls);
+		    $.each(aspVariationsGroups, function (index, item) {
+			aspVariationsGroupsId = index;
+			asp_create_variations_group(index, item, false);
+			if (aspVariationsNames != null) {
+			    $.each(aspVariationsNames[index], function (index, item) {
+				asp_add_variation(aspVariationsGroupsId, item, aspVariationsPrices[aspVariationsGroupsId][index], aspVariationsUrls[aspVariationsGroupsId][index], false);
+			    });
+			}
+		    });
+		    if (aspVariationsGroupsId !== 0) {
+			aspVariationsGroupsId++;
 		    }
-		});
-		if (aspVariationsGroupsId !== 0) {
-		    aspVariationsGroupsId++;
 		}
-		;
 	    });
 	</script>
 	<?php
