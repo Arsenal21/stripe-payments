@@ -87,15 +87,15 @@ $got_product_data_from_db = false;
 
 if ( isset( $_POST[ 'stripeProductId' ] ) && ! empty( $_POST[ 'stripeProductId' ] ) ) {
     //got product ID. Let's try to get required data from database instead of $_POST data
-    $id	 = intval( $_POST[ 'stripeProductId' ] );
-    ASP_Debug_Logger::log( 'Got product ID: ' . $id . '. Trying to get info from database.' );
-    $post	 = get_post( $id );
-    if ( ! $post || get_post_type( $id ) != ASPMain::$products_slug ) {
+    $prod_id = intval( $_POST[ 'stripeProductId' ] );
+    ASP_Debug_Logger::log( 'Got product ID: ' . $prod_id . '. Trying to get info from database.' );
+    $post	 = get_post( $prod_id );
+    if ( ! $post || get_post_type( $prod_id ) != ASPMain::$products_slug ) {
 	//this is not Stripe Payments product
-	asp_ipn_completed( 'Invalid product ID: ' . $id );
+	asp_ipn_completed( 'Invalid product ID: ' . $prod_id );
     }
     $item_name	 = $post->post_title;
-    $item_url	 = get_post_meta( $id, 'asp_product_upload', true );
+    $item_url	 = get_post_meta( $prod_id, 'asp_product_upload', true );
 
     if ( ! empty( $item_url ) ) {
 	$item_url = base64_encode( $item_url );
@@ -107,19 +107,19 @@ if ( isset( $_POST[ 'stripeProductId' ] ) && ! empty( $_POST[ 'stripeProductId' 
 
     if ( ! empty( $post_item_url ) ) {
 	if ( $item_url !== $post_item_url ) {
-	    $item_url = apply_filters( 'asp_item_url_process', $post_item_url, array( 'product_id' => $id, 'button_key' => $_POST[ 'stripeButtonKey' ] ) );
+	    $item_url = apply_filters( 'asp_item_url_process', $post_item_url, array( 'product_id' => $prod_id, 'button_key' => $_POST[ 'stripeButtonKey' ] ) );
 	}
     }
 
-    $currency_code = get_post_meta( $id, 'asp_product_currency', true );
+    $currency_code = get_post_meta( $prod_id, 'asp_product_currency', true );
 
     if ( ! $currency_code ) {
 	$currency_code = $asp_class->get_setting( 'currency_code' );
     }
 
-    $item_quantity = get_post_meta( $id, 'asp_product_quantity', true );
+    $item_quantity = get_post_meta( $prod_id, 'asp_product_quantity', true );
 
-    $item_custom_quantity = get_post_meta( $id, 'asp_product_custom_quantity', true );
+    $item_custom_quantity = get_post_meta( $prod_id, 'asp_product_custom_quantity', true );
 
     if ( $item_custom_quantity ) {
 	//custom quantity. Let's get the value from $_POST data
@@ -130,7 +130,7 @@ if ( isset( $_POST[ 'stripeProductId' ] ) && ! empty( $_POST[ 'stripeProductId' 
 
     $variable = false;
 
-    $item_price = get_post_meta( $id, 'asp_product_price', true );
+    $item_price = get_post_meta( $prod_id, 'asp_product_price', true );
 
     if ( empty( $item_price ) ) {
 	//this is probably custom price
@@ -138,11 +138,11 @@ if ( isset( $_POST[ 'stripeProductId' ] ) && ! empty( $_POST[ 'stripeProductId' 
 	$item_price	 = floatval( $_POST[ 'stripeAmount' ] );
     }
 
-    //apply tax and shipping if needed
+    //get tax and shipping amounts if applicable
 
-    $tax = get_post_meta( $id, 'asp_product_tax', true );
+    $tax = get_post_meta( $prod_id, 'asp_product_tax', true );
 
-    $shipping = floatval( get_post_meta( $id, 'asp_product_shipping', true ) );
+    $shipping = floatval( get_post_meta( $prod_id, 'asp_product_shipping', true ) );
 
     //let's apply filter so addons can change price, currency and shipping if needed
     $price_arr	 = array( 'price' => $item_price, 'currency' => $currency_code, 'shipping' => empty( $shipping ) ? false : $shipping, 'variable' => $variable );
@@ -210,6 +210,27 @@ $stripeEmail		 = sanitize_email( $_POST[ 'stripeEmail' ] );
 $charge_description	 = sanitize_text_field( $_POST[ 'charge_description' ] );
 
 $orig_item_price = $item_price;
+
+//check if we have variatons selected for the product
+$variations = array();
+if ( $got_product_data_from_db && isset( $_POST[ 'stripeVariations' ] ) ) {
+// we got variations posted. Let's get variations from product
+    require_once(WP_ASP_PLUGIN_PATH . '/admin/includes/class-variations.php');
+    $v = new ASPVariations( $prod_id );
+    if ( ! empty( $v->variations ) ) {
+	//there are variations configured for the product
+	$posted_v = $_POST[ 'stripeVariations' ];
+	foreach ( $posted_v as $grp_id => $var_id ) {
+	    $var = $v->get_variation( $grp_id, $var_id[ 0 ] );
+	    if ( ! empty( $var ) ) {
+		$item_price	 = $item_price + $var[ 'price' ];
+		$variations[]	 = array( $var[ 'group_name' ] . ' - ' . $var[ 'name' ], $var[ 'price' ] );
+	    }
+	}
+    } else {
+	//no variations configured for the product
+    }
+}
 
 //check if we we need to apply coupon
 if ( ! empty( $_POST[ 'stripeCoupon' ] ) ) {
@@ -393,6 +414,13 @@ $shipping_address		 .= isset( $_POST[ 'stripeShippingAddressCountry' ] ) ? $_POS
 $post_data[ 'shipping_address' ] = $shipping_address;
 
 $post_data[ 'additional_items' ] = array();
+
+//check if we need to add variations
+if ( ! empty( $variations ) ) {
+    foreach ( $variations as $variation ) {
+	$post_data[ 'additional_items' ][ $variation[ 0 ] ] = $variation[ 1 ];
+    }
+}
 
 //check if we need to increase redeem coupon count
 if ( isset( $coupon ) && $coupon[ 'valid' ] ) {
