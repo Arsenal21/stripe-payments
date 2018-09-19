@@ -40,7 +40,7 @@ stripehandler.amount_to_cents = function (amount, curr) {
     if (stripehandler.zeroCents.indexOf(curr) === -1) {
 	amount = amount * 100;
     }
-    return amount;
+    return parseFloat(amount);
 }
 
 stripehandler.formatMoney = (function (n, data) {
@@ -79,6 +79,13 @@ stripehandler.updateAllAmounts = function (data) {
     if (taxVal) {
 	var taxStr = data.displayStr.tax.replace('%s', stripehandler.formatMoney(taxVal, data));
 	totalCont.children().find('span.asp_price_tax_section').html(taxStr);
+    }
+    if (data.descrGenerated) {
+	var descrAmt = totValue;
+	if (data.discount) {
+	    descrAmt = couponVal;
+	}
+	data.description = data.quantity + ' X ' + stripehandler.formatMoney(descrAmt, data);
     }
 }
 
@@ -394,10 +401,6 @@ function wp_asp_add_stripe_handler(data) {
 		    totCurr = totalCont.find('span.asp_price_amount').addClass('asp_line_through');
 		    totNew = totalCont.find('span.asp_new_price_amount');
 		}
-		if (data.descrGenerated) {
-		    data.oldDescr = data.description;
-		    data.description = data.quantity + ' X ' + response.newAmountFmt;
-		}
 		stripehandler.updateAllAmounts(data);
 		jQuery('#asp-remove-coupon-' + data.uniq_id).on('click', function (e) {
 		    e.preventDefault();
@@ -411,9 +414,6 @@ function wp_asp_add_stripe_handler(data) {
 		    delete data.discountType;
 		    delete data.couponCode;
 		    delete data.newAmountFmt;
-		    if (data.descrGenerated) {
-			data.description = data.oldDescr;
-		    }
 		});
 	    } else {
 		jQuery('div#asp-coupon-info-' + data.uniq_id).html(response.msg);
@@ -450,7 +450,7 @@ function wp_asp_add_stripe_handler(data) {
 	var varId = jQuery(this).val();
 	if (data.variations.applied) {
 	    if (data.variations.applied[grpId] !== undefined)
-		data.item_price = data.item_price - stripehandler.amount_to_cents(data.variations.prices[grpId][data.variations.applied[grpId]], data.currency);
+		data.item_price = parseFloat(data.item_price) - stripehandler.amount_to_cents(data.variations.prices[grpId][data.variations.applied[grpId]], data.currency);
 	} else {
 	    data.variations.applied = [];
 	}

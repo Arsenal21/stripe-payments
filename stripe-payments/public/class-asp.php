@@ -477,7 +477,7 @@ class AcceptStripePayments {
     static function formatted_price( $price, $curr = '', $price_is_cents = false ) {
 
 	if ( empty( $price ) ) {
-	    return '';
+	    $price = 0;
 	}
 
 	$opts = get_option( 'AcceptStripePayments-settings' );
