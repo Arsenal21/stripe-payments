@@ -685,7 +685,9 @@ class AcceptStripePaymentsShortcode {
 				$tpl		 = '<option value="%d">%s %s</option>';
 				$price_mod	 = $variations_prices[ $grp_id ][ $var_id ];
 				if ( ! empty( $price_mod ) ) {
-				    $price_mod = '(+' . AcceptStripePayments::formatted_price( $price_mod, $data[ 'currency' ] ) . ')';
+				    $fmt_price	 = AcceptStripePayments::formatted_price( abs($price_mod), $data[ 'currency' ] );
+				    $price_mod	 = $price_mod < 0 ? '-' . $fmt_price : '+' . $fmt_price;
+				    $price_mod	 = '(' . $price_mod . ')';
 				} else {
 				    $price_mod = '';
 				}
