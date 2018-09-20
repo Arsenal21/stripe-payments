@@ -433,14 +433,16 @@ if ( isset( $coupon ) && $coupon[ 'valid' ] ) {
 }
 
 if ( isset( $tax ) && ! empty( $tax ) ) {
-    $post_data[ 'additional_items' ][ __( 'Tax', 'stripe-payments' ) ]	 = $tax_amt;
-    $post_data[ 'tax_perc' ]						 = $tax;
-    $post_data[ 'tax' ]							 = $tax_amt;
+    $taxStr										 = apply_filters( 'asp_customize_text_msg', __( 'Tax', 'stripe-payments' ), 'tax_str' );
+    $post_data[ 'additional_items' ][ __( ucfirst( $taxStr ), 'stripe-payments' ) ]	 = $tax_amt;
+    $post_data[ 'tax_perc' ]							 = $tax;
+    $post_data[ 'tax' ]								 = $tax_amt;
 }
 
 if ( isset( $shipping ) && ! empty( $shipping ) ) {
-    $post_data[ 'additional_items' ][ __( 'Shipping', 'stripe-payments' ) ]	 = $shipping;
-    $post_data[ 'shipping' ]						 = $shipping;
+    $shipStr									 = apply_filters( 'asp_customize_text_msg', __( 'Shipping', 'stripe-payments' ), 'shipping_str' );
+    $post_data[ 'additional_items' ][ __( ucfirst( $shipStr ), 'stripe-payments' ) ]	 = $shipping;
+    $post_data[ 'shipping' ]							 = $shipping;
 }
 
 //Insert the order data to the custom post

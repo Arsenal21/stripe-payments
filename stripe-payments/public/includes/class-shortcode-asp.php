@@ -77,8 +77,8 @@ class AcceptStripePaymentsShortcode {
 	    'strEnterQuantity'	 => apply_filters( 'asp_customize_text_msg', __( 'Please enter quantity.', 'stripe-payments' ), 'enter_quantity' ),
 	    'strQuantityIsZero'	 => apply_filters( 'asp_customize_text_msg', __( 'Quantity can\'t be zero.', 'stripe-payments' ), 'quantity_is_zero' ),
 	    'strQuantityIsFloat'	 => apply_filters( 'asp_customize_text_msg', __( 'Quantity should be integer value.', 'stripe-payments' ), 'quantity_is_float' ),
-	    'strTax'		 => __( 'Tax', 'stripe-payments' ),
-	    'strShipping'		 => __( 'Shipping', 'stripe-payments' ),
+	    'strTax'		 => apply_filters( 'asp_customize_text_msg', __( 'Tax', 'stripe-payments' ), 'tax_str' ),
+	    'strShipping'		 => apply_filters( 'asp_customize_text_msg', __( 'Shipping', 'stripe-payments' ), 'shipping_str' ),
 	    'strTotal'		 => __( 'Total:', 'stripe-payments' ),
 	    'strPleaseFillIn'	 => apply_filters( 'asp_customize_text_msg', __( 'Please fill in this field.', 'stripe-payments' ), 'fill_in_field' ),
 	    'strPleaseCheckCheckbox' => __( 'Please check this checkbox.', 'stripe-payments' ),
@@ -201,16 +201,18 @@ class AcceptStripePaymentsShortcode {
 
 	if ( $tax !== 0 ) {
 	    if ( ! empty( $price ) ) {
+		$taxStr			 = apply_filters( 'asp_customize_text_msg', __( 'Tax', 'stripe-payments' ), 'tax_str' );
 		$tax_amount		 = AcceptStripePayments::get_tax_amount( $tot_price, $tax, AcceptStripePayments::is_zero_cents( $currency ) );
 		$tot_price		 += $tax_amount;
-		$under_price_line	 = '<span class="asp_price_tax_section">' . AcceptStripePayments::formatted_price( $tax_amount, $currency ) . __( ' (tax)', 'stripe-payments' ) . '</span>';
+		$under_price_line	 = '<span class="asp_price_tax_section">' . AcceptStripePayments::formatted_price( $tax_amount, $currency ) . __( ' (' . strtolower( $taxStr ) . ')', 'stripe-payments' ) . '</span>';
 	    } else {
 		$under_price_line = '<span class="asp_price_tax_section">' . $tax . '% tax' . '</span>';
 	    }
 	}
 	if ( $shipping !== 0 ) {
+	    $shipStr	 = apply_filters( 'asp_customize_text_msg', __( 'Shipping', 'stripe-payments' ), 'shipping_str' );
 	    $tot_price	 += $shipping;
-	    $shipping_line	 = AcceptStripePayments::formatted_price( $shipping, $currency ) . __( ' (shipping)', 'stripe-payments' );
+	    $shipping_line	 = AcceptStripePayments::formatted_price( $shipping, $currency ) . __( ' (' . strtolower( $shipStr ) . ')', 'stripe-payments' );
 	    if ( ! empty( $under_price_line ) ) {
 		$under_price_line .= '<span class="asp_price_shipping_section">' . ' + ' . $shipping_line . '</span>';
 	    } else {
@@ -478,9 +480,12 @@ class AcceptStripePaymentsShortcode {
 	$display_settings[ 's' ]	 = $curr_sym;
 	$display_settings[ 'pos' ]	 = $curr_pos;
 
-	$displayStr		 = array();
-	$displayStr[ 'tax' ]	 = '%s (tax)';
-	$displayStr[ 'ship' ]	 = '%s (shipping)';
+	$displayStr	 = array();
+	$taxStr		 = apply_filters( 'asp_customize_text_msg', __( 'Tax', 'stripe-payments' ), 'tax_str' );
+	$shipStr	 = apply_filters( 'asp_customize_text_msg', __( 'Shipping', 'stripe-payments' ), 'shipping_str' );
+
+	$displayStr[ 'tax' ]	 = '%s (' . strtolower( $taxStr ) . ')';
+	$displayStr[ 'ship' ]	 = '%s (' . strtolower( $shipStr ) . ')';
 
 	$data = array(
 	    'product_id'		 => $product_id,
@@ -685,8 +690,8 @@ class AcceptStripePaymentsShortcode {
 				$tpl		 = '<option value="%d">%s %s</option>';
 				$price_mod	 = $variations_prices[ $grp_id ][ $var_id ];
 				if ( ! empty( $price_mod ) ) {
-				    $fmt_price	 = AcceptStripePayments::formatted_price( abs($price_mod), $data[ 'currency' ] );
-				    $price_mod	 = $price_mod < 0 ? '-' . $fmt_price : '+' . $fmt_price;
+				    $fmt_price	 = AcceptStripePayments::formatted_price( abs( $price_mod ), $data[ 'currency' ] );
+				    $price_mod	 = $price_mod < 0 ? ' - ' . $fmt_price : ' + ' . $fmt_price;
 				    $price_mod	 = '(' . $price_mod . ')';
 				} else {
 				    $price_mod = '';
