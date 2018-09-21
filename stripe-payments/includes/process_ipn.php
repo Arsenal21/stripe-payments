@@ -30,7 +30,8 @@ function asp_ipn_completed( $errMsg = '' ) {
 	    $body	 .= $additional_msg . "\r\n";
 	    $body	 .= __( 'Debug data:', 'stripe-payments' ) . "\r\n";
 	    foreach ( $_POST as $key => $value ) {
-		$body .= $key . ': ' . $value . "\r\n";
+		$value	 = is_array( $value ) ? json_encode( $value ) : $value;
+		$body	 .= $key . ': ' . $value . "\r\n";
 	    }
 	    wp_mail( $to, $subj, $body, $headers );
 	}
@@ -212,7 +213,8 @@ $charge_description	 = sanitize_text_field( $_POST[ 'charge_description' ] );
 $orig_item_price = $item_price;
 
 //check if we have variatons selected for the product
-$variations = array();
+$variations	 = array();
+$varApplied	 = array();
 if ( $got_product_data_from_db && isset( $_POST[ 'stripeVariations' ] ) ) {
 // we got variations posted. Let's get variations from product
     require_once(WP_ASP_PLUGIN_PATH . '/admin/includes/class-variations.php');
@@ -225,6 +227,7 @@ if ( $got_product_data_from_db && isset( $_POST[ 'stripeVariations' ] ) ) {
 	    if ( ! empty( $var ) ) {
 		$item_price	 = $item_price + $var[ 'price' ];
 		$variations[]	 = array( $var[ 'group_name' ] . ' - ' . $var[ 'name' ], $var[ 'price' ] );
+		$varApplied[]	 = $var;
 	    }
 	}
     } else {
@@ -441,7 +444,7 @@ if ( isset( $tax ) && ! empty( $tax ) ) {
 
 if ( isset( $shipping ) && ! empty( $shipping ) ) {
     $shipStr									 = apply_filters( 'asp_customize_text_msg', __( 'Shipping', 'stripe-payments' ), 'shipping_str' );
-    $post_data[ 'additional_items' ][ __( ucfirst( $shipStr ), 'stripe-payments' ) ]	 = $shipping;
+    $post_data[ 'additional_items' ][ __( ucfirst( $shipStr ), 'stripe-payments' ) ] = $shipping;
     $post_data[ 'shipping' ]							 = $shipping;
 }
 
@@ -455,6 +458,20 @@ $post_data[ 'order_post_id' ] = $order_post_id;
 $item_url		 = apply_filters( 'asp_item_url_process', $item_url, $post_data );
 $item_url		 = base64_decode( $item_url );
 $post_data[ 'item_url' ] = $item_url;
+
+if ( ! empty( $varApplied ) ) {
+    //process variations URLs if needed
+    foreach ( $varApplied as $key => $var ) {
+	if ( ! empty( $var[ 'url' ] ) ) {
+	    $var			 = apply_filters( 'asp_variation_url_process', $var, $post_data );
+	    $var[ 'url' ]		 = base64_decode( $var[ 'url' ] );
+	    $varApplied[ $key ]	 = $var;
+	}
+    }
+}
+
+//add variations to the resulting array
+$post_data[ 'var_applied' ] = $varApplied;
 
 ASP_Debug_Logger::log( 'Firing post-payment hooks.' );
 
@@ -604,9 +621,33 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post ) {
     $product_details .= AcceptStripePayments::gen_additional_items( $post );
     $product_details .= "--------------------------------" . "\n";
     $product_details .= __( "Total Amount: ", "stripe-payments" ) . AcceptStripePayments::formatted_price( $post[ 'paid_amount' ], $post[ 'currency_code' ] ) . "\n";
-    if ( ! empty( $post[ 'item_url' ] ) ) {
-	$product_details .= "\n\n" . __( "Download link: ", "stripe-payments" ) . $post[ 'item_url' ];
+    $varUrls	 = array();
+    // check if we have variations applied with download links
+    if ( ! empty( $post[ 'var_applied' ] ) ) {
+	foreach ( $post[ 'var_applied' ] as $var ) {
+	    if ( ! empty( $var[ 'url' ] ) ) {
+		$varUrls[] = $var[ 'url' ];
+	    }
+	}
     }
+    $download_str = '';
+    if ( ! empty( $post[ 'item_url' ] ) ) {
+	$download_str = "\n\n" . __( "Download link: ", "stripe-payments" ) . $post[ 'item_url' ];
+    }
+    if ( ! empty( $varUrls ) ) {
+	//show variations download link(s)
+	//those links will replace the one set for the product
+	if ( count( $varUrls ) === 1 ) {
+	    $download_str = __( "Download link: ", "stripe-payments" );
+	} else {
+	    $download_str = __( "Download links: ", "stripe-payments" ) . "\n";
+	}
+	foreach ( $varUrls as $url ) {
+	    $download_str .= $url . "\n";
+	}
+    }
+
+    $product_details .= rtrim( $download_str, "\n" );
 
     $custom_field = '';
     if ( isset( $post[ 'custom_field_value' ] ) ) {

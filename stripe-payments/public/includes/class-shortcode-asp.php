@@ -287,14 +287,14 @@ class AcceptStripePaymentsShortcode {
 
 	$price_line = AcceptStripePayments::formatted_price( $price, $currency );
 
-	$qntStr='';
+	$qntStr = '';
 	if ( $quantity && $quantity != 1 ) {
-	    $qntStr='x '.$quantity;
+	    $qntStr = 'x ' . $quantity;
 	}
 
 	$product_tags = array(
 	    'thumb_img'		 => $thumb_img,
-	    'quantity' => $qntStr,
+	    'quantity'		 => $qntStr,
 	    'name'			 => $post->post_title,
 	    'description'		 => do_shortcode( wpautop( $post->post_content ) ),
 	    'price'			 => $price_line,
@@ -542,8 +542,11 @@ class AcceptStripePaymentsShortcode {
 	$data[ 'variations' ] = array();
 
 	if ( ! empty( $this->variations ) ) {
-	    $data[ 'variations' ] = $this->variations;
+	    $data[ 'variations' ]	 = $this->variations;
+	    $data[ 'variations' ]	 = apply_filters( 'asp_button_output_variations_ready', $data[ 'variations' ], $data );
 	}
+
+
 
 	$output	 .= '<input type="hidden" name="asp_action" value="process_ipn" />';
 	$output	 .= "<input type = 'hidden' value = '{$data[ 'name' ]}' name = 'item_name' />";
@@ -782,11 +785,27 @@ class AcceptStripePaymentsShortcode {
 	    $output	 .= '<br />';
 	    $output	 .= '<div class="asp-thank-you-page-txn-id">' . __( "Transaction ID: ", "stripe-payments" ) . $aspData[ 'txn_id' ] . '</div>';
 
+	    $download_str = '';
 	    if ( ! empty( $aspData[ 'item_url' ] ) ) {
-		$output	 .= "<div class='asp-thank-you-page-download-link'>";
-		$output	 .= __( "Please ", "stripe-payments" ) . "<a href='" . $aspData[ 'item_url' ] . "'>" . __( "click here", "stripe-payments" ) . "</a>" . __( " to download.", "stripe-payments" );
-		$output	 .= "</div>";
+		$download_str	 .= "<div class='asp-thank-you-page-download-link'>";
+		$download_str	 .= __( "Please ", "stripe-payments" ) . "<a href='" . $aspData[ 'item_url' ] . "'>" . __( "click here", "stripe-payments" ) . "</a>" . __( " to download.", "stripe-payments" );
+		$download_str	 .= "</div>";
 	    }
+
+	    //variations download links if needed
+	    if ( ! empty( $aspData[ 'var_applied' ] ) ) {
+		$download_str	 .= "<div class='asp-thank-you-page-download-link'>";
+		$download_str	 .= '<span>' . __( 'Download links:', 'stripe-payments' ) . '</span><br/>';
+		$download_txt	 = __( 'Click here to download', 'stripe-payments' );
+		$link_tpl	 = '<a href="%s">%s</a><br/>';
+		foreach ( $aspData[ 'var_applied' ] as $var ) {
+		    if ( ! empty( $var[ 'url' ] ) ) {
+			$download_str .= sprintf( $link_tpl, $var[ 'url' ], $download_txt );
+		    }
+		}
+		$download_str .= "</div>";
+	    }
+	    $output .= $download_str;
 
 	    $output = apply_filters( 'asp_stripe_payments_checkout_page_result', $output, $aspData ); //Filter that allows you to modify the output data on the checkout result page
 

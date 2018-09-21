@@ -38,6 +38,8 @@ class ASPVariations {
 	    return false;
 	}
 	$var = array(
+	    'grp_id'	 => $grp_id,
+	    'id'		 => $var_id,
 	    'group_name'	 => $this->groups[ $grp_id ],
 	    'name'		 => $this->variations[ $grp_id ][ 'names' ][ $var_id ],
 	    'price'		 => $this->variations[ $grp_id ][ 'prices' ][ $var_id ],
