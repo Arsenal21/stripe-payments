@@ -150,6 +150,7 @@ None.
 == Changelog ==
 
 = 1.9.5 =
+- Added products variations.
 - Fixed rare bug when customer wasn't redirected to results page on error if "Send Email On Payment Failure" option is not enabled.
 
 = 1.9.4 =

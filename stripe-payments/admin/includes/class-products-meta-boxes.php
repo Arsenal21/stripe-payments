@@ -131,6 +131,11 @@ class asp_products_metaboxes {
 	    .asp-btn-small .dashicons {
 		font-size: 18px;
 	    }
+	    .asp-variations-select-from-ml-btn {
+		position: absolute;
+		top: 8px;
+		right: 8px;
+	    }
 	</style>
 	<div id="asp-variations-cont-main">
 	    <div id="asp-variations-cont">
@@ -150,7 +155,6 @@ class asp_products_metaboxes {
 			<th width="40%"><?php _e( 'Name', 'stripe-payments' ); ?></th>
 			<th width="10%"><?php _e( 'Price Mod', 'stripe-payments' ); ?></th>
 			<th width="40%"><?php _e( 'Product URL', 'stripe-payments' ); ?></th>
-			<th></th>
 		    </tr>
 		</table>
 		<div class="asp-variations-buttons-cont">
@@ -163,8 +167,13 @@ class asp_products_metaboxes {
 		<tr>
 		    <td><input type="text" value="" class="asp-variation-name"></td>
 		    <td><input type="text" value="" class="asp-variation-price"></td>
-		    <td><input type="text" value="" class="asp-variation-url"></td>
-		    <td><button type="button" class="button asp-variations-delete-variation-btn asp-btn-small"><span class="dashicons dashicons-trash" title="<?php _e( 'Delete variation', 'stripe-payments' ); ?>"></span></button></td>
+		    <td style="position: relative;">
+			<input type="text" value="" class="asp-variation-url">
+			<button type="button" class="button asp-variations-select-from-ml-btn asp-btn-small"><span class="dashicons  dashicons-admin-media" title="<?php _e( 'Select from Media Library', 'stripe-payments' ); ?>"></span></button>
+		    </td>
+		    <td>
+			<button type="button" class="button asp-variations-delete-variation-btn asp-btn-small"><span class="dashicons dashicons-trash" title="<?php _e( 'Delete variation', 'stripe-payments' ); ?>"></span></button>
+		    </td>
 		</tr>
 	    </tbody>
 	</table>
@@ -235,6 +244,23 @@ class asp_products_metaboxes {
 		    e.preventDefault();
 		    aspGroupId = $(this).closest('div.asp-variations-group-cont').data('asp-group-id');
 		    asp_add_variation(aspGroupId, '', 0, '', true);
+		});
+		$(document).on('click', 'button.asp-variations-select-from-ml-btn', function (e) {
+		    e.preventDefault();
+		    var asp_selectVarFile = wp.media({
+			title: "Select File",
+			button: {
+			    text: "Insert"
+			},
+			multiple: false
+		    });
+		    var buttonEl = $(this);
+		    asp_selectVarFile.open();
+		    asp_selectVarFile.on('select', function () {
+			var attachment_var = asp_selectVarFile.state().get('selection').first().toJSON();
+			$(buttonEl).closest('tr').children().find('input.asp-variation-url').val(attachment_var.url);
+		    });
+		    return false;
 		});
 		if (aspVariationsGroups.length !== 0) {
 		    aspVariationsGroups = JSON.parse(aspVariationsGroups);
