@@ -287,12 +287,14 @@ class AcceptStripePaymentsShortcode {
 
 	$price_line = AcceptStripePayments::formatted_price( $price, $currency );
 
+	$qntStr='';
 	if ( $quantity && $quantity != 1 ) {
-	    $price_line = AcceptStripePayments::formatted_price( $price, $currency ) . ' x ' . $quantity;
+	    $qntStr='x '.$quantity;
 	}
 
 	$product_tags = array(
 	    'thumb_img'		 => $thumb_img,
+	    'quantity' => $qntStr,
 	    'name'			 => $post->post_title,
 	    'description'		 => do_shortcode( wpautop( $post->post_content ) ),
 	    'price'			 => $price_line,

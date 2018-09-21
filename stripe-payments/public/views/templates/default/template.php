@@ -17,7 +17,7 @@ function asp_get_template( $css_inserted = false ) {
     	%_description_%
         </div>
         <div class="asp_price_container">
-    	<span class="asp_price_amount">%_price_%</span> <span class="asp_new_price_amount"></span>
+    	<span class="asp_price_amount">%_price_%</span> <span class="asp_new_price_amount"></span> <span class="asp_quantity">%_quantity_%</span>
     	<div class="asp_under_price_line">%_under_price_line_%</div>
         </div>
         <div class="asp_product_buy_button">
@@ -47,7 +47,7 @@ function asp_get_post_template( $css_inserted = false ) {
     	    %_description_%
     	</div>
     	<div class="asp_price_container">
-    	    <span class="asp_price_amount">%_price_%</span> <span class="asp_new_price_amount"></span>
+    	    <span class="asp_price_amount">%_price_%</span> <span class="asp_new_price_amount"></span> <span class="asp_quantity">%_quantity_%</span>
     	    <div class="asp_under_price_line">%_under_price_line_%</div>
     	</div>
     	<div class="asp_product_buy_button">

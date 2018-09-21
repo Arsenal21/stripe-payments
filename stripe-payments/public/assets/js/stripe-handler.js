@@ -74,12 +74,13 @@ stripehandler.updateAllAmounts = function (data) {
     totalCont.find('span.asp_price_amount').html(stripehandler.formatMoney(data.item_price, data));
     var taxVal = false;
     if (data.tax !== 0) {
-	var taxVal = Math.round(data.item_price * parseInt(data.tax) / 100);
+	var taxVal = Math.round(data.item_price * parseInt(data.tax) / 100) * data.quantity;
     }
     if (taxVal) {
 	var taxStr = data.displayStr.tax.replace('%s', stripehandler.formatMoney(taxVal, data));
 	totalCont.children().find('span.asp_price_tax_section').html(taxStr);
     }
+    totalCont.find('span.asp_quantity').html('x ' + data.quantity);
     if (data.descrGenerated) {
 	var descrAmt = totValue;
 	if (data.discount) {
@@ -116,6 +117,7 @@ jQuery(document).ready(function () {
 	    }
 	}
     });
+    jQuery('select.asp-product-variations-select').change();
 });
 
 function wp_asp_validate_custom_quantity(data) {
@@ -443,7 +445,6 @@ function wp_asp_add_stripe_handler(data) {
 	return wp_asp_can_proceed(data, true);
 
     });
-    jQuery('#stripe_button_' + data.uniq_id).prop("disabled", false);
 
     jQuery('select.asp-product-variations-select').change(function () {
 	var grpId = jQuery(this).data('asp-variations-group-id');
@@ -458,4 +459,15 @@ function wp_asp_add_stripe_handler(data) {
 	data.item_price = data.item_price + stripehandler.amount_to_cents(data.variations.prices[grpId][varId], data.currency);
 	stripehandler.updateAllAmounts(data);
     });
+
+    jQuery('div.asp_product_item_qty_input_container').children('.asp_product_item_qty_input').change(function () {
+	var qnt = wp_asp_validate_custom_quantity(data);
+	if (qnt !== false) {
+	    data.quantity = qnt;
+	    stripehandler.updateAllAmounts(data);
+	}
+    });
+
+    jQuery('#stripe_button_' + data.uniq_id).prop("disabled", false);
+
 }
