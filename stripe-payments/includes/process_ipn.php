@@ -464,7 +464,6 @@ if ( ! empty( $varApplied ) ) {
     foreach ( $varApplied as $key => $var ) {
 	if ( ! empty( $var[ 'url' ] ) ) {
 	    $var			 = apply_filters( 'asp_variation_url_process', $var, $post_data );
-	    $var[ 'url' ]		 = base64_decode( $var[ 'url' ] );
 	    $varApplied[ $key ]	 = $var;
 	}
     }
