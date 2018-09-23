@@ -787,14 +787,14 @@ class AcceptStripePaymentsShortcode {
 
 	    $download_str = '';
 	    if ( ! empty( $aspData[ 'item_url' ] ) ) {
-		$download_str	 .= "<div class='asp-thank-you-page-download-link'>";
+		$download_str	 .= "<br /><div class='asp-thank-you-page-download-link'>";
 		$download_str	 .= __( "Please ", "stripe-payments" ) . "<a href='" . $aspData[ 'item_url' ] . "'>" . __( "click here", "stripe-payments" ) . "</a>" . __( " to download.", "stripe-payments" );
 		$download_str	 .= "</div>";
 	    }
 
 	    //variations download links if needed
 	    if ( ! empty( $aspData[ 'var_applied' ] ) ) {
-		$download_str	 .= "<div class='asp-thank-you-page-download-link'>";
+		$download_str	 .= "<br /><div class='asp-thank-you-page-download-link'>";
 		$download_str	 .= '<span>' . __( 'Download links:', 'stripe-payments' ) . '</span><br/>';
 		$download_txt	 = __( 'Click here to download', 'stripe-payments' );
 		$link_tpl	 = '<a href="%s">%s</a><br/>';
