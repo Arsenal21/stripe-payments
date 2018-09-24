@@ -394,13 +394,14 @@ $billing_address .= isset( $_POST[ 'stripeBillingAddressCountry' ] ) ? $_POST[ '
 
 if ( empty( $billing_address ) && (isset( $data[ 'product_id' ] ) && get_post_meta( $data[ 'product_id' ], 'asp_product_collect_billing_addr', true )) ) {
     //let's try to fetch billing address from payment data
-    $billing_address .= ! empty( $data[ 'charge' ]->source->name ) ? $data[ 'charge' ]->source->name . "\n" : '';
-    $billing_address .= ! empty( $data[ 'charge' ]->source->address_line1 ) ? $data[ 'charge' ]->source->address_line1 . "\n" : '';
-    $billing_address .= ! empty( $data[ 'charge' ]->source->address_line2 ) ? $data[ 'charge' ]->source->address_line2 . "\n" : '';
-    $billing_address .= ! empty( $data[ 'charge' ]->source->address_zip ) ? $data[ 'charge' ]->source->address_zip . "\n" : '';
-    $billing_address .= ! empty( $data[ 'charge' ]->source->address_city ) ? $data[ 'charge' ]->source->address_city . "\n" : '';
-    $billing_address .= ! empty( $data[ 'charge' ]->source->address_state ) ? $data[ 'charge' ]->source->address_state . "\n" : '';
-    $billing_address .= ! empty( $data[ 'charge' ]->source->address_country ) ? $data[ 'charge' ]->source->address_country . "\n" : '';
+    $billing_address		 .= ! empty( $data[ 'charge' ]->source->name ) ? $data[ 'charge' ]->source->name . "\n" : '';
+    $_POST[ 'stripeBillingName' ]	 = ! empty( $billing_address ) ? $billing_address : NULL;
+    $billing_address		 .= ! empty( $data[ 'charge' ]->source->address_line1 ) ? $data[ 'charge' ]->source->address_line1 . "\n" : '';
+    $billing_address		 .= ! empty( $data[ 'charge' ]->source->address_line2 ) ? $data[ 'charge' ]->source->address_line2 . "\n" : '';
+    $billing_address		 .= ! empty( $data[ 'charge' ]->source->address_zip ) ? $data[ 'charge' ]->source->address_zip . "\n" : '';
+    $billing_address		 .= ! empty( $data[ 'charge' ]->source->address_city ) ? $data[ 'charge' ]->source->address_city . "\n" : '';
+    $billing_address		 .= ! empty( $data[ 'charge' ]->source->address_state ) ? $data[ 'charge' ]->source->address_state . "\n" : '';
+    $billing_address		 .= ! empty( $data[ 'charge' ]->source->address_country ) ? $data[ 'charge' ]->source->address_country . "\n" : '';
 }
 
 $post_data[ 'billing_address' ] = $billing_address;
