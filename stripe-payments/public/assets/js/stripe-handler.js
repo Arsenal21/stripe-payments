@@ -80,7 +80,11 @@ stripehandler.updateAllAmounts = function (data) {
 	var taxStr = data.displayStr.tax.replace('%s', stripehandler.formatMoney(taxVal, data));
 	totalCont.children().find('span.asp_price_tax_section').html(taxStr);
     }
-    totalCont.find('span.asp_quantity').html('x ' + data.quantity);
+    var qntStr = '';
+    if (data.quantity !== 1) {
+	qntStr = 'x ' + data.quantity;
+    }
+    totalCont.find('span.asp_quantity').html(qntStr);
     if (data.descrGenerated) {
 	var descrAmt = totValue;
 	if (data.discount) {
