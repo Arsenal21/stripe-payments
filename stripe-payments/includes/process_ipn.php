@@ -319,11 +319,12 @@ ob_start();
 ASP_Debug_Logger::log( 'Firing pre-payment hook.' );
 $data = apply_filters( 'asp_process_charge', $data );
 
-if ( empty( $data[ 'charge' ] && $amount_in_cents == 0 ) ) {
+if ( empty( $data[ 'charge' ] ) && $amount_in_cents == 0 ) {
     //looks like we have zero amount. We won't be really processing the charge as it would result in error,
     //so we just make it look like it was actually processed.
-    $data[ 'charge' ]	 = new stdClass();
-    $data[ 'charge' ]->id	 = 0;
+    $data[ 'charge' ]		 = new stdClass();
+    $data[ 'charge' ]->id		 = 0;
+    $data[ 'charge' ]->created	 = time();
 }
 
 if ( empty( $data[ 'charge' ] ) ) {
