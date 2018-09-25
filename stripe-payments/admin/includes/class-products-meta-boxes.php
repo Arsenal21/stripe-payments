@@ -82,7 +82,7 @@ class asp_products_metaboxes {
 	<p class = "description"><?php echo __( 'Leave "(Default)" option selected if you want to use currency specified on settings page.', 'stripe-payments' ); ?></p>
 	<hr />
 	<h4><?php _e( 'Variations', 'stripe-payments' ); ?></h4>
-	<p><?php echo sprintf( __( 'You can find documentation on variations here: %s', 'stripe-payments' ), '<a href="https://example.com/variations-docs/" target="_blank">https://example.com/variations-docs/</a>' ); ?></p>
+	<p><?php echo sprintf( __( 'You can find documentation on variations %s', 'stripe-payments' ), '<a href="https://s-plugins.com/stripe-payments-plugin-tutorials/" target="_blank">here</a>' ); ?></p>
 	<?php
 	$variations_str		 = '';
 	$variations_groups	 = get_post_meta( $post->ID, 'asp_variations_groups', true );
