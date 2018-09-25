@@ -152,6 +152,7 @@ None.
 = 1.9.5 =
 - Added products variations.
 - Fixed rare bug when customer wasn't redirected to results page on error if "Send Email On Payment Failure" option is not enabled.
+- Billing name (if available) is now properly passed to MailChimp, AWeber, ConvertKit etc. addons if payment is made via Advanced Payment Methods addon.
 
 = 1.9.4 =
 - Added "Debug Log Shareable Link" to share debug log without having to share WP Dashboard credentials.
