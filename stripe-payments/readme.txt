@@ -151,6 +151,7 @@ None.
 
 = 1.9.5 =
 - Added products variations.
+- Added ability to offer 100% discount coupon. Plugin won't produce "Invalid positive integer" error if it is used.
 - Fixed rare bug when customer wasn't redirected to results page on error if "Send Email On Payment Failure" option is not enabled.
 - Billing name (if available) is now properly passed to MailChimp, AWeber, ConvertKit etc. addons if payment is made via Advanced Payment Methods addon.
 

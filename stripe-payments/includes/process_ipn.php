@@ -319,6 +319,13 @@ ob_start();
 ASP_Debug_Logger::log( 'Firing pre-payment hook.' );
 $data = apply_filters( 'asp_process_charge', $data );
 
+if ( empty( $data[ 'charge' ] && $amount_in_cents == 0 ) ) {
+    //looks like we have zero amount. We won't be really processing the charge as it would result in error,
+    //so we just make it look like it was actually processed.
+    $data[ 'charge' ]	 = new stdClass();
+    $data[ 'charge' ]->id	 = 0;
+}
+
 if ( empty( $data[ 'charge' ] ) ) {
     ASP_Debug_Logger::log( 'Processing payment.' );
 
@@ -378,7 +385,7 @@ $txn_id			 = $data[ 'charge' ]->id; //$charge->balance_transaction;
 //Core transaction data
 $data[ 'txn_id' ]	 = $txn_id; //The Stripe charge ID
 
-$post_data = array_map( 'sanitize_text_field', $data );
+$post_data = $data;
 
 $_POST = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
 
