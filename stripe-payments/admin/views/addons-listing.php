@@ -116,7 +116,17 @@ echo '<link type="text/css" rel="stylesheet" href="' . WP_ASP_PLUGIN_URL . '/adm
 		"settings_url"	 => 'edit.php?post_type=asp-products&page=stripe-payments-settings#aweber',
 		"installed"	 => class_exists( 'ASPAWEBER_main' ) ? true : false
 	    );
-	    array_push( $addons_data, $addon_10 );            
+	    array_push( $addons_data, $addon_10 );
+            
+	    $addon_11 = array(
+		"name"		 => "ConvertKit Integration Addon",
+		"thumbnail"	 => WP_ASP_PLUGIN_URL . "/admin/assets/images/convertkit-integration.png",
+		"description"	 => "This addon allows you to add customers to your ConvertKit list after they purchase a product.",
+		"page_url"	 => "https://s-plugins.com/stripe-convertkit-integration-addon/",
+		"settings_url"	 => 'edit.php?post_type=asp-products&page=stripe-payments-settings#convertkit',
+		"installed"	 => class_exists( 'ASPCK_main' ) ? true : false
+	    );
+	    array_push( $addons_data, $addon_11 );            
 
 	    /*	     * * Show the addons list ** */
 	    foreach ( $addons_data as $addon ) {

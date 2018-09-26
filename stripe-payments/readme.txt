@@ -4,7 +4,7 @@ Donate link: https://s-plugins.com
 Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortcode, digital goods, payment gateway, instant payment, commerce, digital downloads, downloads, e-commerce, e-store, ecommerce, eshop, donation
 Requires at least: 4.7
 Tested up to: 4.9
-Stable tag: 1.9.5t2
+Stable tag: 1.9.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -150,10 +150,11 @@ None.
 == Changelog ==
 
 = 1.9.5 =
-- Added products variations.
+- Added product variations feature. Documentation here - https://s-plugins.com/creating-variable-products-using-the-stripe-payments-plugin/
 - Added ability to offer 100% discount coupon. Plugin won't produce "Invalid positive integer" error if it is used.
 - Fixed rare bug when customer wasn't redirected to results page on error if "Send Email On Payment Failure" option is not enabled.
 - Billing name (if available) is now properly passed to MailChimp, AWeber, ConvertKit etc. addons if payment is made via Advanced Payment Methods addon.
+- Added the necessary changes for the convertkit addon.
 
 = 1.9.4 =
 - Added "Debug Log Shareable Link" to share debug log without having to share WP Dashboard credentials.
