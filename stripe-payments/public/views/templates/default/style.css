@@ -45,6 +45,10 @@
     max-width: 50px;
 }
 
+.asp-product-variations-label{
+    margin-right: 10px;
+}
+
 /* Post Item */
 .asp_post_item {
     width: 90%;
