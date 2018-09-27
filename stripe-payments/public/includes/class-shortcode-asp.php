@@ -690,7 +690,7 @@ class AcceptStripePaymentsShortcode {
 			    $this->variations[ 'prices' ]	 = $variations_prices;
 			    $this->variations[ 'urls' ]	 = $variations_urls;
 			    $variations_str			 .= '<div class="asp-product-variations-cont">';
-			    $variations_str			 .= '<label class="asp-product-variations-lavel">' . $group . '</label>';
+			    $variations_str			 .= '<label class="asp-product-variations-label">' . $group . '</label>';
 			    $variations_str			 .= sprintf( '<select class="asp-product-variations-select" data-asp-variations-group-id="%1$d" name="stripeVariations[%1$d][]">', $grp_id );
 			    foreach ( $variations_names[ $grp_id ] as $var_id => $name ) {
 				$tpl		 = '<option value="%d">%s %s</option>';

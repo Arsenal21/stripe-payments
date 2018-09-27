@@ -154,6 +154,7 @@ None.
 - Fixed zero amount was displayed on products with custom amount.
 - Fixed products table display when viewed from mobile.
 - Products table is now properly displaying large images for newly created or updated products.
+- Added CSS to add some spacing after the variation label.
 
 = 1.9.5 =
 - Added product variations feature. Documentation here - https://s-plugins.com/creating-variable-products-using-the-stripe-payments-plugin/
