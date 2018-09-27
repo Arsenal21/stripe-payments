@@ -218,7 +218,7 @@ class asp_products_metaboxes {
 		$(document).on('click', 'button.asp-variations-delete-group-btn', function (e) {
 		    e.preventDefault();
 		    if (!confirm('<?php
-	$msg	 = __( 'Are you sure want to delete this group?', 'stripe-payments' );
+	$msg	 = __( 'Are you sure you want to delete this group?', 'stripe-payments' );
 	$msg	 = esc_js( $msg );
 	echo $msg;
 	?>')) {
@@ -232,7 +232,7 @@ class asp_products_metaboxes {
 		$(document).on('click', 'button.asp-variations-delete-variation-btn', function (e) {
 		    e.preventDefault();
 		    if (!confirm('<?php
-	$msg	 = __( 'Are you sure want to delete this variation?', 'stripe-payments' );
+	$msg	 = __( 'Are you sure you want to delete this variation?', 'stripe-payments' );
 	$msg	 = esc_js( $msg );
 	echo $msg;
 	?>')) {

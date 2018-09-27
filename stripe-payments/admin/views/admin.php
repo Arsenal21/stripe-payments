@@ -194,7 +194,7 @@ if ( $_GET[ 'page' ] == 'stripe-payments-settings' ) {
 
     		$('#asp_clear_log_btn').click(function (e) {
     		    e.preventDefault();
-    		    if (confirm("<?php _e( 'Are you sure want to clear log?', 'stripe-payments' ); ?>")) {
+    		    if (confirm("<?php _e( 'Are you sure you want to clear log?', 'stripe-payments' ); ?>")) {
     			var req = jQuery.ajax({
     			    url: ajaxurl,
     			    type: "post",
