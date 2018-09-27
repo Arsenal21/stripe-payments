@@ -153,6 +153,7 @@ class AcceptStripePaymentsShortcode {
 	$button_color	 = 'blue'; //this could be made configurable
 
 	$price		 = get_post_meta( $id, 'asp_product_price', true );
+	$price		 = empty( $price ) ? 0 : $price;
 	$shipping	 = get_post_meta( $id, 'asp_product_shipping', true );
 
 	//let's apply filter so addons can change price, currency and shipping if needed
@@ -197,16 +198,16 @@ class AcceptStripePaymentsShortcode {
 	$quantity = get_post_meta( $id, 'asp_product_quantity', true );
 
 	$under_price_line	 = '';
-	$tot_price		 = $quantity ? $price * $quantity : $price;
+	$tot_price		 = ! empty( $quantity ) ? $price * $quantity : $price;
 
 	if ( $tax !== 0 ) {
+	    $taxStr = apply_filters( 'asp_customize_text_msg', __( 'Tax', 'stripe-payments' ), 'tax_str' );
 	    if ( ! empty( $price ) ) {
-		$taxStr			 = apply_filters( 'asp_customize_text_msg', __( 'Tax', 'stripe-payments' ), 'tax_str' );
 		$tax_amount		 = AcceptStripePayments::get_tax_amount( $tot_price, $tax, AcceptStripePayments::is_zero_cents( $currency ) );
 		$tot_price		 += $tax_amount;
 		$under_price_line	 = '<span class="asp_price_tax_section">' . AcceptStripePayments::formatted_price( $tax_amount, $currency ) . __( ' (' . strtolower( $taxStr ) . ')', 'stripe-payments' ) . '</span>';
 	    } else {
-		$under_price_line = '<span class="asp_price_tax_section">' . $tax . '% tax' . '</span>';
+		$under_price_line = '<span class="asp_price_tax_section">' . $tax . '% ' . lcfirst( $taxStr ) . '</span>';
 	    }
 	}
 	if ( $shipping !== 0 ) {
@@ -285,7 +286,7 @@ class AcceptStripePaymentsShortcode {
 	    $this->productCSSInserted = true;
 	}
 
-	$price_line = AcceptStripePayments::formatted_price( $price, $currency );
+	$price_line = empty( $price ) ? '' : AcceptStripePayments::formatted_price( $price, $currency );
 
 	$qntStr = '';
 	if ( $quantity && $quantity != 1 ) {
