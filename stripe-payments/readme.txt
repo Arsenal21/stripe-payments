@@ -4,7 +4,7 @@ Donate link: https://s-plugins.com
 Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortcode, digital goods, payment gateway, instant payment, commerce, digital downloads, downloads, e-commerce, e-store, ecommerce, eshop, donation
 Requires at least: 4.7
 Tested up to: 4.9
-Stable tag: 1.9.6
+Stable tag: 1.9.7t1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -149,6 +149,9 @@ Yes, please visit Stripe Payments > Settings screen for options.
 None.
 
 == Changelog ==
+
+= 1.9.7 =
+- Fixed session_start() error that occurs on some configurations after customer made a payment.
 
 = 1.9.6 =
 - Fixed zero amount was displayed on products with custom amount.
