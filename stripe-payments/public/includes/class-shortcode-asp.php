@@ -583,7 +583,7 @@ class AcceptStripePaymentsShortcode {
 	if ( ! $this->ButtonCSSInserted || $this->CompatMode ) {
 //	    $this->ButtonCSSInserted = true;
 	    // we need to style custom inputs
-	    $style	 = file_get_contents( WP_ASP_PLUGIN_PATH . 'public/assets/css/public.min.css' );
+	    $style	 = file_get_contents( WP_ASP_PLUGIN_PATH . 'public/assets/css/public.css' );
 	    $output	 .= '<style type="text/css">' . $style . '</style>';
 	    //addons can output their styles if needed
 	    $output	 = apply_filters( 'asp-button-output-additional-styles', $output );
