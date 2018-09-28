@@ -7,7 +7,7 @@ if ( ! current_user_can( 'manage_options' ) ) {
 }
 
 $output		 = '';
-echo '<link type="text/css" rel="stylesheet" href="' . WP_ASP_PLUGIN_URL . '/admin/assets/css/stripe-addons-listing.css" />' . "\n";
+ wp_enqueue_style( 'asp-admin-styles', WP_ASP_PLUGIN_URL . '/admin/assets/css/admin.css', array(), AcceptStripePayments::VERSION );
 ?>
 
 <div class="wrap">

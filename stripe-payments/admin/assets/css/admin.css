@@ -1,4 +1,4 @@
-/* This stylesheet is used to style the admin option form of the plugin. */
+/*----- Shortcode Inserter ----- */
 i.mce-i-asp-shortcode-icon {
     background-image: url(img/asp_shortcode.png);
 }
@@ -8,6 +8,7 @@ i.mce-i-asp-shortcode-icon {
 table.asp-shortcode-options-table th, table.asp-shortcode-options-table td {
     padding: 10px 10px 10px 0;
 }
+
 #TB_ajaxContent table.asp-shortcode-options-table p.description {
     padding: 0;
 }
@@ -26,3 +27,52 @@ table.asp-shortcode-options-table th, table.asp-shortcode-options-table td {
     height: auto;
     width: auto;
 }
+/*----- END Shortcode Inserter ----- */
+
+/*----- Addons Listing ----- */
+.stripe_addon_item_canvas{
+    font-family:sans-serif,arial;
+    font-size:12px;
+    border:1px solid #ddd;
+    box-sizing: border-box;
+    display:block;
+    float:left;
+    margin:3px 12px 12px 0;
+    padding:15px;
+    position:relative;
+    width:300px;
+    height:400px;
+}
+.stripe_addon_item_canvas:hover{border-color:#d6d6d6;}
+.stripe_addon_item_thumb {position: relative}
+.stripe_addon_item_installed_mark {position: absolute; right: 7px; top: 5px;}
+.stripe_addon_item_installed_mark img {border: none !important;}
+.stripe_addon_item_thumb img {padding:5px; border: 1px solid #ddd;}
+.stripe_addon_item_thumb a img {border: 1px solid #ccc;}
+.stripe_addon_item_body{line-height:22px;height:170px;overflow:hidden;}
+.stripe_addon_item_name{font-size:16px;font-weight:bold;text-align: center;margin:10px 10px 10px 0px;}
+.stripe_addon_item_description{margin:10px 10px 5px 0px;text-align:justify;overflow:hidden;height:70px;}
+.stripe_addon_clear{clear:both;}
+.stripe_addon_item_details_link{
+    text-align: center;
+}
+.stripe_addon_item_details_link a{
+    border: 3px solid #2d3140;
+    color: #2d3140;
+    display: inline-block;
+    padding: 5px 15px;
+    text-decoration: none !important;
+}
+.stripe_addon_item_details_link a:hover{
+    background-color: #2d3140;
+    color: #FFF;
+}
+/*----- END Addons Listing ----- */
+
+/*----- Admin Products Table ----- */
+th.column-id, th.column-price, th.column-stock { width: 10%; } th.column-thumbnail {width: 15%} th.column-shortcode { width: 20% }
+
+.asp-product-thumbnail-container img {width: 100px; height: 100px}
+.asp-product-thumbnail-container img:hover {box-shadow: 0 0 0 1px #5b9dd9,0 0 2px 1px rgba(30,140,190,.8);}
+.asp-product-thumbnail-container a:focus {box-shadow: none;}
+/*----- END Admin Products Table ----- */

@@ -151,7 +151,7 @@ class ASPProducts {
     function enqueue_products_style() {
 	global $post_type;
 	if ( ASPMain::$products_slug == $post_type ) {
-	    wp_enqueue_style( 'asp-admin-products-styles', WP_ASP_PLUGIN_URL . '/admin/assets/css/admin-products.css', array(), AcceptStripePayments::VERSION );
+	    wp_enqueue_style( 'asp-admin-styles', WP_ASP_PLUGIN_URL . '/admin/assets/css/admin.css', array(), AcceptStripePayments::VERSION );
 	    wp_enqueue_script( 'asp-admin-script', WP_ASP_PLUGIN_URL . '/admin/assets/js/admin.js', array( 'jquery' ), AcceptStripePayments::VERSION );
 	}
     }
