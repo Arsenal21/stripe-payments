@@ -4,7 +4,7 @@ Donate link: https://s-plugins.com
 Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortcode, digital goods, payment gateway, instant payment, commerce, digital downloads, downloads, e-commerce, e-store, ecommerce, eshop, donation
 Requires at least: 4.7
 Tested up to: 4.9
-Stable tag: 1.9.7t1
+Stable tag: 1.9.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -150,7 +150,8 @@ None.
 
 == Changelog ==
 
-= WIP - 1.9.7 =
+= 1.9.7 =
+- Fixed improper tax value calculation under some circumstances.
 - Fixed session_start() error that occurs on some configurations after customer made a payment.
 - Removed some of the CSS styles from the coupon field. So the style of the coupon field fits better with the theme you are using.
 
