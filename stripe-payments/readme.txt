@@ -150,8 +150,9 @@ None.
 
 == Changelog ==
 
-= 1.9.7 =
+= WIP - 1.9.7 =
 - Fixed session_start() error that occurs on some configurations after customer made a payment.
+- Removed some of the CSS styles from the coupon field. So the style of the coupon field fits better with the theme you are using.
 
 = 1.9.6 =
 - Fixed zero amount was displayed on products with custom amount.

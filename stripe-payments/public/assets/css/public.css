@@ -70,6 +70,9 @@ This file is inserted as Inline-CSS at the moment.
     padding: 8px 10px;
 }
 
+.asp_product_custom_field_label{
+    margin-right: 10px;
+}
 .asp-product-variations-label{
     margin-right: 10px;
 }
