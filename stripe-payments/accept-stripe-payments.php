@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Plugin Name: Stripe Payments
  * Description: Easily accept credit card payments via Stripe payment gateway in WordPress.
@@ -11,6 +10,7 @@
  * Text Domain: stripe-payments
  * Domain Path: /languages
  */
+
 //Slug - asp
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
