@@ -1,5 +1,6 @@
 /* 
 This CSS file is used to apply styles to the output of the various shortcodes.
+This file is inserted as Inline-CSS at the moment.
 */
 @keyframes asp-spinner {
     to {transform: rotate(360deg);}
