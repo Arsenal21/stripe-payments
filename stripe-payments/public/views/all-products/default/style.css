@@ -1,5 +1,6 @@
 /*
 This CSS file is used to apply styles to the "All Products" page that this plugin creates.
+CSS class names should use dashes. Example: asp-product-description
 */
 
 .wp-asp-grid button {

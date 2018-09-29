@@ -2,6 +2,7 @@
 This CSS file is used to apply styles to the output of the various shortcodes.
 This file is inserted as Inline-CSS at the moment.
 Used in the [asp_product] shortcode also.
+CSS class names should use dashes. Example: asp-product-description
 */
 @keyframes asp-spinner {
     to {transform: rotate(360deg);}
