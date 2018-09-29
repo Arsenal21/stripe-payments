@@ -1,5 +1,6 @@
 /*
-This CSS file is used to apply styles to the individual custom post type (CPT) page of the product.
+This CSS file is used to apply styles to the product display output. 
+Used by the [asp_product] shortcode. Also used by the individual custom post type (CPT) page of the product.
 */
 .asp_product_item {
     display: block;

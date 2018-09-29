@@ -1,5 +1,5 @@
 /* 
-This CSS file is used to apply styles to the output of the various shortcodes. For example the [asp_product] shortcode.
+This CSS file is used to apply styles to the output of the various shortcodes.
 */
 @keyframes asp-spinner {
     to {transform: rotate(360deg);}
