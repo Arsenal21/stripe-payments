@@ -577,4 +577,25 @@ class AcceptStripePayments {
 	return $out;
     }
 
+    static function get_small_product_thumb( $prod_id ) {
+	$ret		 = '';
+	//check if we have a thumbnail
+	$curr_thumb	 = get_post_meta( $prod_id, 'asp_product_thumbnail', true );
+	if ( empty( $curr_thumb ) ) {
+	    return $ret;
+	}
+	$ret		 = $curr_thumb;
+	//check if we have 100x100 preview generated
+	$thumb_thumb	 = get_post_meta( $prod_id, 'asp_product_thumbnail_thumb', true );
+	if ( empty( $thumb_thumb ) ) {
+	    //looks like we don't have one
+	    // TODO: we should generate one
+	    return $ret;
+	} else {
+	    // we have one. Let's return it
+	    $ret = $thumb_thumb;
+	}
+	return $ret;
+    }
+
 }
