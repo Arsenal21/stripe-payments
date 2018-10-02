@@ -151,7 +151,8 @@ None.
 == Changelog ==
 
 = WIP 1.9.8 =
-- Plugin tries to use small product thumbnail for Stripe pop-up if available. This removes noticeable pop-up window lag when big image is being used.
+- Fixed blank payment results page was displayed under some circumstances if customized [accept_stripe_payment_checkout] shortcode was used.
+- Plugin tries to use small product thumbnail for Stripe pop-up if available. This removes noticeable pop-up window lag when large image is being used.
 
 = 1.9.7 =
 - Fixed improper tax value calculation under some circumstances.

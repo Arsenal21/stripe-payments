@@ -977,6 +977,10 @@ class AcceptStripePaymentsShortcode {
 
 	$data[ 'paid_amount_curr' ] = AcceptStripePayments::formatted_price( $data[ 'paid_amount' ], $data[ 'currency_code' ] );
 
+	// we should unset as it's not a string and it would produce following fatal error if not unset:
+	// Object of class __PHP_Incomplete_Class could not be converted to string
+	unset( $data[ 'charge' ] );
+
 	foreach ( $data as $key => $value ) {
 	    if ( $key == 'stripeEmail' ) {
 		$key = 'payer_email';
