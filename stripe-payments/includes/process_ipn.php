@@ -386,7 +386,7 @@ $data[ 'txn_id' ]	 = $txn_id; //The Stripe charge ID
 
 $post_data = $data;
 
-$_POST = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
+//$_POST = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
 
 //Billing address data (if any)
 $billing_address = "";
