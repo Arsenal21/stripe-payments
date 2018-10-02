@@ -9,9 +9,9 @@ function asp_ipn_completed( $errMsg = '' ) {
 	$msg_after_process	 = __( "Error occured after user interacted with popup.", 'stripe-payments' );
 
 	if ( isset( $_POST[ 'clickProcessed' ] ) ) {
-	    $additional_msg = $msg_after_process . "\r\n";
+	    $additional_msg = $msg_after_process;
 	} else {
-	    $additional_msg = $msg_before_process . "\r\n";
+	    $additional_msg = $msg_before_process;
 	}
 
 	ASP_Debug_Logger::log( $additional_msg, false );
@@ -35,14 +35,12 @@ function asp_ipn_completed( $errMsg = '' ) {
 	    }
 	    wp_mail( $to, $subj, $body, $headers );
 	}
-	global $aspRedirectURL;
-	ASP_Debug_Logger::log( sprintf( 'Redirecting to results page "%s"', $aspRedirectURL ) );
-	wp_redirect( $aspRedirectURL );
     } else {
-	ASP_Debug_Logger::log( 'Payment has been processed successfully.' . "\r\n" );
-	global $aspRedirectURL;
-	wp_redirect( $aspRedirectURL );
+	ASP_Debug_Logger::log( 'Payment has been processed successfully.' );
     }
+    global $aspRedirectURL;
+    ASP_Debug_Logger::log( sprintf( 'Redirecting to results page "%s"', $aspRedirectURL ) . "\r\n" );
+    wp_redirect( $aspRedirectURL );
     exit;
 }
 
