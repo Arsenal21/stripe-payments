@@ -59,9 +59,9 @@ class ASPAddonsHelper {
 	printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( $class ), esc_html( $message ) );
     }
 
-    function add_settings_section( $title ) {
+    function add_settings_section( $title, $descr_callback = null ) { //$descr_callback added since 1.9.8
 	$this->ASPAdmin = AcceptStripePayments_Admin::get_instance();
-	add_settings_section( 'AcceptStripePayments-' . $this->addon->SETTINGS_TAB_NAME . '-section', $title, null, $this->ASPAdmin->plugin_slug . '-' . $this->addon->SETTINGS_TAB_NAME );
+	add_settings_section( 'AcceptStripePayments-' . $this->addon->SETTINGS_TAB_NAME . '-section', $title, $descr_callback, $this->ASPAdmin->plugin_slug . '-' . $this->addon->SETTINGS_TAB_NAME );
 	$this->section = 'AcceptStripePayments-' . $this->addon->SETTINGS_TAB_NAME . '-section';
     }
 
