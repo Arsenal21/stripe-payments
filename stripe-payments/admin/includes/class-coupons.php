@@ -102,7 +102,7 @@ class AcceptStripePayments_CouponsAdmin {
 	    $allowed_products = get_post_meta( $coupon[ 'id' ], 'asp_coupon_allowed_products', true );
 	    if ( is_array( $allowed_products ) && ! in_array( $prod_id, $allowed_products ) ) {
 		$out[ 'success' ]	 = false;
-		$out[ 'msg' ]		 = __( 'Coupon is now allowed for this product.', 'stripe-payments' );
+		$out[ 'msg' ]		 = __( 'Coupon is not allowed for this product.', 'stripe-payments' );
 		wp_send_json( $out );
 	    }
 	}
