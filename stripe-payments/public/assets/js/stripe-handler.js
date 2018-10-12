@@ -383,6 +383,7 @@ function wp_asp_add_stripe_handler(data) {
 	aspCouponBtn.after(aspCouponSpinner);
 	var ajaxData = {
 	    'action': 'asp_check_coupon',
+	    'product_id': data.product_id,
 	    'coupon_code': couponCode,
 	    'curr': data.currency,
 	    'amount': data.item_price,

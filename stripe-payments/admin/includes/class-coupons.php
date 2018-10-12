@@ -90,6 +90,23 @@ class AcceptStripePayments_CouponsAdmin {
 	    wp_send_json( $out );
 	}
 
+	//check if coupon is only availabe for specific products
+	$only_for_allowed_products = get_post_meta( $coupon[ 'id' ], 'asp_coupon_only_for_allowed_products', true );
+	if ( $only_for_allowed_products ) {
+	    $prod_id = filter_input( INPUT_POST, 'product_id', FILTER_SANITIZE_NUMBER_INT );
+	    if ( empty( $prod_id ) ) {
+		$out[ 'success' ]	 = false;
+		$out[ 'msg' ]		 = __( 'No product ID specified.', 'stripe-payments' );
+		wp_send_json( $out );
+	    }
+	    $allowed_products = get_post_meta( $coupon[ 'id' ], 'asp_coupon_allowed_products', true );
+	    if ( is_array( $allowed_products ) && ! in_array( $prod_id, $allowed_products ) ) {
+		$out[ 'success' ]	 = false;
+		$out[ 'msg' ]		 = __( 'Coupon is now allowed for this product.', 'stripe-payments' );
+		wp_send_json( $out );
+	    }
+	}
+
 	$curr = isset( $_POST[ 'curr' ] ) ? $_POST[ 'curr' ] : '';
 
 	$discount	 = $coupon[ 'discount' ];
@@ -261,16 +278,41 @@ class AcceptStripePayments_CouponsAdmin {
 		return false;
 	    }
 	    $coupon = array(
-		'id'		 => $coupon_id,
-		'code'		 => get_post_meta( $coupon_id, 'asp_coupon_code', true ),
-		'active'	 => get_post_meta( $coupon_id, 'asp_coupon_active', true ),
-		'discount'	 => get_post_meta( $coupon_id, 'asp_coupon_discount', true ),
-		'discount_type'	 => get_post_meta( $coupon_id, 'asp_coupon_discount_type', true ),
-		'red_limit'	 => get_post_meta( $coupon_id, 'asp_coupon_red_limit', true ),
-		'red_count'	 => get_post_meta( $coupon_id, 'asp_coupon_red_count', true ),
-		'start_date'	 => get_post_meta( $coupon_id, 'asp_coupon_start_date', true ),
-		'exp_date'	 => get_post_meta( $coupon_id, 'asp_coupon_exp_date', true ),
+		'id'				 => $coupon_id,
+		'code'				 => get_post_meta( $coupon_id, 'asp_coupon_code', true ),
+		'active'			 => get_post_meta( $coupon_id, 'asp_coupon_active', true ),
+		'discount'			 => get_post_meta( $coupon_id, 'asp_coupon_discount', true ),
+		'discount_type'			 => get_post_meta( $coupon_id, 'asp_coupon_discount_type', true ),
+		'red_limit'			 => get_post_meta( $coupon_id, 'asp_coupon_red_limit', true ),
+		'red_count'			 => get_post_meta( $coupon_id, 'asp_coupon_red_count', true ),
+		'start_date'			 => get_post_meta( $coupon_id, 'asp_coupon_start_date', true ),
+		'exp_date'			 => get_post_meta( $coupon_id, 'asp_coupon_exp_date', true ),
+		'only_for_allowed_products'	 => get_post_meta( $coupon_id, 'asp_coupon_only_for_allowed_products', true ),
+		'allowed_products'		 => get_post_meta( $coupon_id, 'asp_coupon_allowed_products', true ),
 	    );
+	}
+	//generate array with all products
+	$posts		 = get_posts( [
+	    'post_type'	 => untrailingslashit( ASPMain::$products_slug ),
+	    'post_status'	 => 'publish',
+	    'numberposts'	 => -1
+	// 'order'    => 'ASC'
+	] );
+	$prod_inputs	 = '';
+	$input_tpl	 = '<label><input type="checkbox" name="asp_coupon[allowed_products][]" value="%s"%s> %s</label>';
+	if ( $posts ) {
+	    foreach ( $posts as $post ) {
+		$checked = '';
+		if ( ! empty( $coupon ) && is_array( $coupon[ 'allowed_products' ] ) ) {
+		    if ( in_array( $post->ID, $coupon[ 'allowed_products' ] ) ) {
+			$checked = ' checked';
+		    }
+		}
+		$prod_inputs	 .= sprintf( $input_tpl, $post->ID, $checked, $post->post_title );
+		$prod_inputs	 .= '<br>';
+	    }
+	} else {
+	    $prod_inputs = __( 'No products created yet.', 'stripe-payments' );
 	}
 	?>
 	<div class="wrap">
@@ -340,6 +382,18 @@ class AcceptStripePayments_CouponsAdmin {
 			    <p class="description"><?php _e( 'Date when this coupon will expire. Put 0 to disable expiry check.', 'stripe-payments' ); ?></p>
 			</td>
 		    </tr>
+		    <tr>
+			<th scope="row"><?php _e( 'Coupon Availabe For:', 'stripe-payments' ); ?></th>
+			<td>
+			    <label><input type="radio" name="asp_coupon[only_for_allowed_products]" value="0"<?php echo ! $is_edit || ($is_edit && ! $coupon[ 'only_for_allowed_products' ]) ? ' checked' : '' ?>> <?php _e( 'All products', 'stripe-payments' ); ?></label>
+			    <br>
+			    <label><input type="radio" name="asp_coupon[only_for_allowed_products]" value="1"<?php echo $is_edit && $coupon[ 'only_for_allowed_products' ] ? ' checked' : '' ?>> <?php _e( 'Specific Products Only', 'stripe-payments' ); ?></label>
+			    <p class="asp-coupons-available-products"<?php echo $is_edit && ! $coupon[ 'only_for_allowed_products' ] ? ' style="display: none;"' : ''; ?>>
+				<?php echo $prod_inputs; ?>
+			    </p>
+			    <p class="description"><?php _e( 'Choose aviability of the coupon. You can specify which products coupon is available when "Specific Products Only" is selected.', 'stripe-payments' ); ?></p>
+			</td>
+		    </tr>
 		</table>
 		<?php
 		wp_nonce_field( 'asp-add-edit-coupon' );
@@ -351,6 +405,13 @@ class AcceptStripePayments_CouponsAdmin {
 	    jQuery(document).ready(function ($) {
 		$('.datepicker-input').datepicker({
 		    dateFormat: 'yy-mm-dd'
+		});
+		$('input[name="asp_coupon[only_for_allowed_products]"]').change(function () {
+		    if ($(this).val() === "1") {
+			$('.asp-coupons-available-products').show();
+		    } else {
+			$('.asp-coupons-available-products').hide();
+		    }
 		});
 	    });
 	</script>
@@ -418,6 +479,11 @@ class AcceptStripePayments_CouponsAdmin {
 	    $post[ 'post_type' ]	 = $this->POST_SLUG;
 	    $coupon_id		 = wp_insert_post( $post );
 	}
+
+	if ( empty( $coupon[ 'allowed_products' ] ) ) {
+	    $coupon[ 'allowed_products' ] = array();
+	}
+
 	foreach ( $coupon as $key => $value ) {
 	    update_post_meta( $coupon_id, 'asp_coupon_' . $key, $value );
 	}
