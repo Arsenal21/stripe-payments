@@ -542,6 +542,9 @@ class AcceptStripePayments_Admin {
 	add_settings_field( 'tos_text', __( 'Checkbox Text', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-tos', array( 'field'	 => 'tos_text',
 	    'desc'	 => __( 'Text to be displayed on checkbox. It accepts HTML code so you can put a link to your terms and conditions page.', 'stripe-payments' ) )
 	);
+	add_settings_field( 'tos_store_ip', __( 'Store Customer\'s IP Address', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-tos', array( 'field'	 => 'tos_store_ip',
+	    'desc'	 => __( 'If enabled, customer\'s IP address from which TOS were accepted will be stored in order info.', 'stripe-payments' ) )
+	);
 
 	// Additional Settings
 	add_settings_field( 'disable_buttons_before_js_loads', __( 'Disable Buttons Before Javascript Loads', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-additional-settings', array( 'field'	 => 'disable_buttons_before_js_loads',
@@ -662,6 +665,7 @@ class AcceptStripePayments_Admin {
 		break;
 	    case 'price_apply_for_input':
 	    case 'tos_enabled':
+	    case 'tos_store_ip':
 	    case 'debug_log_enable':
 	    case 'send_emails_to_seller':
 	    case 'send_emails_to_buyer':
@@ -758,6 +762,8 @@ class AcceptStripePayments_Admin {
 	$output [ 'price_apply_for_input' ] = empty( $input[ 'price_apply_for_input' ] ) ? 0 : 1;
 
 	$output [ 'tos_enabled' ] = empty( $input[ 'tos_enabled' ] ) ? 0 : 1;
+
+	$output [ 'tos_store_ip' ] = empty( $input[ 'tos_store_ip' ] ) ? 0 : 1;
 
 	$output[ 'tos_text' ] = ! empty( $input[ 'tos_text' ] ) ? $input[ 'tos_text' ] : '';
 
