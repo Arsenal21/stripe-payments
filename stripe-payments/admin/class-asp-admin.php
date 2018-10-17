@@ -61,15 +61,24 @@ class AcceptStripePayments_Admin {
     function enqueue_scripts( $hook ) {
 	//this script is requested on all plugin admin pages
 	wp_register_script( 'asp-admin-general-js', WP_ASP_PLUGIN_URL . '/admin/assets/js/admin.js', array( 'jquery' ), WP_ASP_PLUGIN_VERSION, true );
+	//include admin style
+	wp_register_style( 'asp-admin-styles', WP_ASP_PLUGIN_URL . '/admin/assets/css/admin.css', array(), WP_ASP_PLUGIN_VERSION );
+
 	switch ( $hook ) {
 	    case 'asp-products_page_stripe-payments-settings':
 		//settings page
 		wp_register_script( 'asp-admin-settings-js', WP_ASP_PLUGIN_URL . '/admin/assets/js/settings.js', array( 'jquery' ), WP_ASP_PLUGIN_VERSION, true );
 		wp_enqueue_script( 'asp-admin-general-js' );
+		wp_enqueue_style( 'asp-admin-styles' );
 		break;
 	    case 'post.php':
-		wp_register_script( 'asp-admin-edit-product-js', WP_ASP_PLUGIN_URL . '/admin/assets/js/edit-product.js', array( 'jquery' ), WP_ASP_PLUGIN_VERSION, true );
-		wp_enqueue_script( 'asp-admin-general-js' );
+	    case 'edit.php':
+		global $post_type;
+		if ( $post_type === ASPMain::$products_slug ) {
+		    wp_register_script( 'asp-admin-edit-product-js', WP_ASP_PLUGIN_URL . '/admin/assets/js/edit-product.js', array( 'jquery' ), WP_ASP_PLUGIN_VERSION, true );
+		    wp_enqueue_script( 'asp-admin-general-js' );
+		    wp_enqueue_style( 'asp-admin-styles' );
+		}
 		break;
 	}
     }

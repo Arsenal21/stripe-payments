@@ -63,8 +63,6 @@ class ASPProducts {
 	add_action( 'manage_' . ASPMain::$products_slug . '_posts_custom_column', array( $this, 'manage_custom_columns' ), 10, 2 );
 	//set custom columns sortable
 	add_filter( 'manage_edit-' . ASPMain::$products_slug . '_sortable_columns', array( $this, 'manage_sortable_columns' ) );
-	//enqueue css file to style list table and edit product pages
-	add_action( 'admin_head', array( $this, 'enqueue_products_style' ) );
     }
 
     function manage_columns( $columns ) {
@@ -146,13 +144,6 @@ class ASPProducts {
 	$columns[ 'price' ]	 = 'price';
 	$columns[ 'stock' ]	 = 'stock';
 	return $columns;
-    }
-
-    function enqueue_products_style() {
-	global $post_type;
-	if ( ASPMain::$products_slug == $post_type ) {
-	    wp_enqueue_style( 'asp-admin-styles', WP_ASP_PLUGIN_URL . '/admin/assets/css/admin.css', array(), AcceptStripePayments::VERSION );
-	}
     }
 
 }
