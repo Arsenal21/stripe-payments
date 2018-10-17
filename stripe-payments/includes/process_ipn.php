@@ -583,11 +583,12 @@ if ( isset( $opt[ 'send_emails_to_buyer' ] ) ) {
 	$to	 = $post_data[ 'stripeEmail' ];
 	$subj	 = $opt[ 'buyer_email_subject' ];
 	$body	 = asp_apply_dynamic_tags_on_email_body( $opt[ 'buyer_email_body' ], $post_data );
-	$headers = 'From: ' . $from . "\r\n";
 
 	$subj	 = apply_filters( 'asp_buyer_email_subject', $subj, $post_data );
 	$body	 = apply_filters( 'asp_buyer_email_body', $body, $post_data );
-	$headers = apply_filters( 'asp_buyer_email_headers', $headers, $post_data );
+	$from	 = apply_filters( 'asp_buyer_email_from', $from, $post_data );
+
+	$headers = 'From: ' . $from . "\r\n";
 
 	wp_mail( $to, $subj, $body, $headers );
 	ASP_Debug_Logger::log( 'Notification email sent to buyer: ' . $to . ', From email address used: ' . $from );
@@ -599,11 +600,12 @@ if ( isset( $opt[ 'send_emails_to_seller' ] ) ) {
 	$to	 = $opt[ 'seller_notification_email' ];
 	$subj	 = $opt[ 'seller_email_subject' ];
 	$body	 = asp_apply_dynamic_tags_on_email_body( $opt[ 'seller_email_body' ], $post_data );
-	$headers = 'From: ' . $from . "\r\n";
 
 	$subj	 = apply_filters( 'asp_seller_email_subject', $subj, $post_data );
 	$body	 = apply_filters( 'asp_seller_email_body', $body, $post_data );
-	$headers = apply_filters( 'asp_seller_email_headers', $headers, $post_data );
+	$from	 = apply_filters( 'asp_seller_email_from', $from, $post_data );
+
+	$headers = 'From: ' . $from . "\r\n";
 
 	wp_mail( $to, $subj, $body, $headers );
 	ASP_Debug_Logger::log( 'Notification email sent to seller: ' . $to . ', From email address used: ' . $from );
