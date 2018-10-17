@@ -42,6 +42,9 @@ class AcceptStripePayments_Admin {
 	$plugin_basename = plugin_basename( plugin_dir_path( realpath( dirname( __FILE__ ) ) ) . $this->plugin_slug . '.php' );
 	add_filter( 'plugin_action_links_' . $plugin_basename, array( $this, 'add_action_links' ) );
 
+	//Enqueue required scripts and styles
+	add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+
 	//Add any required inline JS code in the admin dashboard side.
 	add_action( 'admin_print_scripts', array( $this, 'asp_print_admin_scripts' ) );
 
@@ -53,6 +56,15 @@ class AcceptStripePayments_Admin {
 	add_action( 'init', array( $this, 'tinymce_shortcode_button' ) );
 	add_action( 'current_screen', array( $this, 'check_current_screen' ) );
 	add_action( 'wp_ajax_asp_tinymce_get_settings', array( $this, 'tinymce_ajax_handler' ) ); // Add ajax action handler for tinymce
+    }
+
+    function enqueue_scripts( $hook ) {
+	switch ( $hook ) {
+	    case 'asp-products_page_stripe-payments-settings':
+		//settings page
+		wp_register_script( 'asp-admin-settings-js', WP_ASP_PLUGIN_URL . '/admin/assets/js/settings.js', array( 'jquery' ), false, true );
+		break;
+	}
     }
 
     function show_admin_notices() {
