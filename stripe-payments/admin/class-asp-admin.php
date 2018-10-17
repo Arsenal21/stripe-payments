@@ -67,6 +67,10 @@ class AcceptStripePayments_Admin {
 		wp_register_script( 'asp-admin-settings-js', WP_ASP_PLUGIN_URL . '/admin/assets/js/settings.js', array( 'jquery' ), false, true );
 		wp_enqueue_script( 'asp-admin-general-js' );
 		break;
+	    case 'post.php':
+		wp_register_script( 'asp-admin-edit-product-js', WP_ASP_PLUGIN_URL . '/admin/assets/js/edit-product.js', array( 'jquery' ), false, true );
+		wp_enqueue_script( 'asp-admin-general-js' );
+		break;
 	}
     }
 
