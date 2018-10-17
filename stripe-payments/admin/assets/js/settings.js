@@ -26,19 +26,6 @@ jQuery(function ($) {
 	}
     });
 
-    $('a.wp-asp-toggle').click(function (e) {
-	e.preventDefault();
-	div = $(this).siblings('div');
-	if (div.is(":visible")) {
-	    $(this).removeClass('toggled-on');
-	    $(this).addClass('toggled-off');
-	} else {
-	    $(this).removeClass('toggled-off');
-	    $(this).addClass('toggled-on');
-	}
-	div.slideToggle('fast');
-    });
-
     $('#asp_clear_log_btn').click(function (e) {
 	e.preventDefault();
 	if (confirm(aspSettingsData.str.logClearConfirm)) {

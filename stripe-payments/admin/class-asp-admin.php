@@ -59,10 +59,13 @@ class AcceptStripePayments_Admin {
     }
 
     function enqueue_scripts( $hook ) {
+	//this script is requested on all plugin admin pages
+	wp_register_script( 'asp-admin-general-js', WP_ASP_PLUGIN_URL . '/admin/assets/js/admin.js', array( 'jquery' ), false, true );
 	switch ( $hook ) {
 	    case 'asp-products_page_stripe-payments-settings':
 		//settings page
 		wp_register_script( 'asp-admin-settings-js', WP_ASP_PLUGIN_URL . '/admin/assets/js/settings.js', array( 'jquery' ), false, true );
+		wp_enqueue_script( 'asp-admin-general-js' );
 		break;
 	}
     }
@@ -719,14 +722,9 @@ class AcceptStripePayments_Admin {
 		    unregister_setting( 'AcceptStripePayments-settings-group', 'AcceptStripePayments-settings' );
 		    update_option( 'AcceptStripePayments-settings', $opts );
 		}
-		echo '<input type="text" size="70" class="asp-debug-log-link" readonly value="' . admin_url() . '?asp_action=view_log&token=' . $token . '">';
+		echo '<input type="text" size="70" class="asp-debug-log-link asp-select-on-click" readonly value="' . admin_url() . '?asp_action=view_log&token=' . $token . '">';
 		echo '<p class="description">' . $desc . '</p>';
 		?>
-		<script>
-		    jQuery('input.asp-debug-log-link').click(function () {
-			jQuery(this).select();
-		    });
-		</script>
 		<?php
 		break;
 	    default:

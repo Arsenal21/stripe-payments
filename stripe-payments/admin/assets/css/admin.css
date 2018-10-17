@@ -76,3 +76,63 @@ th.column-id, th.column-price, th.column-stock { width: 10%; } th.column-thumbna
 .asp-product-thumbnail-container img:hover {box-shadow: 0 0 0 1px #5b9dd9,0 0 2px 1px rgba(30,140,190,.8);}
 .asp-product-thumbnail-container a:focus {box-shadow: none;}
 /*----- END Admin Products Table ----- */
+
+/*----- Settings Page ----- */
+div.wp-asp-tab-container {
+    display: none;
+}
+
+div.wp-asp-tab-container p.description span {
+    font-style: normal;
+    background: #e3e3e3;
+    padding: 2px 5px;
+}
+a.wp-asp-toggle {
+    text-decoration: none;
+    border-bottom: 1px dashed;
+}
+a.wp-asp-toggle.toggled-on::after {
+    content: " ↑";
+}
+a.wp-asp-toggle.toggled-off::after {
+    content: " ↓";
+}
+div.wp-asp-tabs {
+    width: 80%;
+}
+div.wp-asp-tabs input {
+    max-width: 100%;
+}
+div.wp-asp-tabs table {
+    width: 100%;
+    table-layout: fixed;
+}
+div.wp-asp-settings-sidebar-cont {
+    width: 19%;
+    float: right;
+}
+div.wp-asp-settings-grid {
+    display: inline-block;
+}
+div#poststuff {
+    min-width: 19%;
+}
+.wp-asp-stars-container {
+    text-align: center;
+    margin-top: 10px;
+}
+.wp-asp-stars-container span {
+    vertical-align: text-top;
+    color: #ffb900;
+}
+.wp-asp-stars-container a {
+    text-decoration: none;
+}
+@media (max-width: 782px) {
+    div.wp-asp-settings-grid {
+	display: block;
+	float: none;
+	width: 100%;
+    }
+}
+/*----- END Settings Page ----- */

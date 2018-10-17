@@ -16,67 +16,6 @@ if ( $_GET[ 'page' ] == 'stripe-payments-settings' ) {
     if ( $tab ) {
 	delete_transient( 'wp-asp-urlHash' );
     }
-    ?>
-    <style>
-        div.wp-asp-tab-container {
-    	display: none;
-        }
-
-        div.wp-asp-tab-container p.description span {
-    	font-style: normal;
-    	background: #e3e3e3;
-    	padding: 2px 5px;
-        }
-        a.wp-asp-toggle {
-    	text-decoration: none;
-    	border-bottom: 1px dashed;
-        }
-        a.wp-asp-toggle.toggled-on::after {
-    	content: " ↑";
-        }
-        a.wp-asp-toggle.toggled-off::after {
-    	content: " ↓";
-        }
-        div.wp-asp-tabs {
-    	width: 80%;
-        }
-        div.wp-asp-tabs input {
-    	max-width: 100%;
-        }
-        div.wp-asp-tabs table {
-    	width: 100%;
-    	table-layout: fixed;
-        }
-        div.wp-asp-settings-sidebar-cont {
-    	width: 19%;
-    	float: right;
-        }
-        div.wp-asp-settings-grid {
-    	display: inline-block;
-        }
-        div#poststuff {
-    	min-width: 19%;
-        }
-        .wp-asp-stars-container {
-    	text-align: center;
-    	margin-top: 10px;
-        }
-        .wp-asp-stars-container span {
-    	vertical-align: text-top;
-    	color: #ffb900;
-        }
-        .wp-asp-stars-container a {
-    	text-decoration: none;
-        }
-        @media (max-width: 782px) {
-    	div.wp-asp-settings-grid {
-    	    display: block;
-    	    float: none;
-    	    width: 100%;
-    	}
-        }
-    </style>
-    <?php
     do_action( 'asp-settings-page-after-styles' );
     ?>
     <div class="wrap">
@@ -148,77 +87,14 @@ if ( $_GET[ 'page' ] == 'stripe-payments-settings' ) {
     	    </div>
     	</div>
 	    <?php
-	    json_encode( AcceptStripePayments::get_currencies() );
-	    ?>
-    	<script>
-    	    var wp_asp_urlHash = window.location.hash.substr(1);
-    	    var wp_asp_transHash = '<?php echo esc_attr( $tab ); ?>';
-
-    	    var wp_asp_currencies = JSON.parse('<?php echo json_encode( AcceptStripePayments::get_currencies() ); ?>');
-
-    	    if (wp_asp_urlHash === '') {
-    		if (wp_asp_transHash !== '') {
-    		    wp_asp_urlHash = wp_asp_transHash;
-    		} else {
-    		    wp_asp_urlHash = 'general';
-    		}
-    	    }
-    	    jQuery(function ($) {
-    		var wp_asp_activeTab = "";
-    		$('a.nav-tab').click(function (e) {
-    		    if ($(this).attr('data-tab-name') !== wp_asp_activeTab) {
-    			$('div.wp-asp-tab-container[data-tab-name="' + wp_asp_activeTab + '"]').hide();
-    			$('a.nav-tab[data-tab-name="' + wp_asp_activeTab + '"]').removeClass('nav-tab-active');
-    			wp_asp_activeTab = $(this).attr('data-tab-name');
-    			$('div.wp-asp-tab-container[data-tab-name="' + wp_asp_activeTab + '"]').show();
-    			$(this).addClass('nav-tab-active');
-    			$('input#wp-asp-urlHash').val(wp_asp_activeTab);
-    			if (window.location.hash !== wp_asp_activeTab) {
-    			    window.location.hash = wp_asp_activeTab;
-    			}
-    		    }
-    		});
-
-    		$('a.wp-asp-toggle').click(function (e) {
-    		    e.preventDefault();
-    		    div = $(this).siblings('div');
-    		    if (div.is(":visible")) {
-    			$(this).removeClass('toggled-on');
-    			$(this).addClass('toggled-off');
-    		    } else {
-    			$(this).removeClass('toggled-off');
-    			$(this).addClass('toggled-on');
-    		    }
-    		    div.slideToggle('fast');
-    		});
-
-    		$('#asp_clear_log_btn').click(function (e) {
-    		    e.preventDefault();
-    		    if (confirm("<?php _e( 'Are you sure you want to clear log?', 'stripe-payments' ); ?>")) {
-    			var req = jQuery.ajax({
-    			    url: ajaxurl,
-    			    type: "post",
-    			    data: {action: "asp_clear_log"}
-    			});
-    			req.done(function (data) {
-    			    if (data === '1') {
-    				alert("<?php _e( 'Log cleared.', 'stripe-payments' ); ?>");
-    			    } else {
-    				alert("Error occured: " + data);
-    			    }
-    			});
-    		    }
-    		});
-
-    		$('#wp_asp_curr_code').change(function () {
-    		    $('#wp_asp_curr_symb').val(wp_asp_currencies[$('#wp_asp_curr_code').val()][1]);
-    		});
-
-    		$('#wp_asp_curr_code').change();
-
-    		$('a.nav-tab[data-tab-name="' + wp_asp_urlHash + '"]').trigger('click');
-    	    });
-    	</script>
-
-	    <?php
+	    wp_localize_script( 'asp-admin-settings-js', 'aspSettingsData', array(
+		'transHash'	 => $tab,
+		'currencies'	 => AcceptStripePayments::get_currencies(),
+		'str'		 => array(
+		    'logClearConfirm'	 => __( 'Are you sure you want to clear log?', 'stripe-payments' ),
+		    'logCleared'		 => __( 'Log cleared.', 'stripe-payments' ),
+		    'errorOccurred'		 => __( 'Error occured:', 'stripe-payments' ),
+		),
+	    ) );
+	    wp_enqueue_script( 'asp-admin-settings-js' );
 	}
