@@ -387,7 +387,6 @@ $data[ 'txn_id' ]	 = $txn_id; //The Stripe charge ID
 $post_data = $data;
 
 //$_POST = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
-
 //Billing address data (if any)
 $billing_address = "";
 $billing_address .= isset( $_POST[ 'stripeBillingName' ] ) ? $_POST[ 'stripeBillingName' ] . "\n" : '';
@@ -588,6 +587,8 @@ if ( isset( $opt[ 'send_emails_to_buyer' ] ) ) {
 
 	$subj	 = apply_filters( 'asp_buyer_email_subject', $subj, $post_data );
 	$body	 = apply_filters( 'asp_buyer_email_body', $body, $post_data );
+	$headers = apply_filters( 'asp_buyer_email_headers', $headers, $post_data );
+
 	wp_mail( $to, $subj, $body, $headers );
 	ASP_Debug_Logger::log( 'Notification email sent to buyer: ' . $to . ', From email address used: ' . $from );
     }
@@ -602,6 +603,8 @@ if ( isset( $opt[ 'send_emails_to_seller' ] ) ) {
 
 	$subj	 = apply_filters( 'asp_seller_email_subject', $subj, $post_data );
 	$body	 = apply_filters( 'asp_seller_email_body', $body, $post_data );
+	$headers = apply_filters( 'asp_buyer_email_headers', $headers, $post_data );
+
 	wp_mail( $to, $subj, $body, $headers );
 	ASP_Debug_Logger::log( 'Notification email sent to seller: ' . $to . ', From email address used: ' . $from );
     }
