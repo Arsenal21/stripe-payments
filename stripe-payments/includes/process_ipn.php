@@ -603,7 +603,7 @@ if ( isset( $opt[ 'send_emails_to_seller' ] ) ) {
 
 	$subj	 = apply_filters( 'asp_seller_email_subject', $subj, $post_data );
 	$body	 = apply_filters( 'asp_seller_email_body', $body, $post_data );
-	$headers = apply_filters( 'asp_buyer_email_headers', $headers, $post_data );
+	$headers = apply_filters( 'asp_seller_email_headers', $headers, $post_data );
 
 	wp_mail( $to, $subj, $body, $headers );
 	ASP_Debug_Logger::log( 'Notification email sent to seller: ' . $to . ', From email address used: ' . $from );
