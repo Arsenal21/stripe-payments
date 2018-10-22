@@ -154,7 +154,7 @@ None.
 - Fixed blank payment results page was displayed under some circumstances if customized [accept_stripe_payment_checkout] shortcode was used.
 - Added ability to allow coupon usage only for specific products.
 - Added option to store customer's IP address in order info.
-- Plugin tries to use create and use small product thumbnail for Stripe pop-up if available. This removes noticeable pop-up window lag when large image is being used.
+- Plugin tries to create and use small product thumbnail for Stripe pop-up if available. This removes noticeable pop-up window lag when large image is being used.
 
 = 1.9.7 =
 - Fixed improper tax value calculation under some circumstances.
