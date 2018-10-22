@@ -480,7 +480,7 @@ class asp_products_metaboxes {
 	    $thumb_url = esc_url( $_POST[ 'asp_product_thumbnail' ], array( 'http', 'https' ) );
 	    if ( ! empty( $thumb_url ) ) {
 		$curr_thumb	 = get_post_meta( $post_id, 'asp_product_thumbnail', true );
-		$force_regen	 = $thumb_url === $curr_thumb ? true : false;
+		$force_regen	 = $thumb_url === $curr_thumb ? false : true;
 		update_post_meta( $post_id, 'asp_product_thumbnail', $thumb_url );
 		//generate small 100x100 thumbnail
 		AcceptStripePayments::get_small_product_thumb( $post_id, $force_regen );
