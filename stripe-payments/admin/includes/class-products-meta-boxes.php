@@ -479,27 +479,13 @@ class asp_products_metaboxes {
 	    update_post_meta( $post_id, 'asp_product_upload', esc_url( $_POST[ 'asp_product_upload' ], array( 'http', 'https', 'dropbox' ) ) );
 	    $thumb_url	 = esc_url( $_POST[ 'asp_product_thumbnail' ], array( 'http', 'https' ) );
 	    $curr_thumb	 = get_post_meta( $post_id, 'asp_product_thumbnail', true );
-	    if ( $thumb_url !== $curr_thumb ) {
-		$thumb_thumb = '';
-		if ( ! empty( $thumb_url ) ) {
-		    $image = wp_get_image_editor( $thumb_url );
-		    if ( ! is_wp_error( $image ) ) {
-			$image->resize( 100, 100, true );
-			$upload_dir	 = wp_upload_dir();
-			$ext		 = pathinfo( $thumb_url, PATHINFO_EXTENSION );
-			$file_name	 = 'asp_product_' . $post_id . '_thumb_' . md5( $thumb_url ) . '.' . $ext;
-			$res		 = $image->save( $upload_dir[ 'path' ] . '/' . $file_name );
-			if ( ! is_wp_error( $res ) ) {
-			    $thumb_thumb = $upload_dir[ 'url' ] . '/' . $file_name;
-			}
-		    }
-		}
-		update_post_meta( $post_id, 'asp_product_thumbnail_thumb', $thumb_thumb );
-	    }
+	    $force_regen	 = $thumb_url === $curr_thumb ? true : false;
 	    update_post_meta( $post_id, 'asp_product_thumbnail', $thumb_url );
+	    //generate small 100x100 thumbnail
+	    AcceptStripePayments::get_small_product_thumb( $post_id, $force_regen );
 	    update_post_meta( $post_id, 'asp_product_no_popup_thumbnail', isset( $_POST[ 'asp_product_no_popup_thumbnail' ] ) ? "1" : false  );
 	    update_post_meta( $post_id, 'asp_product_thankyou_page', isset( $_POST[ 'asp_product_thankyou_page' ] ) && ! empty( $_POST[ 'asp_product_thankyou_page' ] ) ? esc_url( $_POST[ 'asp_product_thankyou_page' ] ) : ''  );
-	    $shipping_addr = false;
+	    $shipping_addr	 = false;
 	    if ( isset( $_POST[ 'asp_product_collect_shipping_addr' ] ) ) {
 		$shipping_addr = $_POST[ 'asp_product_collect_shipping_addr' ];
 	    }

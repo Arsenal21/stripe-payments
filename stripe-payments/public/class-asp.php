@@ -577,7 +577,7 @@ class AcceptStripePayments {
 	return $out;
     }
 
-    static function get_small_product_thumb( $prod_id ) {
+    static function get_small_product_thumb( $prod_id, $force_regen = false ) {
 	$ret		 = '';
 	//check if we have a thumbnail
 	$curr_thumb	 = get_post_meta( $prod_id, 'asp_product_thumbnail', true );
@@ -587,10 +587,28 @@ class AcceptStripePayments {
 	$ret		 = $curr_thumb;
 	//check if we have 100x100 preview generated
 	$thumb_thumb	 = get_post_meta( $prod_id, 'asp_product_thumbnail_thumb', true );
-	if ( empty( $thumb_thumb ) ) {
-	    //looks like we don't have one
-	    // TODO: we should generate one
-	    return $ret;
+	if ( empty( $thumb_thumb ) || $force_regen ) {
+	    //looks like we don't have one. Let's generate it
+	    $thumb_thumb	 = '';
+	    $image		 = wp_get_image_editor( $curr_thumb );
+	    if ( ! is_wp_error( $image ) ) {
+		$image->resize( 100, 100, true );
+		$upload_dir	 = wp_upload_dir();
+		$ext		 = pathinfo( $curr_thumb, PATHINFO_EXTENSION );
+		$file_name	 = 'asp_product_' . $prod_id . '_thumb_' . md5( $curr_thumb ) . '.' . $ext;
+		$res		 = $image->save( $upload_dir[ 'path' ] . '/' . $file_name );
+		if ( ! is_wp_error( $res ) ) {
+		    $thumb_thumb = $upload_dir[ 'url' ] . '/' . $file_name;
+		} else {
+		    //error saving thumb image
+		    return $ret;
+		}
+	    } else {
+		//error occured during image load
+		return $ret;
+	    }
+	    update_post_meta( $prod_id, 'asp_product_thumbnail_thumb', $thumb_thumb );
+	    $ret = $thumb_thumb;
 	} else {
 	    // we have one. Let's return it
 	    $ret = $thumb_thumb;

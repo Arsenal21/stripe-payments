@@ -93,14 +93,9 @@ class ASPProducts {
 		}
 		break;
 	    case 'thumbnail':
-		$thumb_url = get_post_meta( $post_id, 'asp_product_thumbnail', true );
+		$thumb_url = AcceptStripePayments::get_small_product_thumb( $post_id );
 		if ( ! $thumb_url ) {
 		    $thumb_url = WP_ASP_PLUGIN_URL . '/assets/product-thumb-placeholder.png';
-		} else {
-		    $thumb_thumb = get_post_meta( $post_id, 'asp_product_thumbnail_thumb', true );
-		    if ( ! empty( $thumb_thumb ) ) {
-			$thumb_url = $thumb_thumb;
-		    }
 		}
 		$edit_link	 = get_edit_post_link( $post_id );
 		$title		 = __( "Edit Product", 'stripe-payments' );
