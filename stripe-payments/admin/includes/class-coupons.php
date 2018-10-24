@@ -388,7 +388,7 @@ class AcceptStripePayments_CouponsAdmin {
 			    <label><input type="radio" name="asp_coupon[only_for_allowed_products]" value="0"<?php echo ! $is_edit || ($is_edit && ! $coupon[ 'only_for_allowed_products' ]) ? ' checked' : '' ?>> <?php _e( 'All products', 'stripe-payments' ); ?></label>
 			    <br>
 			    <label><input type="radio" name="asp_coupon[only_for_allowed_products]" value="1"<?php echo $is_edit && $coupon[ 'only_for_allowed_products' ] ? ' checked' : '' ?>> <?php _e( 'Specific Products Only', 'stripe-payments' ); ?></label>
-			    <p class="asp-coupons-available-products"<?php echo $is_edit && ! $coupon[ 'only_for_allowed_products' ] ? ' style="display: none;"' : ''; ?>>
+			    <p class="asp-coupons-available-products"<?php echo ($is_edit && ! $coupon[ 'only_for_allowed_products' ]) || (!$is_edit) ? ' style="display: none;"' : ''; ?>>
 				<?php echo $prod_inputs; ?>
 			    </p>
 			    <p class="description"><?php _e( 'Choose aviability of the coupon. You can specify which products coupon is available when "Specific Products Only" is selected.', 'stripe-payments' ); ?></p>
