@@ -292,12 +292,12 @@ class AcceptStripePayments_CouponsAdmin {
 	    );
 	}
 	//generate array with all products
-	$posts		 = get_posts( [
+	$posts		 = get_posts( array(
 	    'post_type'	 => untrailingslashit( ASPMain::$products_slug ),
 	    'post_status'	 => 'publish',
 	    'numberposts'	 => -1
 	// 'order'    => 'ASC'
-	] );
+	) );
 	$prod_inputs	 = '';
 	$input_tpl	 = '<label><input type="checkbox" name="asp_coupon[allowed_products][]" value="%s"%s> %s</label>';
 	if ( $posts ) {
