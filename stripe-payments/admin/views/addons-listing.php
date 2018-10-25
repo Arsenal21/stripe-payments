@@ -126,9 +126,29 @@ $output		 = '';
 		"settings_url"	 => 'edit.php?post_type=asp-products&page=stripe-payments-settings#convertkit',
 		"installed"	 => class_exists( 'ASPCK_main' ) ? true : false
 	    );
-	    array_push( $addons_data, $addon_11 );            
+	    array_push( $addons_data, $addon_11 );
 
-	    /*	     * * Show the addons list ** */
+	    $addon_12 = array(
+		"name"		 => "Post Payment Actions Addon",
+		"thumbnail"	 => WP_ASP_PLUGIN_URL . "/admin/assets/images/post-payment-actions.png",
+		"description"	 => "Post Payment Actions are triggered after a successful Stripe Payments transaction has been completed.",
+		"page_url"	 => "https://s-plugins.com/post-payment-actions-addon-for-stripe-payments/",
+		"settings_url"	 => 'edit.php?post_type=asp-products&page=stripe-payments-settings#ppa',
+		"installed"	 => class_exists( 'ASPPPA_main' ) ? true : false
+	    );
+	    array_push( $addons_data, $addon_12 );
+            
+	    $addon_13 = array(
+		"name"		 => "SOFORT Payments Addon",
+		"thumbnail"	 => WP_ASP_PLUGIN_URL . "/admin/assets/images/sofort-payments.png",
+		"description"	 => "The SOFORT Addon can be used along side the Stripe Payments Plugin to allow your customers to pay using SOFORT.",
+		"page_url"	 => "https://s-plugins.com/stripe-sofort-payment-addon/",
+		"settings_url"	 => 'edit.php?post_type=asp-products&page=stripe-payments-settings#sofort',
+		"installed"	 => class_exists( 'ASPSOFORT_main' ) ? true : false
+	    );
+	    array_push( $addons_data, $addon_13 );
+            
+	    /* Show the addons list */
 	    foreach ( $addons_data as $addon ) {
 		$output .= '<div class="stripe_addon_item_canvas">';
 
