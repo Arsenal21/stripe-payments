@@ -391,7 +391,7 @@ class AcceptStripePayments_CouponsAdmin {
 			    <p class="asp-coupons-available-products"<?php echo ($is_edit && ! $coupon[ 'only_for_allowed_products' ]) || (!$is_edit) ? ' style="display: none;"' : ''; ?>>
 				<?php echo $prod_inputs; ?>
 			    </p>
-			    <p class="description"><?php _e( 'Choose aviability of the coupon. You can specify which products coupon is available when "Specific Products Only" is selected.', 'stripe-payments' ); ?></p>
+			    <p class="description"><?php _e( 'Choose availability of the coupon. You can specify which products coupon is available when "Specific Products Only" is selected.', 'stripe-payments' ); ?></p>
 			</td>
 		    </tr>
 		</table>
