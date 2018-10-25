@@ -4,7 +4,7 @@ Donate link: https://s-plugins.com
 Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortcode, digital goods, payment gateway, instant payment, commerce, digital downloads, downloads, e-commerce, e-store, ecommerce, eshop, donation
 Requires at least: 4.7
 Tested up to: 4.9
-Stable tag: 1.9.9t1
+Stable tag: 1.9.9t2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -152,6 +152,8 @@ None.
 
 = WIP 1.9.9 =
 - Fixed incompatability with older PHP versions.
+- Added SOFORT and Post Payment Actions addons to the list.
+- Made more strings available for translations, regenerated .pot file.
 
 = 1.9.8 =
 - Fixed blank payment results page was displayed under some circumstances if customized [accept_stripe_payment_checkout] shortcode was used.
