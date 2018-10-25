@@ -288,7 +288,7 @@ class AcceptStripePayments {
 	    'use_new_button_method'			 => 0,
 	    'checkout_url'				 => site_url( 'checkout' ),
 	    'from_email_address'			 => get_bloginfo( 'name' ) . ' <sales@your-domain.com>',
-	    'buyer_email_subject'			 => __( 'Thank you for the purchase', 'strip-payments' ),
+	    'buyer_email_subject'			 => __( 'Thank you for the purchase', 'stripe-payments' ),
 	    'buyer_email_body'			 => __( "Hello", 'stripe-payments' ) . "\r\n\r\n"
 	    . __( "Thank you for your purchase! You ordered the following item(s):", 'stripe-payments' ) . "\r\n\r\n"
 	    . "{product_details}",
