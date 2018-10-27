@@ -16,6 +16,7 @@ class AcceptStripePaymentsShortcode {
      */
     protected static $instance		 = null;
     protected static $payment_buttons	 = array();
+    protected $tplTOS			 = '';
 
     function __construct() {
 	$this->AcceptStripePayments = AcceptStripePayments::get_instance();
@@ -101,6 +102,32 @@ class AcceptStripePaymentsShortcode {
 	wp_localize_script( 'stripe-handler', 'stripehandler', $this->get_loc_data() );
 	// addons can register their scripts if needed
 	do_action( 'asp-button-output-register-script' );
+    }
+
+    function after_button_add_tos_filter( $output, $data, $class ) {
+	$output	 = apply_filters( 'asp_button_output_before_tos', $output, $data );
+	$output	 .= $this->tplTOS;
+	return $output;
+    }
+
+    function tpl_get_tos( $output, $data ) {
+	if ( $data[ 'tos' ] == 1 && empty( $this->tplTOS ) ) {
+	    $tos_text	 = $this->AcceptStripePayments->get_setting( 'tos_text' );
+	    $tplTOS		 = '';
+	    $tplTOS		 .= '<div class="asp_product_tos_input_container">';
+	    $tplTOS		 .= '<label class="asp_product_tos_label"><input id="asp-tos-' . $data[ 'uniq_id' ] . '" class="asp_product_tos_input" type="checkbox" required>' . html_entity_decode( $tos_text ) . '</label>';
+	    $tplTOS		 .= "<span style='display: block;' id='tos_error_explanation_{$data[ 'uniq_id' ]}'></span>";
+	    $tplTOS		 .= '</div>';
+	    $this->tplTOS	 = $tplTOS;
+	}
+	$tosPos = $this->AcceptStripePayments->get_setting( 'tos_position' );
+	if ( $tosPos !== 'below' ) {
+	    $output	 = apply_filters( 'asp_button_output_before_tos', $output, $data );
+	    $output	 .= $this->tplTOS;
+	} else {
+	    add_filter( 'asp_button_output_after_button', array( $this, 'after_button_add_tos_filter' ), 10, 3 );
+	}
+	return $output;
     }
 
     function shortcode_asp_product( $atts ) {
@@ -571,7 +598,8 @@ class AcceptStripePaymentsShortcode {
 	$output .= $button;
 	//after button filter
 	if ( ! $out_of_stock ) {
-	    $output = apply_filters( 'asp-button-output-after-button', $output, $data, $class );
+	    $output	 = apply_filters( 'asp-button-output-after-button', $output, $data, $class );
+	    $output	 = apply_filters( 'asp_button_output_after_button', $output, $data, $class );
 	}
 	$output .= $this->get_scripts( $data );
 
@@ -711,15 +739,9 @@ class AcceptStripePaymentsShortcode {
 		}
 	    }
 
-	    $output = apply_filters( 'asp_button_output_before_tos', $output, $data );
-	    //Terms and Conditions
-	    if ( $data[ 'tos' ] == 1 ) {
-		$tos_text	 = $this->AcceptStripePayments->get_setting( 'tos_text' );
-		$output		 .= '<div class="asp_product_tos_input_container">';
-		$output		 .= '<label class="asp_product_tos_label"><input id="asp-tos-' . $data[ 'uniq_id' ] . '" class="asp_product_tos_input" type="checkbox" required>' . html_entity_decode( $tos_text ) . '</label>';
-		$output		 .= "<span style='display: block;' id='tos_error_explanation_{$data[ 'uniq_id' ]}'></span>";
-		$output		 .= '</div>';
-	    }
+	    //add TOS box if needed
+	    $output = $this->tpl_get_tos( $output, $data );
+
 	    //Coupons
 	    if ( isset( $data[ 'coupons_enabled' ] ) && $data[ 'coupons_enabled' ] == "1" && ! $data[ 'variable' ] ) {
 		if ( isset( $data[ 'product_id' ] ) ) {

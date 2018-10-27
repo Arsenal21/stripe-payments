@@ -547,6 +547,9 @@ class AcceptStripePayments_Admin {
 	add_settings_field( 'tos_store_ip', __( 'Store Customer\'s IP Address', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-tos', array( 'field'	 => 'tos_store_ip',
 	    'desc'	 => __( 'If enabled, customer\'s IP address from which TOS were accepted will be stored in order info.', 'stripe-payments' ) )
 	);
+	add_settings_field( 'tos_position', __( 'Position', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-tos', array( 'field'	 => 'tos_position',
+	    'desc'	 => __( 'Select TOS checkbox position.', 'stripe-payments' ) )
+	);
 
 	// Additional Settings
 	add_settings_field( 'disable_buttons_before_js_loads', __( 'Disable Buttons Before Javascript Loads', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-additional-settings', array( 'field'	 => 'disable_buttons_before_js_loads',
@@ -665,6 +668,13 @@ class AcceptStripePayments_Admin {
 		echo "</select>";
 		echo "<p class=\"description\">{$desc}</p>";
 		break;
+	    case 'tos_position':
+		echo "<select name='AcceptStripePayments-settings[{$field}]'>'";
+		echo "<option value='above'" . ($field_value === 'above' || empty( $field_value ) ? ' selected' : '') . ">" . __( 'Above Button', 'stripe-payments' ) . "</option>";
+		echo "<option value='below'" . ($field_value === 'below' ? ' selected' : '') . ">" . __( 'Below Button', 'stripe-payments' ) . "</option>";
+		echo "</select>";
+		echo "<p class=\"description\">{$desc}</p>";
+		break;
 	    case 'price_apply_for_input':
 	    case 'tos_enabled':
 	    case 'tos_store_ip':
@@ -759,6 +769,8 @@ class AcceptStripePayments_Admin {
 	$output [ 'price_apply_for_input' ] = empty( $input[ 'price_apply_for_input' ] ) ? 0 : 1;
 
 	$output [ 'tos_enabled' ] = empty( $input[ 'tos_enabled' ] ) ? 0 : 1;
+
+	$output [ 'tos_position' ] = sanitize_text_field( $input[ 'tos_position' ] );
 
 	$output [ 'tos_store_ip' ] = empty( $input[ 'tos_store_ip' ] ) ? 0 : 1;
 

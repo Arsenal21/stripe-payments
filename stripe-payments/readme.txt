@@ -4,7 +4,7 @@ Donate link: https://s-plugins.com
 Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortcode, digital goods, payment gateway, instant payment, commerce, digital downloads, downloads, e-commerce, e-store, ecommerce, eshop, donation
 Requires at least: 4.7
 Tested up to: 4.9
-Stable tag: 1.9.9
+Stable tag: 1.9.10t1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -149,6 +149,8 @@ Yes, please visit Stripe Payments > Settings screen for options.
 None.
 
 == Changelog ==
+
+= WIP 1.9.10 =
 
 = 1.9.9 =
 - Fixed incompatability with older PHP versions (prior to 5.4).
