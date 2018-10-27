@@ -530,6 +530,9 @@ class AcceptStripePayments_Admin {
 	add_settings_field( 'custom_field_descr_location', __( 'Text Field Description Location', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-custom-field', array( 'field'	 => 'custom_field_descr_location',
 	    'desc'	 => __( 'Select field description location. Placeholder: description is displayed inside text input (default). Below Input: description is displayed below text input.', 'stripe-payments' ) )
 	);
+	add_settings_field( 'custom_field_position', __( 'Position', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-custom-field', array( 'field'	 => 'custom_field_position',
+	    'desc'	 => __( 'Select custom field position.', 'stripe-payments' ) )
+	);
 	add_settings_field( 'custom_field_type', __( 'Field Type', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-custom-field', array( 'field'	 => 'custom_field_type',
 	    'desc'	 => __( 'Select custom field type.', 'stripe-payments' ) )
 	);
@@ -669,6 +672,7 @@ class AcceptStripePayments_Admin {
 		echo "<p class=\"description\">{$desc}</p>";
 		break;
 	    case 'tos_position':
+	    case 'custom_field_position':
 		echo "<select name='AcceptStripePayments-settings[{$field}]'>'";
 		echo "<option value='above'" . ($field_value === 'above' || empty( $field_value ) ? ' selected' : '') . ">" . __( 'Above Button', 'stripe-payments' ) . "</option>";
 		echo "<option value='below'" . ($field_value === 'below' ? ' selected' : '') . ">" . __( 'Below Button', 'stripe-payments' ) . "</option>";
@@ -785,6 +789,8 @@ class AcceptStripePayments_Admin {
 	$output[ 'custom_field_descr' ] = empty( $input[ 'custom_field_descr' ] ) ? '' : $input[ 'custom_field_descr' ];
 
 	$output[ 'custom_field_descr_location' ] = empty( $input[ 'custom_field_descr_location' ] ) ? 'placeholder' : $input[ 'custom_field_descr_location' ];
+
+	$output [ 'custom_field_position' ] = sanitize_text_field( $input[ 'custom_field_position' ] );
 
 	$output[ 'custom_field_mandatory' ] = empty( $input[ 'custom_field_mandatory' ] ) ? 0 : 1;
 

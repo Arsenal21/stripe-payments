@@ -17,6 +17,7 @@ class AcceptStripePaymentsShortcode {
     protected static $instance		 = null;
     protected static $payment_buttons	 = array();
     protected $tplTOS			 = '';
+    protected $tplCF			 = '';
 
     function __construct() {
 	$this->AcceptStripePayments = AcceptStripePayments::get_instance();
@@ -110,6 +111,12 @@ class AcceptStripePaymentsShortcode {
 	return $output;
     }
 
+    function after_button_add_сf_filter( $output, $data, $class ) {
+	$output	 = apply_filters( 'asp_button_output_before_custom_field', $output, $data );
+	$output	 .= $this->tplCF;
+	return $output;
+    }
+
     function tpl_get_tos( $output, $data ) {
 	if ( $data[ 'tos' ] == 1 && empty( $this->tplTOS ) ) {
 	    $tos_text	 = $this->AcceptStripePayments->get_setting( 'tos_text' );
@@ -125,7 +132,44 @@ class AcceptStripePaymentsShortcode {
 	    $output	 = apply_filters( 'asp_button_output_before_tos', $output, $data );
 	    $output	 .= $this->tplTOS;
 	} else {
-	    add_filter( 'asp_button_output_after_button', array( $this, 'after_button_add_tos_filter' ), 10, 3 );
+	    add_filter( 'asp_button_output_after_button', array( $this, 'after_button_add_tos_filter' ), 1000, 3 );
+	}
+	return $output;
+    }
+
+    function tpl_get_cf( $output, $data ) {
+	if ( $data[ 'custom_field' ] == 1 && empty( $this->tplCF ) ) {
+	    $field_type	 = $this->AcceptStripePayments->get_setting( 'custom_field_type' );
+	    $field_name	 = $this->AcceptStripePayments->get_setting( 'custom_field_name' );
+	    $field_descr	 = $this->AcceptStripePayments->get_setting( 'custom_field_descr' );
+	    $descr_loc	 = $this->AcceptStripePayments->get_setting( 'custom_field_descr_location' );
+	    $mandatory	 = $this->AcceptStripePayments->get_setting( 'custom_field_mandatory' );
+	    $tplCF		 = '';
+	    $tplCF		 .= "<div class='asp_product_custom_field_input_container'>";
+	    $tplCF		 .= '<input type="hidden" name="stripeCustomFieldName" value="' . esc_attr( $field_name ) . '">';
+	    switch ( $field_type ) {
+		case 'text':
+		    if ( $descr_loc !== 'below' ) {
+			$tplCF .= '<label class="asp_product_custom_field_label">' . $field_name . ' ' . '</label><input id="asp-custom-field-' . $data[ 'uniq_id' ] . '" class="asp_product_custom_field_input" type="text"' . ($mandatory ? ' data-asp-custom-mandatory' : '') . ' name="stripeCustomField" placeholder="' . $field_descr . '"' . ($mandatory ? ' required' : '' ) . '>';
+		    } else {
+			$tplCF	 .= '<label class="asp_product_custom_field_label">' . $field_name . ' ' . '</label><input id="asp-custom-field-' . $data[ 'uniq_id' ] . '" class="asp_product_custom_field_input" type="text"' . ($mandatory ? ' data-asp-custom-mandatory' : '') . ' name="stripeCustomField"' . ($mandatory ? ' required' : '' ) . '>';
+			$tplCF	 .= '<div class="asp_product_custom_field_descr">' . $field_descr . '</div>';
+		    }
+		    break;
+		case 'checkbox':
+		    $tplCF .= '<label class="asp_product_custom_field_label"><input id="asp-custom-field-' . $data[ 'uniq_id' ] . '" class="asp_product_custom_field_input" type="checkbox"' . ($mandatory ? ' data-asp-custom-mandatory' : '') . ' name="stripeCustomField"' . ($mandatory ? ' required' : '' ) . '>' . $field_descr . '</label>';
+		    break;
+	    }
+	    $tplCF		 .= "<span style='display: block;' id='custom_field_error_explanation_{$data[ 'uniq_id' ]}'></span>" .
+	    "</div>";
+	    $this->tplCF	 = $tplCF;
+	}
+	$cfPos = $this->AcceptStripePayments->get_setting( 'custom_field_position' );
+	if ( $cfPos !== 'below' ) {
+	    $output	 = apply_filters( 'asp_button_output_before_custom_field', $output, $data );
+	    $output	 .= $this->tplCF;
+	} else {
+	    add_filter( 'asp_button_output_after_button', array( $this, 'after_button_add_сf_filter' ), 990, 3 );
 	}
 	return $output;
     }
@@ -677,31 +721,10 @@ class AcceptStripePaymentsShortcode {
 		. "<span style='display: block;' id='error_explanation_quantity_{$data[ 'uniq_id' ]}'></span>"
 		. "</div>";
 	    }
-	    $output = apply_filters( 'asp_button_output_before_custom_field', $output, $data );
-	    if ( $data[ 'custom_field' ] == 1 ) {
-		$field_type	 = $this->AcceptStripePayments->get_setting( 'custom_field_type' );
-		$field_name	 = $this->AcceptStripePayments->get_setting( 'custom_field_name' );
-		$field_descr	 = $this->AcceptStripePayments->get_setting( 'custom_field_descr' );
-		$descr_loc	 = $this->AcceptStripePayments->get_setting( 'custom_field_descr_location' );
-		$mandatory	 = $this->AcceptStripePayments->get_setting( 'custom_field_mandatory' );
-		$output		 .= "<div class='asp_product_custom_field_input_container'>";
-		$output		 .= '<input type="hidden" name="stripeCustomFieldName" value="' . esc_attr( $field_name ) . '">';
-		switch ( $field_type ) {
-		    case 'text':
-			if ( $descr_loc !== 'below' ) {
-			    $output .= '<label class="asp_product_custom_field_label">' . $field_name . ' ' . '</label><input id="asp-custom-field-' . $data[ 'uniq_id' ] . '" class="asp_product_custom_field_input" type="text"' . ($mandatory ? ' data-asp-custom-mandatory' : '') . ' name="stripeCustomField" placeholder="' . $field_descr . '"' . ($mandatory ? ' required' : '' ) . '>';
-			} else {
-			    $output	 .= '<label class="asp_product_custom_field_label">' . $field_name . ' ' . '</label><input id="asp-custom-field-' . $data[ 'uniq_id' ] . '" class="asp_product_custom_field_input" type="text"' . ($mandatory ? ' data-asp-custom-mandatory' : '') . ' name="stripeCustomField"' . ($mandatory ? ' required' : '' ) . '>';
-			    $output	 .= '<div class="asp_product_custom_field_descr">' . $field_descr . '</div>';
-			}
-			break;
-		    case 'checkbox':
-			$output .= '<label class="asp_product_custom_field_label"><input id="asp-custom-field-' . $data[ 'uniq_id' ] . '" class="asp_product_custom_field_input" type="checkbox"' . ($mandatory ? ' data-asp-custom-mandatory' : '') . ' name="stripeCustomField"' . ($mandatory ? ' required' : '' ) . '>' . $field_descr . '</label>';
-			break;
-		}
-		$output .= "<span style='display: block;' id='custom_field_error_explanation_{$data[ 'uniq_id' ]}'></span>" .
-		"</div>";
-	    }
+
+	    //Output Custom Field if needed
+	    $output = $this->tpl_get_cf( $output, $data );
+
 	    //Variations
 	    if ( isset( $data[ 'product_id' ] ) ) {
 		$variations_groups = get_post_meta( $data[ 'product_id' ], 'asp_variations_groups', true );

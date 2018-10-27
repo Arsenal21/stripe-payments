@@ -151,6 +151,7 @@ None.
 == Changelog ==
 
 = WIP 1.9.10 =
+- Added position settings options for custom field and TOS. You can display those below payment button now.
 
 = 1.9.9 =
 - Fixed incompatability with older PHP versions (prior to 5.4).
