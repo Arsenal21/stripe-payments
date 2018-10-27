@@ -11,6 +11,7 @@ class ASPAddonsHelper {
     }
 
     function init_tasks() {
+	$this->load_text_domain();
 	if ( is_admin() ) {
 	    $this->add_settings_link();
 	    $this->check_updates();
@@ -44,6 +45,12 @@ class ASPAddonsHelper {
 	add_filter( 'plugin_action_links', array( $this, 'settings_link' ), 10, 2 );
     }
 
+    function load_text_domain() {
+	if ( ! empty( $this->addon->file ) && ! empty( $this->addon->textdomain ) ) {
+	    load_plugin_textdomain( $this->addon->textdomain, FALSE, dirname( plugin_basename( $this->addon->file ) ) . '/languages/' );
+	}
+    }
+
     function settings_link( $links, $file ) {
 	if ( $file === plugin_basename( $this->addon->file ) ) {
 	    $settings_link = sprintf( '<a href="edit.php?post_type=asp-products&page=stripe-payments-settings#%s">%s</a>', $this->addon->SETTINGS_TAB_NAME, __( 'Settings', 'stripe-payments' ) );
@@ -60,9 +67,9 @@ class ASPAddonsHelper {
     }
 
     function add_settings_section( $title, $descr_callback = null ) { //$descr_callback added since 1.9.8
-	$this->ASPAdmin = AcceptStripePayments_Admin::get_instance();
+	$this->ASPAdmin	 = AcceptStripePayments_Admin::get_instance();
 	add_settings_section( 'AcceptStripePayments-' . $this->addon->SETTINGS_TAB_NAME . '-section', $title, $descr_callback, $this->ASPAdmin->plugin_slug . '-' . $this->addon->SETTINGS_TAB_NAME );
-	$this->section = 'AcceptStripePayments-' . $this->addon->SETTINGS_TAB_NAME . '-section';
+	$this->section	 = 'AcceptStripePayments-' . $this->addon->SETTINGS_TAB_NAME . '-section';
     }
 
     function add_settings_field( $name, $title, $desc, $size = 10 ) {
