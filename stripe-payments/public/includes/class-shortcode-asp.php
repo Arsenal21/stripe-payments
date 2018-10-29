@@ -1028,6 +1028,16 @@ class AcceptStripePaymentsShortcode {
 
 	$data[ 'item_price_curr' ] = AcceptStripePayments::formatted_price( $data[ 'item_price' ], $data[ 'currency_code' ] );
 
+	if ( isset( $data[ 'tax_perc' ] ) && ! empty( $data[ 'tax_perc' ] ) ) {
+	    $data[ 'tax_perc_fmt' ] = $data[ 'tax_perc' ] . '%';
+	}
+	if ( isset( $data[ 'tax' ] ) && ! empty( $data[ 'tax' ] ) ) {
+	    $data[ 'tax_amt' ] = AcceptStripePayments::formatted_price( $data[ 'tax' ], $data[ 'currency_code' ] );
+	}
+	if ( isset( $data[ 'shipping' ] ) && ! empty( $data[ 'shipping' ] ) ) {
+	    $data[ 'shipping_amt' ] = AcceptStripePayments::formatted_price( $data[ 'shipping' ], $data[ 'currency_code' ] );
+	}
+
 	// we should unset as it's not a string and it would produce following fatal error if not unset:
 	// Object of class __PHP_Incomplete_Class could not be converted to string
 	unset( $data[ 'charge' ] );
@@ -1038,6 +1048,12 @@ class AcceptStripePaymentsShortcode {
 	    }
 	    if ( $key == 'txn_id' ) {
 		$key = 'transaction_id';
+	    }
+	    if ( $key == 'tax' ) { //we don't set 'tax' key so it won't replace our new 'tax' key which we set below
+		continue;
+	    }
+	    if ( $key == 'tax_perc_fmt' ) {
+		$key = 'tax';
 	    }
 	    $tags[]	 = '{' . $key . '}';
 	    $vals[]	 = is_array( $value ) ? '' : $value;

@@ -151,6 +151,7 @@ None.
 == Changelog ==
 
 = WIP 1.9.10 =
+- Added {tax}, {tax_amt} and {shipping_amt} checkout page customization tags. More tags [can be found here](https://s-plugins.com/customize-the-thank-page-message-of-stripe-payments-plugin/).
 - Added {item_name} and {item_quantity} email tags.
 - Added position settings options for custom field and TOS. You can display those below payment button now.
 
