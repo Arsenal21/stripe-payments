@@ -87,16 +87,7 @@ div.wp-asp-tab-container p.description span {
     background: #e3e3e3;
     padding: 2px 5px;
 }
-a.wp-asp-toggle {
-    text-decoration: none;
-    border-bottom: 1px dashed;
-}
-a.wp-asp-toggle.toggled-on::after {
-    content: " ↑";
-}
-a.wp-asp-toggle.toggled-off::after {
-    content: " ↓";
-}
+
 div.wp-asp-tabs {
     width: 80%;
 }
@@ -136,3 +127,34 @@ div#poststuff {
     }
 }
 /*----- END Settings Page ----- */
+
+/*----- Email tags hint ----- */
+.wp-asp-tags-table-cont {
+    margin-top: 10px;
+}
+a.wp-asp-toggle {
+    text-decoration: none;
+    border-bottom: 1px dashed;
+}
+a.wp-asp-toggle.toggled-on::after {
+    content: " ↑";
+}
+a.wp-asp-toggle.toggled-off::after {
+    content: " ↓";
+}
+table.wp-asp-tags-hint td, table.wp-asp-tags-hint th {
+    padding: 5px 10px;
+}
+table.wp-asp-tags-hint {
+    background: #fff;
+    width: 100%;
+}
+table.wp-asp-tags-hint td.wp-asp-tag-name {
+    width: 150px;
+    border-bottom: 1px solid #ededed;
+}
+table.wp-asp-tags-hint td.wp-asp-tag-descr {
+    width: 70%;
+    border-bottom: 1px solid #ededed;
+}
+/*----- END Email tags hint ----- */

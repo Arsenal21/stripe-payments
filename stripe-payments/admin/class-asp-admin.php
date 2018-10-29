@@ -955,19 +955,21 @@ class AcceptStripePayments_Admin {
 
     static function get_email_tags_descr() {
 	$email_tags = array(
-	    "{shipping_address}"	 => __( 'Shipping address of the buyer', 'stripe-payments' ),
-	    "{billing_address}"	 => 'Billing address of the buyer',
-	    "{product_details}"	 => 'The item details of the purchased product (this will include the download link for digital items)',
-	    "{transaction_id}"	 => 'The unique transaction ID of the purchase',
-	    '{customer_name}'	 => 'Customer name. Available only if collect billing address option enabled',
-	    "{payer_email}"		 => 'Email Address of the buyer',
+	    "{item_name}"		 => __( 'Name of the purchased item', 'stripe-payments' ),
+	    "{item_quantity}"	 => __( 'Number of items purchsed', 'stripe-payments' ),
+	    "{item_price}"		 => 'Item price. Example: 1000,00',
+	    "{item_price_curr}"	 => 'Item price with currency symbol. Example: $1,000.00',
 	    "{purchase_amt}"	 => 'The amount paid for the current transaction. Example: 1,000.00',
+	    "{purchase_amt_curr}"	 => 'The amount paid for the current transaction with currency symbol. Example: $1,000.00',
 	    "{tax}"			 => 'Tax in percent. Example: 10%',
 	    "{tax_amt}"		 => 'Formatted tax amount for single item. Example: $0.25',
 	    "{shipping_amt}"	 => 'Formatted shipping amount. Example: $2.50',
-	    "{purchase_amt_curr}"	 => 'The amount paid for the current transaction with currency symbol. Example: $1,000.00',
-	    "{item_price}"		 => 'Item price. Example: 1000,00',
-	    "{item_price_curr}"	 => 'Item price with currency symbol. Example: $1,000.00',
+	    "{product_details}"	 => 'The item details of the purchased product (this will include the download link for digital items)',
+	    "{transaction_id}"	 => 'The unique transaction ID of the purchase',
+	    "{shipping_address}"	 => __( 'Shipping address of the buyer', 'stripe-payments' ),
+	    "{billing_address}"	 => 'Billing address of the buyer',
+	    '{customer_name}'	 => 'Customer name. Available only if collect billing address option enabled',
+	    "{payer_email}"		 => 'Email Address of the buyer',
 	    "{currency}"		 => 'Currency symbol. Example: $',
 	    "{currency_code}"	 => '3-letter currency code. Example: USD',
 	    "{purchase_date}"	 => 'The date of the purchase',
@@ -977,10 +979,10 @@ class AcceptStripePayments_Admin {
 	$email_tags_descr = '';
 
 	foreach ( $email_tags as $tag => $descr ) {
-	    $email_tags_descr .= '<br>' . $tag . ' - ' . $descr;
+	    $email_tags_descr .= sprintf( '<tr><td class="wp-asp-tag-name"><b>%s</b></td><td class="wp-asp-tag-descr">%s</td><tr>', $tag, $descr );
 	}
 
-	$email_tags_descr = '<div><a class="wp-asp-toggle toggled-off" href="#0">' . __( 'Click here to toggle tags hint', 'stripe-payments' ) . '</a><div class="hidden">' . $email_tags_descr . '</div></div>';
+	$email_tags_descr = sprintf( '<div><a class="wp-asp-toggle toggled-off" href="#0">%s</a><div class="wp-asp-tags-table-cont hidden"><table class="wp-asp-tags-hint" cellspacing="0"><tbody>%s</tbody></table></div></div>', __( 'Click here to toggle tags hint', 'stripe-payments' ), $email_tags_descr );
 	return $email_tags_descr;
     }
 

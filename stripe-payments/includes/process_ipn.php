@@ -625,13 +625,13 @@ asp_ipn_completed();
 
 function asp_apply_dynamic_tags_on_email_body( $body, $post ) {
 
-    $product_details = __( "Product Name: ", "stripe-payments" ) . $post[ 'item_name' ] . "\n";
-    $product_details .= __( "Quantity: ", "stripe-payments" ) . $post[ 'item_quantity' ] . "\n";
-    $product_details .= __( "Item Price: ", "stripe-payments" ) . AcceptStripePayments::formatted_price( $post[ 'item_price' ], $post[ 'currency_code' ] ) . "\n";
+    $product_details = __( "Product Name: ", "stripe-payments" ) . '{item_name}' . "\n";
+    $product_details .= __( "Quantity: ", "stripe-payments" ) . '{item_quantity}' . "\n";
+    $product_details .= __( "Item Price: ", "stripe-payments" ) . '{item_price_curr}' . "\n";
     //check if there are any additional items available like tax and shipping cost
     $product_details .= AcceptStripePayments::gen_additional_items( $post );
     $product_details .= "--------------------------------" . "\n";
-    $product_details .= __( "Total Amount: ", "stripe-payments" ) . AcceptStripePayments::formatted_price( $post[ 'paid_amount' ], $post[ 'currency_code' ] ) . "\n";
+    $product_details .= __( "Total Amount: ", "stripe-payments" ) . '{purchase_amt_curr}' . "\n";
     $varUrls	 = array();
     // check if we have variations applied with download links
     if ( ! empty( $post[ 'var_applied' ] ) ) {
@@ -658,7 +658,8 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post ) {
 	}
     }
 
-    $product_details .= rtrim( $download_str, "\n" );
+    $product_details		 .= rtrim( $download_str, "\n" );
+    $post[ 'product_details' ]	 = $product_details;
 
     $custom_field = '';
     if ( isset( $post[ 'custom_field_value' ] ) ) {
@@ -676,12 +677,13 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post ) {
 
     $item_price = AcceptStripePayments::formatted_price( $post[ 'item_price' ], false );
 
-    $item_price_curr = AcceptStripePayments::formatted_price( $post[ 'item_price' ], $post[ 'currency_code' ] );
+    $item_price_curr		 = AcceptStripePayments::formatted_price( $post[ 'item_price' ], $post[ 'currency_code' ] );
+    $post[ 'item_price_curr' ]	 = $item_price_curr;
 
     $purchase_amt = AcceptStripePayments::formatted_price( $post[ 'paid_amount' ], false );
 
-    $purchase_amt_curr = AcceptStripePayments::formatted_price( $post[ 'paid_amount' ], $post[ 'currency_code' ] );
-
+    $purchase_amt_curr		 = AcceptStripePayments::formatted_price( $post[ 'paid_amount' ], $post[ 'currency_code' ] );
+    $post[ 'purchase_amt_curr' ]	 = $purchase_amt_curr;
 
     $tax		 = 0;
     $tax_amt	 = 0;
@@ -697,10 +699,12 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post ) {
 	$shipping = AcceptStripePayments::formatted_price( $post[ 'shipping' ], $post[ 'currency_code' ] );
     }
 
-    $customer_name = isset( $_POST[ 'stripeBillingName' ] ) ? sanitize_text_field( $_POST[ 'stripeBillingName' ] ) : '';
+    $customer_name		 = isset( $_POST[ 'stripeBillingName' ] ) ? sanitize_text_field( $_POST[ 'stripeBillingName' ] ) : '';
+    $post[ 'customer_name' ] = $customer_name;
 
     $tags	 = array(
-	"{product_details}",
+	"{item_name}",
+	"{item_quantity}",
 	"{payer_email}",
 	"{customer_name}",
 	"{transaction_id}",
@@ -719,14 +723,15 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post ) {
 	'{custom_field}'
     );
     $vals	 = array(
-	$product_details,
+	$post[ 'item_name' ],
+	$post[ 'item_quantity' ],
 	$post[ 'stripeEmail' ],
-	$customer_name,
+	$post[ 'customer_name' ],
 	$post[ 'txn_id' ],
 	$item_price,
-	$item_price_curr,
+	$post[ 'item_price_curr' ],
 	$purchase_amt,
-	$purchase_amt_curr,
+	$post[ 'purchase_amt_curr' ],
 	$tax,
 	$tax_amt,
 	$shipping,
@@ -735,7 +740,12 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post ) {
 	date( "F j, Y, g:i a", strtotime( 'now' ) ),
 	$post[ 'shipping_address' ],
 	$post[ 'billing_address' ],
-	$custom_field );
+	$custom_field
+    );
+
+    $product_details = str_replace( $tags, $vals, $product_details );
+    $tags[]		 = "{product_details}";
+    $vals[]		 = $product_details;
 
     $body = stripslashes( str_replace( $tags, $vals, $body ) );
 
