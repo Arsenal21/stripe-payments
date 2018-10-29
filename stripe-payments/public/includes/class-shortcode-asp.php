@@ -821,20 +821,20 @@ class AcceptStripePaymentsShortcode {
 	    $output	 = '';
 	    $output	 .= '<p class="asp-thank-you-page-msg1">' . __( "Thank you for your payment.", "stripe-payments" ) . '</p>';
 	    $output	 .= '<p class="asp-thank-you-page-msg2">' . __( "Here's what you purchased: ", "stripe-payments" ) . '</p>';
-	    $output	 .= '<div class="asp-thank-you-page-product-name">' . __( "Product Name: ", "stripe-payments" ) . $aspData[ 'item_name' ] . '</div>';
-	    $output	 .= '<div class="asp-thank-you-page-qty">' . __( "Quantity: ", "stripe-payments" ) . $aspData[ 'item_quantity' ] . '</div>';
-	    $output	 .= '<div class="asp-thank-you-page-qty">' . __( "Item Price: ", "stripe-payments" ) . AcceptStripePayments::formatted_price( $aspData[ 'item_price' ], $aspData[ 'currency_code' ] ) . '</div>';
+	    $output	 .= '<div class="asp-thank-you-page-product-name">' . __( "Product Name: ", "stripe-payments" ) . '{item_name}' . '</div>';
+	    $output	 .= '<div class="asp-thank-you-page-qty">' . __( "Quantity: ", "stripe-payments" ) . '{item_quantity}' . '</div>';
+	    $output	 .= '<div class="asp-thank-you-page-qty">' . __( "Item Price: ", "stripe-payments" ) . '{item_price_curr}' . '</div>';
 	    //check if there are any additional items available like tax and shipping cost
 	    $output	 .= AcceptStripePayments::gen_additional_items( $aspData, '<br />' );
 	    $output	 .= '<hr />';
-	    $output	 .= '<div class="asp-thank-you-page-qty">' . __( "Total Amount: ", "stripe-payments" ) . AcceptStripePayments::formatted_price( $aspData[ 'paid_amount' ], $aspData[ 'currency_code' ] ) . '</div>';
+	    $output	 .= '<div class="asp-thank-you-page-qty">' . __( "Total Amount: ", "stripe-payments" ) . '{paid_amount_curr}' . '</div>';
 	    $output	 .= '<br />';
-	    $output	 .= '<div class="asp-thank-you-page-txn-id">' . __( "Transaction ID: ", "stripe-payments" ) . $aspData[ 'txn_id' ] . '</div>';
+	    $output	 .= '<div class="asp-thank-you-page-txn-id">' . __( "Transaction ID: ", "stripe-payments" ) . '{transaction_id}' . '</div>';
 
 	    $download_str = '';
 	    if ( ! empty( $aspData[ 'item_url' ] ) ) {
 		$download_str	 .= "<br /><div class='asp-thank-you-page-download-link'>";
-		$download_str	 .= __( "Please ", "stripe-payments" ) . "<a href='" . $aspData[ 'item_url' ] . "'>" . __( "click here", "stripe-payments" ) . "</a>" . __( " to download.", "stripe-payments" );
+		$download_str	 .= _x( "Please ", "Is a part of 'Please click here to download'", "stripe-payments" ) . "<a href='{item_url}'>" . _x( "click here", "Is a part of 'Please click here to download'", "stripe-payments" ) . "</a>" . _x( " to download.", "Is a part of 'Please click here to download'", "stripe-payments" );
 		$download_str	 .= "</div>";
 	    }
 
@@ -854,6 +854,8 @@ class AcceptStripePaymentsShortcode {
 	    $output .= $download_str;
 
 	    $output = apply_filters( 'asp_stripe_payments_checkout_page_result', $output, $aspData ); //Filter that allows you to modify the output data on the checkout result page
+
+	    $output = $this->apply_content_tags( $output, $aspData );
 
 	    $wrap	 = "<div class='asp-thank-you-page-wrap'>";
 	    $wrap	 .= "<div class='asp-thank-you-page-msg-wrap' style='background: #dff0d8; border: 1px solid #C9DEC1; margin: 10px 0px; padding: 15px;'>";
@@ -1017,10 +1019,14 @@ class AcceptStripePaymentsShortcode {
 	if ( isset( $data[ 'custom_field_value' ] ) ) {
 	    $data[ 'custom_field' ] = $data[ 'custom_field_name' ] . ': ' . $data[ 'custom_field_value' ];
 	} else {
-	    $data[ 'custom_field' ] = '';
+	    $data[ 'custom_field' ]		 = null;
+	    $data[ 'custom_field_name' ]	 = null;
+	    $data[ 'custom_field_value' ]	 = null;
 	}
 
 	$data[ 'paid_amount_curr' ] = AcceptStripePayments::formatted_price( $data[ 'paid_amount' ], $data[ 'currency_code' ] );
+
+	$data[ 'item_price_curr' ] = AcceptStripePayments::formatted_price( $data[ 'item_price' ], $data[ 'currency_code' ] );
 
 	// we should unset as it's not a string and it would produce following fatal error if not unset:
 	// Object of class __PHP_Incomplete_Class could not be converted to string
