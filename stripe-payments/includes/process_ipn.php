@@ -422,6 +422,15 @@ $shipping_address		 .= isset( $_POST[ 'stripeShippingAddressState' ] ) ? $_POST[
 $shipping_address		 .= isset( $_POST[ 'stripeShippingAddressCountry' ] ) ? $_POST[ 'stripeShippingAddressCountry' ] . "\n" : '';
 $post_data[ 'shipping_address' ] = $shipping_address;
 
+//get customer name
+$name = isset( $_POST[ 'stripeBillingName' ] ) ? sanitize_text_field( $_POST[ 'stripeBillingName' ] ) : '';
+if ( empty( $name ) && ! empty( $data[ 'charge' ]->source->name ) ) {
+    $name = $data[ 'charge' ]->source->name;
+}
+$post_data[ 'customer_name' ] = $name;
+
+$post_data[ 'purchase_date' ] = date( "F j, Y, g:i a", $data[ 'charge' ]->created );
+
 $post_data[ 'additional_items' ] = array();
 
 //check if we need to add variations
@@ -508,13 +517,9 @@ if ( ! empty( $data[ 'product_id' ] ) ) {
 	if ( ! empty( $level_id ) ) {
 	    //let's form data required for eMember_handle_subsc_signup_stand_alone function and call it
 
-	    $name = isset( $_POST[ 'stripeBillingName' ] ) ? sanitize_text_field( $_POST[ 'stripeBillingName' ] ) : '';
-	    if ( empty( $name ) && ! empty( $data[ 'charge' ]->source->name ) ) {
-		$name = $data[ 'charge' ]->source->name;
-	    }
 	    $first_name	 = '';
 	    $last_name	 = '';
-	    if ( ! empty( $name ) ) {
+	    if ( ! empty( $post_data[ 'customer_name' ] ) ) {
 		// let's try to create first name and last name from full name
 		$parts		 = explode( " ", $name );
 		$last_name	 = array_pop( $parts );
@@ -699,9 +704,6 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post ) {
 	$shipping = AcceptStripePayments::formatted_price( $post[ 'shipping' ], $post[ 'currency_code' ] );
     }
 
-    $customer_name		 = isset( $_POST[ 'stripeBillingName' ] ) ? sanitize_text_field( $_POST[ 'stripeBillingName' ] ) : '';
-    $post[ 'customer_name' ] = $customer_name;
-
     $tags	 = array(
 	"{item_name}",
 	"{item_quantity}",
@@ -720,7 +722,7 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post ) {
 	"{purchase_date}",
 	"{shipping_address}",
 	"{billing_address}",
-	'{custom_field}'
+	"{custom_field}"
     );
     $vals	 = array(
 	$post[ 'item_name' ],
@@ -737,7 +739,7 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post ) {
 	$shipping,
 	$curr_sym,
 	$curr,
-	date( "F j, Y, g:i a", strtotime( 'now' ) ),
+	$post[ 'purchase_date' ],
 	$post[ 'shipping_address' ],
 	$post[ 'billing_address' ],
 	$custom_field

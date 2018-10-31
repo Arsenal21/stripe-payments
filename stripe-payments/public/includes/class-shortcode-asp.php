@@ -1026,6 +1026,18 @@ class AcceptStripePaymentsShortcode {
 
 	$data[ 'paid_amount_curr' ] = AcceptStripePayments::formatted_price( $data[ 'paid_amount' ], $data[ 'currency_code' ] );
 
+	$data[ 'purchase_amt' ]		 = $data[ 'paid_amount' ];
+	$data[ 'purchase_amt_curr' ]	 = $data[ 'paid_amount_curr' ];
+
+	$curr		 = $data[ 'currency_code' ];
+	$currencies	 = AcceptStripePayments::get_currencies();
+	if ( isset( $currencies[ $curr ] ) ) {
+	    $curr_sym = $currencies[ $curr ][ 1 ];
+	} else {
+	    $curr_sym = '';
+	}
+	$data[ 'currency' ] = $curr_sym;
+
 	$data[ 'item_price_curr' ] = AcceptStripePayments::formatted_price( $data[ 'item_price' ], $data[ 'currency_code' ] );
 
 	if ( isset( $data[ 'tax_perc' ] ) && ! empty( $data[ 'tax_perc' ] ) ) {
