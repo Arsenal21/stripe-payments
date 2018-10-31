@@ -276,7 +276,7 @@ class AcceptStripePaymentsShortcode {
 	    if ( ! empty( $price ) ) {
 		$tax_amount		 = AcceptStripePayments::get_tax_amount( $tot_price, $tax, AcceptStripePayments::is_zero_cents( $currency ) );
 		$tot_price		 += $tax_amount;
-		$under_price_line	 = '<span class="asp_price_tax_section">' . AcceptStripePayments::formatted_price( $tax_amount, $currency ) . __( ' (' . strtolower( $taxStr ) . ')', 'stripe-payments' ) . '</span>';
+		$under_price_line	 = '<span class="asp_price_tax_section">' . AcceptStripePayments::formatted_price( $tax_amount, $currency ) . ' (' . strtolower( $taxStr ) . ')' . '</span>';
 	    } else {
 		$under_price_line = '<span class="asp_price_tax_section">' . $tax . '% ' . lcfirst( $taxStr ) . '</span>';
 	    }
@@ -284,7 +284,7 @@ class AcceptStripePaymentsShortcode {
 	if ( $shipping !== 0 ) {
 	    $shipStr	 = apply_filters( 'asp_customize_text_msg', __( 'Shipping', 'stripe-payments' ), 'shipping_str' );
 	    $tot_price	 += $shipping;
-	    $shipping_line	 = AcceptStripePayments::formatted_price( $shipping, $currency ) . __( ' (' . strtolower( $shipStr ) . ')', 'stripe-payments' );
+	    $shipping_line	 = AcceptStripePayments::formatted_price( $shipping, $currency ) . ' (' . strtolower( $shipStr ) . ')';
 	    if ( ! empty( $under_price_line ) ) {
 		$under_price_line .= '<span class="asp_price_shipping_section">' . ' + ' . $shipping_line . '</span>';
 	    } else {
