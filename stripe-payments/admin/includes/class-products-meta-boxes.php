@@ -463,7 +463,9 @@ class asp_products_metaboxes {
 	}
 	if ( isset( $post_id ) ) {
 	    update_post_meta( $post_id, 'asp_product_currency', sanitize_text_field( $_POST[ 'asp_product_currency' ] ) );
-	    update_post_meta( $post_id, 'asp_product_shipping', sanitize_text_field( $_POST[ 'asp_product_shipping' ] ) );
+	    $shipping	 = filter_input( INPUT_POST, 'asp_product_shipping', FILTER_SANITIZE_STRING );
+	    $shipping	 = ! empty( $shipping ) ? AcceptStripePayments::tofloat( $shipping ) : $shipping;
+	    update_post_meta( $post_id, 'asp_product_shipping', $shipping );
 	    update_post_meta( $post_id, 'asp_product_tax', sanitize_text_field( $_POST[ 'asp_product_tax' ] ) );
 	    update_post_meta( $post_id, 'asp_product_quantity', sanitize_text_field( $_POST[ 'asp_product_quantity' ] ) );
 	    update_post_meta( $post_id, 'asp_product_custom_quantity', isset( $_POST[ 'asp_product_custom_quantity' ] ) ? "1" : false  );
@@ -506,9 +508,12 @@ class asp_products_metaboxes {
 	    if ( empty( $asp_plan_id ) ) {
 		//check if price is in min-max range for the currency set by Stripe: https://stripe.com/docs/currencies#minimum-and-maximum-charge-amounts
 		$price		 = sanitize_text_field( $_POST[ 'asp_product_price' ] );
+		$price		 = AcceptStripePayments::tofloat( $price );
+//		var_dump($price);
+//		wp_die();
 		$currency	 = sanitize_text_field( $_POST[ 'asp_product_currency' ] );
 		if ( ! empty( $price ) ) {
-		    $price		 = AcceptStripePayments::is_zero_cents( $currency ) ? round( $price ) : round( $price * 100 );
+		    $price_cents	 = AcceptStripePayments::is_zero_cents( $currency ) ? round( $price ) : round( $price * 100 );
 		    //check if we have currency set
 		    $class_asp	 = AcceptStripePayments::get_instance();
 		    if ( empty( $currency ) ) {
@@ -519,22 +524,24 @@ class asp_products_metaboxes {
 		    //let's see if currency has specific minimum set
 		    if ( isset( $class_asp->minAmounts[ $currency ] ) ) {
 			//check if price < minAmount
-			if ( $price < $class_asp->minAmounts[ $currency ] ) {
+			if ( $price_cents < $class_asp->minAmounts[ $currency ] ) {
 			    // it is. Let's add error message
-			    $text = sprintf( __( '<b>Invalid product price</b>: minimum price in %s should be %s, you specified %s. This price limitation comes from Stripe.', 'stripe-payments' ), $currency, $class_asp->formatted_price( $class_asp->minAmounts[ $currency ], $currency, true ), $class_asp->formatted_price( $price, $currency, true ) );
+			    $text = sprintf( __( '<b>Invalid product price</b>: minimum price in %s should be %s, you specified %s. This price limitation comes from Stripe.', 'stripe-payments' ), $currency, $class_asp->formatted_price( $class_asp->minAmounts[ $currency ], $currency, true ), AcceptStripePayments::formatted_price( $price_cents, $currency, true ) );
 			    AcceptStripePayments_Admin::add_admin_notice( 'error', $text, false );
 			    // we don't save invalid price
 			    return false;
 			}
 		    }
 		    //check if value is not above maximum allowed by Stripe (8 digits; e.g. 99999999 in cents)
-		    if ( $price > 99999999 ) {
+		    if ( $price_cents > 99999999 ) {
 			// it is. Let's add error message
-			$text = sprintf( __( '<b>Invalid product price</b>: maximum allowed product price is %s, you specified %s', 'stripe-payments' ), $class_asp->formatted_price( 99999999, $currency, true ), $class_asp->formatted_price( $price, $currency, true ) );
+			$text = sprintf( __( '<b>Invalid product price</b>: maximum allowed product price is %s, you specified %s', 'stripe-payments' ), $class_asp->formatted_price( 99999999, $currency, true ), AcceptStripePayments::formatted_price( $price_cents, $currency, true ) );
 			AcceptStripePayments_Admin::add_admin_notice( 'error', $text, false );
 			// we don't save invalid price
 			return false;
 		    }
+		    //price seems to be valid, let's save it
+		    update_post_meta( $post_id, 'asp_product_price', $price );
 		}
 		//handle variations
 		$variations_groups = filter_input( INPUT_POST, 'asp-variations-group-names', FILTER_UNSAFE_RAW, FILTER_REQUIRE_ARRAY );
@@ -555,7 +562,6 @@ class asp_products_metaboxes {
 		    update_post_meta( $post_id, 'asp_variations_urls', false );
 		}
 	    }
-	    update_post_meta( $post_id, 'asp_product_price', sanitize_text_field( $_POST[ 'asp_product_price' ] ) );
 	}
     }
 
