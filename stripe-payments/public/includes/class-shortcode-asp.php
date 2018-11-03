@@ -106,14 +106,16 @@ class AcceptStripePaymentsShortcode {
     }
 
     function after_button_add_tos_filter( $output, $data, $class ) {
-	$output	 = apply_filters( 'asp_button_output_before_tos', $output, $data );
-	$output	 .= $this->tplTOS;
+	$output		 = apply_filters( 'asp_button_output_before_tos', $output, $data );
+	$output		 .= $this->tplTOS;
+	$this->tplTOS	 = '';
 	return $output;
     }
 
     function after_button_add_сf_filter( $output, $data, $class ) {
-	$output	 = apply_filters( 'asp_button_output_before_custom_field', $output, $data );
-	$output	 .= $this->tplCF;
+	$output		 = apply_filters( 'asp_button_output_before_custom_field', $output, $data );
+	$output		 .= $this->tplCF;
+	$this->tplCF	 = '';
 	return $output;
     }
 
@@ -129,8 +131,9 @@ class AcceptStripePaymentsShortcode {
 	}
 	$tosPos = $this->AcceptStripePayments->get_setting( 'tos_position' );
 	if ( $tosPos !== 'below' ) {
-	    $output	 = apply_filters( 'asp_button_output_before_tos', $output, $data );
-	    $output	 .= $this->tplTOS;
+	    $output		 = apply_filters( 'asp_button_output_before_tos', $output, $data );
+	    $output		 .= $this->tplTOS;
+	    $this->tplTOS	 = '';
 	} else {
 	    add_filter( 'asp_button_output_after_button', array( $this, 'after_button_add_tos_filter' ), 1000, 3 );
 	}
@@ -166,8 +169,9 @@ class AcceptStripePaymentsShortcode {
 	}
 	$cfPos = $this->AcceptStripePayments->get_setting( 'custom_field_position' );
 	if ( $cfPos !== 'below' ) {
-	    $output	 = apply_filters( 'asp_button_output_before_custom_field', $output, $data );
-	    $output	 .= $this->tplCF;
+	    $output		 = apply_filters( 'asp_button_output_before_custom_field', $output, $data );
+	    $output		 .= $this->tplCF;
+	    $this->tplTOS	 = '';
 	} else {
 	    add_filter( 'asp_button_output_after_button', array( $this, 'after_button_add_сf_filter' ), 990, 3 );
 	}
