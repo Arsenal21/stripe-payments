@@ -12,6 +12,7 @@ if (wp_asp_urlHash === '') {
 }
 jQuery(function ($) {
     var wp_asp_activeTab = "";
+    $('div.asp-settings-spinner-container').remove();
     $('a.nav-tab').click(function (e) {
 	if ($(this).attr('data-tab-name') !== wp_asp_activeTab) {
 	    $('div.wp-asp-tab-container[data-tab-name="' + wp_asp_activeTab + '"]').hide();
@@ -51,4 +52,6 @@ jQuery(function ($) {
     $('#wp_asp_curr_code').change();
 
     $('a.nav-tab[data-tab-name="' + wp_asp_urlHash + '"]').trigger('click');
+
+    $('div.wp-asp-settings-cont').show();
 });

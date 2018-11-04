@@ -37,6 +37,9 @@ if ( $_GET[ 'page' ] == 'stripe-payments-settings' ) {
 		do_action( 'asp-settings-page-after-tabs-menu' );
 		?>
     	</h2>
+    	<div class="asp-settings-spinner-container">
+    	    <div class="asp-settings-spinner">Loading...</div>
+    	</div>
     	<div class="wp-asp-settings-cont">
     	    <div class="wp-asp-settings-grid wp-asp-tabs">
     		<div class="wp-asp-tab-container" data-tab-name="general">
