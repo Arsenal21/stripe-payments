@@ -465,6 +465,9 @@ class AcceptStripePayments_Admin {
 	add_settings_field( 'send_emails_to_buyer', __( 'Send Emails to Buyer After Purchase', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-email', 'AcceptStripePayments-email-section', array( 'field'	 => 'send_emails_to_buyer',
 	    'desc'	 => __( 'If checked the plugin will send an email to the buyer with the sale details. If digital goods are purchased then the email will contain the download links for the purchased products.', 'stripe-payments' ) )
 	);
+	add_settings_field( 'buyer_email_type', __( 'Buyer Email Content Type', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-email', 'AcceptStripePayments-email-section', array( 'field'	 => 'buyer_email_type',
+	    'desc'	 => __( 'Choose which format of email to send.', 'stripe-payments' ) )
+	);
 	add_settings_field( 'from_email_address', __( 'From Email Address', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-email', 'AcceptStripePayments-email-section', array( 'field'	 => 'from_email_address',
 	    'desc'	 => __( 'Example: Your Name &lt;sales@your-domain.com&gt; This is the email address that will be used to send the email to the buyer. This name and email address will appear in the from field of the email.', 'stripe-payments' ) )
 	);
@@ -483,6 +486,11 @@ class AcceptStripePayments_Admin {
 	add_settings_field( 'seller_notification_email', __( 'Notification Email Address', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-email', 'AcceptStripePayments-email-section', array( 'field'	 => 'seller_notification_email',
 	    'desc'	 => __( 'This is the email address where the seller will be notified of product sales. You can put multiple email addresses separated by comma (,) in the above field to send the notification to multiple email addresses.', 'stripe-payments' ) )
 	);
+
+	add_settings_field( 'seller_email_type', __( 'Seller Email Content Type', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-email', 'AcceptStripePayments-email-section', array( 'field'	 => 'seller_email_type',
+	    'desc'	 => __( 'Choose which format of email to send.', 'stripe-payments' ) )
+	);
+
 	add_settings_field( 'seller_email_subject', __( 'Seller Email Subject', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-email', 'AcceptStripePayments-email-section', array( 'field'	 => 'seller_email_subject',
 	    'desc'	 => __( 'This is the subject of the email that will be sent to the seller for record.', 'stripe-payments' ) )
 	);
@@ -697,9 +705,20 @@ class AcceptStripePayments_Admin {
 	    case 'enable_zip_validation':
 		echo "<input type='checkbox' name='AcceptStripePayments-settings[{$field}]' value='1' " . ($field_value ? 'checked=checked' : '') . " /><p class=\"description\">{$desc}</p>";
 		break;
+	    case 'buyer_email_type':
+	    case 'seller_email_type':
+		$checkedText		 = empty( $field_value ) || ($field_value === 'text') ? ' selected' : '';
+		$checkedHTML		 = $field_value === 'html' ? ' selected' : '';
+		echo '<select name="AcceptStripePayments-settings[' . $field . ']">';
+		echo sprintf( '<option value="text"%s>' . __( 'Plain Text', 'stripe-payments' ) . '</option>', $checkedText );
+		echo sprintf( '<option value="html"%s>' . __( 'HTML', 'stripe-payments' ) . '</option>', $checkedHTML );
+		echo '</select>';
+		echo "<p class=\"description\">{$desc}</p>";
+		break;
 	    case 'buyer_email_body':
 	    case 'seller_email_body':
-		echo "<textarea cols='70' rows='7' name='AcceptStripePayments-settings[{$field}]'>{$field_value}</textarea><p class=\"description\">{$desc}</p>";
+		wp_editor( html_entity_decode( $field_value ), $field, array( 'textarea_name' => 'AcceptStripePayments-settings[' . $field . ']' ) );
+		echo "<p class=\"description\">{$desc}</p>";
 		break;
 	    case 'products_page_id':
 		//We save the products page ID internally but we show the URL of that page to the user (its user-friendly).
@@ -867,6 +886,10 @@ class AcceptStripePayments_Admin {
 	$output[ 'api_publishable_key_test' ] = $input[ 'api_publishable_key_test' ];
 
 	$output[ 'api_secret_key_test' ] = $input[ 'api_secret_key_test' ];
+
+	$output[ 'buyer_email_type' ] = $input[ 'buyer_email_type' ];
+
+	$output[ 'seller_email_type' ] = $input[ 'seller_email_type' ];
 
 	if ( ! empty( $input[ 'from_email_address' ] ) )
 	    $output[ 'from_email_address' ] = $input[ 'from_email_address' ];

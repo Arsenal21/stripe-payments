@@ -593,7 +593,12 @@ if ( isset( $opt[ 'send_emails_to_buyer' ] ) ) {
 	$body	 = apply_filters( 'asp_buyer_email_body', $body, $post_data );
 	$from	 = apply_filters( 'asp_buyer_email_from', $from, $post_data );
 
-	$headers = 'From: ' . $from . "\r\n";
+	$headers = array();
+	if ( ! empty( $opt[ 'buyer_email_type' ] ) && $opt[ 'buyer_email_type' ] === 'html' ) {
+	    $headers[]	 = 'Content-Type: text/html; charset=UTF-8';
+	    $body		 = nl2br( $body );
+	}
+	$headers[] = 'From: ' . $from;
 
 	wp_mail( $to, $subj, $body, $headers );
 	ASP_Debug_Logger::log( 'Notification email sent to buyer: ' . $to . ', From email address used: ' . $from );
@@ -610,7 +615,12 @@ if ( isset( $opt[ 'send_emails_to_seller' ] ) ) {
 	$body	 = apply_filters( 'asp_seller_email_body', $body, $post_data );
 	$from	 = apply_filters( 'asp_seller_email_from', $from, $post_data );
 
-	$headers = 'From: ' . $from . "\r\n";
+	$headers = array();
+	if ( ! empty( $opt[ 'seller_email_type' ] ) && $opt[ 'seller_email_type' ] === 'html' ) {
+	    $headers[]	 = 'Content-Type: text/html; charset=UTF-8';
+	    $body		 = nl2br( $body );
+	}
+	$headers[] = 'From: ' . $from;
 
 	wp_mail( $to, $subj, $body, $headers );
 	ASP_Debug_Logger::log( 'Notification email sent to seller: ' . $to . ', From email address used: ' . $from );
