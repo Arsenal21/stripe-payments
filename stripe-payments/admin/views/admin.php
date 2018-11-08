@@ -55,9 +55,6 @@ if ( $_GET[ 'page' ] == 'stripe-payments-settings' ) {
 		    <?php
 		    do_action( 'asp-settings-page-after-tabs' );
 		    ?>
-		    <?php submit_button(); ?>
-
-    		</form>
     	    </div>
     	    <div id="poststuff" class="wp-asp-settings-grid wp-asp-settings-sidebar-cont">
     		<div class="postbox" style="min-width: inherit;">
@@ -88,16 +85,23 @@ if ( $_GET[ 'page' ] == 'stripe-payments-settings' ) {
     		    </div>
     		</div>
     	    </div>
+		<?php submit_button(); ?>
     	</div>
-	    <?php
-	    wp_localize_script( 'asp-admin-settings-js', 'aspSettingsData', array(
-		'transHash'	 => $tab,
-		'currencies'	 => AcceptStripePayments::get_currencies(),
-		'str'		 => array(
-		    'logClearConfirm'	 => __( 'Are you sure you want to clear log?', 'stripe-payments' ),
-		    'logCleared'		 => __( 'Log cleared.', 'stripe-payments' ),
-		    'errorOccurred'		 => __( 'Error occured:', 'stripe-payments' ),
-		),
-	    ) );
-	    wp_enqueue_script( 'asp-admin-settings-js' );
-	}
+
+        </form>
+	<?php
+	do_action( 'asp-settings-page-after-form' );
+	?>
+
+	<?php
+	wp_localize_script( 'asp-admin-settings-js', 'aspSettingsData', array(
+	    'transHash'	 => $tab,
+	    'currencies'	 => AcceptStripePayments::get_currencies(),
+	    'str'		 => array(
+		'logClearConfirm'	 => __( 'Are you sure you want to clear log?', 'stripe-payments' ),
+		'logCleared'		 => __( 'Log cleared.', 'stripe-payments' ),
+		'errorOccurred'		 => __( 'Error occured:', 'stripe-payments' ),
+	    ),
+	) );
+	wp_enqueue_script( 'asp-admin-settings-js' );
+    }
