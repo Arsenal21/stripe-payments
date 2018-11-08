@@ -787,7 +787,10 @@ class AcceptStripePayments_Admin {
     public function settings_sanitize_field_callback( $input ) {
 	$output = get_option( 'AcceptStripePayments-settings' );
 
+	// this filter name is a bit invalid, we will slowly replace it with a valid one below
 	$output = apply_filters( 'apm-admin-settings-sanitize-field', $output, $input );
+
+	$output = apply_filters( 'asp-admin-settings-sanitize-field', $output, $input );
 
 	$output [ 'price_apply_for_input' ] = empty( $input[ 'price_apply_for_input' ] ) ? 0 : 1;
 
