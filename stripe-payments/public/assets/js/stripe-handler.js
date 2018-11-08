@@ -241,17 +241,24 @@ function wp_asp_can_proceed(data, openHandler) {
     }
 
     if (data.custom_field != '0') {
-
-	var customInput = jQuery('#asp-custom-field-' + data.uniq_id);
-	if (typeof (customInput.attr('data-asp-custom-mandatory')) !== "undefined") {
-	    if (customInput.attr('type') === 'text' && customInput.val() === '') {
-		jQuery('#custom_field_error_explanation_' + data.uniq_id).hide().html(stripehandler.strPleaseFillIn).fadeIn('slow');
-		return false;
+	jQuery('form#stripe_form_' + data.uniq_id).find('.asp_product_custom_field_error').hide();
+	customInputs = jQuery('form#stripe_form_' + data.uniq_id).find('.asp_product_custom_field_input').toArray();
+	var valid = true;
+	jQuery.each(customInputs, function (id, customInput) {
+	    customInput = jQuery(customInput);
+	    if (typeof (customInput.attr('data-asp-custom-mandatory')) !== "undefined") {
+		if (customInput.attr('type') === 'text' && customInput.val() === '') {
+		    jQuery(this).siblings('.asp_product_custom_field_error').hide().html(stripehandler.strPleaseFillIn).fadeIn('slow');
+		    return valid = false;
+		}
+		if (customInput.attr('type') === 'checkbox' && customInput.prop('checked') !== true) {
+		    jQuery(this).parent().siblings('.asp_product_custom_field_error').hide().html(stripehandler.strPleaseCheckCheckbox).fadeIn('slow');
+		    return valid = false;
+		}
 	    }
-	    if (customInput.attr('type') === 'checkbox' && customInput.prop('checked') !== true) {
-		jQuery('#custom_field_error_explanation_' + data.uniq_id).hide().html(stripehandler.strPleaseCheckCheckbox).fadeIn('slow');
-		return false;
-	    }
+	});
+	if (!valid) {
+	    return false;
 	}
     }
 

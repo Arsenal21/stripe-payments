@@ -113,7 +113,6 @@ class AcceptStripePaymentsShortcode {
     }
 
     function after_button_add_сf_filter( $output, $data, $class ) {
-	$output		 = apply_filters( 'asp_button_output_before_custom_field', $output, $data );
 	$output		 .= $this->tplCF;
 	$this->tplCF	 = '';
 	return $output;
@@ -142,6 +141,14 @@ class AcceptStripePaymentsShortcode {
 
     function tpl_get_cf( $output, $data ) {
 	if ( $data[ 'custom_field' ] == 1 && empty( $this->tplCF ) ) {
+	    $replaceCF = apply_filters( 'asp_button_output_replace_custom_field', '', $data );
+	    if ( ! empty( $replaceCF ) ) {
+		//we got custom field replaced
+		$this->tplCF	 = $replaceCF;
+		$output		 .= $this->tplCF;
+		$this->tplCF	 = '';
+		return $output;
+	    }
 	    $field_type	 = $this->AcceptStripePayments->get_setting( 'custom_field_type' );
 	    $field_name	 = $this->AcceptStripePayments->get_setting( 'custom_field_name' );
 	    $field_descr	 = $this->AcceptStripePayments->get_setting( 'custom_field_descr' );
@@ -163,15 +170,14 @@ class AcceptStripePaymentsShortcode {
 		    $tplCF .= '<label class="asp_product_custom_field_label"><input id="asp-custom-field-' . $data[ 'uniq_id' ] . '" class="asp_product_custom_field_input" type="checkbox"' . ($mandatory ? ' data-asp-custom-mandatory' : '') . ' name="stripeCustomField"' . ($mandatory ? ' required' : '' ) . '>' . $field_descr . '</label>';
 		    break;
 	    }
-	    $tplCF		 .= "<span style='display: block;' id='custom_field_error_explanation_{$data[ 'uniq_id' ]}'></span>" .
+	    $tplCF		 .= "<span id='custom_field_error_explanation_{$data[ 'uniq_id' ]}' class='asp_product_custom_field_error'></span>" .
 	    "</div>";
 	    $this->tplCF	 = $tplCF;
 	}
 	$cfPos = $this->AcceptStripePayments->get_setting( 'custom_field_position' );
 	if ( $cfPos !== 'below' ) {
-	    $output		 = apply_filters( 'asp_button_output_before_custom_field', $output, $data );
 	    $output		 .= $this->tplCF;
-	    $this->tplTOS	 = '';
+	    $this->tplCF	 = '';
 	} else {
 	    add_filter( 'asp_button_output_after_button', array( $this, 'after_button_add_сf_filter' ), 990, 3 );
 	}
@@ -622,8 +628,6 @@ class AcceptStripePaymentsShortcode {
 	    $data[ 'variations' ]	 = apply_filters( 'asp_button_output_variations_ready', $data[ 'variations' ], $data );
 	}
 
-
-
 	$output	 .= '<input type="hidden" name="asp_action" value="process_ipn" />';
 	$output	 .= "<input type = 'hidden' value = '{$data[ 'name' ]}' name = 'item_name' />";
 	$output	 .= "<input type = 'hidden' value = '{$data[ 'quantity' ]}' name = 'item_quantity' />";
@@ -725,6 +729,8 @@ class AcceptStripePaymentsShortcode {
 		. "<span style='display: block;' id='error_explanation_quantity_{$data[ 'uniq_id' ]}'></span>"
 		. "</div>";
 	    }
+
+	    $output = apply_filters( 'asp_button_output_before_custom_field', $output, $data );
 
 	    //Output Custom Field if needed
 	    $output = $this->tpl_get_cf( $output, $data );

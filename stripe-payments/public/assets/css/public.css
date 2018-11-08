@@ -63,6 +63,11 @@ CSS class names should use dashes. Example: asp-product-description
 
 }
 
+.asp_product_custom_field_error {
+    display: none;
+    color: red;
+}
+
 .asp_out_of_stock {
     font-weight: bold;
 }
