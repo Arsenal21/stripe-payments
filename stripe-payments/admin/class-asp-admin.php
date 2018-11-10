@@ -701,9 +701,13 @@ class AcceptStripePayments_Admin {
 	    case 'disable_buttons_before_js_loads':
 	    case 'dont_save_card':
 	    case 'custom_field_mandatory':
-	    case 'custom_field_enabled':
 	    case 'enable_zip_validation':
 		echo "<input type='checkbox' name='AcceptStripePayments-settings[{$field}]' value='1' " . ($field_value ? 'checked=checked' : '') . " /><p class=\"description\">{$desc}</p>";
+		break;
+	    case 'custom_field_enabled':
+		echo "<input type='checkbox' name='AcceptStripePayments-settings[{$field}]' value='1' " . ($field_value ? 'checked=checked' : '') . " /><p class=\"description\">{$desc}</p>";
+		//do action so ACF addon can display its message if needed
+		do_action( 'asp_acf_settings_page_display_msg' );
 		break;
 	    case 'buyer_email_type':
 	    case 'seller_email_type':

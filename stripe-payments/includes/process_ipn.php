@@ -306,10 +306,13 @@ $data[ 'currency_code' ]	 = $currency_code;
 $data[ 'charge_description' ]	 = $charge_description;
 $data[ 'addonName' ]		 = isset( $_POST[ 'stripeAddonName' ] ) ? sanitize_text_field( $_POST[ 'stripeAddonName' ] ) : '';
 $data[ 'button_key' ]		 = isset( $button_key ) ? $button_key : '';
+
+//Custom Field
+$data[ 'custom_fields' ] = array();
 if ( isset( $_POST[ 'stripeCustomField' ] ) ) {
-    $data[ 'custom_field_value' ]	 = $_POST[ 'stripeCustomField' ];
-    $data[ 'custom_field_name' ]	 = $_POST[ 'stripeCustomFieldName' ];
+    $data[ 'custom_fields' ][] = array( 'name' => $_POST[ 'stripeCustomFieldName' ], 'value' => $_POST[ 'stripeCustomField' ] );
 }
+$data[ 'custom_fields' ] = apply_filters( 'asp_process_custom_fields', $data[ 'custom_fields' ] );
 
 ob_start();
 
@@ -359,10 +362,9 @@ if ( empty( $data[ 'charge' ] ) ) {
 	}
 
 	//Check if we need to include custom field in metadata
-	if ( isset( $_POST[ 'stripeCustomField' ] ) ) {
+	if ( ! empty( $data[ 'custom_fields' ] ) ) {
 	    $metadata			 = array(
-		'custom_field_value'	 => isset( $_POST[ 'stripeCustomField' ] ) ? $_POST[ 'stripeCustomField' ] : '',
-		'custom_field_name'	 => $_POST[ 'stripeCustomFieldName' ],
+		'custom_fields' => json_encode( $data[ 'custom_fields' ] ),
 	    );
 	    $charge_opts[ 'metadata' ]	 = $metadata;
 	}
@@ -677,9 +679,10 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post ) {
     $post[ 'product_details' ]	 = $product_details;
 
     $custom_field = '';
-    if ( isset( $post[ 'custom_field_value' ] ) ) {
-	$custom_field = $post[ 'custom_field_name' ] . ': ' . $post[ 'custom_field_value' ];
+    foreach ( $post[ 'custom_fields' ] as $cf ) {
+	$custom_field .= $cf[ 'name' ] . ': ' . $cf[ 'value' ] . "\r\n";
     }
+    $custom_field = rtrim( $custom_field, "\r\n" );
 
     $curr = $post[ 'currency_code' ];
 
