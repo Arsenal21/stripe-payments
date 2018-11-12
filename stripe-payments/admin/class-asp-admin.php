@@ -407,7 +407,6 @@ class AcceptStripePayments_Admin {
 	register_setting( 'AcceptStripePayments-settings-group', 'AcceptStripePayments-settings', array( &$this, 'settings_sanitize_field_callback' ) );
 
 	// Add/define the various section/groups (the fields will go under these sections).
-	//add_settings_section( 'AcceptStripePayments-documentation', __( 'Plugin Documentation', 'stripe-payments' ), array( &$this, 'general_documentation_callback' ), $this->plugin_slug . '-docs' );
 
 	add_settings_section( 'AcceptStripePayments-global-section', __( 'Global Settings', 'stripe-payments' ), null, $this->plugin_slug );
 	add_settings_section( 'AcceptStripePayments-credentials-section', __( 'Credentials', 'stripe-payments' ), null, $this->plugin_slug );
@@ -426,7 +425,7 @@ class AcceptStripePayments_Admin {
 	add_settings_field( 'checkout_url', __( 'Checkout Result Page URL', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-global-section', array( 'field'	 => 'checkout_url',
 	    'desc'	 => __( 'This is the thank you page. This page is automatically created for you when you install the plugin. Do not delete this page as the plugin will send the customer to this page after the payment.', 'stripe-payments' ) . '<br /><b><i>' . __( 'Important Notice:', 'stripe-payments' ) . '</i></b> ' . __( 'if you are using caching plugins on your site (similar to W3 Total Cache, WP Rocket etc), you must exclude checkout results page from caching. Failing to do so will result in unpredictable checkout results output.', 'stripe-payments' ),
 	    'size'	 => 100 ) );
-	add_settings_field( 'products_page_id', 'Products Page URL', array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-global-section', array( 'field'	 => 'products_page_id',
+	add_settings_field( 'products_page_id', __( 'Products Page URL', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-global-section', array( 'field'	 => 'products_page_id',
 	    'desc'	 => __( 'All your products will be listed here in a grid display. When you create new products, they will show up in this page. This page is automatically created for you when you install the plugin. You can add this page to your navigation menu if you want the site visitors to find it easily.', 'stripe-payments' ),
 	    'size'	 => 100 ) );
 
@@ -515,7 +514,7 @@ class AcceptStripePayments_Admin {
 	add_settings_field( 'price_thousand_sep', __( 'Thousand Separator', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-price-display', array( 'field'	 => 'price_thousand_sep',
 	    'desc'	 => __( 'This sets the thousand separator of the displayed price.', 'stripe-payments' ) )
 	);
-	add_settings_field( 'price_decimals_num', 'Number of Decimals', array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-price-display', array( 'field'	 => 'price_decimals_num',
+	add_settings_field( 'price_decimals_num', __( 'Number of Decimals', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-price-display', array( 'field'	 => 'price_decimals_num',
 	    'desc'	 => __( 'This sets the number of decimal points shown in the displayed price.', 'stripe-payments' ) )
 	);
 
@@ -572,21 +571,11 @@ class AcceptStripePayments_Admin {
 	echo '<p>' . __( 'This section allows you to configure Terms and Conditions or Privacy Policy that customer must accept before making payment. This, for example, can be used to comply with EU GDPR.', 'stripe-payments' ) . '</p>';
     }
 
-    public function general_documentation_callback( $args ) {
-	?>
-	<div style="background: none repeat scroll 0 0 #FFF6D5;border: 1px solid #D1B655;color: #3F2502;margin: 10px 0;padding: 5px 5px 5px 10px;text-shadow: 1px 1px #FFFFFF;">
-	    <p>Please read the
-		<a target="_blank" href="https://s-plugins.com/stripe-payments-plugin-tutorials/">WordPress Stripe</a> plugin setup instructions to configure and use it.
-	    </p>
-	</div>
-	<?php
-    }
-
     public function general_settings_menu_footer_callback( $args ) {
 	?>
 	<div style="background: none repeat scroll 0 0 #FFF6D5;border: 1px solid #D1B655;color: #3F2502;margin: 10px 0;padding: 5px 5px 5px 10px;text-shadow: 1px 1px #FFFFFF;">
 	    <p>
-		If you need a feature rich plugin (with good support) for selling your products and services then check out our
+		<?php _ex( 'If you need a feature rich plugin (with good support) for selling your products and services then check out our', 'Followed by a link to eStore plugin', 'stripe-payments' ); ?>
 		<a target="_blank" href="https://www.tipsandtricks-hq.com/wordpress-estore-plugin-complete-solution-to-sell-digital-products-from-your-wordpress-blog-securely-1059">WP eStore Plugin</a>.
 	    </p>
 	</div>
@@ -612,22 +601,22 @@ class AcceptStripePayments_Admin {
 
     public function get_checkout_lang_options( $selected_value = '' ) {
 	$data_arr	 = array(
-	    ""	 => "Autodetect",
-	    "da"	 => "Danish",
-	    "nl"	 => "Dutch",
-	    "en"	 => "English",
-	    "fi"	 => "Finnish",
-	    "fr"	 => "French",
-	    "de"	 => "German",
-	    "it"	 => "Italian",
-	    "ja"	 => "Japanese",
-	    "no"	 => "Norwegian",
-	    "zh"	 => "Simplified Chinese",
-	    "es"	 => "Spanish",
-	    "sv"	 => "Swedish",
+	    ""	 => __( "Autodetect", 'stripe-payments' ),
+	    "da"	 => __( "Danish", 'stripe-payments' ),
+	    "nl"	 => __( "Dutch", 'stripe-payments' ),
+	    "en"	 => __( "English", 'stripe-payments' ),
+	    "fi"	 => __( "Finnish", 'stripe-payments' ),
+	    "fr"	 => __( "French", 'stripe-payments' ),
+	    "de"	 => __( "German", 'stripe-payments' ),
+	    "it"	 => __( "Italian", 'stripe-payments' ),
+	    "ja"	 => __( "Japanese", 'stripe-payments' ),
+	    "no"	 => __( "Norwegian", 'stripe-payments' ),
+	    "zh"	 => __( "Simplified Chinese", 'stripe-payments' ),
+	    "es"	 => __( "Spanish", 'stripe-payments' ),
+	    "sv"	 => __( "Swedish", 'stripe-payments' )
 	);
 	$opt_tpl	 = '<option value="%val%"%selected%>%name%</option>';
-	$opts		 = $selected_value === false ? '<option value="" selected>(Default)</option>' : '';
+	$opts		 = $selected_value === false ? '<option value="" selected>' . __( '(Default)', 'stripe-payments' ) . '</option>' : '';
 	foreach ( $data_arr as $key => $value ) {
 	    $selected	 = $selected_value == $key ? ' selected' : '';
 	    $opts		 .= str_replace( array( '%val%', '%name%', '%selected%' ), array( $key, $value, $selected ), $opt_tpl );
@@ -667,8 +656,8 @@ class AcceptStripePayments_Admin {
 		break;
 	    case 'custom_field_type':
 		echo "<select name='AcceptStripePayments-settings[{$field}]'>'";
-		echo "<option value='text'" . ($field_value === 'text' ? ' selected' : '') . ">Text</option>";
-		echo "<option value='checkbox'" . ($field_value === 'checkbox' ? ' selected' : '') . ">Checkbox</option>";
+		echo "<option value='text'" . ($field_value === 'text' ? ' selected' : '') . ">" . __( "Text", 'stripe-payments' ) . "</option>";
+		echo "<option value='checkbox'" . ($field_value === 'checkbox' ? ' selected' : '') . ">" . __( 'Checkbox', 'stripe-payments' ) . "</option>";
 		echo "</select>";
 		echo "<p class=\"description\">{$desc}</p>";
 		break;
@@ -750,8 +739,8 @@ class AcceptStripePayments_Admin {
 	    case 'price_currency_pos':
 		?>
 		<select name="AcceptStripePayments-settings[<?php echo $field; ?>]">
-		    <option value="left"<?php echo ($field_value === "left") ? ' selected' : ''; ?>>Left</option>
-		    <option value="right"<?php echo ($field_value === "right") ? ' selected' : ''; ?>>Right</option>
+		    <option value="left"<?php echo ($field_value === "left") ? ' selected' : ''; ?>><?php _ex( 'Left', 'Currency symbol position', 'stripe-payments' ); ?></option>
+		    <option value="right"<?php echo ($field_value === "right") ? ' selected' : ''; ?>><?php _ex( 'Right', 'Currency symbol position', 'stripe-payments' ); ?></option>
 		</select>
 		<p class="description"><?php echo $desc; ?></p>
 		<?php
@@ -987,23 +976,23 @@ class AcceptStripePayments_Admin {
 	$email_tags = array(
 	    "{item_name}"		 => __( 'Name of the purchased item', 'stripe-payments' ),
 	    "{item_quantity}"	 => __( 'Number of items purchsed', 'stripe-payments' ),
-	    "{item_price}"		 => 'Item price. Example: 1000,00',
-	    "{item_price_curr}"	 => 'Item price with currency symbol. Example: $1,000.00',
-	    "{purchase_amt}"	 => 'The amount paid for the current transaction. Example: 1,000.00',
-	    "{purchase_amt_curr}"	 => 'The amount paid for the current transaction with currency symbol. Example: $1,000.00',
-	    "{tax}"			 => 'Tax in percent. Example: 10%',
-	    "{tax_amt}"		 => 'Formatted tax amount for single item. Example: $0.25',
-	    "{shipping_amt}"	 => 'Formatted shipping amount. Example: $2.50',
-	    "{product_details}"	 => 'The item details of the purchased product (this will include the download link for digital items)',
-	    "{transaction_id}"	 => 'The unique transaction ID of the purchase',
+	    "{item_price}"		 => __( 'Item price. Example: 1000,00', 'stripe-payments' ),
+	    "{item_price_curr}"	 => __( 'Item price with currency symbol. Example: $1,000.00', 'stripe-payments' ),
+	    "{purchase_amt}"	 => __( 'The amount paid for the current transaction. Example: 1,000.00', 'stripe-payments' ),
+	    "{purchase_amt_curr}"	 => __( 'The amount paid for the current transaction with currency symbol. Example: $1,000.00', 'stripe-payments' ),
+	    "{tax}"			 => __( 'Tax in percent. Example: 10%', 'stripe-payments' ),
+	    "{tax_amt}"		 => __( 'Formatted tax amount for single item. Example: $0.25', 'stripe-payments' ),
+	    "{shipping_amt}"	 => __( 'Formatted shipping amount. Example: $2.50', 'stripe-payments' ),
+	    "{product_details}"	 => __( 'The item details of the purchased product (this will include the download link for digital items)', 'stripe-payments' ),
+	    "{transaction_id}"	 => __( 'The unique transaction ID of the purchase', 'stripe-payments' ),
 	    "{shipping_address}"	 => __( 'Shipping address of the buyer', 'stripe-payments' ),
-	    "{billing_address}"	 => 'Billing address of the buyer',
-	    '{customer_name}'	 => 'Customer name. Available only if collect billing address option enabled',
-	    "{payer_email}"		 => 'Email Address of the buyer',
-	    "{currency}"		 => 'Currency symbol. Example: $',
-	    "{currency_code}"	 => '3-letter currency code. Example: USD',
-	    "{purchase_date}"	 => 'The date of the purchase',
-	    "{custom_field}"	 => 'Custom field name and value (if enabled)',
+	    "{billing_address}"	 => __( 'Billing address of the buyer', 'stripe-payments' ),
+	    '{customer_name}'	 => __( 'Customer name. Available only if collect billing address option enabled', 'stripe-payments' ),
+	    "{payer_email}"		 => __( 'Email Address of the buyer', 'stripe-payments' ),
+	    "{currency}"		 => __( 'Currency symbol. Example: $', 'stripe-payments' ),
+	    "{currency_code}"	 => __( '3-letter currency code. Example: USD', 'stripe-payments' ),
+	    "{purchase_date}"	 => __( 'The date of the purchase', 'stripe-payments' ),
+	    "{custom_field}"	 => __( 'Custom field name and value (if enabled)', 'stripe-payments' ),
 	);
 
 	$email_tags_descr = '';
