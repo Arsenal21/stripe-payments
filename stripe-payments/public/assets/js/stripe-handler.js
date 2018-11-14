@@ -57,7 +57,17 @@ stripehandler.formatMoney = (function (n, data) {
 });
 
 stripehandler.updateAllAmounts = function (data) {
-    var totValue = data.item_price * data.quantity;
+    var totValue;
+    if (data.variable) {
+	var amt = wp_asp_validate_custom_amount(data, false);
+	if (amt !== false) {
+	    data.item_price = amt;
+	} else {
+	    return false;
+	}
+    } else {
+	totValue = data.item_price * data.quantity;
+    }
     var totalCont = jQuery('form#stripe_form_' + data.uniq_id).parent().siblings('.asp_price_container');
     if (data.discount) {
 	var couponVal = stripehandler.apply_coupon(totValue, data);
@@ -218,6 +228,7 @@ function wp_asp_can_proceed(data, openHandler) {
 	var custom_quantity = wp_asp_validate_custom_quantity(data);
 	if (custom_quantity !== false) {
 	    amount = custom_quantity * amount;
+	    data.quantity = custom_quantity;
 	} else {
 	    return false;
 	}
@@ -270,6 +281,8 @@ function wp_asp_can_proceed(data, openHandler) {
     }
 
     data.canProceed = true;
+
+    data.totalAmount = amount;
 
     data = button_clicked_hooks(data);
 
