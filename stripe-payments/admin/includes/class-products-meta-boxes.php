@@ -509,8 +509,6 @@ class asp_products_metaboxes {
 		//check if price is in min-max range for the currency set by Stripe: https://stripe.com/docs/currencies#minimum-and-maximum-charge-amounts
 		$price		 = sanitize_text_field( $_POST[ 'asp_product_price' ] );
 		$price		 = AcceptStripePayments::tofloat( $price );
-//		var_dump($price);
-//		wp_die();
 		$currency	 = sanitize_text_field( $_POST[ 'asp_product_currency' ] );
 		if ( ! empty( $price ) ) {
 		    $price_cents	 = AcceptStripePayments::is_zero_cents( $currency ) ? round( $price ) : round( $price * 100 );
@@ -540,9 +538,9 @@ class asp_products_metaboxes {
 			// we don't save invalid price
 			return false;
 		    }
-		    //price seems to be valid, let's save it
-		    update_post_meta( $post_id, 'asp_product_price', $price );
 		}
+		//price seems to be valid, let's save it
+		update_post_meta( $post_id, 'asp_product_price', $price );
 		//handle variations
 		$variations_groups = filter_input( INPUT_POST, 'asp-variations-group-names', FILTER_UNSAFE_RAW, FILTER_REQUIRE_ARRAY );
 		if ( ! empty( $variations_groups ) && is_array( $variations_groups ) ) {
