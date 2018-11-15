@@ -2,7 +2,10 @@
 
 class asp_products_metaboxes {
 
+    var $ASPMain;
+
     public function __construct() {
+	$this->ASPMain = AcceptStripePayments::get_instance();
 	remove_post_type_support( ASPMain::$products_slug, 'editor' );
 	add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
 	//products post save action
@@ -411,14 +414,13 @@ class asp_products_metaboxes {
 	$current_val = get_post_meta( $post->ID, 'asp_product_custom_field', true );
 
 	$show_custom_field_settings	 = '';
-	$asp_settings			 = AcceptStripePayments::get_instance();
-	$field_name			 = $asp_settings->get_setting( 'custom_field_name' );
+	$field_name			 = $this->ASPMain->get_setting( 'custom_field_enabled' );
 	if ( ! empty( $field_name ) ) {//Custom field configured so show product specific settings
 	    $show_custom_field_settings = '1';
 	}
 	$show_custom_field_settings = apply_filters( 'asp_show_product_custom_field_settings', $show_custom_field_settings ); //Filter to allow addon to override this
 	if ( empty( $show_custom_field_settings ) ) {
-	    //Custom field isn't configured. Don't show the seettings
+	    //Custom field isn't configured. Don't show the settings
 	    _e( 'Custom field is disabled. Configure custom field in the settings menu of this plugin to enable it.', 'stripe-payments' );
 	    return;
 	}
@@ -513,10 +515,9 @@ class asp_products_metaboxes {
 		if ( ! empty( $price ) ) {
 		    $price_cents	 = AcceptStripePayments::is_zero_cents( $currency ) ? round( $price ) : round( $price * 100 );
 		    //check if we have currency set
-		    $class_asp	 = AcceptStripePayments::get_instance();
 		    if ( empty( $currency ) ) {
 			//we have not. This means default currency should be used
-			$currency = $class_asp->get_setting( 'currency_code' );
+			$currency = $this->ASPMain->get_setting( 'currency_code' );
 		    }
 		    $currency = strtoupper( $currency );
 		    //let's see if currency has specific minimum set

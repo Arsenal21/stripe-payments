@@ -154,6 +154,7 @@ None.
 - Added spinner for settings page to indicate it's being loaded.
 - Fixed product price could not be set to zero or empty value (for donation purposes).
 - Added support for upcoming Additional Custom Fields addon.
+- If custom field name is not set, it would be called "Custom Field".
 - Minor bigfixes and imporvements.
 
 = 1.9.11 =

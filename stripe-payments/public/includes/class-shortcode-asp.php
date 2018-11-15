@@ -151,6 +151,7 @@ class AcceptStripePaymentsShortcode {
 	    }
 	    $field_type	 = $this->AcceptStripePayments->get_setting( 'custom_field_type' );
 	    $field_name	 = $this->AcceptStripePayments->get_setting( 'custom_field_name' );
+	    $field_name	 = empty( $field_name ) ? __( 'Custom Field', 'stripe-payments' ) : $field_name;
 	    $field_descr	 = $this->AcceptStripePayments->get_setting( 'custom_field_descr' );
 	    $descr_loc	 = $this->AcceptStripePayments->get_setting( 'custom_field_descr_location' );
 	    $mandatory	 = $this->AcceptStripePayments->get_setting( 'custom_field_mandatory' );
