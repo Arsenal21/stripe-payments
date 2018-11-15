@@ -122,6 +122,16 @@ class ASPOrder {
 	$output	 .= sprintf( __( "E-Mail Address: %s", "stripe-payments" ), $order_details[ 'stripeEmail' ] ) . "\n";
 	$output	 .= sprintf( __( "Payment Source: %s", "stripe-payments" ), $order_details[ 'stripeTokenType' ] ) . "\n";
 
+	//Custom Fields (if set)
+	if ( isset( $order_details[ 'custom_fields' ] ) ) {
+	    $custom_fields = '';
+	    foreach ( $order_details[ 'custom_fields' ] as $cf ) {
+		$custom_fields .= $cf[ 'name' ] . ': ' . $cf[ 'value' ] . "\r\n";
+	    }
+	    $custom_fields	 = rtrim( $custom_fields, "\r\n" );
+	    $output		 .= $custom_fields;
+	}
+
 	//Check if we have TOS enabled and need to store customer's IP and timestamp
 	$tos_enabled	 = $this->AcceptStripePayments->get_setting( 'tos_enabled' );
 	$tos_store	 = $this->AcceptStripePayments->get_setting( 'tos_store_ip' );
@@ -141,11 +151,6 @@ class ASPOrder {
 	if ( strlen( $order_details[ 'shipping_address' ] ) > 5 ) {
 	    $output	 .= "<h2>" . __( "Shipping Address", "stripe-payments" ) . "</h2>\n";
 	    $output	 .= $order_details[ 'shipping_address' ];
-	}
-
-	//Custom Field (if set)
-	if ( isset( $order_details[ 'custom_field_value' ] ) ) {
-	    $output .= $order_details[ 'custom_field_name' ] . ': ' . $order_details[ 'custom_field_value' ];
 	}
 
 	$post[ 'post_content' ]	 = $output;
