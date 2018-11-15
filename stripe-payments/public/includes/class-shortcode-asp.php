@@ -251,12 +251,17 @@ class AcceptStripePaymentsShortcode {
 
 	$class = isset( $atts[ 'class' ] ) ? $atts[ 'class' ] : $class;
 
-	$custom_field = get_post_meta( $id, 'asp_product_custom_field', true );
+	$custom_field	 = get_post_meta( $id, 'asp_product_custom_field', true );
+	$cf_enabled	 = $this->AcceptStripePayments->get_setting( 'custom_field_enabled' );
 
 	if ( ( $custom_field === "" ) || $custom_field === "2" ) {
-	    $custom_field = $this->AcceptStripePayments->get_setting( 'custom_field_enabled' );
+	    $custom_field = $cf_enabled;
 	} else {
 	    $custom_field = intval( $custom_field );
+	}
+
+	if ( ! $cf_enabled ) {
+	    $custom_field = $cf_enabled;
 	}
 
 	$coupons_enabled = get_post_meta( $id, 'asp_product_coupons_setting', true );
