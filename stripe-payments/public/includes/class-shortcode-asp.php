@@ -1030,9 +1030,10 @@ class AcceptStripePaymentsShortcode {
 	if ( isset( $data[ 'custom_fields' ] ) && ! empty( $data[ 'custom_fields' ] ) ) {
 	    $data[ 'custom_field' ] = '';
 	    foreach ( $data[ 'custom_fields' ] as $field ) {
-		$data[ 'custom_field' ] .= $field[ 'name' ] . ': ' . $field[ 'value' ] . '<br>';
+		$data[ 'custom_field' ] .= $field[ 'name' ] . ': ' . $field[ 'value' ] . "\r\n";
 	    }
-	    $data[ 'custom_field' ]		 = rtrim( $data[ 'custom_field' ], '<br>' );
+	    $data[ 'custom_field' ]		 = rtrim( $data[ 'custom_field' ], "\r\n" );
+	    $data[ 'custom_field' ]		 = nl2br( $data[ 'custom_field' ] );
 	    $data[ 'custom_field_name' ]	 = $data[ 'custom_fields' ][ 0 ][ 'name' ];
 	    $data[ 'custom_field_value' ]	 = $data[ 'custom_fields' ][ 0 ][ 'value' ];
 	} else {
