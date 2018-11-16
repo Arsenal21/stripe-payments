@@ -464,6 +464,12 @@ class asp_products_metaboxes {
 	    return;
 	}
 	if ( isset( $post_id ) ) {
+	    $title = get_the_title( $post_id );
+	    if ( empty( $title ) ) {
+		//Display error message of product name is empty
+		$text = __( 'Please specify product name.', 'stripe-payments' );
+		AcceptStripePayments_Admin::add_admin_notice( 'error', $text, false );
+	    }
 	    update_post_meta( $post_id, 'asp_product_currency', sanitize_text_field( $_POST[ 'asp_product_currency' ] ) );
 	    $shipping	 = filter_input( INPUT_POST, 'asp_product_shipping', FILTER_SANITIZE_STRING );
 	    $shipping	 = ! empty( $shipping ) ? AcceptStripePayments::tofloat( $shipping ) : $shipping;
@@ -513,7 +519,7 @@ class asp_products_metaboxes {
 		$price		 = AcceptStripePayments::tofloat( $price );
 		$currency	 = sanitize_text_field( $_POST[ 'asp_product_currency' ] );
 		if ( ! empty( $price ) ) {
-		    $price_cents	 = AcceptStripePayments::is_zero_cents( $currency ) ? round( $price ) : round( $price * 100 );
+		    $price_cents = AcceptStripePayments::is_zero_cents( $currency ) ? round( $price ) : round( $price * 100 );
 		    //check if we have currency set
 		    if ( empty( $currency ) ) {
 			//we have not. This means default currency should be used
