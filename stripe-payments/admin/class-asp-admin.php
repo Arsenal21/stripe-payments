@@ -562,8 +562,8 @@ class AcceptStripePayments_Admin {
 		break;
 	    case 'buyer_email_type':
 	    case 'seller_email_type':
-		$checkedText		 = empty( $field_value ) || ($field_value === 'text') ? ' selected' : '';
-		$checkedHTML		 = $field_value === 'html' ? ' selected' : '';
+		$checkedText	 = empty( $field_value ) || ($field_value === 'text') ? ' selected' : '';
+		$checkedHTML	 = $field_value === 'html' ? ' selected' : '';
 		echo '<select name="AcceptStripePayments-settings[' . $field . ']">';
 		echo sprintf( '<option value="text"%s>' . __( 'Plain Text', 'stripe-payments' ) . '</option>', $checkedText );
 		echo sprintf( '<option value="html"%s>' . __( 'HTML', 'stripe-payments' ) . '</option>', $checkedHTML );
@@ -572,7 +572,9 @@ class AcceptStripePayments_Admin {
 		break;
 	    case 'buyer_email_body':
 	    case 'seller_email_body':
-		wp_editor( html_entity_decode( $field_value ), $field, array( 'textarea_name' => 'AcceptStripePayments-settings[' . $field . ']' ) );
+		add_filter( 'wp_default_editor', array( $this, 'set_default_editor' ) );
+		wp_editor( html_entity_decode( $field_value ), $field, array( 'textarea_name' => 'AcceptStripePayments-settings[' . $field . ']', 'teeny' => true ) );
+		remove_filter( 'wp_default_editor', array( $this, 'set_default_editor' ) );
 		echo "<p class=\"description\">{$desc}</p>";
 		break;
 	    case 'products_page_id':
@@ -632,6 +634,11 @@ class AcceptStripePayments_Admin {
 		echo "<input type='text' name='AcceptStripePayments-settings[{$field}]' value='{$field_value}' size='{$size}' /> <p class=\"description\">{$desc}</p>";
 		break;
 	}
+    }
+
+    public function set_default_editor( $r ) {
+	$r = 'html';
+	return $r;
     }
 
     /**
