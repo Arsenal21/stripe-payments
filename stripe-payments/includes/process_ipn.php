@@ -314,6 +314,9 @@ if ( isset( $_POST[ 'stripeCustomField' ] ) ) {
 }
 $data[ 'custom_fields' ] = apply_filters( 'asp_process_custom_fields', $data[ 'custom_fields' ] );
 
+//Filter so addons can modify applied variations if needed
+$variations = apply_filters( 'asp_filter_variations_display', $variations, $data );
+
 ob_start();
 
 //let addons process payment if needed
