@@ -4,7 +4,7 @@ Donate link: https://s-plugins.com
 Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortcode, digital goods, payment gateway, instant payment, commerce, digital downloads, downloads, e-commerce, e-store, ecommerce, eshop, donation
 Requires at least: 4.7
 Tested up to: 4.9
-Stable tag: 1.9.12t4
+Stable tag: 1.9.12
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -150,11 +150,13 @@ None.
 
 == Changelog ==
 
-= 1.9.12t4 =
-- Added spinner for settings page to indicate it's being loaded.
+= 1.9.12 =
 - Fixed product price could not be set to zero or empty value (for donation purposes).
+- Added option to send buyer and seller emails in HTML format.
+- Added spinner for settings page to indicate it's being loaded.
 - Added support for upcoming Additional Custom Fields addon.
 - If custom field enabled but its name is not set, it would be called "Custom Field".
+- Made more strings available for translation.
 - Minor bigfixes and imporvements.
 
 = 1.9.11 =
