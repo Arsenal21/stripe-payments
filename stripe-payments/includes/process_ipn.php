@@ -469,10 +469,12 @@ if ( isset( $shipping ) && ! empty( $shipping ) ) {
 }
 
 //Insert the order data to the custom post
-$order		 = ASPOrder::get_instance();
-$order_post_id	 = $order->insert( $post_data, $data[ 'charge' ] );
-
-$post_data[ 'order_post_id' ] = $order_post_id;
+$dont_create_order = $asp_class->get_setting( 'dont_create_orders' );
+if ( ! $dont_create_order ) {
+    $order				 = ASPOrder::get_instance();
+    $order_post_id			 = $order->insert( $post_data, $data[ 'charge' ] );
+    $post_data[ 'order_post_id' ]	 = $order_post_id;
+}
 
 // handle download item url
 $item_url		 = apply_filters( 'asp_item_url_process', $item_url, $post_data );

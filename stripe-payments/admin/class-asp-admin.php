@@ -427,6 +427,9 @@ class AcceptStripePayments_Admin {
 	add_settings_field( 'disable_buttons_before_js_loads', __( 'Disable Buttons Before Javascript Loads', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-additional-settings', array( 'field'	 => 'disable_buttons_before_js_loads',
 	    'desc'	 => __( "If enabled, payment buttons are not clickable until Javascript libraries are loaded on page view. This prevents \"Invalid Stripe Token\" errors on some configurations.", 'stripe-payments' ) )
 	);
+	add_settings_field( 'dont_create_order', __( 'Don\'t Create Order', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-additional-settings', array( 'field'	 => 'dont_create_order',
+	    'desc'	 => __( 'If enabled, no purchase info is saved to Orders, but still available in your Stripe dashboard. Userful if you don\'t want to store purchase and customer data in your database.', 'stripe-payments' ) )
+	);
     }
 
     function tos_description() {
@@ -553,6 +556,7 @@ class AcceptStripePayments_Admin {
 	    case 'dont_save_card':
 	    case 'custom_field_mandatory':
 	    case 'enable_zip_validation':
+	    case 'dont_create_order':
 		echo "<input type='checkbox' name='AcceptStripePayments-settings[{$field}]' value='1' " . ($field_value ? 'checked=checked' : '') . " /><p class=\"description\">{$desc}</p>";
 		break;
 	    case 'custom_field_enabled':
@@ -562,8 +566,8 @@ class AcceptStripePayments_Admin {
 		break;
 	    case 'buyer_email_type':
 	    case 'seller_email_type':
-		$checkedText	 = empty( $field_value ) || ($field_value === 'text') ? ' selected' : '';
-		$checkedHTML	 = $field_value === 'html' ? ' selected' : '';
+		$checkedText		 = empty( $field_value ) || ($field_value === 'text') ? ' selected' : '';
+		$checkedHTML		 = $field_value === 'html' ? ' selected' : '';
 		echo '<select name="AcceptStripePayments-settings[' . $field . ']">';
 		echo sprintf( '<option value="text"%s>' . __( 'Plain Text', 'stripe-payments' ) . '</option>', $checkedText );
 		echo sprintf( '<option value="html"%s>' . __( 'HTML', 'stripe-payments' ) . '</option>', $checkedHTML );
@@ -699,6 +703,8 @@ class AcceptStripePayments_Admin {
 	$output[ 'send_email_on_error_to' ] = sanitize_text_field( $input[ 'send_email_on_error_to' ] );
 
 	$output[ 'disable_buttons_before_js_loads' ] = empty( $input[ 'disable_buttons_before_js_loads' ] ) ? 0 : 1;
+
+	$output[ 'dont_create_order' ] = empty( $input[ 'dont_create_order' ] ) ? 0 : 1;
 
 	$output[ 'enable_zip_validation' ] = empty( $input[ 'enable_zip_validation' ] ) ? 0 : 1;
 
