@@ -469,7 +469,7 @@ if ( isset( $shipping ) && ! empty( $shipping ) ) {
 }
 
 //Insert the order data to the custom post
-$dont_create_order = $asp_class->get_setting( 'dont_create_orders' );
+$dont_create_order = $asp_class->get_setting( 'dont_create_order' );
 if ( ! $dont_create_order ) {
     $order				 = ASPOrder::get_instance();
     $order_post_id			 = $order->insert( $post_data, $data[ 'charge' ] );
