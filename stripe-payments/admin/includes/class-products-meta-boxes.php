@@ -430,6 +430,7 @@ class asp_products_metaboxes {
 	<label><input type="radio" name="asp_product_custom_field" value="1"<?php echo ($current_val === "1") ? ' checked' : ''; ?>><?php echo __( 'Enabled', 'stripe-payments' ); ?> </label>
 	<label><input type="radio" name="asp_product_custom_field" value="0"<?php echo ($current_val === "0") ? ' checked' : ''; ?>><?php echo __( 'Disabled', 'stripe-payments' ); ?> </label>
 	<?php
+	do_action( 'asp_product_custom_field_metabox_after', $post->ID );
     }
 
     function display_coupons_meta_box( $post ) {

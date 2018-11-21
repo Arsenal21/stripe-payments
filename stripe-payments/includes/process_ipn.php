@@ -312,7 +312,7 @@ $data[ 'custom_fields' ] = array();
 if ( isset( $_POST[ 'stripeCustomField' ] ) ) {
     $data[ 'custom_fields' ][] = array( 'name' => $_POST[ 'stripeCustomFieldName' ], 'value' => $_POST[ 'stripeCustomField' ] );
 }
-$data[ 'custom_fields' ] = apply_filters( 'asp_process_custom_fields', $data[ 'custom_fields' ] );
+$data[ 'custom_fields' ] = apply_filters( 'asp_process_custom_fields', $data[ 'custom_fields' ], $data );
 
 //Filter so addons can modify applied variations if needed
 $variations = apply_filters( 'asp_filter_variations_display', $variations, $data );
