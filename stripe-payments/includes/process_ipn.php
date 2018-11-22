@@ -372,6 +372,24 @@ if ( empty( $data[ 'charge' ] ) ) {
 	    $charge_opts[ 'metadata' ]	 = $metadata;
 	}
 
+	//Shipping address data (if any)
+	$shipping_address		 = "";
+	$shipping_address		 .= isset( $_POST[ 'stripeShippingName' ] ) ? $_POST[ 'stripeShippingName' ] . "\n" : '';
+	$shipping_address		 .= isset( $_POST[ 'stripeShippingAddressLine1' ] ) ? $_POST[ 'stripeShippingAddressLine1' ] . "\n" : '';
+	$shipping_address		 .= isset( $_POST[ 'stripeShippingAddressApt' ] ) ? $_POST[ 'stripeShippingAddressApt' ] . "\n" : '';
+	$shipping_address		 .= isset( $_POST[ 'stripeShippingAddressZip' ] ) ? $_POST[ 'stripeShippingAddressZip' ] . "\n" : '';
+	$shipping_address		 .= isset( $_POST[ 'stripeShippingAddressCity' ] ) ? $_POST[ 'stripeShippingAddressCity' ] . "\n" : '';
+	$shipping_address		 .= isset( $_POST[ 'stripeShippingAddressState' ] ) ? $_POST[ 'stripeShippingAddressState' ] . "\n" : '';
+	$shipping_address		 .= isset( $_POST[ 'stripeShippingAddressCountry' ] ) ? $_POST[ 'stripeShippingAddressCountry' ] . "\n" : '';
+	$data[ 'shipping_address' ]	 = $shipping_address;
+
+	if ( ! empty( $shipping_address ) ) {
+	    //add shipping address to metadata
+	    $shipping_address				 = str_replace( "\n", ", ", $shipping_address );
+	    $shipping_address				 = rtrim( $shipping_address, ', ' );
+	    $charge_opts[ 'metadata' ][ 'Shipping Address' ] = $shipping_address;
+	}
+
 	$data[ 'charge' ] = \Stripe\Charge::create( $charge_opts );
     } catch ( Exception $e ) {
 	//If the charge fails (payment unsuccessful), this code will get triggered.
@@ -415,17 +433,6 @@ if ( empty( $billing_address ) && (isset( $data[ 'product_id' ] ) && get_post_me
 }
 
 $post_data[ 'billing_address' ] = $billing_address;
-
-//Shipping address data (if any)
-$shipping_address		 = "";
-$shipping_address		 .= isset( $_POST[ 'stripeShippingName' ] ) ? $_POST[ 'stripeShippingName' ] . "\n" : '';
-$shipping_address		 .= isset( $_POST[ 'stripeShippingAddressLine1' ] ) ? $_POST[ 'stripeShippingAddressLine1' ] . "\n" : '';
-$shipping_address		 .= isset( $_POST[ 'stripeShippingAddressApt' ] ) ? $_POST[ 'stripeShippingAddressApt' ] . "\n" : '';
-$shipping_address		 .= isset( $_POST[ 'stripeShippingAddressZip' ] ) ? $_POST[ 'stripeShippingAddressZip' ] . "\n" : '';
-$shipping_address		 .= isset( $_POST[ 'stripeShippingAddressCity' ] ) ? $_POST[ 'stripeShippingAddressCity' ] . "\n" : '';
-$shipping_address		 .= isset( $_POST[ 'stripeShippingAddressState' ] ) ? $_POST[ 'stripeShippingAddressState' ] . "\n" : '';
-$shipping_address		 .= isset( $_POST[ 'stripeShippingAddressCountry' ] ) ? $_POST[ 'stripeShippingAddressCountry' ] . "\n" : '';
-$post_data[ 'shipping_address' ] = $shipping_address;
 
 //get customer name
 $name = isset( $_POST[ 'stripeBillingName' ] ) ? sanitize_text_field( $_POST[ 'stripeBillingName' ] ) : '';

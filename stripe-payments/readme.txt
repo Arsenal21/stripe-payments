@@ -152,6 +152,7 @@ None.
 
 = WIP 1.9.13 =
 - Added option to disable Order creation after purchase. Useful if you don't want to save purchase info on your website.
+- Customer shipping address is added to payment metadata if available. You can see it in your Stripe Dashboard.
 
 = 1.9.12 =
 - Fixed product price could not be set to zero or empty value (for donation purposes).
