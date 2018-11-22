@@ -151,6 +151,7 @@ None.
 == Changelog ==
 
 = WIP 1.9.13 =
+- Payment buttons are now replaced by a spinner during payment processing for better user experience.
 - Added option to disable Order creation after purchase. Useful if you don't want to save purchase info on your website.
 - Customer shipping address is added to payment metadata if available. You can see it in your Stripe Dashboard.
 

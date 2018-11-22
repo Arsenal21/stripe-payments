@@ -4,10 +4,7 @@ This file is inserted as Inline-CSS at the moment.
 Used in the [asp_product] shortcode also.
 CSS class names should use dashes. Example: asp-product-description
 */
-@keyframes asp-spinner {
-    to {transform: rotate(360deg);}
-}
-
+/* Small Spinner */
 .asp-spinner {
     text-indent: -9999px;
     vertical-align: middle;
@@ -21,6 +18,52 @@ CSS class names should use dashes. Example: asp-product-description
     border: 2px solid #ccc;
     border-top-color: #333;
     animation: asp-spinner .6s linear infinite;
+}
+@keyframes asp-spinner {
+    to {transform: rotate(360deg);}
+}
+
+/* Button Spinner */
+
+.asp-btn-spinner-container {
+    width: 100%;
+    text-align:center;
+    padding: 10px;
+}
+.asp-btn-spinner {
+    display: inline-block;
+    position: relative;
+    width: 64px;
+    height: 64px;
+}
+.asp-btn-spinner div {
+    box-sizing: border-box;
+    display: block;
+    position: absolute;
+    width: 51px;
+    height: 51px;
+    margin: 6px;
+    border: 6px solid #6fcef3;
+    border-radius: 50%;
+    animation: asp-btn-spinner 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+    border-color: #6fcef3 transparent transparent transparent;
+}
+.asp-btn-spinner div:nth-child(1) {
+    animation-delay: -0.45s;
+}
+.asp-btn-spinner div:nth-child(2) {
+    animation-delay: -0.3s;
+}
+.asp-btn-spinner div:nth-child(3) {
+    animation-delay: -0.15s;
+}
+@keyframes asp-btn-spinner {
+    0% {
+	transform: rotate(0deg);
+    }
+    100% {
+	transform: rotate(360deg);
+    }
 }
 
 .asp_line_through {

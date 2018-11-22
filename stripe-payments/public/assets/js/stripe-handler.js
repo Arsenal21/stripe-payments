@@ -322,7 +322,9 @@ function wp_asp_hadnle_token(data, token, args) {
 	inputName = 'stripe' + inputName.replace(/[_]/g, '');
 	form.append('<input type="hidden" name="' + inputName + '" value="' + args[key] + '">')
     }
-    jQuery('#stripe_button_' + data.uniq_id).html(jQuery('.asp-processing-cont').html());
+    //jQuery('#stripe_button_' + data.uniq_id).html(jQuery('.asp-processing-cont').html());
+    jQuery('div#asp-all-buttons-container-' + data.uniq_id).hide();
+    jQuery('div#asp-btn-spinner-container-' + data.uniq_id).show();
     jQuery('#stripe_button_' + data.uniq_id).prop('disabled', true);
 
     if (data.addonHooks.length !== 0) {

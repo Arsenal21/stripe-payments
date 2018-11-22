@@ -653,13 +653,23 @@ class AcceptStripePaymentsShortcode {
 	if ( ! $out_of_stock ) {
 	    $output = apply_filters( 'asp_button_output_before_button', $output, $data, $class );
 	}
-	$output .= $button;
+	$output	 .= '<div id="asp-all-buttons-container-' . $uniq_id . '" class="asp_all_buttons_container">';
+	$output	 .= $button;
 	//after button filter
 	if ( ! $out_of_stock ) {
 	    $output	 = apply_filters( 'asp-button-output-after-button', $output, $data, $class );
 	    $output	 = apply_filters( 'asp_button_output_after_button', $output, $data, $class );
 	}
-	$output .= $this->get_scripts( $data );
+	$output	 .= '</div>';
+	$output	 .= '<div id="asp-btn-spinner-container-' . $uniq_id . '" class="asp-btn-spinner-container" style="display: none !important">'
+	. '<div class="asp-btn-spinner">'
+	. '<div></div>'
+	. '<div></div>'
+	. '<div></div>'
+	. '<div></div>'
+	. '</div>'
+	. '</div>';
+	$output	 .= $this->get_scripts( $data );
 
 	return $output;
     }
@@ -687,7 +697,6 @@ class AcceptStripePaymentsShortcode {
 	if ( $this->CompatMode ) {
 	    ob_start();
 	    ?>
-
 	    <script type='text/javascript'>
 	        var stripehandler = <?php echo json_encode( $this->get_loc_data() ); ?>;
 	    </script>
