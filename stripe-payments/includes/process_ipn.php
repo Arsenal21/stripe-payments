@@ -364,12 +364,11 @@ if ( empty( $data[ 'charge' ] ) ) {
 	    $charge_opts[ 'customer' ] = $customer->id;
 	}
 
+	$charge_opts[ 'metadata' ] = array();
+
 	//Check if we need to include custom field in metadata
 	if ( ! empty( $data[ 'custom_fields' ] ) ) {
-	    $metadata			 = array(
-		'custom_fields' => json_encode( $data[ 'custom_fields' ] ),
-	    );
-	    $charge_opts[ 'metadata' ]	 = $metadata;
+	    $charge_opts[ 'metadata' ][ 'Custom Fields' ] = json_encode( $data[ 'custom_fields' ] );
 	}
 
 	//Shipping address data (if any)
