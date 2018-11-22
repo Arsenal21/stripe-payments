@@ -368,7 +368,12 @@ if ( empty( $data[ 'charge' ] ) ) {
 
 	//Check if we need to include custom field in metadata
 	if ( ! empty( $data[ 'custom_fields' ] ) ) {
-	    $charge_opts[ 'metadata' ][ 'Custom Fields' ] = json_encode( $data[ 'custom_fields' ] );
+	    $cfStr = '';
+	    foreach ( $data[ 'custom_fields' ] as $cf ) {
+		$cfStr .= $cf[ 'name' ] . ': ' . $cf[ 'value' ] . ' | ';
+	    }
+	    $cfStr						 = rtrim( $cfStr, ' | ' );
+	    $charge_opts[ 'metadata' ][ 'Custom Fields' ]	 = $cfStr;
 	}
 
 	//Shipping address data (if any)
