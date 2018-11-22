@@ -149,6 +149,16 @@ wp_enqueue_style( 'asp-admin-styles', WP_ASP_PLUGIN_URL . '/admin/assets/css/adm
 	    );
 	    array_push( $addons_data, $addon_13 );
 
+	    $addon_14 = array(
+		"name"		 => __( "Additional Custom Fields", 'stripe-payments' ),
+		"thumbnail"	 => WP_ASP_PLUGIN_URL . "/admin/assets/images/additional-custom-fields.png",
+		"description"	 => __( "The Additional Custom Fields Addon allows you to collect information from your customers before they proceed to checkout.", 'stripe-payments' ),
+		"page_url"	 => "https://s-plugins.com/stripe-payments-additional-custom-fields-addon/",
+		"settings_url"	 => 'edit.php?post_type=asp-products&page=stripe-payments-settings#acf',
+		"installed"	 => class_exists( 'ASPACF_main' ) ? true : false
+	    );
+	    array_push( $addons_data, $addon_14 );
+
 	    /* Show the addons list */
 	    foreach ( $addons_data as $addon ) {
 		$output .= '<div class="stripe_addon_item_canvas">';
