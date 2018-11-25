@@ -159,6 +159,7 @@ function wp_asp_validate_custom_amount(data, noTaxAndShipping) {
     } else {
 	amount = amount.replace(/\$/g, '');
 	amount = amount.replace(/\,/g, '');
+	amount = amount.replace(/\ /g, '');
     }
     amount = parseFloat(amount);
 
@@ -167,7 +168,7 @@ function wp_asp_validate_custom_amount(data, noTaxAndShipping) {
 	return false;
     }
 
-    var displayAmount = amount.toString();
+    var displayAmount = amount.toFixed(2).toString();
     if (stripehandler.amountOpts.applySepOpts != 0) {
 	displayAmount = displayAmount.replace('.', stripehandler.amountOpts.decimalSep);
     }
