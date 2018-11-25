@@ -4,7 +4,7 @@ Donate link: https://s-plugins.com
 Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortcode, digital goods, payment gateway, instant payment, commerce, digital downloads, downloads, e-commerce, e-store, ecommerce, eshop, donation
 Requires at least: 4.7
 Tested up to: 4.9
-Stable tag: 1.9.13t2
+Stable tag: 1.9.13
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -150,7 +150,7 @@ None.
 
 == Changelog ==
 
-= WIP 1.9.13 =
+= 1.9.13 =
 - Payment buttons are now replaced by a spinner during payment processing for better user experience.
 - Added option to disable Order creation after purchase. Useful if you don't want to save purchase info on your website.
 - Variable amount input is now considers only two digits after decimal separator.
