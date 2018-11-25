@@ -1056,12 +1056,16 @@ class AcceptStripePaymentsShortcode {
 	    $data[ 'custom_field_value' ]	 = null;
 	}
 
-	$data[ 'paid_amount_curr' ] = AcceptStripePayments::formatted_price( $data[ 'paid_amount' ], $data[ 'currency_code' ] );
-
+	if ( isset( $data[ 'paid_amount' ] ) ) {
+	    $data[ 'paid_amount_curr' ] = AcceptStripePayments::formatted_price( $data[ 'paid_amount' ], $data[ 'currency_code' ] );
+	} else {
+	    $data[ 'paid_amount' ]		 = 0;
+	    $data[ 'paid_amount_curr' ]	 = 0;
+	}
 	$data[ 'purchase_amt' ]		 = $data[ 'paid_amount' ];
 	$data[ 'purchase_amt_curr' ]	 = $data[ 'paid_amount_curr' ];
 
-	$curr		 = $data[ 'currency_code' ];
+	$curr		 = isset( $data[ 'currency_code' ] ) ? $data[ 'currency_code' ] : '';
 	$currencies	 = AcceptStripePayments::get_currencies();
 	if ( isset( $currencies[ $curr ] ) ) {
 	    $curr_sym = $currencies[ $curr ][ 1 ];
@@ -1070,7 +1074,11 @@ class AcceptStripePaymentsShortcode {
 	}
 	$data[ 'currency' ] = $curr_sym;
 
-	$data[ 'item_price_curr' ] = AcceptStripePayments::formatted_price( $data[ 'item_price' ], $data[ 'currency_code' ] );
+	if ( isset( $data[ 'item_price' ] ) ) {
+	    $data[ 'item_price_curr' ] = AcceptStripePayments::formatted_price( $data[ 'item_price' ], $data[ 'currency_code' ] );
+	} else {
+	    $data[ 'item_price' ] = 0;
+	}
 
 	if ( isset( $data[ 'tax_perc' ] ) && ! empty( $data[ 'tax_perc' ] ) ) {
 	    $data[ 'tax_perc_fmt' ] = $data[ 'tax_perc' ] . '%';
