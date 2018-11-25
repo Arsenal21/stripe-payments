@@ -108,6 +108,35 @@ class AcceptStripePayments_Admin {
 		ASP_Debug_Logger::view_log();
 	    }
 	}
+	if ( ! wp_doing_ajax() ) {
+	    //check if PHP version meets minimum required
+	    if ( version_compare( PHP_VERSION, WP_ASP_MIN_PHP_VERSION, '<' ) ) {
+		$dismissed_clicked = isset( $_GET[ 'wp_asp_dismiss_php_notice' ] ) ? true : false;
+		if ( $dismissed_clicked ) {
+		    wp_cache_delete( 'wp_asp_php_warning_dismissed', 'options' );
+		    delete_transient( 'asp_admin_msg_arr' );
+		    update_option( 'wp_asp_php_warning_dismissed', true );
+		}
+		//check if warning was dismissed
+		$dismissed = get_option( 'wp_asp_php_warning_dismissed' );
+		if ( ! $dismissed ) {
+		    //it wasn't, so let's display it
+		    add_action( 'admin_notices', array( $this, 'add_php_version_notice' ) );
+		}
+	    }
+	}
+    }
+
+    public function add_php_version_notice() {
+	$msg	 = '';
+	$msg	 .= '<h3>' . __( 'Warning: Stripe Payments plugin', 'stripe-payments' ) . '</h3>';
+	$msg	 .= "<p>" . __( "PHP version installed on your server doesn't meet minimum required for upcoming Stripe Payments plugin versions.", 'stripe-payments' ) . "</p>";
+	$msg	 .= '<p>' . __( 'You need to communicate this information to your system administrator or hosting provider.', 'stripe-payments' ) . '</p>';
+	$msg	 .= '<p><strong>' . __( 'PHP Version Installed:', 'stripe-payments' ) . '</strong> %s</p>';
+	$msg	 .= '<p><strong>' . __( 'PHP Version Required:', 'stripe-payments' ) . '</strong> %s ' . _x( 'or higher.', 'Used in "PHP Version Required: X.X or higher"', 'stripe-payments' ) . '</p>';
+	$msg	 .= '<a href="%s">' . __( 'Dismiss this warning for now', 'stripe-payments' ) . '</a>';
+	$msg	 = sprintf( $msg, PHP_VERSION, WP_ASP_MIN_PHP_VERSION, admin_url( '?wp_asp_dismiss_php_notice=1' ) );
+	self::add_admin_notice( 'warning', $msg, false );
     }
 
     public function check_current_screen() {

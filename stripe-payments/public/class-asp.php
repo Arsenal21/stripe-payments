@@ -320,6 +320,8 @@ class AcceptStripePayments {
 	    $opt = $default;
 	}
 	$opt = array_merge( $default, $opt );
+	//force remove PHP warning dismissal
+	delete_option( 'wp_asp_php_warning_dismissed' );
 	update_option( 'AcceptStripePayments-settings', $opt );
 	if ( empty( $opt ) ) {
 //	    add_option( 'AcceptStripePayments-settings', $default );
