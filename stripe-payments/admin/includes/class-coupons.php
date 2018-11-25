@@ -258,7 +258,7 @@ class AcceptStripePayments_CouponsAdmin {
 			</div>
 		    </div>
 		</div></div>
-	    <h2><?php _e( 'Coupons', 'stripe-payments' ); ?> <a class="page-title-action" href="?post_type=asp-products&page=stripe-payments-coupons&action=asp_add_edit_coupon">Add a Coupon</a></h2>
+	    <h2><?php _e( 'Coupons', 'stripe-payments' ); ?> <a class="page-title-action" href="?post_type=asp-products&page=stripe-payments-coupons&action=asp_add_edit_coupon"><?php _e( 'Add a Coupon', 'stripe-payments' ); ?></a></h2>
 	    <?php $coupons_tbl->display(); ?>
 	</div>
 	<?php
@@ -388,7 +388,7 @@ class AcceptStripePayments_CouponsAdmin {
 			    <label><input type="radio" name="asp_coupon[only_for_allowed_products]" value="0"<?php echo ! $is_edit || ($is_edit && ! $coupon[ 'only_for_allowed_products' ]) ? ' checked' : '' ?>> <?php _e( 'All products', 'stripe-payments' ); ?></label>
 			    <br>
 			    <label><input type="radio" name="asp_coupon[only_for_allowed_products]" value="1"<?php echo $is_edit && $coupon[ 'only_for_allowed_products' ] ? ' checked' : '' ?>> <?php _e( 'Specific Products Only', 'stripe-payments' ); ?></label>
-			    <p class="asp-coupons-available-products"<?php echo ($is_edit && ! $coupon[ 'only_for_allowed_products' ]) || (!$is_edit) ? ' style="display: none;"' : ''; ?>>
+			    <p class="asp-coupons-available-products"<?php echo ($is_edit && ! $coupon[ 'only_for_allowed_products' ]) || ( ! $is_edit) ? ' style="display: none;"' : ''; ?>>
 				<?php echo $prod_inputs; ?>
 			    </p>
 			    <p class="description"><?php _e( 'Choose availability of the coupon. You can specify which products coupon is available when "Specific Products Only" is selected.', 'stripe-payments' ); ?></p>
