@@ -156,6 +156,7 @@ None.
 - Variable amount input is now considers only two digits after decimal separator.
 - Customer shipping address is added to payment metadata if available. You can see it in your Stripe Dashboard.
 - Added dismissible notice if PHP version is older than 5.4.
+- Fixed a couple of issues with variations.
 
 = 1.9.12 =
 - Fixed product price could not be set to zero or empty value (for donation purposes).

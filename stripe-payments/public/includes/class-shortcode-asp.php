@@ -751,6 +751,7 @@ class AcceptStripePaymentsShortcode {
 	    $output = $this->tpl_get_cf( $output, $data );
 
 	    //Variations
+	    $this->variations = array();
 	    if ( isset( $data[ 'product_id' ] ) ) {
 		$variations_groups = get_post_meta( $data[ 'product_id' ], 'asp_variations_groups', true );
 		if ( ! empty( $variations_groups ) ) {
