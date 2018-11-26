@@ -69,6 +69,7 @@ class AcceptStripePayments_Admin {
 		break;
 	    case 'post.php':
 	    case 'edit.php':
+	    case 'post-new.php':
 		global $post_type;
 		if ( $post_type === ASPMain::$products_slug ) {
 		    wp_register_script( 'asp-admin-edit-product-js', WP_ASP_PLUGIN_URL . '/admin/assets/js/edit-product.js', array( 'jquery' ), WP_ASP_PLUGIN_VERSION, true );
