@@ -523,9 +523,9 @@ msgstr ""
 
 #: admin/class-asp-admin.php:460
 msgid ""
-"If enabled, no purchase info is saved to Orders, but still available in your "
-"Stripe dashboard. Userful if you don't want to store purchase and customer "
-"data in your database."
+"If enabled, no transaction info is saved to the orders menu of the plugin. "
+"The transaction data will still be available in your Stripe dashboard. "
+"Useful if you don't want to store purchase and customer data in your site."
 msgstr ""
 
 #: admin/class-asp-admin.php:465

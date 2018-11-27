@@ -457,8 +457,8 @@ class AcceptStripePayments_Admin {
 	add_settings_field( 'disable_buttons_before_js_loads', __( 'Disable Buttons Before Javascript Loads', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-additional-settings', array( 'field'	 => 'disable_buttons_before_js_loads',
 	    'desc'	 => __( "If enabled, payment buttons are not clickable until Javascript libraries are loaded on page view. This prevents \"Invalid Stripe Token\" errors on some configurations.", 'stripe-payments' ) )
 	);
-	add_settings_field( 'dont_create_order', __( 'Don\'t Create Order', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-additional-settings', array( 'field'	 => 'dont_create_order',
-	    'desc'	 => __( 'If enabled, no purchase info is saved to Orders, but still available in your Stripe dashboard. Userful if you don\'t want to store purchase and customer data in your database.', 'stripe-payments' ) )
+	add_settings_field( 'dont_create_order', __( 'Don\'t Create Order', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-additional-settings', array( 'field' => 'dont_create_order',
+	    'desc'	 => __( 'If enabled, no transaction info is saved to the orders menu of the plugin. The transaction data will still be available in your Stripe dashboard. Useful if you don\'t want to store purchase and customer data in your site.', 'stripe-payments' ) )
 	);
     }
 
