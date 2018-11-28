@@ -307,6 +307,11 @@ $data[ 'charge_description' ]	 = $charge_description;
 $data[ 'addonName' ]		 = isset( $_POST[ 'stripeAddonName' ] ) ? sanitize_text_field( $_POST[ 'stripeAddonName' ] ) : '';
 $data[ 'button_key' ]		 = isset( $button_key ) ? $button_key : '';
 
+//Coupon
+if ( isset( $coupon ) ) {
+    $data[ 'coupon' ] = $coupon;
+}
+
 //Custom Field
 $data[ 'custom_fields' ] = array();
 if ( isset( $_POST[ 'stripeCustomField' ] ) ) {

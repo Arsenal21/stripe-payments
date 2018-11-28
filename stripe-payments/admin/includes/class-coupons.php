@@ -394,6 +394,9 @@ class AcceptStripePayments_CouponsAdmin {
 			    <p class="description"><?php _e( 'Choose availability of the coupon. You can specify which products coupon is available when "Specific Products Only" is selected.', 'stripe-payments' ); ?></p>
 			</td>
 		    </tr>
+		    <?php
+		    do_action( 'asp_admin_add_edit_coupon', $coupon_id );
+		    ?>
 		</table>
 		<?php
 		wp_nonce_field( 'asp-add-edit-coupon' );
@@ -487,6 +490,7 @@ class AcceptStripePayments_CouponsAdmin {
 	foreach ( $coupon as $key => $value ) {
 	    update_post_meta( $coupon_id, 'asp_coupon_' . $key, $value );
 	}
+	do_action( 'asp_admin_save_coupon', $coupon_id, $coupon );
 	set_transient( 'asp_coupons_admin_notice', sprintf( $is_edit ? __( 'Coupon "%s" has been updated.', 'stripe-payments' ) : __( 'Coupon "%s" has been created.', 'stripe-payments' ), $coupon[ 'code' ] ), 60 * 60 );
 
 	wp_safe_redirect( 'edit.php?post_type=asp-products&page=stripe-payments-coupons' );
