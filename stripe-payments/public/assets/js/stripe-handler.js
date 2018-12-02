@@ -354,6 +354,8 @@ function wp_asp_add_stripe_handler(data) {
 		currency: data.currency,
 		image: data.image,
 		allowRememberMe: data.allowRememberMe,
+		billingAddress: false,
+		shippingAddress: false,
 		token: function (token, args) {
 		    wp_asp_hadnle_token(data, token, args);
 		}
@@ -361,6 +363,8 @@ function wp_asp_add_stripe_handler(data) {
 
 	    if (data.billingAddress) {
 		handler_opts.billingAddress = data.billingAddress;
+	    }
+	    if (data.shippingAddress) {
 		handler_opts.shippingAddress = data.shippingAddress;
 	    }
 

@@ -150,6 +150,9 @@ None.
 
 == Changelog ==
 
+= WIP 1.9.14 =
+- Fixed [accept_stripe_payment] shortcode was ignoring shipping_address option.
+
 = 1.9.13 =
 - Payment buttons are now replaced by a spinner during payment processing for better user experience.
 - Added option to disable Order creation after purchase. Useful if you don't want to save purchase info on your website.
