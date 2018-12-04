@@ -366,6 +366,8 @@ function wp_asp_add_stripe_handler(data) {
 	    }
 	    if (data.shippingAddress) {
 		handler_opts.shippingAddress = data.shippingAddress;
+		//'billingAddress' must be enabled whenever 'shippingAddress' is.
+		handler_opts.billingAddress = true;
 	    }
 
 	    if (data.customer_email !== '') {
