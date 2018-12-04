@@ -218,21 +218,21 @@ function wp_asp_can_proceed(data, openHandler) {
 	data.item_price = wp_asp_validate_custom_amount(data, true);
     }
 
-    if (typeof amount === "undefined") {
-	amount = stripehandler.apply_coupon(data.item_price, data);
-    } else {
-	amount = stripehandler.apply_coupon(amount, data);
-    }
 
     if (data.custom_quantity === "1") {
 	var custom_quantity = wp_asp_validate_custom_quantity(data);
 	if (custom_quantity !== false) {
-	    amount = custom_quantity * amount;
 	    data.quantity = custom_quantity;
 	} else {
 	    return false;
 	}
     }
+
+    if (typeof amount === "undefined") {
+	amount = data.item_price * data.quantity;
+    }
+
+    amount = stripehandler.apply_coupon(amount, data);
 
     amount = stripehandler.apply_tax_and_shipping(amount, data);
 
