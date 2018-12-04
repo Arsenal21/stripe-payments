@@ -153,6 +153,7 @@ None.
 
 = WIP 1.9.14 =
 - Fixed [accept_stripe_payment] shortcode was ignoring shipping_address option.
+- Fixed quantity set for a product was ignored under some circumstances. 
 
 = 1.9.13 =
 - Payment buttons are now replaced by a spinner during payment processing for better user experience.
