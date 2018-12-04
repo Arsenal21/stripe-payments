@@ -774,8 +774,8 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post ) {
 	$curr_sym,
 	$curr,
 	$post[ 'purchase_date' ],
-	$post[ 'shipping_address' ],
-	$post[ 'billing_address' ],
+	isset( $post[ 'shipping_address' ] ) ? $post[ 'shipping_address' ] : '',
+	isset( $post[ 'billing_address' ] ) ? $post[ 'billing_address' ] : '',
 	$custom_field
     );
 
