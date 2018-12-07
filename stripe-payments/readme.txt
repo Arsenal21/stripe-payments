@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 4.7
 Tested up to: 5.0
 Requires PHP: 5.4
-Stable tag: 1.9.14t1
+Stable tag: 1.9.14t2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -152,8 +152,9 @@ None.
 == Changelog ==
 
 = WIP 1.9.14 =
+- Added product option that lets customers select payment currency.
 - Fixed [accept_stripe_payment] shortcode was ignoring shipping_address option.
-- Fixed quantity set for a product was ignored under some circumstances. 
+- Fixed quantity set for a product was ignored under some circumstances.
 
 = 1.9.13 =
 - Payment buttons are now replaced by a spinner during payment processing for better user experience.
