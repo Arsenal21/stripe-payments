@@ -70,6 +70,7 @@ class asp_products_metaboxes {
     function display_price_meta_box( $post ) {
 	$current_price		 = get_post_meta( $post->ID, 'asp_product_price', true );
 	$current_curr		 = get_post_meta( $post->ID, 'asp_product_currency', true );
+	$current_curr_var	 = get_post_meta( $post->ID, 'asp_product_currency_variable', true );
 	do_action( 'asp_product_price_metabox_before_content', $post );
 	?>
 	<label><?php _e( 'Price', 'stripe-payments' ); ?></label>
@@ -83,6 +84,8 @@ class asp_products_metaboxes {
 	<br/>
 	<select name="asp_product_currency" id="asp_currency_select"><?php echo AcceptStripePayments_Admin::get_currency_options( $current_curr ); ?>></select>
 	<p class = "description"><?php echo __( 'Leave "(Default)" option selected if you want to use currency specified on settings page.', 'stripe-payments' ); ?></p>
+	<label><input type="checkbox" name="asp_product_currency_variable" value="1"<?php echo ! empty( $current_curr_var ) ? ' checked' : ''; ?>> <?php _e( 'Allow customers to specify currency', 'stripe-payments' ); ?></label>
+	<p class="description"><?php _e( 'When enabled, allows customers to select the currency which is used to make payment.', 'stripe-payments' ); ?></p>
 	<hr />
 	<h4><?php _e( 'Variations', 'stripe-payments' ); ?></h4>
 	<p><?php echo sprintf( __( 'You can find documentation on variations %s', 'stripe-payments' ), '<a href="https://s-plugins.com/creating-variable-products-using-the-stripe-payments-plugin/" target="_blank">here</a>' ); ?></p>
@@ -515,10 +518,12 @@ class asp_products_metaboxes {
 	    //check if this is not subscription product
 	    $asp_plan_id = get_post_meta( $post_id, 'asp_sub_plan_id', true );
 	    if ( empty( $asp_plan_id ) ) {
+		$currency_variable	 = isset( $_POST[ 'asp_product_currency_variable' ] ) ? true : false;
+		update_post_meta( $post_id, 'asp_product_currency_variable', $currency_variable );
 		//check if price is in min-max range for the currency set by Stripe: https://stripe.com/docs/currencies#minimum-and-maximum-charge-amounts
-		$price		 = sanitize_text_field( $_POST[ 'asp_product_price' ] );
-		$price		 = AcceptStripePayments::tofloat( $price );
-		$currency	 = sanitize_text_field( $_POST[ 'asp_product_currency' ] );
+		$price			 = sanitize_text_field( $_POST[ 'asp_product_price' ] );
+		$price			 = AcceptStripePayments::tofloat( $price );
+		$currency		 = sanitize_text_field( $_POST[ 'asp_product_currency' ] );
 		if ( ! empty( $price ) ) {
 		    $price_cents = AcceptStripePayments::is_zero_cents( $currency ) ? round( $price ) : round( $price * 100 );
 		    //check if we have currency set

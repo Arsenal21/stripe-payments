@@ -114,10 +114,11 @@ CSS class names should use dashes. Example: asp-product-description
 .asp_out_of_stock {
     font-weight: bold;
 }
-.asp_product_buy_button input {
+.asp_product_buy_button input, .asp_product_buy_button select {
     display: inline-block;
     line-height: 1;
     padding: 8px 10px;
+    height: auto;
 }
 
 .asp_product_custom_field_label{

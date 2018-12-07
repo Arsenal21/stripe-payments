@@ -112,6 +112,12 @@ if ( isset( $_POST[ 'stripeProductId' ] ) && ! empty( $_POST[ 'stripeProductId' 
 
     $currency_code = get_post_meta( $prod_id, 'asp_product_currency', true );
 
+    $currency_variable = get_post_meta( $prod_id, 'asp_product_currency_variable', true );
+
+    if ( $currency_variable ) {
+	$currency_code = sanitize_text_field( $_POST[ 'stripeCurrency' ] );
+    }
+
     if ( ! $currency_code ) {
 	$currency_code = $asp_class->get_setting( 'currency_code' );
     }

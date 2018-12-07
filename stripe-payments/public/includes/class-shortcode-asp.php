@@ -329,6 +329,9 @@ class AcceptStripePaymentsShortcode {
 	    $shipping_address = false;
 	}
 
+	$currency_variable	 = get_post_meta( $id, 'asp_product_currency_variable', true );
+	$currency_variable	 = ! empty( $currency_variable ) ? true : false;
+
 	//Let's only output buy button if we're in the loop. Since the_content hook could be called several times (for example, by a plugin like Yoast SEO for its purposes), we should only output the button only when it's actually needed.
 	if ( ! isset( $atts[ 'in_the_loop' ] ) || $atts[ 'in_the_loop' ] === "1" ) {
 	    $sc_params	 = array(
@@ -336,6 +339,7 @@ class AcceptStripePaymentsShortcode {
 		'name'			 => $post->post_title,
 		'price'			 => $price,
 		'currency'		 => $currency,
+		'currency_variable'	 => $currency_variable,
 		'shipping'		 => $shipping,
 		'tax'			 => $tax,
 		'class'			 => $class,
@@ -425,6 +429,7 @@ class AcceptStripePaymentsShortcode {
 	    'shipping_address'	 => '',
 	    'customer_email'	 => '',
 	    'currency'		 => $this->AcceptStripePayments->get_setting( 'currency_code' ),
+	    'currency_variable'	 => false,
 	    'button_text'		 => $this->AcceptStripePayments->get_setting( 'button_text' ),
 	    'compat_mode'		 => 0,
 	), $atts ) );
@@ -597,6 +602,7 @@ class AcceptStripePaymentsShortcode {
 	    'tax'			 => $tax,
 	    'image'			 => $item_logo,
 	    'currency'		 => $currency,
+	    'currency_variable'	 => $currency_variable,
 	    'locale'		 => (empty( $checkout_lang ) ? 'auto' : $checkout_lang),
 	    'name'			 => htmlspecialchars_decode( $name ),
 	    'url'			 => $url,
@@ -735,10 +741,27 @@ class AcceptStripePaymentsShortcode {
 	    if ( $data[ 'amount' ] == 0 ) { //price not specified, let's add an input box for user to specify the amount
 		$str_enter_amount	 = apply_filters( 'asp_customize_text_msg', __( 'Enter amount', 'stripe-payments' ), 'enter_amount' );
 		$output			 .= "<div class='asp_product_item_amount_input_container'>"
-		. "<input type='text' size='10' class='asp_product_item_amount_input' id='stripeAmount_{$data[ 'uniq_id' ]}' value='' name='stripeAmount' placeholder='" . $str_enter_amount . "' required/>"
-		. "<span class='asp_product_item_amount_currency_label' style='margin-left: 5px; display: inline-block'> {$data[ 'currency' ]}</span>"
-		. "<span style='display: block;' id='error_explanation_{$data[ 'uniq_id' ]}'></span>"
+		. "<input type='text' size='10' class='asp_product_item_amount_input' id='stripeAmount_{$data[ 'uniq_id' ]}' value='' name='stripeAmount' placeholder='" . $str_enter_amount . "' required/>";
+		if ( ! $data[ 'currency_variable' ] ) {
+		    $output .= "<span class='asp_product_item_amount_currency_label' style='margin-left: 5px; display: inline-block'> {$data[ 'currency' ]}</span>";
+		}
+		$output .= "<span style='display: block;' id='error_explanation_{$data[ 'uniq_id' ]}'></span>"
 		. "</div>";
+	    }
+	    if ( $data[ 'currency_variable' ] ) {
+		//let's add a box where user can select currency
+		$output	 .= '<div class="asp_product_currency_input_container">';
+		$output	 .= '<select id="stripeCurrency_' . $data[ 'uniq_id' ] . '" name="stripeCurrency">';
+		$currArr = AcceptStripePayments::get_currencies();
+		$tpl	 = '<option data-asp-curr-sym="%s" value="%s"%s>%s</option>';
+		foreach ( $currArr as $code => $curr ) {
+		    if ( $code !== '' ) {
+			$checked = $data[ 'currency' ] === $code ? ' selected' : '';
+			$output	 .= sprintf( $tpl, $curr[ 1 ], $code, $checked, $curr[ 0 ] );
+		    }
+		}
+		$output	 .= '</select>';
+		$output	 .= '</div>';
 	    }
 	    if ( $data[ 'custom_quantity' ] === "1" ) { //we should output input for customer to input custom quantity
 		if ( empty( $data[ 'quantity' ] ) ) {
