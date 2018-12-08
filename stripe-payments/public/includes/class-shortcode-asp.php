@@ -751,7 +751,7 @@ class AcceptStripePaymentsShortcode {
 	    if ( $data[ 'currency_variable' ] ) {
 		//let's add a box where user can select currency
 		$output	 .= '<div class="asp_product_currency_input_container">';
-		$output	 .= '<select id="stripeCurrency_' . $data[ 'uniq_id' ] . '" name="stripeCurrency">';
+		$output	 .= '<select id="stripeCurrency_' . $data[ 'uniq_id' ] . '" class="asp_product_currency_input" name="stripeCurrency">';
 		$currArr = AcceptStripePayments::get_currencies();
 		$tpl	 = '<option data-asp-curr-sym="%s" value="%s"%s>%s</option>';
 		foreach ( $currArr as $code => $curr ) {
