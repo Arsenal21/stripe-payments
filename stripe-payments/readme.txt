@@ -153,6 +153,7 @@ None.
 
 = WIP 1.9.14 =
 - Added product option that lets customers select payment currency.
+- Added support for variable amount subscriptions (requires Subscriptions addon version 1.3.4+).
 - Fixed [accept_stripe_payment] shortcode was ignoring shipping_address option.
 - Fixed quantity set for a product was ignored under some circumstances.
 
