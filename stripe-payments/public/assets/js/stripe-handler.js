@@ -360,18 +360,16 @@ function wp_asp_add_stripe_handler(data) {
 		currency: data.currency,
 		image: data.image,
 		allowRememberMe: data.allowRememberMe,
-		billingAddress: false,
-		shippingAddress: false,
 		token: function (token, args) {
 		    wp_asp_hadnle_token(data, token, args);
 		}
 	    };
 
-	    if (data.billingAddress) {
-		handler_opts.billingAddress = data.billingAddress;
+	    if (data.billingAddress !== false) {
+		handler_opts.billingAddress = true;
 	    }
-	    if (data.shippingAddress) {
-		handler_opts.shippingAddress = data.shippingAddress;
+	    if (data.shippingAddress !== false) {
+		handler_opts.shippingAddress = true;
 		//'billingAddress' must be enabled whenever 'shippingAddress' is.
 		handler_opts.billingAddress = true;
 	    }
