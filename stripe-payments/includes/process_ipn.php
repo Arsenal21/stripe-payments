@@ -638,7 +638,7 @@ if ( isset( $opt[ 'send_emails_to_seller' ] ) ) {
 	$from	 = $opt[ 'from_email_address' ];
 	$to	 = $opt[ 'seller_notification_email' ];
 	$subj	 = $opt[ 'seller_email_subject' ];
-	$body	 = asp_apply_dynamic_tags_on_email_body( $opt[ 'seller_email_body' ], $post_data );
+	$body	 = asp_apply_dynamic_tags_on_email_body( $opt[ 'seller_email_body' ], $post_data, true );
 
 	$subj	 = apply_filters( 'asp_seller_email_subject', $subj, $post_data );
 	$body	 = apply_filters( 'asp_seller_email_body', $body, $post_data );
@@ -667,7 +667,7 @@ $_SESSION[ 'asp_data' ] = $post_data;
 
 asp_ipn_completed();
 
-function asp_apply_dynamic_tags_on_email_body( $body, $post ) {
+function asp_apply_dynamic_tags_on_email_body( $body, $post, $seller_email = false ) {
 
     $product_details = __( "Product Name: ", "stripe-payments" ) . '{item_name}' . "\n";
     $product_details .= __( "Quantity: ", "stripe-payments" ) . '{item_quantity}' . "\n";
@@ -702,8 +702,14 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post ) {
 	}
     }
 
-    $product_details		 .= rtrim( $download_str, "\n" );
-    $post[ 'product_details' ]	 = $product_details;
+    $product_details .= rtrim( $download_str, "\n" );
+
+    //add link to order info if this is email to seller
+    if ( $seller_email && isset( $post[ 'order_post_id' ] ) ) {
+	$product_details .= "\n\n" . __( 'Order info: ', 'stripe-payments' ) . admin_url( 'post.php?post=' . $post[ 'order_post_id' ] . '&action=edit' );
+    }
+
+    $post[ 'product_details' ] = $product_details;
 
     $custom_field = '';
     foreach ( $post[ 'custom_fields' ] as $cf ) {
