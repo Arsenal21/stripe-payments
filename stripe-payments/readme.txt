@@ -151,7 +151,7 @@ None.
 
 == Changelog ==
 
-= WIP 1.9.14 =
+= 1.9.14 =
 - Added product option that lets customers select payment currency.
 - Added support for variable amount subscriptions (requires Subscriptions addon version 1.3.4+).
 - Added order info link to seller email.
@@ -183,14 +183,3 @@ None.
 - Added {tax}, {tax_amt}, {currency} and {shipping_amt} checkout page customization tags. More tags [can be found here](https://s-plugins.com/customize-the-thank-page-message-of-stripe-payments-plugin/).
 - Added {item_name} and {item_quantity} email tags.
 - Added position settings options for custom field and TOS. You can display those below payment button now.
-
-= 1.9.9 =
-- Fixed incompatability with older PHP versions (prior to 5.4).
-- Added SOFORT and Post Payment Actions addons to the list.
-- Made more strings available for translations, regenerated .pot file.
-
-= 1.9.8 =
-- Fixed blank payment results page was displayed under some circumstances if customized [accept_stripe_payment_checkout] shortcode was used.
-- Added ability to allow coupon usage only for specific products.
-- Added option to store customer's IP address in order info.
-- Plugin tries to create and use small product thumbnail for Stripe pop-up if available. This removes noticeable pop-up window lag when large image is being used.
