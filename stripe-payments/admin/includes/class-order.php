@@ -142,13 +142,13 @@ class ASPOrder {
 	}
 
 	//Billing address data (if any)
-	if ( strlen( $order_details[ 'billing_address' ] ) > 5 ) {
+	if ( isset( $order_details[ 'billing_address' ] ) && strlen( $order_details[ 'billing_address' ] ) > 5 ) {
 	    $output	 .= "<h2>" . __( "Billing Address", "stripe-payments" ) . "</h2>\n";
 	    $output	 .= $order_details[ 'billing_address' ];
 	}
 
 	//Shipping address data (if any)
-	if ( strlen( $order_details[ 'shipping_address' ] ) > 5 ) {
+	if ( isset( $order_details[ 'shipping_address' ] ) && strlen( $order_details[ 'shipping_address' ] ) > 5 ) {
 	    $output	 .= "<h2>" . __( "Shipping Address", "stripe-payments" ) . "</h2>\n";
 	    $output	 .= $order_details[ 'shipping_address' ];
 	}
