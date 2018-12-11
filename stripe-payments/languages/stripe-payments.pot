@@ -1273,8 +1273,7 @@ msgstr ""
 
 #: admin/includes/class-products-meta-boxes.php:88
 msgid ""
-"When enabled, allows customers to select the currency which is used to make "
-"payment."
+"When enabled, it allows the customers to select the currency which is used to make the payment."
 msgstr ""
 
 #: admin/includes/class-products-meta-boxes.php:90
@@ -1926,7 +1925,7 @@ msgid "Download links: "
 msgstr ""
 
 #: includes/process_ipn.php:709
-msgid "Order info: "
+msgid "Order Info: "
 msgstr ""
 
 #: public/class-asp.php:287

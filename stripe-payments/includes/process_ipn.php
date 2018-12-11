@@ -704,9 +704,9 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post, $seller_email = fal
 
     $product_details .= rtrim( $download_str, "\n" );
 
-    //add link to order info if this is email to seller
+    //Add link to order info if this is email to the seller
     if ( $seller_email && isset( $post[ 'order_post_id' ] ) ) {
-	$product_details .= "\n\n" . __( 'Order info: ', 'stripe-payments' ) . admin_url( 'post.php?post=' . $post[ 'order_post_id' ] . '&action=edit' );
+	$product_details .= "\n\n" . __( 'Order Info: ', 'stripe-payments' ) . admin_url( 'post.php?post=' . $post[ 'order_post_id' ] . '&action=edit' );
     }
 
     $post[ 'product_details' ] = $product_details;

@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 4.7
 Tested up to: 5.0
 Requires PHP: 5.4
-Stable tag: 1.9.14t2
+Stable tag: 1.9.14
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -152,7 +152,7 @@ None.
 == Changelog ==
 
 = 1.9.14 =
-- Added product option that lets customers select payment currency.
+- Added product option that lets the customers select payment currency.
 - Added support for variable amount subscriptions (requires Subscriptions addon version 1.3.4+).
 - Added order info link to seller email.
 - Fixed [accept_stripe_payment] shortcode was ignoring shipping_address option.
