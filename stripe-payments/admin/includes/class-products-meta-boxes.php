@@ -85,7 +85,7 @@ class asp_products_metaboxes {
 	<select name="asp_product_currency" id="asp_currency_select"><?php echo AcceptStripePayments_Admin::get_currency_options( $current_curr ); ?>></select>
 	<p class = "description"><?php echo __( 'Leave "(Default)" option selected if you want to use currency specified on settings page.', 'stripe-payments' ); ?></p>
 	<label><input type="checkbox" name="asp_product_currency_variable" value="1"<?php echo ! empty( $current_curr_var ) ? ' checked' : ''; ?>> <?php _e( 'Allow customers to specify currency', 'stripe-payments' ); ?></label>
-	<p class="description"><?php _e( 'When enabled, it allows the customers to select the currency which is used to make the payment. It does not dynamically change the price. So this is mainly useful for a donation type product.', 'stripe-payments' ); ?></p>
+	<p class="description"><?php _e( 'When enabled, it allows the customers to select the currency which is used to make the payment. It does not dynamically change the price. No dynamic currency conversion takes place. So this is mainly useful for a donation type product.', 'stripe-payments' ); ?></p>
 	<hr />
 	<h4><?php _e( 'Variations', 'stripe-payments' ); ?></h4>
 	<p><?php echo sprintf( __( 'You can find documentation on variations %s', 'stripe-payments' ), '<a href="https://s-plugins.com/creating-variable-products-using-the-stripe-payments-plugin/" target="_blank">here</a>' ); ?></p>

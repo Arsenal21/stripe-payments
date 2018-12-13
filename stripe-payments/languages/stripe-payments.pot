@@ -1273,7 +1273,7 @@ msgstr ""
 
 #: admin/includes/class-products-meta-boxes.php:88
 msgid ""
-"When enabled, it allows the customers to select the currency which is used to make the payment. It does not dynamically change the price. So this is mainly useful for a donation type product."
+"When enabled, it allows the customers to select the currency which is used to make the payment. It does not dynamically change the price. No dynamic currency conversion takes place. So this is mainly useful for a donation type product."
 msgstr ""
 
 #: admin/includes/class-products-meta-boxes.php:90
