@@ -31,6 +31,7 @@ class AcceptStripePayments {
     );
     var $APISecKey	 = '';
     var $APIPubKey	 = '';
+    var $APIPubKeyTest	 = '';
     var $APISecKeyLive	 = '';
     var $APISecKeyTest	 = '';
     var $is_live		 = false;
@@ -88,6 +89,7 @@ class AcceptStripePayments {
 	    $this->APIPubKey = $this->get_setting( 'api_publishable_key' );
 	    $this->APISecKey = $this->get_setting( 'api_secret_key' );
 	}
+	$this->APIPubKeyTest	 = $this->get_setting( 'api_publishable_key_test' );
 	$this->APISecKeyLive	 = $this->get_setting( 'api_secret_key' );
 	$this->APISecKeyTest	 = $this->get_setting( 'api_secret_key_test' );
 

@@ -286,12 +286,6 @@ if ( ! AcceptStripePayments::is_zero_cents( $currency_code ) ) {
     $amount_in_cents = $amount_in_cents * 100;
 }
 
-ASP_Debug_Logger::log( 'Getting API keys and trying to create a charge.' );
-
-ASPMain::load_stripe_lib();
-
-\Stripe\Stripe::setApiKey( $asp_class->APISecKey );
-
 $GLOBALS[ 'asp_payment_success' ] = false;
 
 $opt = get_option( 'AcceptStripePayments-settings' );
@@ -329,6 +323,18 @@ $data[ 'custom_fields' ] = apply_filters( 'asp_process_custom_fields', $data[ 'c
 $variations = apply_filters( 'asp_filter_variations_display', $variations, $data );
 
 ob_start();
+
+ASP_Debug_Logger::log( 'Getting API keys and trying to create a charge.' );
+
+ASPMain::load_stripe_lib();
+
+if ( $data[ 'is_live' ] ) {
+    $sec_key = $asp_class->APISecKeyLive;
+} else {
+    $sec_key = $asp_class->APISecKeyTest;
+}
+
+\Stripe\Stripe::setApiKey( $sec_key );
 
 //let addons process payment if needed
 ASP_Debug_Logger::log( 'Firing pre-payment hook.' );

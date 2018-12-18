@@ -351,8 +351,15 @@ function wp_asp_add_stripe_handler(data) {
     function wp_asp_check_handler(data) {
 	if (typeof (data.handler) === "undefined") {
 
+	    var key;
+	    if (data.is_live) {
+		key = stripehandler.key;
+	    } else {
+		key = stripehandler.key_test;
+	    }
+
 	    var handler_opts = {
-		key: stripehandler.key,
+		key: key,
 		amount: data.amount,
 		locale: data.locale,
 		description: data.description,

@@ -64,6 +64,7 @@ class AcceptStripePaymentsShortcode {
     function get_loc_data() {
 	//localization data, some settings and Stripe API key
 	$key		 = $this->AcceptStripePayments->APIPubKey;
+	$key_test	 = $this->AcceptStripePayments->APIPubKeyTest;
 	$minAmounts	 = $this->AcceptStripePayments->minAmounts;
 	$zeroCents	 = $this->AcceptStripePayments->zeroCents;
 
@@ -88,6 +89,7 @@ class AcceptStripePaymentsShortcode {
 	    'strRemoveCoupon'	 => apply_filters( 'asp_customize_text_msg', __( 'Remove coupon', 'stripe-payments' ), 'remove_coupon' ),
 	    'strRemove'		 => apply_filters( 'asp_customize_text_msg', __( 'Remove', 'stripe-payments' ), 'remove' ),
 	    'key'			 => $key,
+	    'key_test'		 => $key_test,
 	    'ajax_url'		 => admin_url( 'admin-ajax.php' ),
 	    'minAmounts'		 => $minAmounts,
 	    'zeroCents'		 => $zeroCents,
@@ -590,6 +592,7 @@ class AcceptStripePaymentsShortcode {
 	$displayStr[ 'ship' ]	 = '%s (' . strtolower( $shipStr ) . ')';
 
 	$data = array(
+	    'is_live'		 => $this->AcceptStripePayments->is_live,
 	    'product_id'		 => $product_id,
 	    'button_key'		 => $button_key,
 	    'item_price'		 => isset( $item_price ) ? $item_price : 0,
