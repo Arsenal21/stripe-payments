@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 4.7
 Tested up to: 5.0
 Requires PHP: 5.4
-Stable tag: 1.9.14.1
+Stable tag: 1.9.14.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -150,6 +150,9 @@ Yes, please visit Stripe Payments > Settings screen for options.
 None.
 
 == Changelog ==
+
+= 1.9.14.2 =
+- Fixed price consistency check for payment button shortcodes.
 
 = 1.9.14.1 =
 - Fixed Stripe mode was improperly set during subscriptions payment processing sometimes (requires Subscriptions addon 1.3.5+).

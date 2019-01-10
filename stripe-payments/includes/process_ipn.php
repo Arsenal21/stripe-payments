@@ -186,7 +186,12 @@ if ( ! $got_product_data_from_db ) {
     }
     $trans_name	 = 'stripe-payments-' . $button_key;
     $trans		 = get_transient( $trans_name ); //Read the price for this item from the system.
-    $item_price	 = $trans[ 'price' ];
+
+    if ( empty( $trans ) ) {
+	asp_ipn_completed( "Can't check payment validity. Aborting." );
+    }
+
+    $item_price = $trans[ 'price' ];
 
     $tax = isset( $trans[ 'tax' ] ) ? $trans[ 'tax' ] : 0;
 
