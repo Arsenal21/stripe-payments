@@ -5,54 +5,115 @@ namespace Stripe;
 /**
  * Class Invoice
  *
+ * @property string $id
+ * @property string $object
+ * @property int $amount_due
+ * @property int $amount_paid
+ * @property int $amount_remaining
+ * @property int $application_fee
+ * @property int $attempt_count
+ * @property bool $attempted
+ * @property bool $auto_advance
+ * @property string $billing
+ * @property string $billing_reason
+ * @property string $charge
+ * @property string $currency
+ * @property string $customer
+ * @property int $date
+ * @property string $description
+ * @property Discount $discount
+ * @property int $due_date
+ * @property int $ending_balance
+ * @property string $hosted_invoice_url
+ * @property string $invoice_pdf
+ * @property int $last_payment_attempt
+ * @property Collection $lines
+ * @property bool $livemode
+ * @property StripeObject $metadata
+ * @property int $next_payment_attempt
+ * @property string $number
+ * @property bool $paid
+ * @property int $period_end
+ * @property int $period_start
+ * @property string $receipt_number
+ * @property int $starting_balance
+ * @property string $statement_descriptor
+ * @property string $status
+ * @property string $subscription
+ * @property int $subscription_proration_date
+ * @property int $subtotal
+ * @property int $tax
+ * @property float $tax_percent
+ * @property int $total
+ * @property int $webhooks_delivered_at
+ *
  * @package Stripe
  */
 class Invoice extends ApiResource
 {
-    /**
-     * @param array|null $params
-     * @param array|string|null $opts
-     *
-     * @return Invoice The created invoice.
-     */
-    public static function create($params = null, $opts = null)
-    {
-        return self::_create($params, $opts);
-    }
 
-    /**
-     * @param array|string $id The ID of the invoice to retrieve, or an options
-     *     array containing an `id` key.
-     * @param array|string|null $opts
-     *
-     * @return Invoice
-     */
-    public static function retrieve($id, $opts = null)
-    {
-        return self::_retrieve($id, $opts);
-    }
+    const OBJECT_NAME = "invoice";
+
+    use ApiOperations\All;
+    use ApiOperations\Create;
+    use ApiOperations\Delete;
+    use ApiOperations\Retrieve;
+    use ApiOperations\Update;
 
     /**
      * @param array|null $params
      * @param array|string|null $opts
      *
-     * @return Collection of Invoices
+     * @return Invoice The finalized invoice.
      */
-    public static function all($params = null, $opts = null)
+    public function finalizeInvoice($params = null, $opts = null)
     {
-        return self::_all($params, $opts);
+        $url = $this->instanceUrl() . '/finalize';
+        list($response, $opts) = $this->_request('post', $url, $params, $opts);
+        $this->refreshFrom($response, $opts);
+        return $this;
     }
 
     /**
-     * @param string $id The ID of the invoice to update.
      * @param array|null $params
-     * @param array|string|null $options
+     * @param array|string|null $opts
      *
-     * @return Invoice The updated invoice.
+     * @return Invoice The uncollectible invoice.
      */
-    public static function update($id, $params = null, $options = null)
+    public function markUncollectible($params = null, $opts = null)
     {
-        return self::_update($id, $params, $options);
+        $url = $this->instanceUrl() . '/mark_uncollectible';
+        list($response, $opts) = $this->_request('post', $url, $params, $opts);
+        $this->refreshFrom($response, $opts);
+        return $this;
+    }
+
+    /**
+     * @param array|null $params
+     * @param array|string|null $opts
+     *
+     * @return Invoice The paid invoice.
+     */
+    public function pay($params = null, $opts = null)
+    {
+        $url = $this->instanceUrl() . '/pay';
+        list($response, $opts) = $this->_request('post', $url, $params, $opts);
+        $this->refreshFrom($response, $opts);
+        return $this;
+    }
+
+    /**
+     * @param array|null $params
+     * @param array|string|null $opts
+     *
+     * @return Invoice The sent invoice.
+     */
+    public function sendInvoice($params = null, $opts = null)
+    {
+        $url = $this->instanceUrl() . '/send';
+        list($response, $opts) = $this->_request('post', $url, $params, $opts);
+        $this->refreshFrom($response, $opts);
+        return $this;
     }
 
     /**
@@ -71,21 +132,14 @@ class Invoice extends ApiResource
     }
 
     /**
+     * @param array|null $params
      * @param array|string|null $opts
      *
-     * @return Invoice The saved invoice.
+     * @return Invoice The voided invoice.
      */
-    public function save($opts = null)
+    public function voidInvoice($params = null, $opts = null)
     {
-        return $this->_save($opts);
-    }
-
-    /**
-     * @return Invoice The paid invoice.
-     */
-    public function pay($params = null, $opts = null)
-    {
-        $url = $this->instanceUrl() . '/pay';
+        $url = $this->instanceUrl() . '/void';
         list($response, $opts) = $this->_request('post', $url, $params, $opts);
         $this->refreshFrom($response, $opts);
         return $this;

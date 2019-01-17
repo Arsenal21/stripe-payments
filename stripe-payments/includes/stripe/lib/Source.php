@@ -5,54 +5,60 @@ namespace Stripe;
 /**
  * Class Source
  *
+ * @property string $id
+ * @property string $object
+ * @property int $amount
+ * @property string $client_secret
+ * @property mixed $code_verification
+ * @property int $created
+ * @property string $currency
+ * @property string $flow
+ * @property bool $livemode
+ * @property StripeObject $metadata
+ * @property mixed $owner
+ * @property mixed $receiver
+ * @property mixed $redirect
+ * @property string $statement_descriptor
+ * @property string $status
+ * @property string $type
+ * @property string $usage
+ *
  * @package Stripe
  */
 class Source extends ApiResource
 {
-    /**
-     * @param array|string $id The ID of the source to retrieve, or an options
-     *     array containing an `id` key.
-     * @param array|string|null $opts
-     *
-     * @return Source
-     */
-    public static function retrieve($id, $opts = null)
-    {
-        return self::_retrieve($id, $opts);
-    }
+
+    const OBJECT_NAME = "source";
+
+    use ApiOperations\Create;
+    use ApiOperations\Retrieve;
+    use ApiOperations\Update;
 
     /**
-     * @param array|null $params
-     * @param array|string|null $opts
-     *
-     * @return Source The created Source.
+     * Possible string representations of source flows.
+     * @link https://stripe.com/docs/api#source_object-flow
      */
-    public static function create($params = null, $opts = null)
-    {
-        return self::_create($params, $opts);
-    }
+    const FLOW_REDIRECT          = 'redirect';
+    const FLOW_RECEIVER          = 'receiver';
+    const FLOW_CODE_VERIFICATION = 'code_verification';
+    const FLOW_NONE              = 'none';
 
     /**
-     * @param string $id The ID of the source to update.
-     * @param array|null $params
-     * @param array|string|null $options
-     *
-     * @return Source The updated source.
+     * Possible string representations of source statuses.
+     * @link https://stripe.com/docs/api#source_object-status
      */
-    public static function update($id, $params = null, $options = null)
-    {
-        return self::_update($id, $params, $options);
-    }
+    const STATUS_CANCELED   = 'canceled';
+    const STATUS_CHARGEABLE = 'chargeable';
+    const STATUS_CONSUMED   = 'consumed';
+    const STATUS_FAILED     = 'failed';
+    const STATUS_PENDING    = 'pending';
 
     /**
-     * @param array|string|null $opts
-     *
-     * @return Source The saved source.
+     * Possible string representations of source usage.
+     * @link https://stripe.com/docs/api#source_object-usage
      */
-    public function save($opts = null)
-    {
-        return $this->_save($opts);
-    }
+    const USAGE_REUSABLE   = 'reusable';
+    const USAGE_SINGLE_USE = 'single_use';
 
     /**
      * @param array|null $params
