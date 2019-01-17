@@ -152,7 +152,7 @@ None.
 == Changelog ==
 
 = WIP 1.9.15 =
-- Updated Stripe PHP SDK to latest version. PHP below 5.4 are no longer supported.
+- Updated Stripe PHP SDK to latest version. PHP versions below 5.4 are no longer supported.
 
 = 1.9.14.2 =
 - Fixed price consistency check for payment button shortcodes.
