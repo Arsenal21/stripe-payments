@@ -303,7 +303,6 @@ class AcceptStripePayments_Admin {
 	add_settings_section( 'AcceptStripePayments-global-section', __( 'Global Settings', 'stripe-payments' ), null, $this->plugin_slug );
 	add_settings_section( 'AcceptStripePayments-credentials-section', __( 'Credentials', 'stripe-payments' ), null, $this->plugin_slug );
 	add_settings_section( 'AcceptStripePayments-debug-section', __( 'Debug', 'stripe-payments' ), null, $this->plugin_slug );
-	add_settings_section( 'AcceptStripePayments-settings-footer', '', array( &$this, 'general_settings_menu_footer_callback' ), $this->plugin_slug );
 
 	add_settings_section( 'AcceptStripePayments-email-section', __( 'Email Settings', 'stripe-payments' ), null, $this->plugin_slug . '-email' );
 	add_settings_section( 'AcceptStripePayments-error-email-section', __( 'Transaction Error Email Settings', 'stripe-payments' ), null, $this->plugin_slug . '-email' );
@@ -464,17 +463,6 @@ class AcceptStripePayments_Admin {
 
     function tos_description() {
 	echo '<p>' . __( 'This section allows you to configure Terms and Conditions or Privacy Policy that customer must accept before making payment. This, for example, can be used to comply with EU GDPR.', 'stripe-payments' ) . '</p>';
-    }
-
-    public function general_settings_menu_footer_callback( $args ) {
-	?>
-	<div style="background: none repeat scroll 0 0 #FFF6D5;border: 1px solid #D1B655;color: #3F2502;margin: 10px 0;padding: 5px 5px 5px 10px;text-shadow: 1px 1px #FFFFFF;">
-	    <p>
-		<?php _ex( 'If you need a feature rich plugin (with good support) for selling your products and services then check out our', 'Followed by a link to eStore plugin', 'stripe-payments' ); ?>
-		<a target="_blank" href="https://www.tipsandtricks-hq.com/wordpress-estore-plugin-complete-solution-to-sell-digital-products-from-your-wordpress-blog-securely-1059">WP eStore Plugin</a>.
-	    </p>
-	</div>
-	<?php
     }
 
     static function get_currency_options( $selected_value = '', $show_default = true ) {
