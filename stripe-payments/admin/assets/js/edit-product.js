@@ -88,4 +88,8 @@ jQuery(document).ready(function ($) {
 	    aspVariationsGroupsId++;
 	}
     }
+    $('input[name="asp_product_collect_billing_addr"]').change(function () {
+	checked = $(this).is(":checked");
+	$('input[data-addr-radio="1"]').prop('disabled', !checked);
+    });
 });

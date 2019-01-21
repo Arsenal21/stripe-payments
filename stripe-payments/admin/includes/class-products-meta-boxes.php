@@ -377,9 +377,12 @@ class asp_products_metaboxes {
 	<label><input type="checkbox" name="asp_product_collect_billing_addr" value="1"<?php echo ($collect_billing_addr === "1") ? ' checked' : ''; ?>><?php echo __( 'Collect Address on Checkout', 'stripe-payments' ); ?> </label>
 	<p class="description"><?php echo __( "Enable this to collect customer address on checkout.", 'stripe-payments' ); ?></p>
 	<div style="margin-left:30px;">
-	    <label><input type="radio" name="asp_product_collect_shipping_addr" value="1"<?php echo ($collect_shipping_addr === "1" || $collect_shipping_addr === "") ? ' checked' : ''; ?>><?php echo __( 'Collect Both Billing And Shipping Addresses', 'stripe-payments' ); ?> </label>
+	    <label><input type="radio" name="asp_product_collect_shipping_addr" data-addr-radio="1" value="1"<?php echo ($collect_shipping_addr === "1" || $collect_shipping_addr === "") ? ' checked' : '';
+	echo ! $collect_billing_addr ? ' disabled' : '';
+	?>><?php echo __( 'Collect Both Billing And Shipping Addresses', 'stripe-payments' ); ?> </label>
 	    <p></p>
-	    <label><input type="radio" name="asp_product_collect_shipping_addr" value="0"<?php echo ($collect_shipping_addr === "0") ? ' checked' : ''; ?>><?php echo __( 'Collect Billing Address Only', 'stripe-payments' ); ?> </label>
+	    <label><input type="radio" name="asp_product_collect_shipping_addr" data-addr-radio="1" value="0"<?php echo ($collect_shipping_addr === "0") ? ' checked' : '';
+		  echo ! $collect_billing_addr ? ' disabled' : ''; ?>><?php echo __( 'Collect Billing Address Only', 'stripe-payments' ); ?> </label>
 	</div>
 	<?php
     }
@@ -390,7 +393,7 @@ class asp_products_metaboxes {
 	<input type="text" name="asp_product_thankyou_page" style="width: 100%;" value="<?php echo ! empty( $current_val ) ? $current_val : ''; ?>">
 	<p class="description"><?php _e( 'Enter Thank You page URL. Leave it blank if you want ot use default Thank You page.', 'stripe-payments' ); ?>
 	    <br />
-	    <?php _e( 'You can read how to customize messages on Thank You page <a href="https://s-plugins.com/customize-the-thank-page-message-of-stripe-payments-plugin/" target="_blank">in the documentation</a>.', 'stripe-payments' ); ?>
+	<?php _e( 'You can read how to customize messages on Thank You page <a href="https://s-plugins.com/customize-the-thank-page-message-of-stripe-payments-plugin/" target="_blank">in the documentation</a>.', 'stripe-payments' ); ?>
 	</p>
 	<?php
     }
