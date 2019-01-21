@@ -45,8 +45,12 @@ table.asp-shortcode-options-table th, table.asp-shortcode-options-table td {
 }
 .stripe_addon_item_canvas:hover{border-color:#d6d6d6;}
 .stripe_addon_item_thumb {position: relative}
-.stripe_addon_item_installed_mark {position: absolute; right: 7px; top: 5px;}
-.stripe_addon_item_installed_mark img {border: none !important;}
+.stripe-addon-item-installed-mark {position: absolute; right: 5px; top: 5px;}
+.stripe-addon-item-installed-mark span {border: none !important;
+					height: 50px;
+					color: #00e600;
+					font-size: 50px;
+					width: 50px;}
 .stripe_addon_item_thumb img {padding:5px; border: 1px solid #ddd;}
 .stripe_addon_item_thumb a img {border: 1px solid #ccc;}
 .stripe_addon_item_body{line-height:22px;height:170px;overflow:hidden;}

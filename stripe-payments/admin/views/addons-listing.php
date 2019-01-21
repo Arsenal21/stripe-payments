@@ -165,8 +165,9 @@ wp_enqueue_style( 'asp-admin-styles', WP_ASP_PLUGIN_URL . '/admin/assets/css/adm
 
 		$output .= '<div class="stripe_addon_item_thumb">';
 		if ( $addon[ 'installed' ] ) {
-		    $output .= '<div class="stripe_addon_item_installed_mark"><img src="' . WP_ASP_PLUGIN_URL . "/admin/assets/css/img/checkmark-icon.png" . '" title="' . __( 'Add-on installed', 'stripe-payments' ) . '"></div>';
+		    $output .= '<div class="stripe-addon-item-installed-mark"><span class="dashicons dashicons-yes" title="' . __( 'Add-on installed', 'stripe-payments' ) . '"></span></div>';
 		}
+
 		$img_src = $addon[ 'thumbnail' ];
 		$output	 .= '<img src="' . $img_src . '" alt="' . $addon[ 'name' ] . '">';
 		$output	 .= '</div>'; //end thumbnail
