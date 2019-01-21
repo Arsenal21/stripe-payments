@@ -3,9 +3,9 @@ Contributors: Tips and Tricks HQ, wptipsntricks, alexanderfoxc
 Donate link: https://s-plugins.com
 Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortcode, digital goods, payment gateway, instant payment, commerce, digital downloads, downloads, e-commerce, e-store, ecommerce, eshop, donation
 Requires at least: 4.7
-Tested up to: 5.0
+Tested up to: 5.0.3
 Requires PHP: 5.4
-Stable tag: 1.9.15t1
+Stable tag: 1.9.15
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -151,8 +151,9 @@ None.
 
 == Changelog ==
 
-= WIP 1.9.15 =
+= 1.9.15 =
 - Updated Stripe PHP SDK to latest version. PHP versions below 5.4 are no longer supported.
+- Some minor admin interface modifications.
 
 = 1.9.14.2 =
 - Fixed price consistency check for payment button shortcodes.
