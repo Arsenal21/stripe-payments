@@ -70,7 +70,7 @@ if ( $_GET[ 'page' ] == 'stripe-payments-settings' ) {
     		    </div>
     		</div>
     		<div class="postbox" style="min-width: inherit;">
-    		    <h3 class="hndle"><label for="title"><?php echo __( 'Need something bigger?', 'stripe-payments' ); ?></label></h3>
+    		    <h3 class="hndle"><label for="title"><?php echo __( 'Need Something Bigger?', 'stripe-payments' ); ?></label></h3>
     		    <div class="inside">
 			    <?php _ex( 'If you need a feature rich plugin (with good support) for selling your products and services then check out our', 'Followed by a link to eStore plugin', 'stripe-payments' ); ?>
     			<a target="_blank" href="https://www.tipsandtricks-hq.com/wordpress-estore-plugin-complete-solution-to-sell-digital-products-from-your-wordpress-blog-securely-1059">WP eStore Plugin</a>.
@@ -79,7 +79,7 @@ if ( $_GET[ 'page' ] == 'stripe-payments-settings' ) {
     		<div class="postbox" style="min-width: inherit;">
     		    <h3 class="hndle"><label for="title"><?php echo __( 'Rate Us', 'stripe-payments' ); ?></label></h3>
     		    <div class="inside">
-			    <?php echo sprintf( _x( 'Like the plugin? Please give us a %s', '%s is replaced by "rating" link', 'stripe-payments' ), sprintf( '<a href="https://wordpress.org/support/plugin/stripe-payments/reviews/?filter=5" target="_blank">%s</a>', __( 'rating!', 'stripe-payments' ) ) ); ?>
+			    <?php echo sprintf( _x( 'Like the plugin? Please give us a good %s', '%s is replaced by "rating" link', 'stripe-payments' ), sprintf( '<a href="https://wordpress.org/support/plugin/stripe-payments/reviews/?filter=5" target="_blank">%s</a>', __( 'rating!', 'stripe-payments' ) ) ); ?>
     			<div class="wp-asp-stars-container">
     			    <a href="https://wordpress.org/support/plugin/stripe-payments/reviews/?filter=5" target="_blank">
     				<span class="dashicons dashicons-star-filled"></span>
