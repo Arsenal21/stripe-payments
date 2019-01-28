@@ -29,6 +29,7 @@ class AcceptStripePaymentsShortcode {
 	add_shortcode( 'accept_stripe_payment', array( &$this, 'shortcode_accept_stripe_payment' ) );
 	add_shortcode( 'accept_stripe_payment_checkout', array( &$this, 'shortcode_accept_stripe_payment_checkout' ) );
 	add_shortcode( 'accept_stripe_payment_checkout_error', array( &$this, 'shortcode_accept_stripe_payment_checkout_error' ) );
+	add_shortcode( 'asp_show_my_transactions', array( $this, 'show_user_transactions' ) );
 	if ( ! is_admin() ) {
 	    add_filter( 'widget_text', 'do_shortcode' );
 	}
@@ -185,6 +186,12 @@ class AcceptStripePaymentsShortcode {
 	    add_filter( 'asp_button_output_after_button', array( $this, 'after_button_add_сf_filter' ), 990, 3 );
 	}
 	return $output;
+    }
+
+    function show_user_transactions( $atts ) {
+	require_once(WP_ASP_PLUGIN_PATH . 'public/includes/shortcodes/show-user-transactions.php');
+	$scClass = new AcceptStripePayments_scUserTransactions;
+	return $scClass->process_shortcode( $atts );
     }
 
     function shortcode_asp_product( $atts ) {
