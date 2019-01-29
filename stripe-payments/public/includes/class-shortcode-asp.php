@@ -955,22 +955,34 @@ class AcceptStripePaymentsShortcode {
 
     function shortcode_show_all_products( $params ) {
 
+	$params = shortcode_atts( array(
+	    'items_per_page' => '30',
+	    'sort_by'	 => 'none',
+	    'sort_order'	 => 'desc',
+	    'template'	 => '',
+	    'search_box'	 => '1',
+	), $params, 'asp_show_all_products' );
+
 	include_once(WP_ASP_PLUGIN_PATH . 'public/views/all-products/default/template.php');
 
-	$page = isset( $_GET[ 'asp_page' ] ) && ! empty( $_GET[ 'asp_page' ] ) ? intval( $_GET[ 'asp_page' ] ) : 1;
+	$page = filter_input( INPUT_GET, 'asp_page', FILTER_SANITIZE_NUMBER_INT );
+
+	$page = empty( $page ) ? 1 : $page;
 
 	$q = array(
 	    'post_type'	 => ASPMain::$products_slug,
 	    'post_status'	 => 'publish',
-	    'posts_per_page' => $params[ 'items_per_page' ],
+	    'posts_per_page' => isset( $params[ 'items_per_page' ] ) ? $params[ 'items_per_page' ] : 30,
 	    'paged'		 => $page,
-	    'orderby'	 => $params[ 'sort_by' ],
-	    'order'		 => strtoupper( $params[ 'sort_order' ] ),
+	    'orderby'	 => isset( $params[ 'sort_by' ] ) ? ($params[ 'sort_by' ]) : 'none',
+	    'order'		 => isset( $params[ 'sort_order' ] ) ? strtoupper( $params[ 'sort_order' ] ) : 'DESC',
 	);
 
 	//handle search
 
-	$search = isset( $_GET[ 'asp_search' ] ) && ! empty( $_GET[ 'asp_search' ] ) ? sanitize_text_field( $_GET[ 'asp_search' ] ) : false;
+	$search = filter_input( INPUT_GET, 'asp_search', FILTER_SANITIZE_STRING );
+
+	$search = empty( $search ) ? false : $search;
 
 	if ( $search !== false ) {
 	    $q[ 's' ] = $search;
@@ -986,9 +998,9 @@ class AcceptStripePaymentsShortcode {
 	    }
 	}
 
-	if ( $params[ 'search_box' ] !== '1' ) {
-	    $tpl[ 'search_box' ] = '';
-	} else {
+	$search_box = ! empty( $params[ 'search_box' ] ) ? $params[ 'search_box' ] : false;
+
+	if ( $search_box ) {
 	    if ( $search !== false ) {
 		$tpl[ 'clear_search_url' ]	 = esc_url( remove_query_arg( array( 'asp_search', 'asp_page' ) ) );
 		$tpl[ 'search_result_text' ]	 = $products->found_posts === 0 ? __( 'Nothing found for', 'stripe-payments' ) . ' "%s".' : __( 'Search results for', 'stripe-payments' ) . ' "%s".';
@@ -999,6 +1011,8 @@ class AcceptStripePaymentsShortcode {
 		$tpl[ 'clear_search_button' ]	 = '';
 		$tpl[ 'search_term' ]		 = '';
 	    }
+	} else {
+	    $tpl[ 'search_box' ] = '';
 	}
 
 	$tpl[ 'products_list' ]	 .= $tpl[ 'products_row_start' ];
