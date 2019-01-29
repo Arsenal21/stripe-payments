@@ -189,6 +189,10 @@ class AcceptStripePaymentsShortcode {
     }
 
     function show_user_transactions( $atts ) {
+	$atts	 = shortcode_atts( array(
+	    'items_per_page'		 => '20',
+	    'show_subscription_cancel'	 => '0'
+	), $atts, 'asp_show_my_transactions' );
 	require_once(WP_ASP_PLUGIN_PATH . 'public/includes/shortcodes/show-user-transactions.php');
 	$scClass = new AcceptStripePayments_scUserTransactions;
 	return $scClass->process_shortcode( $atts );
