@@ -8,7 +8,7 @@ stripehandler.log = (function ($mod, $msg) {
 
 stripehandler.apply_tax = function (amount, data) {
     if (data.tax !== 0) {
-	var tax = Math.round(amount * parseInt(data.tax) / 100);
+	var tax = Math.round(amount * parseFloat(data.tax) / 100);
 	amount = parseInt(amount) + parseInt(tax);
     }
     return amount;

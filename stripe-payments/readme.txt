@@ -153,6 +153,7 @@ None.
 
 = WIP 1.9.16 =
 - Fixed PHP notices displayed on products page.
+- Fixed tax value was displayed rounded down on frontend.
 
 = 1.9.15 =
 - Updated Stripe PHP SDK to latest version. PHP versions below 5.4 are no longer supported.
