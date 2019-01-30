@@ -532,6 +532,12 @@ ASP_Debug_Logger::log( 'Firing post-payment hooks.' );
 //Action hook with the checkout post data parameters.
 do_action( 'asp_stripe_payment_completed', $post_data, $data[ 'charge' ] );
 
+//insert payment data into order info
+if ( isset( $order_post_id ) ) {
+    update_post_meta( $order_post_id, 'order_data', $post_data );
+    update_post_meta( $order_post_id, 'charge_data', $data[ 'charge' ] );
+}
+
 //eMember integration - check if this is a product
 //Action hook with the order object.
 do_action( 'AcceptStripePayments_payment_completed', $order, $data[ 'charge' ] );

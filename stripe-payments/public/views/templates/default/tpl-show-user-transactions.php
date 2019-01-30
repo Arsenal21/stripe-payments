@@ -73,6 +73,7 @@ class AcceptStripePayments_tplUserTransactions {
 	    <div class="asp-user-transaction-item-line asp-user-transaction-product-id"><span><?php _e( 'Item ID:', 'stripe-payments' ); ?></span> %_product_id_%</div>
 	    <div class="asp-user-transaction-item-line asp-user-transaction-product-amount"><span><?php _e( 'Amount:', 'stripe-payments' ); ?></span> %_amount_%</div>
 	    <div class="asp-user-transaction-item-line asp-user-transaction-product-date"><span><?php _e( 'Date:', 'stripe-payments' ); ?></span> %_date_%</div>
+	    <div class="asp-user-transaction-item-line asp-user-transaction-product-additional-data">%_additional_data_%</div>
 	</div>
 	<?php
 	$this->item_tpl = ob_get_clean();

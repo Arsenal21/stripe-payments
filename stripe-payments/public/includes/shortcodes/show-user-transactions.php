@@ -46,11 +46,15 @@ class AcceptStripePayments_scUserTransactions {
 
 	$items = array();
 	foreach ( $transactions as $trans ) {
-	    $order_details = get_post_meta( $trans->ID, 'order_details', true );
-	    if ( $order_details ) {
-		$product_id	 = $order_details[ 'product_id' ];
-		$amount		 = AcceptStripePayments::formatted_price( $order_details[ 'paid_amount' ], $order_details[ 'currency_code' ] );
-		$product_name	 = $order_details[ 'item_name' ];
+	    $additional_data = '';
+	    $order_data	 = get_post_meta( $trans->ID, 'order_data', true );
+	    if ( $order_data ) {
+		$product_id	 = $order_data[ 'product_id' ];
+		$amount		 = AcceptStripePayments::formatted_price( $order_data[ 'paid_amount' ], $order_data[ 'currency_code' ] );
+		$product_name	 = $order_data[ 'item_name' ];
+		if ( isset( $order_data[ 'item_url' ] ) ) {
+		    $additional_data .= _x( "Please ", "Is a part of 'Please click here to download'", "stripe-payments" ) . "<a href='" . $order_data[ 'item_url' ] . "'>" . _x( "click here", "Is a part of 'Please click here to download'", "stripe-payments" ) . "</a>" . _x( " to download.", "Is a part of 'Please click here to download'", "stripe-payments" );
+		}
 	    } else {
 		$product_id	 = "-";
 		$amount		 = "-";
@@ -58,10 +62,11 @@ class AcceptStripePayments_scUserTransactions {
 	    }
 
 	    $item	 = array(
-		'product_name'	 => $product_name,
-		'product_id'	 => $product_id,
-		'date'		 => $trans->post_date,
-		'amount'	 => $amount
+		'product_name'		 => $product_name,
+		'product_id'		 => $product_id,
+		'date'			 => $trans->post_date,
+		'amount'		 => $amount,
+		'additional_data'	 => $additional_data,
 	    );
 	    $items[] = $item;
 	}

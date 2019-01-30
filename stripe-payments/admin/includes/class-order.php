@@ -160,10 +160,6 @@ class ASPOrder {
 
 	$post_id = wp_insert_post( $post );
 
-	//let's save order and charge details in post meta data
-	update_post_meta( $post_id, 'order_details', $order_details );
-	update_post_meta( $post_id, 'charge_details', $charge_details );
-
 	//let's insert WP user ID into order details. Can be used to display user's transaction history.
 	$user_id = get_current_user_id();
 	if ( $user_id ) {
