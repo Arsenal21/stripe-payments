@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 4.7
 Tested up to: 5.0.3
 Requires PHP: 5.4
-Stable tag: 1.9.16t1
+Stable tag: 1.9.15.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -151,9 +151,9 @@ None.
 
 == Changelog ==
 
-= WIP 1.9.16 =
-- Fixed PHP notices displayed on products page.
+= 1.9.15.1 =
 - Fixed tax value was displayed rounded down on frontend.
+- Fixed PHP notices displayed on products page.
 
 = 1.9.15 =
 - Updated Stripe PHP SDK to latest version. PHP versions below 5.4 are no longer supported.
