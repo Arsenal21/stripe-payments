@@ -245,20 +245,26 @@ if ( $got_product_data_from_db && isset( $_POST[ 'stripeVariations' ] ) ) {
 }
 
 //check if we we need to apply coupon
-if ( ! empty( $_POST[ 'stripeCoupon' ] ) ) {
+if ( isset( $prod_id ) && ! empty( $_POST[ 'stripeCoupon' ] ) ) {
     $coupon_code	 = strtoupper( $_POST[ 'stripeCoupon' ] );
     ASP_Debug_Logger::log( sprintf( 'Coupon provided "%s"', $coupon_code ) );
     $coupon		 = AcceptStripePayments_CouponsAdmin::get_coupon( $coupon_code );
     if ( $coupon[ 'valid' ] ) {
-	if ( $coupon[ 'discountType' ] === 'perc' ) {
-	    $perc		 = AcceptStripePayments::is_zero_cents( $currency_code ) ? 0 : 2;
-	    $discount_amount = round( $item_price * ( $coupon[ 'discount' ] / 100 ), $perc );
+	if ( ! AcceptStripePayments_CouponsAdmin::is_coupon_allowed_for_product( $coupon[ 'id' ], $prod_id ) ) {
+	    //coupon not allowed for this product
+	    ASP_Debug_Logger::log( 'Coupon is not allowed for this product' );
+	    unset( $coupon );
 	} else {
-	    $discount_amount = $coupon[ 'discount' ];
+	    if ( $coupon[ 'discountType' ] === 'perc' ) {
+		$perc		 = AcceptStripePayments::is_zero_cents( $currency_code ) ? 0 : 2;
+		$discount_amount = round( $item_price * ( $coupon[ 'discount' ] / 100 ), $perc );
+	    } else {
+		$discount_amount = $coupon[ 'discount' ];
+	    }
+	    ASP_Debug_Logger::log( sprintf( 'Coupon is valid. Discount amount: %s', $discount_amount ) );
+	    $coupon[ 'discountAmount' ]	 = $discount_amount;
+	    $item_price			 = $item_price - $discount_amount;
 	}
-	ASP_Debug_Logger::log( sprintf( 'Coupon is valid. Discount amount: %s', $discount_amount ) );
-	$coupon[ 'discountAmount' ]	 = $discount_amount;
-	$item_price			 = $item_price - $discount_amount;
     } else {
 	ASP_Debug_Logger::log( sprintf( 'Invalid coupon "%s", reason: %s', $coupon_code, $coupon[ 'err_msg' ] ) );
 	unset( $coupon );

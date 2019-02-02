@@ -69,6 +69,18 @@ class AcceptStripePayments_CouponsAdmin {
 	return $out;
     }
 
+    static function is_coupon_allowed_for_product( $coupon_id, $prod_id ) {
+	//check if coupon is only availabe for specific products
+	$only_for_allowed_products = get_post_meta( $coupon_id, 'asp_coupon_only_for_allowed_products', true );
+	if ( $only_for_allowed_products ) {
+	    $allowed_products = get_post_meta( $coupon_id, 'asp_coupon_allowed_products', true );
+	    if ( is_array( $allowed_products ) && ! in_array( $prod_id, $allowed_products ) ) {
+		return false;
+	    }
+	}
+	return true;
+    }
+
     function frontend_check_coupon() {
 	$out = array();
 	if ( empty( $_POST[ 'coupon_code' ] ) ) {
@@ -90,21 +102,16 @@ class AcceptStripePayments_CouponsAdmin {
 	    wp_send_json( $out );
 	}
 
-	//check if coupon is only availabe for specific products
-	$only_for_allowed_products = get_post_meta( $coupon[ 'id' ], 'asp_coupon_only_for_allowed_products', true );
-	if ( $only_for_allowed_products ) {
-	    $prod_id = filter_input( INPUT_POST, 'product_id', FILTER_SANITIZE_NUMBER_INT );
-	    if ( empty( $prod_id ) ) {
-		$out[ 'success' ]	 = false;
-		$out[ 'msg' ]		 = __( 'No product ID specified.', 'stripe-payments' );
-		wp_send_json( $out );
-	    }
-	    $allowed_products = get_post_meta( $coupon[ 'id' ], 'asp_coupon_allowed_products', true );
-	    if ( is_array( $allowed_products ) && ! in_array( $prod_id, $allowed_products ) ) {
-		$out[ 'success' ]	 = false;
-		$out[ 'msg' ]		 = __( 'Coupon is not allowed for this product.', 'stripe-payments' );
-		wp_send_json( $out );
-	    }
+	$prod_id = filter_input( INPUT_POST, 'product_id', FILTER_SANITIZE_NUMBER_INT );
+	if ( empty( $prod_id ) ) {
+	    $out[ 'success' ]	 = false;
+	    $out[ 'msg' ]		 = __( 'No product ID specified.', 'stripe-payments' );
+	    wp_send_json( $out );
+	}
+	if ( ! self::is_coupon_allowed_for_product( $coupon[ 'id' ], $prod_id ) ) {
+	    $out[ 'success' ]	 = false;
+	    $out[ 'msg' ]		 = __( 'Coupon is not allowed for this product.', 'stripe-payments' );
+	    wp_send_json( $out );
 	}
 
 	$curr = isset( $_POST[ 'curr' ] ) ? $_POST[ 'curr' ] : '';
