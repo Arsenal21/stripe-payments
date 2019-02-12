@@ -52,8 +52,12 @@ class AcceptStripePayments_scUserTransactions {
 		$product_id	 = $order_data[ 'product_id' ];
 		$amount		 = AcceptStripePayments::formatted_price( $order_data[ 'paid_amount' ], $order_data[ 'currency_code' ] );
 		$product_name	 = $order_data[ 'item_name' ];
-		if ( isset( $order_data[ 'item_url' ] ) ) {
+		if ( $atts[ 'show_download_link' ] && ! empty( $order_data[ 'item_url' ] ) ) {
 		    $additional_data .= _x( "Please ", "Is a part of 'Please click here to download'", "stripe-payments" ) . "<a href='" . $order_data[ 'item_url' ] . "'>" . _x( "click here", "Is a part of 'Please click here to download'", "stripe-payments" ) . "</a>" . _x( " to download.", "Is a part of 'Please click here to download'", "stripe-payments" );
+		}
+		$canc_url = apply_filters( 'asp_show_user_transactions_additional_data', false, $order_data );
+		if ( ! empty( $canc_url ) ) {
+		    $additional_data .= $canc_url;
 		}
 	    } else {
 		$product_id	 = "-";
