@@ -814,11 +814,24 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post, $seller_email = fal
 	$custom_field
     );
 
+    //let's combine tags and vals into one array so we can apply filters on it
+    $tags_vals	 = array(
+	'tags'	 => $tags,
+	'vals'	 => $vals
+    );
+    $tags_vals	 = apply_filters( 'asp_email_body_tags_vals_before_replace', $tags_vals, $post );
+    $tags		 = $tags_vals[ 'tags' ];
+    $vals		 = $tags_vals[ 'vals' ];
+
     $product_details = str_replace( $tags, $vals, $product_details );
     $tags[]		 = "{product_details}";
     $vals[]		 = $product_details;
 
     $body = stripslashes( str_replace( $tags, $vals, $body ) );
+
+    //let's apply filters for email body
+
+    $body = apply_filters( 'asp_email_body_after_replace', $body );
 
     return $body;
 }
