@@ -3,9 +3,9 @@ Contributors: Tips and Tricks HQ, wptipsntricks, alexanderfoxc
 Donate link: https://s-plugins.com
 Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortcode, digital goods, payment gateway, instant payment, commerce, digital downloads, downloads, e-commerce, e-store, ecommerce, eshop, donation
 Requires at least: 4.7
-Tested up to: 5.0.3
+Tested up to: 5.1
 Requires PHP: 5.4
-Stable tag: 1.9.16t2
+Stable tag: 1.9.16
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -151,7 +151,7 @@ None.
 
 == Changelog ==
 
-= WIP 1.9.16 =
+= 1.9.16 =
 - Fixed coupon was still applied to the product even if it's not allowed for it.
 
 = 1.9.15.1 =
