@@ -151,6 +151,9 @@ None.
 
 == Changelog ==
 
+= WIP 1.9.17 =
+- Fixed frontend stock control. Now customers cannot order more items than available in stock.
+
 = 1.9.16 =
 - Fixed coupon was still applied to the product even if it's not allowed for it.
 
