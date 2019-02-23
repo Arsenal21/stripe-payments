@@ -149,6 +149,7 @@ function wp_asp_validate_custom_quantity(data) {
 	jQuery('#error_explanation_quantity_' + data.uniq_id).hide().html(stripehandler.strStockNotAvailable.replace('%d', data.stock_items)).fadeIn('slow');
 	return false;
     } else {
+	jQuery('#error_explanation_quantity_' + data.uniq_id).hide();
 	return custom_quantity;
     }
 }
