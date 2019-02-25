@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 4.7
 Tested up to: 5.1
 Requires PHP: 5.4
-Stable tag: 1.9.17t1
+Stable tag: 1.9.17t2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -153,6 +153,8 @@ None.
 
 = WIP 1.9.17 =
 - Fixed frontend stock control. Now customers cannot order more items than available in stock.
+- Added [asp_show_my_transactions] shortcode to display transactions made by user.
+- Added support for addons' email merge tags. They are also displayed in tags hint if available.
 
 = 1.9.16 =
 - Fixed coupon was still applied to the product even if it's not allowed for it.

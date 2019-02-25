@@ -46,18 +46,17 @@ class AcceptStripePayments_scUserTransactions {
 
 	$items = array();
 	foreach ( $transactions as $trans ) {
-	    $additional_data = '';
+	    $additional_data = array();
 	    $order_data	 = get_post_meta( $trans->ID, 'order_data', true );
 	    if ( $order_data ) {
-		$product_id	 = $order_data[ 'product_id' ];
+		$product_id = $order_data[ 'product_id' ];
+
+		$additional_data = apply_filters( 'asp_sc_show_user_transactions_additional_data', $additional_data, $order_data, $atts );
+
 		$amount		 = AcceptStripePayments::formatted_price( $order_data[ 'paid_amount' ], $order_data[ 'currency_code' ] );
 		$product_name	 = $order_data[ 'item_name' ];
 		if ( $atts[ 'show_download_link' ] && ! empty( $order_data[ 'item_url' ] ) ) {
-		    $additional_data .= _x( "Please ", "Is a part of 'Please click here to download'", "stripe-payments" ) . "<a href='" . $order_data[ 'item_url' ] . "'>" . _x( "click here", "Is a part of 'Please click here to download'", "stripe-payments" ) . "</a>" . _x( " to download.", "Is a part of 'Please click here to download'", "stripe-payments" );
-		}
-		$canc_url = apply_filters( 'asp_show_user_transactions_additional_data', false, $order_data );
-		if ( ! empty( $canc_url ) ) {
-		    $additional_data .= $canc_url;
+		    $additional_data[] = array( __( "Download link:", 'stripe-payments' ) => sprintf( '<a href="%s" target="_blank">' . __( 'Click here to download', 'stripe-payments' ) . '</a>', $order_data[ 'item_url' ] ) );
 		}
 	    } else {
 		$product_id	 = "-";
