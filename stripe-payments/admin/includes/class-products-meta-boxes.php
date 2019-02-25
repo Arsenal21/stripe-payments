@@ -454,11 +454,6 @@ class asp_products_metaboxes {
 	?>
 	<input type="text" name="asp_product_shortcode" style="width: 100%;" class="asp-select-on-click" readonly value="[asp_product id=&quot;<?php echo $post->ID; ?>&quot;]">
 	<p class="description"><?php _e( 'Use this shortcode to display button for your product.', 'stripe-payments' ); ?></p>
-	<script>
-	    jQuery('input.asp-select-on-click').click(function () {
-		$(this).select();
-	    });
-	</script>
 	<?php
     }
 

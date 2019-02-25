@@ -81,6 +81,7 @@ class AcceptStripePaymentsShortcode {
 	    'strEnterQuantity'	 => apply_filters( 'asp_customize_text_msg', __( 'Please enter quantity.', 'stripe-payments' ), 'enter_quantity' ),
 	    'strQuantityIsZero'	 => apply_filters( 'asp_customize_text_msg', __( 'Quantity can\'t be zero.', 'stripe-payments' ), 'quantity_is_zero' ),
 	    'strQuantityIsFloat'	 => apply_filters( 'asp_customize_text_msg', __( 'Quantity should be integer value.', 'stripe-payments' ), 'quantity_is_float' ),
+	    'strStockNotAvailable'	 => apply_filters( 'asp_customize_text_msg', __( 'You cannot order more items than available: %d', 'stripe-payments' ), 'stock_not_available' ),
 	    'strTax'		 => apply_filters( 'asp_customize_text_msg', __( 'Tax', 'stripe-payments' ), 'tax_str' ),
 	    'strShipping'		 => apply_filters( 'asp_customize_text_msg', __( 'Shipping', 'stripe-payments' ), 'shipping_str' ),
 	    'strTotal'		 => __( 'Total:', 'stripe-payments' ),
@@ -543,7 +544,9 @@ class AcceptStripePaymentsShortcode {
 	//$button = "<button id = '{$button_id}' type = 'submit' class = '{$class}'><span>{$button_text}</span></button>";
 	$button = sprintf( '<div class="asp_product_buy_btn_container"><button id="%s" type="submit" class="%s"%s><span>%s</span></button></div>', esc_attr( $button_id ), esc_attr( $class ), $is_disabled, sanitize_text_field( $button_text ) );
 
-	$out_of_stock = false;
+	$out_of_stock		 = false;
+	$stock_control_enabled	 = false;
+	$stock_items		 = 0;
 	//check if stock enabled
 	if ( isset( $product_id ) && get_post_meta( $product_id, 'asp_product_enable_stock', true ) ) {
 	    //check if product is not out of stock
@@ -551,6 +554,9 @@ class AcceptStripePaymentsShortcode {
 	    if ( empty( $stock_items ) ) {
 		$button		 = '<div class="asp_out_of_stock">' . __( "Out of stock", 'stripe-payments' ) . '</div>';
 		$out_of_stock	 = true;
+	    } else {
+		$stock_control_enabled	 = true;
+		$stock_items		 = $stock_items;
 	    }
 	}
 
@@ -634,6 +640,8 @@ class AcceptStripePaymentsShortcode {
 	    'tos'			 => $tos,
 	    'button_text'		 => esc_attr( $button_text ),
 	    'out_of_stock'		 => $out_of_stock,
+	    'stock_control_enabled'	 => $stock_control_enabled,
+	    'stock_items'		 => $stock_items,
 	    'verifyZip'		 => ( ! $verifyZip) ? 0 : 1,
 	    'currencyFormat'	 => $display_settings,
 	    'displayStr'		 => $displayStr,

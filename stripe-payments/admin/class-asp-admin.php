@@ -456,7 +456,7 @@ class AcceptStripePayments_Admin {
 	add_settings_field( 'disable_buttons_before_js_loads', __( 'Disable Buttons Before Javascript Loads', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-additional-settings', array( 'field'	 => 'disable_buttons_before_js_loads',
 	    'desc'	 => __( "If enabled, payment buttons are not clickable until Javascript libraries are loaded on page view. This prevents \"Invalid Stripe Token\" errors on some configurations.", 'stripe-payments' ) )
 	);
-	add_settings_field( 'dont_create_order', __( 'Don\'t Create Order', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-additional-settings', array( 'field' => 'dont_create_order',
+	add_settings_field( 'dont_create_order', __( 'Don\'t Create Order', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-additional-settings', array( 'field'	 => 'dont_create_order',
 	    'desc'	 => __( 'If enabled, no transaction info is saved to the orders menu of the plugin. The transaction data will still be available in your Stripe dashboard. Useful if you don\'t want to store purchase and customer data in your site.', 'stripe-payments' ) )
 	);
     }
@@ -874,10 +874,18 @@ class AcceptStripePayments_Admin {
 	    "{custom_field}"	 => __( 'Custom field name and value (if enabled)', 'stripe-payments' ),
 	);
 
+	//apply filters so addons can add their hints if needed
+	$email_tags = apply_filters( 'asp_get_email_tags_descr', $email_tags );
+
 	$email_tags_descr = '';
 
 	foreach ( $email_tags as $tag => $descr ) {
-	    $email_tags_descr .= sprintf( '<tr><td class="wp-asp-tag-name"><b>%s</b></td><td class="wp-asp-tag-descr">%s</td><tr>', $tag, $descr );
+	    if ( $descr === '' ) {
+		//this means we need to add addon title which is in $tag var
+		$email_tags_descr .= sprintf( '<tr><td colspan="2" style="text-align: center" class="wp-asp-tag-name"><b>%s</b></td><tr>', $tag );
+	    } else {
+		$email_tags_descr .= sprintf( '<tr><td class="wp-asp-tag-name"><b>%s</b></td><td class="wp-asp-tag-descr">%s</td><tr>', $tag, $descr );
+	    }
 	}
 
 	$email_tags_descr = sprintf( '<div><a class="wp-asp-toggle toggled-off" href="#0">%s</a><div class="wp-asp-tags-table-cont hidden"><table class="wp-asp-tags-hint" cellspacing="0"><tbody>%s</tbody></table></div></div>', __( 'Click here to toggle tags hint', 'stripe-payments' ), $email_tags_descr );

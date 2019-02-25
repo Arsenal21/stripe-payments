@@ -93,22 +93,7 @@ if ( isset( $_POST[ 'stripeProductId' ] ) && ! empty( $_POST[ 'stripeProductId' 
 	//this is not Stripe Payments product
 	asp_ipn_completed( 'Invalid product ID: ' . $prod_id );
     }
-    $item_name	 = $post->post_title;
-    $item_url	 = get_post_meta( $prod_id, 'asp_product_upload', true );
-
-    if ( ! empty( $item_url ) ) {
-	$item_url = base64_encode( $item_url );
-    } else {
-	$item_url = '';
-    }
-
-    $post_item_url = isset( $_POST[ 'item_url' ] ) ? $_POST[ 'item_url' ] : '';
-
-    if ( ! empty( $post_item_url ) ) {
-	if ( $item_url !== $post_item_url ) {
-	    $item_url = apply_filters( 'asp_item_url_process', $post_item_url, array( 'product_id' => $prod_id, 'button_key' => $_POST[ 'stripeButtonKey' ] ) );
-	}
-    }
+    $item_name = $post->post_title;
 
     $currency_code = get_post_meta( $prod_id, 'asp_product_currency', true );
 
@@ -156,7 +141,32 @@ if ( isset( $_POST[ 'stripeProductId' ] ) && ! empty( $_POST[ 'stripeProductId' 
     $item_price	 = $price;
     $currency_code	 = $currency;
 
+    //handle item url
+    $item_url = get_post_meta( $prod_id, 'asp_product_upload', true );
+
+    if ( ! empty( $item_url ) ) {
+	$item_url = base64_encode( $item_url );
+    } else {
+	$item_url = '';
+    }
+
+    $post_item_url = filter_input( INPUT_POST, 'item_url', FILTER_SANITIZE_STRING );
+
+    $button_key = filter_input( INPUT_POST, 'stripeButtonKey', FILTER_SANITIZE_STRING );
+
+    if ( empty( $button_key ) ) {
+	//let's generate our own button key
+	$button_key = md5( $item_name . $item_price );
+    }
+
+    if ( ! empty( $post_item_url ) ) {
+	if ( $item_url !== $post_item_url ) {
+	    $item_url = apply_filters( 'asp_item_url_process', $post_item_url, array( 'product_id' => $prod_id, 'button_key' => $button_key ) );
+	}
+    }
+
     $got_product_data_from_db = true;
+
     ASP_Debug_Logger::log( 'Got required product info from database.' );
 }
 

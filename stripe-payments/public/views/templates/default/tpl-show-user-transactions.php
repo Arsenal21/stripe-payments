@@ -4,6 +4,7 @@ class AcceptStripePayments_tplUserTransactions {
 
     private $tpl		 = false;
     private $item_tpl	 = false;
+    private $add_data_tpl	 = false;
     private $pagination_tpl	 = false;
     private $atts		 = array();
 
@@ -13,13 +14,23 @@ class AcceptStripePayments_tplUserTransactions {
 	$this->_get_tpl();
 	$this->_get_item_tpl();
 	$this->_get_pagination_tpl();
+	$this->_get_additional_data_tpl();
 	$this->atts = $atts;
     }
 
     public function build_tpl( $items ) {
 	$items_tpl = '';
 	foreach ( $items as $item_arr ) {
-	    $item_tpl = $this->item_tpl;
+	    $item_tpl	 = $this->item_tpl;
+	    $additional_data = '';
+	    if ( ! empty( $item_arr[ 'additional_data' ] ) ) {
+		foreach ( $item_arr[ 'additional_data' ] as $add_data ) {
+		    foreach ( $add_data as $key => $value )
+			$add_data_tpl	 = $this->add_data_tpl;
+		    $additional_data .= str_replace( array( '%_key_%', '%_value_%' ), array( $key, $value ), $add_data_tpl );
+		}
+	    }
+	    $item_arr[ 'additional_data' ] = $additional_data;
 	    foreach ( $item_arr as $key => $value ) {
 		$item_tpl = str_replace( '%_' . $key . '_%', $value, $item_tpl );
 	    }
@@ -49,6 +60,11 @@ class AcceptStripePayments_tplUserTransactions {
 	}
 	ob_start();
 	?>
+	<div class="asp-user-transactions-pagination-cont">
+	    <ul>
+		%_pagination_%
+	    </ul>
+	</div>
 	<div class="asp-user-transactions-cont">
 	    %_items_%
 	</div>
@@ -77,6 +93,18 @@ class AcceptStripePayments_tplUserTransactions {
 	</div>
 	<?php
 	$this->item_tpl = ob_get_clean();
+	return false;
+    }
+
+    private function _get_additional_data_tpl() {
+	if ( $this->add_data_tpl ) {
+	    return true;
+	}
+	ob_start();
+	?>
+	<div class="asp-user-transaction-product-additional-data-line"><span>%_key_%</span> %_value_%</div>
+	<?php
+	$this->add_data_tpl = ob_get_clean();
 	return false;
     }
 
