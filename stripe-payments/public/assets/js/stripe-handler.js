@@ -292,6 +292,13 @@ function wp_asp_can_proceed(data, openHandler) {
 
     data.canProceed = true;
 
+    var handlerOpts = {};
+
+    if (typeof (data.is_trial) !== "undefined" && data.is_trial) {
+	handlerOpts.panelLabel = stripehandler.strStartFreeTrial;
+	amount = 0;
+    }
+
     data.totalAmount = amount;
 
     data = button_clicked_hooks(data);
@@ -303,8 +310,6 @@ function wp_asp_can_proceed(data, openHandler) {
     if (!openHandler) {
 	return true;
     }
-
-    var handlerOpts = {};
 
     handlerOpts.description = description;
     handlerOpts.currency = data.currency;

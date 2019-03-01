@@ -90,6 +90,7 @@ class AcceptStripePaymentsShortcode {
 	    'strMustAcceptTos'	 => apply_filters( 'asp_customize_text_msg', __( 'You must accept the terms before you can proceed.', 'stripe-payments' ), 'accept_terms' ),
 	    'strRemoveCoupon'	 => apply_filters( 'asp_customize_text_msg', __( 'Remove coupon', 'stripe-payments' ), 'remove_coupon' ),
 	    'strRemove'		 => apply_filters( 'asp_customize_text_msg', __( 'Remove', 'stripe-payments' ), 'remove' ),
+	    'strStartFreeTrial'	 => apply_filters( 'asp_customize_text_msg', __( 'Start Free Trial', 'stripe-payments' ), 'start_free_trial' ),
 	    'key'			 => $key,
 	    'key_test'		 => $key_test,
 	    'ajax_url'		 => admin_url( 'admin-ajax.php' ),
