@@ -503,6 +503,14 @@ function wp_asp_add_stripe_handler(data) {
 	}
     });
 
+    aspProductForm.find('div.asp_product_item_amount_input_container').children('.asp_product_item_amount_input').change(function () {
+	var amt = wp_asp_validate_custom_amount(data);
+	if (amt !== false) {
+	    data.item_price = amt;
+	    stripehandler.updateAllAmounts(data);
+	}
+    });
+
     aspProductForm.find('select.asp-product-variations-select').change(function () {
 	var grpId = jQuery(this).data('asp-variations-group-id');
 	var varId = jQuery(this).val();
