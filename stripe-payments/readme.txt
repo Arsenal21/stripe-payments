@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 4.7
 Tested up to: 5.1
 Requires PHP: 5.4
-Stable tag: 1.9.18t1
+Stable tag: 1.9.18t2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -155,6 +155,7 @@ None.
 - Trial subscriptions are now displaying 0 as payment amount on checkout results and email receipts.
 Payment button in Stripe pop-up for those now shows "Start Free Trial" instead of payment amount.
 Requires Subscriptions addon 1.4.5+
+- Fixed invalid amount was displayed on Stripe pop-up when variable price and quantity is used.
 
 = 1.9.17 =
 - Fixed frontend stock control. Now customers cannot order more items than available in stock.

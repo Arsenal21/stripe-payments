@@ -238,9 +238,7 @@ function wp_asp_can_proceed(data, openHandler) {
 	}
     }
 
-    if (typeof amount === "undefined") {
-	amount = data.item_price * data.quantity;
-    }
+    amount = data.item_price * data.quantity;
 
     amount = stripehandler.apply_coupon(amount, data);
 
