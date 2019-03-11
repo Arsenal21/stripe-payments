@@ -263,6 +263,14 @@ function wp_asp_can_proceed(data, openHandler) {
 	jQuery('form#stripe_form_' + data.uniq_id).find('.asp_product_custom_field_error').hide();
 	customInputs = jQuery('form#stripe_form_' + data.uniq_id).find('.asp_product_custom_field_input').toArray();
 	var valid = true;
+	if (typeof (data.custom_field_validation_regex) !== "undefined" && data.custom_field_validation_regex !== '') {
+	    try {
+		var re = new RegExp(data.custom_field_validation_regex);
+	    } catch (error) {
+		alert(stripehandler.strInvalidCFValidationRegex + ' ' + data.custom_field_validation_regex + "\n" + error);
+		return valid = false;
+	    }
+	}
 	jQuery.each(customInputs, function (id, customInput) {
 	    customInput = jQuery(customInput);
 	    if (typeof (customInput.attr('data-asp-custom-mandatory')) !== "undefined") {
@@ -272,6 +280,12 @@ function wp_asp_can_proceed(data, openHandler) {
 		}
 		if (customInput.attr('type') === 'checkbox' && customInput.prop('checked') !== true) {
 		    jQuery(this).parent().siblings('.asp_product_custom_field_error').hide().html(stripehandler.strPleaseCheckCheckbox).fadeIn('slow');
+		    return valid = false;
+		}
+	    }
+	    if (customInput.attr('class') === 'asp_product_custom_field_input' && customInput.attr('type') === 'text') {
+		if (customInput.val() && !re.test(customInput.val())) {
+		    jQuery(this).siblings('.asp_product_custom_field_error').hide().html(data.custom_field_validation_err_msg).fadeIn('slow');
 		    return valid = false;
 		}
 	    }

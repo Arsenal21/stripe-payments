@@ -194,6 +194,93 @@ div#poststuff {
 	box-shadow: 0 2.5em 0 0;
     }
 }
+
+/* Hover over help hint */
+
+
+.wp-asp-help {
+    position: relative;
+    display: inline-block;
+    cursor: help;
+    vertical-align: middle;
+    color: #cdcdcd;
+}
+
+.wp-asp-help:hover {
+    color: blue;
+}
+
+.wp-asp-help .dashicons {
+    font-size: 180%;
+    height: auto;
+    width: auto;
+}
+
+.wp-asp-help:hover .wp-asp-help-text {
+    visibility: visible;
+}
+.wp-asp-help .wp-asp-help-text {
+    min-width:200px;
+    top:-10px;
+    left:50%;
+    transform:translate(-50%, -100%);
+    padding:7px 10px;
+    color:#fff;
+    background-color:#111;
+    font-weight:normal;
+    border-radius:8px;
+    position:absolute;
+    z-index:99999999;
+    box-sizing:border-box;
+    box-shadow:0 1px 8px rgba(0,0,0,0.5);
+    visibility: hidden;
+    text-align: center;
+}
+.wp-asp-help .wp-asp-help-text::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: black transparent transparent transparent;
+}
+@media screen and (max-width: 782px) {
+    .wp-asp-help .wp-asp-help-text::after {
+	top: 50%;
+	left: 100%; /* To the right of the tooltip */
+	margin-left: auto;
+	margin-top: -5px;
+	border-width: 5px;
+	border-style: solid;
+	border-color: transparent transparent transparent black;
+    }
+    .wp-asp-help {
+	float: right;
+    }
+    .wp-asp-help .wp-asp-help-text {
+	min-width:200px;
+	top:50%;
+	right:100%;
+	left: auto;
+	margin-right:10px;
+	transform:translate(0, -50%);
+    }
+    .wp-asp-help .dashicons {
+	vertical-align: bottom;
+	width: 30px;
+	height: 30px;
+	font-size: 200%;
+    }
+    .asp_acf_input_control span.dashicons
+    {
+	vertical-align: middle;
+    }
+}
+
+/* END Hover over help hint */
+
 /*----- END Settings Page ----- */
 
 /*----- Email tags hint ----- */

@@ -76,27 +76,28 @@ class AcceptStripePaymentsShortcode {
 	);
 
 	$loc_data = array(
-	    'strEnterValidAmount'	 => apply_filters( 'asp_customize_text_msg', __( 'Please enter a valid amount', 'stripe-payments' ), 'enter_valid_amount' ),
-	    'strMinAmount'		 => apply_filters( 'asp_customize_text_msg', __( 'Minimum amount is', 'stripe-payments' ), 'min_amount_is' ),
-	    'strEnterQuantity'	 => apply_filters( 'asp_customize_text_msg', __( 'Please enter quantity.', 'stripe-payments' ), 'enter_quantity' ),
-	    'strQuantityIsZero'	 => apply_filters( 'asp_customize_text_msg', __( 'Quantity can\'t be zero.', 'stripe-payments' ), 'quantity_is_zero' ),
-	    'strQuantityIsFloat'	 => apply_filters( 'asp_customize_text_msg', __( 'Quantity should be integer value.', 'stripe-payments' ), 'quantity_is_float' ),
-	    'strStockNotAvailable'	 => apply_filters( 'asp_customize_text_msg', __( 'You cannot order more items than available: %d', 'stripe-payments' ), 'stock_not_available' ),
-	    'strTax'		 => apply_filters( 'asp_customize_text_msg', __( 'Tax', 'stripe-payments' ), 'tax_str' ),
-	    'strShipping'		 => apply_filters( 'asp_customize_text_msg', __( 'Shipping', 'stripe-payments' ), 'shipping_str' ),
-	    'strTotal'		 => __( 'Total:', 'stripe-payments' ),
-	    'strPleaseFillIn'	 => apply_filters( 'asp_customize_text_msg', __( 'Please fill in this field.', 'stripe-payments' ), 'fill_in_field' ),
-	    'strPleaseCheckCheckbox' => __( 'Please check this checkbox.', 'stripe-payments' ),
-	    'strMustAcceptTos'	 => apply_filters( 'asp_customize_text_msg', __( 'You must accept the terms before you can proceed.', 'stripe-payments' ), 'accept_terms' ),
-	    'strRemoveCoupon'	 => apply_filters( 'asp_customize_text_msg', __( 'Remove coupon', 'stripe-payments' ), 'remove_coupon' ),
-	    'strRemove'		 => apply_filters( 'asp_customize_text_msg', __( 'Remove', 'stripe-payments' ), 'remove' ),
-	    'strStartFreeTrial'	 => apply_filters( 'asp_customize_text_msg', __( 'Start Free Trial', 'stripe-payments' ), 'start_free_trial' ),
-	    'key'			 => $key,
-	    'key_test'		 => $key_test,
-	    'ajax_url'		 => admin_url( 'admin-ajax.php' ),
-	    'minAmounts'		 => $minAmounts,
-	    'zeroCents'		 => $zeroCents,
-	    'amountOpts'		 => $amountOpts,
+	    'strEnterValidAmount'		 => apply_filters( 'asp_customize_text_msg', __( 'Please enter a valid amount', 'stripe-payments' ), 'enter_valid_amount' ),
+	    'strMinAmount'			 => apply_filters( 'asp_customize_text_msg', __( 'Minimum amount is', 'stripe-payments' ), 'min_amount_is' ),
+	    'strEnterQuantity'		 => apply_filters( 'asp_customize_text_msg', __( 'Please enter quantity.', 'stripe-payments' ), 'enter_quantity' ),
+	    'strQuantityIsZero'		 => apply_filters( 'asp_customize_text_msg', __( 'Quantity can\'t be zero.', 'stripe-payments' ), 'quantity_is_zero' ),
+	    'strQuantityIsFloat'		 => apply_filters( 'asp_customize_text_msg', __( 'Quantity should be integer value.', 'stripe-payments' ), 'quantity_is_float' ),
+	    'strStockNotAvailable'		 => apply_filters( 'asp_customize_text_msg', __( 'You cannot order more items than available: %d', 'stripe-payments' ), 'stock_not_available' ),
+	    'strTax'			 => apply_filters( 'asp_customize_text_msg', __( 'Tax', 'stripe-payments' ), 'tax_str' ),
+	    'strShipping'			 => apply_filters( 'asp_customize_text_msg', __( 'Shipping', 'stripe-payments' ), 'shipping_str' ),
+	    'strTotal'			 => __( 'Total:', 'stripe-payments' ),
+	    'strPleaseFillIn'		 => apply_filters( 'asp_customize_text_msg', __( 'Please fill in this field.', 'stripe-payments' ), 'fill_in_field' ),
+	    'strPleaseCheckCheckbox'	 => __( 'Please check this checkbox.', 'stripe-payments' ),
+	    'strMustAcceptTos'		 => apply_filters( 'asp_customize_text_msg', __( 'You must accept the terms before you can proceed.', 'stripe-payments' ), 'accept_terms' ),
+	    'strRemoveCoupon'		 => apply_filters( 'asp_customize_text_msg', __( 'Remove coupon', 'stripe-payments' ), 'remove_coupon' ),
+	    'strRemove'			 => apply_filters( 'asp_customize_text_msg', __( 'Remove', 'stripe-payments' ), 'remove' ),
+	    'strStartFreeTrial'		 => apply_filters( 'asp_customize_text_msg', __( 'Start Free Trial', 'stripe-payments' ), 'start_free_trial' ),
+	    'strInvalidCFValidationRegex'	 => __( 'Invalid validation RegEx: ', 'stripe-payments' ),
+	    'key'				 => $key,
+	    'key_test'			 => $key_test,
+	    'ajax_url'			 => admin_url( 'admin-ajax.php' ),
+	    'minAmounts'			 => $minAmounts,
+	    'zeroCents'			 => $zeroCents,
+	    'amountOpts'			 => $amountOpts,
 	);
 	return $loc_data;
     }
@@ -575,6 +576,24 @@ class AcceptStripePaymentsShortcode {
 	    $custom_field = $atts[ 'custom_field' ];
 	}
 
+	$cf_validation_regex	 = '';
+	$cf_validation_err_msg	 = '';
+
+	if ( $custom_field ) {
+	    //check if we have custom field validation enabled
+	    $custom_validation = $this->AcceptStripePayments->get_setting( 'custom_field_validation' );
+	    if ( ! empty( $custom_validation ) ) {
+		if ( $custom_validation === 'num' ) {
+		    $cf_validation_regex	 = '^[0-9]+$';
+		    $cf_validation_err_msg	 = __( 'Only numbers are allowed: 0-9', 'stripe-payments' );
+		} else
+		if ( $custom_validation === 'custom' ) {
+		    $cf_validation_regex	 = $this->AcceptStripePayments->get_setting( 'custom_field_custom_validation_regex' );
+		    $cf_validation_err_msg	 = $this->AcceptStripePayments->get_setting( 'custom_field_custom_validation_err_msg' );
+		}
+	    }
+	}
+
 	$coupons_enabled = $this->AcceptStripePayments->get_setting( 'coupons_enabled' );
 	if ( isset( $atts[ 'coupons_enabled' ] ) ) {
 	    $coupons_enabled = $atts[ 'coupons_enabled' ];
@@ -611,41 +630,43 @@ class AcceptStripePaymentsShortcode {
 	$displayStr[ 'ship' ]	 = '%s (' . strtolower( $shipStr ) . ')';
 
 	$data = array(
-	    'is_live'		 => $this->AcceptStripePayments->is_live,
-	    'product_id'		 => $product_id,
-	    'button_key'		 => $button_key,
-	    'item_price'		 => isset( $item_price ) ? $item_price : 0,
-	    'allowRememberMe'	 => $allowRememberMe,
-	    'quantity'		 => $quantity,
-	    'custom_quantity'	 => $custom_quantity,
-	    'description'		 => $description,
-	    'descrGenerated'	 => $descr_generated,
-	    'shipping'		 => $shipping,
-	    'tax'			 => $tax,
-	    'image'			 => $item_logo,
-	    'currency'		 => $currency,
-	    'currency_variable'	 => $currency_variable,
-	    'locale'		 => (empty( $checkout_lang ) ? 'auto' : $checkout_lang),
-	    'name'			 => htmlspecialchars_decode( $name ),
-	    'url'			 => $url,
-	    'amount'		 => $priceInCents,
-	    'billingAddress'	 => (empty( $billing_address ) ? false : true),
-	    'shippingAddress'	 => (empty( $shipping_address ) ? false : true),
-	    'customer_email'	 => $customer_email,
-	    'uniq_id'		 => $uniq_id,
-	    'variable'		 => ($price == 0 ? true : false),
-	    'zeroCents'		 => $this->AcceptStripePayments->zeroCents,
-	    'addonHooks'		 => array(),
-	    'custom_field'		 => $custom_field,
-	    'coupons_enabled'	 => $coupons_enabled,
-	    'tos'			 => $tos,
-	    'button_text'		 => esc_attr( $button_text ),
-	    'out_of_stock'		 => $out_of_stock,
-	    'stock_control_enabled'	 => $stock_control_enabled,
-	    'stock_items'		 => $stock_items,
-	    'verifyZip'		 => ( ! $verifyZip) ? 0 : 1,
-	    'currencyFormat'	 => $display_settings,
-	    'displayStr'		 => $displayStr,
+	    'is_live'				 => $this->AcceptStripePayments->is_live,
+	    'product_id'				 => $product_id,
+	    'button_key'				 => $button_key,
+	    'item_price'				 => isset( $item_price ) ? $item_price : 0,
+	    'allowRememberMe'			 => $allowRememberMe,
+	    'quantity'				 => $quantity,
+	    'custom_quantity'			 => $custom_quantity,
+	    'description'				 => $description,
+	    'descrGenerated'			 => $descr_generated,
+	    'shipping'				 => $shipping,
+	    'tax'					 => $tax,
+	    'image'					 => $item_logo,
+	    'currency'				 => $currency,
+	    'currency_variable'			 => $currency_variable,
+	    'locale'				 => (empty( $checkout_lang ) ? 'auto' : $checkout_lang),
+	    'name'					 => htmlspecialchars_decode( $name ),
+	    'url'					 => $url,
+	    'amount'				 => $priceInCents,
+	    'billingAddress'			 => (empty( $billing_address ) ? false : true),
+	    'shippingAddress'			 => (empty( $shipping_address ) ? false : true),
+	    'customer_email'			 => $customer_email,
+	    'uniq_id'				 => $uniq_id,
+	    'variable'				 => ($price == 0 ? true : false),
+	    'zeroCents'				 => $this->AcceptStripePayments->zeroCents,
+	    'addonHooks'				 => array(),
+	    'custom_field'				 => $custom_field,
+	    'custom_field_validation_regex'		 => $cf_validation_regex,
+	    'custom_field_validation_err_msg'	 => $cf_validation_err_msg,
+	    'coupons_enabled'			 => $coupons_enabled,
+	    'tos'					 => $tos,
+	    'button_text'				 => esc_attr( $button_text ),
+	    'out_of_stock'				 => $out_of_stock,
+	    'stock_control_enabled'			 => $stock_control_enabled,
+	    'stock_items'				 => $stock_items,
+	    'verifyZip'				 => ( ! $verifyZip) ? 0 : 1,
+	    'currencyFormat'			 => $display_settings,
+	    'displayStr'				 => $displayStr,
 	);
 
 	$data = apply_filters( 'asp-button-output-data-ready', $data, $atts );

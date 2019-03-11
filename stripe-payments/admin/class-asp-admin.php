@@ -434,6 +434,9 @@ class AcceptStripePayments_Admin {
 	add_settings_field( 'custom_field_type', __( 'Field Type', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-custom-field', array( 'field'	 => 'custom_field_type',
 	    'desc'	 => __( 'Select custom field type.', 'stripe-payments' ) )
 	);
+	add_settings_field( 'custom_field_validation', __( 'Field Validation', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-custom-field', array( 'field'	 => 'custom_field_validation',
+	    'desc'	 => __( 'Select custom field validation if needed.', 'stripe-payments' ) )
+	);
 	add_settings_field( 'custom_field_mandatory', __( 'Mandatory', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-custom-field', array( 'field'	 => 'custom_field_mandatory',
 	    'desc'	 => __( "If enabled, makes the field mandatory - user can't proceed with the payment before it's filled.", 'stripe-payments' ) )
 	);
@@ -550,6 +553,36 @@ class AcceptStripePayments_Admin {
 		echo "<option value='below'" . ($field_value === 'below' ? ' selected' : '') . ">" . __( 'Below Input', 'stripe-payments' ) . "</option>";
 		echo "</select>";
 		echo "<p class=\"description\">{$desc}</p>";
+		break;
+	    case 'custom_field_validation':
+		echo "<select name='AcceptStripePayments-settings[{$field}]'>'";
+		echo "<option value=''" . (empty( $field_value ) ? ' selected' : '') . ">" . __( 'No Validation', 'stripe-payments' ) . "</option>";
+		echo "<option value='num'" . ($field_value === 'num' ? ' selected' : '') . ">" . __( 'Numbers Only', 'stripe-payments' ) . "</option>";
+		echo "<option value='custom'" . ($field_value === 'custom' ? ' selected' : '') . ">" . __( 'Custom Validation', 'stripe-payments' ) . "</option>";
+		echo "</select>";
+		echo ' <div class="wp-asp-help"><i class="dashicons dashicons-editor-help"></i>'
+		. '<span class="wp-asp-help-text">'
+		. '<p><strong>' . __( 'No Validation', 'stripe-payments' ) . '</strong>: ' . __( 'no validation performed', 'stripe-payments' ) . '</p>'
+		. '<p><strong>' . __( 'Numbers Only', 'stripe-payments' ) . '</strong>: ' . __( 'only accepts numbers 0-9', 'stripe-payments' ) . '</p>'
+		. '<p><strong>' . __( 'Custom Validation', 'stripe-payments' ) . '</strong>: ' . sprintf( __( 'you can enter your own validation rules using <a href="%s" target="_blank">JavaScript RegExp</a> format.', 'stripe-payments' ), 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions' ) . '</p>'
+		. '</span>'
+		. '</div>';
+		echo "<p class=\"description\">{$desc}</p>";
+		$opts		 = get_option( 'AcceptStripePayments-settings' );
+		$custom_regex	 = '';
+		if ( ! empty( $opts[ 'custom_field_custom_validation_regex' ] ) ) {
+		    $custom_regex = $opts[ 'custom_field_custom_validation_regex' ];
+		}
+		$custom_regex_err_msg = __( 'Please enter valid data', 'stripe-payments' );
+		if ( ! empty( $opts[ 'custom_field_custom_validation_err_msg' ] ) ) {
+		    $custom_regex_err_msg = $opts[ 'custom_field_custom_validation_err_msg' ];
+		}
+		echo '<div class="wp-asp-custom-field-validation-custom-input-cont" style="display: none;">'
+		. '<input type="text" size="40" name="AcceptStripePayments-settings[custom_field_custom_validation_regex]" value="' . $custom_regex . '"></input>'
+		. '<p class="description">' . sprintf( __( 'Enter your custom validation rule using <a href="%s" target="_blank">JavaScript RegExp</a> format.', 'stripe-payments' ), 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions' ) . '</p>'
+		. '<input type="text" size="40" name="AcceptStripePayments-settings[custom_field_custom_validation_err_msg]" value="' . $custom_regex_err_msg . '"></input>'
+		. '<p class="description">' . __( 'Error message to display if validation is not passed.', 'stripe-payments' ) . '</p>'
+		. '</div>';
 		break;
 	    case 'tos_position':
 	    case 'custom_field_position':
@@ -697,6 +730,13 @@ class AcceptStripePayments_Admin {
 	$output[ 'custom_field_descr_location' ] = empty( $input[ 'custom_field_descr_location' ] ) ? 'placeholder' : $input[ 'custom_field_descr_location' ];
 
 	$output [ 'custom_field_position' ] = sanitize_text_field( $input[ 'custom_field_position' ] );
+
+	$output [ 'custom_field_validation' ] = sanitize_text_field( $input[ 'custom_field_validation' ] );
+
+	if ( ! empty( $output[ 'custom_field_validation' ] ) && $output[ 'custom_field_validation' ] === 'custom' ) {
+	    $output[ 'custom_field_custom_validation_regex' ]	 = sanitize_text_field( $input[ 'custom_field_custom_validation_regex' ] );
+	    $output[ 'custom_field_custom_validation_err_msg' ]	 = sanitize_text_field( $input[ 'custom_field_custom_validation_err_msg' ] );
+	}
 
 	$output[ 'custom_field_mandatory' ] = empty( $input[ 'custom_field_mandatory' ] ) ? 0 : 1;
 

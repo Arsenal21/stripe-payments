@@ -27,6 +27,22 @@ jQuery(function ($) {
 	}
     });
 
+    $('select[name="AcceptStripePayments-settings[custom_field_type]"').change(function () {
+	if ($(this).val() === 'text') {
+	    $(this).parents('tr').next().show();
+	} else {
+	    $(this).parents('tr').next().hide();
+	}
+    });
+
+    $('select[name="AcceptStripePayments-settings[custom_field_validation]"').change(function () {
+	if ($(this).val() === 'custom') {
+	    $('div.wp-asp-custom-field-validation-custom-input-cont').show();
+	} else {
+	    $('div.wp-asp-custom-field-validation-custom-input-cont').hide();
+	}
+    });
+
     $('#asp_clear_log_btn').click(function (e) {
 	e.preventDefault();
 	if (confirm(aspSettingsData.str.logClearConfirm)) {
@@ -50,6 +66,10 @@ jQuery(function ($) {
     });
 
     $('#wp_asp_curr_code').change();
+
+    $('select[name="AcceptStripePayments-settings[custom_field_validation]"').change();
+
+    $('select[name="AcceptStripePayments-settings[custom_field_type]"').change();
 
     $('a.nav-tab[data-tab-name="' + wp_asp_urlHash + '"]').trigger('click');
 
