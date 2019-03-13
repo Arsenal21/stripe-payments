@@ -578,8 +578,10 @@ class AcceptStripePayments_Admin {
 		    $custom_regex_err_msg = $opts[ 'custom_field_custom_validation_err_msg' ];
 		}
 		echo '<div class="wp-asp-custom-field-validation-custom-input-cont" style="display: none;">'
-		. '<input type="text" size="40" name="AcceptStripePayments-settings[custom_field_custom_validation_regex]" value="' . $custom_regex . '"></input>'
-		. '<p class="description">' . sprintf( __( 'Enter your custom validation rule using <a href="%s" target="_blank">JavaScript RegExp</a> format.', 'stripe-payments' ), 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions' ) . '</p>'
+		. '<input type="text" size="40" name="AcceptStripePayments-settings[custom_field_custom_validation_regex]" value="' . esc_attr( $custom_regex ) . '"></input>'
+		. '<p class="description">' . sprintf( __( 'Enter your custom validation rule using <a href="%s" target="_blank">JavaScript RegExp</a> format. No need to enclose those using "/".', 'stripe-payments' ), 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions' )
+		. '<br/>' . __( 'Example RegExp to allow numbers only: ^[0-9]+$', 'stripe-payments' )
+		. '</p>'
 		. '<input type="text" size="40" name="AcceptStripePayments-settings[custom_field_custom_validation_err_msg]" value="' . $custom_regex_err_msg . '"></input>'
 		. '<p class="description">' . __( 'Error message to display if validation is not passed.', 'stripe-payments' ) . '</p>'
 		. '</div>';
@@ -734,7 +736,20 @@ class AcceptStripePayments_Admin {
 	$output [ 'custom_field_validation' ] = sanitize_text_field( $input[ 'custom_field_validation' ] );
 
 	if ( ! empty( $output[ 'custom_field_validation' ] ) && $output[ 'custom_field_validation' ] === 'custom' ) {
-	    $output[ 'custom_field_custom_validation_regex' ]	 = sanitize_text_field( $input[ 'custom_field_custom_validation_regex' ] );
+	    $custom_regex	 = sanitize_text_field( $input[ 'custom_field_custom_validation_regex' ] );
+	    $regex_error	 = false;
+	    try {
+		if ( preg_match( '/' . $custom_regex . '/', '' ) === false ) {
+		    $regex_error = true;
+		}
+	    } catch ( Exception $ex ) {
+		$regex_error = true;
+	    }
+	    if ( $regex_error ) {
+		//error occurred during regex test
+		add_settings_error( 'custom_field_custom_validation_regex', 'custom_field_custom_validation_regex', sprintf( __( 'Invalid custom RegExp for Custom Field validation provided: %s', 'stripe-payments' ), $custom_regex ) );
+	    }
+	    $output[ 'custom_field_custom_validation_regex' ]	 = $custom_regex;
 	    $output[ 'custom_field_custom_validation_err_msg' ]	 = sanitize_text_field( $input[ 'custom_field_custom_validation_err_msg' ] );
 	}
 
