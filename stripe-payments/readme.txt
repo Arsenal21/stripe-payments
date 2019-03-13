@@ -159,6 +159,7 @@ Requires Subscriptions addon 1.4.5+
 - Fixed invalid amount was displayed on Stripe pop-up when variable price and quantity is used.
 - {product_details} merge tag is available for custom checkout results page.
 - Purchase date is now displayed using WP date\time format settings and considers timezone.
+- Added option to display product variations as radio buttons (can be set per product on product edit page). 
 
 = 1.9.17 =
 - Fixed frontend stock control. Now customers cannot order more items than available in stock.

@@ -525,7 +525,7 @@ function wp_asp_add_stripe_handler(data) {
 	}
     });
 
-    aspProductForm.find('select.asp-product-variations-select').change(function () {
+    aspProductForm.find('select.asp-product-variations-select, input.asp-product-variations-select-radio').change(function () {
 	var grpId = jQuery(this).data('asp-variations-group-id');
 	var varId = jQuery(this).val();
 	if (Object.getOwnPropertyNames(data.variations).length !== 0) {
@@ -541,7 +541,7 @@ function wp_asp_add_stripe_handler(data) {
 	}
     });
 
-    aspProductForm.find('select.asp-product-variations-select').change();
+    aspProductForm.find('select.asp-product-variations-select, input.asp-product-variations-select-radio:checked').change();
 
     jQuery('#stripe_button_' + data.uniq_id).prop("disabled", false);
 }

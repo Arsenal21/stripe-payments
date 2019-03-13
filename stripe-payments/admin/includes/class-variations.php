@@ -22,9 +22,11 @@ class ASPVariations {
 	    if ( ! empty( $variations_names ) ) {
 		$variations_prices			 = get_post_meta( $this->prod_id, 'asp_variations_prices', true );
 		$variations_urls			 = get_post_meta( $this->prod_id, 'asp_variations_urls', true );
+		$variations_opts			 = get_post_meta( $this->prod_id, 'asp_variations_opts', true );
 		$this->variations[ $grp_id ][ 'names' ]	 = $variations_names[ $grp_id ];
 		$this->variations[ $grp_id ][ 'prices' ] = $variations_prices[ $grp_id ];
 		$this->variations[ $grp_id ][ 'urls' ]	 = $variations_urls[ $grp_id ];
+		$this->variations[ $grp_id ][ 'opts' ]	 = $variations_opts;
 	    }
 	}
     }
@@ -43,7 +45,8 @@ class ASPVariations {
 	    'group_name'	 => $this->groups[ $grp_id ],
 	    'name'		 => $this->variations[ $grp_id ][ 'names' ][ $var_id ],
 	    'price'		 => $this->variations[ $grp_id ][ 'prices' ][ $var_id ],
-	    'url'		 => $this->variations[ $grp_id ][ 'urls' ][ $var_id ]
+	    'url'		 => $this->variations[ $grp_id ][ 'urls' ][ $var_id ],
+	    'opts'		 => $this->variations[ $grp_id ][ 'opts' ][ $var_id ]
 	);
 	return $var;
     }

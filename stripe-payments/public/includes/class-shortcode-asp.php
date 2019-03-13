@@ -838,15 +838,25 @@ class AcceptStripePaymentsShortcode {
 			if ( ! empty( $variations_names ) ) {
 			    $variations_prices		 = get_post_meta( $data[ 'product_id' ], 'asp_variations_prices', true );
 			    $variations_urls		 = get_post_meta( $data[ 'product_id' ], 'asp_variations_urls', true );
+			    $variations_opts		 = get_post_meta( $data[ 'product_id' ], 'asp_variations_opts', true );
 			    $this->variations[ 'names' ]	 = $variations_names;
 			    $this->variations[ 'prices' ]	 = $variations_prices;
 			    $this->variations[ 'urls' ]	 = $variations_urls;
+			    $this->variations[ 'opts' ]	 = $variations_opts;
 			    $variations_str			 .= '<div class="asp-product-variations-cont">';
 			    $variations_str			 .= '<label class="asp-product-variations-label">' . $group . '</label>';
-			    $variations_str			 .= sprintf( '<select class="asp-product-variations-select" data-asp-variations-group-id="%1$d" name="stripeVariations[%1$d][]">', $grp_id );
+			    if ( $variations_opts[ $grp_id ] === "1" ) {
+				
+			    } else {
+				$variations_str .= sprintf( '<select class="asp-product-variations-select" data-asp-variations-group-id="%1$d" name="stripeVariations[%1$d][]">', $grp_id );
+			    }
 			    foreach ( $variations_names[ $grp_id ] as $var_id => $name ) {
-				$tpl		 = '<option value="%d">%s %s</option>';
-				$price_mod	 = $variations_prices[ $grp_id ][ $var_id ];
+				if ( $variations_opts[ $grp_id ] === "1" ) {
+				    $tpl = '<label class="asp-product-variations-select-radio-label"><input class="asp-product-variations-select-radio" data-asp-variations-group-id="' . $grp_id . '" name="stripeVariations[' . $grp_id . '][]" type="radio" name="123" value="%d"' . ($var_id === 0 ? 'checked' : '') . '>%s %s</label>';
+				} else {
+				    $tpl = '<option value="%d">%s %s</option>';
+				}
+				$price_mod = $variations_prices[ $grp_id ][ $var_id ];
 				if ( ! empty( $price_mod ) ) {
 				    $fmt_price	 = AcceptStripePayments::formatted_price( abs( $price_mod ), $data[ 'currency' ] );
 				    $price_mod	 = $price_mod < 0 ? ' - ' . $fmt_price : ' + ' . $fmt_price;
@@ -856,7 +866,12 @@ class AcceptStripePaymentsShortcode {
 				}
 				$variations_str .= sprintf( $tpl, $var_id, $name, $price_mod );
 			    }
-			    $variations_str .= '</select></div>';
+			    if ( $variations_opts[ $grp_id ] === "1" ) {
+				
+			    } else {
+				$variations_str .= '</select>';
+			    }
+			    $variations_str .= '</div>';
 			}
 		    }
 		    $output .= $variations_str;

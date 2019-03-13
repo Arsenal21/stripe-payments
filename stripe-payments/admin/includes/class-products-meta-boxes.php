@@ -95,6 +95,7 @@ class asp_products_metaboxes {
 	$variations_names	 = get_post_meta( $post->ID, 'asp_variations_names', true );
 	$variations_prices	 = get_post_meta( $post->ID, 'asp_variations_prices', true );
 	$variations_urls	 = get_post_meta( $post->ID, 'asp_variations_urls', true );
+	$variations_opts	 = get_post_meta( $post->ID, 'asp_variations_opts', true );
 	if ( empty( $variations_groups ) ) {
 	    $variations_str = __( 'No variations configured for this product.', 'stripe-payments' );
 	}
@@ -110,10 +111,9 @@ class asp_products_metaboxes {
 	    }
 	    .asp-variations-group-title {
 		padding: 5px;
-		text-align: center;
 	    }
 	    .asp-variations-group-name {
-		width: 70%;
+		width: 60%;
 		display: inline-block;
 	    }
 	    .asp-variations-tbl {
@@ -139,8 +139,10 @@ class asp_products_metaboxes {
 	    }
 	    .asp-variations-select-from-ml-btn {
 		position: absolute;
-		top: 8px;
-		right: 8px;
+		top: 50%;
+		bottom: 50%;
+		margin: auto 0 !important;
+		right: 7px;
 	    }
 	</style>
 	<div id="asp-variations-cont-main">
@@ -154,7 +156,16 @@ class asp_products_metaboxes {
 		<div class="asp-variations-group-title">
 		    <span><?php _e( 'Group Name:', 'stripe-payments' ); ?> </span>
 		    <input type="text" value="" class="asp-variations-group-name">
-		    <button type="button" class="button asp-variations-delete-group-btn asp-btn-small"><span class="dashicons dashicons-trash" title="<?php _e( 'Delete group', 'stripe-payments' ); ?>"></span></button>
+		    <button type="button" class="button asp-variations-delete-group-btn asp-btn-small">
+			<span class="dashicons dashicons-trash" title="<?php _e( 'Delete group', 'stripe-payments' ); ?>"></span>
+		    </button>
+		    <div style="float: right;">
+		    <label><?php _e( 'Display As:', 'stripe-payments' ); ?> </label>
+		    <select class="asp-variations-display-type">
+			<option value="0">Dropdown</option>
+			<option value="1">Radio</option>
+		    </select>
+		    </div>
 		</div>
 		<table class="widefat asp-variations-tbl">
 		    <tr>
@@ -189,6 +200,7 @@ class asp_products_metaboxes {
 	    'varNames'	 => $variations_names,
 	    'varPrices'	 => $variations_prices,
 	    'varUrls'	 => $variations_urls,
+	    'varOpts' => $variations_opts,
 	    'str'		 => array(
 		'groupDeleteConfirm'	 => __( 'Are you sure you want to delete this group?', 'stripe-payments' ),
 		'varDeleteConfirm'	 => __( 'Are you sure you want to delete this variation?', 'stripe-payments' ),
@@ -377,12 +389,14 @@ class asp_products_metaboxes {
 	<label><input type="checkbox" name="asp_product_collect_billing_addr" value="1"<?php echo ($collect_billing_addr === "1") ? ' checked' : ''; ?>><?php echo __( 'Collect Address on Checkout', 'stripe-payments' ); ?> </label>
 	<p class="description"><?php echo __( "Enable this to collect customer address on checkout.", 'stripe-payments' ); ?></p>
 	<div style="margin-left:30px;">
-	    <label><input type="radio" name="asp_product_collect_shipping_addr" data-addr-radio="1" value="1"<?php echo ($collect_shipping_addr === "1" || $collect_shipping_addr === "") ? ' checked' : '';
-	echo ! $collect_billing_addr ? ' disabled' : '';
-	?>><?php echo __( 'Collect Both Billing And Shipping Addresses', 'stripe-payments' ); ?> </label>
+	    <label><input type="radio" name="asp_product_collect_shipping_addr" data-addr-radio="1" value="1"<?php
+		echo ($collect_shipping_addr === "1" || $collect_shipping_addr === "") ? ' checked' : '';
+		echo ! $collect_billing_addr ? ' disabled' : '';
+		?>><?php echo __( 'Collect Both Billing And Shipping Addresses', 'stripe-payments' ); ?> </label>
 	    <p></p>
 	    <label><input type="radio" name="asp_product_collect_shipping_addr" data-addr-radio="1" value="0"<?php echo ($collect_shipping_addr === "0") ? ' checked' : '';
-		  echo ! $collect_billing_addr ? ' disabled' : ''; ?>><?php echo __( 'Collect Billing Address Only', 'stripe-payments' ); ?> </label>
+		echo ! $collect_billing_addr ? ' disabled' : '';
+		?>><?php echo __( 'Collect Billing Address Only', 'stripe-payments' ); ?> </label>
 	</div>
 	<?php
     }
@@ -563,12 +577,15 @@ class asp_products_metaboxes {
 		    update_post_meta( $post_id, 'asp_variations_prices', $variations_prices );
 		    $variations_urls	 = filter_input( INPUT_POST, 'asp-variation-urls', FILTER_UNSAFE_RAW, FILTER_REQUIRE_ARRAY );
 		    update_post_meta( $post_id, 'asp_variations_urls', $variations_urls );
+		    $variations_opts	 = filter_input( INPUT_POST, 'asp-variations-opts', FILTER_UNSAFE_RAW, FILTER_REQUIRE_ARRAY );
+		    update_post_meta( $post_id, 'asp_variations_opts', $variations_opts );
 		} else {
 		    //we got no variations groups. Let's clear meta values
 		    update_post_meta( $post_id, 'asp_variations_groups', false );
 		    update_post_meta( $post_id, 'asp_variations_names', false );
 		    update_post_meta( $post_id, 'asp_variations_prices', false );
 		    update_post_meta( $post_id, 'asp_variations_urls', false );
+		    update_post_meta( $post_id, 'asp_variations_opts', false );
 		}
 	    }
 	}

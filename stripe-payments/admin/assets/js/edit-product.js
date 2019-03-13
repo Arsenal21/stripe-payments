@@ -4,12 +4,19 @@ jQuery(document).ready(function ($) {
     var aspVariationsNames = aspEditProdData.varNames;
     var aspVariationsPrices = aspEditProdData.varPrices;
     var aspVariationsUrls = aspEditProdData.varUrls;
+    var aspVariationsOpts = aspEditProdData.varOpts;
     function asp_create_variations_group(aspGroupId, groupName, focus) {
 	$('span.asp-variations-no-variations-msg').hide();
 	tpl_html = $('div.asp-html-tpl-variations-group').html();
 	tpl_html = $.parseHTML(tpl_html);
 	$(tpl_html).find('input.asp-variations-group-name').attr('name', 'asp-variations-group-names[' + aspGroupId + ']');
 	$(tpl_html).find('input.asp-variations-group-name').val(groupName);
+	displayType = 0;
+	if (typeof aspVariationsOpts[aspGroupId] !== "undefined") {
+	    displayType = aspVariationsOpts[aspGroupId];
+	}
+	$(tpl_html).find('select.asp-variations-display-type').attr('name', 'asp-variations-opts[' + aspGroupId + ']');
+	$(tpl_html).find('select.asp-variations-display-type').val(displayType);
 	$(tpl_html).closest('div.asp-variations-group-cont').attr('data-asp-group-id', aspGroupId);
 	$('div#asp-variations-cont').append(tpl_html);
 	if (focus) {
