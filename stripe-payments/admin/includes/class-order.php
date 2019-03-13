@@ -101,8 +101,11 @@ class ASPOrder {
 	    $post[ 'post_status' ] = 'publish';
 	}
 
+	$order_date	 = date( 'Y-m-d H:i:s', $charge_details->created );
+	$order_date	 = get_date_from_gmt( $order_date, get_option( 'date_format' ) . ', ' . get_option( 'time_format' ) );
+
 	$output	 .= "<h2>" . __( "Order Details", "stripe-payments" ) . "</h2>\n";
-	$output	 .= __( "Order Time: ", "stripe-payments" ) . date( "F j, Y, g:i a", strtotime( 'now' ) ) . "\n";
+	$output	 .= __( "Order Time: ", "stripe-payments" ) . $order_date . "\n";
 	$output	 .= __( "Transaction ID: ", "stripe-payments" ) . $charge_details->id . "\n";
 	$output	 .= __( "Stripe Token: ", "stripe-payments" ) . $order_details[ 'stripeToken' ] . "\n";
 	$output	 .= __( "Description: ", "stripe-payments" ) . $order_details[ 'charge_description' ] . "\n";

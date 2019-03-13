@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 4.7
 Tested up to: 5.1.1
 Requires PHP: 5.4
-Stable tag: 1.9.18t3
+Stable tag: 1.9.18t4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -158,6 +158,7 @@ Requires Subscriptions addon 1.4.5+
 - Added validation for custom filed. You can use your own validation rules via custom JavaScript RegExp.
 - Fixed invalid amount was displayed on Stripe pop-up when variable price and quantity is used.
 - {product_details} merge tag is available for custom checkout results page.
+- Purchase date is now displayed using WP date\time format settings and considers timezone.
 
 = 1.9.17 =
 - Fixed frontend stock control. Now customers cannot order more items than available in stock.

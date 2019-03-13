@@ -483,7 +483,10 @@ if ( empty( $name ) && ! empty( $data[ 'charge' ]->source->name ) ) {
 }
 $post_data[ 'customer_name' ] = $name;
 
-$post_data[ 'purchase_date' ] = date( "F j, Y, g:i a", $data[ 'charge' ]->created );
+$purchase_date	 = date( 'Y-m-d H:i:s', $data[ 'charge' ]->created );
+$purchase_date	 = get_date_from_gmt( $purchase_date, get_option( 'date_format' ) . ', ' . get_option( 'time_format' ) );
+
+$post_data[ 'purchase_date' ] = $purchase_date;
 
 $post_data[ 'additional_items' ] = array();
 
@@ -689,8 +692,12 @@ if ( isset( $opt[ 'send_emails_to_seller' ] ) ) {
     }
 }
 
-$post_data[ 'charge_date_raw' ]	 = $data[ 'charge' ]->created;
-$post_data[ 'charge_date' ]	 = date( 'Y/m/d H:i:s', $data[ 'charge' ]->created );
+$post_data[ 'charge_date_raw' ] = $data[ 'charge' ]->created;
+
+$charge_date	 = date( 'Y-m-d H:i:s', $data[ 'charge' ]->created );
+$charge_date	 = get_date_from_gmt( $charge_date, get_option( 'date_format' ) . ', ' . get_option( 'time_format' ) );
+
+$post_data[ 'charge_date' ] = $charge_date;
 
 $_SESSION[ 'asp_data' ] = $post_data;
 
