@@ -157,6 +157,7 @@ Payment button in Stripe pop-up for those now shows "Start Free Trial" instead o
 Requires Subscriptions addon 1.4.5+
 - Added validation for custom filed. You can use your own validation rules via custom JavaScript RegExp.
 - Fixed invalid amount was displayed on Stripe pop-up when variable price and quantity is used.
+- {product_details} merge tag is available for custom checkout results page.
 
 = 1.9.17 =
 - Fixed frontend stock control. Now customers cannot order more items than available in stock.

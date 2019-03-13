@@ -843,5 +843,11 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post, $seller_email = fal
 
     $body = apply_filters( 'asp_email_body_after_replace', $body );
 
+    //make tags and vals available for checkout results page by storing those in $_SESSION array
+    if ( ! $seller_email ) {
+	$_SESSION[ 'asp_checkout_data_tags' ]	 = $tags;
+	$_SESSION[ 'asp_checkout_data_vals' ]	 = $vals;
+    }
+
     return $body;
 }

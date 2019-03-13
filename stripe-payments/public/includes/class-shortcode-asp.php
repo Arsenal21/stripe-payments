@@ -1198,6 +1198,21 @@ class AcceptStripePaymentsShortcode {
 	    $vals[]	 = is_array( $value ) ? '' : $value;
 	}
 
+	//add email merge tags to the available merge tags
+	$sess_tags	 = ! empty( $_SESSION[ 'asp_checkout_data_tags' ] ) ? $_SESSION[ 'asp_checkout_data_tags' ] : array();
+	$sess_vals	 = ! empty( $_SESSION[ 'asp_checkout_data_vals' ] ) ? $_SESSION[ 'asp_checkout_data_vals' ] : array();
+
+	foreach ( $sess_tags as $key => $value ) {
+	    if ( empty( $tags[ $value ] ) ) {
+		if ( $value === '{product_details}' ) {
+		    //replace new lines to <br> to display product details properly
+		    $sess_vals[ $key ] = nl2br( $sess_vals[ $key ] );
+		}
+		$tags[]	 = $value;
+		$vals[]	 = $sess_vals[ $key ];
+	    }
+	}
+
 	$content = str_replace( $tags, $vals, $content );
 	return $content;
     }
