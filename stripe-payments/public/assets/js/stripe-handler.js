@@ -283,7 +283,7 @@ function wp_asp_can_proceed(data, openHandler) {
 		    return valid = false;
 		}
 	    }
-	    if (customInput.attr('class') === 'asp_product_custom_field_input' && customInput.attr('type') === 'text') {
+	    if (customInput.attr('class') === 'asp_product_custom_field_input' && customInput.attr('type') === 'text' && typeof re !=="undefined") {
 		if (customInput.val() && !re.test(customInput.val())) {
 		    jQuery(this).siblings('.asp_product_custom_field_error').hide().html(data.custom_field_validation_err_msg).fadeIn('slow');
 		    return valid = false;
