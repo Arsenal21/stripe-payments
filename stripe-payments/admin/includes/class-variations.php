@@ -26,7 +26,7 @@ class ASPVariations {
 		$this->variations[ $grp_id ][ 'names' ]	 = $variations_names[ $grp_id ];
 		$this->variations[ $grp_id ][ 'prices' ] = $variations_prices[ $grp_id ];
 		$this->variations[ $grp_id ][ 'urls' ]	 = $variations_urls[ $grp_id ];
-		$this->variations[ $grp_id ][ 'opts' ]	 = $variations_opts;
+		$this->variations[ $grp_id ][ 'opts' ]	 = $variations_opts[ $grp_id ];
 	    }
 	}
     }
