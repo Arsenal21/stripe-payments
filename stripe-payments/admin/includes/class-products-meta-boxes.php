@@ -144,6 +144,14 @@ class asp_products_metaboxes {
 		margin: auto 0 !important;
 		right: 7px;
 	    }
+	    .asp-variations-display-type-cont {
+		float: right;
+	    }
+	    @media screen and (max-width: 782px) {
+		.asp-variations-display-type-cont {
+		    float: none;
+		}
+	    }
 	</style>
 	<div id="asp-variations-cont-main">
 	    <div id="asp-variations-cont">
@@ -159,7 +167,7 @@ class asp_products_metaboxes {
 		    <button type="button" class="button asp-variations-delete-group-btn asp-btn-small">
 			<span class="dashicons dashicons-trash" title="<?php _e( 'Delete group', 'stripe-payments' ); ?>"></span>
 		    </button>
-		    <div style="float: right;">
+		    <div class="asp-variations-display-type-cont">
 		    <label><?php _e( 'Display As:', 'stripe-payments' ); ?> </label>
 		    <select class="asp-variations-display-type">
 			<option value="0">Dropdown</option>
@@ -167,7 +175,7 @@ class asp_products_metaboxes {
 		    </select>
 		    </div>
 		</div>
-		<table class="widefat asp-variations-tbl">
+		<table class="widefat fixed asp-variations-tbl">
 		    <tr>
 			<th width="40%"><?php _e( 'Name', 'stripe-payments' ); ?></th>
 			<th width="10%"><?php _e( 'Price Mod', 'stripe-payments' ); ?></th>
