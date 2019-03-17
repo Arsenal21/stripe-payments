@@ -102,14 +102,16 @@ class AcceptStripePayments_Admin {
     }
 
     function admin_init() {
-	add_action( 'wp_ajax_asp_clear_log', array( 'ASP_Debug_Logger', 'clear_log' ) );
-	//view log file
-	if ( isset( $_GET[ 'asp_action' ] ) ) {
-	    if ( $_GET[ 'asp_action' ] === 'view_log' ) {
-		ASP_Debug_Logger::view_log();
+	if ( current_user_can( 'manage_options' ) ) {
+	    add_action( 'wp_ajax_asp_clear_log', array( 'ASP_Debug_Logger', 'clear_log' ) );
+	    //view log file
+	    if ( isset( $_GET[ 'asp_action' ] ) ) {
+		if ( $_GET[ 'asp_action' ] === 'view_log' ) {
+		    ASP_Debug_Logger::view_log();
+		}
 	    }
 	}
-	if ( ! wp_doing_ajax() ) {
+	if ( ! wp_doing_ajax() && is_admin() ) {
 	    //check if PHP version meets minimum required
 	    if ( version_compare( PHP_VERSION, WP_ASP_MIN_PHP_VERSION, '<' ) ) {
 		$dismissed_clicked = isset( $_GET[ 'wp_asp_dismiss_php_notice' ] ) ? true : false;
