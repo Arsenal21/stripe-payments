@@ -168,11 +168,11 @@ class asp_products_metaboxes {
 			<span class="dashicons dashicons-trash" title="<?php _e( 'Delete group', 'stripe-payments' ); ?>"></span>
 		    </button>
 		    <div class="asp-variations-display-type-cont">
-		    <label><?php _e( 'Display As:', 'stripe-payments' ); ?> </label>
-		    <select class="asp-variations-display-type">
-			<option value="0">Dropdown</option>
-			<option value="1">Radio</option>
-		    </select>
+			<label><?php _e( 'Display As:', 'stripe-payments' ); ?> </label>
+			<select class="asp-variations-display-type">
+			    <option value="0"><?php _e( 'Dropdown', 'stripe-payments' ); ?></option>
+			    <option value="1"><?php _e( 'Radio Buttons', 'stripe-payments' ); ?></option>
+			</select>
 		    </div>
 		</div>
 		<table class="widefat fixed asp-variations-tbl">
@@ -208,7 +208,7 @@ class asp_products_metaboxes {
 	    'varNames'	 => $variations_names,
 	    'varPrices'	 => $variations_prices,
 	    'varUrls'	 => $variations_urls,
-	    'varOpts' => $variations_opts,
+	    'varOpts'	 => $variations_opts,
 	    'str'		 => array(
 		'groupDeleteConfirm'	 => __( 'Are you sure you want to delete this group?', 'stripe-payments' ),
 		'varDeleteConfirm'	 => __( 'Are you sure you want to delete this variation?', 'stripe-payments' ),
@@ -402,7 +402,8 @@ class asp_products_metaboxes {
 		echo ! $collect_billing_addr ? ' disabled' : '';
 		?>><?php echo __( 'Collect Both Billing And Shipping Addresses', 'stripe-payments' ); ?> </label>
 	    <p></p>
-	    <label><input type="radio" name="asp_product_collect_shipping_addr" data-addr-radio="1" value="0"<?php echo ($collect_shipping_addr === "0") ? ' checked' : '';
+	    <label><input type="radio" name="asp_product_collect_shipping_addr" data-addr-radio="1" value="0"<?php
+		echo ($collect_shipping_addr === "0") ? ' checked' : '';
 		echo ! $collect_billing_addr ? ' disabled' : '';
 		?>><?php echo __( 'Collect Billing Address Only', 'stripe-payments' ); ?> </label>
 	</div>
