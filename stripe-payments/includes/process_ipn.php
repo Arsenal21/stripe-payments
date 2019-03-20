@@ -499,9 +499,14 @@ if ( ! empty( $variations ) ) {
 
 //check if we need to increase redeem coupon count
 if ( isset( $coupon ) && $coupon[ 'valid' ] ) {
-    $curr_redeem_cnt											 = get_post_meta( $coupon[ 'id' ], 'asp_coupon_red_count', true );
+    $curr_redeem_cnt = get_post_meta( $coupon[ 'id' ], 'asp_coupon_red_count', true );
     $curr_redeem_cnt ++;
     update_post_meta( $coupon[ 'id' ], 'asp_coupon_red_count', $curr_redeem_cnt ++  );
+    if ( isset( $data[ 'is_trial' ] ) ) {
+	//trial Subscription
+	$coupon[ 'discountAmount' ]	 = 0;
+	$data[ 'discount_item_price' ]	 = 0;
+    }
     $post_data[ 'coupon' ]											 = $coupon;
     $post_data[ 'additional_items' ][ sprintf( __( 'Coupon "%s"', 'stripe-payments' ), $coupon[ 'code' ] ) ] = floatval( '-' . $coupon[ 'discountAmount' ] );
     $post_data[ 'additional_items' ][ __( 'Subtotal', 'stripe-payments' ) ]					 = $data[ 'discount_item_price' ];
