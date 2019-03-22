@@ -238,9 +238,7 @@ function wp_asp_can_proceed(data, openHandler) {
 	}
     }
 
-    if (typeof amount === "undefined") {
-	amount = data.item_price * data.quantity;
-    }
+    amount = data.item_price * data.quantity;
 
     amount = stripehandler.apply_coupon(amount, data);
 
@@ -265,6 +263,14 @@ function wp_asp_can_proceed(data, openHandler) {
 	jQuery('form#stripe_form_' + data.uniq_id).find('.asp_product_custom_field_error').hide();
 	customInputs = jQuery('form#stripe_form_' + data.uniq_id).find('.asp_product_custom_field_input').toArray();
 	var valid = true;
+	if (typeof (data.custom_field_validation_regex) !== "undefined" && data.custom_field_validation_regex !== '') {
+	    try {
+		var re = new RegExp(data.custom_field_validation_regex);
+	    } catch (error) {
+		alert(stripehandler.strInvalidCFValidationRegex + ' ' + data.custom_field_validation_regex + "\n" + error);
+		return valid = false;
+	    }
+	}
 	jQuery.each(customInputs, function (id, customInput) {
 	    customInput = jQuery(customInput);
 	    if (typeof (customInput.attr('data-asp-custom-mandatory')) !== "undefined") {
@@ -274,6 +280,12 @@ function wp_asp_can_proceed(data, openHandler) {
 		}
 		if (customInput.attr('type') === 'checkbox' && customInput.prop('checked') !== true) {
 		    jQuery(this).parent().siblings('.asp_product_custom_field_error').hide().html(stripehandler.strPleaseCheckCheckbox).fadeIn('slow');
+		    return valid = false;
+		}
+	    }
+	    if (customInput.attr('class') === 'asp_product_custom_field_input' && customInput.attr('type') === 'text' && typeof re !=="undefined") {
+		if (customInput.val() && !re.test(customInput.val())) {
+		    jQuery(this).siblings('.asp_product_custom_field_error').hide().html(data.custom_field_validation_err_msg).fadeIn('slow');
 		    return valid = false;
 		}
 	    }
@@ -292,6 +304,13 @@ function wp_asp_can_proceed(data, openHandler) {
 
     data.canProceed = true;
 
+    var handlerOpts = {};
+
+    if (typeof (data.is_trial) !== "undefined" && data.is_trial) {
+	handlerOpts.panelLabel = stripehandler.strStartFreeTrial;
+	amount = 0;
+    }
+
     data.totalAmount = amount;
 
     data = button_clicked_hooks(data);
@@ -303,8 +322,6 @@ function wp_asp_can_proceed(data, openHandler) {
     if (!openHandler) {
 	return true;
     }
-
-    var handlerOpts = {};
 
     handlerOpts.description = description;
     handlerOpts.currency = data.currency;
@@ -500,7 +517,15 @@ function wp_asp_add_stripe_handler(data) {
 	}
     });
 
-    aspProductForm.find('select.asp-product-variations-select').change(function () {
+    aspProductForm.find('div.asp_product_item_amount_input_container').children('.asp_product_item_amount_input').change(function () {
+	var amt = wp_asp_validate_custom_amount(data);
+	if (amt !== false) {
+	    data.item_price = amt;
+	    stripehandler.updateAllAmounts(data);
+	}
+    });
+
+    aspProductForm.find('select.asp-product-variations-select, input.asp-product-variations-select-radio').change(function () {
 	var grpId = jQuery(this).data('asp-variations-group-id');
 	var varId = jQuery(this).val();
 	if (Object.getOwnPropertyNames(data.variations).length !== 0) {
@@ -516,7 +541,7 @@ function wp_asp_add_stripe_handler(data) {
 	}
     });
 
-    aspProductForm.find('select.asp-product-variations-select').change();
+    aspProductForm.find('select.asp-product-variations-select, input.asp-product-variations-select-radio:checked').change();
 
     jQuery('#stripe_button_' + data.uniq_id).prop("disabled", false);
 }

@@ -76,26 +76,28 @@ class AcceptStripePaymentsShortcode {
 	);
 
 	$loc_data = array(
-	    'strEnterValidAmount'	 => apply_filters( 'asp_customize_text_msg', __( 'Please enter a valid amount', 'stripe-payments' ), 'enter_valid_amount' ),
-	    'strMinAmount'		 => apply_filters( 'asp_customize_text_msg', __( 'Minimum amount is', 'stripe-payments' ), 'min_amount_is' ),
-	    'strEnterQuantity'	 => apply_filters( 'asp_customize_text_msg', __( 'Please enter quantity.', 'stripe-payments' ), 'enter_quantity' ),
-	    'strQuantityIsZero'	 => apply_filters( 'asp_customize_text_msg', __( 'Quantity can\'t be zero.', 'stripe-payments' ), 'quantity_is_zero' ),
-	    'strQuantityIsFloat'	 => apply_filters( 'asp_customize_text_msg', __( 'Quantity should be integer value.', 'stripe-payments' ), 'quantity_is_float' ),
-	    'strStockNotAvailable'	 => apply_filters( 'asp_customize_text_msg', __( 'You cannot order more items than available: %d', 'stripe-payments' ), 'stock_not_available' ),
-	    'strTax'		 => apply_filters( 'asp_customize_text_msg', __( 'Tax', 'stripe-payments' ), 'tax_str' ),
-	    'strShipping'		 => apply_filters( 'asp_customize_text_msg', __( 'Shipping', 'stripe-payments' ), 'shipping_str' ),
-	    'strTotal'		 => __( 'Total:', 'stripe-payments' ),
-	    'strPleaseFillIn'	 => apply_filters( 'asp_customize_text_msg', __( 'Please fill in this field.', 'stripe-payments' ), 'fill_in_field' ),
-	    'strPleaseCheckCheckbox' => __( 'Please check this checkbox.', 'stripe-payments' ),
-	    'strMustAcceptTos'	 => apply_filters( 'asp_customize_text_msg', __( 'You must accept the terms before you can proceed.', 'stripe-payments' ), 'accept_terms' ),
-	    'strRemoveCoupon'	 => apply_filters( 'asp_customize_text_msg', __( 'Remove coupon', 'stripe-payments' ), 'remove_coupon' ),
-	    'strRemove'		 => apply_filters( 'asp_customize_text_msg', __( 'Remove', 'stripe-payments' ), 'remove' ),
-	    'key'			 => $key,
-	    'key_test'		 => $key_test,
-	    'ajax_url'		 => admin_url( 'admin-ajax.php' ),
-	    'minAmounts'		 => $minAmounts,
-	    'zeroCents'		 => $zeroCents,
-	    'amountOpts'		 => $amountOpts,
+	    'strEnterValidAmount'		 => apply_filters( 'asp_customize_text_msg', __( 'Please enter a valid amount', 'stripe-payments' ), 'enter_valid_amount' ),
+	    'strMinAmount'			 => apply_filters( 'asp_customize_text_msg', __( 'Minimum amount is', 'stripe-payments' ), 'min_amount_is' ),
+	    'strEnterQuantity'		 => apply_filters( 'asp_customize_text_msg', __( 'Please enter quantity.', 'stripe-payments' ), 'enter_quantity' ),
+	    'strQuantityIsZero'		 => apply_filters( 'asp_customize_text_msg', __( 'Quantity can\'t be zero.', 'stripe-payments' ), 'quantity_is_zero' ),
+	    'strQuantityIsFloat'		 => apply_filters( 'asp_customize_text_msg', __( 'Quantity should be integer value.', 'stripe-payments' ), 'quantity_is_float' ),
+	    'strStockNotAvailable'		 => apply_filters( 'asp_customize_text_msg', __( 'You cannot order more items than available: %d', 'stripe-payments' ), 'stock_not_available' ),
+	    'strTax'			 => apply_filters( 'asp_customize_text_msg', __( 'Tax', 'stripe-payments' ), 'tax_str' ),
+	    'strShipping'			 => apply_filters( 'asp_customize_text_msg', __( 'Shipping', 'stripe-payments' ), 'shipping_str' ),
+	    'strTotal'			 => __( 'Total:', 'stripe-payments' ),
+	    'strPleaseFillIn'		 => apply_filters( 'asp_customize_text_msg', __( 'Please fill in this field.', 'stripe-payments' ), 'fill_in_field' ),
+	    'strPleaseCheckCheckbox'	 => __( 'Please check this checkbox.', 'stripe-payments' ),
+	    'strMustAcceptTos'		 => apply_filters( 'asp_customize_text_msg', __( 'You must accept the terms before you can proceed.', 'stripe-payments' ), 'accept_terms' ),
+	    'strRemoveCoupon'		 => apply_filters( 'asp_customize_text_msg', __( 'Remove coupon', 'stripe-payments' ), 'remove_coupon' ),
+	    'strRemove'			 => apply_filters( 'asp_customize_text_msg', __( 'Remove', 'stripe-payments' ), 'remove' ),
+	    'strStartFreeTrial'		 => apply_filters( 'asp_customize_text_msg', __( 'Start Free Trial', 'stripe-payments' ), 'start_free_trial' ),
+	    'strInvalidCFValidationRegex'	 => __( 'Invalid validation RegEx: ', 'stripe-payments' ),
+	    'key'				 => $key,
+	    'key_test'			 => $key_test,
+	    'ajax_url'			 => admin_url( 'admin-ajax.php' ),
+	    'minAmounts'			 => $minAmounts,
+	    'zeroCents'			 => $zeroCents,
+	    'amountOpts'			 => $amountOpts,
 	);
 	return $loc_data;
     }
@@ -574,6 +576,24 @@ class AcceptStripePaymentsShortcode {
 	    $custom_field = $atts[ 'custom_field' ];
 	}
 
+	$cf_validation_regex	 = '';
+	$cf_validation_err_msg	 = '';
+
+	if ( $custom_field ) {
+	    //check if we have custom field validation enabled
+	    $custom_validation = $this->AcceptStripePayments->get_setting( 'custom_field_validation' );
+	    if ( ! empty( $custom_validation ) ) {
+		if ( $custom_validation === 'num' ) {
+		    $cf_validation_regex	 = '^[0-9]+$';
+		    $cf_validation_err_msg	 = __( 'Only numbers are allowed: 0-9', 'stripe-payments' );
+		} else
+		if ( $custom_validation === 'custom' ) {
+		    $cf_validation_regex	 = $this->AcceptStripePayments->get_setting( 'custom_field_custom_validation_regex' );
+		    $cf_validation_err_msg	 = $this->AcceptStripePayments->get_setting( 'custom_field_custom_validation_err_msg' );
+		}
+	    }
+	}
+
 	$coupons_enabled = $this->AcceptStripePayments->get_setting( 'coupons_enabled' );
 	if ( isset( $atts[ 'coupons_enabled' ] ) ) {
 	    $coupons_enabled = $atts[ 'coupons_enabled' ];
@@ -610,41 +630,43 @@ class AcceptStripePaymentsShortcode {
 	$displayStr[ 'ship' ]	 = '%s (' . strtolower( $shipStr ) . ')';
 
 	$data = array(
-	    'is_live'		 => $this->AcceptStripePayments->is_live,
-	    'product_id'		 => $product_id,
-	    'button_key'		 => $button_key,
-	    'item_price'		 => isset( $item_price ) ? $item_price : 0,
-	    'allowRememberMe'	 => $allowRememberMe,
-	    'quantity'		 => $quantity,
-	    'custom_quantity'	 => $custom_quantity,
-	    'description'		 => $description,
-	    'descrGenerated'	 => $descr_generated,
-	    'shipping'		 => $shipping,
-	    'tax'			 => $tax,
-	    'image'			 => $item_logo,
-	    'currency'		 => $currency,
-	    'currency_variable'	 => $currency_variable,
-	    'locale'		 => (empty( $checkout_lang ) ? 'auto' : $checkout_lang),
-	    'name'			 => htmlspecialchars_decode( $name ),
-	    'url'			 => $url,
-	    'amount'		 => $priceInCents,
-	    'billingAddress'	 => (empty( $billing_address ) ? false : true),
-	    'shippingAddress'	 => (empty( $shipping_address ) ? false : true),
-	    'customer_email'	 => $customer_email,
-	    'uniq_id'		 => $uniq_id,
-	    'variable'		 => ($price == 0 ? true : false),
-	    'zeroCents'		 => $this->AcceptStripePayments->zeroCents,
-	    'addonHooks'		 => array(),
-	    'custom_field'		 => $custom_field,
-	    'coupons_enabled'	 => $coupons_enabled,
-	    'tos'			 => $tos,
-	    'button_text'		 => esc_attr( $button_text ),
-	    'out_of_stock'		 => $out_of_stock,
-	    'stock_control_enabled'	 => $stock_control_enabled,
-	    'stock_items'		 => $stock_items,
-	    'verifyZip'		 => ( ! $verifyZip) ? 0 : 1,
-	    'currencyFormat'	 => $display_settings,
-	    'displayStr'		 => $displayStr,
+	    'is_live'				 => $this->AcceptStripePayments->is_live,
+	    'product_id'				 => $product_id,
+	    'button_key'				 => $button_key,
+	    'item_price'				 => isset( $item_price ) ? $item_price : 0,
+	    'allowRememberMe'			 => $allowRememberMe,
+	    'quantity'				 => $quantity,
+	    'custom_quantity'			 => $custom_quantity,
+	    'description'				 => $description,
+	    'descrGenerated'			 => $descr_generated,
+	    'shipping'				 => $shipping,
+	    'tax'					 => $tax,
+	    'image'					 => $item_logo,
+	    'currency'				 => $currency,
+	    'currency_variable'			 => $currency_variable,
+	    'locale'				 => (empty( $checkout_lang ) ? 'auto' : $checkout_lang),
+	    'name'					 => htmlspecialchars_decode( $name ),
+	    'url'					 => $url,
+	    'amount'				 => $priceInCents,
+	    'billingAddress'			 => (empty( $billing_address ) ? false : true),
+	    'shippingAddress'			 => (empty( $shipping_address ) ? false : true),
+	    'customer_email'			 => $customer_email,
+	    'uniq_id'				 => $uniq_id,
+	    'variable'				 => ($price == 0 ? true : false),
+	    'zeroCents'				 => $this->AcceptStripePayments->zeroCents,
+	    'addonHooks'				 => array(),
+	    'custom_field'				 => $custom_field,
+	    'custom_field_validation_regex'		 => $cf_validation_regex,
+	    'custom_field_validation_err_msg'	 => $cf_validation_err_msg,
+	    'coupons_enabled'			 => $coupons_enabled,
+	    'tos'					 => $tos,
+	    'button_text'				 => esc_attr( $button_text ),
+	    'out_of_stock'				 => $out_of_stock,
+	    'stock_control_enabled'			 => $stock_control_enabled,
+	    'stock_items'				 => $stock_items,
+	    'verifyZip'				 => ( ! $verifyZip) ? 0 : 1,
+	    'currencyFormat'			 => $display_settings,
+	    'displayStr'				 => $displayStr,
 	);
 
 	$data = apply_filters( 'asp-button-output-data-ready', $data, $atts );
@@ -816,15 +838,25 @@ class AcceptStripePaymentsShortcode {
 			if ( ! empty( $variations_names ) ) {
 			    $variations_prices		 = get_post_meta( $data[ 'product_id' ], 'asp_variations_prices', true );
 			    $variations_urls		 = get_post_meta( $data[ 'product_id' ], 'asp_variations_urls', true );
+			    $variations_opts		 = get_post_meta( $data[ 'product_id' ], 'asp_variations_opts', true );
 			    $this->variations[ 'names' ]	 = $variations_names;
 			    $this->variations[ 'prices' ]	 = $variations_prices;
 			    $this->variations[ 'urls' ]	 = $variations_urls;
+			    $this->variations[ 'opts' ]	 = $variations_opts;
 			    $variations_str			 .= '<div class="asp-product-variations-cont">';
 			    $variations_str			 .= '<label class="asp-product-variations-label">' . $group . '</label>';
-			    $variations_str			 .= sprintf( '<select class="asp-product-variations-select" data-asp-variations-group-id="%1$d" name="stripeVariations[%1$d][]">', $grp_id );
+			    if ( $variations_opts[ $grp_id ] === "1" ) {
+				
+			    } else {
+				$variations_str .= sprintf( '<select class="asp-product-variations-select" data-asp-variations-group-id="%1$d" name="stripeVariations[%1$d][]">', $grp_id );
+			    }
 			    foreach ( $variations_names[ $grp_id ] as $var_id => $name ) {
-				$tpl		 = '<option value="%d">%s %s</option>';
-				$price_mod	 = $variations_prices[ $grp_id ][ $var_id ];
+				if ( $variations_opts[ $grp_id ] === "1" ) {
+				    $tpl = '<label class="asp-product-variations-select-radio-label"><input class="asp-product-variations-select-radio" data-asp-variations-group-id="' . $grp_id . '" name="stripeVariations[' . $grp_id . '][]" type="radio" name="123" value="%d"' . ($var_id === 0 ? 'checked' : '') . '>%s %s</label>';
+				} else {
+				    $tpl = '<option value="%d">%s %s</option>';
+				}
+				$price_mod = $variations_prices[ $grp_id ][ $var_id ];
 				if ( ! empty( $price_mod ) ) {
 				    $fmt_price	 = AcceptStripePayments::formatted_price( abs( $price_mod ), $data[ 'currency' ] );
 				    $price_mod	 = $price_mod < 0 ? ' - ' . $fmt_price : ' + ' . $fmt_price;
@@ -834,7 +866,12 @@ class AcceptStripePaymentsShortcode {
 				}
 				$variations_str .= sprintf( $tpl, $var_id, $name, $price_mod );
 			    }
-			    $variations_str .= '</select></div>';
+			    if ( $variations_opts[ $grp_id ] === "1" ) {
+				
+			    } else {
+				$variations_str .= '</select>';
+			    }
+			    $variations_str .= '</div>';
 			}
 		    }
 		    $output .= $variations_str;
@@ -1174,6 +1211,21 @@ class AcceptStripePaymentsShortcode {
 	    }
 	    $tags[]	 = '{' . $key . '}';
 	    $vals[]	 = is_array( $value ) ? '' : $value;
+	}
+
+	//add email merge tags to the available merge tags
+	$sess_tags	 = ! empty( $_SESSION[ 'asp_checkout_data_tags' ] ) ? $_SESSION[ 'asp_checkout_data_tags' ] : array();
+	$sess_vals	 = ! empty( $_SESSION[ 'asp_checkout_data_vals' ] ) ? $_SESSION[ 'asp_checkout_data_vals' ] : array();
+
+	foreach ( $sess_tags as $key => $value ) {
+	    if ( empty( $tags[ $value ] ) ) {
+		if ( $value === '{product_details}' ) {
+		    //replace new lines to <br> to display product details properly
+		    $sess_vals[ $key ] = nl2br( $sess_vals[ $key ] );
+		}
+		$tags[]	 = $value;
+		$vals[]	 = $sess_vals[ $key ];
+	    }
 	}
 
 	$content = str_replace( $tags, $vals, $content );

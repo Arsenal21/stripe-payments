@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 4.7
 Tested up to: 5.1
 Requires PHP: 5.4
-Stable tag: 1.9.17t2
+Stable tag: 1.9.18
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -151,7 +151,17 @@ None.
 
 == Changelog ==
 
-= WIP 1.9.17 =
+= 1.9.18 =
+- Trial subscriptions are now displaying 0 as payment amount on checkout results and email receipts.
+Payment button in Stripe pop-up for those now shows "Start Free Trial" instead of payment amount.
+Requires Subscriptions addon 1.4.5+
+- Added validation for custom filed. You can use your own validation rules via custom JavaScript RegExp.
+- Fixed invalid amount was displayed on Stripe pop-up when variable price and quantity is used.
+- {product_details} merge tag is available for custom checkout results page.
+- Purchase date is now displayed using WP date\time format settings and considers timezone.
+- Added option to display product variations as radio buttons (can be set per product on product edit page).
+
+= 1.9.17 =
 - Fixed frontend stock control. Now customers cannot order more items than available in stock.
 - Added [asp_show_my_transactions] shortcode to display transactions made by user.
 - Added support for addons' email merge tags. They are also displayed in tags hint if available.

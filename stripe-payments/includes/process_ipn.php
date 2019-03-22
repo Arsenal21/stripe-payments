@@ -483,7 +483,10 @@ if ( empty( $name ) && ! empty( $data[ 'charge' ]->source->name ) ) {
 }
 $post_data[ 'customer_name' ] = $name;
 
-$post_data[ 'purchase_date' ] = date( "F j, Y, g:i a", $data[ 'charge' ]->created );
+$purchase_date	 = date( 'Y-m-d H:i:s', $data[ 'charge' ]->created );
+$purchase_date	 = get_date_from_gmt( $purchase_date, get_option( 'date_format' ) . ', ' . get_option( 'time_format' ) );
+
+$post_data[ 'purchase_date' ] = $purchase_date;
 
 $post_data[ 'additional_items' ] = array();
 
@@ -496,9 +499,14 @@ if ( ! empty( $variations ) ) {
 
 //check if we need to increase redeem coupon count
 if ( isset( $coupon ) && $coupon[ 'valid' ] ) {
-    $curr_redeem_cnt											 = get_post_meta( $coupon[ 'id' ], 'asp_coupon_red_count', true );
+    $curr_redeem_cnt = get_post_meta( $coupon[ 'id' ], 'asp_coupon_red_count', true );
     $curr_redeem_cnt ++;
     update_post_meta( $coupon[ 'id' ], 'asp_coupon_red_count', $curr_redeem_cnt ++  );
+    if ( isset( $data[ 'is_trial' ] ) ) {
+	//trial Subscription
+	$coupon[ 'discountAmount' ]	 = 0;
+	$data[ 'discount_item_price' ]	 = 0;
+    }
     $post_data[ 'coupon' ]											 = $coupon;
     $post_data[ 'additional_items' ][ sprintf( __( 'Coupon "%s"', 'stripe-payments' ), $coupon[ 'code' ] ) ] = floatval( '-' . $coupon[ 'discountAmount' ] );
     $post_data[ 'additional_items' ][ __( 'Subtotal', 'stripe-payments' ) ]					 = $data[ 'discount_item_price' ];
@@ -689,8 +697,12 @@ if ( isset( $opt[ 'send_emails_to_seller' ] ) ) {
     }
 }
 
-$post_data[ 'charge_date_raw' ]	 = $data[ 'charge' ]->created;
-$post_data[ 'charge_date' ]	 = date( 'Y/m/d H:i:s', $data[ 'charge' ]->created );
+$post_data[ 'charge_date_raw' ] = $data[ 'charge' ]->created;
+
+$charge_date	 = date( 'Y-m-d H:i:s', $data[ 'charge' ]->created );
+$charge_date	 = get_date_from_gmt( $charge_date, get_option( 'date_format' ) . ', ' . get_option( 'time_format' ) );
+
+$post_data[ 'charge_date' ] = $charge_date;
 
 $_SESSION[ 'asp_data' ] = $post_data;
 
@@ -842,6 +854,12 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post, $seller_email = fal
     //let's apply filters for email body
 
     $body = apply_filters( 'asp_email_body_after_replace', $body );
+
+    //make tags and vals available for checkout results page by storing those in $_SESSION array
+    if ( ! $seller_email ) {
+	$_SESSION[ 'asp_checkout_data_tags' ]	 = $tags;
+	$_SESSION[ 'asp_checkout_data_vals' ]	 = $vals;
+    }
 
     return $body;
 }
