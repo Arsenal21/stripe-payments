@@ -560,31 +560,31 @@ class AcceptStripePayments_Admin {
 		echo "<p class=\"description\">{$desc}</p>";
 		break;
 	    case 'custom_field_type':
-		echo "<select name='AcceptStripePayments-settings[{$field}]'>'";
+		echo "<select name='AcceptStripePayments-settings[{$field}]'>";
 		echo "<option value='text'" . ($field_value === 'text' ? ' selected' : '') . ">" . __( "Text", 'stripe-payments' ) . "</option>";
 		echo "<option value='checkbox'" . ($field_value === 'checkbox' ? ' selected' : '') . ">" . __( 'Checkbox', 'stripe-payments' ) . "</option>";
 		echo "</select>";
 		echo "<p class=\"description\">{$desc}</p>";
 		break;
 	    case 'custom_field_descr_location':
-		echo "<select name='AcceptStripePayments-settings[{$field}]'>'";
+		echo "<select name='AcceptStripePayments-settings[{$field}]'>";
 		echo "<option value='placeholder'" . ($field_value === 'placeholder' ? ' selected' : '') . ">" . __( 'Placeholder', 'stripe-payments' ) . "</option>";
 		echo "<option value='below'" . ($field_value === 'below' ? ' selected' : '') . ">" . __( 'Below Input', 'stripe-payments' ) . "</option>";
 		echo "</select>";
 		echo "<p class=\"description\">{$desc}</p>";
 		break;
 	    case 'custom_field_validation':
-		echo "<select name='AcceptStripePayments-settings[{$field}]'>'";
+		echo "<select name='AcceptStripePayments-settings[{$field}]'>";
 		echo "<option value=''" . (empty( $field_value ) ? ' selected' : '') . ">" . __( 'No Validation', 'stripe-payments' ) . "</option>";
 		echo "<option value='num'" . ($field_value === 'num' ? ' selected' : '') . ">" . __( 'Numbers Only', 'stripe-payments' ) . "</option>";
 		echo "<option value='custom'" . ($field_value === 'custom' ? ' selected' : '') . ">" . __( 'Custom Validation', 'stripe-payments' ) . "</option>";
 		echo "</select>";
 		echo ' <div class="wp-asp-help"><i class="dashicons dashicons-editor-help"></i>'
-		. '<span class="wp-asp-help-text">'
+		. '<div class="wp-asp-help-text">'
 		. '<p><strong>' . __( 'No Validation', 'stripe-payments' ) . '</strong>: ' . __( 'no validation performed', 'stripe-payments' ) . '</p>'
 		. '<p><strong>' . __( 'Numbers Only', 'stripe-payments' ) . '</strong>: ' . __( 'only accepts numbers 0-9', 'stripe-payments' ) . '</p>'
 		. '<p><strong>' . __( 'Custom Validation', 'stripe-payments' ) . '</strong>: ' . sprintf( __( 'you can enter your own validation rules using <a href="%s" target="_blank">JavaScript RegExp</a> format.', 'stripe-payments' ), 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions' ) . '</p>'
-		. '</span>'
+		. '</div>'
 		. '</div>';
 		echo "<p class=\"description\">{$desc}</p>";
 		$opts		 = get_option( 'AcceptStripePayments-settings' );
@@ -607,7 +607,7 @@ class AcceptStripePayments_Admin {
 		break;
 	    case 'tos_position':
 	    case 'custom_field_position':
-		echo "<select name='AcceptStripePayments-settings[{$field}]'>'";
+		echo "<select name='AcceptStripePayments-settings[{$field}]'>";
 		echo "<option value='above'" . ($field_value === 'above' || empty( $field_value ) ? ' selected' : '') . ">" . __( 'Above Button', 'stripe-payments' ) . "</option>";
 		echo "<option value='below'" . ($field_value === 'below' ? ' selected' : '') . ">" . __( 'Below Button', 'stripe-payments' ) . "</option>";
 		echo "</select>";
