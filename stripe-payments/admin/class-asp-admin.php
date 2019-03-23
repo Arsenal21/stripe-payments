@@ -597,11 +597,11 @@ class AcceptStripePayments_Admin {
 		    $custom_regex_err_msg = $opts[ 'custom_field_custom_validation_err_msg' ];
 		}
 		echo '<div class="wp-asp-custom-field-validation-custom-input-cont" style="display: none;">'
-		. '<input type="text" size="40" name="AcceptStripePayments-settings[custom_field_custom_validation_regex]" value="' . esc_attr( $custom_regex ) . '"></input>'
+		. '<input type="text" size="40" name="AcceptStripePayments-settings[custom_field_custom_validation_regex]" value="' . esc_attr( $custom_regex ) . '">'
 		. '<p class="description">' . sprintf( __( 'Enter your custom validation rule using <a href="%s" target="_blank">JavaScript RegExp</a> format. No need to enclose those using "/".', 'stripe-payments' ), 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions' )
 		. '<br/>' . __( 'Example RegExp to allow numbers only: ^[0-9]+$', 'stripe-payments' )
 		. '</p>'
-		. '<input type="text" size="40" name="AcceptStripePayments-settings[custom_field_custom_validation_err_msg]" value="' . $custom_regex_err_msg . '"></input>'
+		. '<input type="text" size="40" name="AcceptStripePayments-settings[custom_field_custom_validation_err_msg]" value="' . $custom_regex_err_msg . '">'
 		. '<p class="description">' . __( 'Error message to display if validation is not passed.', 'stripe-payments' ) . '</p>'
 		. '</div>';
 		break;
@@ -667,7 +667,7 @@ class AcceptStripePayments_Admin {
 		//echo "<p class=\"description\">{$desc}</p>";
 		break;
 	    case 'currency_symbol':
-		echo '<input type="text" name="AcceptStripePayments-settings[' . $field . ']" value="" id="wp_asp_curr_symb"?>';
+		echo '<input type="text" name="AcceptStripePayments-settings[' . $field . ']" value="" id="wp_asp_curr_symb">';
 		break;
 	    case 'checkout_lang':
 		// list of supported languages can be found here: https://stripe.com/docs/checkout#supported-languages
@@ -956,13 +956,13 @@ class AcceptStripePayments_Admin {
 	foreach ( $email_tags as $tag => $descr ) {
 	    if ( $descr === '' ) {
 		//this means we need to add addon title which is in $tag var
-		$email_tags_descr .= sprintf( '<tr><td colspan="2" style="text-align: center" class="wp-asp-tag-name"><b>%s</b></td><tr>', $tag );
+		$email_tags_descr .= sprintf( '<tr><td colspan="2" style="text-align: center" class="wp-asp-tag-name"><b>%s</b></td></tr>', $tag );
 	    } else {
-		$email_tags_descr .= sprintf( '<tr><td class="wp-asp-tag-name"><b>%s</b></td><td class="wp-asp-tag-descr">%s</td><tr>', $tag, $descr );
+		$email_tags_descr .= sprintf( '<tr><td class="wp-asp-tag-name"><b>%s</b></td><td class="wp-asp-tag-descr">%s</td></tr>', $tag, $descr );
 	    }
 	}
 
-	$email_tags_descr = sprintf( '<div><a class="wp-asp-toggle toggled-off" href="#0">%s</a><div class="wp-asp-tags-table-cont hidden"><table class="wp-asp-tags-hint" cellspacing="0"><tbody>%s</tbody></table></div></div>', __( 'Click here to toggle tags hint', 'stripe-payments' ), $email_tags_descr );
+	$email_tags_descr = sprintf( '</p><div><a class="wp-asp-toggle toggled-off" href="#0">%s</a><div class="wp-asp-tags-table-cont hidden"><table class="wp-asp-tags-hint" cellspacing="0"><tbody>%s</tbody></table></div></div><p>', __( 'Click here to toggle tags hint', 'stripe-payments' ), $email_tags_descr );
 	return $email_tags_descr;
     }
 
