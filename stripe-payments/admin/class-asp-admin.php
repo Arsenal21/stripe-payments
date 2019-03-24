@@ -48,10 +48,26 @@ class AcceptStripePayments_Admin {
 
 	add_action( 'admin_notices', array( $this, 'show_admin_notices' ), 1 );
 
+	//Gutenberg blocks related
+	//add_action( 'init', array( $this, 'register_block' ) );
 	//TinyMCE button related
 	add_action( 'init', array( $this, 'tinymce_shortcode_button' ) );
 	add_action( 'current_screen', array( $this, 'check_current_screen' ) );
 	add_action( 'wp_ajax_asp_tinymce_get_settings', array( $this, 'tinymce_ajax_handler' ) ); // Add ajax action handler for tinymce
+    }
+
+    function register_block() {
+	if ( ! function_exists( 'register_block_type' ) ) {
+	    // Gutenberg is not active.
+	    return;
+	}
+
+	wp_register_script(
+	'stripe-payments-block', WP_ASP_PLUGIN_URL . '/admin/assets/js/blocks/blocks.js', array( 'wp-blocks', 'wp-i18n', 'wp-element' ), filemtime( plugin_dir_path( __FILE__ ) . 'assets/js/blocks/blocks.js' )
+	);
+	register_block_type( 'stripe-payments/block', array(
+	    'editor_script' => 'stripe-payments-block',
+	) );
     }
 
     function enqueue_scripts( $hook ) {
@@ -543,31 +559,31 @@ class AcceptStripePayments_Admin {
 		echo "<p class=\"description\">{$desc}</p>";
 		break;
 	    case 'custom_field_type':
-		echo "<select name='AcceptStripePayments-settings[{$field}]'>'";
+		echo "<select name='AcceptStripePayments-settings[{$field}]'>";
 		echo "<option value='text'" . ($field_value === 'text' ? ' selected' : '') . ">" . __( "Text", 'stripe-payments' ) . "</option>";
 		echo "<option value='checkbox'" . ($field_value === 'checkbox' ? ' selected' : '') . ">" . __( 'Checkbox', 'stripe-payments' ) . "</option>";
 		echo "</select>";
 		echo "<p class=\"description\">{$desc}</p>";
 		break;
 	    case 'custom_field_descr_location':
-		echo "<select name='AcceptStripePayments-settings[{$field}]'>'";
+		echo "<select name='AcceptStripePayments-settings[{$field}]'>";
 		echo "<option value='placeholder'" . ($field_value === 'placeholder' ? ' selected' : '') . ">" . __( 'Placeholder', 'stripe-payments' ) . "</option>";
 		echo "<option value='below'" . ($field_value === 'below' ? ' selected' : '') . ">" . __( 'Below Input', 'stripe-payments' ) . "</option>";
 		echo "</select>";
 		echo "<p class=\"description\">{$desc}</p>";
 		break;
 	    case 'custom_field_validation':
-		echo "<select name='AcceptStripePayments-settings[{$field}]'>'";
+		echo "<select name='AcceptStripePayments-settings[{$field}]'>";
 		echo "<option value=''" . (empty( $field_value ) ? ' selected' : '') . ">" . __( 'No Validation', 'stripe-payments' ) . "</option>";
 		echo "<option value='num'" . ($field_value === 'num' ? ' selected' : '') . ">" . __( 'Numbers Only', 'stripe-payments' ) . "</option>";
 		echo "<option value='custom'" . ($field_value === 'custom' ? ' selected' : '') . ">" . __( 'Custom Validation', 'stripe-payments' ) . "</option>";
 		echo "</select>";
 		echo ' <div class="wp-asp-help"><i class="dashicons dashicons-editor-help"></i>'
-		. '<span class="wp-asp-help-text">'
+		. '<div class="wp-asp-help-text">'
 		. '<p><strong>' . __( 'No Validation', 'stripe-payments' ) . '</strong>: ' . __( 'no validation performed', 'stripe-payments' ) . '</p>'
 		. '<p><strong>' . __( 'Numbers Only', 'stripe-payments' ) . '</strong>: ' . __( 'only accepts numbers 0-9', 'stripe-payments' ) . '</p>'
 		. '<p><strong>' . __( 'Custom Validation', 'stripe-payments' ) . '</strong>: ' . sprintf( __( 'you can enter your own validation rules using <a href="%s" target="_blank">JavaScript RegExp</a> format.', 'stripe-payments' ), 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions' ) . '</p>'
-		. '</span>'
+		. '</div>'
 		. '</div>';
 		echo "<p class=\"description\">{$desc}</p>";
 		$opts		 = get_option( 'AcceptStripePayments-settings' );
@@ -580,17 +596,17 @@ class AcceptStripePayments_Admin {
 		    $custom_regex_err_msg = $opts[ 'custom_field_custom_validation_err_msg' ];
 		}
 		echo '<div class="wp-asp-custom-field-validation-custom-input-cont" style="display: none;">'
-		. '<input type="text" size="40" name="AcceptStripePayments-settings[custom_field_custom_validation_regex]" value="' . esc_attr( $custom_regex ) . '"></input>'
+		. '<input type="text" size="40" name="AcceptStripePayments-settings[custom_field_custom_validation_regex]" value="' . esc_attr( $custom_regex ) . '">'
 		. '<p class="description">' . sprintf( __( 'Enter your custom validation rule using <a href="%s" target="_blank">JavaScript RegExp</a> format. No need to enclose those using "/".', 'stripe-payments' ), 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions' )
 		. '<br/>' . __( 'Example RegExp to allow numbers only: ^[0-9]+$', 'stripe-payments' )
 		. '</p>'
-		. '<input type="text" size="40" name="AcceptStripePayments-settings[custom_field_custom_validation_err_msg]" value="' . $custom_regex_err_msg . '"></input>'
+		. '<input type="text" size="40" name="AcceptStripePayments-settings[custom_field_custom_validation_err_msg]" value="' . $custom_regex_err_msg . '">'
 		. '<p class="description">' . __( 'Error message to display if validation is not passed.', 'stripe-payments' ) . '</p>'
 		. '</div>';
 		break;
 	    case 'tos_position':
 	    case 'custom_field_position':
-		echo "<select name='AcceptStripePayments-settings[{$field}]'>'";
+		echo "<select name='AcceptStripePayments-settings[{$field}]'>";
 		echo "<option value='above'" . ($field_value === 'above' || empty( $field_value ) ? ' selected' : '') . ">" . __( 'Above Button', 'stripe-payments' ) . "</option>";
 		echo "<option value='below'" . ($field_value === 'below' ? ' selected' : '') . ">" . __( 'Below Button', 'stripe-payments' ) . "</option>";
 		echo "</select>";
@@ -650,7 +666,7 @@ class AcceptStripePayments_Admin {
 		//echo "<p class=\"description\">{$desc}</p>";
 		break;
 	    case 'currency_symbol':
-		echo '<input type="text" name="AcceptStripePayments-settings[' . $field . ']" value="" id="wp_asp_curr_symb"?>';
+		echo '<input type="text" name="AcceptStripePayments-settings[' . $field . ']" value="" id="wp_asp_curr_symb">';
 		break;
 	    case 'checkout_lang':
 		// list of supported languages can be found here: https://stripe.com/docs/checkout#supported-languages
@@ -784,11 +800,11 @@ class AcceptStripePayments_Admin {
 	$output[ 'enable_zip_validation' ] = empty( $input[ 'enable_zip_validation' ] ) ? 0 : 1;
 
 	if ( $output[ 'is_live' ] != 0 ) {
-	    if ( empty( $input[ 'api_secret_key' ] ) || empty( $input[ 'api_publishable_key' ] ) ) {
+	    if ( empty( sanitize_text_field( $input[ 'api_secret_key' ] ) ) || empty( sanitize_text_field( $input[ 'api_publishable_key' ] ) ) ) {
 		add_settings_error( 'AcceptStripePayments-settings', 'invalid-credentials', __( 'You must fill Live API credentials for plugin to work correctly.', 'stripe-payments' ) );
 	    }
 	} else {
-	    if ( empty( $input[ 'api_secret_key_test' ] ) || empty( $input[ 'api_publishable_key_test' ] ) ) {
+	    if ( empty( sanitize_text_field( $input[ 'api_secret_key_test' ] ) ) || empty( sanitize_text_field( $input[ 'api_publishable_key_test' ] ) ) ) {
 		add_settings_error( 'AcceptStripePayments-settings', 'invalid-credentials', __( 'You must fill Test API credentials for plugin to work correctly.', 'stripe-payments' ) );
 	    }
 	}
@@ -825,13 +841,13 @@ class AcceptStripePayments_Admin {
 
 	$output[ 'checkout_lang' ] = $input[ 'checkout_lang' ];
 
-	$output[ 'api_publishable_key' ] = $input[ 'api_publishable_key' ];
+	$output[ 'api_publishable_key' ] = sanitize_text_field( $input[ 'api_publishable_key' ] );
 
-	$output[ 'api_secret_key' ] = $input[ 'api_secret_key' ];
+	$output[ 'api_secret_key' ] = sanitize_text_field( $input[ 'api_secret_key' ] );
 
-	$output[ 'api_publishable_key_test' ] = $input[ 'api_publishable_key_test' ];
+	$output[ 'api_publishable_key_test' ] = sanitize_text_field( $input[ 'api_publishable_key_test' ] );
 
-	$output[ 'api_secret_key_test' ] = $input[ 'api_secret_key_test' ];
+	$output[ 'api_secret_key_test' ] = sanitize_text_field( $input[ 'api_secret_key_test' ] );
 
 	$output[ 'buyer_email_type' ] = $input[ 'buyer_email_type' ];
 
@@ -939,13 +955,13 @@ class AcceptStripePayments_Admin {
 	foreach ( $email_tags as $tag => $descr ) {
 	    if ( $descr === '' ) {
 		//this means we need to add addon title which is in $tag var
-		$email_tags_descr .= sprintf( '<tr><td colspan="2" style="text-align: center" class="wp-asp-tag-name"><b>%s</b></td><tr>', $tag );
+		$email_tags_descr .= sprintf( '<tr><td colspan="2" style="text-align: center" class="wp-asp-tag-name"><b>%s</b></td></tr>', $tag );
 	    } else {
-		$email_tags_descr .= sprintf( '<tr><td class="wp-asp-tag-name"><b>%s</b></td><td class="wp-asp-tag-descr">%s</td><tr>', $tag, $descr );
+		$email_tags_descr .= sprintf( '<tr><td class="wp-asp-tag-name"><b>%s</b></td><td class="wp-asp-tag-descr">%s</td></tr>', $tag, $descr );
 	    }
 	}
 
-	$email_tags_descr = sprintf( '<div><a class="wp-asp-toggle toggled-off" href="#0">%s</a><div class="wp-asp-tags-table-cont hidden"><table class="wp-asp-tags-hint" cellspacing="0"><tbody>%s</tbody></table></div></div>', __( 'Click here to toggle tags hint', 'stripe-payments' ), $email_tags_descr );
+	$email_tags_descr = sprintf( '</p><div><a class="wp-asp-toggle toggled-off" href="#0">%s</a><div class="wp-asp-tags-table-cont hidden"><table class="wp-asp-tags-hint" cellspacing="0"><tbody>%s</tbody></table></div></div><p>', __( 'Click here to toggle tags hint', 'stripe-payments' ), $email_tags_descr );
 	return $email_tags_descr;
     }
 

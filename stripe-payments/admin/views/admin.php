@@ -112,3 +112,5 @@ if ( $_GET[ 'page' ] == 'stripe-payments-settings' ) {
 	) );
 	wp_enqueue_script( 'asp-admin-settings-js' );
     }
+    ?>
+</div>

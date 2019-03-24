@@ -334,10 +334,10 @@ class AcceptStripePayments_CouponsAdmin {
 			</td>
 		    </tr>
 		    <?php if ( $is_edit ) { ?>
-	    	    <input type="hidden" name="asp_coupon_id" value="<?php echo $coupon_id; ?>">
 	    	    <tr>
 	    		<th scope="row"><?php _e( 'Coupon ID', 'stripe-payments' ); ?></th>
 	    		<td>
+	    		    <input type="hidden" name="asp_coupon_id" value="<?php echo $coupon_id; ?>">
 				<?php echo $coupon_id; ?>
 	    		    <p class="description"><?php _e( 'Coupon ID. This value cannot be changed.', 'stripe-payments' ); ?></p>
 	    		</td>
@@ -424,7 +424,6 @@ class AcceptStripePayments_CouponsAdmin {
 		    }
 		});
 	    });
-	</script>
 	</script>
 	<?php
     }

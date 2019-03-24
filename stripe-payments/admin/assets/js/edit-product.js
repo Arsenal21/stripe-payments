@@ -7,11 +7,11 @@ jQuery(document).ready(function ($) {
     var aspVariationsOpts = aspEditProdData.varOpts;
     function asp_create_variations_group(aspGroupId, groupName, focus) {
 	$('span.asp-variations-no-variations-msg').hide();
-	tpl_html = $('div.asp-html-tpl-variations-group').html();
+	var tpl_html = $('div.asp-html-tpl-variations-group').html();
 	tpl_html = $.parseHTML(tpl_html);
 	$(tpl_html).find('input.asp-variations-group-name').attr('name', 'asp-variations-group-names[' + aspGroupId + ']');
 	$(tpl_html).find('input.asp-variations-group-name').val(groupName);
-	displayType = 0;
+	var displayType = 0;
 	if (typeof aspVariationsOpts[aspGroupId] !== "undefined") {
 	    displayType = aspVariationsOpts[aspGroupId];
 	}
@@ -24,7 +24,7 @@ jQuery(document).ready(function ($) {
 	}
     }
     function asp_add_variation(aspGroupId, variationName, variationPrice, variationUrl, focus) {
-	tpl_html = $('table.asp-html-tpl-variation-row tbody').html();
+	var tpl_html = $('table.asp-html-tpl-variation-row tbody').html();
 	tpl_html = $.parseHTML(tpl_html);
 	$(tpl_html).find('input.asp-variation-name').attr('name', 'asp-variation-names[' + aspGroupId + '][]');
 	$(tpl_html).find('input.asp-variation-name').val(variationName);
@@ -61,7 +61,7 @@ jQuery(document).ready(function ($) {
     });
     $(document).on('click', 'button.asp-variations-add-variation-btn', function (e) {
 	e.preventDefault();
-	aspGroupId = $(this).closest('div.asp-variations-group-cont').data('asp-group-id');
+	var aspGroupId = $(this).closest('div.asp-variations-group-cont').data('asp-group-id');
 	asp_add_variation(aspGroupId, '', 0, '', true);
     });
     $(document).on('click', 'button.asp-variations-select-from-ml-btn', function (e) {
@@ -83,7 +83,7 @@ jQuery(document).ready(function ($) {
     });
     if (aspVariationsGroups.length !== 0) {
 	$.each(aspVariationsGroups, function (index, item) {
-	    aspVariationsGroupsId = index;
+	    var aspVariationsGroupsId = index;
 	    asp_create_variations_group(index, item, false);
 	    if (aspVariationsNames !== null) {
 		$.each(aspVariationsNames[index], function (index, item) {
@@ -96,7 +96,7 @@ jQuery(document).ready(function ($) {
 	}
     }
     $('input[name="asp_product_collect_billing_addr"]').change(function () {
-	checked = $(this).is(":checked");
+	var checked = $(this).is(":checked");
 	$('input[data-addr-radio="1"]').prop('disabled', !checked);
     });
 });
