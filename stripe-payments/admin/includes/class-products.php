@@ -52,7 +52,7 @@ class ASPProducts {
 	    'show_ui'		 => true,
 	    'show_in_nav_menus'	 => true,
 	    'show_in_admin_bar'	 => true,
-	    'menu_position'		 => 25,
+	    'menu_position'		 => 80,
 	    'menu_icon'		 => $menu_icon
 	);
 
