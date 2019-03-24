@@ -799,12 +799,17 @@ class AcceptStripePayments_Admin {
 
 	$output[ 'enable_zip_validation' ] = empty( $input[ 'enable_zip_validation' ] ) ? 0 : 1;
 
+	$input[ 'api_secret_key' ]		 = sanitize_text_field( $input[ 'api_secret_key' ] );
+	$input [ 'api_publishable_key' ]	 = sanitize_text_field( $input[ 'api_publishable_key' ] );
+	$input[ 'api_secret_key_test' ]		 = sanitize_text_field( $input[ 'api_secret_key_test' ] );
+	$input[ 'api_publishable_key_test' ]	 = sanitize_text_field( $input[ 'api_publishable_key_test' ] );
+
 	if ( $output[ 'is_live' ] != 0 ) {
-	    if ( empty( sanitize_text_field( $input[ 'api_secret_key' ] ) ) || empty( sanitize_text_field( $input[ 'api_publishable_key' ] ) ) ) {
+	    if ( empty( $input[ 'api_secret_key' ] ) || empty( $input[ 'api_publishable_key' ] ) ) {
 		add_settings_error( 'AcceptStripePayments-settings', 'invalid-credentials', __( 'You must fill Live API credentials for plugin to work correctly.', 'stripe-payments' ) );
 	    }
 	} else {
-	    if ( empty( sanitize_text_field( $input[ 'api_secret_key_test' ] ) ) || empty( sanitize_text_field( $input[ 'api_publishable_key_test' ] ) ) ) {
+	    if ( empty( $input[ 'api_secret_key_test' ] ) || empty( $input[ 'api_publishable_key_test' ] ) ) {
 		add_settings_error( 'AcceptStripePayments-settings', 'invalid-credentials', __( 'You must fill Test API credentials for plugin to work correctly.', 'stripe-payments' ) );
 	    }
 	}
@@ -841,13 +846,13 @@ class AcceptStripePayments_Admin {
 
 	$output[ 'checkout_lang' ] = $input[ 'checkout_lang' ];
 
-	$output[ 'api_publishable_key' ] = sanitize_text_field( $input[ 'api_publishable_key' ] );
+	$output[ 'api_publishable_key' ] = $input[ 'api_publishable_key' ];
 
-	$output[ 'api_secret_key' ] = sanitize_text_field( $input[ 'api_secret_key' ] );
+	$output[ 'api_secret_key' ] = $input[ 'api_secret_key' ];
 
-	$output[ 'api_publishable_key_test' ] = sanitize_text_field( $input[ 'api_publishable_key_test' ] );
+	$output[ 'api_publishable_key_test' ] = $input[ 'api_publishable_key_test' ];
 
-	$output[ 'api_secret_key_test' ] = sanitize_text_field( $input[ 'api_secret_key_test' ] );
+	$output[ 'api_secret_key_test' ] = $input[ 'api_secret_key_test' ];
 
 	$output[ 'buyer_email_type' ] = $input[ 'buyer_email_type' ];
 
