@@ -49,8 +49,7 @@ class AcceptStripePayments_Admin {
 	add_action( 'admin_notices', array( $this, 'show_admin_notices' ), 1 );
 
 	//Gutenberg blocks related
-	add_action( 'init', array( $this, 'register_block' ) );
-
+	//add_action( 'init', array( $this, 'register_block' ) );
 	//TinyMCE button related
 	add_action( 'init', array( $this, 'tinymce_shortcode_button' ) );
 	add_action( 'current_screen', array( $this, 'check_current_screen' ) );

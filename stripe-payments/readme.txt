@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 4.7
 Tested up to: 5.1
 Requires PHP: 5.4
-Stable tag: 1.9.19t1
+Stable tag: 1.9.19
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -151,8 +151,10 @@ None.
 
 == Changelog ==
 
-= WIP 1.9.19t1 =
+= 1.9.19 =
 - Fixed issues on Settings page that prevented it from being properly displayed in some versions of Safari browser.
+- Stripe Payemnts menu icon color changed to white to have better contrast with dark menu background.
+- Fixed minor HTML-related admin interface issues.
 
 = 1.9.18 =
 - Trial subscriptions are now displaying 0 as payment amount on checkout results and email receipts.
