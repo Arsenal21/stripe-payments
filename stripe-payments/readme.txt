@@ -153,7 +153,7 @@ None.
 
 = 1.9.19 =
 - Fixed issues on Settings page that prevented it from being properly displayed in some versions of Safari browser.
-- Stripe Payemnts menu icon color changed to white to have better contrast with dark menu background.
+- Stripe Payments menu icon color changed to white to have better contrast with dark menu background.
 - Fixed minor HTML-related admin interface issues.
 
 = 1.9.18 =
