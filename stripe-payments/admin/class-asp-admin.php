@@ -48,26 +48,10 @@ class AcceptStripePayments_Admin {
 
 	add_action( 'admin_notices', array( $this, 'show_admin_notices' ), 1 );
 
-	//Gutenberg blocks related
-	//add_action( 'init', array( $this, 'register_block' ) );
 	//TinyMCE button related
 	add_action( 'init', array( $this, 'tinymce_shortcode_button' ) );
 	add_action( 'current_screen', array( $this, 'check_current_screen' ) );
 	add_action( 'wp_ajax_asp_tinymce_get_settings', array( $this, 'tinymce_ajax_handler' ) ); // Add ajax action handler for tinymce
-    }
-
-    function register_block() {
-	if ( ! function_exists( 'register_block_type' ) ) {
-	    // Gutenberg is not active.
-	    return;
-	}
-
-	wp_register_script(
-	'stripe-payments-block', WP_ASP_PLUGIN_URL . '/admin/assets/js/blocks/blocks.js', array( 'wp-blocks', 'wp-i18n', 'wp-element' ), filemtime( plugin_dir_path( __FILE__ ) . 'assets/js/blocks/blocks.js' )
-	);
-	register_block_type( 'stripe-payments/block', array(
-	    'editor_script' => 'stripe-payments-block',
-	) );
     }
 
     function enqueue_scripts( $hook ) {

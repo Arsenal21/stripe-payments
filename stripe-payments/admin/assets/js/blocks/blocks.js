@@ -1,42 +1,35 @@
-/**
- * Hello World: Step 1
- *
- * Simple block, renders and saves the same content without interactivity.
- *
- * Using inline styles - no external stylesheet needed.  Not recommended
- * because all of these styles will appear in `post_content`.
- */
-(function (blocks, i18n, element) {
-    var el = element.createElement;
-    var __ = i18n.__;
+var el = wp.element.createElement,
+	registerBlockType = wp.blocks.registerBlockType,
+	ServerSideRender = wp.components.ServerSideRender,
+	TextControl = wp.components.TextControl,
+	SelectControl = wp.components.SelectControl,
+	InspectorControls = wp.editor.InspectorControls;
 
-    var blockStyle = {
-	backgroundColor: '#900',
-	color: '#fff',
-	padding: '20px',
-    };
+registerBlockType('stripe-payments/block', {
+    title: 'Stripe Payments',
+    icon: 'book-alt',
+    category: 'common',
 
-    blocks.registerBlockType('gutenberg-examples/example-01-basic', {
-	title: __('Stripe Payments', 'gutenberg-examples'),
-	icon: 'book-alt',
-	category: 'common',
-	edit: function () {
-	    return el(
-		    'p',
-		    {style: blockStyle},
-		    'Hello World, step 1 (from the editor).'
-		    );
-	},
-	save: function () {
-	    return el(
-		    'p',
-		    {style: blockStyle},
-		    'Hello World, step 1 (from the frontend).'
-		    );
-	},
-    });
-}(
-	window.wp.blocks,
-	window.wp.i18n,
-	window.wp.element
-	));
+    edit: function (props) {
+	return [
+	    el(ServerSideRender, {
+		block: 'stripe-payments/block',
+		attributes: props.attributes,
+	    }),
+	    el(InspectorControls, {},
+		    el(SelectControl, {
+			label: 'Product',
+			value: props.attributes.prodId,
+			options: aspProdOpts,
+			onChange: (value) => {
+			    props.setAttributes({prodId: value});
+			},
+		    })
+		    ),
+	];
+    },
+
+    save: function () {
+	return null;
+    },
+});

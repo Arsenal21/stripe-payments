@@ -50,6 +50,7 @@ require_once( WP_ASP_PLUGIN_PATH . 'public/class-asp.php' );
 require_once( WP_ASP_PLUGIN_PATH . 'admin/includes/class-products.php' );
 require_once( WP_ASP_PLUGIN_PATH . 'admin/includes/class-coupons.php' );
 require_once( WP_ASP_PLUGIN_PATH . 'admin/includes/class-order.php' );
+require_once( WP_ASP_PLUGIN_PATH . 'admin/views/blocks.php' );
 require_once( WP_ASP_PLUGIN_PATH . 'includes/addons-helper-class.php' );
 
 /*
