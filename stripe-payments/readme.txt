@@ -152,6 +152,7 @@ None.
 == Changelog ==
 
 = WIP 1.9.20 =
+- Fixed PHP notices when viewing some products with variations.
 
 = 1.9.19 =
 - Fixed issues on Settings page that prevented it from being properly displayed in some versions of Safari browser.

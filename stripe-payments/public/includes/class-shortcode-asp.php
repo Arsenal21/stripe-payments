@@ -845,13 +845,13 @@ class AcceptStripePaymentsShortcode {
 			    $this->variations[ 'opts' ]	 = $variations_opts;
 			    $variations_str			 .= '<div class="asp-product-variations-cont">';
 			    $variations_str			 .= '<label class="asp-product-variations-label">' . $group . '</label>';
-			    if ( $variations_opts[ $grp_id ] === "1" ) {
-				
+			    if ( isset( $variations_opts[ $grp_id ] ) && $variations_opts[ $grp_id ] === "1" ) {
+				//radio buttons output
 			    } else {
 				$variations_str .= sprintf( '<select class="asp-product-variations-select" data-asp-variations-group-id="%1$d" name="stripeVariations[%1$d][]">', $grp_id );
 			    }
 			    foreach ( $variations_names[ $grp_id ] as $var_id => $name ) {
-				if ( $variations_opts[ $grp_id ] === "1" ) {
+				if ( isset( $variations_opts[ $grp_id ] ) && $variations_opts[ $grp_id ] === "1" ) {
 				    $tpl = '<label class="asp-product-variations-select-radio-label"><input class="asp-product-variations-select-radio" data-asp-variations-group-id="' . $grp_id . '" name="stripeVariations[' . $grp_id . '][]" type="radio" name="123" value="%d"' . ($var_id === 0 ? 'checked' : '') . '>%s %s</label>';
 				} else {
 				    $tpl = '<option value="%d">%s %s</option>';
@@ -866,8 +866,8 @@ class AcceptStripePaymentsShortcode {
 				}
 				$variations_str .= sprintf( $tpl, $var_id, $name, $price_mod );
 			    }
-			    if ( $variations_opts[ $grp_id ] === "1" ) {
-				
+			    if ( isset( $variations_opts[ $grp_id ] ) && $variations_opts[ $grp_id ] === "1" ) {
+				//radio buttons output
 			    } else {
 				$variations_str .= '</select>';
 			    }
