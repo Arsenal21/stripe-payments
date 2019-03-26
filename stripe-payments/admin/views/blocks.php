@@ -3,7 +3,6 @@
 class AcceptStripePayments_Blocks {
 
     function __construct() {
-	//Gutenberg blocks related
 	add_action( 'init', array( $this, 'register_block' ) );
     }
 
@@ -20,11 +19,15 @@ class AcceptStripePayments_Blocks {
 	$this->get_products_array();
 
 	wp_localize_script( 'stripe-payments-block', 'aspProdOpts', $this->get_products_array() );
+	wp_localize_script( 'stripe-payments-block', 'aspBlockProdStr', array(
+	    'title'		 => 'Stripe Payments',
+	    'product'	 => __( 'Product', 'stripe-payments' ),
+	) );
 
 	register_block_type( 'stripe-payments/block', array(
 	    'attributes'		 => array(
 		'prodId' => array(
-		    'type'		 => 'integer',
+		    'type'		 => 'string',
 		    'default'	 => 0,
 		),
 	    ),
@@ -38,10 +41,10 @@ class AcceptStripePayments_Blocks {
 	$prodId = ! empty( $atts[ 'prodId' ] ) ? intval( $atts[ 'prodId' ] ) : 0;
 
 	if ( empty( $prodId ) ) {
-	    return '<p>Select product to view</p>';
+	    return '<p>' . __( 'Select product to view', 'stripe-payments' ) . '</p>';
 	}
 
-	return do_shortcode( sprintf( '[asp_product id=%d]', $prodId ) );
+	return do_shortcode( sprintf( '[asp_product id="%d"]', $prodId ) );
     }
 
     private function get_products_array() {
@@ -49,11 +52,15 @@ class AcceptStripePayments_Blocks {
 	    'post_type'	 => ASPMain::$products_slug,
 	    'post_status'	 => 'publish',
 	    'posts_per_page' => -1,
+	    'orderby'	 => 'title',
+	    'order'		 => 'ASC',
 	) );
-	$prodArr = array( array( 'label' => '{Select product)', 'value' => 0 ) );
+	$prodArr = array( array( 'label' => __( '(Select product)', 'stripe-payments' ), 'value' => 0 ) );
 	while ( $query->have_posts() ) {
 	    $query->the_post();
-	    $prodArr[] = array( 'label' => get_the_title(), 'value' => get_the_ID() );
+	    $title		 = get_the_title();
+	    $title		 = html_entity_decode( $title );
+	    $prodArr[]	 = array( 'label' => esc_attr( $title ), 'value' => get_the_ID() );
 	}
 	wp_reset_query();
 	return $prodArr;
