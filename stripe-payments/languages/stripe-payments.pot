@@ -1,4 +1,4 @@
-#: accept-stripe-payments.php:98 admin/class-asp-admin.php:287
+#: accept-stripe-payments.php:99 admin/class-asp-admin.php:287
 #: admin/views/addons-listing.php:187 includes/addons-helper-class.php:56
 msgid "Settings"
 msgstr ""
@@ -692,149 +692,149 @@ msgstr ""
 msgid "Invalid custom RegExp for Custom Field validation provided: %s"
 msgstr ""
 
-#: admin/class-asp-admin.php:788
+#: admin/class-asp-admin.php:793
 msgid "You must fill Live API credentials for plugin to work correctly."
 msgstr ""
 
-#: admin/class-asp-admin.php:792
+#: admin/class-asp-admin.php:797
 msgid "You must fill Test API credentials for plugin to work correctly."
 msgstr ""
 
-#: admin/class-asp-admin.php:799
+#: admin/class-asp-admin.php:804
 msgid "Please specify a checkout page."
 msgstr ""
 
-#: admin/class-asp-admin.php:804
+#: admin/class-asp-admin.php:809
 msgid "Button text should not be empty."
 msgstr ""
 
-#: admin/class-asp-admin.php:824
+#: admin/class-asp-admin.php:829
 msgid "You must specify payment currency."
 msgstr ""
 
-#: admin/class-asp-admin.php:843
+#: admin/class-asp-admin.php:848
 msgid "You must specify from email address."
 msgstr ""
 
-#: admin/class-asp-admin.php:848
+#: admin/class-asp-admin.php:853
 msgid "You must specify buyer email subject."
 msgstr ""
 
-#: admin/class-asp-admin.php:853
+#: admin/class-asp-admin.php:858
 msgid "You must fill in buyer email body."
 msgstr ""
 
-#: admin/class-asp-admin.php:858
+#: admin/class-asp-admin.php:863
 msgid "You must specify seller notification email address."
 msgstr ""
 
-#: admin/class-asp-admin.php:863
+#: admin/class-asp-admin.php:868
 msgid "You must specify seller email subject."
 msgstr ""
 
-#: admin/class-asp-admin.php:868
+#: admin/class-asp-admin.php:873
 msgid "You must fill in seller email body."
 msgstr ""
 
-#: admin/class-asp-admin.php:877
+#: admin/class-asp-admin.php:882
 msgid "Price decimal separator can't be empty."
 msgstr ""
 
-#: admin/class-asp-admin.php:882
+#: admin/class-asp-admin.php:887
 msgid "Price thousand separator can't be empty."
 msgstr ""
 
-#: admin/class-asp-admin.php:887
+#: admin/class-asp-admin.php:892
 msgid "Price number of decimals can't be empty."
 msgstr ""
 
-#: admin/class-asp-admin.php:913
+#: admin/class-asp-admin.php:918
 msgid "Name of the purchased item"
 msgstr ""
 
-#: admin/class-asp-admin.php:914
+#: admin/class-asp-admin.php:919
 msgid "Number of items purchsed"
 msgstr ""
 
-#: admin/class-asp-admin.php:915
+#: admin/class-asp-admin.php:920
 msgid "Item price. Example: 1000,00"
 msgstr ""
 
-#: admin/class-asp-admin.php:916
+#: admin/class-asp-admin.php:921
 msgid "Item price with currency symbol. Example: $1,000.00"
 msgstr ""
 
-#: admin/class-asp-admin.php:917
+#: admin/class-asp-admin.php:922
 msgid "The amount paid for the current transaction. Example: 1,000.00"
 msgstr ""
 
-#: admin/class-asp-admin.php:918
+#: admin/class-asp-admin.php:923
 msgid ""
 "The amount paid for the current transaction with currency symbol. Example: "
 "$1,000.00"
 msgstr ""
 
-#: admin/class-asp-admin.php:919
+#: admin/class-asp-admin.php:924
 msgid "Tax in percent. Example: 10%"
 msgstr ""
 
-#: admin/class-asp-admin.php:920
+#: admin/class-asp-admin.php:925
 msgid "Formatted tax amount for single item. Example: $0.25"
 msgstr ""
 
-#: admin/class-asp-admin.php:921
+#: admin/class-asp-admin.php:926
 msgid "Formatted shipping amount. Example: $2.50"
 msgstr ""
 
-#: admin/class-asp-admin.php:922
+#: admin/class-asp-admin.php:927
 msgid ""
 "The item details of the purchased product (this will include the download "
 "link for digital items)"
 msgstr ""
 
-#: admin/class-asp-admin.php:923
+#: admin/class-asp-admin.php:928
 msgid "The unique transaction ID of the purchase"
 msgstr ""
 
-#: admin/class-asp-admin.php:924
+#: admin/class-asp-admin.php:929
 msgid "Shipping address of the buyer"
 msgstr ""
 
-#: admin/class-asp-admin.php:925
+#: admin/class-asp-admin.php:930
 msgid "Billing address of the buyer"
 msgstr ""
 
-#: admin/class-asp-admin.php:926
+#: admin/class-asp-admin.php:931
 msgid "Customer name. Available only if collect billing address option enabled"
 msgstr ""
 
-#: admin/class-asp-admin.php:927
+#: admin/class-asp-admin.php:932
 msgid "Email Address of the buyer"
 msgstr ""
 
-#: admin/class-asp-admin.php:928
+#: admin/class-asp-admin.php:933
 msgid "Currency symbol. Example: $"
 msgstr ""
 
-#: admin/class-asp-admin.php:929
+#: admin/class-asp-admin.php:934
 msgid "3-letter currency code. Example: USD"
 msgstr ""
 
-#: admin/class-asp-admin.php:930
+#: admin/class-asp-admin.php:935
 msgid "The date of the purchase"
 msgstr ""
 
-#: admin/class-asp-admin.php:931
+#: admin/class-asp-admin.php:936
 msgid "Custom field name and value (if enabled)"
 msgstr ""
 
-#: admin/class-asp-admin.php:948
+#: admin/class-asp-admin.php:953
 msgid "Click here to toggle tags hint"
 msgstr ""
 
 #: admin/includes/class-cooupons-list-table.php:50
 #: admin/includes/class-coupons.php:347
-#: public/includes/class-shortcode-asp.php:890
+#: public/includes/class-shortcode-asp.php:896
 msgid "Coupon Code"
 msgstr ""
 
@@ -978,7 +978,7 @@ msgstr ""
 msgid "Use this to enable/disable this coupon."
 msgstr ""
 
-#: admin/includes/class-coupons.php:339
+#: admin/includes/class-coupons.php:338
 msgid "Coupon ID"
 msgstr ""
 
@@ -1051,39 +1051,39 @@ msgstr ""
 msgid "Update Coupon"
 msgstr ""
 
-#: admin/includes/class-coupons.php:436
+#: admin/includes/class-coupons.php:435
 msgid "Can't delete coupon: coupon ID is not provided."
 msgstr ""
 
-#: admin/includes/class-coupons.php:441
+#: admin/includes/class-coupons.php:440
 #, php-format
 msgid "Can't delete coupon: coupon #%d not found."
 msgstr ""
 
-#: admin/includes/class-coupons.php:445
+#: admin/includes/class-coupons.php:444
 #, php-format
 msgid "Can't delete coupon: post #%d is not a coupon."
 msgstr ""
 
-#: admin/includes/class-coupons.php:450
+#: admin/includes/class-coupons.php:449
 #, php-format
 msgid "Coupon #%d has been deleted."
 msgstr ""
 
-#: admin/includes/class-coupons.php:467
+#: admin/includes/class-coupons.php:466
 msgid "Please enter coupon code."
 msgstr ""
 
-#: admin/includes/class-coupons.php:471
+#: admin/includes/class-coupons.php:470
 msgid "Please enter discount."
 msgstr ""
 
-#: admin/includes/class-coupons.php:501
+#: admin/includes/class-coupons.php:500
 #, php-format
 msgid "Coupon \"%s\" has been created."
 msgstr ""
 
-#: admin/includes/class-coupons.php:501
+#: admin/includes/class-coupons.php:500
 #, php-format
 msgid "Coupon \"%s\" has been updated."
 msgstr ""
@@ -1155,7 +1155,7 @@ msgid "Order Time: "
 msgstr ""
 
 #: admin/includes/class-order.php:109
-#: public/includes/class-shortcode-asp.php:945
+#: public/includes/class-shortcode-asp.php:951
 msgid "Transaction ID: "
 msgstr ""
 
@@ -1167,23 +1167,23 @@ msgstr ""
 msgid "Description: "
 msgstr ""
 
-#: admin/includes/class-order.php:113 includes/process_ipn.php:712
-#: public/includes/class-shortcode-asp.php:937
+#: admin/includes/class-order.php:113 includes/process_ipn.php:717
+#: public/includes/class-shortcode-asp.php:943
 msgid "Product Name: "
 msgstr ""
 
-#: admin/includes/class-order.php:114 includes/process_ipn.php:713
-#: public/includes/class-shortcode-asp.php:938
+#: admin/includes/class-order.php:114 includes/process_ipn.php:718
+#: public/includes/class-shortcode-asp.php:944
 msgid "Quantity: "
 msgstr ""
 
-#: admin/includes/class-order.php:115 includes/process_ipn.php:714
-#: public/includes/class-shortcode-asp.php:939
+#: admin/includes/class-order.php:115 includes/process_ipn.php:719
+#: public/includes/class-shortcode-asp.php:945
 msgid "Item Price: "
 msgstr ""
 
-#: admin/includes/class-order.php:119 includes/process_ipn.php:718
-#: public/includes/class-shortcode-asp.php:943
+#: admin/includes/class-order.php:119 includes/process_ipn.php:723
+#: public/includes/class-shortcode-asp.php:949
 msgid "Total Amount: "
 msgstr ""
 
@@ -1581,11 +1581,11 @@ msgid ""
 "tutorial</a>."
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:437
+#: admin/includes/class-products-meta-boxes.php:437 admin/views/blocks.php:25
 msgid "Show Button Only"
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:438
+#: admin/includes/class-products-meta-boxes.php:438 admin/views/blocks.php:26
 msgid ""
 "Check this box if you just want to show the button only without any "
 "additional product info."
@@ -1729,7 +1729,7 @@ msgid "Date"
 msgstr ""
 
 #: admin/includes/class-products.php:112
-#: public/includes/class-shortcode-asp.php:557
+#: public/includes/class-shortcode-asp.php:563
 msgid "Out of stock"
 msgstr ""
 
@@ -1944,6 +1944,18 @@ msgstr ""
 msgid "Error occurred:"
 msgstr ""
 
+#: admin/views/blocks.php:24
+msgid "Product"
+msgstr ""
+
+#: admin/views/blocks.php:50
+msgid "Select product to view"
+msgstr ""
+
+#: admin/views/blocks.php:71
+msgid "(Select product)"
+msgstr ""
+
 #: includes/addons-helper-class.php:64
 #, php-format
 msgid ""
@@ -1973,36 +1985,36 @@ msgstr ""
 msgid "Debug data:"
 msgstr ""
 
-#: includes/process_ipn.php:506
+#: includes/process_ipn.php:511
 #, php-format
 msgid "Coupon \"%s\""
 msgstr ""
 
-#: includes/process_ipn.php:507
+#: includes/process_ipn.php:512
 msgid "Subtotal"
 msgstr ""
 
-#: includes/process_ipn.php:511 public/includes/class-shortcode-asp.php:85
+#: includes/process_ipn.php:516 public/includes/class-shortcode-asp.php:85
 #: public/includes/class-shortcode-asp.php:308
-#: public/includes/class-shortcode-asp.php:626
+#: public/includes/class-shortcode-asp.php:632
 msgid "Tax"
 msgstr ""
 
-#: includes/process_ipn.php:518 public/includes/class-shortcode-asp.php:86
+#: includes/process_ipn.php:523 public/includes/class-shortcode-asp.php:86
 #: public/includes/class-shortcode-asp.php:318
-#: public/includes/class-shortcode-asp.php:627
+#: public/includes/class-shortcode-asp.php:633
 msgid "Shipping"
 msgstr ""
 
-#: includes/process_ipn.php:730 includes/process_ipn.php:736
+#: includes/process_ipn.php:735 includes/process_ipn.php:741
 msgid "Download link: "
 msgstr ""
 
-#: includes/process_ipn.php:738
+#: includes/process_ipn.php:743
 msgid "Download links: "
 msgstr ""
 
-#: includes/process_ipn.php:749
+#: includes/process_ipn.php:754
 msgid "Order Info: "
 msgstr ""
 
@@ -2230,77 +2242,77 @@ msgstr ""
 msgid "Invalid validation RegEx: "
 msgstr ""
 
-#: public/includes/class-shortcode-asp.php:566
+#: public/includes/class-shortcode-asp.php:572
 msgid ""
 "Stripe Payments requires Javascript to be supported by the browser in order "
 "to operate."
 msgstr ""
 
-#: public/includes/class-shortcode-asp.php:588
+#: public/includes/class-shortcode-asp.php:594
 msgid "Only numbers are allowed: 0-9"
 msgstr ""
 
-#: public/includes/class-shortcode-asp.php:787
+#: public/includes/class-shortcode-asp.php:793
 msgid "Enter amount"
 msgstr ""
 
-#: public/includes/class-shortcode-asp.php:817
+#: public/includes/class-shortcode-asp.php:823
 msgid "Enter quantity"
 msgstr ""
 
-#: public/includes/class-shortcode-asp.php:818
+#: public/includes/class-shortcode-asp.php:824
 msgid "X item(s)"
 msgstr ""
 
-#: public/includes/class-shortcode-asp.php:892
+#: public/includes/class-shortcode-asp.php:898
 msgid "Apply"
 msgstr ""
 
-#: public/includes/class-shortcode-asp.php:932
+#: public/includes/class-shortcode-asp.php:938
 msgid "System was not able to complete the payment."
 msgstr ""
 
-#: public/includes/class-shortcode-asp.php:935
+#: public/includes/class-shortcode-asp.php:941
 msgid "Thank you for your payment."
 msgstr ""
 
-#: public/includes/class-shortcode-asp.php:936
+#: public/includes/class-shortcode-asp.php:942
 msgid "Here's what you purchased: "
 msgstr ""
 
-#: public/includes/class-shortcode-asp.php:950
+#: public/includes/class-shortcode-asp.php:956
 msgctxt "Is a part of 'Please click here to download'"
 msgid " to download."
 msgstr ""
 
-#: public/includes/class-shortcode-asp.php:950
+#: public/includes/class-shortcode-asp.php:956
 msgctxt "Is a part of 'Please click here to download'"
 msgid "Please "
 msgstr ""
 
-#: public/includes/class-shortcode-asp.php:950
+#: public/includes/class-shortcode-asp.php:956
 msgctxt "Is a part of 'Please click here to download'"
 msgid "click here"
 msgstr ""
 
-#: public/includes/class-shortcode-asp.php:957
+#: public/includes/class-shortcode-asp.php:963
 msgid "Download links:"
 msgstr ""
 
-#: public/includes/class-shortcode-asp.php:958
+#: public/includes/class-shortcode-asp.php:964
 #: public/includes/shortcodes/show-user-transactions.php:59
 msgid "Click here to download"
 msgstr ""
 
-#: public/includes/class-shortcode-asp.php:1047
+#: public/includes/class-shortcode-asp.php:1053
 msgid "No products have been configured yet"
 msgstr ""
 
-#: public/includes/class-shortcode-asp.php:1056
+#: public/includes/class-shortcode-asp.php:1062
 msgid "Nothing found for"
 msgstr ""
 
-#: public/includes/class-shortcode-asp.php:1056
+#: public/includes/class-shortcode-asp.php:1062
 msgid "Search results for"
 msgstr ""
 
