@@ -372,13 +372,18 @@ class AcceptStripePaymentsShortcode {
 		'custom_field'		 => $custom_field,
 		'coupons_enabled'	 => $coupons_enabled,
 		'compat_mode'		 => $compat_mode,
+		'button_only'		 => isset( $atts[ 'button_only' ] ) ? intval( $atts[ 'button_only' ] ) : null,
 	    );
 	    //this would pass additional shortcode parameters from asp_product shortcode
 	    $sc_params	 = array_merge( $atts, $sc_params );
 	    $buy_btn	 = $this->shortcode_accept_stripe_payment( $sc_params );
 	}
 
-	$button_only = get_post_meta( $id, 'asp_product_button_only', true );
+	if ( ! isset( $sc_params[ 'button_only' ] ) ) {
+	    $button_only = get_post_meta( $id, 'asp_product_button_only', true );
+	} else {
+	    $button_only = $sc_params[ 'button_only' ];
+	}
 
 	if ( (isset( $atts[ "fancy" ] ) && $atts[ "fancy" ] == '0') || $button_only == 1 ) {
 	    //Just show the stripe payment button (no fancy template)
@@ -389,6 +394,7 @@ class AcceptStripePaymentsShortcode {
 	    }
 	    return $tpl;
 	}
+
 
 	//Show the stripe payment button with fancy style template.
 	require_once(WP_ASP_PLUGIN_PATH . 'public/views/templates/' . $template_name . '/template.php');
@@ -845,13 +851,13 @@ class AcceptStripePaymentsShortcode {
 			    $this->variations[ 'opts' ]	 = $variations_opts;
 			    $variations_str			 .= '<div class="asp-product-variations-cont">';
 			    $variations_str			 .= '<label class="asp-product-variations-label">' . $group . '</label>';
-			    if ( $variations_opts[ $grp_id ] === "1" ) {
-				
+			    if ( isset( $variations_opts[ $grp_id ] ) && $variations_opts[ $grp_id ] === "1" ) {
+				//radio buttons output
 			    } else {
 				$variations_str .= sprintf( '<select class="asp-product-variations-select" data-asp-variations-group-id="%1$d" name="stripeVariations[%1$d][]">', $grp_id );
 			    }
 			    foreach ( $variations_names[ $grp_id ] as $var_id => $name ) {
-				if ( $variations_opts[ $grp_id ] === "1" ) {
+				if ( isset( $variations_opts[ $grp_id ] ) && $variations_opts[ $grp_id ] === "1" ) {
 				    $tpl = '<label class="asp-product-variations-select-radio-label"><input class="asp-product-variations-select-radio" data-asp-variations-group-id="' . $grp_id . '" name="stripeVariations[' . $grp_id . '][]" type="radio" name="123" value="%d"' . ($var_id === 0 ? 'checked' : '') . '>%s %s</label>';
 				} else {
 				    $tpl = '<option value="%d">%s %s</option>';
@@ -866,8 +872,8 @@ class AcceptStripePaymentsShortcode {
 				}
 				$variations_str .= sprintf( $tpl, $var_id, $name, $price_mod );
 			    }
-			    if ( $variations_opts[ $grp_id ] === "1" ) {
-				
+			    if ( isset( $variations_opts[ $grp_id ] ) && $variations_opts[ $grp_id ] === "1" ) {
+				//radio buttons output
 			    } else {
 				$variations_str .= '</select>';
 			    }

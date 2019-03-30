@@ -45,7 +45,7 @@ class ASPProducts {
 	    'publicly_queryable'	 => true,
 	    'capability_type'	 => 'post',
 	    'query_var'		 => true,
-	    'has_archive'		 => true,
+	    'has_archive'		 => false,
 	    'hierarchical'		 => false,
 	    'rewrite'		 => array( 'slug' => $asp_slug ),
 	    'supports'		 => array( 'title' ),
