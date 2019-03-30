@@ -372,13 +372,18 @@ class AcceptStripePaymentsShortcode {
 		'custom_field'		 => $custom_field,
 		'coupons_enabled'	 => $coupons_enabled,
 		'compat_mode'		 => $compat_mode,
+		'button_only'		 => isset( $atts[ 'button_only' ] ) ? intval( $atts[ 'button_only' ] ) : null,
 	    );
 	    //this would pass additional shortcode parameters from asp_product shortcode
 	    $sc_params	 = array_merge( $atts, $sc_params );
 	    $buy_btn	 = $this->shortcode_accept_stripe_payment( $sc_params );
 	}
 
-	$button_only = get_post_meta( $id, 'asp_product_button_only', true );
+	if ( ! isset( $sc_params[ 'button_only' ] ) ) {
+	    $button_only = get_post_meta( $id, 'asp_product_button_only', true );
+	} else {
+	    $button_only = $sc_params[ 'button_only' ];
+	}
 
 	if ( (isset( $atts[ "fancy" ] ) && $atts[ "fancy" ] == '0') || $button_only == 1 ) {
 	    //Just show the stripe payment button (no fancy template)
@@ -389,6 +394,7 @@ class AcceptStripePaymentsShortcode {
 	    }
 	    return $tpl;
 	}
+
 
 	//Show the stripe payment button with fancy style template.
 	require_once(WP_ASP_PLUGIN_PATH . 'public/views/templates/' . $template_name . '/template.php');

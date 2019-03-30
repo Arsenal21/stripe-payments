@@ -152,6 +152,7 @@ None.
 == Changelog ==
 
 = WIP 1.9.20 =
+- Added button_only parameter to [asp_product] shortcode. When set to "1", no product title and info is displayed.
 - Fixed PHP notices when viewing some products with variations.
 
 = 1.9.19 =
