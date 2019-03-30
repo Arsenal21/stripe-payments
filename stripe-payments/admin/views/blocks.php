@@ -13,30 +13,36 @@ class AcceptStripePayments_Blocks {
 	}
 
 	wp_register_script(
-	'stripe-payments-block', WP_ASP_PLUGIN_URL . '/admin/assets/js/blocks/blocks.js', array( 'wp-blocks', 'wp-element', 'wp-components', 'wp-editor' ), WP_ASP_PLUGIN_VERSION
+	'stripe-payments-product-block', WP_ASP_PLUGIN_URL . '/admin/assets/js/blocks/product-block.js', array( 'wp-blocks', 'wp-element', 'wp-components', 'wp-editor' ), WP_ASP_PLUGIN_VERSION
 	);
 
 	$this->get_products_array();
 
-	wp_localize_script( 'stripe-payments-block', 'aspProdOpts', $this->get_products_array() );
-	wp_localize_script( 'stripe-payments-block', 'aspBlockProdStr', array(
-	    'title'		 => 'Stripe Payments',
-	    'product'	 => __( 'Product', 'stripe-payments' ),
+	wp_localize_script( 'stripe-payments-product-block', 'aspProdOpts', $this->get_products_array() );
+	wp_localize_script( 'stripe-payments-product-block', 'aspBlockProdStr', array(
+	    'title'			 => 'Stripe Payments Product',
+	    'product'		 => __( 'Product', 'stripe-payments' ),
+	    'button_only'		 => __( 'Show Button Only', 'stripe-payments' ),
+	    'button_only_help'	 => __( 'Check this box if you just want to show the button only without any additional product info.', 'stripe-payments' ),
 	) );
 
-	register_block_type( 'stripe-payments/block', array(
+	register_block_type( 'stripe-payments/product-block', array(
 	    'attributes'		 => array(
-		'prodId' => array(
+		'prodId'	 => array(
 		    'type'		 => 'string',
 		    'default'	 => 0,
 		),
+		'btnOnly'	 => array(
+		    'type'		 => 'boolean',
+		    'default'	 => false,
+		),
 	    ),
-	    'editor_script'		 => 'stripe-payments-block',
-	    'render_callback'	 => array( $this, 'render_block' ),
+	    'editor_script'		 => 'stripe-payments-product-block',
+	    'render_callback'	 => array( $this, 'render_product_block' ),
 	) );
     }
 
-    function render_block( $atts ) {
+    function render_product_block( $atts ) {
 
 	$prodId = ! empty( $atts[ 'prodId' ] ) ? intval( $atts[ 'prodId' ] ) : 0;
 
@@ -44,7 +50,14 @@ class AcceptStripePayments_Blocks {
 	    return '<p>' . __( 'Select product to view', 'stripe-payments' ) . '</p>';
 	}
 
-	return do_shortcode( sprintf( '[asp_product id="%d"]', $prodId ) );
+	$sc_str	 = 'asp_product id="%d"';
+	$sc_str	 = sprintf( $sc_str, $prodId );
+
+	if ( ! empty( $atts[ 'btnOnly' ] ) ) {
+	    $sc_str .= ' button_only="1"';
+	}
+
+	return do_shortcode( '[' . $sc_str . ']' );
     }
 
     private function get_products_array() {
