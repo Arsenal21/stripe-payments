@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 4.7
 Tested up to: 5.1
 Requires PHP: 5.4
-Stable tag: 1.9.20t1
+Stable tag: 1.9.20
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -151,7 +151,7 @@ None.
 
 == Changelog ==
 
-= WIP 1.9.20 =
+= 1.9.20 =
 - Added Stripe Payments Product Gutenberg block.
 - Added button_only parameter to [asp_product] shortcode. When set to "1", no product title and info is displayed.
 - Fixed PHP notices when viewing some products with variations.
