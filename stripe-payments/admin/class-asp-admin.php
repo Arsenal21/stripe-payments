@@ -913,31 +913,44 @@ class AcceptStripePayments_Admin {
 	include_once( 'views/addons-listing.php' );
     }
 
-    static function get_email_tags_descr() {
-	$email_tags = array(
-	    "{item_name}"		 => __( 'Name of the purchased item', 'stripe-payments' ),
-	    "{item_quantity}"	 => __( 'Number of items purchsed', 'stripe-payments' ),
-	    "{item_price}"		 => __( 'Item price. Example: 1000,00', 'stripe-payments' ),
-	    "{item_price_curr}"	 => __( 'Item price with currency symbol. Example: $1,000.00', 'stripe-payments' ),
-	    "{purchase_amt}"	 => __( 'The amount paid for the current transaction. Example: 1,000.00', 'stripe-payments' ),
-	    "{purchase_amt_curr}"	 => __( 'The amount paid for the current transaction with currency symbol. Example: $1,000.00', 'stripe-payments' ),
-	    "{tax}"			 => __( 'Tax in percent. Example: 10%', 'stripe-payments' ),
-	    "{tax_amt}"		 => __( 'Formatted tax amount for single item. Example: $0.25', 'stripe-payments' ),
-	    "{shipping_amt}"	 => __( 'Formatted shipping amount. Example: $2.50', 'stripe-payments' ),
-	    "{product_details}"	 => __( 'The item details of the purchased product (this will include the download link for digital items)', 'stripe-payments' ),
-	    "{transaction_id}"	 => __( 'The unique transaction ID of the purchase', 'stripe-payments' ),
-	    "{shipping_address}"	 => __( 'Shipping address of the buyer', 'stripe-payments' ),
-	    "{billing_address}"	 => __( 'Billing address of the buyer', 'stripe-payments' ),
-	    '{customer_name}'	 => __( 'Customer name. Available only if collect billing address option enabled', 'stripe-payments' ),
-	    "{payer_email}"		 => __( 'Email Address of the buyer', 'stripe-payments' ),
-	    "{currency}"		 => __( 'Currency symbol. Example: $', 'stripe-payments' ),
-	    "{currency_code}"	 => __( '3-letter currency code. Example: USD', 'stripe-payments' ),
-	    "{purchase_date}"	 => __( 'The date of the purchase', 'stripe-payments' ),
-	    "{custom_field}"	 => __( 'Custom field name and value (if enabled)', 'stripe-payments' ),
-	);
+    /**
+     * Helper function for addons to generate custom email tags
+     *
+     * @since    1.9.21t1
+     */
+    static function get_email_tags_descr_out( $email_tags = array(), $apply_filters = true ) {
+	return self::get_email_tags_descr( $email_tags, $apply_filters );
+    }
+
+    static function get_email_tags_descr( $email_tags = array(), $apply_filters = true ) {
+	if ( empty( $email_tags ) ) {
+	    $email_tags = array(
+		"{item_name}"		 => __( 'Name of the purchased item', 'stripe-payments' ),
+		"{item_quantity}"	 => __( 'Number of items purchsed', 'stripe-payments' ),
+		"{item_price}"		 => __( 'Item price. Example: 1000,00', 'stripe-payments' ),
+		"{item_price_curr}"	 => __( 'Item price with currency symbol. Example: $1,000.00', 'stripe-payments' ),
+		"{purchase_amt}"	 => __( 'The amount paid for the current transaction. Example: 1,000.00', 'stripe-payments' ),
+		"{purchase_amt_curr}"	 => __( 'The amount paid for the current transaction with currency symbol. Example: $1,000.00', 'stripe-payments' ),
+		"{tax}"			 => __( 'Tax in percent. Example: 10%', 'stripe-payments' ),
+		"{tax_amt}"		 => __( 'Formatted tax amount for single item. Example: $0.25', 'stripe-payments' ),
+		"{shipping_amt}"	 => __( 'Formatted shipping amount. Example: $2.50', 'stripe-payments' ),
+		"{product_details}"	 => __( 'The item details of the purchased product (this will include the download link for digital items)', 'stripe-payments' ),
+		"{transaction_id}"	 => __( 'The unique transaction ID of the purchase', 'stripe-payments' ),
+		"{shipping_address}"	 => __( 'Shipping address of the buyer', 'stripe-payments' ),
+		"{billing_address}"	 => __( 'Billing address of the buyer', 'stripe-payments' ),
+		'{customer_name}'	 => __( 'Customer name. Available only if collect billing address option enabled', 'stripe-payments' ),
+		"{payer_email}"		 => __( 'Email Address of the buyer', 'stripe-payments' ),
+		"{currency}"		 => __( 'Currency symbol. Example: $', 'stripe-payments' ),
+		"{currency_code}"	 => __( '3-letter currency code. Example: USD', 'stripe-payments' ),
+		"{purchase_date}"	 => __( 'The date of the purchase', 'stripe-payments' ),
+		"{custom_field}"	 => __( 'Custom field name and value (if enabled)', 'stripe-payments' ),
+	    );
+	}
 
 	//apply filters so addons can add their hints if needed
-	$email_tags = apply_filters( 'asp_get_email_tags_descr', $email_tags );
+	if ( $apply_filters ) {
+	    $email_tags = apply_filters( 'asp_get_email_tags_descr', $email_tags );
+	}
 
 	$email_tags_descr = '';
 
