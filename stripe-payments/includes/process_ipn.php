@@ -414,6 +414,16 @@ if ( empty( $data[ 'charge' ] ) ) {
 	    $charge_opts[ 'metadata' ][ 'Custom Fields' ]	 = $cfStr;
 	}
 
+	//Check if we need to include variations data into metadata
+	if ( ! empty( $variations ) ) {
+	    $varStr = '';
+	    foreach ( $variations as $variation ) {
+		$varStr .= '[' . $variation[ 0 ] . "], ";
+	    }
+	    $varStr						 = rtrim( $varStr, ', ' );
+	    $charge_opts[ 'metadata' ][ 'Variations' ]	 = $varStr;
+	}
+
 	//Shipping address data (if any)
 	$shipping_address		 = "";
 	$shipping_address		 .= isset( $_POST[ 'stripeShippingName' ] ) ? $_POST[ 'stripeShippingName' ] . "\n" : '';
