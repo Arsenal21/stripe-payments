@@ -152,6 +152,7 @@ None.
 == Changelog ==
 
 = WIP 1.9.21 =
+- Fixed frontend discount amount display when custom quantity is enabled and initial quantity is set to 0 or empty.
 
 = 1.9.20 =
 - Added Stripe Payments Product Gutenberg block.
