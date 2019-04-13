@@ -92,7 +92,7 @@ stripehandler.updateAllAmounts = function (data) {
     totalCont.find('span.asp_price_amount').html(stripehandler.formatMoney(data.item_price, data));
     var taxVal = false;
     if (data.tax !== 0) {
-	var taxVal = Math.round(data.item_price * parseInt(data.tax) / 100) * data.quantity;
+	var taxVal = Math.round(data.item_price * parseFloat(data.tax) / 100) * data.quantity;
     }
     if (taxVal) {
 	var taxStr = data.displayStr.tax.replace('%s', stripehandler.formatMoney(taxVal, data));
