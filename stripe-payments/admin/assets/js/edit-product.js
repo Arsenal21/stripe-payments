@@ -1,10 +1,10 @@
-var aspVariationsGroupsId = 0;
 jQuery(document).ready(function ($) {
     var aspVariationsGroups = aspEditProdData.varGroups;
     var aspVariationsNames = aspEditProdData.varNames;
     var aspVariationsPrices = aspEditProdData.varPrices;
     var aspVariationsUrls = aspEditProdData.varUrls;
     var aspVariationsOpts = aspEditProdData.varOpts;
+    var aspVariationsGroupsId = 0;
     function asp_create_variations_group(aspGroupId, groupName, focus) {
 	$('span.asp-variations-no-variations-msg').hide();
 	var tpl_html = $('div.asp-html-tpl-variations-group').html();
@@ -83,7 +83,7 @@ jQuery(document).ready(function ($) {
     });
     if (aspVariationsGroups.length !== 0) {
 	$.each(aspVariationsGroups, function (index, item) {
-	    var aspVariationsGroupsId = index;
+	    aspVariationsGroupsId = index;
 	    asp_create_variations_group(index, item, false);
 	    if (aspVariationsNames !== null) {
 		$.each(aspVariationsNames[index], function (index, item) {
