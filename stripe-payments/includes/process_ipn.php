@@ -411,6 +411,8 @@ if ( empty( $data[ 'charge' ] ) ) {
 		$cfStr .= $cf[ 'name' ] . ': ' . $cf[ 'value' ] . ' | ';
 	    }
 	    $cfStr						 = rtrim( $cfStr, ' | ' );
+	    //trim the string as metadata value cannot exceed 500 chars
+	    $cfStr						 = substr( $cfStr, 0, 499 );
 	    $charge_opts[ 'metadata' ][ 'Custom Fields' ]	 = $cfStr;
 	}
 
@@ -421,6 +423,8 @@ if ( empty( $data[ 'charge' ] ) ) {
 		$varStr .= '[' . $variation[ 0 ] . "], ";
 	    }
 	    $varStr						 = rtrim( $varStr, ', ' );
+	    //trim the string as metadata value cannot exceed 500 chars
+	    $varStr						 = substr( $varStr, 0, 499 );
 	    $charge_opts[ 'metadata' ][ 'Variations' ]	 = $varStr;
 	}
 
