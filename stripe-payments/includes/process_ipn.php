@@ -411,7 +411,21 @@ if ( empty( $data[ 'charge' ] ) ) {
 		$cfStr .= $cf[ 'name' ] . ': ' . $cf[ 'value' ] . ' | ';
 	    }
 	    $cfStr						 = rtrim( $cfStr, ' | ' );
+	    //trim the string as metadata value cannot exceed 500 chars
+	    $cfStr						 = substr( $cfStr, 0, 499 );
 	    $charge_opts[ 'metadata' ][ 'Custom Fields' ]	 = $cfStr;
+	}
+
+	//Check if we need to include variations data into metadata
+	if ( ! empty( $variations ) ) {
+	    $varStr = '';
+	    foreach ( $variations as $variation ) {
+		$varStr .= '[' . $variation[ 0 ] . "], ";
+	    }
+	    $varStr						 = rtrim( $varStr, ', ' );
+	    //trim the string as metadata value cannot exceed 500 chars
+	    $varStr						 = substr( $varStr, 0, 499 );
+	    $charge_opts[ 'metadata' ][ 'Variations' ]	 = $varStr;
 	}
 
 	//Shipping address data (if any)

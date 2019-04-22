@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 4.7
 Tested up to: 5.1
 Requires PHP: 5.4
-Stable tag: 1.9.20
+Stable tag: 1.9.21
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -150,6 +150,13 @@ Yes, please visit Stripe Payments > Settings screen for options.
 None.
 
 == Changelog ==
+
+= 1.9.21 =
+- Fixed frontend discount amount display when custom quantity is enabled and initial quantity is set to 0 or empty.
+- Fixed adding groups to existing product with variations caused improper variations placement.
+- Fixed tax amount was displayed rounded down on frontend under some circumstances (wasn't affecting actual payment amount).
+- Product variations are now added to payment metadata in Stripe account.
+- Added admin side notice if required PHP modules are not installed on the server.
 
 = 1.9.20 =
 - Added Stripe Payments Product Gutenberg block.

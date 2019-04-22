@@ -9,7 +9,8 @@ class AcceptStripePayments_Admin {
      *
      * @var      object
      */
-    protected static $instance = null;
+    protected static $instance	 = null;
+    private $requiered_php_modules	 = array( 'curl', 'zlib' );
 
     /**
      * Slug of the plugin screen.
@@ -114,32 +115,38 @@ class AcceptStripePayments_Admin {
 	if ( ! wp_doing_ajax() && is_admin() ) {
 	    //check if PHP version meets minimum required
 	    if ( version_compare( PHP_VERSION, WP_ASP_MIN_PHP_VERSION, '<' ) ) {
-		$dismissed_clicked = isset( $_GET[ 'wp_asp_dismiss_php_notice' ] ) ? true : false;
-		if ( $dismissed_clicked ) {
-		    wp_cache_delete( 'wp_asp_php_warning_dismissed', 'options' );
-		    delete_transient( 'asp_admin_msg_arr' );
-		    update_option( 'wp_asp_php_warning_dismissed', true );
-		}
-		//check if warning was dismissed
-		$dismissed = get_option( 'wp_asp_php_warning_dismissed' );
-		if ( ! $dismissed ) {
-		    //it wasn't, so let's display it
-		    add_action( 'admin_notices', array( $this, 'add_php_version_notice' ) );
-		}
+		add_action( 'admin_notices', array( $this, 'add_php_version_notice' ) );
 	    }
+	    //check if required php modules are installed
+	    $this->check_php_modules();
+	}
+    }
+
+    private function check_php_modules() {
+	$missing_modules = array();
+	$php_modules	 = apply_filters( 'asp_required_php_modules_array', $this->requiered_php_modules );
+	foreach ( $php_modules as $module ) {
+	    if ( ! extension_loaded( $module ) ) {
+		$missing_modules[] = $module;
+	    }
+	}
+	if ( ! empty( $missing_modules ) ) {
+	    $msg	 = __( '<b>Stripe Payments:</b> following extentions are required by the plugin to operate properly but aren\'t installed on your system:', 'stripe-payments' );
+	    $msg	 .= '<p><strong>' . implode( ', ', $missing_modules ) . '</strong></p>';
+	    $msg	 .= '<p>' . __( 'You need to communicate this information to your system administrator or hosting provider.', 'stripe-payments' ) . '</p>';
+	    self::add_admin_notice( 'error', $msg );
 	}
     }
 
     public function add_php_version_notice() {
 	$msg	 = '';
 	$msg	 .= '<h3>' . __( 'Warning: Stripe Payments plugin', 'stripe-payments' ) . '</h3>';
-	$msg	 .= "<p>" . __( "PHP version installed on your server doesn't meet minimum required for upcoming Stripe Payments plugin versions.", 'stripe-payments' ) . "</p>";
+	$msg	 .= "<p>" . __( "PHP version installed on your server doesn't meet minimum required for Stripe Payments plugin to operate properly.", 'stripe-payments' ) . "</p>";
 	$msg	 .= '<p>' . __( 'You need to communicate this information to your system administrator or hosting provider.', 'stripe-payments' ) . '</p>';
 	$msg	 .= '<p><strong>' . __( 'PHP Version Installed:', 'stripe-payments' ) . '</strong> %s</p>';
 	$msg	 .= '<p><strong>' . __( 'PHP Version Required:', 'stripe-payments' ) . '</strong> %s ' . _x( 'or higher.', 'Used in "PHP Version Required: X.X or higher"', 'stripe-payments' ) . '</p>';
-	$msg	 .= '<a href="%s">' . __( 'Dismiss this warning for now', 'stripe-payments' ) . '</a>';
-	$msg	 = sprintf( $msg, PHP_VERSION, WP_ASP_MIN_PHP_VERSION, admin_url( '?wp_asp_dismiss_php_notice=1' ) );
-	self::add_admin_notice( 'warning', $msg, false );
+	$msg	 = sprintf( $msg, PHP_VERSION, WP_ASP_MIN_PHP_VERSION );
+	self::add_admin_notice( 'error', $msg, false );
     }
 
     public function check_current_screen() {
@@ -913,31 +920,44 @@ class AcceptStripePayments_Admin {
 	include_once( 'views/addons-listing.php' );
     }
 
-    static function get_email_tags_descr() {
-	$email_tags = array(
-	    "{item_name}"		 => __( 'Name of the purchased item', 'stripe-payments' ),
-	    "{item_quantity}"	 => __( 'Number of items purchsed', 'stripe-payments' ),
-	    "{item_price}"		 => __( 'Item price. Example: 1000,00', 'stripe-payments' ),
-	    "{item_price_curr}"	 => __( 'Item price with currency symbol. Example: $1,000.00', 'stripe-payments' ),
-	    "{purchase_amt}"	 => __( 'The amount paid for the current transaction. Example: 1,000.00', 'stripe-payments' ),
-	    "{purchase_amt_curr}"	 => __( 'The amount paid for the current transaction with currency symbol. Example: $1,000.00', 'stripe-payments' ),
-	    "{tax}"			 => __( 'Tax in percent. Example: 10%', 'stripe-payments' ),
-	    "{tax_amt}"		 => __( 'Formatted tax amount for single item. Example: $0.25', 'stripe-payments' ),
-	    "{shipping_amt}"	 => __( 'Formatted shipping amount. Example: $2.50', 'stripe-payments' ),
-	    "{product_details}"	 => __( 'The item details of the purchased product (this will include the download link for digital items)', 'stripe-payments' ),
-	    "{transaction_id}"	 => __( 'The unique transaction ID of the purchase', 'stripe-payments' ),
-	    "{shipping_address}"	 => __( 'Shipping address of the buyer', 'stripe-payments' ),
-	    "{billing_address}"	 => __( 'Billing address of the buyer', 'stripe-payments' ),
-	    '{customer_name}'	 => __( 'Customer name. Available only if collect billing address option enabled', 'stripe-payments' ),
-	    "{payer_email}"		 => __( 'Email Address of the buyer', 'stripe-payments' ),
-	    "{currency}"		 => __( 'Currency symbol. Example: $', 'stripe-payments' ),
-	    "{currency_code}"	 => __( '3-letter currency code. Example: USD', 'stripe-payments' ),
-	    "{purchase_date}"	 => __( 'The date of the purchase', 'stripe-payments' ),
-	    "{custom_field}"	 => __( 'Custom field name and value (if enabled)', 'stripe-payments' ),
-	);
+    /**
+     * Helper function for addons to generate custom email tags
+     *
+     * @since    1.9.21t1
+     */
+    static function get_email_tags_descr_out( $email_tags = array(), $apply_filters = true ) {
+	return self::get_email_tags_descr( $email_tags, $apply_filters );
+    }
+
+    static function get_email_tags_descr( $email_tags = array(), $apply_filters = true ) {
+	if ( empty( $email_tags ) ) {
+	    $email_tags = array(
+		"{item_name}"		 => __( 'Name of the purchased item', 'stripe-payments' ),
+		"{item_quantity}"	 => __( 'Number of items purchsed', 'stripe-payments' ),
+		"{item_price}"		 => __( 'Item price. Example: 1000,00', 'stripe-payments' ),
+		"{item_price_curr}"	 => __( 'Item price with currency symbol. Example: $1,000.00', 'stripe-payments' ),
+		"{purchase_amt}"	 => __( 'The amount paid for the current transaction. Example: 1,000.00', 'stripe-payments' ),
+		"{purchase_amt_curr}"	 => __( 'The amount paid for the current transaction with currency symbol. Example: $1,000.00', 'stripe-payments' ),
+		"{tax}"			 => __( 'Tax in percent. Example: 10%', 'stripe-payments' ),
+		"{tax_amt}"		 => __( 'Formatted tax amount for single item. Example: $0.25', 'stripe-payments' ),
+		"{shipping_amt}"	 => __( 'Formatted shipping amount. Example: $2.50', 'stripe-payments' ),
+		"{product_details}"	 => __( 'The item details of the purchased product (this will include the download link for digital items)', 'stripe-payments' ),
+		"{transaction_id}"	 => __( 'The unique transaction ID of the purchase', 'stripe-payments' ),
+		"{shipping_address}"	 => __( 'Shipping address of the buyer', 'stripe-payments' ),
+		"{billing_address}"	 => __( 'Billing address of the buyer', 'stripe-payments' ),
+		'{customer_name}'	 => __( 'Customer name. Available only if collect billing address option enabled', 'stripe-payments' ),
+		"{payer_email}"		 => __( 'Email Address of the buyer', 'stripe-payments' ),
+		"{currency}"		 => __( 'Currency symbol. Example: $', 'stripe-payments' ),
+		"{currency_code}"	 => __( '3-letter currency code. Example: USD', 'stripe-payments' ),
+		"{purchase_date}"	 => __( 'The date of the purchase', 'stripe-payments' ),
+		"{custom_field}"	 => __( 'Custom field name and value (if enabled)', 'stripe-payments' ),
+	    );
+	}
 
 	//apply filters so addons can add their hints if needed
-	$email_tags = apply_filters( 'asp_get_email_tags_descr', $email_tags );
+	if ( $apply_filters ) {
+	    $email_tags = apply_filters( 'asp_get_email_tags_descr', $email_tags );
+	}
 
 	$email_tags_descr = '';
 

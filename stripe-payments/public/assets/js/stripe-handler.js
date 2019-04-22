@@ -58,6 +58,14 @@ stripehandler.formatMoney = function (n, data) {
 
 stripehandler.updateAllAmounts = function (data) {
     var totValue;
+    if (data.custom_quantity === "1") {
+	var custom_quantity = wp_asp_validate_custom_quantity(data);
+	if (custom_quantity !== false) {
+	    data.quantity = custom_quantity;
+	} else {
+	    return false;
+	}
+    }
     if (data.variable) {
 	var amt = wp_asp_validate_custom_amount(data, false);
 	if (amt !== false) {
@@ -84,7 +92,7 @@ stripehandler.updateAllAmounts = function (data) {
     totalCont.find('span.asp_price_amount').html(stripehandler.formatMoney(data.item_price, data));
     var taxVal = false;
     if (data.tax !== 0) {
-	var taxVal = Math.round(data.item_price * parseInt(data.tax) / 100) * data.quantity;
+	var taxVal = Math.round(data.item_price * parseFloat(data.tax) / 100) * data.quantity;
     }
     if (taxVal) {
 	var taxStr = data.displayStr.tax.replace('%s', stripehandler.formatMoney(taxVal, data));
@@ -283,7 +291,7 @@ function wp_asp_can_proceed(data, openHandler) {
 		    return valid = false;
 		}
 	    }
-	    if (customInput.attr('class') === 'asp_product_custom_field_input' && customInput.attr('type') === 'text' && typeof re !=="undefined") {
+	    if (customInput.attr('class') === 'asp_product_custom_field_input' && customInput.attr('type') === 'text' && typeof re !== "undefined") {
 		if (customInput.val() && !re.test(customInput.val())) {
 		    jQuery(this).siblings('.asp_product_custom_field_error').hide().html(data.custom_field_validation_err_msg).fadeIn('slow');
 		    return valid = false;
