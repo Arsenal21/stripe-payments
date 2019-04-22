@@ -145,8 +145,7 @@ class AcceptStripePayments_Admin {
 	$msg	 .= '<p>' . __( 'You need to communicate this information to your system administrator or hosting provider.', 'stripe-payments' ) . '</p>';
 	$msg	 .= '<p><strong>' . __( 'PHP Version Installed:', 'stripe-payments' ) . '</strong> %s</p>';
 	$msg	 .= '<p><strong>' . __( 'PHP Version Required:', 'stripe-payments' ) . '</strong> %s ' . _x( 'or higher.', 'Used in "PHP Version Required: X.X or higher"', 'stripe-payments' ) . '</p>';
-//	$msg	 .= '<a href="%s">' . __( 'Dismiss this warning for now', 'stripe-payments' ) . '</a>';
-	$msg	 = sprintf( $msg, PHP_VERSION, WP_ASP_MIN_PHP_VERSION, admin_url( '?wp_asp_dismiss_php_notice=1' ) );
+	$msg	 = sprintf( $msg, PHP_VERSION, WP_ASP_MIN_PHP_VERSION );
 	self::add_admin_notice( 'error', $msg, false );
     }
 
