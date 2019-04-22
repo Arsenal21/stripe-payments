@@ -11,7 +11,7 @@ class ASPAddonsHelper {
     }
 
     function init_tasks() {
-	$this->load_text_domain();
+	add_action( 'init', array( $this, 'load_text_domain' ) );
 	if ( is_admin() ) {
 	    $this->add_settings_link();
 	    $this->check_updates();
