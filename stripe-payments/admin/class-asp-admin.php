@@ -9,7 +9,8 @@ class AcceptStripePayments_Admin {
      *
      * @var      object
      */
-    protected static $instance = null;
+    protected static $instance	 = null;
+    private $requiered_php_modules	 = array( 'curl', 'zlib' );
 
     /**
      * Slug of the plugin screen.
@@ -127,6 +128,25 @@ class AcceptStripePayments_Admin {
 		    add_action( 'admin_notices', array( $this, 'add_php_version_notice' ) );
 		}
 	    }
+	    //check if required php modules are installed
+
+	    $this->check_php_modules();
+	}
+    }
+
+    private function check_php_modules() {
+	$missing_modules = array();
+	$php_modules	 = apply_filters( 'asp_required_php_modules_array', $this->requiered_php_modules );
+	foreach ( $php_modules as $module ) {
+	    if ( ! extension_loaded( $module ) ) {
+		$missing_modules[] = $module;
+	    }
+	}
+	if ( ! empty( $missing_modules ) ) {
+	    $msg	 = __( '<b>Stripe Payments:</b> following extentions are required by the plugin to operate properly but aren\'t installed on your system:', 'stripe-payments' );
+	    $msg	 .= '<p><strong>' . implode( ', ', $missing_modules ) . '</strong></p>';
+	    $msg	 .= '<p>' . __( 'You need to communicate this information to your system administrator or hosting provider.', 'stripe-payments' ) . '</p>';
+	    self::add_admin_notice( 'error', $msg );
 	}
     }
 
