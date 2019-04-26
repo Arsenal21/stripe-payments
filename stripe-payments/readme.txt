@@ -151,6 +151,9 @@ None.
 
 == Changelog ==
 
+= WIP 2.9.22 =
+- Fixed the "asp_stripe_payments_checkout_page_result" filter hook not triggering correctly.
+
 = 1.9.21 =
 - Fixed frontend discount amount display when custom quantity is enabled and initial quantity is set to 0 or empty.
 - Fixed adding groups to existing product with variations caused improper variations placement.
