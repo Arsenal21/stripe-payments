@@ -31,6 +31,7 @@ class ASP_Coupons_Table extends WP_List_Table {
 		'exp_date'	 => get_post_meta( $id, 'asp_coupon_exp_date', true ),
 	    );
 	}
+	wp_reset_postdata();
 	usort( $data, array( &$this, 'sort_data' ) );
 	$perPage		 = 10;
 	$currentPage		 = $this->get_pagenum();

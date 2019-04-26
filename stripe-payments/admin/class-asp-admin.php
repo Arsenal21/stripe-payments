@@ -186,7 +186,7 @@ class AcceptStripePayments_Admin {
 	    $query->the_post();
 	    $products_sel .= '<option value="' . get_the_ID() . '">' . get_the_title() . '</option>';
 	}
-	wp_reset_query();
+	wp_reset_postdata();
 
 	$opt			 = get_option( 'AcceptStripePayments-settings' );
 	$ret[ 'button_text' ]	 = $opt[ 'button_text' ];
