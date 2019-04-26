@@ -46,7 +46,7 @@ class ASPVariations {
 	    'name'		 => $this->variations[ $grp_id ][ 'names' ][ $var_id ],
 	    'price'		 => $this->variations[ $grp_id ][ 'prices' ][ $var_id ],
 	    'url'		 => $this->variations[ $grp_id ][ 'urls' ][ $var_id ],
-	    'opts'		 => $this->variations[ $grp_id ][ 'opts' ][ $var_id ]
+	    'opts'		 => isset($this->variations[ $grp_id ][ 'opts' ][ $var_id ]) ? $this->variations[ $grp_id ][ 'opts' ][ $var_id ] : array(),
 	);
 	return $var;
     }
