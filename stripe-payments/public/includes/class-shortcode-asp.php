@@ -988,6 +988,8 @@ class AcceptStripePaymentsShortcode {
 	    //some error occured. We don't display any content to let the error shortcode handle it
 	    return;
 	}
+        
+        $content = apply_filters('asp_stripe_payments_checkout_page_result', $content, $aspData);
 	$content = $this->apply_content_tags( do_shortcode( $content ), $aspData );
 	return $content;
     }
