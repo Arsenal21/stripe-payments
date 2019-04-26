@@ -28,6 +28,7 @@ class AcceptStripePayments_CouponsAdmin {
 	    'offset'	 => 0,
 	    'post_type'	 => 'asp_coupons',
 	) );
+	wp_reset_postdata();
 	if ( empty( $coupon ) ) {
 	    //coupon not found
 	    $out[ 'valid' ]		 = false;
@@ -308,19 +309,20 @@ class AcceptStripePayments_CouponsAdmin {
 	$prod_inputs	 = '';
 	$input_tpl	 = '<label><input type="checkbox" name="asp_coupon[allowed_products][]" value="%s"%s> %s</label>';
 	if ( $posts ) {
-	    foreach ( $posts as $post ) {
+	    foreach ( $posts as $the_post ) {
 		$checked = '';
 		if ( ! empty( $coupon ) && is_array( $coupon[ 'allowed_products' ] ) ) {
-		    if ( in_array( $post->ID, $coupon[ 'allowed_products' ] ) ) {
+		    if ( in_array( $the_post->ID, $coupon[ 'allowed_products' ] ) ) {
 			$checked = ' checked';
 		    }
 		}
-		$prod_inputs	 .= sprintf( $input_tpl, $post->ID, $checked, $post->post_title );
+		$prod_inputs	 .= sprintf( $input_tpl, $the_post->ID, $checked, $the_post->post_title );
 		$prod_inputs	 .= '<br>';
 	    }
 	} else {
 	    $prod_inputs = __( 'No products created yet.', 'stripe-payments' );
 	}
+	wp_reset_postdata();
 	?>
 	<div class="wrap">
 	    <h2><?php empty( $coupon_id ) ? _e( 'Add Coupon', 'stripe-payments' ) : _e( 'Edit Coupon', 'stripe-payments' ); ?></h2>
@@ -435,12 +437,12 @@ class AcceptStripePayments_CouponsAdmin {
 	    set_transient( 'asp_coupons_admin_error', __( 'Can\'t delete coupon: coupon ID is not provided.', 'stripe-payments' ), 60 * 60 );
 	    return false;
 	}
-	$post = get_post( $coupon_id );
-	if ( is_null( $post ) ) {
+	$the_post = get_post( $coupon_id );
+	if ( is_null( $the_post ) ) {
 	    set_transient( 'asp_coupons_admin_error', sprintf( __( 'Can\'t delete coupon: coupon #%d not found.', 'stripe-payments' ), $coupon_id ), 60 * 60 );
 	    return false;
 	}
-	if ( $post->post_type !== $this->POST_SLUG ) {
+	if ( $the_post->post_type !== $this->POST_SLUG ) {
 	    set_transient( 'asp_coupons_admin_error', sprintf( __( 'Can\'t delete coupon: post #%d is not a coupon.', 'stripe-payments' ), $coupon_id ), 60 * 60 );
 	    return false;
 	}

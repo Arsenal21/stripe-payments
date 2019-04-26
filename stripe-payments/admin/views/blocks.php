@@ -16,8 +16,6 @@ class AcceptStripePayments_Blocks {
 	'stripe-payments-product-block', WP_ASP_PLUGIN_URL . '/admin/assets/js/blocks/product-block.js', array( 'wp-blocks', 'wp-element', 'wp-components', 'wp-editor' ), WP_ASP_PLUGIN_VERSION
 	);
 
-	$this->get_products_array();
-
 	wp_localize_script( 'stripe-payments-product-block', 'aspProdOpts', $this->get_products_array() );
 	wp_localize_script( 'stripe-payments-product-block', 'aspBlockProdStr', array(
 	    'title'			 => 'Stripe Payments Product',
@@ -61,7 +59,7 @@ class AcceptStripePayments_Blocks {
     }
 
     private function get_products_array() {
-	$query	 = new WP_Query( array(
+	$q	 = get_posts( array(
 	    'post_type'	 => ASPMain::$products_slug,
 	    'post_status'	 => 'publish',
 	    'posts_per_page' => -1,
@@ -69,13 +67,11 @@ class AcceptStripePayments_Blocks {
 	    'order'		 => 'ASC',
 	) );
 	$prodArr = array( array( 'label' => __( '(Select product)', 'stripe-payments' ), 'value' => 0 ) );
-	while ( $query->have_posts() ) {
-	    $query->the_post();
-	    $title		 = get_the_title();
-	    $title		 = html_entity_decode( $title );
-	    $prodArr[]	 = array( 'label' => esc_attr( $title ), 'value' => get_the_ID() );
+	foreach ( $q as $post ) {
+	    $title		 = html_entity_decode( $post->post_title );
+	    $prodArr[]	 = array( 'label' => esc_attr( $title ), 'value' => $post->ID );
 	}
-	wp_reset_query();
+	wp_reset_postdata();
 	return $prodArr;
     }
 

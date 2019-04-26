@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 4.7
 Tested up to: 5.1
 Requires PHP: 5.4
-Stable tag: 1.9.21
+Stable tag: 1.9.22
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -151,7 +151,8 @@ None.
 
 == Changelog ==
 
-= WIP 2.9.22 =
+= 1.9.22 =
+- Fixed archive pages list could be messed up when plugin is enabled.
 - Fixed the "asp_stripe_payments_checkout_page_result" filter hook not triggering correctly.
 
 = 1.9.21 =

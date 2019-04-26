@@ -29,9 +29,9 @@ class AcceptStripePayments_scUserTransactions {
 	    'meta_key'	 => 'asp_user_id',
 	    'meta_value'	 => $this->user_id,
 	);
-	$transactions	 = get_posts( $args );
 	$res		 = new WP_Query( $args );
 	$transactions	 = $res->posts;
+	wp_reset_postdata();
 	if ( ! $transactions ) {
 	    //no transactions found
 	    $out .= __( 'No transactions found.', 'stripe-payments' );
