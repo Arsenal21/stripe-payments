@@ -287,7 +287,7 @@ class AcceptStripePaymentsShortcode {
 	    $coupons_enabled = $this->AcceptStripePayments->get_setting( 'coupons_enabled' );
 	}
 
-	$thankyou_page = get_post_meta( $id, 'asp_product_thankyou_page', true );
+	$thankyou_page = empty( $atts[ 'thankyou_page_url' ] ) ? get_post_meta( $id, 'asp_product_thankyou_page', true ) : $atts[ 'thankyou_page_url' ];
 
 	if ( ! $shipping ) {
 	    $shipping = 0;
