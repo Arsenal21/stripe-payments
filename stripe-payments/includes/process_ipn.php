@@ -52,7 +52,9 @@ global $aspRedirectURL;
 
 ASP_Debug_Logger::log( 'Payment processing started.' );
 
-$aspRedirectURL = (isset( $_POST[ 'thankyou_page_url' ] ) && empty( $_POST[ 'thankyou_page_url' ] )) ? $asp_class->get_setting( 'checkout_url' ) : base64_decode( $_POST[ 'thankyou_page_url' ] );
+$post_thankyou_page_url = filter_input( INPUT_POST, 'thankyou_page_url', FILTER_SANITIZE_STRING );
+
+$aspRedirectURL = empty( $post_thankyou_page_url ) ? $asp_class->get_setting( 'checkout_url' ) : base64_decode( $post_thankyou_page_url );
 
 ASP_Debug_Logger::log( 'Triggering hook for addons to process posted data if needed.' );
 $process_result = apply_filters( 'asp_before_payment_processing', array(), $_POST );
