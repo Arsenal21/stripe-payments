@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 4.7
 Tested up to: 5.1
 Requires PHP: 5.4
-Stable tag: 1.9.23t1
+Stable tag: 1.9.23t2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -153,6 +153,8 @@ None.
 
 = WIP 1.9.23 =
 - Fixed thankyou_page_url parameter was ignored for [asp_product] shortcode.
+- Fixed frontend total amount calculation display for products with variations and custom amount enabled.
+- Custom amount validation errors no longer displayed on page load for products with variations and custom amount enabled.
 
 = 1.9.22 =
 - Fixed archive pages list could be messed up when plugin is enabled.
