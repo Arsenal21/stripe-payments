@@ -109,16 +109,6 @@ add_action( 'init', array( $ASPProducts, 'register_post_type' ), 0 );
 $ASPOrder	 = ASPOrder::get_instance();
 add_action( 'init', array( $ASPOrder, 'register_post_type' ), 0 );
 
-if ( session_id() == '' && ! wp_doing_ajax() ) {
-    try {
-	ob_start();
-	session_start();
-    } catch ( Exception $e ) {
-	//looks like there were some issues with session. Let's do nothing about it for now.
-    }
-    ob_end_clean();
-}
-
 function asp_activation_hook_handler() {
     $ASPProducts	 = ASPProducts::get_instance();
     $ASPProducts->register_post_type();
