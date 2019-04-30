@@ -831,11 +831,14 @@ class AcceptStripePaymentsShortcode {
 	    //Output Custom Field if needed
 	    $output = $this->tpl_get_cf( $output, $data );
 
+	    //Get subscription plan ID for the product (if any)
+	    $plan_id = get_post_meta( $data[ 'product_id' ], 'asp_sub_plan_id', true );
+
 	    //Variations
 	    $this->variations = array();
 	    if ( isset( $data[ 'product_id' ] ) ) {
 		$variations_groups = get_post_meta( $data[ 'product_id' ], 'asp_variations_groups', true );
-		if ( ! empty( $variations_groups ) ) {
+		if ( ! empty( $variations_groups ) && ! $plan_id ) { //we only display variations for non-subscription products for now
 		    //we got variations for this product
 		    $variations_str			 = '';
 		    $this->variations[ 'groups' ]	 = $variations_groups;
@@ -891,7 +894,6 @@ class AcceptStripePaymentsShortcode {
 	    if ( isset( $data[ 'coupons_enabled' ] ) && $data[ 'coupons_enabled' ] == "1" && ! $data[ 'variable' ] ) {
 		if ( isset( $data[ 'product_id' ] ) ) {
 		    //check if this is subscription product. If it is, we will only display coupon field if subs addon version is >=1.3.3t1
-		    $plan_id = get_post_meta( $data[ 'product_id' ], 'asp_sub_plan_id', true );
 		    if ( ! $plan_id || ($plan_id && class_exists( 'ASPSUB_main' ) && version_compare( ASPSUB_main::ADDON_VER, '1.3.3t1' ) >= 0) ) {
 			$str_coupon_label	 = __( 'Coupon Code', 'stripe-payments' );
 			$output			 .= '<div class="asp_product_coupon_input_container"><label class="asp_product_coupon_field_label">' . $str_coupon_label . ' ' . '</label><input id="asp-coupon-field-' . $data[ 'uniq_id' ] . '" class="asp_product_coupon_field_input" type="text" name="stripeCoupon">'
