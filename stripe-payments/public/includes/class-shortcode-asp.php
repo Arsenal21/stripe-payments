@@ -961,16 +961,22 @@ class AcceptStripePaymentsShortcode {
 
 	    //variations download links if needed
 	    if ( ! empty( $aspData[ 'var_applied' ] ) ) {
-		$download_str	 .= "<br /><div class='asp-thank-you-page-download-link'>";
-		$download_str	 .= '<span>' . __( 'Download links:', 'stripe-payments' ) . '</span><br/>';
-		$download_txt	 = __( 'Click here to download', 'stripe-payments' );
-		$link_tpl	 = '<a href="%s">%s</a><br/>';
+		$download_var_str	 = '';
+		$has_download_link	 = false;
+		$download_var_str	 .= "<br /><div class='asp-thank-you-page-download-link'>";
+		$download_var_str	 .= '<span>' . __( 'Download links:', 'stripe-payments' ) . '</span><br/>';
+		$download_txt		 = __( 'Click here to download', 'stripe-payments' );
+		$link_tpl		 = '<a href="%s">%s</a><br/>';
 		foreach ( $aspData[ 'var_applied' ] as $var ) {
 		    if ( ! empty( $var[ 'url' ] ) ) {
-			$download_str .= sprintf( $link_tpl, $var[ 'url' ], $download_txt );
+			$has_download_link	 = true;
+			$download_var_str	 .= sprintf( $link_tpl, $var[ 'url' ], $download_txt );
 		    }
 		}
-		$download_str .= "</div>";
+		$download_var_str .= "</div>";
+		if ( $has_download_link ) {
+		    $download_str .= $download_var_str;
+		}
 	    }
 	    $output .= $download_str;
 
