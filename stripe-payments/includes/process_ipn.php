@@ -332,8 +332,6 @@ class AcceptStripePayments_Process_IPN {
 	    $amount_in_cents = $amount_in_cents * 100;
 	}
 
-	$GLOBALS[ 'asp_payment_success' ] = false;
-
 	$opt = get_option( 'AcceptStripePayments-settings' );
 
 	$data				 = array();
@@ -475,11 +473,11 @@ class AcceptStripePayments_Process_IPN {
 	    } catch ( Exception $e ) {
 		//If the charge fails (payment unsuccessful), this code will get triggered.
 		if ( ! empty( $data[ 'charge' ]->failure_code ) )
-		    $GLOBALS[ 'asp_error' ] = $data[ 'charge' ]->failure_code . ": " . $data[ 'charge' ]->failure_message;
+		    $err_msg = $data[ 'charge' ]->failure_code . ": " . $data[ 'charge' ]->failure_message;
 		else {
-		    $GLOBALS[ 'asp_error' ] = $e->getMessage();
+		    $err_msg = $e->getMessage();
 		}
-		$this->ipn_completed( $GLOBALS[ 'asp_error' ] );
+		$this->ipn_completed( $err_msg );
 	    }
 	}
 
@@ -490,7 +488,6 @@ class AcceptStripePayments_Process_IPN {
 
 	$post_data = $data;
 
-//$_POST = filter_input_array( INPUT_POST, FILTER_SANITIZE_STRING );
 //Billing address data (if any)
 	$billing_address = "";
 	$billing_address .= isset( $_POST[ 'stripeBillingName' ] ) ? $_POST[ 'stripeBillingName' ] . "\n" : '';
@@ -601,11 +598,8 @@ class AcceptStripePayments_Process_IPN {
 	    update_post_meta( $order_post_id, 'charge_data', $data[ 'charge' ] );
 	}
 
-//eMember integration - check if this is a product
 //Action hook with the order object.
 	do_action( 'AcceptStripePayments_payment_completed', $order, $data[ 'charge' ] );
-
-	$GLOBALS[ 'asp_payment_success' ] = true;
 
 	if ( ! empty( $data[ 'product_id' ] ) ) {
 	    //check if we need to deal with stock
@@ -744,10 +738,6 @@ class AcceptStripePayments_Process_IPN {
 	$post_data[ 'charge_date' ] = $charge_date;
 
 	$this->sess->set_transient_data( 'asp_data', $post_data );
-
-//Show the "payment success" or "payment failure" info on the checkout complete page.
-//include (WP_ASP_PLUGIN_PATH . 'public/views/checkout.php');
-//echo ob_get_clean();
 
 	$this->ipn_completed();
     }
@@ -899,7 +889,7 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post, $seller_email = fal
 
     $body = apply_filters( 'asp_email_body_after_replace', $body );
 
-    //make tags and vals available for checkout results page by storing those in $_SESSION array
+    //make tags and vals available for checkout results page by storing those in inner session
     if ( ! $seller_email ) {
 	$sess = ASP_Session::get_instance();
 	$sess->set_transient_data( 'asp_checkout_data_tags', $tags );
