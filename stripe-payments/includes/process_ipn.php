@@ -88,7 +88,7 @@ class AcceptStripePayments_Process_IPN {
 	    }
 	}
 
-//Check nonce
+	//Check nonce
 	ASP_Debug_Logger::log( 'Checking received data.' );
 	$nonce = $_REQUEST[ '_wpnonce' ];
 	if ( ! wp_verify_nonce( $nonce, 'stripe_payments' ) ) {
@@ -256,11 +256,11 @@ class AcceptStripePayments_Process_IPN {
 
 	$orig_item_price = $item_price;
 
-//check if we have variatons selected for the product
+	//check if we have variatons selected for the product
 	$variations	 = array();
 	$varApplied	 = array();
 	if ( $got_product_data_from_db && isset( $_POST[ 'stripeVariations' ] ) ) {
-// we got variations posted. Let's get variations from product
+	    // we got variations posted. Let's get variations from product
 	    require_once(WP_ASP_PLUGIN_PATH . '/admin/includes/class-variations.php');
 	    $v = new ASPVariations( $prod_id );
 	    if ( ! empty( $v->variations ) ) {
@@ -279,7 +279,7 @@ class AcceptStripePayments_Process_IPN {
 	    }
 	}
 
-//check if we we need to apply coupon
+	//check if we we need to apply coupon
 	if ( isset( $prod_id ) && ! empty( $_POST[ 'stripeCoupon' ] ) ) {
 	    $coupon_code	 = strtoupper( $_POST[ 'stripeCoupon' ] );
 	    ASP_Debug_Logger::log( sprintf( 'Coupon provided "%s"', $coupon_code ) );
@@ -308,7 +308,7 @@ class AcceptStripePayments_Process_IPN {
 
 	$amount = $item_price;
 
-//apply tax if needed
+	//apply tax if needed
 	$tax_amt = AcceptStripePayments::get_tax_amount( $amount, $tax, AcceptStripePayments::is_zero_cents( $currency_code ) );
 
 	$amount = AcceptStripePayments::apply_tax( $amount, $tax, AcceptStripePayments::is_zero_cents( $currency_code ) );
@@ -323,7 +323,7 @@ class AcceptStripePayments_Process_IPN {
 
 	$amount = ($item_quantity !== "NA" ? ($amount * $item_quantity) : $amount);
 
-//add shipping cost
+	//add shipping cost
 	$amount = AcceptStripePayments::apply_shipping( $amount, $shipping );
 
 	$amount_in_cents = $amount;
@@ -351,19 +351,19 @@ class AcceptStripePayments_Process_IPN {
 	$data[ 'addonName' ]		 = isset( $_POST[ 'stripeAddonName' ] ) ? sanitize_text_field( $_POST[ 'stripeAddonName' ] ) : '';
 	$data[ 'button_key' ]		 = isset( $button_key ) ? $button_key : '';
 
-//Coupon
+	//Coupon
 	if ( isset( $coupon ) ) {
 	    $data[ 'coupon' ] = $coupon;
 	}
 
-//Custom Field
+	//Custom Field
 	$data[ 'custom_fields' ] = array();
 	if ( isset( $_POST[ 'stripeCustomField' ] ) ) {
 	    $data[ 'custom_fields' ][] = array( 'name' => $_POST[ 'stripeCustomFieldName' ], 'value' => $_POST[ 'stripeCustomField' ] );
 	}
 	$data[ 'custom_fields' ] = apply_filters( 'asp_process_custom_fields', $data[ 'custom_fields' ], $data );
 
-//Filter so addons can modify applied variations if needed
+	//Filter so addons can modify applied variations if needed
 	$variations = apply_filters( 'asp_filter_variations_display', $variations, $data );
 
 	ob_start();
@@ -380,7 +380,7 @@ class AcceptStripePayments_Process_IPN {
 
 	\Stripe\Stripe::setApiKey( $sec_key );
 
-//let addons process payment if needed
+	//let addons process payment if needed
 	ASP_Debug_Logger::log( 'Firing pre-payment hook.' );
 	$data = apply_filters( 'asp_process_charge', $data );
 
@@ -481,14 +481,14 @@ class AcceptStripePayments_Process_IPN {
 	    }
 	}
 
-//Grab the charge ID and set it as the transaction ID.
+	//Grab the charge ID and set it as the transaction ID.
 	$txn_id			 = $data[ 'charge' ]->id; //$charge->balance_transaction;
-//Core transaction data
+	//Core transaction data
 	$data[ 'txn_id' ]	 = $txn_id; //The Stripe charge ID
 
 	$post_data = $data;
 
-//Billing address data (if any)
+	//Billing address data (if any)
 	$billing_address = "";
 	$billing_address .= isset( $_POST[ 'stripeBillingName' ] ) ? $_POST[ 'stripeBillingName' ] . "\n" : '';
 	$billing_address .= isset( $_POST[ 'stripeBillingAddressLine1' ] ) ? $_POST[ 'stripeBillingAddressLine1' ] . "\n" : '';
@@ -512,7 +512,7 @@ class AcceptStripePayments_Process_IPN {
 
 	$post_data[ 'billing_address' ] = $billing_address;
 
-//get customer name
+	//get customer name
 	$name = isset( $_POST[ 'stripeBillingName' ] ) ? sanitize_text_field( $_POST[ 'stripeBillingName' ] ) : '';
 	if ( empty( $name ) && ! empty( $data[ 'charge' ]->source->name ) ) {
 	    $name = $data[ 'charge' ]->source->name;
@@ -526,18 +526,18 @@ class AcceptStripePayments_Process_IPN {
 
 	$post_data[ 'additional_items' ] = array();
 
-//check if we need to add variations
+	//check if we need to add variations
 	if ( ! empty( $variations ) ) {
 	    foreach ( $variations as $variation ) {
 		$post_data[ 'additional_items' ][ $variation[ 0 ] ] = $variation[ 1 ];
 	    }
 	}
 
-//check if we need to increase redeem coupon count
+	//check if we need to increase redeem coupon count
 	if ( isset( $coupon ) && $coupon[ 'valid' ] ) {
 	    $curr_redeem_cnt = get_post_meta( $coupon[ 'id' ], 'asp_coupon_red_count', true );
 	    $curr_redeem_cnt ++;
-	    update_post_meta( $coupon[ 'id' ], 'asp_coupon_red_count', $curr_redeem_cnt ++  );
+	    update_post_meta( $coupon[ 'id' ], 'asp_coupon_red_count', $curr_redeem_cnt );
 	    if ( isset( $data[ 'is_trial' ] ) ) {
 		//trial Subscription
 		$coupon[ 'discountAmount' ]	 = 0;
@@ -549,19 +549,19 @@ class AcceptStripePayments_Process_IPN {
 	}
 
 	if ( isset( $tax ) && ! empty( $tax ) ) {
-	    $taxStr										 = apply_filters( 'asp_customize_text_msg', __( 'Tax', 'stripe-payments' ), 'tax_str' );
-	    $post_data[ 'additional_items' ][ __( ucfirst( $taxStr ), 'stripe-payments' ) ]	 = $tax_amt;
-	    $post_data[ 'tax_perc' ]							 = $tax;
-	    $post_data[ 'tax' ]								 = $tax_amt;
+	    $taxStr							 = apply_filters( 'asp_customize_text_msg', __( 'Tax', 'stripe-payments' ), 'tax_str' );
+	    $post_data[ 'additional_items' ][ ucfirst( $taxStr ) ]	 = $tax_amt;
+	    $post_data[ 'tax_perc' ]				 = $tax;
+	    $post_data[ 'tax' ]					 = $tax_amt;
 	}
 
 	if ( isset( $shipping ) && ! empty( $shipping ) ) {
-	    $shipStr									 = apply_filters( 'asp_customize_text_msg', __( 'Shipping', 'stripe-payments' ), 'shipping_str' );
-	    $post_data[ 'additional_items' ][ __( ucfirst( $shipStr ), 'stripe-payments' ) ] = $shipping;
-	    $post_data[ 'shipping' ]							 = $shipping;
+	    $shipStr						 = apply_filters( 'asp_customize_text_msg', __( 'Shipping', 'stripe-payments' ), 'shipping_str' );
+	    $post_data[ 'additional_items' ][ ucfirst( $shipStr ) ]	 = $shipping;
+	    $post_data[ 'shipping' ]				 = $shipping;
 	}
 
-//Insert the order data to the custom post
+	//Insert the order data to the custom post
 	$dont_create_order = $asp_class->get_setting( 'dont_create_order' );
 	if ( ! $dont_create_order ) {
 	    $order				 = ASPOrder::get_instance();
@@ -569,7 +569,7 @@ class AcceptStripePayments_Process_IPN {
 	    $post_data[ 'order_post_id' ]	 = $order_post_id;
 	}
 
-// handle download item url
+	// handle download item url
 	$item_url		 = apply_filters( 'asp_item_url_process', $item_url, $post_data );
 	$item_url		 = base64_decode( $item_url );
 	$post_data[ 'item_url' ] = $item_url;
@@ -584,22 +584,24 @@ class AcceptStripePayments_Process_IPN {
 	    }
 	}
 
-//add variations to the resulting array
+	//add variations to the resulting array
 	$post_data[ 'var_applied' ] = $varApplied;
 
 	ASP_Debug_Logger::log( 'Firing post-payment hooks.' );
 
-//Action hook with the checkout post data parameters.
+	//Action hook with the checkout post data parameters.
 	do_action( 'asp_stripe_payment_completed', $post_data, $data[ 'charge' ] );
 
-//insert payment data into order info
+	//insert payment data into order info
 	if ( isset( $order_post_id ) ) {
 	    update_post_meta( $order_post_id, 'order_data', $post_data );
 	    update_post_meta( $order_post_id, 'charge_data', $data[ 'charge' ] );
 	}
 
-//Action hook with the order object.
-	do_action( 'AcceptStripePayments_payment_completed', $order, $data[ 'charge' ] );
+	//Action hook with the order object.
+	if ( ! $dont_create_order ) {
+	    do_action( 'AcceptStripePayments_payment_completed', $order, $data[ 'charge' ] );
+	}
 
 	if ( ! empty( $data[ 'product_id' ] ) ) {
 	    //check if we need to deal with stock
@@ -684,7 +686,7 @@ class AcceptStripePayments_Process_IPN {
 	    }
 	}
 
-//Let's handle email sending stuff
+	//Let's handle email sending stuff
 	if ( isset( $opt[ 'send_emails_to_buyer' ] ) ) {
 	    if ( $opt[ 'send_emails_to_buyer' ] ) {
 		$from	 = $opt[ 'from_email_address' ];
