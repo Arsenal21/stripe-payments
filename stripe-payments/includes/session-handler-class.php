@@ -1,0 +1,63 @@
+<?php
+
+class ASP_Session {
+
+    protected static $instance	 = null;
+    var $transient_id		 = false;
+    private $trans_name;
+
+    function __construct() {
+	add_action( 'init', array( $this, 'init' ) );
+    }
+
+    public static function get_instance() {
+	if ( null == self::$instance ) {
+	    self::$instance = new self;
+	}
+	return self::$instance;
+    }
+
+    private function get_transient_id() {
+	if ( empty( $this->transient_id ) ) {
+	    $this->transient_id = md5( uniqid( 'asp', true ) );
+	}
+	return $this->transient_id;
+    }
+
+    function set_transient_data( $name, $data ) {
+	$curr_data = get_transient( $this->trans_name );
+	if ( empty( $curr_data ) ) {
+	    $curr_data = array();
+	}
+	$curr_data[ $name ] = $data;
+	delete_transient( $this->trans_name );
+	set_transient( $this->trans_name, $curr_data, 3600 );
+    }
+
+    function get_transient_data( $name, $default = false ) {
+	$curr_data = get_transient( $this->trans_name );
+	if ( empty( $curr_data ) ) {
+	    return $default;
+	}
+	if ( ! isset( $curr_data[ $name ] ) ) {
+	    return $default;
+	}
+	return $curr_data[ $name ];
+    }
+
+    function init() {
+	$cookie_transient_id = filter_input( INPUT_COOKIE, 'asp_transient_id', FILTER_SANITIZE_STRING );
+	if ( empty( $cookie_transient_id ) ) {
+	    if ( ! headers_sent() ) {
+		setcookie( "asp_transient_id", $this->get_transient_id(), 0, COOKIEPATH, COOKIE_DOMAIN );
+	    }
+	} else {
+	    $this->transient_id = $cookie_transient_id;
+	}
+
+	$this->trans_name = "asp_session_data_" . $this->get_transient_id();
+    }
+
+}
+
+ASP_Session::get_instance();

@@ -2,67 +2,25 @@
 
 class AcceptStripePayments_Process_IPN {
 
-    protected static $instance	 = null;
-    var $transient_id		 = false;
-    private $trans_name;
+    protected static $instance = null;
     var $aspRedirectURL;
+    var $sess;
 
     function __construct() {
 	add_action( 'init', array( $this, 'init' ) );
     }
 
     public static function get_instance() {
-
-	// If the single instance hasn't been set, set it now.
 	if ( null == self::$instance ) {
 	    self::$instance = new self;
 	}
-
 	return self::$instance;
     }
 
-    private function get_transient_id() {
-	if ( empty( $this->transient_id ) ) {
-	    $this->transient_id = md5( uniqid( 'asp', true ) );
-	}
-	return $this->transient_id;
-    }
-
-    function set_transient_data( $name, $data ) {
-	$curr_data = get_transient( $this->trans_name );
-	if ( empty( $curr_data ) ) {
-	    $curr_data = array();
-	}
-	$curr_data[ $name ] = $data;
-	delete_transient( $this->trans_name );
-	set_transient( $this->trans_name, $curr_data, 3600 );
-    }
-
-    function get_transient_data( $name, $default = false ) {
-	$curr_data = get_transient( $this->trans_name );
-	if ( empty( $curr_data ) ) {
-	    return $default;
-	}
-	if ( ! isset( $curr_data[ $name ] ) ) {
-	    return $default;
-	}
-	return $curr_data[ $name ];
-    }
-
     function init() {
-	$cookie_transient_id = filter_input( INPUT_COOKIE, 'asp_transient_id', FILTER_SANITIZE_STRING );
-	if ( empty( $cookie_transient_id ) ) {
-	    if ( ! headers_sent() ) {
-		setcookie( "asp_transient_id", $this->get_transient_id(), time() + 3600, COOKIEPATH, COOKIE_DOMAIN );
-	    }
-	} else {
-	    $this->transient_id = $cookie_transient_id;
-	}
-
-	$this->trans_name = "asp_session_data_" . $this->get_transient_id();
-
 	if ( isset( $_POST[ 'asp_action' ] ) ) {
 	    if ( $_POST[ 'asp_action' ] == 'process_ipn' ) {
+		$this->sess = ASP_Session::get_instance();
 		$this->process_ipn();
 	    }
 	}
@@ -84,7 +42,7 @@ class AcceptStripePayments_Process_IPN {
 
 	    ASP_Debug_Logger::log( $additional_msg, false );
 
-	    $this->set_transient_data( 'asp_data', $aspData );
+	    $this->sess->set_transient_data( 'asp_data', $aspData );
 
 	    //send email to notify site admin (if option enabled)
 	    $opt = get_option( 'AcceptStripePayments-settings' );
@@ -785,7 +743,7 @@ class AcceptStripePayments_Process_IPN {
 
 	$post_data[ 'charge_date' ] = $charge_date;
 
-	$this->set_transient_data( 'asp_data', $post_data );
+	$this->sess->set_transient_data( 'asp_data', $post_data );
 
 //Show the "payment success" or "payment failure" info on the checkout complete page.
 //include (WP_ASP_PLUGIN_PATH . 'public/views/checkout.php');
@@ -943,9 +901,9 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post, $seller_email = fal
 
     //make tags and vals available for checkout results page by storing those in $_SESSION array
     if ( ! $seller_email ) {
-	$ipn = AcceptStripePayments_Process_IPN::get_instance();
-	$ipn->set_transient_data( 'asp_checkout_data_tags', $tags );
-	$ipn->set_transient_data( 'asp_checkout_data_vals', $vals );
+	$sess = ASP_Session::get_instance();
+	$sess->set_transient_data( 'asp_checkout_data_tags', $tags );
+	$sess->set_transient_data( 'asp_checkout_data_vals', $vals );
     }
 
     return $body;

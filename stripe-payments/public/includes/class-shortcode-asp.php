@@ -927,8 +927,8 @@ class AcceptStripePaymentsShortcode {
 	    define( 'DONOTCACHEPAGE', true );
 	}
 	$aspData = array();
-	$ipn	 = AcceptStripePayments_Process_IPN::get_instance();
-	$aspData = $ipn->get_transient_data( 'asp_data' );
+	$sess	 = ASP_Session::get_instance();
+	$aspData = $sess->get_transient_data( 'asp_data' );
 	if ( empty( $aspData ) ) {
 	    // no session data, let's display nothing for now
 	    return;
@@ -1005,8 +1005,8 @@ class AcceptStripePaymentsShortcode {
 
     function shortcode_accept_stripe_payment_checkout_error( $atts, $content = '' ) {
 	$aspData = array();
-	$ipn	 = AcceptStripePayments_Process_IPN::get_instance();
-	$aspData = $ipn->get_transient_data( 'asp_data' );
+	$sess	 = ASP_Session::get_instance();
+	$aspData = $sess->get_transient_data( 'asp_data' );
 	if ( empty( $aspData ) ) {
 	    // no session data, let's display nothing for now
 	    return;
@@ -1232,9 +1232,9 @@ class AcceptStripePaymentsShortcode {
 	}
 
 	//add email merge tags to the available merge tags
-	$ipn		 = AcceptStripePayments_Process_IPN::get_instance();
-	$sess_tags	 = $ipn->get_transient_data( 'asp_checkout_data_tags', array() );
-	$sess_vals	 = $ipn->get_transient_data( 'asp_checkout_data_vals', array() );
+	$sess		 = ASP_Session::get_instance();
+	$sess_tags	 = $sess->get_transient_data( 'asp_checkout_data_tags', array() );
+	$sess_vals	 = $sess->get_transient_data( 'asp_checkout_data_vals', array() );
 
 	foreach ( $sess_tags as $key => $value ) {
 	    if ( empty( $tags[ $value ] ) ) {

@@ -98,7 +98,7 @@ class AcceptStripePayments {
 
 	add_action( 'plugins_loaded', array( $this, 'plugins_loaded' ) );
 
-	//IPN handle the stuff
+	//handle IPN stuff if needed
 	require_once(WP_ASP_PLUGIN_PATH . 'includes/process_ipn.php');
 
 	// Activate plugin when new blog is added
@@ -626,10 +626,6 @@ class AcceptStripePayments {
 	preg_replace( "/[^0-9]/", "", substr( $num, 0, $sep ) ) . '.' .
 	preg_replace( "/[^0-9]/", "", substr( $num, $sep + 1, strlen( $num ) ) )
 	);
-    }
-
-    static function set_cookie() {
-	
     }
 
 }
