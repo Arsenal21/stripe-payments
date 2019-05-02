@@ -984,8 +984,9 @@ class AcceptStripePaymentsShortcode {
 
 	    $output = $this->apply_content_tags( $output, $aspData );
 
+	    $output	 .= '<style>.asp-thank-you-page-msg-wrap {background: #dff0d8; border: 1px solid #C9DEC1; margin: 10px 0px; padding: 15px;}</style>';
 	    $wrap	 = "<div class='asp-thank-you-page-wrap'>";
-	    $wrap	 .= "<div class='asp-thank-you-page-msg-wrap' style='background: #dff0d8; border: 1px solid #C9DEC1; margin: 10px 0px; padding: 15px;'>";
+	    $wrap	 .= "<div class='asp-thank-you-page-msg-wrap'>";
 	    $output	 = $wrap . $output;
 	    $output	 .= "</div>"; //end of .asp-thank-you-page-msg-wrap
 	    $output	 .= "</div>"; //end of .asp-thank-you-page-wrap
