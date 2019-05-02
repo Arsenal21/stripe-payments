@@ -175,18 +175,24 @@ class AcceptStripePayments_Process_IPN {
 		$item_url = '';
 	    }
 
-	    $post_item_url = filter_input( INPUT_POST, 'item_url', FILTER_SANITIZE_STRING );
+	    $post_item_url = isset( $_POST[ 'item_url' ] ) ? sanitize_text_field( $_POST[ 'item_url' ] ) : false;
 
-	    $button_key = filter_input( INPUT_POST, 'stripeButtonKey', FILTER_SANITIZE_STRING );
+	    $button_key = isset( $_POST[ 'stripeButtonKey' ] ) ? sanitize_text_field( $_POST[ 'stripeButtonKey' ] ) : false;
 
 	    if ( empty( $button_key ) ) {
 		//let's generate our own button key
-		$button_key = md5( $item_name . $item_price );
+		$price		 = AcceptStripePayments::apply_tax( $item_price, $tax );
+		$price		 = AcceptStripePayments::apply_shipping( $price, $shipping );
+		$price_in_cents	 = $price;
+		if ( ! AcceptStripePayments::is_zero_cents( $currency_code ) ) {
+		    $price_in_cents = $price_in_cents * 100;
+		}
+		$button_key = md5( htmlspecialchars_decode( $item_name ) . $price_in_cents );
 	    }
 
 	    if ( ! empty( $post_item_url ) ) {
 		if ( $item_url !== $post_item_url ) {
-		    $item_url = apply_filters( 'asp_item_url_process', $post_item_url, array( 'product_id' => $prod_id, 'button_key' => $button_key ) );
+		    $item_url = $post_item_url;
 		}
 	    }
 
