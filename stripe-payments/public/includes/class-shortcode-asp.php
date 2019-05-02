@@ -926,6 +926,7 @@ class AcceptStripePaymentsShortcode {
 	if ( ! defined( 'DONOTCACHEPAGE' ) ) {
 	    define( 'DONOTCACHEPAGE', true );
 	}
+
 	$aspData = array();
 	$sess	 = ASP_Session::get_instance();
 	$aspData = $sess->get_transient_data( 'asp_data' );
@@ -936,7 +937,7 @@ class AcceptStripePaymentsShortcode {
 	if ( empty( $content ) ) {
 	    //this is old shortcode. Let's display the default output for backward compatability
 	    if ( isset( $aspData[ 'error_msg' ] ) && ! empty( $aspData[ 'error_msg' ] ) ) {
-		//some error occured, let's display it
+		//some error occurred, let's display it
 		return __( "System was not able to complete the payment.", "stripe-payments" ) . ' ' . $aspData[ 'error_msg' ];
 	    }
 	    $output	 = '';
@@ -994,7 +995,12 @@ class AcceptStripePaymentsShortcode {
 	    return $output;
 	}
 	if ( isset( $aspData[ 'error_msg' ] ) && ! empty( $aspData[ 'error_msg' ] ) ) {
-	    //some error occured. We don't display any content to let the error shortcode handle it
+	    //some error occurred. Let's check if we have [accept_stripe_payment_checkout_error] shortcode on page
+	    $page_content = get_the_content();
+	    if ( ! empty( $page_content ) && ! has_shortcode( $page_content, 'accept_stripe_payment_checkout_error' ) ) {
+		//no error output shortcode found. Let's output default error message
+		return __( "System was not able to complete the payment.", "stripe-payments" ) . ' ' . $aspData[ 'error_msg' ];
+	    }
 	    return;
 	}
 
