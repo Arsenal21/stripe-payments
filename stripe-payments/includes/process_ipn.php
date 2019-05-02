@@ -75,7 +75,7 @@ class AcceptStripePayments_Process_IPN {
 
 	ASP_Debug_Logger::log( 'Payment processing started.' );
 
-	$post_thankyou_page_url = filter_input( INPUT_POST, 'thankyou_page_url', FILTER_SANITIZE_STRING );
+	$post_thankyou_page_url = isset( $_POST[ 'thankyou_page_url' ] ) ? sanitize_text_field( $_POST[ 'thankyou_page_url' ] ) : false;
 
 	$this->aspRedirectURL = empty( $post_thankyou_page_url ) ? $asp_class->get_setting( 'checkout_url' ) : base64_decode( $post_thankyou_page_url );
 
