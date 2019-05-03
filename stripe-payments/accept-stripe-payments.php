@@ -80,6 +80,9 @@ add_action( 'plugins_loaded', array( 'AcceptStripePayments', 'get_instance' ) );
  *
  * The code below is intended to to give the lightest footprint possible.
  */
+require_once( WP_ASP_PLUGIN_PATH . 'includes/item-class.php' );
+require_once( WP_ASP_PLUGIN_PATH . 'includes/class-asp-ng-payment-handler.php' );
+
 if ( is_admin() ) {
     //check and redirect old Settings page
     add_action( 'init', 'asp_init_handler' );
@@ -91,8 +94,10 @@ if ( is_admin() ) {
     //load session class
     require_once(plugin_dir_path( __FILE__ ) . 'includes/session-handler-class.php');
     require_once( WP_ASP_PLUGIN_PATH . 'public/includes/class-shortcode-asp.php' );
+    require_once( WP_ASP_PLUGIN_PATH . 'public/includes/class-shortcode-ng.php' );
     add_filter( 'the_content', 'asp_filter_post_type_content' );
     add_action( 'plugins_loaded', array( 'AcceptStripePaymentsShortcode', 'get_instance' ) );
+    add_action( 'plugins_loaded', array( 'AcceptStripePaymentsShortcodeNG', 'get_instance' ) );
 }
 
 /* Add a link to the settings page in the plugins listing page */
