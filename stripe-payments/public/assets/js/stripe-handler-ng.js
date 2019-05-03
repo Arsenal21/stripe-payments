@@ -12,7 +12,7 @@ jQuery(document).ready(function ($) {
 	    console.log(response);
 	    if (response.success) {
 		stripe.redirectToCheckout({
-		    sessionId: response.checkoutSessionId,
+		    sessionId: response.checkoutSessionId
 		}).then(function (result) {
 		    alert('ERROR OCCURRED! ' + result.error.message);
 		    return false;
