@@ -84,7 +84,7 @@ class AcceptStripePaymentsShortcodeNG {
 
 	$output	 = '';
 	$output	 = sprintf( '<a href="#0" data-asp-ng-button-id="%d">%s</a>', 0, $button_text );
-	echo $output;
+	return $output;
     }
 
     private function print_loc_data() {
