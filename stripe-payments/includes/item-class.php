@@ -52,6 +52,9 @@ class ASPItem {
 
     public function get_shipping( $in_cents = false ) {
 	$this->shipping = get_post_meta( $this->post_id, 'asp_product_shipping', true );
+	if ( empty( $this->shipping ) ) {
+	    $this->shipping = 0;
+	}
 	if ( $in_cents ) {
 	    return $this->in_cents( $this->shipping );
 	}
