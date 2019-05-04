@@ -74,7 +74,8 @@ class AcceptStripePaymentsShortcodeNG {
 	}
 
 	$itemData = array(
-	    'productId' => $id,
+	    'productId'	 => $id,
+	    'is_live'	 => $this->ASPClass->is_live,
 	);
 
 	$this->print_loc_data();
@@ -83,7 +84,7 @@ class AcceptStripePaymentsShortcodeNG {
 	wp_enqueue_script( 'asp-stripe-handler-ng' );
 
 	$output	 = '';
-	$output	 = sprintf( '<a href="#0" data-asp-ng-button-id="%d">%s</a>', 0, $button_text );
+	$output	 = sprintf( '<input type="button" class="%s" data-asp-ng-button-id="%d" value="%s">', $item->get_button_class(), 0, $button_text );
 	return $output;
     }
 

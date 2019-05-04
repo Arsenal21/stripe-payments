@@ -68,6 +68,11 @@ class ASPItem {
 	return $this->name;
     }
 
+    public function get_description() {
+	$this->description = get_post_meta( $this->post_id, 'asp_product_description', true );
+	return $this->description;
+    }
+
     public function get_quantity() {
 	$this->quantity = get_post_meta( $this->post_id, 'asp_product_quantity', true );
 	return $this->quantity;
@@ -84,8 +89,12 @@ class ASPItem {
 	return $this->price;
     }
 
-    public function get_tax_amount() {
-	return AcceptStripePayments::get_tax_amount( $this->get_price( true ), $this->get_tax(), $this->zero_cent );
+    public function get_tax_amount( $in_cents = false ) {
+	$this->tax_amount = AcceptStripePayments::get_tax_amount( $this->get_price(), $this->get_tax(), $this->zero_cent );
+	if ( $in_cents ) {
+	    return $this->in_cents( $this->tax_amount );
+	}
+	return $this->tax_amount;
     }
 
     public function get_currency() {
@@ -94,6 +103,18 @@ class ASPItem {
 	    $this->currency = $this->ASPMain->get_setting( 'currency_code' );
 	}
 	return $this->currency;
+    }
+
+    public function get_redir_url() {
+	$url = get_post_meta( $this->post_id, 'asp_product_thankyou_page', true );
+	if ( empty( $url ) ) {
+	    $url = $this->ASPMain->get_setting( 'checkout_url' );
+	}
+	return $url;
+    }
+
+    public function collect_billing_addr() {
+	return get_post_meta( $this->post_id, 'asp_product_collect_billing_addr', true );
     }
 
     public function gen_item_data() {
@@ -107,19 +128,24 @@ class ASPItem {
 	if ( ! empty( $this->get_thumb() ) ) {
 	    $item_info[ 'images' ] = array( $this->get_thumb() );
 	}
+	if ( ! empty( $this->get_description() ) ) {
+	    $item_info[ 'description' ] = $this->get_description();
+	}
 	$ret[] = $item_info;
 	if ( ! empty( $this->get_tax() ) ) {
+	    $taxStr		 = apply_filters( 'asp_customize_text_msg', __( 'Tax', 'stripe-payments' ), 'tax_str' );
 	    $tax_info	 = array(
-		'name'		 => sprintf( 'Tax (%s%%)', $this->get_tax() ),
-		'amount'	 => $this->get_tax_amount(),
+		'name'		 => sprintf( '%s (%s%%)', $taxStr, $this->get_tax() ),
+		'amount'	 => $this->get_tax_amount( true ),
 		'currency'	 => $this->get_currency(),
 		'quantity'	 => $this->get_quantity(),
 	    );
 	    $ret[]		 = $tax_info;
 	}
 	if ( ! empty( $this->get_shipping() ) ) {
+	    $shipStr	 = apply_filters( 'asp_customize_text_msg', __( 'Shipping', 'stripe-payments' ), 'shipping_str' );
 	    $tax_info	 = array(
-		'name'		 => sprintf( 'Shipping' ),
+		'name'		 => sprintf( '%s', $shipStr ),
 		'amount'	 => $this->get_shipping( true ),
 		'currency'	 => $this->get_currency(),
 		'quantity'	 => $this->get_quantity(),

@@ -558,6 +558,14 @@ class AcceptStripePayments {
 	return in_array( strtoupper( $curr ), $zeroCents );
     }
 
+    static function from_cents( $amount, $currency ) {
+	$res = $amount;
+	if ( ! self::is_zero_cents( $currency ) ) {
+	    $res = $amount / 100;
+	}
+	return $res;
+    }
+
     static function gen_additional_items( $data, $sep = "\n" ) {
 	$out = '';
 	if ( ! empty( $data[ 'additional_items' ] ) ) {
