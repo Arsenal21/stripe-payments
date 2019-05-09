@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 4.7
 Tested up to: 5.2
 Requires PHP: 5.4
-Stable tag: 1.9.23t2
+Stable tag: 1.9.23t3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -152,9 +152,14 @@ None.
 == Changelog ==
 
 = WIP 1.9.23 =
-- Fixed thankyou_page_url parameter was ignored for [asp_product] shortcode.
+- PHP sessions are no longer used for security and better chaching purposes.
+- Fixed thankyou_page_url parameter was ignored for [asp_product] shortcode and by some addons.
+- Fixed item url wasn't processed by Secure Downloads addon when some other addons are enabled.
 - Fixed frontend total amount calculation display for products with variations and custom amount enabled.
 - Custom amount validation errors no longer displayed on page load for products with variations and custom amount enabled.
+- Checkout results page no longer displays "Download links" message if there are no downloads set for variations.
+- Checkout error message is now displayed even if no [accept_stripe_payment_checkout_error] shortcode inserted on custom checkout results page.
+- Some other minor bugfixes.
 
 = 1.9.22 =
 - Fixed archive pages list could be messed up when plugin is enabled.
