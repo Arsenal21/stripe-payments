@@ -84,12 +84,12 @@ if ( is_admin() ) {
     //check and redirect old Settings page
     add_action( 'init', 'asp_init_handler' );
 
-    require_once( plugin_dir_path( __FILE__ ) . 'admin/class-asp-admin.php' );
+    require_once( WP_ASP_PLUGIN_PATH . 'admin/class-asp-admin.php' );
     add_action( 'plugins_loaded', array( 'AcceptStripePayments_Admin', 'get_instance' ) );
     add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'asp_stripe_add_settings_link' );
 } else {
     //load session class
-    require_once(plugin_dir_path( __FILE__ ) . 'includes/session-handler-class.php');
+    require_once( WP_ASP_PLUGIN_PATH . 'includes/session-handler-class.php');
     require_once( WP_ASP_PLUGIN_PATH . 'public/includes/class-shortcode-asp.php' );
     add_filter( 'the_content', 'asp_filter_post_type_content' );
     add_action( 'plugins_loaded', array( 'AcceptStripePaymentsShortcode', 'get_instance' ) );
