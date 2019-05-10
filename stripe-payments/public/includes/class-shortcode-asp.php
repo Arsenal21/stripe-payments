@@ -413,12 +413,14 @@ class AcceptStripePaymentsShortcode {
 	if ( $quantity && $quantity != 1 ) {
 	    $qntStr = 'x ' . $quantity;
 	}
-
-	$product_tags = array(
+	remove_filter( 'the_content', 'asp_filter_post_type_content' );
+	$descr		 = apply_filters( "the_content", $post->post_content );
+	add_filter( 'the_content', 'asp_filter_post_type_content' );
+	$product_tags	 = array(
 	    'thumb_img'		 => $thumb_img,
 	    'quantity'		 => $qntStr,
 	    'name'			 => $post->post_title,
-	    'description'		 => do_shortcode( wpautop( $post->post_content ) ),
+	    'description'		 => $descr,
 	    'price'			 => $price_line,
 	    'under_price_line'	 => $under_price_line,
 	    'buy_btn'		 => $buy_btn,
