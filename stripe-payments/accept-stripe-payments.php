@@ -21,6 +21,7 @@ define( 'WP_ASP_PLUGIN_VERSION', '1.9.23t3' );
 define( 'WP_ASP_MIN_PHP_VERSION', '5.4' );
 define( 'WP_ASP_PLUGIN_URL', plugins_url( '', __FILE__ ) );
 define( 'WP_ASP_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
+define( 'WP_ASP_PLUGIN_FILE', __FILE__ );
 
 class ASPMain {
 
@@ -33,7 +34,7 @@ class ASPMain {
 
     static function load_stripe_lib() {
 	if ( ! class_exists( '\Stripe\Stripe' ) ) {
-	    require_once( plugin_dir_path( __FILE__ ) . 'includes/stripe/init.php' );
+	    require_once( WP_ASP_PLUGIN_PATH . 'includes/stripe/init.php' );
 	    \Stripe\Stripe::setAppInfo( "Stripe Payments", WP_ASP_PLUGIN_VERSION, "https://wordpress.org/plugins/stripe-payments/" );
 	}
     }
@@ -86,21 +87,11 @@ if ( is_admin() ) {
 
     require_once( WP_ASP_PLUGIN_PATH . 'admin/class-asp-admin.php' );
     add_action( 'plugins_loaded', array( 'AcceptStripePayments_Admin', 'get_instance' ) );
-    add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'asp_stripe_add_settings_link' );
 } else {
     //load session class
     require_once( WP_ASP_PLUGIN_PATH . 'includes/session-handler-class.php');
     require_once( WP_ASP_PLUGIN_PATH . 'public/includes/class-shortcode-asp.php' );
-    add_filter( 'the_content', 'asp_filter_post_type_content' );
     add_action( 'plugins_loaded', array( 'AcceptStripePaymentsShortcode', 'get_instance' ) );
-}
-
-/* Add a link to the settings page in the plugins listing page */
-
-function asp_stripe_add_settings_link( $links ) {
-    $settings_link = '<a href="edit.php?post_type=stripe_order&page=stripe-payments-settings">' . __( 'Settings', 'stripe-payments' ) . '</a>';
-    array_unshift( $links, $settings_link );
-    return $links;
 }
 
 register_activation_hook( __FILE__, 'asp_activation_hook_handler' );
@@ -132,14 +123,4 @@ function asp_init_handler() {
 	//products meta boxes handler
 	require_once(WP_ASP_PLUGIN_PATH . 'admin/includes/class-products-meta-boxes.php');
     }
-}
-
-function asp_filter_post_type_content( $content ) {
-    global $post;
-    if ( isset( $post ) ) {
-	if ( $post->post_type == ASPMain::$products_slug ) {//Handle the content for product type post
-	    return do_shortcode( '[asp_product id="' . $post->ID . '" is_post_tpl="1" in_the_loop="' . +in_the_loop() . '"]' );
-	}
-    }
-    return $content;
 }

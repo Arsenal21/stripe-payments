@@ -22,6 +22,8 @@ class AcceptStripePaymentsShortcode {
     function __construct() {
 	$this->AcceptStripePayments = AcceptStripePayments::get_instance();
 
+	add_filter( 'the_content', array( $this, 'filter_post_type_content' ) );
+
 	add_action( 'wp_enqueue_scripts', array( $this, 'register_stripe_script' ) );
 
 	add_shortcode( 'asp_show_all_products', array( &$this, 'shortcode_show_all_products' ) );
@@ -33,6 +35,16 @@ class AcceptStripePaymentsShortcode {
 	if ( ! is_admin() ) {
 	    add_filter( 'widget_text', 'do_shortcode' );
 	}
+    }
+
+    public function filter_post_type_content( $content ) {
+	global $post;
+	if ( isset( $post ) ) {
+	    if ( $post->post_type === ASPMain::$products_slug ) {//Handle the content for product type post
+		return do_shortcode( '[asp_product id="' . $post->ID . '" is_post_tpl="1" in_the_loop="' . +in_the_loop() . '"]' );
+	    }
+	}
+	return $content;
     }
 
     public function interfer_for_redirect() {
@@ -413,9 +425,9 @@ class AcceptStripePaymentsShortcode {
 	if ( $quantity && $quantity != 1 ) {
 	    $qntStr = 'x ' . $quantity;
 	}
-	remove_filter( 'the_content', 'asp_filter_post_type_content' );
+	remove_filter( 'the_content', array( $this, 'filter_post_type_content' ) );
 	$descr		 = apply_filters( "the_content", $post->post_content );
-	add_filter( 'the_content', 'asp_filter_post_type_content' );
+	add_filter( 'the_content', array( $this, 'filter_post_type_content' ) );
 	$product_tags	 = array(
 	    'thumb_img'		 => $thumb_img,
 	    'quantity'		 => $qntStr,

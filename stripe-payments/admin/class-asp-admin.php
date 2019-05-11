@@ -53,6 +53,14 @@ class AcceptStripePayments_Admin {
 	add_action( 'init', array( $this, 'tinymce_shortcode_button' ) );
 	add_action( 'current_screen', array( $this, 'check_current_screen' ) );
 	add_action( 'wp_ajax_asp_tinymce_get_settings', array( $this, 'tinymce_ajax_handler' ) ); // Add ajax action handler for tinymce
+	//Settings link
+	add_filter( 'plugin_action_links_' . plugin_basename( WP_ASP_PLUGIN_FILE ), array( $this, 'add_settings_link' ) );
+    }
+
+    public function add_settings_link( $links ) {
+	$settings_link = '<a href="edit.php?post_type=stripe_order&page=stripe-payments-settings">' . __( 'Settings', 'stripe-payments' ) . '</a>';
+	array_unshift( $links, $settings_link );
+	return $links;
     }
 
     function enqueue_scripts( $hook ) {
