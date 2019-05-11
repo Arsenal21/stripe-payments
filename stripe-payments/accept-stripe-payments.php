@@ -30,6 +30,35 @@ class ASPMain {
 
     function __construct() {
 	ASPMain::$products_slug = 'asp-products';
+
+	require_once( WP_ASP_PLUGIN_PATH . 'includes/class-debug-logger.php' );
+	require_once( WP_ASP_PLUGIN_PATH . 'public/class-asp.php' );
+	require_once( WP_ASP_PLUGIN_PATH . 'admin/includes/class-products.php' );
+	require_once( WP_ASP_PLUGIN_PATH . 'admin/includes/class-coupons.php' );
+	require_once( WP_ASP_PLUGIN_PATH . 'admin/includes/class-order.php' );
+	require_once( WP_ASP_PLUGIN_PATH . 'admin/views/blocks.php' );
+	require_once( WP_ASP_PLUGIN_PATH . 'includes/addons-helper-class.php' );
+
+	register_activation_hook( __FILE__, array( 'AcceptStripePayments', 'activate' ) );
+	register_deactivation_hook( __FILE__, array( 'AcceptStripePayments', 'deactivate' ) );
+
+	add_action( 'plugins_loaded', array( 'AcceptStripePayments', 'get_instance' ) );
+
+	if ( is_admin() ) {
+	    require_once( WP_ASP_PLUGIN_PATH . 'admin/class-asp-admin.php' );
+	    add_action( 'plugins_loaded', array( 'AcceptStripePayments_Admin', 'get_instance' ) );
+	}
+
+	require_once( WP_ASP_PLUGIN_PATH . 'includes/session-handler-class.php');
+	require_once( WP_ASP_PLUGIN_PATH . 'public/includes/class-shortcode-asp.php' );
+
+	add_action( 'init', array( 'AcceptStripePaymentsShortcode', 'get_instance' ) );
+
+	// register custom post type
+	$ASPProducts	 = ASPProducts::get_instance();
+	add_action( 'init', array( $ASPProducts, 'register_post_type' ), 0 );
+	$ASPOrder	 = ASPOrder::get_instance();
+	add_action( 'init', array( $ASPOrder, 'register_post_type' ), 0 );
     }
 
     static function load_stripe_lib() {
@@ -41,77 +70,4 @@ class ASPMain {
 
 }
 
-$ASPMain = new ASPMain();
-
-/* ----------------------------------------------------------------------------*
- * Public-Facing Functionality
- * ---------------------------------------------------------------------------- */
-require_once( WP_ASP_PLUGIN_PATH . 'includes/class-debug-logger.php' );
-require_once( WP_ASP_PLUGIN_PATH . 'public/class-asp.php' );
-require_once( WP_ASP_PLUGIN_PATH . 'admin/includes/class-products.php' );
-require_once( WP_ASP_PLUGIN_PATH . 'admin/includes/class-coupons.php' );
-require_once( WP_ASP_PLUGIN_PATH . 'admin/includes/class-order.php' );
-require_once( WP_ASP_PLUGIN_PATH . 'admin/views/blocks.php' );
-require_once( WP_ASP_PLUGIN_PATH . 'includes/addons-helper-class.php' );
-
-/*
- * Register hooks that are fired when the plugin is activated or deactivated.
- * When the plugin is deleted, the uninstall.php file is loaded.
- *
- */
-
-register_activation_hook( __FILE__, array( 'AcceptStripePayments', 'activate' ) );
-register_deactivation_hook( __FILE__, array( 'AcceptStripePayments', 'deactivate' ) );
-
-/*
- */
-add_action( 'plugins_loaded', array( 'AcceptStripePayments', 'get_instance' ) );
-
-/* ----------------------------------------------------------------------------*
- * Dashboard and Administrative Functionality
- * ---------------------------------------------------------------------------- */
-
-/*
- * If you want to include Ajax within the dashboard, change the following
- * conditional to:
- *
- * if ( is_admin() ) {
- *   ...
- * }
- *
- * The code below is intended to to give the lightest footprint possible.
- */
-if ( is_admin() ) {
-    add_action( 'init', 'asp_init_handler' );
-
-    require_once( WP_ASP_PLUGIN_PATH . 'admin/class-asp-admin.php' );
-    add_action( 'plugins_loaded', array( 'AcceptStripePayments_Admin', 'get_instance' ) );
-} else {
-    //load session class
-    require_once( WP_ASP_PLUGIN_PATH . 'includes/session-handler-class.php');
-    require_once( WP_ASP_PLUGIN_PATH . 'public/includes/class-shortcode-asp.php' );
-    add_action( 'plugins_loaded', array( 'AcceptStripePaymentsShortcode', 'get_instance' ) );
-}
-
-register_activation_hook( __FILE__, 'asp_activation_hook_handler' );
-
-// register custom post type
-$ASPProducts	 = ASPProducts::get_instance();
-add_action( 'init', array( $ASPProducts, 'register_post_type' ), 0 );
-$ASPOrder	 = ASPOrder::get_instance();
-add_action( 'init', array( $ASPOrder, 'register_post_type' ), 0 );
-
-function asp_activation_hook_handler() {
-    $ASPProducts	 = ASPProducts::get_instance();
-    $ASPProducts->register_post_type();
-    $ASPOrder	 = ASPOrder::get_instance();
-    $ASPOrder->register_post_type();
-    flush_rewrite_rules();
-}
-
-function asp_init_handler() {
-    if ( is_admin() ) {
-	//products meta boxes handler
-	require_once(WP_ASP_PLUGIN_PATH . 'admin/includes/class-products-meta-boxes.php');
-    }
-}
+new ASPMain();

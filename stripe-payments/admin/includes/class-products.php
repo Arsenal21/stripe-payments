@@ -5,7 +5,10 @@ class ASPProducts {
     protected static $instance = null;
 
     function __construct() {
-	
+	if ( is_admin() ) {
+	    //products meta boxes handler
+	    require_once(WP_ASP_PLUGIN_PATH . 'admin/includes/class-products-meta-boxes.php');
+	}
     }
 
     public static function get_instance() {

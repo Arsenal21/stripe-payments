@@ -37,7 +37,7 @@ class AcceptStripePaymentsShortcode {
 	}
     }
 
-    public function filter_post_type_content( $content ) {
+    public static function filter_post_type_content( $content ) {
 	global $post;
 	if ( isset( $post ) ) {
 	    if ( $post->post_type === ASPMain::$products_slug ) {//Handle the content for product type post
