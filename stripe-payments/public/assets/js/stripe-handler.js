@@ -388,6 +388,7 @@ function wp_asp_hadnle_token(data, token, args) {
 
     form.append('<input type="hidden" name="clickProcessed" value="1">');
     form.off('submit');
+    form.find('input').prop('readonly', true);
     form.submit();
 }
 
