@@ -82,7 +82,6 @@ add_action( 'plugins_loaded', array( 'AcceptStripePayments', 'get_instance' ) );
  * The code below is intended to to give the lightest footprint possible.
  */
 if ( is_admin() ) {
-    //check and redirect old Settings page
     add_action( 'init', 'asp_init_handler' );
 
     require_once( WP_ASP_PLUGIN_PATH . 'admin/class-asp-admin.php' );
@@ -111,15 +110,7 @@ function asp_activation_hook_handler() {
 }
 
 function asp_init_handler() {
-    global $pagenow;
     if ( is_admin() ) {
-	//check if we need redirect old Settings page
-	if ( ($pagenow == "options-general.php" && isset( $_GET[ 'page' ] ) && $_GET[ 'page' ] == 'accept_stripe_payment') ||
-	($pagenow == "edit.php" && (isset( $_GET[ 'post_type' ] ) && $_GET[ 'post_type' ] == 'stripe_order') && (isset( $_GET[ 'page' ] ) && $_GET[ 'page' ] == 'stripe-payments-settings') ) ) {
-	    //let's redirect old Settings page to new
-	    wp_redirect( get_admin_url() . 'edit.php?post_type=' . ASPMain::$products_slug . '&page=stripe-payments-settings', 301 );
-	    exit;
-	}
 	//products meta boxes handler
 	require_once(WP_ASP_PLUGIN_PATH . 'admin/includes/class-products-meta-boxes.php');
     }
