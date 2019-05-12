@@ -69,7 +69,7 @@ if ( $_GET[ 'page' ] == 'stripe-payments-settings' ) {
 			    <?php echo sprintf( __( 'Want additional functionality like subscriptions, Apple Pay support or MailChimp integration? Check out our %s', 'stripe-payments' ), '<a target="_blank" href="edit.php?post_type=asp-products&page=stripe-payments-addons">Add-Ons!</a>' ); ?>
     		    </div>
     		</div>
-    		<div class="postbox" style="min-width: inherit;">
+    		<div class="postbox yellowish" style="min-width: inherit;">
     		    <h3 class="hndle"><label for="title"><?php echo __( 'Need Something Bigger?', 'stripe-payments' ); ?></label></h3>
     		    <div class="inside">
 			    <?php _ex( 'If you need a feature rich plugin (with good support) for selling your products and services then check out our', 'Followed by a link to eStore plugin', 'stripe-payments' ); ?>
