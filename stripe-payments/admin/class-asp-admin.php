@@ -901,12 +901,10 @@ class AcceptStripePayments_Admin {
 	else
 	    add_settings_error( 'AcceptStripePayments-settings', 'empty-price-thousand-sep', __( 'Price thousand separator can\'t be empty.', 'stripe-payments' ) );
 
-	if ( ! empty( $input[ 'price_decimals_num' ] ) )
-	    $output[ 'price_decimals_num' ] = esc_attr( $input[ 'price_decimals_num' ] );
+	if ( isset( $input[ 'price_decimals_num' ] ) )
+	    $output[ 'price_decimals_num' ] = intval( $input[ 'price_decimals_num' ] );
 	else
 	    add_settings_error( 'AcceptStripePayments-settings', 'invalid-price-decimals-num', __( 'Price number of decimals can\'t be empty.', 'stripe-payments' ) );
-
-
 
 	if ( isset( $_POST[ 'wp-asp-urlHash' ] ) ) {
 	    set_transient( 'wp-asp-urlHash', $_POST[ 'wp-asp-urlHash' ], 300 );

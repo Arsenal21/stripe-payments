@@ -539,9 +539,14 @@ class AcceptStripePayments {
 	return $price;
     }
 
-    static function apply_shipping( $price, $shipping ) {
+    static function apply_shipping( $price, $shipping, $is_zero_cents = false ) {
 	if ( ! empty( $shipping ) ) {
-	    $price += floatval( $shipping );
+	    $prec = 2;
+	    if ( $is_zero_cents ) {
+		$prec = 0;
+	    }
+	    $price	 += floatval( $shipping );
+	    $price	 = round( $price, $prec );
 	}
 	return $price;
     }

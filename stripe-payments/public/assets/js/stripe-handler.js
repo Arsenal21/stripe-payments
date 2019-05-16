@@ -40,14 +40,14 @@ stripehandler.is_zero_cents = (function (curr) {
 });
 
 stripehandler.cents_to_amount = (function (amount, curr) {
-    if (stripehandler.zeroCents.indexOf(curr) === -1) {
+    if (!stripehandler.is_zero_cents(curr)) {
 	amount = amount / 100;
     }
     return amount;
 });
 
 stripehandler.amount_to_cents = function (amount, curr) {
-    if (stripehandler.zeroCents.indexOf(curr) === -1) {
+    if (!stripehandler.is_zero_cents(curr)) {
 	amount = amount * 100;
     }
     return parseFloat(amount);

@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 4.7
 Tested up to: 5.2
 Requires PHP: 5.4
-Stable tag: 1.9.23t4
+Stable tag: 1.9.23t5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -161,6 +161,7 @@ None.
 - Checkout results page no longer displays "Download links" message if there are no downloads set for variations.
 - Checkout error message is now displayed even if no [accept_stripe_payment_checkout_error] shortcode inserted on custom checkout results page.
 - Frontend amount and quantity inputs are disabled on payment form submit to prevent "Token can't be used more than once" error.
+- Fixed zero-cent currencies displaying and handling issues.
 - Product description now supports WP embeds.
 - Tweaks for better compatability with various page builders.
 - Other minor bugfixes.

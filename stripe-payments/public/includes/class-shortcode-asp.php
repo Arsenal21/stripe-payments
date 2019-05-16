@@ -625,7 +625,7 @@ class AcceptStripePaymentsShortcode {
 
 	//Currency Display settings
 	$display_settings	 = array();
-	$display_settings[ 'c' ] = $this->AcceptStripePayments->get_setting( 'price_decimal_num', 2 );
+	$display_settings[ 'c' ] = $this->AcceptStripePayments->get_setting( 'price_decimals_num', 2 );
 	$display_settings[ 'd' ] = $this->AcceptStripePayments->get_setting( 'price_decimal_sep' );
 	$display_settings[ 't' ] = $this->AcceptStripePayments->get_setting( 'price_thousand_sep' );
 
