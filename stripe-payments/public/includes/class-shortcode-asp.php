@@ -775,16 +775,14 @@ class AcceptStripePaymentsShortcode {
 	if ( $this->CompatMode ) {
 	    ob_start();
 	    ?>
-	    <script type='text/javascript'>
-	        var stripehandler = <?php echo json_encode( $this->get_loc_data() ); ?>;
-	    </script>
-	    <script type='text/javascript'>
-	        var stripehandler<?php echo $data[ 'uniq_id' ]; ?> = <?php echo json_encode( array( 'data' => $data ) ); ?>;
-	    </script>
+	    <script type='text/javascript'>var stripehandler = <?php echo json_encode( $this->get_loc_data() ); ?>;</script>
+	    <script type='text/javascript'>var stripehandler<?php echo $data[ 'uniq_id' ]; ?> = <?php echo json_encode( array( 'data' => $data ) ); ?>;</script>
 	    <script type='text/javascript' src='https://checkout.stripe.com/checkout.js'></script>
 	    <script type='text/javascript' src='<?php echo WP_ASP_PLUGIN_URL; ?>/public/assets/js/stripe-handler.js?ver=<?php echo WP_ASP_PLUGIN_VERSION; ?>'></script>
 	    <?php
-	    $output .= ob_get_clean();
+	    $output	 .= ob_get_clean();
+	    //remove newline symbols for compatability with some page builders
+	    $output	 = str_replace( array( "\r\n", "\n", "\t" ), '', $output );
 	} else {
 	    //Let's enqueue Stripe js
 	    wp_enqueue_script( 'stripe-script' );
