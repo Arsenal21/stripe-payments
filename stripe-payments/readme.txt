@@ -153,6 +153,7 @@ None.
 
 = WIP 1.9.23 =
 - PHP sessions are no longer used for security and better caching purposes.
+- Disabled nonce checking for buttons.
 - Fixed thankyou_page_url parameter was ignored for [asp_product] shortcode and by some addons.
 - Fixed item URL wasn't processed by Secure Downloads addon when some other addons are enabled.
 - Fixed frontend total amount calculation display for products with variations and custom amount enabled.
@@ -161,8 +162,8 @@ None.
 - Checkout error message is now displayed even if no [accept_stripe_payment_checkout_error] shortcode inserted on custom checkout results page.
 - Frontend amount and quantity inputs are disabled on payment form submit to prevent "Token can't be used more than once" error.
 - Product description now supports WP embeds.
-- Some tweaks for better compatability with various page builders.
-- Some other minor bugfixes.
+- Tweaks for better compatability with various page builders.
+- Other minor bugfixes.
 
 = 1.9.22 =
 - Fixed archive pages list could be messed up when plugin is enabled.
