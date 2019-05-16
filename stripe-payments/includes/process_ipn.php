@@ -90,11 +90,6 @@ class AcceptStripePayments_Process_IPN {
 
 	//Check nonce
 	ASP_Debug_Logger::log( 'Checking received data.' );
-	$nonce = $_REQUEST[ '_wpnonce' ];
-	if ( ! wp_verify_nonce( $nonce, 'stripe_payments' ) ) {
-	    //nonce check failed
-	    $this->ipn_completed( "Nonce check failed." );
-	}
 
 	if ( ! isset( $_POST[ 'stripeToken' ] ) || empty( $_POST[ 'stripeToken' ] ) ) {
 	    $this->ipn_completed( 'Invalid Stripe Token' );

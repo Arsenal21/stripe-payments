@@ -725,7 +725,6 @@ class AcceptStripePaymentsShortcode {
 	$trans[ 'shipping' ]	 = $shipping;
 	$trans[ 'price' ]	 = $price;
 	set_transient( $trans_name, $trans, 2 * 3600 ); //Save the price for this item for 2 hours.
-	$output			 .= wp_nonce_field( 'stripe_payments', '_wpnonce', true, false );
 	$output			 .= "</form>";
 	//before button filter
 	if ( ! $out_of_stock ) {
