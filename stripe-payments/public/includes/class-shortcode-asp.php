@@ -765,6 +765,8 @@ class AcceptStripePaymentsShortcode {
 	    <div class="asp-processing-cont"><span class="asp-processing">Processing <i>.</i><i>.</i><i>.</i></span></div>
 	    <?php
 	    $output	 .= ob_get_clean();
+	    //remove newline symbols for compatability with some page builders
+	    $output	 = str_replace( array( "\r\n", "\n", "\t" ), '', $output );
 	}
 	return $output;
     }
