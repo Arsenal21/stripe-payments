@@ -1155,9 +1155,10 @@ class AcceptStripePaymentsShortcode {
 		if ( $i != $page ) {
 		    $url	 = esc_url( add_query_arg( 'asp_page', $i ) );
 		    $str	 = str_replace( array( '%[url]%', '%[page_num]%' ), array( $url, $i ), $tpl[ 'pagination_item' ] );
-		} else
-		    $str				 = str_replace( '%[page_num]%', $i, $tpl[ 'pagination_item_current' ] );
-		$tpl[ 'pagination_items' ]	 .= $str;
+		} else {
+		    $str = str_replace( '%[page_num]%', $i, $tpl[ 'pagination_item_current' ] );
+		}
+		$tpl[ 'pagination_items' ] .= $str;
 		$i ++;
 	    }
 	}
