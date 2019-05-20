@@ -98,8 +98,8 @@ class AcceptStripePayments {
 
 	add_action( 'plugins_loaded', array( $this, 'plugins_loaded' ) );
 
-	//Check if IPN submitted
-	add_action( 'init', array( $this, 'asp_check_ipn' ) );
+	//handle IPN stuff if needed
+	require_once(WP_ASP_PLUGIN_PATH . 'includes/process_ipn.php');
 
 	// Activate plugin when new blog is added
 	add_action( 'wpmu_new_blog', array( $this, 'activate_new_site' ) );
@@ -118,14 +118,6 @@ class AcceptStripePayments {
 	    //let's check token
 	    if ( $this->get_setting( 'debug_log_access_token' ) === $token ) {
 		ASP_Debug_Logger::view_log();
-	    }
-	}
-    }
-
-    public function asp_check_ipn() {
-	if ( isset( $_POST[ 'asp_action' ] ) ) {
-	    if ( $_POST[ 'asp_action' ] == 'process_ipn' ) {
-		require_once(WP_ASP_PLUGIN_PATH . 'includes/process_ipn.php');
 	    }
 	}
     }
@@ -394,6 +386,12 @@ class AcceptStripePayments {
 		update_option( 'AcceptStripePayments-settings', $AcceptStripePayments_settings );
 	    }
 	}
+	//Flush rewrite rules so new pages and slugs are properly handled
+	$ASPProducts	 = ASPProducts::get_instance();
+	$ASPProducts->register_post_type();
+	$ASPOrder	 = ASPOrder::get_instance();
+	$ASPOrder->register_post_type();
+	flush_rewrite_rules();
     }
 
     public static function create_post( $postType, $title, $name, $content, $parentId = NULL ) {
@@ -541,9 +539,14 @@ class AcceptStripePayments {
 	return $price;
     }
 
-    static function apply_shipping( $price, $shipping ) {
+    static function apply_shipping( $price, $shipping, $is_zero_cents = false ) {
 	if ( ! empty( $shipping ) ) {
-	    $price += floatval( $shipping );
+	    $prec = 2;
+	    if ( $is_zero_cents ) {
+		$prec = 0;
+	    }
+	    $price	 += floatval( $shipping );
+	    $price	 = round( $price, $prec );
 	}
 	return $price;
     }

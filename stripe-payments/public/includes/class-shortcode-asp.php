@@ -22,6 +22,8 @@ class AcceptStripePaymentsShortcode {
     function __construct() {
 	$this->AcceptStripePayments = AcceptStripePayments::get_instance();
 
+	add_filter( 'the_content', array( $this, 'filter_post_type_content' ) );
+
 	add_action( 'wp_enqueue_scripts', array( $this, 'register_stripe_script' ) );
 
 	add_shortcode( 'asp_show_all_products', array( &$this, 'shortcode_show_all_products' ) );
@@ -33,6 +35,16 @@ class AcceptStripePaymentsShortcode {
 	if ( ! is_admin() ) {
 	    add_filter( 'widget_text', 'do_shortcode' );
 	}
+    }
+
+    public static function filter_post_type_content( $content ) {
+	global $post;
+	if ( isset( $post ) ) {
+	    if ( $post->post_type === ASPMain::$products_slug ) {//Handle the content for product type post
+		return do_shortcode( '[asp_product id="' . $post->ID . '" is_post_tpl="1" in_the_loop="' . +in_the_loop() . '"]' );
+	    }
+	}
+	return $content;
     }
 
     public function interfer_for_redirect() {
@@ -287,7 +299,7 @@ class AcceptStripePaymentsShortcode {
 	    $coupons_enabled = $this->AcceptStripePayments->get_setting( 'coupons_enabled' );
 	}
 
-	$thankyou_page = get_post_meta( $id, 'asp_product_thankyou_page', true );
+	$thankyou_page = empty( $atts[ 'thankyou_page_url' ] ) ? get_post_meta( $id, 'asp_product_thankyou_page', true ) : $atts[ 'thankyou_page_url' ];
 
 	if ( ! $shipping ) {
 	    $shipping = 0;
@@ -413,12 +425,14 @@ class AcceptStripePaymentsShortcode {
 	if ( $quantity && $quantity != 1 ) {
 	    $qntStr = 'x ' . $quantity;
 	}
-
-	$product_tags = array(
+	remove_filter( 'the_content', array( $this, 'filter_post_type_content' ) );
+	$descr		 = apply_filters( "the_content", $post->post_content );
+	add_filter( 'the_content', array( $this, 'filter_post_type_content' ) );
+	$product_tags	 = array(
 	    'thumb_img'		 => $thumb_img,
 	    'quantity'		 => $qntStr,
 	    'name'			 => $post->post_title,
-	    'description'		 => do_shortcode( wpautop( $post->post_content ) ),
+	    'description'		 => $descr,
 	    'price'			 => $price_line,
 	    'under_price_line'	 => $under_price_line,
 	    'buy_btn'		 => $buy_btn,
@@ -490,7 +504,7 @@ class AcceptStripePaymentsShortcode {
 	    $quantity = "NA";
 	}
 	$price			 = floatval( $price );
-	$uniq_id		 = count( self::$payment_buttons );
+	$uniq_id		 = count( self::$payment_buttons ) . uniqid();
 	$button_id		 = 'stripe_button_' . $uniq_id;
 	self::$payment_buttons[] = $button_id;
 
@@ -611,7 +625,7 @@ class AcceptStripePaymentsShortcode {
 
 	//Currency Display settings
 	$display_settings	 = array();
-	$display_settings[ 'c' ] = $this->AcceptStripePayments->get_setting( 'price_decimal_num', 2 );
+	$display_settings[ 'c' ] = $this->AcceptStripePayments->get_setting( 'price_decimals_num', 2 );
 	$display_settings[ 'd' ] = $this->AcceptStripePayments->get_setting( 'price_decimal_sep' );
 	$display_settings[ 't' ] = $this->AcceptStripePayments->get_setting( 'price_thousand_sep' );
 
@@ -711,7 +725,6 @@ class AcceptStripePaymentsShortcode {
 	$trans[ 'shipping' ]	 = $shipping;
 	$trans[ 'price' ]	 = $price;
 	set_transient( $trans_name, $trans, 2 * 3600 ); //Save the price for this item for 2 hours.
-	$output			 .= wp_nonce_field( 'stripe_payments', '_wpnonce', true, false );
 	$output			 .= "</form>";
 	//before button filter
 	if ( ! $out_of_stock ) {
@@ -752,6 +765,8 @@ class AcceptStripePaymentsShortcode {
 	    <div class="asp-processing-cont"><span class="asp-processing">Processing <i>.</i><i>.</i><i>.</i></span></div>
 	    <?php
 	    $output	 .= ob_get_clean();
+	    //remove newline symbols for compatability with some page builders
+	    $output	 = str_replace( array( "\r\n", "\n", "\t" ), '', $output );
 	}
 	return $output;
     }
@@ -761,16 +776,14 @@ class AcceptStripePaymentsShortcode {
 	if ( $this->CompatMode ) {
 	    ob_start();
 	    ?>
-	    <script type='text/javascript'>
-	        var stripehandler = <?php echo json_encode( $this->get_loc_data() ); ?>;
-	    </script>
-	    <script type='text/javascript'>
-	        var stripehandler<?php echo $data[ 'uniq_id' ]; ?> = <?php echo json_encode( array( 'data' => $data ) ); ?>;
-	    </script>
+	    <script type='text/javascript'>var stripehandler = <?php echo json_encode( $this->get_loc_data() ); ?>;</script>
+	    <script type='text/javascript'>var stripehandler<?php echo $data[ 'uniq_id' ]; ?> = <?php echo json_encode( array( 'data' => $data ) ); ?>;</script>
 	    <script type='text/javascript' src='https://checkout.stripe.com/checkout.js'></script>
 	    <script type='text/javascript' src='<?php echo WP_ASP_PLUGIN_URL; ?>/public/assets/js/stripe-handler.js?ver=<?php echo WP_ASP_PLUGIN_VERSION; ?>'></script>
 	    <?php
-	    $output .= ob_get_clean();
+	    $output	 .= ob_get_clean();
+	    //remove newline symbols for compatability with some page builders
+	    $output	 = str_replace( array( "\r\n", "\n", "\t" ), '', $output );
 	} else {
 	    //Let's enqueue Stripe js
 	    wp_enqueue_script( 'stripe-script' );
@@ -831,11 +844,14 @@ class AcceptStripePaymentsShortcode {
 	    //Output Custom Field if needed
 	    $output = $this->tpl_get_cf( $output, $data );
 
+	    //Get subscription plan ID for the product (if any)
+	    $plan_id = get_post_meta( $data[ 'product_id' ], 'asp_sub_plan_id', true );
+
 	    //Variations
 	    $this->variations = array();
 	    if ( isset( $data[ 'product_id' ] ) ) {
 		$variations_groups = get_post_meta( $data[ 'product_id' ], 'asp_variations_groups', true );
-		if ( ! empty( $variations_groups ) ) {
+		if ( ! empty( $variations_groups ) && ! $plan_id ) { //we only display variations for non-subscription products for now
 		    //we got variations for this product
 		    $variations_str			 = '';
 		    $this->variations[ 'groups' ]	 = $variations_groups;
@@ -891,7 +907,6 @@ class AcceptStripePaymentsShortcode {
 	    if ( isset( $data[ 'coupons_enabled' ] ) && $data[ 'coupons_enabled' ] == "1" && ! $data[ 'variable' ] ) {
 		if ( isset( $data[ 'product_id' ] ) ) {
 		    //check if this is subscription product. If it is, we will only display coupon field if subs addon version is >=1.3.3t1
-		    $plan_id = get_post_meta( $data[ 'product_id' ], 'asp_sub_plan_id', true );
 		    if ( ! $plan_id || ($plan_id && class_exists( 'ASPSUB_main' ) && version_compare( ASPSUB_main::ADDON_VER, '1.3.3t1' ) >= 0) ) {
 			$str_coupon_label	 = __( 'Coupon Code', 'stripe-payments' );
 			$output			 .= '<div class="asp_product_coupon_input_container"><label class="asp_product_coupon_field_label">' . $str_coupon_label . ' ' . '</label><input id="asp-coupon-field-' . $data[ 'uniq_id' ] . '" class="asp_product_coupon_field_input" type="text" name="stripeCoupon">'
@@ -924,17 +939,18 @@ class AcceptStripePaymentsShortcode {
 	if ( ! defined( 'DONOTCACHEPAGE' ) ) {
 	    define( 'DONOTCACHEPAGE', true );
 	}
+
 	$aspData = array();
-	if ( isset( $_SESSION[ 'asp_data' ] ) ) {
-	    $aspData = $_SESSION[ 'asp_data' ];
-	} else {
+	$sess	 = ASP_Session::get_instance();
+	$aspData = $sess->get_transient_data( 'asp_data' );
+	if ( empty( $aspData ) ) {
 	    // no session data, let's display nothing for now
 	    return;
 	}
 	if ( empty( $content ) ) {
 	    //this is old shortcode. Let's display the default output for backward compatability
 	    if ( isset( $aspData[ 'error_msg' ] ) && ! empty( $aspData[ 'error_msg' ] ) ) {
-		//some error occured, let's display it
+		//some error occurred, let's display it
 		return __( "System was not able to complete the payment.", "stripe-payments" ) . ' ' . $aspData[ 'error_msg' ];
 	    }
 	    $output	 = '';
@@ -959,16 +975,22 @@ class AcceptStripePaymentsShortcode {
 
 	    //variations download links if needed
 	    if ( ! empty( $aspData[ 'var_applied' ] ) ) {
-		$download_str	 .= "<br /><div class='asp-thank-you-page-download-link'>";
-		$download_str	 .= '<span>' . __( 'Download links:', 'stripe-payments' ) . '</span><br/>';
-		$download_txt	 = __( 'Click here to download', 'stripe-payments' );
-		$link_tpl	 = '<a href="%s">%s</a><br/>';
+		$download_var_str	 = '';
+		$has_download_link	 = false;
+		$download_var_str	 .= "<br /><div class='asp-thank-you-page-download-link'>";
+		$download_var_str	 .= '<span>' . __( 'Download links:', 'stripe-payments' ) . '</span><br/>';
+		$download_txt		 = __( 'Click here to download', 'stripe-payments' );
+		$link_tpl		 = '<a href="%s">%s</a><br/>';
 		foreach ( $aspData[ 'var_applied' ] as $var ) {
 		    if ( ! empty( $var[ 'url' ] ) ) {
-			$download_str .= sprintf( $link_tpl, $var[ 'url' ], $download_txt );
+			$has_download_link	 = true;
+			$download_var_str	 .= sprintf( $link_tpl, $var[ 'url' ], $download_txt );
 		    }
 		}
-		$download_str .= "</div>";
+		$download_var_str .= "</div>";
+		if ( $has_download_link ) {
+		    $download_str .= $download_var_str;
+		}
 	    }
 	    $output .= $download_str;
 
@@ -976,8 +998,9 @@ class AcceptStripePaymentsShortcode {
 
 	    $output = $this->apply_content_tags( $output, $aspData );
 
+	    $output	 .= '<style>.asp-thank-you-page-msg-wrap {background: #dff0d8; border: 1px solid #C9DEC1; margin: 10px 0px; padding: 15px;}</style>';
 	    $wrap	 = "<div class='asp-thank-you-page-wrap'>";
-	    $wrap	 .= "<div class='asp-thank-you-page-msg-wrap' style='background: #dff0d8; border: 1px solid #C9DEC1; margin: 10px 0px; padding: 15px;'>";
+	    $wrap	 .= "<div class='asp-thank-you-page-msg-wrap'>";
 	    $output	 = $wrap . $output;
 	    $output	 .= "</div>"; //end of .asp-thank-you-page-msg-wrap
 	    $output	 .= "</div>"; //end of .asp-thank-you-page-wrap
@@ -985,7 +1008,12 @@ class AcceptStripePaymentsShortcode {
 	    return $output;
 	}
 	if ( isset( $aspData[ 'error_msg' ] ) && ! empty( $aspData[ 'error_msg' ] ) ) {
-	    //some error occured. We don't display any content to let the error shortcode handle it
+	    //some error occurred. Let's check if we have [accept_stripe_payment_checkout_error] shortcode on page
+	    $page_content = get_the_content();
+	    if ( ! empty( $page_content ) && ! has_shortcode( $page_content, 'accept_stripe_payment_checkout_error' ) ) {
+		//no error output shortcode found. Let's output default error message
+		return __( "System was not able to complete the payment.", "stripe-payments" ) . ' ' . $aspData[ 'error_msg' ];
+	    }
 	    return;
 	}
 
@@ -997,9 +1025,9 @@ class AcceptStripePaymentsShortcode {
 
     function shortcode_accept_stripe_payment_checkout_error( $atts, $content = '' ) {
 	$aspData = array();
-	if ( isset( $_SESSION[ 'asp_data' ] ) ) {
-	    $aspData = $_SESSION[ 'asp_data' ];
-	} else {
+	$sess	 = ASP_Session::get_instance();
+	$aspData = $sess->get_transient_data( 'asp_data' );
+	if ( empty( $aspData ) ) {
 	    // no session data, let's display nothing for now
 	    return;
 	}
@@ -1127,9 +1155,10 @@ class AcceptStripePaymentsShortcode {
 		if ( $i != $page ) {
 		    $url	 = esc_url( add_query_arg( 'asp_page', $i ) );
 		    $str	 = str_replace( array( '%[url]%', '%[page_num]%' ), array( $url, $i ), $tpl[ 'pagination_item' ] );
-		} else
-		    $str				 = str_replace( '%[page_num]%', $i, $tpl[ 'pagination_item_current' ] );
-		$tpl[ 'pagination_items' ]	 .= $str;
+		} else {
+		    $str = str_replace( '%[page_num]%', $i, $tpl[ 'pagination_item_current' ] );
+		}
+		$tpl[ 'pagination_items' ] .= $str;
 		$i ++;
 	    }
 	}
@@ -1224,8 +1253,9 @@ class AcceptStripePaymentsShortcode {
 	}
 
 	//add email merge tags to the available merge tags
-	$sess_tags	 = ! empty( $_SESSION[ 'asp_checkout_data_tags' ] ) ? $_SESSION[ 'asp_checkout_data_tags' ] : array();
-	$sess_vals	 = ! empty( $_SESSION[ 'asp_checkout_data_vals' ] ) ? $_SESSION[ 'asp_checkout_data_vals' ] : array();
+	$sess		 = ASP_Session::get_instance();
+	$sess_tags	 = $sess->get_transient_data( 'asp_checkout_data_tags', array() );
+	$sess_vals	 = $sess->get_transient_data( 'asp_checkout_data_vals', array() );
 
 	foreach ( $sess_tags as $key => $value ) {
 	    if ( empty( $tags[ $value ] ) ) {
