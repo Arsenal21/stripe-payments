@@ -151,7 +151,7 @@ None.
 
 == Changelog ==
 
-= WIP 1.9.23 =
+= 1.9.23 =
 - PHP sessions are no longer used for security and better caching purposes.
 - Disabled nonce checking for buttons.
 - Fixed thankyou_page_url parameter was ignored for [asp_product] shortcode and by some addons.
