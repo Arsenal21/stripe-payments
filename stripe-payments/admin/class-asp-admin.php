@@ -947,6 +947,7 @@ class AcceptStripePayments_Admin {
 		"{tax}"			 => __( 'Tax in percent. Example: 10%', 'stripe-payments' ),
 		"{tax_amt}"		 => __( 'Formatted tax amount for single item. Example: $0.25', 'stripe-payments' ),
 		"{shipping_amt}"	 => __( 'Formatted shipping amount. Example: $2.50', 'stripe-payments' ),
+		'{item_url}'		 => __( 'Item download URL (if it\'s set)', 'stripe-payments' ),
 		"{product_details}"	 => __( 'The item details of the purchased product (this will include the download link for digital items)', 'stripe-payments' ),
 		"{transaction_id}"	 => __( 'The unique transaction ID of the purchase', 'stripe-payments' ),
 		"{shipping_address}"	 => __( 'Shipping address of the buyer', 'stripe-payments' ),

@@ -835,6 +835,7 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post, $seller_email = fal
     $tags	 = array(
 	"{item_name}",
 	"{item_quantity}",
+	"{item_url}",
 	"{payer_email}",
 	"{customer_name}",
 	"{transaction_id}",
@@ -855,6 +856,7 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post, $seller_email = fal
     $vals	 = array(
 	$post[ 'item_name' ],
 	$post[ 'item_quantity' ],
+	! empty( $post[ 'item_url' ] ) ? $post[ 'item_url' ] : '',
 	$post[ 'stripeEmail' ],
 	$post[ 'customer_name' ],
 	$post[ 'txn_id' ],

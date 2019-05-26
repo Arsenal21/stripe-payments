@@ -152,7 +152,7 @@ None.
 == Changelog ==
 
 = WIP 1.9.24 =
-
+- Added {item_url} email tag support.
 
 = 1.9.23 =
 - PHP sessions are no longer used for security and better caching purposes.
