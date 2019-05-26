@@ -105,18 +105,18 @@ class ASPOrder {
 	$order_date	 = get_date_from_gmt( $order_date, get_option( 'date_format' ) . ', ' . get_option( 'time_format' ) );
 
 	$output	 .= "<h2>" . __( "Order Details", "stripe-payments" ) . "</h2>\n";
-	$output	 .= __( "Order Time: ", "stripe-payments" ) . $order_date . "\n";
-	$output	 .= __( "Transaction ID: ", "stripe-payments" ) . $charge_details->id . "\n";
-	$output	 .= __( "Stripe Token: ", "stripe-payments" ) . $order_details[ 'stripeToken' ] . "\n";
-	$output	 .= __( "Description: ", "stripe-payments" ) . $order_details[ 'charge_description' ] . "\n";
+	$output	 .= __( "Order Time", "stripe-payments" ) . ": " . $order_date . "\n";
+	$output	 .= __( "Transaction ID", "stripe-payments" ) . ": " . $charge_details->id . "\n";
+	$output	 .= __( "Stripe Token", "stripe-payments" ) . ": " . $order_details[ 'stripeToken' ] . "\n";
+	$output	 .= __( "Description", "stripe-payments" ) . ": " . $order_details[ 'charge_description' ] . "\n";
 	$output	 .= "--------------------------------" . "\n";
-	$output	 .= __( "Product Name: ", "stripe-payments" ) . $order_details[ 'item_name' ] . "\n";
-	$output	 .= __( "Quantity: ", "stripe-payments" ) . $order_details[ 'item_quantity' ] . "\n";
-	$output	 .= __( "Item Price: ", "stripe-payments" ) . AcceptStripePayments::formatted_price( $order_details[ 'item_price' ], $order_details[ 'currency_code' ] ) . "\n";
+	$output	 .= __( "Product Name", "stripe-payments" ) . ": " . $order_details[ 'item_name' ] . "\n";
+	$output	 .= __( "Quantity", "stripe-payments" ) . ": " . $order_details[ 'item_quantity' ] . "\n";
+	$output	 .= __( "Item Price", "stripe-payments" ) . ": " . AcceptStripePayments::formatted_price( $order_details[ 'item_price' ], $order_details[ 'currency_code' ] ) . "\n";
 	//check if there are any additional items available like tax and shipping cost
 	$output	 .= AcceptStripePayments::gen_additional_items( $order_details );
 	$output	 .= "--------------------------------" . "\n";
-	$output	 .= __( "Total Amount: ", "stripe-payments" ) . AcceptStripePayments::formatted_price( ($order_details[ 'paid_amount' ] ), $order_details[ 'currency_code' ] ) . "\n";
+	$output	 .= __( "Total Amount", "stripe-payments" ) . ": " . AcceptStripePayments::formatted_price( ($order_details[ 'paid_amount' ] ), $order_details[ 'currency_code' ] ) . "\n";
 
 
 	$output .= "\n\n";

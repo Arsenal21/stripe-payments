@@ -751,13 +751,13 @@ AcceptStripePayments_Process_IPN::get_instance();
 
 function asp_apply_dynamic_tags_on_email_body( $body, $post, $seller_email = false ) {
 
-    $product_details = __( "Product Name: ", "stripe-payments" ) . '{item_name}' . "\n";
-    $product_details .= __( "Quantity: ", "stripe-payments" ) . '{item_quantity}' . "\n";
-    $product_details .= __( "Item Price: ", "stripe-payments" ) . '{item_price_curr}' . "\n";
+    $product_details = __( "Product Name", "stripe-payments" ) . ': {item_name}' . "\n";
+    $product_details .= __( "Quantity", "stripe-payments" ) . ': {item_quantity}' . "\n";
+    $product_details .= __( "Item Price", "stripe-payments" ) . ': {item_price_curr}' . "\n";
     //check if there are any additional items available like tax and shipping cost
     $product_details .= AcceptStripePayments::gen_additional_items( $post );
     $product_details .= "--------------------------------" . "\n";
-    $product_details .= __( "Total Amount: ", "stripe-payments" ) . '{purchase_amt_curr}' . "\n";
+    $product_details .= __( "Total Amount", "stripe-payments" ) . ': {purchase_amt_curr}' . "\n";
     $varUrls	 = array();
     // check if we have variations applied with download links
     if ( ! empty( $post[ 'var_applied' ] ) ) {
@@ -769,15 +769,15 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post, $seller_email = fal
     }
     $download_str = '';
     if ( ! empty( $post[ 'item_url' ] ) ) {
-	$download_str = "\n\n" . __( "Download link: ", "stripe-payments" ) . $post[ 'item_url' ];
+	$download_str = "\n\n" . __( "Download link", "stripe-payments" ) . ": " . $post[ 'item_url' ];
     }
     if ( ! empty( $varUrls ) ) {
 	//show variations download link(s)
 	//those links will replace the one set for the product
 	if ( count( $varUrls ) === 1 ) {
-	    $download_str = __( "Download link: ", "stripe-payments" );
+	    $download_str = __( "Download link", "stripe-payments" ) . ": ";
 	} else {
-	    $download_str = __( "Download links: ", "stripe-payments" ) . "\n";
+	    $download_str = __( "Download links", "stripe-payments" ) . ":\n";
 	}
 	foreach ( $varUrls as $url ) {
 	    $download_str .= $url . "\n";
