@@ -767,7 +767,7 @@ msgid "Name of the purchased item"
 msgstr ""
 
 #: stripe-payments/admin/class-asp-admin.php:942
-msgid "Number of items purchsed"
+msgid "Number of items purchased"
 msgstr ""
 
 #: stripe-payments/admin/class-asp-admin.php:943
@@ -801,48 +801,52 @@ msgid "Formatted shipping amount. Example: $2.50"
 msgstr ""
 
 #: stripe-payments/admin/class-asp-admin.php:950
+msgid "Item download URL (if it's set)"
+msgstr ""
+
+#: stripe-payments/admin/class-asp-admin.php:951
 msgid ""
 "The item details of the purchased product (this will include the download "
 "link for digital items)"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:951
+#: stripe-payments/admin/class-asp-admin.php:952
 msgid "The unique transaction ID of the purchase"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:952
+#: stripe-payments/admin/class-asp-admin.php:953
 msgid "Shipping address of the buyer"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:953
+#: stripe-payments/admin/class-asp-admin.php:954
 msgid "Billing address of the buyer"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:954
+#: stripe-payments/admin/class-asp-admin.php:955
 msgid "Customer name. Available only if collect billing address option enabled"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:955
+#: stripe-payments/admin/class-asp-admin.php:956
 msgid "Email Address of the buyer"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:956
+#: stripe-payments/admin/class-asp-admin.php:957
 msgid "Currency symbol. Example: $"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:957
+#: stripe-payments/admin/class-asp-admin.php:958
 msgid "3-letter currency code. Example: USD"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:958
+#: stripe-payments/admin/class-asp-admin.php:959
 msgid "The date of the purchase"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:959
+#: stripe-payments/admin/class-asp-admin.php:960
 msgid "Custom field name and value (if enabled)"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:979
+#: stripe-payments/admin/class-asp-admin.php:980
 msgid "Click here to toggle tags hint"
 msgstr ""
 
