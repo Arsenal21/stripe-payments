@@ -48,7 +48,7 @@ stripehandler.cents_to_amount = (function (amount, curr) {
 
 stripehandler.amount_to_cents = function (amount, curr) {
     if (!stripehandler.is_zero_cents(curr)) {
-	amount = amount * 100;
+	amount = Math.round(amount * 100);
     }
     return parseFloat(amount);
 }
