@@ -425,10 +425,25 @@ class AcceptStripePaymentsShortcode {
 	if ( $quantity && $quantity != 1 ) {
 	    $qntStr = 'x ' . $quantity;
 	}
+
 	remove_filter( 'the_content', array( $this, 'filter_post_type_content' ) );
-	$descr		 = apply_filters( "the_content", $post->post_content );
+	setup_postdata( $post );
+	$GLOBALS[ 'post' ]	 = $post;
+	$descr			 = $post->post_content;
+	global $wp_embed;
+	if ( isset( $wp_embed ) && is_object( $wp_embed ) ) {
+	    if ( method_exists( $wp_embed, 'autoembed' ) ) {
+		$descr = $wp_embed->autoembed( $descr );
+	    }
+	    if ( method_exists( $wp_embed, 'run_shortcode' ) ) {
+		$descr = $wp_embed->run_shortcode( $descr );
+	    }
+	}
+	$descr = do_shortcode( $descr );
+	wp_reset_postdata();
 	add_filter( 'the_content', array( $this, 'filter_post_type_content' ) );
-	$product_tags	 = array(
+
+	$product_tags = array(
 	    'thumb_img'		 => $thumb_img,
 	    'quantity'		 => $qntStr,
 	    'name'			 => $post->post_title,

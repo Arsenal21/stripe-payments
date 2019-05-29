@@ -153,6 +153,7 @@ None.
 
 = WIP 1.9.24 =
 - Added {item_url} email tag support.
+- Fixed issue with the_content filter usage in product shortcode output that could cause some content duplication.
 
 = 1.9.23 =
 - PHP sessions are no longer used for security and better caching purposes.
