@@ -482,6 +482,7 @@ class AcceptStripePaymentsShortcode {
 	    'customer_email'	 => '',
 	    'currency'		 => $this->AcceptStripePayments->get_setting( 'currency_code' ),
 	    'currency_variable'	 => false,
+	    'checkout_lang'		 => $this->AcceptStripePayments->get_setting( 'checkout_lang' ),
 	    'button_text'		 => $this->AcceptStripePayments->get_setting( 'button_text' ),
 	    'compat_mode'		 => 0,
 	), $atts ) );
@@ -600,7 +601,7 @@ class AcceptStripePaymentsShortcode {
 	//add message if no javascript is enabled
 	$button .= '<noscript>' . __( 'Stripe Payments requires Javascript to be supported by the browser in order to operate.', 'stripe-payments' ) . '</noscript>';
 
-	$checkout_lang = $this->AcceptStripePayments->get_setting( 'checkout_lang' );
+	$checkout_lang = empty( $checkout_lang ) ? $this->AcceptStripePayments->get_setting( 'checkout_lang' ) : $checkout_lang;
 
 	$allowRememberMe = $this->AcceptStripePayments->get_setting( 'disable_remember_me' );
 
