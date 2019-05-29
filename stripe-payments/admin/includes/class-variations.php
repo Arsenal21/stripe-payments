@@ -20,7 +20,8 @@ class ASPVariations {
 	foreach ( $variations_groups as $grp_id => $group ) {
 	    $variations_names = get_post_meta( $this->prod_id, 'asp_variations_names', true );
 	    if ( ! empty( $variations_names ) ) {
-		$variations_prices			 = get_post_meta( $this->prod_id, 'asp_variations_prices', true );
+		$variations_prices_orig			 = get_post_meta( $this->prod_id, 'asp_variations_prices', true );
+		$variations_prices			 = apply_filters( 'asp_variations_prices_filter', $variations_prices_orig, $this->prod_id );
 		$variations_urls			 = get_post_meta( $this->prod_id, 'asp_variations_urls', true );
 		$variations_opts			 = get_post_meta( $this->prod_id, 'asp_variations_opts', true );
 		$this->variations[ $grp_id ][ 'names' ]	 = $variations_names[ $grp_id ];
@@ -46,7 +47,7 @@ class ASPVariations {
 	    'name'		 => $this->variations[ $grp_id ][ 'names' ][ $var_id ],
 	    'price'		 => $this->variations[ $grp_id ][ 'prices' ][ $var_id ],
 	    'url'		 => $this->variations[ $grp_id ][ 'urls' ][ $var_id ],
-	    'opts'		 => isset($this->variations[ $grp_id ][ 'opts' ][ $var_id ]) ? $this->variations[ $grp_id ][ 'opts' ][ $var_id ] : array(),
+	    'opts'		 => isset( $this->variations[ $grp_id ][ 'opts' ][ $var_id ] ) ? $this->variations[ $grp_id ][ 'opts' ][ $var_id ] : array(),
 	);
 	return $var;
     }

@@ -262,7 +262,6 @@ class AcceptStripePayments_Process_IPN {
 	$varApplied	 = array();
 	if ( $got_product_data_from_db && isset( $_POST[ 'stripeVariations' ] ) ) {
 	    // we got variations posted. Let's get variations from product
-	    require_once(WP_ASP_PLUGIN_PATH . '/admin/includes/class-variations.php');
 	    $v = new ASPVariations( $prod_id );
 	    if ( ! empty( $v->variations ) ) {
 		//there are variations configured for the product

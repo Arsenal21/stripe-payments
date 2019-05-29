@@ -38,6 +38,7 @@ class ASPMain {
 	require_once( WP_ASP_PLUGIN_PATH . 'admin/includes/class-order.php' );
 	require_once( WP_ASP_PLUGIN_PATH . 'admin/views/blocks.php' );
 	require_once( WP_ASP_PLUGIN_PATH . 'includes/addons-helper-class.php' );
+	require_once(WP_ASP_PLUGIN_PATH . '/admin/includes/class-variations.php');
 
 	register_activation_hook( __FILE__, array( 'AcceptStripePayments', 'activate' ) );
 	register_deactivation_hook( __FILE__, array( 'AcceptStripePayments', 'deactivate' ) );
