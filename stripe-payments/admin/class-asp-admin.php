@@ -58,7 +58,7 @@ class AcceptStripePayments_Admin {
     }
 
     public function add_settings_link( $links ) {
-	$settings_link = '<a href="edit.php?post_type=stripe_order&page=stripe-payments-settings">' . __( 'Settings', 'stripe-payments' ) . '</a>';
+	$settings_link = '<a href="edit.php?post_type=asp-products&page=stripe-payments-settings#general">' . __( 'Settings', 'stripe-payments' ) . '</a>';
 	array_unshift( $links, $settings_link );
 	return $links;
     }
