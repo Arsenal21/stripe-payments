@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 4.7
 Tested up to: 5.2
 Requires PHP: 5.4
-Stable tag: 1.9.24t2
+Stable tag: 1.9.24
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -151,7 +151,7 @@ None.
 
 == Changelog ==
 
-= WIP 1.9.24 =
+= 1.9.24 =
 - Added {item_url} email tag support.
 - Fixed issue with the_content filter usage in product shortcode output that could cause some content duplication.
 - Added checkout_lang shortcode parameter which sets checkout popup language for a product.
