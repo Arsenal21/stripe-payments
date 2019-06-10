@@ -319,6 +319,7 @@ class AcceptStripePayments_Admin {
 
 	add_settings_section( 'AcceptStripePayments-global-section', __( 'Global Settings', 'stripe-payments' ), null, $this->plugin_slug );
 	add_settings_section( 'AcceptStripePayments-credentials-section', __( 'Credentials', 'stripe-payments' ), null, $this->plugin_slug );
+	add_settings_section( 'AcceptStripePayments-stripeng-section', __( 'Stripe NG', 'stripe-payments' ), null, $this->plugin_slug );
 	add_settings_section( 'AcceptStripePayments-debug-section', __( 'Debug', 'stripe-payments' ), null, $this->plugin_slug );
 
 	add_settings_section( 'AcceptStripePayments-email-section', __( 'Email Settings', 'stripe-payments' ), null, $this->plugin_slug . '-email' );
@@ -358,6 +359,9 @@ class AcceptStripePayments_Admin {
 	add_settings_field( 'api_secret_key', __( 'Live Stripe Secret Key', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-credentials-section', array( 'field' => 'api_secret_key', 'desc' => '' ) );
 	add_settings_field( 'api_publishable_key_test', __( 'Test Stripe Publishable Key', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-credentials-section', array( 'field' => 'api_publishable_key_test', 'desc' => '' ) );
 	add_settings_field( 'api_secret_key_test', __( 'Test Stripe Secret Key', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-credentials-section', array( 'field' => 'api_secret_key_test', 'desc' => '' ) );
+
+	//Stripe-NG section
+	add_settings_field( 'stripe_ng_enable', __( 'Enable Stripe NG', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-stripeng-section', array( 'field' => 'stripe_ng_enable', 'desc' => __( 'Enable Stripe NG', 'stripe-payments' ) ) );
 
 	//Debug section
 	add_settings_field( 'debug_log_enable', __( 'Enable Debug Logging', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-debug-section', array( 'field'	 => 'debug_log_enable', 'desc'	 => __( 'Check this option to enable debug logging. This is useful for troubleshooting post payment failures.', 'stripe-payments' ) .
@@ -615,6 +619,7 @@ class AcceptStripePayments_Admin {
 	    case 'tos_enabled':
 	    case 'tos_store_ip':
 	    case 'debug_log_enable':
+	    case 'stripe_ng_enable':
 	    case 'send_emails_to_seller':
 	    case 'send_emails_to_buyer':
 	    case 'stripe_receipt_email':
@@ -775,6 +780,8 @@ class AcceptStripePayments_Admin {
 	$output[ 'is_live' ] = empty( $input[ 'is_live' ] ) ? 0 : 1;
 
 	$output[ 'debug_log_enable' ] = empty( $input[ 'debug_log_enable' ] ) ? 0 : 1;
+
+	$output[ 'stripe_ng_enable' ] = empty( $input[ 'stripe_ng_enable' ] ) ? 0 : 1;
 
 	$output[ 'dont_save_card' ] = empty( $input[ 'dont_save_card' ] ) ? 0 : 1;
 
