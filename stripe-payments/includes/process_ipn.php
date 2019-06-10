@@ -90,11 +90,6 @@ class AcceptStripePayments_Process_IPN {
 
 	//Check nonce
 	ASP_Debug_Logger::log( 'Checking received data.' );
-	$nonce = $_REQUEST[ '_wpnonce' ];
-	if ( ! wp_verify_nonce( $nonce, 'stripe_payments' ) ) {
-	    //nonce check failed
-	    $this->ipn_completed( "Nonce check failed." );
-	}
 
 	if ( ! isset( $_POST[ 'stripeToken' ] ) || empty( $_POST[ 'stripeToken' ] ) ) {
 	    $this->ipn_completed( 'Invalid Stripe Token' );
@@ -181,8 +176,9 @@ class AcceptStripePayments_Process_IPN {
 
 	    if ( empty( $button_key ) ) {
 		//let's generate our own button key
-		$price		 = AcceptStripePayments::apply_tax( $item_price, $tax );
-		$price		 = AcceptStripePayments::apply_shipping( $price, $shipping );
+		$price		 = AcceptStripePayments::apply_tax( $item_price, $tax, AcceptStripePayments::is_zero_cents( $currency_code ) );
+		$price		 = AcceptStripePayments::apply_shipping( $price, $shipping, AcceptStripePayments::is_zero_cents( $currency_code ) );
+
 		$price_in_cents	 = $price;
 		if ( ! AcceptStripePayments::is_zero_cents( $currency_code ) ) {
 		    $price_in_cents = $price_in_cents * 100;
@@ -267,7 +263,7 @@ class AcceptStripePayments_Process_IPN {
 	$varApplied	 = array();
 	if ( $got_product_data_from_db && isset( $_POST[ 'stripeVariations' ] ) ) {
 	    // we got variations posted. Let's get variations from product
-	    require_once(WP_ASP_PLUGIN_PATH . '/admin/includes/class-variations.php');
+
 	    $v = new ASPVariations( $prod_id );
 	    if ( ! empty( $v->variations ) ) {
 		//there are variations configured for the product
@@ -330,7 +326,7 @@ class AcceptStripePayments_Process_IPN {
 	$amount = ($item_quantity !== "NA" ? ($amount * $item_quantity) : $amount);
 
 	//add shipping cost
-	$amount = AcceptStripePayments::apply_shipping( $amount, $shipping );
+	$amount = AcceptStripePayments::apply_shipping( $amount, $shipping, AcceptStripePayments::is_zero_cents( $currency_code ) );
 
 	$amount_in_cents = $amount;
 
@@ -756,13 +752,13 @@ AcceptStripePayments_Process_IPN::get_instance();
 
 function asp_apply_dynamic_tags_on_email_body( $body, $post, $seller_email = false ) {
 
-    $product_details = __( "Product Name: ", "stripe-payments" ) . '{item_name}' . "\n";
-    $product_details .= __( "Quantity: ", "stripe-payments" ) . '{item_quantity}' . "\n";
-    $product_details .= __( "Item Price: ", "stripe-payments" ) . '{item_price_curr}' . "\n";
+    $product_details = __( "Product Name", "stripe-payments" ) . ': {item_name}' . "\n";
+    $product_details .= __( "Quantity", "stripe-payments" ) . ': {item_quantity}' . "\n";
+    $product_details .= __( "Item Price", "stripe-payments" ) . ': {item_price_curr}' . "\n";
     //check if there are any additional items available like tax and shipping cost
     $product_details .= AcceptStripePayments::gen_additional_items( $post );
     $product_details .= "--------------------------------" . "\n";
-    $product_details .= __( "Total Amount: ", "stripe-payments" ) . '{purchase_amt_curr}' . "\n";
+    $product_details .= __( "Total Amount", "stripe-payments" ) . ': {purchase_amt_curr}' . "\n";
     $varUrls	 = array();
     // check if we have variations applied with download links
     if ( ! empty( $post[ 'var_applied' ] ) ) {
@@ -774,15 +770,15 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post, $seller_email = fal
     }
     $download_str = '';
     if ( ! empty( $post[ 'item_url' ] ) ) {
-	$download_str = "\n\n" . __( "Download link: ", "stripe-payments" ) . $post[ 'item_url' ];
+	$download_str = "\n\n" . __( "Download link", "stripe-payments" ) . ": " . $post[ 'item_url' ];
     }
     if ( ! empty( $varUrls ) ) {
 	//show variations download link(s)
 	//those links will replace the one set for the product
 	if ( count( $varUrls ) === 1 ) {
-	    $download_str = __( "Download link: ", "stripe-payments" );
+	    $download_str = __( "Download link", "stripe-payments" ) . ": ";
 	} else {
-	    $download_str = __( "Download links: ", "stripe-payments" ) . "\n";
+	    $download_str = __( "Download links", "stripe-payments" ) . ":\n";
 	}
 	foreach ( $varUrls as $url ) {
 	    $download_str .= $url . "\n";
@@ -840,6 +836,7 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post, $seller_email = fal
     $tags	 = array(
 	"{item_name}",
 	"{item_quantity}",
+	"{item_url}",
 	"{payer_email}",
 	"{customer_name}",
 	"{transaction_id}",
@@ -860,6 +857,7 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post, $seller_email = fal
     $vals	 = array(
 	$post[ 'item_name' ],
 	$post[ 'item_quantity' ],
+	! empty( $post[ 'item_url' ] ) ? $post[ 'item_url' ] : '',
 	$post[ 'stripeEmail' ],
 	$post[ 'customer_name' ],
 	$post[ 'txn_id' ],

@@ -40,15 +40,15 @@ stripehandler.is_zero_cents = (function (curr) {
 });
 
 stripehandler.cents_to_amount = (function (amount, curr) {
-    if (stripehandler.zeroCents.indexOf(curr) === -1) {
+    if (!stripehandler.is_zero_cents(curr)) {
 	amount = amount / 100;
     }
     return amount;
 });
 
 stripehandler.amount_to_cents = function (amount, curr) {
-    if (stripehandler.zeroCents.indexOf(curr) === -1) {
-	amount = amount * 100;
+    if (!stripehandler.is_zero_cents(curr)) {
+	amount = Math.round(amount * 100);
     }
     return parseFloat(amount);
 }
@@ -388,6 +388,7 @@ function wp_asp_hadnle_token(data, token, args) {
 
     form.append('<input type="hidden" name="clickProcessed" value="1">');
     form.off('submit');
+    form.find('input').prop('readonly', true);
     form.submit();
 }
 

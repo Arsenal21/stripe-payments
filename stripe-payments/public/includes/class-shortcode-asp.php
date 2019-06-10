@@ -22,6 +22,8 @@ class AcceptStripePaymentsShortcode {
     function __construct() {
 	$this->AcceptStripePayments = AcceptStripePayments::get_instance();
 
+	add_filter( 'the_content', array( $this, 'filter_post_type_content' ) );
+
 	add_action( 'wp_enqueue_scripts', array( $this, 'register_stripe_script' ) );
 
 	add_shortcode( 'asp_show_all_products', array( &$this, 'shortcode_show_all_products' ) );
@@ -33,6 +35,16 @@ class AcceptStripePaymentsShortcode {
 	if ( ! is_admin() ) {
 	    add_filter( 'widget_text', 'do_shortcode' );
 	}
+    }
+
+    public static function filter_post_type_content( $content ) {
+	global $post;
+	if ( isset( $post ) ) {
+	    if ( $post->post_type === ASPMain::$products_slug ) {//Handle the content for product type post
+		return do_shortcode( '[asp_product id="' . $post->ID . '" is_post_tpl="1" in_the_loop="' . +in_the_loop() . '"]' );
+	    }
+	}
+	return $content;
     }
 
     public function interfer_for_redirect() {
@@ -414,11 +426,28 @@ class AcceptStripePaymentsShortcode {
 	    $qntStr = 'x ' . $quantity;
 	}
 
+	remove_filter( 'the_content', array( $this, 'filter_post_type_content' ) );
+	setup_postdata( $post );
+	$GLOBALS[ 'post' ]	 = $post;
+	$descr			 = $post->post_content;
+	global $wp_embed;
+	if ( isset( $wp_embed ) && is_object( $wp_embed ) ) {
+	    if ( method_exists( $wp_embed, 'autoembed' ) ) {
+		$descr = $wp_embed->autoembed( $descr );
+	    }
+	    if ( method_exists( $wp_embed, 'run_shortcode' ) ) {
+		$descr = $wp_embed->run_shortcode( $descr );
+	    }
+	}
+	$descr = do_shortcode( $descr );
+	wp_reset_postdata();
+	add_filter( 'the_content', array( $this, 'filter_post_type_content' ) );
+
 	$product_tags = array(
 	    'thumb_img'		 => $thumb_img,
 	    'quantity'		 => $qntStr,
 	    'name'			 => $post->post_title,
-	    'description'		 => do_shortcode( wpautop( $post->post_content ) ),
+	    'description'		 => $descr,
 	    'price'			 => $price_line,
 	    'under_price_line'	 => $under_price_line,
 	    'buy_btn'		 => $buy_btn,
@@ -453,6 +482,7 @@ class AcceptStripePaymentsShortcode {
 	    'customer_email'	 => '',
 	    'currency'		 => $this->AcceptStripePayments->get_setting( 'currency_code' ),
 	    'currency_variable'	 => false,
+	    'checkout_lang'		 => $this->AcceptStripePayments->get_setting( 'checkout_lang' ),
 	    'button_text'		 => $this->AcceptStripePayments->get_setting( 'button_text' ),
 	    'compat_mode'		 => 0,
 	), $atts ) );
@@ -490,7 +520,7 @@ class AcceptStripePaymentsShortcode {
 	    $quantity = "NA";
 	}
 	$price			 = floatval( $price );
-	$uniq_id		 = count( self::$payment_buttons );
+	$uniq_id		 = count( self::$payment_buttons ) . uniqid();
 	$button_id		 = 'stripe_button_' . $uniq_id;
 	self::$payment_buttons[] = $button_id;
 
@@ -571,7 +601,7 @@ class AcceptStripePaymentsShortcode {
 	//add message if no javascript is enabled
 	$button .= '<noscript>' . __( 'Stripe Payments requires Javascript to be supported by the browser in order to operate.', 'stripe-payments' ) . '</noscript>';
 
-	$checkout_lang = $this->AcceptStripePayments->get_setting( 'checkout_lang' );
+	$checkout_lang = empty( $checkout_lang ) ? $this->AcceptStripePayments->get_setting( 'checkout_lang' ) : $checkout_lang;
 
 	$allowRememberMe = $this->AcceptStripePayments->get_setting( 'disable_remember_me' );
 
@@ -611,7 +641,7 @@ class AcceptStripePaymentsShortcode {
 
 	//Currency Display settings
 	$display_settings	 = array();
-	$display_settings[ 'c' ] = $this->AcceptStripePayments->get_setting( 'price_decimal_num', 2 );
+	$display_settings[ 'c' ] = $this->AcceptStripePayments->get_setting( 'price_decimals_num', 2 );
 	$display_settings[ 'd' ] = $this->AcceptStripePayments->get_setting( 'price_decimal_sep' );
 	$display_settings[ 't' ] = $this->AcceptStripePayments->get_setting( 'price_thousand_sep' );
 
@@ -634,6 +664,24 @@ class AcceptStripePaymentsShortcode {
 
 	$displayStr[ 'tax' ]	 = '%s (' . strtolower( $taxStr ) . ')';
 	$displayStr[ 'ship' ]	 = '%s (' . strtolower( $shipStr ) . ')';
+
+	$plan_id = get_post_meta( $product_id, 'asp_sub_plan_id', true );
+
+	//variations
+	$this->variations	 = array();
+	$v			 = new ASPVariations( $product_id );
+	if ( ! empty( $v->groups ) && empty( $plan_id ) ) {
+	    $this->variations[ 'groups' ]	 = $v->groups;
+	    $variations_names		 = get_post_meta( $product_id, 'asp_variations_names', true );
+	    $variations_prices_orig		 = get_post_meta( $product_id, 'asp_variations_prices', true );
+	    $variations_prices		 = apply_filters( 'asp_variations_prices_filter', $variations_prices_orig, $product_id );
+	    $variations_urls		 = get_post_meta( $product_id, 'asp_variations_urls', true );
+	    $variations_opts		 = get_post_meta( $product_id, 'asp_variations_opts', true );
+	    $this->variations[ 'names' ]	 = $variations_names;
+	    $this->variations[ 'prices' ]	 = $variations_prices;
+	    $this->variations[ 'urls' ]	 = $variations_urls;
+	    $this->variations[ 'opts' ]	 = $variations_opts;
+	}
 
 	$data = array(
 	    'is_live'				 => $this->AcceptStripePayments->is_live,
@@ -673,7 +721,13 @@ class AcceptStripePaymentsShortcode {
 	    'verifyZip'				 => ( ! $verifyZip) ? 0 : 1,
 	    'currencyFormat'			 => $display_settings,
 	    'displayStr'				 => $displayStr,
+	    'variations'				 => $this->variations,
 	);
+
+	if ( ! empty( $data[ 'variations' ] ) ) {
+	    //do not hook to this filter, it will be REMOVED in upcoming versions. Use asp-button-output-data-ready instead
+	    $data[ 'variations' ] = apply_filters( 'asp_button_output_variations_ready', $data[ 'variations' ], $data );
+	}
 
 	$data = apply_filters( 'asp-button-output-data-ready', $data, $atts );
 
@@ -691,13 +745,6 @@ class AcceptStripePaymentsShortcode {
 
 	$output .= $this->get_button_code_new_method( $data );
 
-	$data[ 'variations' ] = array();
-
-	if ( ! empty( $this->variations ) ) {
-	    $data[ 'variations' ]	 = $this->variations;
-	    $data[ 'variations' ]	 = apply_filters( 'asp_button_output_variations_ready', $data[ 'variations' ], $data );
-	}
-
 	$output	 .= '<input type="hidden" name="asp_action" value="process_ipn" />';
 	$output	 .= "<input type = 'hidden' value = '{$data[ 'name' ]}' name = 'item_name' />";
 	$output	 .= "<input type = 'hidden' value = '{$data[ 'quantity' ]}' name = 'item_quantity' />";
@@ -711,7 +758,6 @@ class AcceptStripePaymentsShortcode {
 	$trans[ 'shipping' ]	 = $shipping;
 	$trans[ 'price' ]	 = $price;
 	set_transient( $trans_name, $trans, 2 * 3600 ); //Save the price for this item for 2 hours.
-	$output			 .= wp_nonce_field( 'stripe_payments', '_wpnonce', true, false );
 	$output			 .= "</form>";
 	//before button filter
 	if ( ! $out_of_stock ) {
@@ -752,6 +798,8 @@ class AcceptStripePaymentsShortcode {
 	    <div class="asp-processing-cont"><span class="asp-processing">Processing <i>.</i><i>.</i><i>.</i></span></div>
 	    <?php
 	    $output	 .= ob_get_clean();
+	    //remove newline symbols for compatability with some page builders
+	    $output	 = str_replace( array( "\r\n", "\n", "\t" ), '', $output );
 	}
 	return $output;
     }
@@ -761,16 +809,14 @@ class AcceptStripePaymentsShortcode {
 	if ( $this->CompatMode ) {
 	    ob_start();
 	    ?>
-	    <script type='text/javascript'>
-	        var stripehandler = <?php echo json_encode( $this->get_loc_data() ); ?>;
-	    </script>
-	    <script type='text/javascript'>
-	        var stripehandler<?php echo $data[ 'uniq_id' ]; ?> = <?php echo json_encode( array( 'data' => $data ) ); ?>;
-	    </script>
+	    <script type='text/javascript'>var stripehandler = <?php echo json_encode( $this->get_loc_data() ); ?>;</script>
+	    <script type='text/javascript'>var stripehandler<?php echo $data[ 'uniq_id' ]; ?> = <?php echo json_encode( array( 'data' => $data ) ); ?>;</script>
 	    <script type='text/javascript' src='https://checkout.stripe.com/checkout.js'></script>
 	    <script type='text/javascript' src='<?php echo WP_ASP_PLUGIN_URL; ?>/public/assets/js/stripe-handler.js?ver=<?php echo WP_ASP_PLUGIN_VERSION; ?>'></script>
 	    <?php
-	    $output .= ob_get_clean();
+	    $output	 .= ob_get_clean();
+	    //remove newline symbols for compatability with some page builders
+	    $output	 = str_replace( array( "\r\n", "\n", "\t" ), '', $output );
 	} else {
 	    //Let's enqueue Stripe js
 	    wp_enqueue_script( 'stripe-script' );
@@ -835,56 +881,43 @@ class AcceptStripePaymentsShortcode {
 	    $plan_id = get_post_meta( $data[ 'product_id' ], 'asp_sub_plan_id', true );
 
 	    //Variations
-	    $this->variations = array();
-	    if ( isset( $data[ 'product_id' ] ) ) {
-		$variations_groups = get_post_meta( $data[ 'product_id' ], 'asp_variations_groups', true );
-		if ( ! empty( $variations_groups ) && ! $plan_id ) { //we only display variations for non-subscription products for now
-		    //we got variations for this product
-		    $variations_str			 = '';
-		    $this->variations[ 'groups' ]	 = $variations_groups;
-		    foreach ( $variations_groups as $grp_id => $group ) {
-			$variations_names = get_post_meta( $data[ 'product_id' ], 'asp_variations_names', true );
-			if ( ! empty( $variations_names ) ) {
-			    $variations_prices		 = get_post_meta( $data[ 'product_id' ], 'asp_variations_prices', true );
-			    $variations_urls		 = get_post_meta( $data[ 'product_id' ], 'asp_variations_urls', true );
-			    $variations_opts		 = get_post_meta( $data[ 'product_id' ], 'asp_variations_opts', true );
-			    $this->variations[ 'names' ]	 = $variations_names;
-			    $this->variations[ 'prices' ]	 = $variations_prices;
-			    $this->variations[ 'urls' ]	 = $variations_urls;
-			    $this->variations[ 'opts' ]	 = $variations_opts;
-			    $variations_str			 .= '<div class="asp-product-variations-cont">';
-			    $variations_str			 .= '<label class="asp-product-variations-label">' . $group . '</label>';
-			    if ( isset( $variations_opts[ $grp_id ] ) && $variations_opts[ $grp_id ] === "1" ) {
-				//radio buttons output
-			    } else {
-				$variations_str .= sprintf( '<select class="asp-product-variations-select" data-asp-variations-group-id="%1$d" name="stripeVariations[%1$d][]">', $grp_id );
-			    }
-			    foreach ( $variations_names[ $grp_id ] as $var_id => $name ) {
-				if ( isset( $variations_opts[ $grp_id ] ) && $variations_opts[ $grp_id ] === "1" ) {
-				    $tpl = '<label class="asp-product-variations-select-radio-label"><input class="asp-product-variations-select-radio" data-asp-variations-group-id="' . $grp_id . '" name="stripeVariations[' . $grp_id . '][]" type="radio" name="123" value="%d"' . ($var_id === 0 ? 'checked' : '') . '>%s %s</label>';
-				} else {
-				    $tpl = '<option value="%d">%s %s</option>';
-				}
-				$price_mod = $variations_prices[ $grp_id ][ $var_id ];
-				if ( ! empty( $price_mod ) ) {
-				    $fmt_price	 = AcceptStripePayments::formatted_price( abs( $price_mod ), $data[ 'currency' ] );
-				    $price_mod	 = $price_mod < 0 ? ' - ' . $fmt_price : ' + ' . $fmt_price;
-				    $price_mod	 = '(' . $price_mod . ')';
-				} else {
-				    $price_mod = '';
-				}
-				$variations_str .= sprintf( $tpl, $var_id, $name, $price_mod );
-			    }
-			    if ( isset( $variations_opts[ $grp_id ] ) && $variations_opts[ $grp_id ] === "1" ) {
-				//radio buttons output
-			    } else {
-				$variations_str .= '</select>';
-			    }
-			    $variations_str .= '</div>';
+	    if ( ! empty( $data[ 'variations' ] ) ) {
+		//we got variations for this product
+		$variations_str = '';
+		foreach ( $data[ 'variations' ][ 'groups' ] as $grp_id => $group ) {
+		    if ( ! empty( $data[ 'variations' ][ 'names' ] ) ) {
+			$variations_str	 .= '<div class="asp-product-variations-cont">';
+			$variations_str	 .= '<label class="asp-product-variations-label">' . $group . '</label>';
+			if ( isset( $data[ 'variations' ][ 'opts' ][ $grp_id ] ) && $data[ 'variations' ][ 'opts' ][ $grp_id ] === "1" ) {
+			    //radio buttons output
+			} else {
+			    $variations_str .= sprintf( '<select class="asp-product-variations-select" data-asp-variations-group-id="%1$d" name="stripeVariations[%1$d][]">', $grp_id );
 			}
+			foreach ( $data[ 'variations' ][ 'names' ][ $grp_id ] as $var_id => $name ) {
+			    if ( isset( $data[ 'variations' ][ 'opts' ][ $grp_id ] ) && $data[ 'variations' ][ 'opts' ][ $grp_id ] === "1" ) {
+				$tpl = '<label class="asp-product-variations-select-radio-label"><input class="asp-product-variations-select-radio" data-asp-variations-group-id="' . $grp_id . '" name="stripeVariations[' . $grp_id . '][]" type="radio" name="123" value="%d"' . ($var_id === 0 ? 'checked' : '') . '>%s %s</label>';
+			    } else {
+				$tpl = '<option value="%d">%s %s</option>';
+			    }
+			    $price_mod = $data[ 'variations' ][ 'prices' ][ $grp_id ][ $var_id ];
+			    if ( ! empty( $price_mod ) ) {
+				$fmt_price	 = AcceptStripePayments::formatted_price( abs( $price_mod ), $data[ 'currency' ] );
+				$price_mod	 = $price_mod < 0 ? ' - ' . $fmt_price : ' + ' . $fmt_price;
+				$price_mod	 = '(' . $price_mod . ')';
+			    } else {
+				$price_mod = '';
+			    }
+			    $variations_str .= sprintf( $tpl, $var_id, $name, $price_mod );
+			}
+			if ( isset( $data[ 'variations' ][ 'opts' ][ $grp_id ] ) && $data[ 'variations' ][ 'opts' ][ $grp_id ] === "1" ) {
+			    //radio buttons output
+			} else {
+			    $variations_str .= '</select>';
+			}
+			$variations_str .= '</div>';
 		    }
-		    $output .= $variations_str;
 		}
+		$output .= $variations_str;
 	    }
 
 	    //add TOS box if needed
@@ -943,15 +976,15 @@ class AcceptStripePaymentsShortcode {
 	    $output	 = '';
 	    $output	 .= '<p class="asp-thank-you-page-msg1">' . __( "Thank you for your payment.", "stripe-payments" ) . '</p>';
 	    $output	 .= '<p class="asp-thank-you-page-msg2">' . __( "Here's what you purchased: ", "stripe-payments" ) . '</p>';
-	    $output	 .= '<div class="asp-thank-you-page-product-name">' . __( "Product Name: ", "stripe-payments" ) . '{item_name}' . '</div>';
-	    $output	 .= '<div class="asp-thank-you-page-qty">' . __( "Quantity: ", "stripe-payments" ) . '{item_quantity}' . '</div>';
-	    $output	 .= '<div class="asp-thank-you-page-qty">' . __( "Item Price: ", "stripe-payments" ) . '{item_price_curr}' . '</div>';
+	    $output	 .= '<div class="asp-thank-you-page-product-name">' . __( "Product Name", "stripe-payments" ) . ': {item_name}' . '</div>';
+	    $output	 .= '<div class="asp-thank-you-page-qty">' . __( "Quantity", "stripe-payments" ) . ': {item_quantity}' . '</div>';
+	    $output	 .= '<div class="asp-thank-you-page-qty">' . __( "Item Price", "stripe-payments" ) . ': {item_price_curr}' . '</div>';
 	    //check if there are any additional items available like tax and shipping cost
 	    $output	 .= AcceptStripePayments::gen_additional_items( $aspData, '<br />' );
 	    $output	 .= '<hr />';
-	    $output	 .= '<div class="asp-thank-you-page-qty">' . __( "Total Amount: ", "stripe-payments" ) . '{paid_amount_curr}' . '</div>';
+	    $output	 .= '<div class="asp-thank-you-page-qty">' . __( "Total Amount", "stripe-payments" ) . ': {paid_amount_curr}' . '</div>';
 	    $output	 .= '<br />';
-	    $output	 .= '<div class="asp-thank-you-page-txn-id">' . __( "Transaction ID: ", "stripe-payments" ) . '{transaction_id}' . '</div>';
+	    $output	 .= '<div class="asp-thank-you-page-txn-id">' . __( "Transaction ID", "stripe-payments" ) . ': {transaction_id}' . '</div>';
 
 	    $download_str = '';
 	    if ( ! empty( $aspData[ 'item_url' ] ) ) {
@@ -965,7 +998,7 @@ class AcceptStripePaymentsShortcode {
 		$download_var_str	 = '';
 		$has_download_link	 = false;
 		$download_var_str	 .= "<br /><div class='asp-thank-you-page-download-link'>";
-		$download_var_str	 .= '<span>' . __( 'Download links:', 'stripe-payments' ) . '</span><br/>';
+		$download_var_str	 .= '<span>' . __( 'Download links', 'stripe-payments' ) . ':</span><br/>';
 		$download_txt		 = __( 'Click here to download', 'stripe-payments' );
 		$link_tpl		 = '<a href="%s">%s</a><br/>';
 		foreach ( $aspData[ 'var_applied' ] as $var ) {
@@ -1142,9 +1175,10 @@ class AcceptStripePaymentsShortcode {
 		if ( $i != $page ) {
 		    $url	 = esc_url( add_query_arg( 'asp_page', $i ) );
 		    $str	 = str_replace( array( '%[url]%', '%[page_num]%' ), array( $url, $i ), $tpl[ 'pagination_item' ] );
-		} else
-		    $str				 = str_replace( '%[page_num]%', $i, $tpl[ 'pagination_item_current' ] );
-		$tpl[ 'pagination_items' ]	 .= $str;
+		} else {
+		    $str = str_replace( '%[page_num]%', $i, $tpl[ 'pagination_item_current' ] );
+		}
+		$tpl[ 'pagination_items' ] .= $str;
 		$i ++;
 	    }
 	}

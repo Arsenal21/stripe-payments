@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 4.7
 Tested up to: 5.2
 Requires PHP: 5.4
-Stable tag: 1.9.23t2
+Stable tag: 1.9.24
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -151,10 +151,25 @@ None.
 
 == Changelog ==
 
-= WIP 1.9.23 =
-- Fixed thankyou_page_url parameter was ignored for [asp_product] shortcode.
+= 1.9.24 =
+- Added {item_url} email tag support.
+- Fixed issue with the_content filter usage in product shortcode output that could cause some content duplication.
+- Added checkout_lang shortcode parameter which sets checkout popup language for a product.
+
+= 1.9.23 =
+- PHP sessions are no longer used for security and better caching purposes.
+- Disabled nonce checking for buttons.
+- Fixed thankyou_page_url parameter was ignored for [asp_product] shortcode and by some addons.
+- Fixed item URL wasn't processed by Secure Downloads addon when some other addons are enabled.
 - Fixed frontend total amount calculation display for products with variations and custom amount enabled.
 - Custom amount validation errors no longer displayed on page load for products with variations and custom amount enabled.
+- Checkout results page no longer displays "Download links" message if there are no downloads set for variations.
+- Checkout error message is now displayed even if no [accept_stripe_payment_checkout_error] shortcode inserted on custom checkout results page.
+- Frontend amount and quantity inputs are disabled on payment form submit to prevent "Token can't be used more than once" error.
+- Fixed zero-cent currencies displaying and handling issues.
+- Product description now supports WP embeds.
+- Tweaks for better compatability with various page builders.
+- Other minor bugfixes.
 
 = 1.9.22 =
 - Fixed archive pages list could be messed up when plugin is enabled.

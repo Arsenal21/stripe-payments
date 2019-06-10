@@ -53,6 +53,14 @@ class AcceptStripePayments_Admin {
 	add_action( 'init', array( $this, 'tinymce_shortcode_button' ) );
 	add_action( 'current_screen', array( $this, 'check_current_screen' ) );
 	add_action( 'wp_ajax_asp_tinymce_get_settings', array( $this, 'tinymce_ajax_handler' ) ); // Add ajax action handler for tinymce
+	//Settings link
+	add_filter( 'plugin_action_links_' . plugin_basename( WP_ASP_PLUGIN_FILE ), array( $this, 'add_settings_link' ) );
+    }
+
+    public function add_settings_link( $links ) {
+	$settings_link = '<a href="edit.php?post_type=asp-products&page=stripe-payments-settings#general">' . __( 'Settings', 'stripe-payments' ) . '</a>';
+	array_unshift( $links, $settings_link );
+	return $links;
     }
 
     function enqueue_scripts( $hook ) {
@@ -900,12 +908,10 @@ class AcceptStripePayments_Admin {
 	else
 	    add_settings_error( 'AcceptStripePayments-settings', 'empty-price-thousand-sep', __( 'Price thousand separator can\'t be empty.', 'stripe-payments' ) );
 
-	if ( ! empty( $input[ 'price_decimals_num' ] ) )
-	    $output[ 'price_decimals_num' ] = esc_attr( $input[ 'price_decimals_num' ] );
+	if ( isset( $input[ 'price_decimals_num' ] ) )
+	    $output[ 'price_decimals_num' ] = intval( $input[ 'price_decimals_num' ] );
 	else
 	    add_settings_error( 'AcceptStripePayments-settings', 'invalid-price-decimals-num', __( 'Price number of decimals can\'t be empty.', 'stripe-payments' ) );
-
-
 
 	if ( isset( $_POST[ 'wp-asp-urlHash' ] ) ) {
 	    set_transient( 'wp-asp-urlHash', $_POST[ 'wp-asp-urlHash' ], 300 );
@@ -940,7 +946,7 @@ class AcceptStripePayments_Admin {
 	if ( empty( $email_tags ) ) {
 	    $email_tags = array(
 		"{item_name}"		 => __( 'Name of the purchased item', 'stripe-payments' ),
-		"{item_quantity}"	 => __( 'Number of items purchsed', 'stripe-payments' ),
+		"{item_quantity}"	 => __( 'Number of items purchased', 'stripe-payments' ),
 		"{item_price}"		 => __( 'Item price. Example: 1000,00', 'stripe-payments' ),
 		"{item_price_curr}"	 => __( 'Item price with currency symbol. Example: $1,000.00', 'stripe-payments' ),
 		"{purchase_amt}"	 => __( 'The amount paid for the current transaction. Example: 1,000.00', 'stripe-payments' ),
@@ -948,6 +954,7 @@ class AcceptStripePayments_Admin {
 		"{tax}"			 => __( 'Tax in percent. Example: 10%', 'stripe-payments' ),
 		"{tax_amt}"		 => __( 'Formatted tax amount for single item. Example: $0.25', 'stripe-payments' ),
 		"{shipping_amt}"	 => __( 'Formatted shipping amount. Example: $2.50', 'stripe-payments' ),
+		'{item_url}'		 => __( 'Item download URL (if it\'s set)', 'stripe-payments' ),
 		"{product_details}"	 => __( 'The item details of the purchased product (this will include the download link for digital items)', 'stripe-payments' ),
 		"{transaction_id}"	 => __( 'The unique transaction ID of the purchase', 'stripe-payments' ),
 		"{shipping_address}"	 => __( 'Shipping address of the buyer', 'stripe-payments' ),

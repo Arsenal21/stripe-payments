@@ -127,6 +127,9 @@ div#poststuff {
 .wp-asp-stars-container a {
     text-decoration: none;
 }
+div.postbox.yellowish {
+    background-color: #ffffc8;
+}
 @media (max-width: 782px) {
     div.wp-asp-settings-grid {
 	display: block;

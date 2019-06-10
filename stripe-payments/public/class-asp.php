@@ -386,6 +386,12 @@ class AcceptStripePayments {
 		update_option( 'AcceptStripePayments-settings', $AcceptStripePayments_settings );
 	    }
 	}
+	//Flush rewrite rules so new pages and slugs are properly handled
+	$ASPProducts	 = ASPProducts::get_instance();
+	$ASPProducts->register_post_type();
+	$ASPOrder	 = ASPOrder::get_instance();
+	$ASPOrder->register_post_type();
+	flush_rewrite_rules();
     }
 
     public static function create_post( $postType, $title, $name, $content, $parentId = NULL ) {
@@ -533,9 +539,14 @@ class AcceptStripePayments {
 	return $price;
     }
 
-    static function apply_shipping( $price, $shipping ) {
+    static function apply_shipping( $price, $shipping, $is_zero_cents = false ) {
 	if ( ! empty( $shipping ) ) {
-	    $price += floatval( $shipping );
+	    $prec = 2;
+	    if ( $is_zero_cents ) {
+		$prec = 0;
+	    }
+	    $price	 += floatval( $shipping );
+	    $price	 = round( $price, $prec );
 	}
 	return $price;
     }

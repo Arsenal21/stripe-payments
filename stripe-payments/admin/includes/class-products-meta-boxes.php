@@ -1,6 +1,6 @@
 <?php
 
-class asp_products_metaboxes {
+class ASPProductsMetaboxes {
 
     var $ASPMain;
 
@@ -602,4 +602,4 @@ class asp_products_metaboxes {
 
 }
 
-$asp_products_metaboxes = new asp_products_metaboxes();
+new ASPProductsMetaboxes();
