@@ -2,18 +2,12 @@
 
 class AcceptStripePaymentsShortcodeNG {
 
-    var $ASPClass		 = null;
-    var $StripeCSSInserted	 = false;
-    var $ProductCSSInserted	 = false;
-    var $ButtonCSSInserted	 = false;
-    var $CompatMode		 = false;
-    var $variations		 = array();
-
-    /**
-     * Instance of this class.
-     *
-     * @var      object
-     */
+    var $ASPClass			 = null;
+    var $StripeCSSInserted		 = false;
+    var $ProductCSSInserted		 = false;
+    var $ButtonCSSInserted		 = false;
+    var $CompatMode			 = false;
+    var $variations			 = array();
     protected static $instance		 = null;
     protected static $payment_buttons	 = array();
     protected $tplTOS			 = '';
@@ -22,25 +16,14 @@ class AcceptStripePaymentsShortcodeNG {
 
     function __construct() {
 	$this->ASPClass = AcceptStripePayments::get_instance();
-
 	add_action( 'wp_enqueue_scripts', array( $this, 'register_scripts' ) );
 	add_shortcode( 'asp_product_ng', array( $this, 'shortcode_asp_product' ) );
     }
 
-    /**
-     * Return an instance of this class.
-     *
-     * @since     1.0.0
-     *
-     * @return    object    A single instance of this class.
-     */
     public static function get_instance() {
-
-	// If the single instance hasn't been set, set it now.
 	if ( null == self::$instance ) {
 	    self::$instance = new self;
 	}
-
 	return self::$instance;
     }
 
@@ -50,6 +33,7 @@ class AcceptStripePaymentsShortcodeNG {
     }
 
     public function shortcode_asp_product( $atts ) {
+
 	if ( ! isset( $atts[ 'id' ] ) || ! is_numeric( $atts[ 'id' ] ) ) {
 	    $error_msg	 = '<div class="stripe_payments_error_msg" style="color: red;">';
 	    $error_msg	 .= "Error: product ID is invalid.";
@@ -73,18 +57,46 @@ class AcceptStripePaymentsShortcodeNG {
 	    $button_text = esc_attr( $atts[ 'button_text' ] );
 	}
 
+	$uniq_id = uniqid();
+
 	$itemData = array(
 	    'productId'	 => $id,
 	    'is_live'	 => $this->ASPClass->is_live,
+	    'uniq_id'	 => $uniq_id,
 	);
 
 	$this->print_loc_data();
-	wp_localize_script( 'asp-stripe-handler-ng', 'aspItemDataNG' . '0', $itemData );
+
+	wp_localize_script( 'asp-stripe-handler-ng', 'aspItemDataNG' . $uniq_id, $itemData );
 	wp_enqueue_script( 'asp-stripe-script-ng' );
 	wp_enqueue_script( 'asp-stripe-handler-ng' );
 
+	//button class
+	$class = ! empty( $atts[ 'class' ] ) ? $atts[ 'class' ] : $item->get_button_class();
+
+	if ( empty( $class ) ) {
+	    $class = "asp_product_buy_btn blue";
+	}
+
 	$output	 = '';
-	$output	 = sprintf( '<input type="button" class="%s" data-asp-ng-button-id="%d" value="%s">', $item->get_button_class(), 0, $button_text );
+	$output	 .= "<link rel='stylesheet' href='" . WP_ASP_PLUGIN_URL . '/public/views/templates/default/style.css' . "' type='text/css' media='all' />";
+
+	$styles = AcceptStripePaymentsShortcode::get_instance()->get_styles();
+
+	$output	 .= $styles;
+	$output	 .= '<div id="asp-all-buttons-container-' . $uniq_id . '" class="asp_all_buttons_container">';
+	$output	 .= '<div class="asp_product_buy_btn_container">';
+	$output	 .= sprintf( '<button class="%s" type="submit" data-asp-ng-button-id="%s"><span>%s</span></button>', $class, $uniq_id, $button_text );
+	$output	 .= '</div>';
+	$output	 .= '</div>';
+	$output	 .= '<div id="asp-btn-spinner-container-' . $uniq_id . '" class="asp-btn-spinner-container" style="display: none !important">'
+	. '<div class="asp-btn-spinner">'
+	. '<div></div>'
+	. '<div></div>'
+	. '<div></div>'
+	. '<div></div>'
+	. '</div>'
+	. '</div>';
 	return $output;
     }
 
@@ -93,6 +105,11 @@ class AcceptStripePaymentsShortcodeNG {
 	if ( $this->locDataPrinted ) {
 	    return;
 	}
+
+	$key = $this->ASPClass->is_live ? $this->ASPClass->APIPubKey : $this->ASPClass->APIPubKeyTest;
+
+	global $wp;
+	$current_url = home_url( add_query_arg( array( $_GET ), $wp->request ) );
 
 	$loc_data		 = array(
 	    'strEnterValidAmount'		 => apply_filters( 'asp_customize_text_msg', __( 'Please enter a valid amount', 'stripe-payments' ), 'enter_valid_amount' ),
@@ -111,8 +128,10 @@ class AcceptStripePaymentsShortcodeNG {
 	    'strRemove'			 => apply_filters( 'asp_customize_text_msg', __( 'Remove', 'stripe-payments' ), 'remove' ),
 	    'strStartFreeTrial'		 => apply_filters( 'asp_customize_text_msg', __( 'Start Free Trial', 'stripe-payments' ), 'start_free_trial' ),
 	    'strInvalidCFValidationRegex'	 => __( 'Invalid validation RegEx: ', 'stripe-payments' ),
+	    'strErrorOccurred'		 => __( 'Error occurred', 'stripe-payments' ),
 	    'ajaxURL'			 => admin_url( 'admin-ajax.php' ),
-	    'pubKey'			 => $this->ASPClass->APIPubKeyTest,
+	    'pubKey'			 => $key,
+	    'current_url'			 => $current_url,
 	);
 	wp_localize_script( 'asp-stripe-handler-ng', 'stripeHandlerNG', $loc_data );
 	$this->locDataPrinted	 = true;

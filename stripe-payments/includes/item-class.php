@@ -78,6 +78,9 @@ class ASPItem {
 
     public function get_quantity() {
 	$this->quantity = get_post_meta( $this->post_id, 'asp_product_quantity', true );
+	if ( empty( $this->quantity ) ) {
+	    $this->quantity = 1;
+	}
 	return $this->quantity;
     }
 

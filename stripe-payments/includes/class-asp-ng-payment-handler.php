@@ -7,10 +7,7 @@ class ASPPaymentHandlerNG {
 
     function __construct() {
 	$this->ASPClass = AcceptStripePayments::get_instance();
-	if ( wp_doing_ajax() ) {
-	    add_action( 'wp_ajax_asp_ng_get_token', array( $this, 'get_token' ) );
-	    add_action( 'wp_ajax_nopriv_asp_ng_get_token', array( $this, 'get_token' ) );
-	}
+	add_action( 'init', array( $this, 'init_tasks' ) );
 	if ( ! is_admin() ) {
 	    $asp_result = filter_input( INPUT_GET, 'asp_result', FILTER_SANITIZE_STRING );
 	    if ( $asp_result === 'success' ) {
@@ -29,19 +26,15 @@ class ASPPaymentHandlerNG {
 	return self::$instance;
     }
 
+    public static function init_tasks() {
+	if ( wp_doing_ajax() ) {
+	    add_action( 'wp_ajax_asp_ng_get_token', array( $this, 'get_token' ) );
+	    add_action( 'wp_ajax_nopriv_asp_ng_get_token', array( $this, 'get_token' ) );
+	}
+    }
+
     public function process_payment_success() {
 	$sess = ASP_Session::get_instance();
-
-	ASPMain::load_stripe_lib();
-
-	\Stripe\Stripe::setApiKey( $this->ASPClass->APISecKeyTest );
-
-	$events = \Stripe\Event::all( [
-	    'type'		 => 'checkout.session.completed',
-	    'created'	 => [
-		'gte' => time() - 24 * 60,
-	    ],
-	] );
 
 	$trans_data = $sess->get_transient_data( 'trans_info' );
 
@@ -56,9 +49,23 @@ class ASPPaymentHandlerNG {
 	} else {
 	    $trans_id	 = $trans_data[ 'trans_id' ];
 	    $prod_id	 = $trans_data[ 'prod_id' ];
+	    $is_live	 = $trans_data[ 'is_live' ];
 	}
 
 	$pi_id = false;
+
+	ASPMain::load_stripe_lib();
+
+	$key = $is_live ? $this->ASPClass->APISecKey : $this->ASPClass->APISecKeyTest;
+
+	\Stripe\Stripe::setApiKey( $key );
+
+	$events = \Stripe\Event::all( [
+	    'type'		 => 'checkout.session.completed',
+	    'created'	 => [
+		'gte' => time() - 24 * 60,
+	    ],
+	] );
 
 	foreach ( $events->autoPagingIterator() as $event ) {
 	    $session = $event->data->object;
@@ -77,22 +84,28 @@ class ASPPaymentHandlerNG {
 		'meta_value'	 => $trans_id )
 	    );
 
+	    $sess->set_transient_data( 'trans_info', array() );
+
 	    if ( ! empty( $completed_order ) ) {
 		//already processed - let's redirect to results page
 		wp_redirect( $redir_url );
 		exit;
 	    }
-	    $pi			 = \Stripe\PaymentIntent::retrieve( $pi_id );
-	    $charge			 = $pi->charges;
-	    $data			 = array();
-	    $data[ 'paid_amount' ]	 = AcceptStripePayments::from_cents( $pi->amount_received, $pi->currency );
-	    $data[ 'currency_code' ] = strtoupper( $pi->currency );
-	    $data[ 'item_quantity' ] = $item->get_quantity();
-	    $data[ 'charge' ]	 = $charge;
-	    $data[ 'item_name' ]	 = $item->get_name();
-	    $data[ 'item_price' ]	 = $item->get_price();
-	    $data[ 'stripeEmail' ]	 = $charge->data[ 0 ]->billing_details->email;
-	    $data[ 'customer_name' ] = $charge->data[ 0 ]->billing_details->name;
+	    $pi				 = \Stripe\PaymentIntent::retrieve( $pi_id );
+	    $charge				 = $pi->charges;
+	    $data				 = array();
+	    $data[ 'paid_amount' ]		 = AcceptStripePayments::from_cents( $pi->amount_received, $pi->currency );
+	    $data[ 'currency_code' ]	 = strtoupper( $pi->currency );
+	    $data[ 'item_quantity' ]	 = $item->get_quantity();
+	    $data[ 'charge' ]		 = $charge->data[ 0 ];
+	    $data[ 'stripeToken' ]		 = '';
+	    $data[ 'stripeTokenType' ]	 = 'card';
+	    $data[ 'is_live' ]		 = $is_live;
+	    $data[ 'charge_description' ]	 = $item->get_description();
+	    $data[ 'item_name' ]		 = $item->get_name();
+	    $data[ 'item_price' ]		 = $item->get_price();
+	    $data[ 'stripeEmail' ]		 = $charge->data[ 0 ]->billing_details->email;
+	    $data[ 'customer_name' ]	 = $charge->data[ 0 ]->billing_details->name;
 
 	    $purchase_date	 = date( 'Y-m-d H:i:s', $charge->data[ 0 ]->created );
 	    $purchase_date	 = get_date_from_gmt( $purchase_date, get_option( 'date_format' ) . ', ' . get_option( 'time_format' ) );
@@ -151,28 +164,36 @@ class ASPPaymentHandlerNG {
     public function get_token() {
 	$prod_id = filter_input( INPUT_POST, 'product_id', FILTER_SANITIZE_NUMBER_INT );
 	if ( empty( $prod_id ) ) {
-	    wp_send_json( array( 'success' => false, 'errMsg' => 'No product ID sent' ) );
+	    wp_send_json( array( 'success' => false, 'errMsg' => 'No product ID set' ) );
 	}
 	$item = new ASPItem( $prod_id );
 	if ( ! empty( $item->get_last_error() ) ) {
 	    wp_send_json( array( 'success' => false, 'errMsg' => "Can't load product info" ) );
 	}
 
+	$is_live = filter_input( INPUT_POST, 'is_live', FILTER_SANITIZE_NUMBER_INT );
+
 	ASPMain::load_stripe_lib();
 
-	\Stripe\Stripe::setApiKey( $this->ASPClass->APISecKeyTest );
+	$key = $is_live ? $this->ASPClass->APISecKey : $this->ASPClass->APISecKeyTest;
+
+	\Stripe\Stripe::setApiKey( $key );
 
 	$site_url = get_home_url( null, '/' );
 
 	$sess		 = ASP_Session::get_instance();
 	$trans_id	 = md5( uniqid( 'asp_trans_id', true ) ) . '|' . $prod_id;
 
-	$sess->set_transient_data( 'trans_info', array( 'prod_id' => $prod_id, 'trans_id' => $trans_id ) );
+	$sess->set_transient_data( 'trans_info', array( 'prod_id' => $prod_id, 'trans_id' => $trans_id, 'is_live' => $is_live ) );
+
+	$current_url = filter_input( INPUT_POST, 'current_url', FILTER_SANITIZE_URL );
+
+	$current_url = empty( $current_url ) ? $site_url : $current_url;
 
 	$sData = array(
 	    'payment_method_types'	 => array( 'card' ),
 	    'success_url'		 => add_query_arg( array( 'asp_result' => 'success', 'asp_trans_id' => $trans_id ), $site_url ),
-	    'cancel_url'		 => add_query_arg( array( 'asp_result' => 'cancel' ), $site_url ),
+	    'cancel_url'		 => $current_url,
 	    'client_reference_id'	 => $trans_id,
 	);
 
@@ -184,7 +205,8 @@ class ASPPaymentHandlerNG {
 
 	$session = \Stripe\Checkout\Session::create( $sData );
 
-	wp_send_json( array( 'success' => true, 'checkoutSessionId' => $session->id ) );
+	wp_send_json( array( 'success' => true, 'checkoutSessionId' => $session->id, 'sData' => $sData ) );
+	exit;
     }
 
 }
