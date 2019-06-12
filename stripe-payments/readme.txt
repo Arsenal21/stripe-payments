@@ -151,6 +151,9 @@ None.
 
 == Changelog ==
 
+= WIP 1.9.25 =
+- Fixed improper frontend total amount display in some circumstances.
+
 = 1.9.24 =
 - Added {item_url} email tag support.
 - Fixed issue with the_content filter usage in product shortcode output that could cause some content duplication.

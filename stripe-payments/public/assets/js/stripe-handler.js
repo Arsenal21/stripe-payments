@@ -77,7 +77,7 @@ stripehandler.updateAllAmounts = function (data) {
 	}
     }
     if (data.variable) {
-	var amt = wp_asp_validate_custom_amount(data, false);
+	var amt = wp_asp_validate_custom_amount(data, true);
 	if (amt !== false) {
 	    totValue = amt;
 	} else {
