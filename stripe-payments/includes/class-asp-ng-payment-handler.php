@@ -39,7 +39,7 @@ class ASPPaymentHandlerNG {
 	$trans_data = $sess->get_transient_data( 'trans_info' );
 
 	if ( empty( $trans_data[ 'trans_id' ] ) ) {
-	    $trans_id	 = $_GET[ 'asp_trans_id' ];
+	    $trans_id	 = filter_input( INPUT_GET, 'asp_trans_id', FILTER_SANITIZE_STRING );
 	    $trans_info	 = explode( '|', $trans_id );
 	    if ( empty( $trans_info[ 1 ] ) ) {
 		wp_die( 'Cannot find transaction info.' );
@@ -49,8 +49,9 @@ class ASPPaymentHandlerNG {
 	} else {
 	    $trans_id	 = $trans_data[ 'trans_id' ];
 	    $prod_id	 = $trans_data[ 'prod_id' ];
-	    $is_live	 = $trans_data[ 'is_live' ];
 	}
+
+	$is_live = $trans_data[ 'is_live' ];
 
 	$pi_id = false;
 
@@ -103,9 +104,15 @@ class ASPPaymentHandlerNG {
 	    $data[ 'is_live' ]		 = $is_live;
 	    $data[ 'charge_description' ]	 = $item->get_description();
 	    $data[ 'item_name' ]		 = $item->get_name();
-	    $data[ 'item_price' ]		 = $item->get_price();
-	    $data[ 'stripeEmail' ]		 = $charge->data[ 0 ]->billing_details->email;
-	    $data[ 'customer_name' ]	 = $charge->data[ 0 ]->billing_details->name;
+	    $price				 = $item->get_price();
+	    if ( empty( $price ) ) {
+		$price	 = $session->display_items[ 0 ]->amount;
+		$price	 = AcceptStripePayments::from_cents( $price, $item->get_currency() );
+		$item->set_price( $price );
+	    }
+	    $data[ 'item_price' ]	 = $price;
+	    $data[ 'stripeEmail' ]	 = $charge->data[ 0 ]->billing_details->email;
+	    $data[ 'customer_name' ] = $charge->data[ 0 ]->billing_details->name;
 
 	    $purchase_date	 = date( 'Y-m-d H:i:s', $charge->data[ 0 ]->created );
 	    $purchase_date	 = get_date_from_gmt( $purchase_date, get_option( 'date_format' ) . ', ' . get_option( 'time_format' ) );
@@ -171,6 +178,8 @@ class ASPPaymentHandlerNG {
 	    wp_send_json( array( 'success' => false, 'errMsg' => "Can't load product info" ) );
 	}
 
+	$form_data = filter_input( INPUT_POST, 'form_data', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
+
 	$is_live = filter_input( INPUT_POST, 'is_live', FILTER_SANITIZE_NUMBER_INT );
 
 	ASPMain::load_stripe_lib();
@@ -199,6 +208,20 @@ class ASPPaymentHandlerNG {
 
 	if ( $item->collect_billing_addr() ) {
 	    $sData[ 'billing_address_collection' ] = 'required';
+	}
+
+	//check for variable price
+	$price = $item->get_price();
+	if ( empty( $price ) ) {
+	    //variable place. Get price from form data
+	    if ( isset( $form_data[ 'stripeAmount' ] ) && ! empty( $form_data[ 'stripeAmount' ] ) ) {
+		$price = floatval( $form_data[ 'stripeAmount' ] );
+		$item->set_price( $price );
+	    }
+	    if ( empty( $price ) ) {
+		wp_send_json( array( 'success' => false, 'errMsg' => "Invalid amount provided" ) );
+		exit;
+	    }
 	}
 
 	$sData[ 'line_items' ] = $item->gen_item_data();

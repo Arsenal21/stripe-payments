@@ -63,6 +63,8 @@ class AcceptStripePaymentsShortcodeNG {
 	    'productId'	 => $id,
 	    'is_live'	 => $this->ASPClass->is_live,
 	    'uniq_id'	 => $uniq_id,
+	    'currency'	 => $item->get_currency(),
+	    'variable'	 => empty( $price ) ? true : false,
 	);
 
 	$this->print_loc_data();
@@ -78,12 +80,31 @@ class AcceptStripePaymentsShortcodeNG {
 	    $class = "asp_product_buy_btn blue";
 	}
 
+	$currency = $item->get_currency();
+
+	//price
+	$price = $item->get_price();
+
 	$output	 = '';
 	$output	 .= "<link rel='stylesheet' href='" . WP_ASP_PLUGIN_URL . '/public/views/templates/default/style.css' . "' type='text/css' media='all' />";
 
-	$styles = AcceptStripePaymentsShortcode::get_instance()->get_styles();
-
+	$styles	 = AcceptStripePaymentsShortcode::get_instance()->get_styles();
 	$output	 .= $styles;
+
+	$output .= "<form id = 'stripe_form_{$uniq_id}' data-asp-ng-form-id='{$uniq_id}' stclass='asp-stripe-form' action = '' METHOD = 'POST'> ";
+
+
+	if ( empty( $price ) ) { //price not specified, let's add an input box for user to specify the amount
+	    $str_enter_amount	 = apply_filters( 'asp_customize_text_msg', __( 'Enter amount', 'stripe-payments' ), 'enter_amount' );
+	    $output			 .= "<div class='asp_product_item_amount_input_container'>"
+	    . "<input type='text' size='10' class='asp_product_item_amount_input' id='stripeAmount_{$uniq_id}' value='' name='stripeAmount' placeholder='" . $str_enter_amount . "' required/>";
+	    $output			 .= "<span class='asp_product_item_amount_currency_label' style='margin-left: 5px; display: inline-block'> {$currency}</span>";
+	    $output			 .= "<span style='display: block;' id='error_explanation_{$uniq_id}'></span>"
+	    . "</div>";
+	}
+
+	$output .= '</form>';
+
 	$output	 .= '<div id="asp-all-buttons-container-' . $uniq_id . '" class="asp_all_buttons_container">';
 	$output	 .= '<div class="asp_product_buy_btn_container">';
 	$output	 .= sprintf( '<button class="%s" type="submit" data-asp-ng-button-id="%s"><span>%s</span></button>', $class, $uniq_id, $button_text );
@@ -107,6 +128,15 @@ class AcceptStripePaymentsShortcodeNG {
 	}
 
 	$key = $this->ASPClass->is_live ? $this->ASPClass->APIPubKey : $this->ASPClass->APIPubKeyTest;
+
+	$minAmounts	 = $this->ASPClass->minAmounts;
+	$zeroCents	 = $this->ASPClass->zeroCents;
+
+	$amountOpts = array(
+	    'applySepOpts'	 => $this->ASPClass->get_setting( 'price_apply_for_input' ),
+	    'decimalSep'	 => $this->ASPClass->get_setting( 'price_decimal_sep' ),
+	    'thousandSep'	 => $this->ASPClass->get_setting( 'price_thousand_sep' ),
+	);
 
 	global $wp;
 	$current_url = home_url( add_query_arg( array( $_GET ), $wp->request ) );
@@ -132,6 +162,9 @@ class AcceptStripePaymentsShortcodeNG {
 	    'ajaxURL'			 => admin_url( 'admin-ajax.php' ),
 	    'pubKey'			 => $key,
 	    'current_url'			 => $current_url,
+	    'minAmounts'			 => $minAmounts,
+	    'zeroCents'			 => $zeroCents,
+	    'amountOpts'			 => $amountOpts,
 	);
 	wp_localize_script( 'asp-stripe-handler-ng', 'stripeHandlerNG', $loc_data );
 	$this->locDataPrinted	 = true;

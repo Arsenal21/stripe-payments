@@ -95,6 +95,10 @@ class ASPItem {
 	return $this->price;
     }
 
+    public function set_price( $price ) {
+	$this->price = $price;
+    }
+
     public function get_tax_amount( $in_cents = false ) {
 	$this->tax_amount = AcceptStripePayments::get_tax_amount( $this->get_price(), $this->get_tax(), $this->zero_cent );
 	if ( $in_cents ) {
