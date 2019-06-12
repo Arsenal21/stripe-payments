@@ -178,7 +178,6 @@ class AcceptStripePayments_Process_IPN {
 		//let's generate our own button key
 		$price		 = AcceptStripePayments::apply_tax( $item_price, $tax, AcceptStripePayments::is_zero_cents( $currency_code ) );
 		$price		 = AcceptStripePayments::apply_shipping( $price, $shipping, AcceptStripePayments::is_zero_cents( $currency_code ) );
-
 		$price_in_cents	 = $price;
 		if ( ! AcceptStripePayments::is_zero_cents( $currency_code ) ) {
 		    $price_in_cents = $price_in_cents * 100;
@@ -263,7 +262,6 @@ class AcceptStripePayments_Process_IPN {
 	$varApplied	 = array();
 	if ( $got_product_data_from_db && isset( $_POST[ 'stripeVariations' ] ) ) {
 	    // we got variations posted. Let's get variations from product
-
 	    $v = new ASPVariations( $prod_id );
 	    if ( ! empty( $v->variations ) ) {
 		//there are variations configured for the product

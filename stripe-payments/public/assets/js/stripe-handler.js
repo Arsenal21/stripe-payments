@@ -77,7 +77,7 @@ stripehandler.updateAllAmounts = function (data) {
 	}
     }
     if (data.variable) {
-	var amt = wp_asp_validate_custom_amount(data, false);
+	var amt = wp_asp_validate_custom_amount(data, true);
 	if (amt !== false) {
 	    totValue = amt;
 	} else {
@@ -87,7 +87,7 @@ stripehandler.updateAllAmounts = function (data) {
 	totValue = data.item_price;
     }
     totValue = stripehandler.apply_variations(totValue, data);
-    totValue = totValue;
+    var itemPrice = totValue;
     var totalCont = jQuery('form#stripe_form_' + data.uniq_id).parent().siblings('.asp_price_container');
     if (data.discount) {
 	var couponVal = stripehandler.apply_coupon(totValue, data);
@@ -101,7 +101,7 @@ stripehandler.updateAllAmounts = function (data) {
     }
     totValue = stripehandler.apply_tax_and_shipping(totValue, data);
     totalCont.children().find('span.asp_tot_current_price').html(stripehandler.formatMoney(totValue, data));
-    totalCont.find('span.asp_price_amount').html(stripehandler.formatMoney(totValue, data));
+    totalCont.find('span.asp_price_amount').html(stripehandler.formatMoney(itemPrice, data));
     var taxVal = false;
     if (data.tax !== 0) {
 	var taxVal = Math.round(data.item_price * parseFloat(data.tax) / 100) * data.quantity;
