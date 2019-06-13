@@ -439,7 +439,7 @@ class AcceptStripePaymentsShortcode {
 		$descr = $wp_embed->run_shortcode( $descr );
 	    }
 	}
-	$descr = do_shortcode( $descr );
+	$descr = wpautop( do_shortcode( $descr ) );
 	wp_reset_postdata();
 	add_filter( 'the_content', array( $this, 'filter_post_type_content' ) );
 
