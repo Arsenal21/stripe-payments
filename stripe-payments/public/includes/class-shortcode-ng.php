@@ -59,6 +59,18 @@ class AcceptStripePaymentsShortcodeNG {
 
 	$uniq_id = uniqid();
 
+	//button class
+	$class = ! empty( $atts[ 'class' ] ) ? $atts[ 'class' ] : $item->get_button_class();
+
+	if ( empty( $class ) ) {
+	    $class = "asp_product_buy_btn blue";
+	}
+
+	$currency = $item->get_currency();
+
+	//price
+	$price = $item->get_price();
+
 	$itemData = array(
 	    'productId'	 => $id,
 	    'is_live'	 => $this->ASPClass->is_live,
@@ -72,18 +84,6 @@ class AcceptStripePaymentsShortcodeNG {
 	wp_localize_script( 'asp-stripe-handler-ng', 'aspItemDataNG' . $uniq_id, $itemData );
 	wp_enqueue_script( 'asp-stripe-script-ng' );
 	wp_enqueue_script( 'asp-stripe-handler-ng' );
-
-	//button class
-	$class = ! empty( $atts[ 'class' ] ) ? $atts[ 'class' ] : $item->get_button_class();
-
-	if ( empty( $class ) ) {
-	    $class = "asp_product_buy_btn blue";
-	}
-
-	$currency = $item->get_currency();
-
-	//price
-	$price = $item->get_price();
 
 	$output	 = '';
 	$output	 .= "<link rel='stylesheet' href='" . WP_ASP_PLUGIN_URL . '/public/views/templates/default/style.css' . "' type='text/css' media='all' />";

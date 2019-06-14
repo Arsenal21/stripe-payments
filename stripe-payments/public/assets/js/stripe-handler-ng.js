@@ -46,7 +46,7 @@ jQuery(document).ready(function ($) {
 	var data = window['aspItemDataNG' + btnId];
 
 	var amount = jQuery('input#stripeAmount_' + btnId).val();
-	if (this.amountOpts.applySepOpts !== 0) {
+	if (this.amountOpts.applySepOpts != 0) {
 	    amount = amount.replace(this.amountOpts.thousandSep, '');
 	    amount = amount.replace(this.amountOpts.decimalSep, '.');
 	} else {
