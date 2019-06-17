@@ -94,7 +94,7 @@ class AcceptStripePayments {
 	$this->APISecKeyTest	 = $this->get_setting( 'api_secret_key_test' );
 
 	// Load plugin text domain
-	add_action( 'plugins_loaded', array( $this, 'load_asp_plugin_textdomain' ) );
+	add_action( 'init', array( $this, 'load_asp_plugin_textdomain' ) );
 
 	add_action( 'plugins_loaded', array( $this, 'plugins_loaded' ) );
 
@@ -567,6 +567,14 @@ class AcceptStripePayments {
     static function is_zero_cents( $curr ) {
 	$zeroCents = array( 'JPY', 'MGA', 'VND', 'KRW' );
 	return in_array( strtoupper( $curr ), $zeroCents );
+    }
+
+    static function from_cents( $amount, $currency ) {
+	$res = $amount;
+	if ( ! self::is_zero_cents( $currency ) ) {
+	    $res = $amount / 100;
+	}
+	return $res;
     }
 
     static function gen_additional_items( $data, $sep = "\n" ) {
