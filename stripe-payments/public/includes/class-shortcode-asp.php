@@ -746,7 +746,7 @@ class AcceptStripePaymentsShortcode {
 	$output .= $this->get_button_code_new_method( $data );
 
 	$output	 .= '<input type="hidden" name="asp_action" value="process_ipn" />';
-	$output	 .= "<input type = 'hidden' value = '{$data[ 'name' ]}' name = 'item_name' />";
+	$output	 .= "<input type = 'hidden' value = '" . esc_attr( $data[ 'name' ] ) . "' name = 'item_name' />";
 	$output	 .= "<input type = 'hidden' value = '{$data[ 'quantity' ]}' name = 'item_quantity' />";
 	$output	 .= "<input type = 'hidden' value = '{$data[ 'currency' ]}' name = 'currency_code' />";
 	$output	 .= "<input type = 'hidden' value = '{$data[ 'url' ]}' name = 'item_url' />";
