@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 4.7
 Tested up to: 5.2
 Requires PHP: 5.4
-Stable tag: 1.9.25t2
+Stable tag: 1.9.25
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -151,10 +151,11 @@ None.
 
 == Changelog ==
 
-= WIP 1.9.25 =
+= 1.9.25 =
 - Fixed improper frontend total amount display in some circumstances.
 - Fixed total amount was displayed instead of item price in some circumstances.
 - Fixed issues that could lead to "button key mismatch" error when [accept_stripe_payment] shortcode is used.
+- Paragraphs are automatically added to product description when needed.
 
 = 1.9.24 =
 - Added {item_url} email tag support.
