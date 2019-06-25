@@ -83,43 +83,134 @@ class AcceptStripePaymentsShortcodeNG {
 	    'price'		 => $price,
 	    'tax'		 => $item->get_tax( true ),
 	    'shipping'	 => $item->get_shipping( true ),
+	    'quantity'	 => $item->get_quantity(),
 	);
 
 	$output = '';
 
+	$template_name	 = "default-ng";
+	require_once(WP_ASP_PLUGIN_PATH . 'public/views/templates/' . $template_name . '/template-ng.php');
+	$tplClass	 = new ASPTemplateNG();
+	$tpl		 = $tplClass->get_template();
+
+	$post = get_post( $id );
+
+	$thumb_img	 = '';
+	$thumb_url	 = $item->get_thumb();
+
+	if ( $thumb_url ) {
+	    $thumb_img = '<img src="' . $thumb_url . '">';
+	}
+
+	$descr = $post->post_content;
+	global $wp_embed;
+	if ( isset( $wp_embed ) && is_object( $wp_embed ) ) {
+	    if ( method_exists( $wp_embed, 'autoembed' ) ) {
+		$descr = $wp_embed->autoembed( $descr );
+	    }
+	    if ( method_exists( $wp_embed, 'run_shortcode' ) ) {
+		$descr = $wp_embed->run_shortcode( $descr );
+	    }
+	}
+
+	$descr = wpautop( do_shortcode( $descr ) );
+
+	$buy_btn = $this->get_button_code( $itemData, $class, $button_text );
+
+	$quantity	 = $item->get_quantity();
+	$qntStr		 = '';
+	if ( $quantity && $quantity != 1 ) {
+	    $qntStr = 'x ' . $quantity;
+	}
+
+	$price_line = empty( $item->get_price() ) ? '' : AcceptStripePayments::formatted_price( $item->get_price(), $currency );
+
+	$under_price_line	 = '';
+	$tot_price		 = $item->get_price() * $item->get_quantity();
+
+	$tax = $item->get_tax();
+
+	if ( $tax !== 0 ) {
+	    $taxStr = apply_filters( 'asp_customize_text_msg', __( 'Tax', 'stripe-payments' ), 'tax_str' );
+	    if ( ! empty( $price ) ) {
+		$tax_amount	 = $item->get_tax_amount();
+		$tot_price	 += $tax_amount;
+		$tax_amt	 = AcceptStripePayments::formatted_price( $tax_amount, $currency );
+	    } else {
+		$tax_amt = $item->get_tax() . '%';
+	    }
+	    $under_price_line = sprintf( '<span class="asp_price_tax_section asp_price_tax_section-ng">%s: <span>%s</span></span>', $taxStr, $tax_amt );
+	}
+
+	$shipping = $item->get_shipping();
+
+	if ( $shipping !== 0 ) {
+	    $shipStr	 = apply_filters( 'asp_customize_text_msg', __( 'Shipping', 'stripe-payments' ), 'shipping_str' );
+	    $tot_price	 += $shipping;
+	    if ( ! empty( $under_price_line ) ) {
+		$under_price_line .= sprintf( '<span class="asp_price_shipping_section">%s: <span>%s</span></span>', $shipStr, AcceptStripePayments::formatted_price( $shipping, $currency ) );
+	    }
+	}
+
+	if ( ! empty( $under_price_line ) ) {
+	    $under_price_line .= sprintf( '<div class="asp_price_full_total"%s>%s <span class="asp_tot_current_price">%s</span> <span class="asp_tot_new_price"></span></div>', empty( $price ) ? ' style="display: none;"' : '', __( 'Total:', 'stripe-payments' ), AcceptStripePayments::formatted_price( $tot_price, $currency ) );
+	}
+
+	$product_tags = array(
+	    'thumb_img'		 => $thumb_img,
+	    'quantity'		 => $qntStr,
+	    'name'			 => $post->post_title,
+	    'description'		 => $descr,
+	    'price'			 => $price_line,
+	    'under_price_line'	 => $under_price_line,
+	    'buy_btn'		 => $buy_btn,
+	);
+
+	$product_tags = apply_filters( 'asp_product_tpl_tags_arr', $product_tags, $id );
+
+	foreach ( $product_tags as $tag => $repl ) {
+	    $tpl = str_replace( '%_' . $tag . '_%', $repl, $tpl );
+	}
+
+	$output .= $tpl;
+	return '<div data-asp-ng-cont-id="' . $uniq_id . '"' . $output . '</div>';
+    }
+
+    function get_button_code( $itemData, $class, $button_text ) {
+	$output = '';
 	if ( ! $this->locDataPrinted ) {
-	    $loc_data		 = $this->get_loc_data();
+	    $loc_data		 = $this->get_loc_data( $itemData[ 'currency' ] );
 	    $output			 .= '<script>var aspFrontVars =' . json_encode( $loc_data ) . ';</script>';
 	    $this->locDataPrinted	 = true;
 	}
 
 	$output .= '<script>jQuery(document).ready(function() {new stripeHandlerNG(' . json_encode( $itemData ) . ')});</script>';
 
-	$output .= "<link rel='stylesheet' href='" . WP_ASP_PLUGIN_URL . '/public/views/templates/default/style.css' . "' type='text/css' media='all' />";
+	$output .= "<link rel='stylesheet' href='" . WP_ASP_PLUGIN_URL . '/public/views/templates/default-ng/style.css' . "' type='text/css' media='all' />";
 
 	$styles	 = AcceptStripePaymentsShortcode::get_instance()->get_styles();
 	$output	 .= $styles;
 
-	$output .= "<form id = 'stripe_form_{$uniq_id}' data-asp-ng-form-id='{$uniq_id}' stclass='asp-stripe-form' action = '' METHOD = 'POST'> ";
+	$output .= "<form id = 'stripe_form_{$itemData[ 'uniq_id' ]}' data-asp-ng-form-id='{$itemData[ 'uniq_id' ]}' stclass='asp-stripe-form' action = '' METHOD = 'POST'> ";
 
 
-	if ( empty( $price ) ) { //price not specified, let's add an input box for user to specify the amount
+	if ( empty( $itemData[ 'price' ] ) ) { //price not specified, let's add an input box for user to specify the amount
 	    $str_enter_amount	 = apply_filters( 'asp_customize_text_msg', __( 'Enter amount', 'stripe-payments' ), 'enter_amount' );
 	    $output			 .= "<div class='asp_product_item_amount_input_container'>"
-	    . "<input type='text' size='10' class='asp_product_item_amount_input' id='stripeAmount_{$uniq_id}' value='' name='stripeAmount' placeholder='" . $str_enter_amount . "' required/>";
-	    $output			 .= "<span class='asp_product_item_amount_currency_label' style='margin-left: 5px; display: inline-block'> {$currency}</span>";
-	    $output			 .= "<span style='display: block;' id='error_explanation_{$uniq_id}'></span>"
+	    . "<input type='text' size='10' class='asp_product_item_amount_input' id='stripeAmount_{$itemData[ 'uniq_id' ]}' value='' name='stripeAmount' placeholder='" . $str_enter_amount . "' required/>";
+	    $output			 .= "<span class='asp_product_item_amount_currency_label' style='margin-left: 5px; display: inline-block'> {$itemData[ 'currency' ]}</span>";
+	    $output			 .= "<span style='display: block;' id='error_explanation_{$itemData[ 'uniq_id' ]}'></span>"
 	    . "</div>";
 	}
 
 	$output .= '</form>';
 
-	$output	 .= '<div id="asp-all-buttons-container-' . $uniq_id . '" class="asp_all_buttons_container">';
+	$output	 .= '<div id="asp-all-buttons-container-' . $itemData[ 'uniq_id' ] . '" class="asp_all_buttons_container">';
 	$output	 .= '<div class="asp_product_buy_btn_container">';
-	$output	 .= sprintf( '<button class="%s" type="submit" data-asp-ng-button-id="%s"><span>%s</span></button>', $class, $uniq_id, $button_text );
+	$output	 .= sprintf( '<button class="%s" type="submit" data-asp-ng-button-id="%s"><span>%s</span></button>', $class, $itemData[ 'uniq_id' ], $button_text );
 	$output	 .= '</div>';
 	$output	 .= '</div>';
-	$output	 .= '<div id="asp-btn-spinner-container-' . $uniq_id . '" class="asp-btn-spinner-container" style="display: none !important">'
+	$output	 .= '<div id="asp-btn-spinner-container-' . $itemData[ 'uniq_id' ] . '" class="asp-btn-spinner-container" style="display: none !important">'
 	. '<div class="asp-btn-spinner">'
 	. '<div></div>'
 	. '<div></div>'
@@ -130,7 +221,7 @@ class AcceptStripePaymentsShortcodeNG {
 	return $output;
     }
 
-    private function get_loc_data() {
+    private function get_loc_data( $currency ) {
 
 	$key = $this->ASPClass->is_live ? $this->ASPClass->APIPubKey : $this->ASPClass->APIPubKeyTest;
 
@@ -145,6 +236,25 @@ class AcceptStripePaymentsShortcodeNG {
 
 	global $wp;
 	$current_url = home_url( add_query_arg( array( $_GET ), $wp->request ) );
+
+	//Currency Display settings
+	$display_settings	 = array();
+	$display_settings[ 'c' ] = $this->ASPClass->get_setting( 'price_decimals_num', 2 );
+	$display_settings[ 'd' ] = $this->ASPClass->get_setting( 'price_decimal_sep' );
+	$display_settings[ 't' ] = $this->ASPClass->get_setting( 'price_thousand_sep' );
+
+	$currencies = AcceptStripePayments::get_currencies();
+	if ( isset( $currencies[ $currency ] ) ) {
+	    $curr_sym = $currencies[ $currency ][ 1 ];
+	} else {
+	    //no currency code found, let's just use currency code instead of symbol
+	    $curr_sym = $currencies;
+	}
+
+	$curr_pos = $this->ASPClass->get_setting( 'price_currency_pos' );
+
+	$display_settings[ 's' ]	 = $curr_sym;
+	$display_settings[ 'pos' ]	 = $curr_pos;
 
 	$loc_data = array(
 	    'strEnterValidAmount'		 => apply_filters( 'asp_customize_text_msg', __( 'Please enter a valid amount', 'stripe-payments' ), 'enter_valid_amount' ),
@@ -170,6 +280,7 @@ class AcceptStripePaymentsShortcodeNG {
 	    'minAmounts'			 => $minAmounts,
 	    'zeroCents'			 => $zeroCents,
 	    'amountOpts'			 => $amountOpts,
+	    'currencyFormat'		 => $display_settings,
 	);
 	return $loc_data;
     }

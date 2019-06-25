@@ -2,6 +2,11 @@ var stripeHandlerNG = function (data) {
     var parent = this;
     parent.data = data;
     parent.processing = false;
+    parent.dsp = {};
+    parent.dsp.Tax = false;
+    parent.dsp.Shipping = false;
+    parent.dsp.Total = false;
+    parent.dsp.Amount = false;
 
     this.getFormData = function () {
 	var unindexed_array = parent.aspForm.serializeArray();
@@ -12,6 +17,19 @@ var stripeHandlerNG = function (data) {
 	});
 
 	return indexed_array;
+    };
+
+    this.formatMoney = function (n) {
+	n = parent.cents_to_amount(n);
+	var c = isNaN(c = Math.abs(aspFrontVars.currencyFormat.c)) ? 2 : aspFrontVars.currencyFormat.c,
+		d = d === undefined ? "." : aspFrontVars.currencyFormat.d,
+		t = t === undefined ? "," : aspFrontVars.currencyFormat.t,
+		s = n < 0 ? "-" : "",
+		i = String(parseInt(n = Math.abs(Number(n) || 0).toFixed(c))),
+		j = (j = i.length) > 3 ? j % 3 : 0;
+
+	var result = s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
+	return (aspFrontVars.currencyFormat.pos !== "right" ? aspFrontVars.currencyFormat.s + result : result + aspFrontVars.currencyFormat.s);
     };
 
     this.calc_total = function () {
@@ -46,6 +64,21 @@ var stripeHandlerNG = function (data) {
 	    amount = amount + parseInt(parent.data.shipping);
 	}
 	return amount;
+    };
+
+    this.updateAmountsDisplay = function () {
+	parent.calc_total();
+	if (!parent.dsp.Tax) {
+	    parent.dsp.Tax = parent.cont.find('.asp_price_tax_section').find('span');
+	}
+	var taxVal = Math.round(parent.data.item_price * parseFloat(parent.data.tax) / 100) * parent.data.quantity;
+	parent.dsp.Tax.html(parent.formatMoney(taxVal));
+
+	if (!parent.dsp.Total) {
+	    parent.dsp.Total = parent.cont.find('.asp_price_full_total');
+	}
+	parent.dsp.Total.show();
+	parent.dsp.Total.find('.asp_tot_current_price').html(parent.formatMoney(parent.data.total));
     };
 
     this.validate_custom_amount = function (noTaxAndShipping) {
@@ -95,6 +128,8 @@ var stripeHandlerNG = function (data) {
 	    amount = parent.apply_tax_and_shipping(amount);
 	}
 	parent.data.item_price = amount;
+	parent.calc_total();
+	parent.updateAmountsDisplay();
 	return amount;
     };
 
@@ -157,6 +192,8 @@ var stripeHandlerNG = function (data) {
 	parent.doCheckout();
     });
 
+    this.cont = jQuery('[data-asp-ng-cont-id="' + this.data.uniq_id + '"]');
+
     this.aspForm = jQuery('form[data-asp-ng-form-id="' + this.data.uniq_id + '"]');
 
     this.aspForm.submit(function (e) {
@@ -172,7 +209,6 @@ var stripeHandlerNG = function (data) {
 	    return false;
 	}
 	parent.validate_custom_amount(true);
-	parent.calc_total();
     });
 
 };
