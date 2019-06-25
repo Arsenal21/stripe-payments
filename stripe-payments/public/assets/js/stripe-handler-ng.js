@@ -4,9 +4,8 @@ var stripeHandlerNG = function (data) {
     parent.processing = false;
     parent.dsp = {};
     parent.dsp.Tax = false;
-    parent.dsp.Shipping = false;
     parent.dsp.Total = false;
-    parent.dsp.Amount = false;
+    parent.dsp.Price = false;
 
     this.getFormData = function () {
 	var unindexed_array = parent.aspForm.serializeArray();
@@ -33,6 +32,7 @@ var stripeHandlerNG = function (data) {
     };
 
     this.calc_total = function () {
+	parent.data.taxAmount = Math.round(parent.data.item_price * parseFloat(parent.data.tax) / 100) * parent.data.quantity;
 	parent.data.total = parent.apply_tax_and_shipping(parent.data.item_price);
     };
 
@@ -68,17 +68,19 @@ var stripeHandlerNG = function (data) {
 
     this.updateAmountsDisplay = function () {
 	parent.calc_total();
-	if (!parent.dsp.Tax) {
-	    parent.dsp.Tax = parent.cont.find('.asp_price_tax_section').find('span');
-	}
-	var taxVal = Math.round(parent.data.item_price * parseFloat(parent.data.tax) / 100) * parent.data.quantity;
-	parent.dsp.Tax.html(parent.formatMoney(taxVal));
 
-	if (!parent.dsp.Total) {
-	    parent.dsp.Total = parent.cont.find('.asp_price_full_total');
+	if (parent.dsp.Price) {
+	    parent.dsp.Price.html(parent.formatMoney(parent.data.item_price));
 	}
-	parent.dsp.Total.show();
-	parent.dsp.Total.find('.asp_tot_current_price').html(parent.formatMoney(parent.data.total));
+
+	if (parent.dsp.Tax) {
+	    parent.dsp.Tax.html(parent.formatMoney(parent.data.taxAmount));
+	}
+
+	if (parent.dsp.Total) {
+	    parent.dsp.Total.show();
+	    parent.dsp.Total.find('.asp_tot_current_price').html(parent.formatMoney(parent.data.total));
+	}
     };
 
     this.validate_custom_amount = function (noTaxAndShipping) {
@@ -193,6 +195,9 @@ var stripeHandlerNG = function (data) {
     });
 
     this.cont = jQuery('[data-asp-ng-cont-id="' + this.data.uniq_id + '"]');
+    parent.dsp.Price = parent.cont.find('.asp_price_amount');
+    parent.dsp.Tax = parent.cont.find('.asp_price_tax_section').find('span');
+    parent.dsp.Total = parent.cont.find('.asp_price_full_total');
 
     this.aspForm = jQuery('form[data-asp-ng-form-id="' + this.data.uniq_id + '"]');
 

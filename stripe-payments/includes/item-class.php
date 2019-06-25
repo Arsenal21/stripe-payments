@@ -47,6 +47,9 @@ class ASPItem {
 
     public function get_tax() {
 	$this->tax = get_post_meta( $this->post_id, 'asp_product_tax', true );
+	if ( empty( $this->tax ) ) {
+	    $this->tax = 0;
+	}
 	return $this->tax;
     }
 
