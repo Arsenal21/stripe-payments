@@ -1,54 +1,59 @@
-jQuery(document).ready(function ($) {
+var stripeHandlerNG = function (data) {
+    var parent = this;
+    parent.data = data;
+    parent.processing = false;
 
-    stripeHandlerNG.getFormData = function ($form) {
-	var unindexed_array = $form.serializeArray();
+    this.getFormData = function () {
+	var unindexed_array = parent.aspForm.serializeArray();
 	var indexed_array = {};
 
-	$.map(unindexed_array, function (n, i) {
+	jQuery.map(unindexed_array, function (n, i) {
 	    indexed_array[n['name']] = n['value'];
 	});
 
 	return indexed_array;
-    }
+    };
 
-    stripeHandlerNG.cents_to_amount = (function (amount, curr) {
-	if (!this.is_zero_cents(curr)) {
+    this.calc_total = function () {
+	parent.data.total = parent.apply_tax_and_shipping(parent.data.item_price);
+    };
+
+    this.cents_to_amount = function (amount) {
+	if (!parent.is_zero_cents()) {
 	    amount = amount / 100;
 	}
 	return amount;
-    });
+    };
 
-    stripeHandlerNG.is_zero_cents = (function (curr) {
-	if (this.zeroCents.indexOf(curr) === -1) {
+    this.is_zero_cents = function () {
+	if (aspFrontVars.zeroCents.indexOf(parent.data.currency) === -1) {
 	    return false;
 	}
 	return true;
-    });
+    };
 
-    stripeHandlerNG.apply_tax = function (amount, data) {
-	if (data.tax !== 0) {
-	    var tax = Math.round(amount * parseFloat(data.tax) / 100);
+    this.apply_tax = function (amount) {
+	if (parent.data.tax !== 0) {
+	    var tax = Math.round(amount * parseFloat(parent.data.tax) / 100);
 	    amount = parseInt(amount) + parseInt(tax);
 	}
 	return amount;
     };
 
-    stripeHandlerNG.apply_tax_and_shipping = function (amount, data) {
-	amount = this.apply_tax(amount, data);
-	if (data.shipping !== 0) {
-	    amount = amount + parseInt(data.shipping);
+    this.apply_tax_and_shipping = function (amount) {
+	amount = parent.apply_tax(amount);
+	if (parent.data.shipping !== 0) {
+	    amount = amount + parseInt(parent.data.shipping);
 	}
 	return amount;
     };
 
+    this.validate_custom_amount = function (noTaxAndShipping) {
 
-    stripeHandlerNG.validate_custom_amount = function (btnId, noTaxAndShipping) {
-	var data = window['aspItemDataNG' + btnId];
-
-	var amount = jQuery('input#stripeAmount_' + btnId).val();
-	if (this.amountOpts.applySepOpts != 0) {
-	    amount = amount.replace(this.amountOpts.thousandSep, '');
-	    amount = amount.replace(this.amountOpts.decimalSep, '.');
+	var amount = jQuery('input#stripeAmount_' + parent.data.uniq_id).val();
+	if (aspFrontVars.amountOpts.applySepOpts != 0) {
+	    amount = amount.replace(this.aspFrontVars.amountOpts.thousandSep, '');
+	    amount = amount.replace(this.aspFrontVars.amountOpts.decimalSep, '.');
 	} else {
 	    amount = amount.replace(/\$/g, '');
 	    amount = amount.replace(/\,/g, '');
@@ -57,109 +62,117 @@ jQuery(document).ready(function ($) {
 	amount = parseFloat(amount);
 
 	if (isNaN(amount)) {
-	    if (!this.dontShowValidationErrors) {
-		jQuery('#error_explanation_' + btnId).hide().html(stripeHandlerNG.strEnterValidAmount).fadeIn('slow');
+	    if (!aspFrontVars.dontShowValidationErrors) {
+		jQuery('#error_explanation_' + parent.data.uniq_id).hide().html(aspFrontVars.strEnterValidAmount).fadeIn('slow');
 	    }
 	    return false;
 	}
 
 	var displayAmount = amount.toFixed(2).toString();
-	if (this.amountOpts.applySepOpts !== 0) {
-	    displayAmount = displayAmount.replace('.', this.amountOpts.decimalSep);
+	if (aspFrontVars.amountOpts.applySepOpts !== 0) {
+	    displayAmount = displayAmount.replace('.', aspFrontVars.amountOpts.decimalSep);
 	}
-	if (!this.is_zero_cents(data.currency)) {
+	if (!parent.is_zero_cents()) {
 	    amount = Math.round(amount * 100);
 	}
-	if (typeof this.minAmounts[data.currency] !== 'undefined') {
-	    if (this.minAmounts[data.currency] > amount) {
-		jQuery('#error_explanation_' + data.uniq_id).hide().html(this.strMinAmount + ' ' + this.cents_to_amount(this.minAmounts[data.currency], data.currency)).fadeIn('slow');
+	if (typeof aspFrontVars.minAmounts[parent.data.currency] !== 'undefined') {
+	    if (aspFrontVars.minAmounts[parent.data.currency] > amount) {
+		jQuery('#error_explanation_' + parent.data.uniq_id).hide().html(aspFrontVars.strMinAmount + ' ' +
+			parent.cents_to_amount(aspFrontVars.minAmounts[parent.data.currency])).fadeIn('slow');
 		return false;
 	    }
 	} else if (50 > amount) {
-	    jQuery('#error_explanation_' + btnId).hide().html(this.strMinAmount + ' 0.5').fadeIn('slow');
+	    jQuery('#error_explanation_' + parent.data.uniq_id).hide().html(aspFrontVars.strMinAmount + ' 0.5').fadeIn('slow');
 	    return false;
 	}
-	jQuery('#error_explanation_' + btnId).html('');
-	jQuery('input#stripeAmount_' + btnId).val(displayAmount);
+	jQuery('#error_explanation_' + parent.data.uniq_id).html('');
+	jQuery('input#stripeAmount_' + parent.data.uniq_id).val(displayAmount);
 
 	if (typeof noTaxAndShipping === 'undefined') {
 	    noTaxAndShipping = false;
 	}
 	if (!noTaxAndShipping) {
-	    amount = this.apply_tax_and_shipping(amount, data);
+	    amount = parent.apply_tax_and_shipping(amount);
 	}
+	parent.data.item_price = amount;
 	return amount;
-    }
+    };
 
-    stripeHandlerNG.toggle_spinner = function (btnId, show) {
+    this.toggle_spinner = function (show) {
 	if (show) {
-	    $('div#asp-all-buttons-container-' + btnId).hide();
-	    $('div#asp-btn-spinner-container-' + btnId).show();
+	    jQuery('div#asp-all-buttons-container-' + parent.data.uniq_id).hide();
+	    jQuery('div#asp-btn-spinner-container-' + parent.data.uniq_id).show();
 	} else {
-	    $('div#asp-btn-spinner-container-' + btnId).hide();
-	    $('div#asp-all-buttons-container-' + btnId).show();
+	    jQuery('div#asp-btn-spinner-container-' + parent.data.uniq_id).hide();
+	    jQuery('div#asp-all-buttons-container-' + parent.data.uniq_id).show();
 	}
     };
 
-    stripeHandlerNG.doCheckout = function (itemData) {
-	var formData = this.getFormData($('form[data-asp-ng-form-id="' + itemData.uniq_id + '"]'));
+    this.doCheckout = function () {
+	parent.toggle_spinner(true);
+	var formData = this.getFormData();
 	var payloadData = {
 	    'action': 'asp_ng_get_token',
-	    'product_id': itemData.productId,
-	    'current_url': this.current_url,
-	    'is_live': itemData.is_live,
+	    'product_id': parent.data.productId,
+	    'current_url': aspFrontVars.current_url,
+	    'is_live': parent.data.is_live,
 	    'form_data': formData
 	};
 
-	var stripe = Stripe(stripeHandlerNG.pubKey);
+	var stripe = Stripe(aspFrontVars.pubKey);
+	parent.processing = true;
 
-	$.post(stripeHandlerNG.ajaxURL, payloadData, function (response) {
-	    console.log(response);
+	jQuery.post(aspFrontVars.ajaxURL, payloadData, function (response) {
 	    if (response.success) {
 		stripe.redirectToCheckout({
 		    sessionId: response.checkoutSessionId
 		}).then(function (result) {
-		    alert(stripeHandlerNG.strErrorOccurred + ': ' + result.error.message);
-		    stripeHandlerNG.toggle_spinner(itemData.uniq_id, false);
+		    alert(aspFrontVars.strErrorOccurred + ': ' + result.error.message);
+		    parent.processing = false;
+		    parent.toggle_spinner(false);
 		});
 	    } else {
-		alert(stripeHandlerNG.strErrorOccurred + ': ' + response.errMsg);
-		stripeHandlerNG.toggle_spinner(itemData.uniq_id, false);
+		alert(aspFrontVars.strErrorOccurred + ': ' + response.errMsg);
+		parent.processing = false;
+		parent.toggle_spinner(false);
 	    }
 	}).fail(function (res) {
-	    alert(stripeHandlerNG.strErrorOccurred + ': ' + res.responseText);
-	    stripeHandlerNG.toggle_spinner(itemData.uniq_id, false);
+	    alert(aspFrontVars.strErrorOccurred + ': ' + res.responseText);
+	    parent.processing = false;
+	    parent.toggle_spinner(false);
 	});
     };
 
-    $('[data-asp-ng-button-id]').click(function (e) {
+    jQuery('[data-asp-ng-button-id="' + parent.data.uniq_id + '"]').click(function (e) {
 	e.preventDefault();
-	var btnId = $(this).data('asp-ng-button-id');
-	var itemData = window['aspItemDataNG' + btnId];
-	if (itemData.variable) {
-	    var amt = stripeHandlerNG.validate_custom_amount(btnId, true);
+	if (parent.processing) {
+	    return false;
+	}
+	if (parent.data.variable) {
+	    var amt = parent.validate_custom_amount(true);
 	    if (!amt) {
 		return false;
 	    }
 	}
-	stripeHandlerNG.toggle_spinner(btnId, true);
-	stripeHandlerNG.doCheckout(itemData);
+	parent.doCheckout();
     });
 
-    var aspForms = $('form[data-asp-ng-form-id]');
+    this.aspForm = jQuery('form[data-asp-ng-form-id="' + this.data.uniq_id + '"]');
 
-    aspForms.submit(function (e) {
+    this.aspForm.submit(function (e) {
 	e.preventDefault();
-	var btnId = $(this).data('asp-ng-form-id');
-	$('[data-asp-ng-button-id="' + btnId + '"]').click();
-    });
-
-    aspForms.find('.asp_product_item_amount_input').change(function () {
-	var btnId = $(this).closest('form[data-asp-ng-form-id]').data('asp-ng-form-id');
-	var amt = stripeHandlerNG.validate_custom_amount(btnId, true);
-	if (!amt) {
-
+	if (parent.processing) {
+	    return false;
 	}
+	jQuery('[data-asp-ng-button-id="' + parent.data.uniq_id + '"]').click();
     });
 
-});
+    this.aspForm.find('.asp_product_item_amount_input').change(function () {
+	if (parent.processing) {
+	    return false;
+	}
+	parent.validate_custom_amount(true);
+	parent.calc_total();
+    });
+
+};

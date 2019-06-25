@@ -30,6 +30,9 @@ class AcceptStripePaymentsShortcodeNG {
     public function register_scripts() {
 	wp_register_script( 'asp-stripe-script-ng', 'https://js.stripe.com/v3/', array(), null, true );
 	wp_register_script( 'asp-stripe-handler-ng', WP_ASP_PLUGIN_URL . '/public/assets/js/stripe-handler-ng.js', array( 'jquery' ), WP_ASP_PLUGIN_VERSION, true );
+
+	wp_enqueue_script( 'asp-stripe-script-ng' );
+	wp_enqueue_script( 'asp-stripe-handler-ng' );
     }
 
     public function shortcode_asp_product( $atts ) {
@@ -69,7 +72,7 @@ class AcceptStripePaymentsShortcodeNG {
 	$currency = $item->get_currency();
 
 	//price
-	$price = $item->get_price();
+	$price = $item->get_price( true );
 
 	$itemData = array(
 	    'productId'	 => $id,
@@ -77,16 +80,22 @@ class AcceptStripePaymentsShortcodeNG {
 	    'uniq_id'	 => $uniq_id,
 	    'currency'	 => $item->get_currency(),
 	    'variable'	 => empty( $price ) ? true : false,
+	    'price'		 => $price,
+	    'tax'		 => $item->get_tax( true ),
+	    'shipping'	 => $item->get_shipping( true ),
 	);
 
-	$this->print_loc_data();
+	$output = '';
 
-	wp_localize_script( 'asp-stripe-handler-ng', 'aspItemDataNG' . $uniq_id, $itemData );
-	wp_enqueue_script( 'asp-stripe-script-ng' );
-	wp_enqueue_script( 'asp-stripe-handler-ng' );
+	if ( ! $this->locDataPrinted ) {
+	    $loc_data		 = $this->get_loc_data();
+	    $output			 .= '<script>var aspFrontVars =' . json_encode( $loc_data ) . ';</script>';
+	    $this->locDataPrinted	 = true;
+	}
 
-	$output	 = '';
-	$output	 .= "<link rel='stylesheet' href='" . WP_ASP_PLUGIN_URL . '/public/views/templates/default/style.css' . "' type='text/css' media='all' />";
+	$output .= '<script>jQuery(document).ready(function() {new stripeHandlerNG(' . json_encode( $itemData ) . ')});</script>';
+
+	$output .= "<link rel='stylesheet' href='" . WP_ASP_PLUGIN_URL . '/public/views/templates/default/style.css' . "' type='text/css' media='all' />";
 
 	$styles	 = AcceptStripePaymentsShortcode::get_instance()->get_styles();
 	$output	 .= $styles;
@@ -121,11 +130,7 @@ class AcceptStripePaymentsShortcodeNG {
 	return $output;
     }
 
-    private function print_loc_data() {
-
-	if ( $this->locDataPrinted ) {
-	    return;
-	}
+    private function get_loc_data() {
 
 	$key = $this->ASPClass->is_live ? $this->ASPClass->APIPubKey : $this->ASPClass->APIPubKeyTest;
 
@@ -141,7 +146,7 @@ class AcceptStripePaymentsShortcodeNG {
 	global $wp;
 	$current_url = home_url( add_query_arg( array( $_GET ), $wp->request ) );
 
-	$loc_data		 = array(
+	$loc_data = array(
 	    'strEnterValidAmount'		 => apply_filters( 'asp_customize_text_msg', __( 'Please enter a valid amount', 'stripe-payments' ), 'enter_valid_amount' ),
 	    'strMinAmount'			 => apply_filters( 'asp_customize_text_msg', __( 'Minimum amount is', 'stripe-payments' ), 'min_amount_is' ),
 	    'strEnterQuantity'		 => apply_filters( 'asp_customize_text_msg', __( 'Please enter quantity.', 'stripe-payments' ), 'enter_quantity' ),
@@ -166,8 +171,7 @@ class AcceptStripePaymentsShortcodeNG {
 	    'zeroCents'			 => $zeroCents,
 	    'amountOpts'			 => $amountOpts,
 	);
-	wp_localize_script( 'asp-stripe-handler-ng', 'stripeHandlerNG', $loc_data );
-	$this->locDataPrinted	 = true;
+	return $loc_data;
     }
 
 }
