@@ -32,6 +32,7 @@ namespace Stripe;
  * @property string $payment_intent
  * @property string $receipt_email
  * @property string $receipt_number
+ * @property string $receipt_url
  * @property bool $refunded
  * @property Collection $refunds
  * @property string $review
@@ -41,6 +42,7 @@ namespace Stripe;
  * @property string $statement_descriptor
  * @property string $status
  * @property string $transfer
+ * @property mixed $transfer_data
  * @property string $transfer_group
  *
  * @package Stripe
@@ -102,6 +104,14 @@ class Charge extends ApiResource
     const DECLINED_TRANSACTION_NOT_ALLOWED           = 'transaction_not_allowed';
     const DECLINED_TRY_AGAIN_LATER                   = 'try_again_later';
     const DECLINED_WITHDRAWAL_COUNT_LIMIT_EXCEEDED   = 'withdrawal_count_limit_exceeded';
+
+    /**
+     * Possible string representations of the status of the charge.
+     * @link https://stripe.com/docs/api/charges/object#charge_object-status
+     */
+    const STATUS_FAILED    = 'failed';
+    const STATUS_PENDING   = 'pending';
+    const STATUS_SUCCEEDED = 'succeeded';
 
     /**
      * @param array|null $params

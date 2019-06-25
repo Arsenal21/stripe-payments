@@ -60,6 +60,13 @@ class ASPMain {
 	add_action( 'init', array( $ASPProducts, 'register_post_type' ), 0 );
 	$ASPOrder	 = ASPOrder::get_instance();
 	add_action( 'init', array( $ASPOrder, 'register_post_type' ), 0 );
+
+	//NG-related
+	require_once( WP_ASP_PLUGIN_PATH . 'includes/item-class.php' );
+	require_once( WP_ASP_PLUGIN_PATH . 'includes/class-asp-ng-payment-handler.php' );
+	require_once( WP_ASP_PLUGIN_PATH . 'public/includes/class-shortcode-ng.php' );
+	add_action( 'plugins_loaded', array( 'AcceptStripePaymentsShortcodeNG', 'get_instance' ) );
+	//NG-related end
     }
 
     static function load_stripe_lib() {
