@@ -94,7 +94,7 @@ class AcceptStripePayments {
 	$this->APISecKeyTest	 = $this->get_setting( 'api_secret_key_test' );
 
 	// Load plugin text domain
-	add_action( 'plugins_loaded', array( $this, 'load_asp_plugin_textdomain' ) );
+	add_action( 'init', array( $this, 'load_asp_plugin_textdomain' ) );
 
 	add_action( 'plugins_loaded', array( $this, 'plugins_loaded' ) );
 

@@ -207,7 +207,7 @@ class AcceptStripePayments_Process_IPN {
 		$this->ipn_completed( 'Invalid Currency Code' );
 	    }
 
-	    $item_name		 = sanitize_text_field( $_POST[ 'item_name' ] );
+	    $item_name		 = stripslashes( sanitize_text_field( $_POST[ 'item_name' ] ) );
 	    $item_quantity		 = sanitize_text_field( $_POST[ 'item_quantity' ] );
 	    $item_custom_quantity	 = isset( $_POST[ 'stripeCustomQuantity' ] ) ? intval( $_POST[ 'stripeCustomQuantity' ] ) : false;
 	    $item_url		 = sanitize_text_field( $_POST[ 'item_url' ] );
@@ -215,7 +215,7 @@ class AcceptStripePayments_Process_IPN {
 	    $reported_price		 = $_POST[ 'stripeItemPrice' ];
 
 	    ASP_Debug_Logger::log( 'Checking price consistency.' );
-	    $calculated_button_key = md5( htmlspecialchars_decode( $_POST[ 'item_name' ] ) . $reported_price );
+	    $calculated_button_key = md5( htmlspecialchars_decode( $item_name ) . $reported_price );
 
 	    if ( $button_key !== $calculated_button_key ) {
 		$this->ipn_completed( 'Button Key mismatch. Expected ' . $button_key . ', calculated: ' . $calculated_button_key );
