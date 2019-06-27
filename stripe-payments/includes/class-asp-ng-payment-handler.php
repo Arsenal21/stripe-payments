@@ -139,6 +139,12 @@ class ASPPaymentHandlerNG {
 		$data[ 'shipping' ]					 = $item->get_shipping();
 	    }
 
+	    //custom fields
+	    $custom_fields = $sess->get_transient_data( 'custom_fields' );
+	    if ( ! empty( $custom_fields ) ) {
+		$data[ 'custom_fields' ] = $custom_fields;
+	    }
+
 	    $product_details = __( "Product Name: ", "stripe-payments" ) . $data[ 'item_name' ] . "\n";
 	    $product_details .= __( "Quantity: ", "stripe-payments" ) . $data[ 'item_quantity' ] . "\n";
 	    $product_details .= __( "Item Price: ", "stripe-payments" ) . AcceptStripePayments::formatted_price( $data[ 'item_price' ], $data[ 'currency_code' ] ) . "\n";
@@ -213,7 +219,7 @@ class ASPPaymentHandlerNG {
 	//check for variable price
 	$price = $item->get_price();
 	if ( empty( $price ) ) {
-	    //variable place. Get price from form data
+	    //variable price. Get price from form data
 	    if ( isset( $form_data[ 'stripeAmount' ] ) && ! empty( $form_data[ 'stripeAmount' ] ) ) {
 		$price = floatval( $form_data[ 'stripeAmount' ] );
 		$item->set_price( $price );
@@ -225,6 +231,48 @@ class ASPPaymentHandlerNG {
 	}
 
 	$sData[ 'line_items' ] = $item->gen_item_data();
+
+	$metadata = array();
+
+	//Custom Field
+	$custom_fields = array();
+	if ( isset( $form_data[ 'stripeCustomField' ] ) ) {
+	    $custom_fields[] = array( 'name' => $form_data[ 'stripeCustomFieldName' ], 'value' => $form_data[ 'stripeCustomField' ] );
+	}
+
+	//compatability with ACF addon
+	$postArr = array();
+	foreach ( $form_data as $key => $val ) {
+	    if ( preg_match( '/^stripeCustomFields\[(.*)/', $key, $m ) ) {
+		$postArr[ $m[ 1 ] ] = $val;
+	    }
+	}
+
+	if ( ! empty( $postArr ) ) {
+	    $_POST[ 'stripeCustomFields' ] = $postArr;
+	}
+
+	$custom_fields = apply_filters( 'asp_process_custom_fields', $custom_fields, array( 'product_id' => $prod_id ) );
+
+	//add to session
+	$sess->set_transient_data( 'custom_fields', $custom_fields );
+
+	if ( ! empty( $custom_fields ) ) {
+	    //add to metadata
+	    $cfStr = '';
+	    foreach ( $custom_fields as $cf ) {
+		$cfStr .= $cf[ 'name' ] . ': ' . $cf[ 'value' ] . ' | ';
+	    }
+	    $cfStr				 = rtrim( $cfStr, ' | ' );
+	    //trim the string as metadata value cannot exceed 500 chars
+	    $cfStr				 = substr( $cfStr, 0, 499 );
+	    $metadata[ 'Custom Fields' ]	 = $cfStr;
+	}
+
+	if ( ! empty( $metadata ) ) {
+	    $sData[ 'payment_intent_data' ]			 = array();
+	    $sData[ 'payment_intent_data' ][ 'metadata' ]	 = $metadata;
+	}
 
 	$session = \Stripe\Checkout\Session::create( $sData );
 

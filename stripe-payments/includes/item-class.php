@@ -173,12 +173,12 @@ class ASPItem {
 	    $post_id = $this->post_id;
 	}
 	if ( $post_id === false ) {
-	    $this->last_error = 'No product ID provided.';
+	    $this->last_error = __( 'No product ID provided.', 'stripe-payments' );
 	    return false;
 	}
 	$this->post = get_post( $post_id );
 	if ( ! $this->post || get_post_type( $post_id ) != ASPMain::$products_slug ) {
-	    $this->last_error = sprintf( "Can't find product with ID %d", $post_id );
+	    $this->last_error = sprintf( __( "Can't find product with ID %d", 'stripe-payments' ), $post_id );
 	    return false;
 	}
 	$this->zero_cent = AcceptStripePayments::is_zero_cents( $this->get_currency() );

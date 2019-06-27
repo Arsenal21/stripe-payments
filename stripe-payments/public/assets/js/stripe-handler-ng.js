@@ -180,6 +180,43 @@ var stripeHandlerNG = function (data) {
 	});
     };
 
+    this.validateCustomFields = function () {
+	if (parent.data.custom_field != '1') {
+	    return true;
+	}
+	parent.aspForm.find('.asp_product_custom_field_error').hide();
+	parent.customInputs = parent.aspForm.find('.asp_product_custom_field_input').toArray();
+	var valid = true;
+	if (typeof (parent.data.custom_field_validation_regex) !== "undefined" && parent.data.custom_field_validation_regex !== '') {
+	    try {
+		var re = new RegExp(parent.data.custom_field_validation_regex);
+	    } catch (error) {
+		alert(aspFrontVars.strInvalidCFValidationRegex + ' ' + parent.data.custom_field_validation_regex + "\n" + error);
+		return valid = false;
+	    }
+	}
+	jQuery.each(parent.customInputs, function (id, customInput) {
+	    customInput = jQuery(customInput);
+	    if (typeof (customInput.attr('data-asp-custom-mandatory')) !== "undefined") {
+		if (customInput.attr('type') === 'text' && customInput.val() === '') {
+		    jQuery(this).siblings('.asp_product_custom_field_error').hide().html(aspFrontVars.strPleaseFillIn).fadeIn('slow');
+		    return valid = false;
+		}
+		if (customInput.attr('type') === 'checkbox' && customInput.prop('checked') !== true) {
+		    jQuery(this).parent().siblings('.asp_product_custom_field_error').hide().html(stripehandler.strPleaseCheckCheckbox).fadeIn('slow');
+		    return valid = false;
+		}
+	    }
+	    if (customInput.attr('class') === 'asp_product_custom_field_input' && customInput.attr('type') === 'text' && typeof re !== "undefined") {
+		if (customInput.val() && !re.test(customInput.val())) {
+		    jQuery(this).siblings('.asp_product_custom_field_error').hide().html(parent.data.custom_field_validation_err_msg).fadeIn('slow');
+		    return valid = false;
+		}
+	    }
+	});
+	return valid;
+    }
+
     jQuery('[data-asp-ng-button-id="' + parent.data.uniq_id + '"]').click(function (e) {
 	e.preventDefault();
 	if (parent.processing) {
@@ -190,6 +227,11 @@ var stripeHandlerNG = function (data) {
 	    if (!amt) {
 		return false;
 	    }
+	}
+	var canProceed = false;
+	canProceed = parent.validateCustomFields();
+	if (!canProceed) {
+	    return false;
 	}
 	parent.doCheckout();
     });
