@@ -33,7 +33,7 @@ class ASPTemplateNG {
 	<?php
 	$tpl = ob_get_clean();
 	if ( ! $css_inserted ) {
-	    $tpl = "<link rel='stylesheet' href='" . WP_ASP_PLUGIN_URL . '/public/views/templates/default/style.css' . "' type='text/css' media='all' />" . $tpl;
+	    $tpl = "<link rel='stylesheet' href='" . WP_ASP_PLUGIN_URL . '/public/views/templates/default-ng/style.css' . "' type='text/css' media='all' />" . $tpl;
 	}
 	return $tpl;
     }

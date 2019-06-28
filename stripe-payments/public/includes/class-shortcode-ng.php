@@ -30,7 +30,9 @@ class AcceptStripePaymentsShortcodeNG {
     public function register_scripts() {
 	wp_register_script( 'asp-stripe-script-ng', 'https://js.stripe.com/v3/', array(), null, true );
 	wp_register_script( 'asp-stripe-handler-ng', WP_ASP_PLUGIN_URL . '/public/assets/js/stripe-handler-ng.js', array( 'jquery' ), WP_ASP_PLUGIN_VERSION, true );
+	wp_register_style( 'asp-pure-css', 'https://unpkg.com/purecss@1.0.0/build/pure-min.css', array(), null );
 
+	wp_enqueue_style( 'asp-pure-css' );
 	wp_enqueue_script( 'asp-stripe-script-ng' );
 	wp_enqueue_script( 'asp-stripe-handler-ng' );
     }
@@ -106,7 +108,7 @@ class AcceptStripePaymentsShortcodeNG {
 	$template_name	 = "default-ng";
 	require_once(WP_ASP_PLUGIN_PATH . 'public/views/templates/' . $template_name . '/template-ng.php');
 	$tplClass	 = new ASPTemplateNG();
-	$tpl		 = $tplClass->get_template();
+	$tpl		 = $tplClass->get_template(false);
 
 	$post = get_post( $id );
 
@@ -163,7 +165,7 @@ class AcceptStripePaymentsShortcodeNG {
 	    $shipStr	 = apply_filters( 'asp_customize_text_msg', __( 'Shipping', 'stripe-payments' ), 'shipping_str' );
 	    $tot_price	 += $shipping;
 	    if ( ! empty( $under_price_line ) ) {
-		$under_price_line .= sprintf( '<span class="asp_price_shipping_section">%s: <span>%s</span></span>', $shipStr, AcceptStripePayments::formatted_price( $shipping, $currency ) );
+		$under_price_line .= sprintf( '<span class="asp_price_shipping_section asp_price_shipping_section-ng">%s: <span>%s</span></span>', $shipStr, AcceptStripePayments::formatted_price( $shipping, $currency ) );
 	    }
 	}
 
@@ -188,7 +190,7 @@ class AcceptStripePaymentsShortcodeNG {
 	}
 
 	$output .= $tpl;
-	return '<div data-asp-ng-cont-id="' . $uniq_id . '"' . $output . '</div>';
+	return '<div data-asp-ng-cont-id="' . $uniq_id . '">' . $output . '</div>';
     }
 
     function get_button_code( $itemData, $class, $button_text ) {
@@ -201,20 +203,19 @@ class AcceptStripePaymentsShortcodeNG {
 
 	$output .= '<script>jQuery(document).ready(function() {new stripeHandlerNG(' . json_encode( $itemData ) . ')});</script>';
 
-	$output .= "<link rel='stylesheet' href='" . WP_ASP_PLUGIN_URL . '/public/views/templates/default-ng/style.css' . "' type='text/css' media='all' />";
-
 	$styles	 = AcceptStripePaymentsShortcode::get_instance()->get_styles();
 	$output	 .= $styles;
 
-	$output .= "<form id = 'stripe_form_{$itemData[ 'uniq_id' ]}' data-asp-ng-form-id='{$itemData[ 'uniq_id' ]}' stclass='asp-stripe-form' action = '' METHOD = 'POST'> ";
+	$output .= "<form id = 'stripe_form_{$itemData[ 'uniq_id' ]}' data-asp-ng-form-id='{$itemData[ 'uniq_id' ]}' class='pure-form pure-form-stacked asp-stripe-form' action = '' METHOD = 'POST'> ";
 
 
 	if ( empty( $itemData[ 'price' ] ) ) { //price not specified, let's add an input box for user to specify the amount
 	    $str_enter_amount	 = apply_filters( 'asp_customize_text_msg', __( 'Enter amount', 'stripe-payments' ), 'enter_amount' );
 	    $output			 .= "<div class='asp_product_item_amount_input_container'>"
-	    . "<input type='text' size='10' class='asp_product_item_amount_input' id='stripeAmount_{$itemData[ 'uniq_id' ]}' value='' name='stripeAmount' placeholder='" . $str_enter_amount . "' required/>";
-	    $output			 .= "<span class='asp_product_item_amount_currency_label' style='margin-left: 5px; display: inline-block'> {$itemData[ 'currency' ]}</span>";
-	    $output			 .= "<span style='display: block;' id='error_explanation_{$itemData[ 'uniq_id' ]}'></span>"
+	    . " <fieldset>"
+	    . "<input type='text' size='10' class='pure-input-1 asp_product_item_amount_input' id='stripeAmount_{$itemData[ 'uniq_id' ]}' value='' name='stripeAmount' placeholder='" . $str_enter_amount . " ({$itemData[ 'currency' ]})' required/>";
+	    $output			 .= "<span class='pure-form-message asp-product-error-msg' id='error_explanation_{$itemData[ 'uniq_id' ]}'></span>"
+	    . "</fieldset>"
 	    . "</div>";
 	}
 
@@ -259,6 +260,7 @@ class AcceptStripePaymentsShortcodeNG {
 	    $mandatory	 = $this->ASPClass->get_setting( 'custom_field_mandatory' );
 	    $tplCF		 = '';
 	    $tplCF		 .= "<div class='asp_product_custom_field_input_container'>";
+	    $tplCF		 .= "<fieldset>";
 	    $tplCF		 .= '<input type="hidden" name="stripeCustomFieldName" value="' . esc_attr( $field_name ) . '">';
 	    switch ( $field_type ) {
 		case 'text':
@@ -270,10 +272,11 @@ class AcceptStripePaymentsShortcodeNG {
 		    }
 		    break;
 		case 'checkbox':
-		    $tplCF .= '<label class="asp_product_custom_field_label"><input id="asp-custom-field-' . $data[ 'uniq_id' ] . '" class="asp_product_custom_field_input" type="checkbox"' . ($mandatory ? ' data-asp-custom-mandatory' : '') . ' name="stripeCustomField"' . ($mandatory ? ' required' : '' ) . '>' . $field_descr . '</label>';
+		    $tplCF .= '<label class="pure-checkbox asp_product_custom_field_label"><input id="asp-custom-field-' . $data[ 'uniq_id' ] . '" class="asp_product_custom_field_input" type="checkbox"' . ($mandatory ? ' data-asp-custom-mandatory' : '') . ' name="stripeCustomField"' . ($mandatory ? ' required' : '' ) . '>' . $field_descr . '</label>';
 		    break;
 	    }
-	    $tplCF		 .= "<span id='custom_field_error_explanation_{$data[ 'uniq_id' ]}' class='asp_product_custom_field_error'></span>" .
+	    $tplCF		 .= "<span id='custom_field_error_explanation_{$data[ 'uniq_id' ]}' class='pure-form-message asp_product_custom_field_error'></span>" .
+	    "</fieldset>" .
 	    "</div>";
 	    $this->tplCF	 = $tplCF;
 	}

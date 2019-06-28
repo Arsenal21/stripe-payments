@@ -99,6 +99,7 @@ var stripeHandlerNG = function (data) {
 	if (isNaN(amount)) {
 	    if (!aspFrontVars.dontShowValidationErrors) {
 		jQuery('#error_explanation_' + parent.data.uniq_id).hide().html(aspFrontVars.strEnterValidAmount).fadeIn('slow');
+		jQuery('input#stripeAmount_' + parent.data.uniq_id).focus();
 	    }
 	    return false;
 	}
@@ -114,10 +115,12 @@ var stripeHandlerNG = function (data) {
 	    if (aspFrontVars.minAmounts[parent.data.currency] > amount) {
 		jQuery('#error_explanation_' + parent.data.uniq_id).hide().html(aspFrontVars.strMinAmount + ' ' +
 			parent.cents_to_amount(aspFrontVars.minAmounts[parent.data.currency])).fadeIn('slow');
+		jQuery('input#stripeAmount_' + parent.data.uniq_id).focus();
 		return false;
 	    }
 	} else if (50 > amount) {
 	    jQuery('#error_explanation_' + parent.data.uniq_id).hide().html(aspFrontVars.strMinAmount + ' 0.5').fadeIn('slow');
+	    jQuery('input#stripeAmount_' + parent.data.uniq_id).focus();
 	    return false;
 	}
 	jQuery('#error_explanation_' + parent.data.uniq_id).html('');
@@ -180,12 +183,11 @@ var stripeHandlerNG = function (data) {
 	});
     };
 
-    this.validateCustomFields = function () {
+    this.validateCustomFields = function (singleInput) {
 	if (parent.data.custom_field != '1') {
 	    return true;
 	}
 	parent.aspForm.find('.asp_product_custom_field_error').hide();
-	parent.customInputs = parent.aspForm.find('.asp_product_custom_field_input').toArray();
 	var valid = true;
 	if (typeof (parent.data.custom_field_validation_regex) !== "undefined" && parent.data.custom_field_validation_regex !== '') {
 	    try {
@@ -195,21 +197,30 @@ var stripeHandlerNG = function (data) {
 		return valid = false;
 	    }
 	}
-	jQuery.each(parent.customInputs, function (id, customInput) {
-	    customInput = jQuery(customInput);
+	var inputs;
+	if (singleInput) {
+	    inputs = singleInput;
+	} else {
+	    inputs = parent.customInputs;
+	}
+	jQuery.each(inputs, function (id, customInput) {
+	    var customInput = jQuery(customInput);
 	    if (typeof (customInput.attr('data-asp-custom-mandatory')) !== "undefined") {
 		if (customInput.attr('type') === 'text' && customInput.val() === '') {
 		    jQuery(this).siblings('.asp_product_custom_field_error').hide().html(aspFrontVars.strPleaseFillIn).fadeIn('slow');
+		    jQuery(this).focus();
 		    return valid = false;
 		}
 		if (customInput.attr('type') === 'checkbox' && customInput.prop('checked') !== true) {
 		    jQuery(this).parent().siblings('.asp_product_custom_field_error').hide().html(stripehandler.strPleaseCheckCheckbox).fadeIn('slow');
+		    jQuery(this).focus();
 		    return valid = false;
 		}
 	    }
 	    if (customInput.attr('class') === 'asp_product_custom_field_input' && customInput.attr('type') === 'text' && typeof re !== "undefined") {
 		if (customInput.val() && !re.test(customInput.val())) {
 		    jQuery(this).siblings('.asp_product_custom_field_error').hide().html(parent.data.custom_field_validation_err_msg).fadeIn('slow');
+		    jQuery(this).focus();
 		    return valid = false;
 		}
 	    }
@@ -256,6 +267,12 @@ var stripeHandlerNG = function (data) {
 	    return false;
 	}
 	parent.validate_custom_amount(true);
+    });
+
+    parent.customInputs = parent.aspForm.find('.asp_product_custom_field_input').toArray();
+
+    jQuery(parent.customInputs).change(function () {
+	parent.validateCustomFields(jQuery(this));
     });
 
 };

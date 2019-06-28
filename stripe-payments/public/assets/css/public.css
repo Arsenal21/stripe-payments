@@ -106,8 +106,8 @@ CSS class names should use dashes. Example: asp-product-description
 
 }
 
-.asp_product_custom_field_error {
-    display: none;
+.asp_product_custom_field_error, .asp-product-error-msg {
+    display: block;
     color: red;
 }
 
