@@ -97,7 +97,7 @@ class AcceptStripePaymentsShortcodeNG
 		$coupons_enabled = get_post_meta($id, 'asp_product_coupons_setting', true);
 
 		if (($coupons_enabled === "") || $coupons_enabled === "2") {
-			$coupons_enabled = $this->AcceptStripePayments->get_setting('coupons_enabled');
+			$coupons_enabled = $this->ASPClass->get_setting('coupons_enabled');
 		}
 
 		$itemData = array(
@@ -108,6 +108,7 @@ class AcceptStripePaymentsShortcodeNG
 			'currency'	 => $item->get_currency(),
 			'variable'	 => empty($price) ? true : false,
 			'price'		 => $price,
+			'item_price' => $price,
 			'tax'		 => $item->get_tax(true),
 			'shipping'	 => $item->get_shipping(true),
 			'quantity'	 => $item->get_quantity(),
@@ -246,6 +247,9 @@ class AcceptStripePaymentsShortcodeNG
 				//check if this is subscription product. If it is, we will only display coupon field if subs addon version is >=1.3.3t1
 				if (!$plan_id || ($plan_id && class_exists('ASPSUB_main') && version_compare(ASPSUB_main::ADDON_VER, '1.3.3t1') >= 0)) {
 					$str_coupon_label = __('Coupon Code', 'stripe-payments');
+					$strRemoveCoupon = apply_filters('asp_customize_text_msg', __('Remove coupon', 'stripe-payments'), 'remove_coupon');
+					$strRemove = apply_filters('asp_customize_text_msg', __('Remove', 'stripe-payments'), 'remove');
+
 					ob_start();
 					?>
 				<div class="asp_product_coupon_input_container">
@@ -257,10 +261,13 @@ class AcceptStripePaymentsShortcodeNG
 							</div>
 						</div>
 						<div class="pure-u-1 pure-u-md-2-5">
-							<button type="button" id="asp-redeem-coupon-btn-<?php echo $itemData['uniq_id']; ?>" class="pure-button asp_coupon_apply_btn-ng"><?php _e('Apply', 'stripe-payments'); ?></button>
+							<button type="button" id="asp-redeem-coupon-btn-<?php echo $itemData['uniq_id']; ?>" class="pure-button asp-coupon-btn-normalize asp_coupon_apply_btn-ng"><?php _e('Apply', 'stripe-payments'); ?></button>
+						</div>
+						<div id="asp-coupon-info-<?php echo $itemData['uniq_id']; ?>" class="pure-u-1 asp_product_coupon_info">
+							<span></span>
+							<button type="button" id="asp-remove-coupon-<?php echo $itemData['uniq_id']; ?>" style="display: none;" class="pure-button asp-coupon-btn-normalize asp_coupon_apply_btn" title="<?php echo $strRemoveCoupon; ?>"><?php echo $strRemove; ?></button>
 						</div>
 					</div>
-					<div id="asp-coupon-info-<?php echo $itemData['uniq_id']; ?>" class="asp_product_coupon_info"></div>
 				</div>
 				<?php
 				$output .= ob_get_clean();
@@ -391,7 +398,6 @@ private function get_loc_data($currency)
 		'strPleaseFillIn' => apply_filters('asp_customize_text_msg', __('Please fill in this field.', 'stripe-payments'), 'fill_in_field'),
 		'strPleaseCheckCheckbox' => __('Please check this checkbox.', 'stripe-payments'),
 		'strMustAcceptTos' => apply_filters('asp_customize_text_msg', __('You must accept the terms before you can proceed.', 'stripe-payments'), 'accept_terms'),
-		'strRemoveCoupon' => apply_filters('asp_customize_text_msg', __('Remove coupon', 'stripe-payments'), 'remove_coupon'),
 		'strRemove'	=> apply_filters('asp_customize_text_msg', __('Remove', 'stripe-payments'), 'remove'),
 		'strStartFreeTrial' => apply_filters('asp_customize_text_msg', __('Start Free Trial', 'stripe-payments'), 'start_free_trial'),
 		'strInvalidCFValidationRegex' => __('Invalid validation RegEx: ', 'stripe-payments'),
