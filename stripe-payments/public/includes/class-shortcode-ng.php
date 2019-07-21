@@ -116,6 +116,8 @@ class AcceptStripePaymentsShortcodeNG
 			'coupons_enabled' => $coupons_enabled
 		);
 
+		$itemData = apply_filters( 'asp_ng_button_output_data_ready', $itemData, $atts );
+
 		$output = '';
 
 		$template_name	 = "default-ng";
