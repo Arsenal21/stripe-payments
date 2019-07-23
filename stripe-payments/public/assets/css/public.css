@@ -190,17 +190,22 @@ CSS class names should use dashes. Example: asp-product-description
 
 .asp-popup-iframe {
     border: 0;
-    height: 100%;
-    left: 0;
-    position: absolute;
-    top: 0;
     width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    display: none;
+}
+
+.asp-popup-spinner-cont {
+    text-align: center;
+    height: 85px;
+    padding-top: 10px;
 }
 
 .asp-popup-iframe-cont {
-    overflow: hidden;
-    padding-top: 56.25%;
-    position: relative;
+    width: 100%;
+    height: auto;
 }
 
 @media (max-width: 500px) {

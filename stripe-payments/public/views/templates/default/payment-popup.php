@@ -25,10 +25,17 @@
                     <form method="post" id="payment-form" class="pure-form pure-form-stacked">
                         <div class="pure-u-5-5">
                             <fieldset>
-                                <label for="billing_name">Name</label>
-                                <input type="text" id="billing-name" name="billing_name" required>
-                                <label for="email">Email</label>
-                                <input type="email" id="email" name="email" required>
+                                <div class="pure-g">
+                                    <div class="pure-u-1 pure-u-md-11-24">
+                                        <label for="billing_name">Name</label>
+                                        <input class="pure-input-1" type="text" id="billing-name" name="billing_name" required>
+                                    </div>
+                                    <div class="pure-u-md-2-24"></div>
+                                    <div class="pure-u-1 pure-u-md-11-24">
+                                        <label for="email">Email</label>
+                                        <input class="pure-input-1" type="email" id="email" name="email" required>
+                                    </div>
+                                </div>
                                 <label for="card-element">Credit or debit card</label>
                                 <div id="card-element">
                                 </div>
@@ -67,6 +74,8 @@
     var errorCont = document.getElementById('global-error');
     var cardErrorCont = document.getElementById('card-errors');
 
+    var resizeEvent = window.document.createEvent('UIEvents');
+
     card.on('ready', function() {
         submitBtn.disabled = false;
     });
@@ -80,6 +89,8 @@
         } else {
             cardErrorCont.textContent = '';
         }
+        resizeEvent.initUIEvent('resize', true, false, window, 0);
+        window.dispatchEvent(resizeEvent);
     });
 
     var form = document.getElementById('payment-form');
@@ -105,6 +116,8 @@
                 submitBtn.disabled = false;
                 errorCont.innerHTML = result.error.message;
                 errorCont.style.display = 'block';
+                resizeEvent.initUIEvent('resize', true, false, window, 0);
+                window.dispatchEvent(resizeEvent);
             } else {
                 var form = document.getElementById('payment-form');
                 piInput.value = result.paymentIntent.id;

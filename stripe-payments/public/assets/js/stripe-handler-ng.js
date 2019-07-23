@@ -5,7 +5,7 @@ var stripeHandlerNG = function (data) {
     jQuery('#asp_ng_button_' + data.uniq_id).click(function (e) {
         e.preventDefault();
         if (!parent.modal) {
-            jQuery('body').append('<div id="asp-payment-popup-' + parent.data.uniq_id + '" style="display: none; max-width: 350px !important;min-width: 314px;"><div class="asp-popup-iframe-cont"><iframe frameborder="0" class="asp-popup-iframe" src="https://desertfox.top/miniserv/cleanwp/?asp_action=show_pp&product_id=' + parent.data.product_id + '"></iframe></div></div>');
+            jQuery('body').append('<div id="asp-payment-popup-' + parent.data.uniq_id + '" style="display: none;"><div class="asp-popup-spinner-cont"></div><div class="asp-popup-iframe-cont"><iframe frameborder="0" class="asp-popup-iframe" src="https://desertfox.top/miniserv/cleanwp/?asp_action=show_pp&product_id=' + parent.data.product_id + '"></iframe></div></div>');
             jQuery('#asp-payment-popup-' + parent.data.uniq_id).iziModal({
                 title: parent.data.name,
                 transitionIn: 'fadeInUp',
@@ -18,9 +18,20 @@ var stripeHandlerNG = function (data) {
             });
             jQuery('#asp-payment-popup-' + parent.data.uniq_id).iziModal('open');
             parent.modal = jQuery('#asp-payment-popup-' + parent.data.uniq_id);
-            parent.iframe = parent.modal.find('iframe');
-            parent.iframe.on('load', function (e) {
-                parent.iForm = parent.iframe.contents().find('form#payment-form');
+            parent.modal.find('.asp-popup-spinner-cont').append(jQuery('div#asp-btn-spinner-container-' + data.uniq_id).html());
+            var iframe = parent.modal.find('iframe');
+            var iframeCont = parent.modal.find('.asp-popup-iframe-cont');
+            iframe.on('load', function (e) {
+                var aligner = iframe.contents().find('.Aligner-item');
+                jQuery(iframe[0].contentWindow).resize(function () {
+                    if (iframeCont.height() !== aligner.prop('scrollHeight')) {
+                        iframeCont.height(aligner.prop('scrollHeight') + 20);
+                        console.log(aligner.prop('scrollHeight'));
+                    }
+                });
+                parent.modal.find('.asp-popup-spinner-cont').hide();
+                iframe.show();
+                parent.iForm = iframe.contents().find('form#payment-form');
                 parent.iForm.on('submit', function (e) {
                     e.preventDefault();
                     var token = parent.iForm.find('input#payment-intent').val();
@@ -39,7 +50,6 @@ var stripeHandlerNG = function (data) {
                     }
                     return false;
                 });
-
             });
         } else {
             parent.modal.iziModal('open');

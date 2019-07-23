@@ -48,17 +48,6 @@ class AcceptStripePaymentsShortcodeNG
 		return $content;
 	}
 
-	public function interfer_for_redirect()
-	{
-		global $post;
-		if (!is_admin()) {
-			if (has_shortcode($post->post_content, 'accept_stripe_payment_checkout')) {
-				$this->shortcode_accept_stripe_payment_checkout();
-				exit;
-			}
-		}
-	}
-
 	/**
 	 * Return an instance of this class.
 	 *
@@ -120,12 +109,7 @@ class AcceptStripePaymentsShortcodeNG
 
 	function register_stripe_script()
 	{
-		wp_register_script('stripe-script', 'https://checkout.stripe.com/checkout.js', array(), null, true);
-		wp_register_script('stripe-handler', WP_ASP_PLUGIN_URL . '/public/assets/js/stripe-handler.js', array('jquery'), WP_ASP_PLUGIN_VERSION, true);
-
-		wp_localize_script('stripe-handler', 'stripehandler', $this->get_loc_data());
-		// addons can register their scripts if needed
-		do_action('asp-button-output-register-script');
+		//		do_action('asp-button-output-register-script');
 	}
 
 	function after_button_add_tos_filter($output, $data, $class)
