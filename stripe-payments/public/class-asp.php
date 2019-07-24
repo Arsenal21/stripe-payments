@@ -677,11 +677,9 @@ class AcceptStripePayments
 
 	function enqueue_frontend_scripts_styles()
 	{
-		wp_register_script('asp-iziModal', WP_ASP_PLUGIN_URL . '/public/assets/js/iziModal.min.js', 'jquery', WP_ASP_PLUGIN_VERSION, true);
-		wp_register_style('asp-iziModal-css', WP_ASP_PLUGIN_URL . '/public/assets/css/iziModal.min.css', null, WP_ASP_PLUGIN_VERSION);
 		wp_register_script('stripe-handler-ng', WP_ASP_PLUGIN_URL . '/public/assets/js/stripe-handler-ng.js', array('jquery'), WP_ASP_PLUGIN_VERSION, true);
-		wp_enqueue_script('asp-iziModal');
 		wp_enqueue_script('stripe-handler-ng');
-		wp_enqueue_style('asp-iziModal-css');
+		wp_register_style('stripe-handler-ng-style', WP_ASP_PLUGIN_URL . '/public/assets/css/public.css', array(), WP_ASP_PLUGIN_VERSION);
+		wp_enqueue_style('stripe-handler-ng-style');
 	}
 }

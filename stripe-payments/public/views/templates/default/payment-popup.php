@@ -15,7 +15,7 @@
 </head>
 
 <body>
-    <div class="Aligner">
+    <div id="Aligner" class="Aligner">
         <div class="Aligner-item">
             <div class="pure-g">
                 <div class="pure-u-5-5">
@@ -54,6 +54,7 @@
 </body>
 <script src="https://js.stripe.com/v3/"></script>
 <script>
+    var background = document.getElementById('Aligner');
     var clientSecret = '<?php echo esc_js($a['client_secret']) ?>';
     var stripe = Stripe('<?php echo esc_js($a['stripe_key']) ?>');
     var elements = stripe.elements();
@@ -74,8 +75,6 @@
     var errorCont = document.getElementById('global-error');
     var cardErrorCont = document.getElementById('card-errors');
 
-    var resizeEvent = window.document.createEvent('UIEvents');
-
     card.on('ready', function() {
         submitBtn.disabled = false;
     });
@@ -89,8 +88,6 @@
         } else {
             cardErrorCont.textContent = '';
         }
-        resizeEvent.initUIEvent('resize', true, false, window, 0);
-        window.dispatchEvent(resizeEvent);
     });
 
     var form = document.getElementById('payment-form');
@@ -116,8 +113,6 @@
                 submitBtn.disabled = false;
                 errorCont.innerHTML = result.error.message;
                 errorCont.style.display = 'block';
-                resizeEvent.initUIEvent('resize', true, false, window, 0);
-                window.dispatchEvent(resizeEvent);
             } else {
                 var form = document.getElementById('payment-form');
                 piInput.value = result.paymentIntent.id;

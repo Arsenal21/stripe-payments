@@ -189,12 +189,19 @@ CSS class names should use dashes. Example: asp-product-description
 }
 
 .asp-popup-iframe {
-    border: 0;
+    z-index: 2147483647;
+    background: rgba(0, 0, 0, 0.004);
+    border: 0px none transparent;
+    overflow: hidden auto;
+    visibility: visible;
+    margin: 0px;
+    padding: 0px;
+    -webkit-tap-highlight-color: transparent;
+    position: fixed;
+    left: 0px;
+    top: 0px;
     width: 100%;
     height: 100%;
-    padding: 0;
-    margin: 0;
-    display: none;
 }
 
 .asp-popup-spinner-cont {
@@ -204,8 +211,21 @@ CSS class names should use dashes. Example: asp-product-description
 }
 
 .asp-popup-iframe-cont {
+    align-items: center;
+    justify-content: center;
+    z-index: 2147483647;
+    background: rgba(0, 0, 0, .3);
+    border: 0px none transparent;
+    overflow: hidden auto;
+    visibility: visible;
+    margin: 0px;
+    padding: 0px;
+    -webkit-tap-highlight-color: transparent;
+    position: fixed;
+    left: 0px;
+    top: 0px;
     width: 100%;
-    height: auto;
+    height: 100%;
 }
 
 @media (max-width: 500px) {

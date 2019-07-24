@@ -20,7 +20,18 @@ class AcceptStripePayments_Process_IPN_NG
 
         $intent = \Stripe\PaymentIntent::retrieve($pi);
         $charges = $intent->charges->data;
+
+        echo '<pre>';
+        var_dump($_POST);
+        echo '</pre>';
+
+        echo '<pre>';
         var_dump($charges);
+        echo '</pre>';
+
+        $prod_id = filter_input(INPUT_POST, 'asp_product_id', FILTER_SANITIZE_NUMBER_INT);
+        $item         = new AcceptStripePayments_Item($prod_id);
+
         wp_die();
     }
 }
