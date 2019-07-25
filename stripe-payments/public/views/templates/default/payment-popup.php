@@ -8,6 +8,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="<?php echo $a['plugin_url'] ?>/public/views/templates/default/pure.css">
     <link rel="stylesheet" href="<?php echo $a['plugin_url'] ?>/public/views/templates/default/pp-style.css">
+    <?php
+    foreach ($a['styles'] as $style) {
+        if (!$style['footer']) {
+            printf('<link rel="stylesheet" href="%s">', $style['src']);
+        }
+    }
+
+    foreach ($a['vars'] as $var => $data) {
+        printf("<script type='text/javascript'>
+            /* <![CDATA[ */
+            var %s = %s;
+            /* ]]> */
+            </script>", $var, json_encode($data));
+    }
+
+    foreach ($a['scripts'] as $script) {
+
+        if ($script['footer']) {
+            printf('<script src="%s"></script>', $script['src']);
+        }
+    }
+    ?>
     <!--[if lt IE 9]>
 <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
@@ -18,12 +40,17 @@
     <div id="Aligner" class="Aligner">
         <div class="Aligner-item">
             <div class="pure-g">
-                <div class="pure-u-5-5">
+                <div class="pure-u-1">
                     <div id="global-error"></div>
                 </div>
-                <div class="pure-u-5-5">
+                <div class="pure-u-1">
                     <form method="post" id="payment-form" class="pure-form pure-form-stacked">
-                        <div class="pure-u-5-5">
+                        <?php if (isset($a['custom_fields'])) { ?>
+                            <div class="pure-u-1">
+                                <?php echo $a['custom_fields'] ?>
+                            </div>
+                        <?php } ?>
+                        <div class="pure-u-1">
                             <fieldset>
                                 <div class="pure-g">
                                     <div class="pure-u-1 pure-u-md-11-24">
@@ -122,5 +149,21 @@
 
     });
 </script>
+<?php
+foreach ($a['scripts'] as $script) {
+
+    if ($script['footer']) {
+        printf('<script src="%s"></script>', $script['src']);
+    }
+}
+
+foreach ($a['styles'] as $style) {
+
+    if ($style['footer']) {
+        printf('<link rel="stylesheet" href="%s">', $style['src']);
+    }
+}
+
+?>
 
 </html>
