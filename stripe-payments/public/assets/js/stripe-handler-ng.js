@@ -12,11 +12,16 @@ var stripeHandlerNG = function (data) {
             var iframe = parent.modal.find('iframe');
             iframe.on('load', function (e) {
                 parent.modal.find('.asp-popup-spinner-cont').hide();
-                aligner = iframe.contents().find('#Aligner');
+                var aligner = iframe.contents().find('#Aligner');
+                closebtn = iframe.contents().find('#modal-close-btn');
+                closebtn.fadeIn();
                 aligner.on('click', function (e) {
                     if (e.target !== e.currentTarget) {
                         return;
                     }
+                    parent.modal.fadeOut();
+                })
+                closebtn.on('click', function (e) {
                     parent.modal.fadeOut();
                 })
                 parent.iForm = iframe.contents().find('form#payment-form');

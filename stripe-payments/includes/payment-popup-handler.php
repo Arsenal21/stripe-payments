@@ -83,6 +83,7 @@ class AcceptStripePaymentsPP
         $a = array();
         $a['page_title'] = 'Blah';
         $a['plugin_url'] = WP_ASP_PLUGIN_URL;
+        $a['item_name'] = $this->item->get_name();
         $a['stripe_key'] = $this->AcceptStripePayments->APIPubKeyTest;
         $intent = \Stripe\PaymentIntent::create([
             'amount' => $this->item->get_price(true),

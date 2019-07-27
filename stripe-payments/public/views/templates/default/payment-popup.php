@@ -38,42 +38,49 @@
 
 <body>
     <div id="Aligner" class="Aligner">
+
         <div class="Aligner-item">
-            <div class="pure-g">
-                <div class="pure-u-1">
-                    <div id="global-error"></div>
-                </div>
-                <div class="pure-u-1">
-                    <form method="post" id="payment-form" class="pure-form pure-form-stacked">
-                        <?php if (isset($a['custom_fields'])) { ?>
+            <div id="modal-header">
+                <span id="modal-close-btn"><img src="<?php echo $a['plugin_url'] ?>/public/views/templates/default/close-btn.png"></span>
+                <div id="item-name"><?php echo $a['item_name'] ?></div>
+            </div>
+            <div id="modal-body">
+                <div class="pure-g">
+                    <div class="pure-u-1">
+                        <div id="global-error"></div>
+                    </div>
+                    <div class="pure-u-1">
+                        <form method="post" id="payment-form" class="pure-form pure-form-stacked">
+                            <?php if (isset($a['custom_fields'])) { ?>
+                                <div class="pure-u-1">
+                                    <?php echo $a['custom_fields'] ?>
+                                </div>
+                            <?php } ?>
                             <div class="pure-u-1">
-                                <?php echo $a['custom_fields'] ?>
+                                <fieldset>
+                                    <div class="pure-g">
+                                        <div class="pure-u-1 pure-u-md-11-24">
+                                            <label for="billing_name">Name</label>
+                                            <input class="pure-input-1" type="text" id="billing-name" name="billing_name" required>
+                                        </div>
+                                        <div class="pure-u-md-2-24"></div>
+                                        <div class="pure-u-1 pure-u-md-11-24">
+                                            <label for="email">Email</label>
+                                            <input class="pure-input-1" type="email" id="email" name="email" required>
+                                        </div>
+                                    </div>
+                                    <label for="card-element">Credit or debit card</label>
+                                    <div id="card-element">
+                                    </div>
+                                    <div id="card-errors" role="alert"></div>
+                                </fieldset>
                             </div>
-                        <?php } ?>
-                        <div class="pure-u-1">
-                            <fieldset>
-                                <div class="pure-g">
-                                    <div class="pure-u-1 pure-u-md-11-24">
-                                        <label for="billing_name">Name</label>
-                                        <input class="pure-input-1" type="text" id="billing-name" name="billing_name" required>
-                                    </div>
-                                    <div class="pure-u-md-2-24"></div>
-                                    <div class="pure-u-1 pure-u-md-11-24">
-                                        <label for="email">Email</label>
-                                        <input class="pure-input-1" type="email" id="email" name="email" required>
-                                    </div>
-                                </div>
-                                <label for="card-element">Credit or debit card</label>
-                                <div id="card-element">
-                                </div>
-                                <div id="card-errors" role="alert"></div>
-                            </fieldset>
-                        </div>
-                        <div class="pure-u-5-5 centered">
-                            <button type="submit" id="submit-btn" class="pure-button pure-button-primary" disabled>Submit Payment</button>
-                        </div>
-                        <input type="hidden" id="payment-intent" name="payment_intent" value="">
-                    </form>
+                            <div class="pure-u-5-5 centered">
+                                <button type="submit" id="submit-btn" class="pure-button pure-button-primary" disabled>Submit Payment</button>
+                            </div>
+                            <input type="hidden" id="payment-intent" name="payment_intent" value="">
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
