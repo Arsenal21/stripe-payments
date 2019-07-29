@@ -83,6 +83,10 @@ html, body {
     font-weight: bold;
 }
 
+#submit-btn {
+    min-width: 200px;
+}
+
 .centered {
     text-align: center;
 }

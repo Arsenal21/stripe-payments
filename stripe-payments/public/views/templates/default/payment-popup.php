@@ -14,7 +14,6 @@
             printf('<link rel="stylesheet" href="%s">', $style['src']);
         }
     }
-
     foreach ($a['vars'] as $var => $data) {
         printf("<script type='text/javascript'>
             /* <![CDATA[ */
@@ -24,7 +23,6 @@
     }
 
     foreach ($a['scripts'] as $script) {
-
         if ($script['footer']) {
             printf('<script src="%s"></script>', $script['src']);
         }
@@ -41,7 +39,7 @@
 
         <div class="Aligner-item">
             <div id="modal-header">
-                <span id="modal-close-btn"><img src="<?php echo $a['plugin_url'] ?>/public/views/templates/default/close-btn.png"></span>
+                <span id="modal-close-btn" title="<?php _e('Close', 'stripe-payments') ?>"><img src="<?php echo $a['plugin_url'] ?>/public/views/templates/default/close-btn.png"></span>
                 <div id="item-name"><?php echo $a['item_name'] ?></div>
             </div>
             <div id="modal-body">
@@ -76,9 +74,12 @@
                                 </fieldset>
                             </div>
                             <div class="pure-u-5-5 centered">
-                                <button type="submit" id="submit-btn" class="pure-button pure-button-primary" disabled>Submit Payment</button>
+                                <button type="submit" id="submit-btn" class="pure-button pure-button-primary" disabled><?php echo $a['pay_btn_text'] ?></button>
                             </div>
                             <input type="hidden" id="payment-intent" name="payment_intent" value="">
+                            <input type="hidden" id="product-id" name="product_id" value="<?php echo $a['prod_id'] ?>">
+                            <input type="hidden" name="process_ipn" value="1">
+                            <input type="hidden" name="is_live" value="<?php echo $a['is_live'] ? 'true' : 'false' ?>">
                         </form>
                     </div>
                 </div>
@@ -88,6 +89,13 @@
 </body>
 <script src="https://js.stripe.com/v3/"></script>
 <script>
+    function inIframe() {
+        try {
+            return window.self !== window.top;
+        } catch (e) {
+            return true;
+        }
+    }
     var background = document.getElementById('Aligner');
     var clientSecret = '<?php echo esc_js($a['client_secret']) ?>';
     var stripe = Stripe('<?php echo esc_js($a['stripe_key']) ?>');
@@ -125,9 +133,20 @@
     });
 
     var form = document.getElementById('payment-form');
+
     form.addEventListener('submit', function(event) {
         event.preventDefault();
         if (piInput.value !== '') {
+            if (!inIframe()) {
+                console.log('Self-submitting');
+                for (var i = 0; i < form.elements.length; i++) {
+                    if (form.elements[i].name) {
+                        form.elements[i].setAttribute("name", 'asp_' + form.elements[i].name);
+                    }
+                }
+
+                form.submit();
+            }
             return false;
         }
         errorCont.style.display = 'none';
@@ -148,7 +167,6 @@
                 errorCont.innerHTML = result.error.message;
                 errorCont.style.display = 'block';
             } else {
-                var form = document.getElementById('payment-form');
                 piInput.value = result.paymentIntent.id;
                 form.dispatchEvent(new Event('submit'));
             }
@@ -158,14 +176,12 @@
 </script>
 <?php
 foreach ($a['scripts'] as $script) {
-
     if ($script['footer']) {
         printf('<script src="%s"></script>', $script['src']);
     }
 }
 
 foreach ($a['styles'] as $style) {
-
     if ($style['footer']) {
         printf('<link rel="stylesheet" href="%s">', $style['src']);
     }

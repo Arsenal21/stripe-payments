@@ -8,6 +8,10 @@ class AcceptStripePaymentsPP
     {
         $action = filter_input(INPUT_GET, 'asp_action', FILTER_SANITIZE_STRING);
         if ($action === 'show_pp') {
+            $process_ipn = filter_input(INPUT_POST, 'asp_process_ipn', FILTER_SANITIZE_NUMBER_INT);
+            if ($process_ipn) {
+                return;
+            }
             $this->AcceptStripePayments = AcceptStripePayments::get_instance();
             add_action('plugins_loaded', array($this, 'showpp'));
         }
@@ -72,24 +76,22 @@ class AcceptStripePaymentsPP
             exit;
         }
 
+        $a = array();
+
         $a['prod_id'] = $product_id;
 
         ASPMain::load_stripe_lib();
         $key = $this->AcceptStripePayments->is_live ? $this->AcceptStripePayments->APISecKey : $this->AcceptStripePayments->APISecKeyTest;
         \Stripe\Stripe::setApiKey($key);
 
+        $a['is_live'] = $this->AcceptStripePayments->is_live;
+
         $this->uniq_id = uniqid();
 
-        $a = array();
-        $a['page_title'] = 'Blah';
+        $a['page_title'] = $this->item->get_name();
         $a['plugin_url'] = WP_ASP_PLUGIN_URL;
         $a['item_name'] = $this->item->get_name();
         $a['stripe_key'] = $this->AcceptStripePayments->APIPubKeyTest;
-        $intent = \Stripe\PaymentIntent::create([
-            'amount' => $this->item->get_price(true),
-            'currency' => $this->item->get_currency(),
-        ]);
-        $a['client_secret'] = $intent->client_secret;
 
         //Custom Field if needed
 
@@ -118,10 +120,21 @@ class AcceptStripePaymentsPP
         $a['scripts'] = apply_filters('asp_ng_pp_output_add_scripts', $a['scripts']);
         $a['vars'] = apply_filters('asp_ng_pp_output_add_vars', $a['vars']);
 
+        $intent = \Stripe\PaymentIntent::create([
+            'amount' => $this->item->get_total(true),
+            'currency' => $this->item->get_currency(),
+        ]);
+
+        $a['client_secret'] = $intent->client_secret;
+
+        $pay_str = "Pay %s";
+        $a['pay_btn_text'] = sprintf($pay_str, AcceptStripePayments::formatted_price($this->item->get_total(), $this->item->get_currency()));
+
         ob_start();
         require_once(WP_ASP_PLUGIN_PATH . 'public/views/templates/default/payment-popup.php');
         $tpl = ob_get_clean();
         echo $tpl;
+        var_dump($a);
         exit;
     }
 }

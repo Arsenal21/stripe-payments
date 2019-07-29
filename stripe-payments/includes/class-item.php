@@ -111,6 +111,21 @@ class AcceptStripePayments_Item
         return $this->price;
     }
 
+    public function get_total($in_cents = false)
+    {
+        $total=$this->get_price();
+        if ($this->get_tax()) {
+            $total=$total + $this->get_tax_amount();
+        }
+        if ($this->get_shipping()) {
+            $total=$total + $this->get_shipping();
+        }
+        if ($in_cents) {
+            $total=$this->in_cents($total);
+        }
+        return $total;
+     }
+
     public function set_price($price)
     {
         $this->price = $price;

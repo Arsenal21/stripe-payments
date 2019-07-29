@@ -154,6 +154,22 @@ class AcceptStripePayments_Process_IPN_NG
         $data['additional_items'] = array();
         $item_price = $item->get_price();
         $currency_code = $item->get_currency();
+
+        $custom_fields = array();
+        if (isset($_POST['asp_stripeCustomFieldName'])) {
+            $custom_fields[] = array('name' => $_POST['stripeCustomFieldName'], 'value' => $_POST['stripeCustomField']);
+        }
+
+        //compatability with ACF addon
+        if (!empty($_POST['asp_stripeCustomFields'])) {
+            $_POST['stripeCustomFields'] = $_POST['asp_stripeCustomFields'];
+        }
+        $custom_fields = apply_filters('asp_process_custom_fields', $custom_fields, array('product_id' => $prod_id));
+
+        if (!empty($custom_fields)) {
+            $data['custom_fields'] = $custom_fields;
+        }
+
         //check if coupon was used
         if (isset($charge->data[0]->metadata['Coupon'])) {
             $coupon_code = strtoupper($charge->data[0]->metadata['Coupon']);

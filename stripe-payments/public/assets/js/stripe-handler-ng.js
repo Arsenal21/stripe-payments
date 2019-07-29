@@ -29,7 +29,7 @@ var stripeHandlerNG = function (data) {
                     e.preventDefault();
                     var token = parent.iForm.find('input#payment-intent').val();
                     if (token !== '') {
-                        parent.iForm.find('input').each(function (e) {
+                        parent.iForm.find('[name!=""]').each(function (e) {
                             if (jQuery(this).attr('name')) {
                                 parent.form.append('<input type="hidden" name="asp_' + jQuery(this).attr('name') + '" value="' + jQuery(this).val() + '">');
                             }
