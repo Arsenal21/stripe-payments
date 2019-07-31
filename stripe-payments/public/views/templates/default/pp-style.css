@@ -87,6 +87,50 @@ html, body {
     min-width: 200px;
 }
 
+#submit-btn-cont {
+    position: relative;
+    height: 34px;
+    width: auto;
+    display: inline-block;
+}
+
+#amount-error {
+    display: none;
+}
+
+.form-err {
+    color: red;
+}
+
 .centered {
     text-align: center;
+}
+
+/* Small Spinner */
+
+.small-spinner {
+    vertical-align: middle;
+    right: 10px;
+    top: 0.5em;
+    display: none;
+    box-sizing: border-box;
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid #ccc;
+    border-top-color: #333;
+    animation: small-spinner .6s linear infinite;
+}
+
+@keyframes small-spinner {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    .small-spinner {
+        top: 1.1em;
+    }
 }

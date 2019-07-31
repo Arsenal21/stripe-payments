@@ -113,18 +113,18 @@ class AcceptStripePayments_Item
 
     public function get_total($in_cents = false)
     {
-        $total=$this->get_price();
+        $total = $this->get_price();
         if ($this->get_tax()) {
-            $total=$total + $this->get_tax_amount();
+            $total = $total + $this->get_tax_amount();
         }
         if ($this->get_shipping()) {
-            $total=$total + $this->get_shipping();
+            $total = $total + $this->get_shipping();
         }
         if ($in_cents) {
-            $total=$this->in_cents($total);
+            $total = $this->in_cents($total);
         }
         return $total;
-     }
+    }
 
     public function set_price($price)
     {
@@ -147,6 +147,12 @@ class AcceptStripePayments_Item
             $this->currency = $this->ASPMain->get_setting('currency_code');
         }
         return $this->currency;
+    }
+
+    public function is_currency_variable()
+    {
+        $currency_variable     = get_post_meta($this->post_id, 'asp_product_currency_variable', true);
+        return $currency_variable;
     }
 
     public function get_redir_url()
