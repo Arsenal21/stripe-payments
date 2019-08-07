@@ -202,14 +202,16 @@ class ASP_Process_IPN_NG {
 			$curr_redeem_cnt++;
 			update_post_meta( $coupon['id'], 'asp_coupon_red_count', $curr_redeem_cnt );
 		}
-		if ( ! empty( $item->get_tax() ) ) {
+		$tax = $item->get_tax();
+		if ( ! empty( $tax ) ) {
 			$tax_str = apply_filters( 'asp_customize_text_msg', __( 'Tax', 'stripe-payments' ), 'tax_str' );
 			$tax_amt = $item->get_tax_amount( false );
 			$data['additional_items'][ ucfirst( $tax_str ) ] = $tax_amt;
 			$data['tax_perc']                                = $item->get_tax();
 			$data['tax']                                     = $tax_amt;
 		}
-		if ( ! empty( $item->get_shipping() ) ) {
+		$ship = $item->get_shipping();
+		if ( ! empty( $ship ) ) {
 			$ship_str = apply_filters( 'asp_customize_text_msg', __( 'Shipping', 'stripe-payments' ), 'shipping_str' );
 			$data['additional_items'][ ucfirst( $ship_str ) ] = $item->get_shipping();
 			$data['shipping']                                 = $item->get_shipping();

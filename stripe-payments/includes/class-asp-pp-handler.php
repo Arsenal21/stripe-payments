@@ -145,7 +145,7 @@ class ASP_PP_Handler {
 		$display_settings['c'] = $this->asp_main->get_setting( 'price_decimals_num', 2 );
 		$display_settings['d'] = $this->asp_main->get_setting( 'price_decimal_sep' );
 		$display_settings['t'] = $this->asp_main->get_setting( 'price_thousand_sep' );
-		$currencies            = $this->asp_main::get_currencies();
+		$currencies            = AcceptStripePayments::get_currencies();
 		if ( isset( $currencies[ $currency ] ) ) {
 			$curr_sym = $currencies[ $currency ][1];
 		} else {

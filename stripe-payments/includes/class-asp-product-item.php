@@ -158,14 +158,17 @@ class ASP_Product_Item {
 			'currency' => $this->get_currency(),
 			'quantity' => $this->get_quantity(),
 		);
-		if ( ! empty( $this->get_thumb() ) ) {
+		$thumb     = $this->get_thumb();
+		if ( ! empty( $thumb ) ) {
 			$item_info['images'] = array( $this->get_thumb() );
 		}
-		if ( ! empty( $this->get_description() ) ) {
+		$descr = $this->get_description();
+		if ( ! empty( $descr ) ) {
 			$item_info['description'] = $this->get_description();
 		}
 		$ret[] = $item_info;
-		if ( ! empty( $this->get_tax() ) ) {
+		$tax   = $this->get_tax();
+		if ( ! empty( $tax ) ) {
 			$tax_str  = apply_filters( 'asp_customize_text_msg', __( 'Tax', 'stripe-payments' ), 'tax_str' );
 			$tax_info = array(
 				'name'     => sprintf( '%s (%s%%)', $tax_str, $this->get_tax() ),
@@ -175,7 +178,8 @@ class ASP_Product_Item {
 			);
 			$ret[]    = $tax_info;
 		}
-		if ( ! empty( $this->get_shipping() ) ) {
+		$ship = $this->get_shipping();
+		if ( ! empty( $ship ) ) {
 			$ship_str = apply_filters( 'asp_customize_text_msg', __( 'Shipping', 'stripe-payments' ), 'shipping_str' );
 			$tax_info = array(
 				'name'     => sprintf( '%s', $ship_str ),
