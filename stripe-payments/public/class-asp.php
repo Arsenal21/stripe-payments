@@ -102,7 +102,7 @@ class AcceptStripePayments
 
 		//handle IPN stuff if needed
 		require_once(WP_ASP_PLUGIN_PATH . 'includes/process_ipn.php');
-		require_once(WP_ASP_PLUGIN_PATH . 'includes/process_ipn_ng.php');
+		require_once(WP_ASP_PLUGIN_PATH . 'includes/class-asp-process-ipn-ng.php');
 
 		//handle payment popup display if needed
 		require_once(WP_ASP_PLUGIN_PATH . 'includes/payment-popup-handler.php');
