@@ -5,7 +5,7 @@ var stripeHandlerNG = function (data) {
     jQuery('#asp_ng_button_' + data.uniq_id).click(function (e) {
         e.preventDefault();
         if (!parent.modal) {
-            jQuery('body').append('<div id="asp-payment-popup-' + parent.data.uniq_id + '" class="asp-popup-iframe-cont"><div class="asp-popup-spinner-cont"></div><iframe frameborder="0" allowtransparency="true" class="asp-popup-iframe" src="https://desertfox.top/miniserv/cleanwp/?asp_action=show_pp&product_id=' + parent.data.product_id + '"></iframe></div>');
+            jQuery('body').append('<div id="asp-payment-popup-' + parent.data.uniq_id + '" class="asp-popup-iframe-cont"><div class="asp-popup-spinner-cont"></div><iframe frameborder="0" allowtransparency="true" class="asp-popup-iframe" src="' + parent.data.iframe_url + '"></iframe></div>');
             parent.modal = jQuery('#asp-payment-popup-' + parent.data.uniq_id);
             parent.modal.css("display", "flex");
             parent.modal.find('.asp-popup-spinner-cont').append(jQuery('div#asp-btn-spinner-container-' + parent.data.uniq_id).html());

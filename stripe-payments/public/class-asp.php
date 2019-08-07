@@ -105,7 +105,7 @@ class AcceptStripePayments
 		require_once(WP_ASP_PLUGIN_PATH . 'includes/class-asp-process-ipn-ng.php');
 
 		//handle payment popup display if needed
-		require_once(WP_ASP_PLUGIN_PATH . 'includes/payment-popup-handler.php');
+		require_once(WP_ASP_PLUGIN_PATH . 'includes/class-asp-pp-handler.php');
 
 		// Activate plugin when new blog is added
 		add_action('wpmu_new_blog', array($this, 'activate_new_site'));
