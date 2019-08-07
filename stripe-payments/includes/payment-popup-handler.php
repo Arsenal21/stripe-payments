@@ -74,7 +74,7 @@ class AcceptStripePaymentsPP
     function showpp()
     {
         $product_id = filter_input(INPUT_GET, 'product_id', FILTER_SANITIZE_NUMBER_INT);
-        $this->item = new AcceptStripePayments_Item($product_id);
+        $this->item = new ASP_Product_Item($product_id);
 
         if ($this->item->get_last_error()) {
             echo $this->item->get_last_error();

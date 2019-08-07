@@ -47,7 +47,7 @@ class ASP_Process_IPN_NG {
 			ASP_Debug_Logger::log( 'Payment has been processed successfully.' );
 		}
 		ASP_Debug_Logger::log( sprintf( 'Redirecting to results page "%s"', $this->asp_redirect_url ) . "\r\n" );
-		wp_save_redirect( $this->asp_redirect_url );
+		wp_safe_redirect( $this->asp_redirect_url );
 		exit;
 	}
 
@@ -59,7 +59,7 @@ class ASP_Process_IPN_NG {
 		$this->asp_redirect_url = empty( $post_thankyou_page_url ) ? $this->asp_class->get_setting( 'checkout_url' ) : base64_decode( $post_thankyou_page_url ); //phpcs:ignore
 
 		$prod_id = filter_input( INPUT_POST, 'asp_product_id', FILTER_SANITIZE_NUMBER_INT );
-		$item    = new AcceptStripePayments_Item( $prod_id );
+		$item    = new ASP_Product_Item( $prod_id );
 
 		$err = $item->get_last_error();
 
