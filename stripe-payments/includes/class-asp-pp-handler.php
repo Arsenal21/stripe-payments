@@ -219,8 +219,8 @@ class ASP_PP_Handler {
 			}
 
 			if ( ! isset( $a['fatal_error'] ) ) {
-
 				$a['client_secret'] = $intent->client_secret;
+				$a['pi_id']         = $intent->id;
 			}
 		}
 		$a['currency']     = $this->item->get_currency();
@@ -238,6 +238,7 @@ class ASP_PP_Handler {
 		$out['success'] = false;
 		$amount         = filter_input( INPUT_POST, 'amount', FILTER_SANITIZE_NUMBER_INT );
 		$curr           = filter_input( INPUT_POST, 'curr', FILTER_SANITIZE_STRING );
+		$pi_id          = filter_input( INPUT_POST, 'pi', FILTER_SANITIZE_STRING );
 
 		try {
 			ASPMain::load_stripe_lib();
@@ -247,13 +248,22 @@ class ASP_PP_Handler {
 			$out['err'] = __( 'Stripe API error occurred:', 'stripe-payments' ) . ' ' . $e->getMessage();
 			wp_send_json( $out );
 		}
+
+		$metadata = array();
+
 		try {
-			$intent = \Stripe\PaymentIntent::create(
-				array(
-					'amount'   => $amount,
-					'currency' => $curr,
-				)
+			$pi_params = array(
+				'amount'   => $amount,
+				'currency' => $curr,
 			);
+			if ( isset( $metadata ) && ! empty( $metadata ) ) {
+				$pi_params[] = $metadata;
+			}
+			if ( $pi_id ) {
+				$intent = \Stripe\PaymentIntent::update( $pi_id, $pi_params );
+			} else {
+				$intent = \Stripe\PaymentIntent::create( $pi_params );
+			}
 		} catch ( Exception $e ) {
 			$out['err'] = __( 'Stripe API error occurred:', 'stripe-payments' ) . ' ' . $e->getMessage();
 			wp_send_json( $out );
@@ -261,6 +271,7 @@ class ASP_PP_Handler {
 
 		$out['success']      = true;
 		$out['clientSecret'] = $intent->client_secret;
+		$out['pi_id']        = $intent->id;
 		wp_send_json( $out );
 		exit;
 	}

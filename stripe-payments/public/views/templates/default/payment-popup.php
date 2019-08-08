@@ -218,6 +218,7 @@
 	var clientSecAmount = 0;
 	var formCont = document.getElementById('form-container');
 	var background = document.getElementById('Aligner');
+	var pi_id ='<?php echo isset( $a['pi_id'] ) ? esc_js( $a['pi_id'] ) : ''; ?>';
 	var clientSecret = '<?php echo isset( $a['client_secret'] ) ? esc_js( $a['client_secret'] ) : ''; ?>';
 	var stripe = Stripe('<?php echo esc_js( $a['stripe_key'] ); ?>');
 	var elements = stripe.elements();
@@ -338,7 +339,11 @@
 		httpReqCS.onreadystatechange = alertContents;
 		httpReqCS.open('POST', vars.ajaxURL);
 		httpReqCS.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-		httpReqCS.send('action=asp_pp_req_token&amount=' + amount + '&curr=' + currency);
+		var reqStr='action=asp_pp_req_token&amount=' + amount + '&curr=' + currency;
+		if (clientSecret !== '') {
+			reqStr=reqStr +'&pi=' + pi_id;
+		}
+		httpReqCS.send(reqStr);
 	}
 
 	function alertContents() {
@@ -349,6 +354,7 @@
 					var resp = JSON.parse(httpReqCS.responseText);
 					console.log(resp);
 					clientSecret = resp.clientSecret;
+					pi_id = resp.pi_id;
 					clientSecAmount = amount;
 					handlePayment();
 				} else {
