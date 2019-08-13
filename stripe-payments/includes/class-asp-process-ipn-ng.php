@@ -108,6 +108,13 @@ class ASP_Process_IPN_NG {
 
 		$sess = ASP_Session::get_instance();
 
+		$post_quantity = filter_input( INPUT_POST, 'asp_quantity', FILTER_SANITIZE_NUMBER_INT );
+		if ( $post_quantity ) {
+			$item->set_quantity( $post_quantity );
+		}
+
+		$opt = get_option( 'AcceptStripePayments-settings' );
+
 		$data                       = array();
 		$data['paid_amount']        = AcceptStripePayments::from_cents( $charge->data[0]->amount, $charge->data[0]->currency );
 		$data['currency_code']      = strtoupper( $charge->data[0]->currency );
@@ -120,7 +127,12 @@ class ASP_Process_IPN_NG {
 		$data['item_name']          = $item->get_name();
 		$price                      = $item->get_price();
 		if ( empty( $price ) ) {
-			$price = $charge->data[0]->amount;
+			$post_price = filter_input( INPUT_POST, 'asp_amount', FILTER_SANITIZE_NUMBER_FLOAT );
+			if ( $post_price ) {
+				$price = $post_price;
+			} else {
+				$price = $charge->data[0]->amount;
+			}
 			$price = AcceptStripePayments::from_cents( $price, $item->get_currency() );
 			$item->set_price( $price );
 		}
@@ -216,6 +228,7 @@ class ASP_Process_IPN_NG {
 			$data['additional_items'][ ucfirst( $ship_str ) ] = $item->get_shipping();
 			$data['shipping']                                 = $item->get_shipping();
 		}
+
 		//custom fields
 		$custom_fields = $sess->get_transient_data( 'custom_fields' );
 		if ( ! empty( $custom_fields ) ) {
@@ -224,11 +237,13 @@ class ASP_Process_IPN_NG {
 		$product_details  = __( 'Product Name: ', 'stripe-payments' ) . $data['item_name'] . "\n";
 		$product_details .= __( 'Quantity: ', 'stripe-payments' ) . $data['item_quantity'] . "\n";
 		$product_details .= __( 'Item Price: ', 'stripe-payments' ) . AcceptStripePayments::formatted_price( $data['item_price'], $data['currency_code'] ) . "\n";
+
 		//check if there are any additional items available like tax and shipping cost
 		$product_details        .= AcceptStripePayments::gen_additional_items( $data );
 		$product_details        .= '--------------------------------' . "\n";
 		$product_details        .= __( 'Total Amount: ', 'stripe-payments' ) . AcceptStripePayments::formatted_price( $data['paid_amount'], $data['currency_code'] ) . "\n";
 		$data['product_details'] = nl2br( $product_details );
+
 		//Insert the order data to the custom post
 		$dont_create_order = $this->asp_class->get_setting( 'dont_create_order' );
 		if ( ! $dont_create_order ) {
@@ -240,6 +255,53 @@ class ASP_Process_IPN_NG {
 			update_post_meta( $order_post_id, 'trans_id', $charge->data[0]->balance_transaction );
 			update_post_meta( $order_post_id, 'pi_id', $pi );
 		}
+
+		//Let's handle email sending stuff
+		if ( isset( $opt['send_emails_to_buyer'] ) ) {
+			if ( $opt['send_emails_to_buyer'] ) {
+				$from = $opt['from_email_address'];
+				$to   = $data['stripeEmail'];
+				$subj = $opt['buyer_email_subject'];
+				$body = asp_apply_dynamic_tags_on_email_body( $opt['buyer_email_body'], $data );
+
+				$subj = apply_filters( 'asp_buyer_email_subject', $subj, $data );
+				$body = apply_filters( 'asp_buyer_email_body', $body, $data );
+				$from = apply_filters( 'asp_buyer_email_from', $from, $data );
+
+				$headers = array();
+				if ( ! empty( $opt['buyer_email_type'] ) && 'html' === $opt['buyer_email_type'] ) {
+					$headers[] = 'Content-Type: text/html; charset=UTF-8';
+					$body      = nl2br( $body );
+				}
+				$headers[] = 'From: ' . $from;
+
+				wp_mail( $to, $subj, $body, $headers );
+				ASP_Debug_Logger::log( 'Notification email sent to buyer: ' . $to . ', From email address used: ' . $from );
+			}
+		}
+		if ( isset( $opt['send_emails_to_seller'] ) ) {
+			if ( $opt['send_emails_to_seller'] ) {
+				$from = $opt['from_email_address'];
+				$to   = $opt['seller_notification_email'];
+				$subj = $opt['seller_email_subject'];
+				$body = asp_apply_dynamic_tags_on_email_body( $opt['seller_email_body'], $data, true );
+
+				$subj = apply_filters( 'asp_seller_email_subject', $subj, $data );
+				$body = apply_filters( 'asp_seller_email_body', $body, $data );
+				$from = apply_filters( 'asp_seller_email_from', $from, $data );
+
+				$headers = array();
+				if ( ! empty( $opt['seller_email_type'] ) && 'html' === $opt['seller_email_type'] ) {
+					$headers[] = 'Content-Type: text/html; charset=UTF-8';
+					$body      = nl2br( $body );
+				}
+				$headers[] = 'From: ' . $from;
+
+				wp_mail( $to, $subj, $body, $headers );
+				ASP_Debug_Logger::log( 'Notification email sent to seller: ' . $to . ', From email address used: ' . $from );
+			}
+		}
+
 		$sess->set_transient_data( 'asp_data', $data );
 		$this->ipn_completed();
 	}

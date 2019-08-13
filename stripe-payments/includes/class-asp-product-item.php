@@ -5,7 +5,8 @@ class ASP_Product_Item {
 
 	protected $post_id = false;
 	protected $post;
-	private $last_error = '';
+	private $last_error    = '';
+	private $cust_quantity = false;
 	protected $tax;
 	protected $zero_cent = false;
 	protected $price;
@@ -85,6 +86,9 @@ class ASP_Product_Item {
 		if ( empty( $this->quantity ) ) {
 			$this->quantity = 1;
 		}
+		if ( $this->cust_quantity ) {
+			$this->quantity = $this->cust_quantity;
+		}
 		return $this->quantity;
 	}
 
@@ -100,7 +104,7 @@ class ASP_Product_Item {
 	}
 
 	public function get_total( $in_cents = false ) {
-		$total = $this->get_price();
+		$total = $this->get_price() * $this->get_quantity();
 		if ( $this->get_tax() ) {
 			$total = $total + $this->get_tax_amount();
 		}
@@ -115,6 +119,10 @@ class ASP_Product_Item {
 
 	public function set_price( $price ) {
 		$this->price = $price;
+	}
+
+	public function set_quantity( $quantity ) {
+		$this->cust_quantity = $quantity;
 	}
 
 	public function get_tax_amount( $in_cents = false ) {
