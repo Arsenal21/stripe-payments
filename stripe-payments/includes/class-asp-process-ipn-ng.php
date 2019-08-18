@@ -133,7 +133,7 @@ class ASP_Process_IPN_NG {
 			} else {
 				$price = $charge->data[0]->amount;
 			}
-			$price = AcceptStripePayments::from_cents( $price, $item->get_currency() );
+			$price = AcceptStripePayments::from_cents( $price, $item->get_currency() / 100 );
 			$item->set_price( $price );
 		}
 		$data['item_price']      = $price;

@@ -47,7 +47,7 @@ html, body {
     box-shadow: inset 0 1px 3px #ddd;
     border-radius: 4px;
     font-size: 100%;
-    min-height: 18px;
+    min-height: 19.5px;
 }
 
 #card-element.StripeElement--invalid {
@@ -62,7 +62,7 @@ html, body {
 
 #global-error {
     border-radius: 4px;
-    padding: 20px;
+    padding: 15px;
     background-color: red;
     color: white;
     display: none;
@@ -99,6 +99,17 @@ html, body {
     font-weight: bold;
 }
 
+#item-descr {
+    font-size: 0.8rem;
+    padding: 5px 10px 0px 10px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    text-align: center;
+    color: #5b5b65;
+    text-shadow: 0 1px 0 #fff;
+    overflow: hidden;
+}
+
 #submit-btn {
     min-width: 200px;
 }
@@ -120,6 +131,12 @@ html, body {
 
 .centered {
     text-align: center;
+}
+
+#tax-shipping-cont {
+    padding-top: 10px;
+    font-size: 0.85rem;
+    color: #5d5d5d;
 }
 
 /* Icons */
@@ -166,5 +183,15 @@ input.pure-input-1.has-icon {
 @media only screen and (max-width: 480px) {
     .small-spinner {
         top: 1.1em;
+    }
+    #tax-shipping-cont {
+        padding-top: 20px;
+    }
+}
+
+@media screen and (max-width: 48em) {
+    #test-mode {
+        top: 1px;
+        right: auto;
     }
 }

@@ -133,6 +133,11 @@ class ASP_PP_Handler {
 		$data['pi_id']         = '';
 		$data['amount']        = $this->item->get_total( true );
 		$data['item_price']    = $this->item->get_price( true );
+		$data['tax']           = $this->item->get_tax();
+		$data['shipping']      = $this->item->get_shipping( true );
+		$data['descr']         = $this->item->get_description();
+
+		$data['is_live'] = $this->asp_main->is_live;
 
 		$a['data'] = $data;
 
@@ -213,13 +218,8 @@ class ASP_PP_Handler {
 		$out            = array();
 		$out['success'] = false;
 		$amount         = filter_input( INPUT_POST, 'amount', FILTER_SANITIZE_NUMBER_FLOAT );
-		$quantity       = filter_input( INPUT_POST, 'quantity', FILTER_SANITIZE_NUMBER_INT );
 		$curr           = filter_input( INPUT_POST, 'curr', FILTER_SANITIZE_STRING );
 		$pi_id          = filter_input( INPUT_POST, 'pi', FILTER_SANITIZE_STRING );
-
-		if ( ! $quantity ) {
-			$quantity = 1;
-		}
 
 		try {
 			ASPMain::load_stripe_lib();
@@ -234,7 +234,7 @@ class ASP_PP_Handler {
 
 		try {
 			$pi_params = array(
-				'amount'   => $amount * $quantity,
+				'amount'   => $amount,
 				'currency' => $curr,
 			);
 			if ( isset( $metadata ) && ! empty( $metadata ) ) {
@@ -246,7 +246,7 @@ class ASP_PP_Handler {
 				$intent = \Stripe\PaymentIntent::create( $pi_params );
 			}
 		} catch ( Exception $e ) {
-			$out['err'] = __( 'Stripe API error occurred:', 'stripe-payments' ) . ' ' . $e->getMessage();
+			$out['err'] = $e->getMessage();
 			wp_send_json( $out );
 		}
 

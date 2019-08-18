@@ -43,11 +43,14 @@
 
 <body>
 	<div id="Aligner" class="Aligner">
+		<?php if ( ! $a['data']['is_live'] ) { ?>
 	<a href="https://stripe.com/docs/testing#cards" target="_blank" id="test-mode">TEST MODE</a>
+		<?php } ?>
 		<div class="Aligner-item">
 			<div id="modal-header">
-				<span id="modal-close-btn" title="<?php _e( 'Close', 'stripe-payments' ); ?>"><img src="<?php echo $a['plugin_url']; ?>/public/views/templates/default/close-btn.png"></span>
-				<div id="item-name"><?php echo $a['item_name']; ?></div>
+				<span id="modal-close-btn" title="<?php esc_html_e( 'Close', 'stripe-payments' ); ?>"><img src="<?php echo esc_url( $a['plugin_url'] ); ?>/public/views/templates/default/close-btn.png"></span>
+				<div id="item-name"><?php echo esc_html( $a['item_name'] ); ?></div>
+				<div id="item-descr"><?php echo esc_html( $a['data']['descr'] ); ?></div>
 			</div>
 			<div id="modal-body">
 				<div class="pure-g">
@@ -76,7 +79,7 @@
 						<form method="post" id="payment-form" class="pure-form pure-form-stacked">
 							<?php if ( $a['amount_variable'] ) { ?>
 								<label for="amount">Enter Amount</label>
-								<input class="pure-input-1" id="amount" name="amount" required>
+								<input class="pure-input-1" id="amount" name="amount" inputmode="decimal" required>
 								<div id="amount-error" class="form-err" role="alert"></div>
 							<?php } ?>
 							<?php
@@ -85,7 +88,7 @@
 							?>
 							<?php if ( $a['data']['custom_quantity'] ) { ?>
 								<label for="quantity">Enter Quantity</label>
-								<input type="number" min="1" class="pure-input-1" id="quantity" name="quantity" value="<?php echo esc_attr( $a['data']['quantity'] ); ?>" required>
+								<input type="number" min="1" class="pure-input-1" id="quantity" name="quantity" inputmode="numeric" value="<?php echo esc_attr( $a['data']['quantity'] ); ?>" required>
 								<div id="quantity-error" class="form-err" role="alert"></div>
 							<?php } ?>
 							<?php if ( isset( $a['custom_fields'] ) ) { ?>
@@ -122,6 +125,31 @@
 								<div id="submit-btn-cont">
 									<button type="submit" id="submit-btn" class="pure-button pure-button-primary" disabled><?php echo $a['pay_btn_text']; ?></button>
 									<span id="btn-spinner" class="small-spinner"></span>
+								</div>
+							</div>
+							<div class="pure-u-1"<?php echo ( ! $a['data']['tax'] && ! $a['data']['shipping'] ) ? ' style="display: none;"' : ''; ?>>
+								<div id="tax-shipping-cont" class="pure-u-5-5 centered">
+									Includes 
+									<?php
+									$out = array();
+									if ( $a['data']['tax'] ) {
+										$tax_str = apply_filters( 'asp_customize_text_msg', __( 'Tax', 'stripe-payments' ), 'tax_str' );
+										$out[]   = sprintf( '<span id="tax-cont">%s %s%%</span>', lcfirst( $tax_str ), $a['data']['tax'] );
+									}
+									if ( $a['data']['shipping'] ) {
+										$ship_str = apply_filters( 'asp_customize_text_msg', __( 'Shipping', 'stripe-payments' ), 'shipping_str' );
+										$out[]    = sprintf( '<span id="shipping-cont">%s %s</span>', lcfirst( $ship_str ), AcceptStripePayments::formatted_price( $a['data']['shipping'], $a['data']['currency'], true ) );
+									}
+									if ( $out ) {
+										$out_str = '';
+										foreach ( $out as $text ) {
+											$out_str .= $text . ', ';
+										}
+										$out_str = rtrim( $out_str, ', ' );
+										echo $out_str;
+									}
+									?>
+																															
 								</div>
 							</div>
 							<input type="hidden" id="payment-intent" name="payment_intent" value="">

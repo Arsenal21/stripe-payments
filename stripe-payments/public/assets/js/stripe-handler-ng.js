@@ -15,12 +15,12 @@ var stripeHandlerNG = function (data) {
                 var aligner = iframe.contents().find('#Aligner');
                 closebtn = iframe.contents().find('#modal-close-btn');
                 closebtn.fadeIn();
-                aligner.on('click', function (e) {
-                    if (e.target !== e.currentTarget) {
-                        return;
-                    }
-                    parent.modal.fadeOut();
-                })
+                // aligner.on('click', function (e) {
+                //     if (e.target !== e.currentTarget) {
+                //         return;
+                //     }
+                //     parent.modal.fadeOut();
+                // })
                 closebtn.on('click', function (e) {
                     parent.modal.fadeOut();
                 })
