@@ -120,7 +120,7 @@ class ASP_PP_Handler {
 		$data               = array();
 		$data['product_id'] = $product_id;
 		$quantity           = get_post_meta( $product_id, 'asp_product_quantity', true );
-		if ( $quantity ) {
+		if ( ! $quantity ) {
 			$quantity = 1;
 		}
 		$data['quantity']          = $quantity;
