@@ -98,13 +98,15 @@ class ASP_Process_IPN_NG {
 		$intent = \Stripe\PaymentIntent::retrieve( $pi );
 		$charge = $intent->charges;
 
-		//        echo '<pre>';
-		//        var_dump($_POST);
-		//        echo '</pre>';
+		/*
+		echo '<pre>';
+		var_dump($_POST);
+		echo '</pre>';
 
-		//        echo '<pre>';
-		//        var_dump($charge);
-		//        echo '</pre>';
+		echo '<pre>';
+		var_dump($charge);
+		echo '</pre>';
+		*/
 
 		$sess = ASP_Session::get_instance();
 

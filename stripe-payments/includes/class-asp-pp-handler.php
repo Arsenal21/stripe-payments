@@ -117,6 +117,13 @@ class ASP_PP_Handler {
 
 		$a['currency'] = $this->item->get_currency();
 
+		$billing_address  = get_post_meta( $product_id, 'asp_product_collect_billing_addr', true );
+		$shipping_address = get_post_meta( $product_id, 'asp_product_collect_shipping_addr', true );
+
+		if ( ! $billing_address ) {
+			$shipping_address = false;
+		}
+
 		$data               = array();
 		$data['product_id'] = $product_id;
 		$quantity           = get_post_meta( $product_id, 'asp_product_quantity', true );
@@ -128,6 +135,9 @@ class ASP_PP_Handler {
 		$data['amount_variable']   = $a['amount_variable'];
 		$data['currency_variable'] = $a['currency_variable'];
 		$data['currency']          = $a['currency'];
+
+		$data['billing_address']  = $billing_address;
+		$data['shipping_address'] = $shipping_address;
 
 		$data['client_secret'] = '';
 		$data['pi_id']         = '';
@@ -182,26 +192,27 @@ class ASP_PP_Handler {
 		} catch ( Exception $e ) {
 			$a['fatal_error'] = __( 'Stripe API error occurred:', 'stripe-payments' ) . ' ' . $e->getMessage();
 		}
+		/*
+		if ( ! $a['amount_variable'] && ! $a['currency_variable'] ) {
+			try {
+				$intent = \Stripe\PaymentIntent::create(
+					array(
+						'amount'   => $this->item->get_total( true ),
+						'currency' => $this->item->get_currency(),
+					)
+				);
+			} catch ( Exception $e ) {
+				$a['fatal_error'] = __( 'Stripe API error occurred:', 'stripe-payments' ) . ' ' . $e->getMessage();
+			}
 
-		// if ( ! $a['amount_variable'] && ! $a['currency_variable'] ) {
-		// 	try {
-		// 		$intent = \Stripe\PaymentIntent::create(
-		// 			array(
-		// 				'amount'   => $this->item->get_total( true ),
-		// 				'currency' => $this->item->get_currency(),
-		// 			)
-		// 		);
-		// 	} catch ( Exception $e ) {
-		// 		$a['fatal_error'] = __( 'Stripe API error occurred:', 'stripe-payments' ) . ' ' . $e->getMessage();
-		// 	}
-
-		// 	if ( ! isset( $a['fatal_error'] ) ) {
-		// 		$a['client_secret']                         = $intent->client_secret;
-		// 		$a['pi_id']                                 = $intent->id;
-		// 		$a['vars']['vars']['data']['client_secret'] = $intent->client_secret;
-		// 		$a['vars']['vars']['data']['pi_id']         = $intent->id;
-		// 	}
-		// }
+			if ( ! isset( $a['fatal_error'] ) ) {
+				$a['client_secret']                         = $intent->client_secret;
+				$a['pi_id']                                 = $intent->id;
+				$a['vars']['vars']['data']['client_secret'] = $intent->client_secret;
+				$a['vars']['vars']['data']['pi_id']         = $intent->id;
+			}
+		}
+		*/
 		if ( isset( $a['fatal_error'] ) ) {
 			$a['vars']['vars']['fatal_error'] = $a['fatal_error'];
 		}

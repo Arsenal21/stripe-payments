@@ -245,13 +245,24 @@ form.addEventListener('submit', function (event) {
 });
 
 function handlePayment() {
+	var billingDetails = {
+		name: billingNameInput.value,
+		email: emailInput.value,
+	}
+	if (vars.data.billing_address) {
+		var bAddr = document.getElementById('address');
+		var bCity = document.getElementById('city');
+		var bCountry = document.getElementById('country');
+		billingDetails.address = {
+			line1: bAddr.value,
+			city: bCity.value,
+			country: bCountry.value || bCountry.options[bCountry.selectedIndex].value
+		}
+	}
 	stripe.handleCardPayment(
 		vars.data.client_secret, card, {
 			payment_method_data: {
-				billing_details: {
-					name: billingNameInput.value,
-					email: emailInput.value,
-				}
+				billing_details: billingDetails
 			}
 		}
 	).then(function (result) {
