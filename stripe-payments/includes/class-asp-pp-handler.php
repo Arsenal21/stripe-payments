@@ -124,6 +124,13 @@ class ASP_PP_Handler {
 			$shipping_address = false;
 		}
 
+		$tos = $this->asp_main->get_setting( 'tos_enabled' );
+
+		if ( $tos ) {
+			$a['tos']      = true;
+			$a['tos_text'] = $this->asp_main->get_setting( 'tos_text' );
+		}
+
 		$data               = array();
 		$data['product_id'] = $product_id;
 		$quantity           = get_post_meta( $product_id, 'asp_product_quantity', true );
@@ -139,6 +146,8 @@ class ASP_PP_Handler {
 		$data['billing_address']  = $billing_address;
 		$data['shipping_address'] = $shipping_address;
 
+		$data['tos'] = $tos;
+
 		$data['client_secret'] = '';
 		$data['pi_id']         = '';
 		$data['amount']        = $this->item->get_total( true );
@@ -149,7 +158,7 @@ class ASP_PP_Handler {
 
 		$data['is_live'] = $this->asp_main->is_live;
 
-		$data = apply_filters( 'asp-button-output-data-ready', $data, array('product_id' => $product_id) );
+		$data = apply_filters( 'asp-button-output-data-ready', $data, array( 'product_id' => $product_id ) ); //phpcs:ignore
 
 		$a['data'] = $data;
 

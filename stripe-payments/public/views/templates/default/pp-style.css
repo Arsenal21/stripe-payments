@@ -119,6 +119,7 @@ html, body {
     height: 34px;
     width: auto;
     display: inline-block;
+    margin-top: 5px;
 }
 
 #amount-error {
@@ -127,6 +128,7 @@ html, body {
 
 .form-err {
     color: red;
+    margin-bottom: 5px;
 }
 
 .centered {

@@ -125,6 +125,14 @@
 									</div>
 									<div id="card-errors" class="form-err" role="alert"></div>
 								</fieldset>
+								<?php if ( isset( $a['tos'] ) && $a['tos'] ) { ?>
+								<div class="pure-u-1">
+									<label for="tos" class="pure-checkbox">
+										<input id="tos" type="checkbox" value="1"> <?php echo html_entity_decode( $a['tos_text'] ); ?>
+									</label>
+									<div id="tos-error" class="form-err" role="alert"></div>
+								</div>
+								<?php } ?>
 							</div>
 							<div class="pure-u-5-5 centered">
 								<div id="submit-btn-cont">

@@ -166,6 +166,14 @@ var piInput = document.getElementById('payment-intent');
 var cardErrorCont = document.getElementById('card-errors');
 var form = document.getElementById('payment-form');
 
+if (vars.data.tos) {
+	var tosInput = document.getElementById('tos');
+	var tosInputErr = document.getElementById('tos-error');
+	tosInput.addEventListener('change', function (event) {
+		tosInputErr.style.display = 'none';
+	})
+}
+
 var card = elements.create('card', {
 	style: style
 });
@@ -227,6 +235,13 @@ form.addEventListener('submit', function (event) {
 			form.submit();
 		}
 		return false;
+	}
+
+	if (vars.data.tos) {
+		if (!tosInput.checked) {
+			showFormInputErr(vars.str.strMustAcceptTos, tosInputErr, tosInput);
+			return false;
+		}
 	}
 
 	errorCont.style.display = 'none';
