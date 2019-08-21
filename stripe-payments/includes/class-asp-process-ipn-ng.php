@@ -118,6 +118,7 @@ class ASP_Process_IPN_NG {
 		$opt = get_option( 'AcceptStripePayments-settings' );
 
 		$data                       = array();
+		$data['product_id']         = $prod_id ? $prod_id : null;
 		$data['paid_amount']        = AcceptStripePayments::from_cents( $charge->data[0]->amount, $charge->data[0]->currency );
 		$data['currency_code']      = strtoupper( $charge->data[0]->currency );
 		$data['item_quantity']      = $item->get_quantity();
@@ -257,6 +258,9 @@ class ASP_Process_IPN_NG {
 			update_post_meta( $order_post_id, 'trans_id', $charge->data[0]->balance_transaction );
 			update_post_meta( $order_post_id, 'pi_id', $pi );
 		}
+
+		//Action hook with the checkout post data parameters.
+		do_action( 'asp_stripe_payment_completed', $data, $data['charge'] );
 
 		//Let's handle email sending stuff
 		if ( isset( $opt['send_emails_to_buyer'] ) ) {

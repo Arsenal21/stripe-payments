@@ -3,7 +3,7 @@
 class ASP_Utils {
 	public static function get_countries() {
 		$countries = array(
-			''   => '--',
+			''   => '—',
 			'AF' => __( 'Afghanistan', 'stripe-payments' ),
 			'AX' => __( 'Aland Islands', 'stripe-payments' ),
 			'AL' => __( 'Albania', 'stripe-payments' ),

@@ -149,6 +149,8 @@ class ASP_PP_Handler {
 
 		$data['is_live'] = $this->asp_main->is_live;
 
+		$data = apply_filters( 'asp-button-output-data-ready', $data, array('product_id' => $product_id) );
+
 		$a['data'] = $data;
 
 		$a['vars']['vars'] = array(
