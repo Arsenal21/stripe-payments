@@ -9,7 +9,7 @@
 	<?php
 	foreach ( $a['styles'] as $style ) {
 		if ( ! $style['footer'] ) {
-			printf( '<link rel="stylesheet" href="%s">' . "\r\n", esc_url( $style['src'] ) );
+			printf( '<link rel="stylesheet" href="%s">' . "\r\n", esc_url( $style['src'] ) ); //phpcs:ignore
 		}
 	}
 	foreach ( $a['vars'] as $var => $data ) {
@@ -26,7 +26,7 @@
 
 	foreach ( $a['scripts'] as $script ) {
 		if ( ! $script['footer'] ) {
-			printf( '<script src="%s"></script>' . "\r\n", esc_url( $script['src'] ) );
+			printf( '<script src="%s"></script>' . "\r\n", esc_url( $script['src'] ) ); //phpcs:ignore
 		}
 	}
 
@@ -44,7 +44,7 @@
 <body>
 	<div id="Aligner" class="Aligner">
 		<?php if ( ! $a['data']['is_live'] ) { ?>
-	<a href="https://stripe.com/docs/testing#cards" target="_blank" id="test-mode">TEST MODE</a>
+	<a href="https://stripe.com/docs/testing#cards" target="_blank" id="test-mode"><?php esc_html_e( 'TEST MODE', 'stripe-payments' ); ?></a>
 		<?php } ?>
 		<div class="Aligner-item">
 			<div id="modal-header">
@@ -55,27 +55,11 @@
 			<div id="modal-body">
 				<div class="pure-g">
 					<div class="pure-u-1">
-						<div id="global-error" 
-						<?php
-						if ( isset( $a['fatal_error'] ) ) {
-							echo 'style="display: block"';
-						}
-						?>
-												>
-							<?php
-							if ( isset( $a['fatal_error'] ) ) {
-								echo esc_html( $a['fatal_error'] );
-							}
-							?>
+						<div id="global-error" <?php echo isset( $a['fatal_error'] ) ? 'style="display: block"' : ''; ?>>
+							<?php echo isset( $a['fatal_error'] ) ? esc_html( $a['fatal_error'] ) : ''; ?> 
 						</div>
 					</div>
-					<div id="form-container" class="pure-u-1" 
-					<?php
-					if ( isset( $a['fatal_error'] ) ) {
-						echo ' style="display: none;"';
-					}
-					?>
-																>
+					<div id="form-container" class="pure-u-1" <?php	echo isset( $a['fatal_error'] ) ? 'style="display: none;"' : ''; ?>>
 						<form method="post" id="payment-form" class="pure-form pure-form-stacked">
 							<?php if ( $a['amount_variable'] ) { ?>
 								<label for="amount"><?php esc_html_e( 'Enter amount', 'stripe-payments' ); ?></label>
@@ -150,7 +134,6 @@
 							</div>
 							<div class="pure-u-1"<?php echo ( ! $a['data']['tax'] && ! $a['data']['shipping'] ) ? ' style="display: none;"' : ''; ?>>
 								<div id="tax-shipping-cont" class="pure-u-5-5 centered">
-									Includes 
 									<?php
 									$out = array();
 									if ( $a['data']['tax'] ) {
@@ -167,10 +150,10 @@
 											$out_str .= $text . ', ';
 										}
 										$out_str = rtrim( $out_str, ', ' );
-										echo $out_str;
+										$out_str = __( 'Includes', 'stripe-payments' ) . ' ' . $out_str;
+										echo $out_str; //phpcs:ignore
 									}
 									?>
-																														
 								</div>
 							</div>
 							<input type="hidden" id="payment-intent" name="payment_intent" value="">
@@ -188,13 +171,13 @@
 <?php
 foreach ( $a['scripts'] as $script ) {
 	if ( $script['footer'] ) {
-		printf( '<script src="%s"></script>' . "\r\n", esc_url( $script['src'] ) );
+		printf( '<script src="%s"></script>' . "\r\n", esc_url( $script['src'] ) ); //phpcs:ignore
 	}
 }
 
 foreach ( $a['styles'] as $style ) {
 	if ( $style['footer'] ) {
-		printf( '<link rel="stylesheet" href="%s">' . "\r\n", esc_url( $style['src'] ) );
+		printf( '<link rel="stylesheet" href="%s">' . "\r\n", esc_url( $style['src'] ) ); //phpcs:ignore
 	}
 }
 ?>
