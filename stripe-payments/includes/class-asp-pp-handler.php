@@ -227,7 +227,8 @@ class ASP_PP_Handler {
 		if ( isset( $a['fatal_error'] ) ) {
 			$a['vars']['vars']['fatal_error'] = $a['fatal_error'];
 		}
-		$pay_str           = 'Pay %s';
+		// translators: %s is payment amount
+		$pay_str           = __( 'Pay %s', 'stripe-payments' );
 		$a['pay_btn_text'] = sprintf( $pay_str, AcceptStripePayments::formatted_price( $this->item->get_total(), $this->item->get_currency() ) );
 		ob_start();
 		require_once WP_ASP_PLUGIN_PATH . 'public/views/templates/default/payment-popup.php';
