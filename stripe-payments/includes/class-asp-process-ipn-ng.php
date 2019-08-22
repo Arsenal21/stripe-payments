@@ -108,11 +108,35 @@ class ASP_Process_IPN_NG {
 		echo '</pre>';
 		*/
 
-		$sess = ASP_Session::get_instance();
+		$this->sess = ASP_Session::get_instance();
 
 		$post_quantity = filter_input( INPUT_POST, 'asp_quantity', FILTER_SANITIZE_NUMBER_INT );
 		if ( $post_quantity ) {
 			$item->set_quantity( $post_quantity );
+		}
+
+		$price = $item->get_price();
+		if ( empty( $price ) ) {
+			$post_price = filter_input( INPUT_POST, 'asp_amount', FILTER_SANITIZE_NUMBER_FLOAT );
+			if ( $post_price ) {
+				$price = $post_price;
+			} else {
+				$price = $charge->data[0]->amount;
+			}
+			$price = AcceptStripePayments::from_cents( $price, $item->get_currency() / 100 );
+			$item->set_price( $price );
+		}
+
+		$amount_in_cents = intval( $item->get_total( true ) );
+		$amount_paid     = intval( $charge->data[0]->amount );
+		if ( $amount_in_cents !== $amount_paid ) {
+			$err = sprintf(
+				// translators: placeholders ar expected and received amounts
+				__( 'Invalid payment amount received. Expected %1$s, got %2$s.', 'stripe-payments' ),
+				AcceptStripePayments::formatted_price( $amount_in_cents, $charge->data[0]->currency, true ),
+				AcceptStripePayments::formatted_price( $amount_paid, $charge->data[0]->currency, true )
+			);
+			$this->ipn_completed( $err );
 		}
 
 		$opt = get_option( 'AcceptStripePayments-settings' );
@@ -128,26 +152,15 @@ class ASP_Process_IPN_NG {
 		$data['is_live']            = $is_live;
 		$data['charge_description'] = $item->get_description();
 		$data['item_name']          = $item->get_name();
-		$price                      = $item->get_price();
-		if ( empty( $price ) ) {
-			$post_price = filter_input( INPUT_POST, 'asp_amount', FILTER_SANITIZE_NUMBER_FLOAT );
-			if ( $post_price ) {
-				$price = $post_price;
-			} else {
-				$price = $charge->data[0]->amount;
-			}
-			$price = AcceptStripePayments::from_cents( $price, $item->get_currency() / 100 );
-			$item->set_price( $price );
-		}
-		$data['item_price']      = $price;
-		$data['stripeEmail']     = $charge->data[0]->billing_details->email;
-		$data['customer_name']   = $charge->data[0]->billing_details->name;
-		$purchase_date           = gmdate( 'Y-m-d H:i:s', $charge->data[0]->created );
-		$purchase_date           = get_date_from_gmt( $purchase_date, get_option( 'date_format' ) . ', ' . get_option( 'time_format' ) );
-		$data['purchase_date']   = $purchase_date;
-		$data['charge_date']     = $purchase_date;
-		$data['charge_date_raw'] = $charge->data[0]->created;
-		$data['txn_id']          = $charge->data[0]->id;
+		$data['item_price']         = $price;
+		$data['stripeEmail']        = $charge->data[0]->billing_details->email;
+		$data['customer_name']      = $charge->data[0]->billing_details->name;
+		$purchase_date              = gmdate( 'Y-m-d H:i:s', $charge->data[0]->created );
+		$purchase_date              = get_date_from_gmt( $purchase_date, get_option( 'date_format' ) . ', ' . get_option( 'time_format' ) );
+		$data['purchase_date']      = $purchase_date;
+		$data['charge_date']        = $purchase_date;
+		$data['charge_date_raw']    = $charge->data[0]->created;
+		$data['txn_id']             = $charge->data[0]->id;
 		//billing address
 		$billing_address = '';
 		$bd              = $charge->data[0]->billing_details;
@@ -233,7 +246,7 @@ class ASP_Process_IPN_NG {
 		}
 
 		//custom fields
-		$custom_fields = $sess->get_transient_data( 'custom_fields' );
+		$custom_fields = $this->sess->get_transient_data( 'custom_fields' );
 		if ( ! empty( $custom_fields ) ) {
 			$data['custom_fields'] = $custom_fields;
 		}
@@ -308,7 +321,7 @@ class ASP_Process_IPN_NG {
 			}
 		}
 
-		$sess->set_transient_data( 'asp_data', $data );
+		$this->sess->set_transient_data( 'asp_data', $data );
 		$this->ipn_completed();
 	}
 }
