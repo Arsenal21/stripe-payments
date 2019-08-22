@@ -44,10 +44,15 @@
 <body>
 	<div id="Aligner" class="Aligner">
 		<?php if ( ! $a['data']['is_live'] ) { ?>
-	<a href="https://stripe.com/docs/testing#cards" target="_blank" id="test-mode"><?php esc_html_e( 'TEST MODE', 'stripe-payments' ); ?></a>
+			<a href="https://stripe.com/docs/testing#cards" target="_blank" id="test-mode"><?php esc_html_e( 'TEST MODE', 'stripe-payments' ); ?></a>
 		<?php } ?>
 		<div class="Aligner-item">
 			<div id="modal-header">
+				<?php if ( $a['data']['item_logo'] ) { ?>
+					<div id="item-logo-cont">
+						<img id="item-logo" src="<?php echo esc_url( $a['data']['item_logo'] ); ?>">
+					</div>
+				<?php } ?>
 				<span id="modal-close-btn" title="<?php esc_html_e( 'Close', 'stripe-payments' ); ?>"><img src="<?php echo esc_url( $a['plugin_url'] ); ?>/public/views/templates/default/close-btn.png"></span>
 				<div id="item-name"><?php echo esc_html( $a['item_name'] ); ?></div>
 				<div id="item-descr"><?php echo esc_html( $a['data']['descr'] ); ?></div>

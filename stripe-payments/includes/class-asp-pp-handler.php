@@ -131,6 +131,12 @@ class ASP_PP_Handler {
 			$a['tos_text'] = $this->asp_main->get_setting( 'tos_text' );
 		}
 
+		$item_logo = '';
+
+		if ( ! get_post_meta( $product_id, 'asp_product_no_popup_thumbnail', true ) ) {
+			$item_logo = AcceptStripePayments::get_small_product_thumb( $product_id );
+		}
+
 		$data               = array();
 		$data['product_id'] = $product_id;
 		$quantity           = get_post_meta( $product_id, 'asp_product_quantity', true );
@@ -146,7 +152,8 @@ class ASP_PP_Handler {
 		$data['billing_address']  = $billing_address;
 		$data['shipping_address'] = $shipping_address;
 
-		$data['tos'] = $tos;
+		$data['tos']       = $tos;
+		$data['item_logo'] = $item_logo;
 
 		$data['client_secret'] = '';
 		$data['pi_id']         = '';
