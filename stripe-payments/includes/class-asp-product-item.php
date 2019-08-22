@@ -104,10 +104,11 @@ class ASP_Product_Item {
 	}
 
 	public function get_total( $in_cents = false ) {
-		$total = $this->get_price() * $this->get_quantity();
+		$total = $this->get_price();
 		if ( $this->get_tax() ) {
 			$total = $total + $this->get_tax_amount();
 		}
+		$total = $total * $this->get_quantity();
 		if ( $this->get_shipping() ) {
 			$total = $total + $this->get_shipping();
 		}
