@@ -73,8 +73,24 @@
 							<?php } ?>
 							<?php
 							if ( $a['currency_variable'] ) {
-							}
-							?>
+								?>
+								<label for="quantity"><?php esc_html_e( 'Select currency', 'stripe-payments' ); ?></label>
+								<select class="pure-input-1" id="currency" name="currency">
+								<?php
+								//let's add a box where user can select currency
+								$output   = '';
+								$curr_arr = ASP_Utils::get_currencies();
+								$tpl      = '<option data-asp-curr-sym="%s" value="%s"%s>%s</option>';
+								foreach ( $curr_arr as $code => $curr ) {
+									if ( '' !== $code ) {
+										$checked = $a['data']['currency'] === $code ? ' selected' : '';
+										$output .= sprintf( $tpl, $curr[1], $code, $checked, $curr[0] );
+									}
+								}
+								echo $output;
+								?>
+								</select>
+							<?php } ?>
 							<?php if ( $a['data']['custom_quantity'] ) { ?>
 								<label for="quantity"><?php esc_html_e( 'Enter quantity', 'stripe-payments' ); ?></label>
 								<input type="number" min="1" class="pure-input-1" id="quantity" name="quantity" inputmode="numeric" value="<?php echo esc_attr( $a['data']['quantity'] ); ?>" required>

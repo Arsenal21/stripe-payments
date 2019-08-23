@@ -267,4 +267,48 @@ class ASP_Utils {
 		}
 		return $out;
 	}
+
+	public static function get_currencies() {
+		$currencies = array(
+			''    => array( __( '(Default)', 'stripe-payments' ), '' ),
+			'USD' => array( __( 'US Dollars (USD)', 'stripe-payments' ), '$' ),
+			'EUR' => array( __( 'Euros (EUR)', 'stripe-payments' ), '€' ),
+			'GBP' => array( __( 'Pounds Sterling (GBP)', 'stripe-payments' ), '£' ),
+			'AUD' => array( __( 'Australian Dollars (AUD)', 'stripe-payments' ), 'AU$' ),
+			'BRL' => array( __( 'Brazilian Real (BRL)', 'stripe-payments' ), 'R$' ),
+			'CAD' => array( __( 'Canadian Dollars (CAD)', 'stripe-payments' ), 'CA$' ),
+			'CNY' => array( __( 'Chinese Yuan (CNY)', 'stripe-payments' ), 'CN￥' ),
+			'CZK' => array( __( 'Czech Koruna (CZK)', 'stripe-payments' ), 'Kč' ),
+			'DKK' => array( __( 'Danish Krone (DKK)', 'stripe-payments' ), 'kr' ),
+			'HKD' => array( __( 'Hong Kong Dollar (HKD)', 'stripe-payments' ), 'HK$' ),
+			'HUF' => array( __( 'Hungarian Forint (HUF)', 'stripe-payments' ), 'Ft' ),
+			'INR' => array( __( 'Indian Rupee (INR)', 'stripe-payments' ), '₹' ),
+			'IDR' => array( __( 'Indonesia Rupiah (IDR)', 'stripe-payments' ), 'Rp' ),
+			'ILS' => array( __( 'Israeli Shekel (ILS)', 'stripe-payments' ), '₪' ),
+			'JPY' => array( __( 'Japanese Yen (JPY)', 'stripe-payments' ), '¥' ),
+			'MYR' => array( __( 'Malaysian Ringgits (MYR)', 'stripe-payments' ), 'RM' ),
+			'MXN' => array( __( 'Mexican Peso (MXN)', 'stripe-payments' ), 'MX$' ),
+			'NZD' => array( __( 'New Zealand Dollar (NZD)', 'stripe-payments' ), 'NZ$' ),
+			'NOK' => array( __( 'Norwegian Krone (NOK)', 'stripe-payments' ), 'kr' ),
+			'PHP' => array( __( 'Philippine Pesos (PHP)', 'stripe-payments' ), '₱' ),
+			'PLN' => array( __( 'Polish Zloty (PLN)', 'stripe-payments' ), 'zł' ),
+			'RUB' => array( __( 'Russian Ruble (RUB)', 'stripe-payments' ), '₽' ),
+			'SGD' => array( __( 'Singapore Dollar (SGD)', 'stripe-payments' ), 'SG$' ),
+			'ZAR' => array( __( 'South African Rand (ZAR)', 'stripe-payments' ), 'R' ),
+			'KRW' => array( __( 'South Korean Won (KRW)', 'stripe-payments' ), '₩' ),
+			'SEK' => array( __( 'Swedish Krona (SEK)', 'stripe-payments' ), 'kr' ),
+			'CHF' => array( __( 'Swiss Franc (CHF)', 'stripe-payments' ), 'CHF' ),
+			'TWD' => array( __( 'Taiwan New Dollars (TWD)', 'stripe-payments' ), 'NT$' ),
+			'THB' => array( __( 'Thai Baht (THB)', 'stripe-payments' ), '฿' ),
+			'TRY' => array( __( 'Turkish Lira (TRY)', 'stripe-payments' ), '₺' ),
+			'VND' => array( __( 'Vietnamese Dong (VND)', 'stripe-payments' ), '₫' ),
+		);
+		$opts       = get_option( 'AcceptStripePayments-settings' );
+		if ( isset( $opts['custom_currency_symbols'] ) && is_array( $opts['custom_currency_symbols'] ) ) {
+			$currencies = array_merge( $currencies, $opts['custom_currency_symbols'] );
+		}
+
+		return $currencies;
+	}
+
 }

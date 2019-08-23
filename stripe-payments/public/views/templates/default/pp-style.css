@@ -129,6 +129,8 @@ html, body {
 .form-err {
     color: red;
     margin-bottom: 5px;
+    margin-top: 5px;
+    font-size: 0.9rem;
 }
 
 .centered {

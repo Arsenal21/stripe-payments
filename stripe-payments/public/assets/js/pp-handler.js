@@ -145,6 +145,15 @@ if (vars.data.custom_quantity) {
 		}
 	});
 }
+
+if (vars.data.currency_variable) {
+	var currencyInput = document.getElementById('currency');
+	currencyInput.addEventListener('change', function (e) {
+		vars.data.currency = currencyInput.value || currencyInput.options[currencyInput.selectedIndex];
+		vars.currencyFormat.s = currencyInput.options[currencyInput.selectedIndex].getAttribute('data-asp-curr-sym');
+		updateAllAmounts();
+	});
+}
 var amount = vars.data.amount;
 var clientSecAmount = 0;
 var formCont = document.getElementById('form-container');
