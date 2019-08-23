@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; //Exit if accessed directly
 }
 
-define( 'WP_ASP_PLUGIN_VERSION', '2.0.0t2' );
+define( 'WP_ASP_PLUGIN_VERSION', '2.0.0t3' );
 define( 'WP_ASP_MIN_PHP_VERSION', '5.4' );
 define( 'WP_ASP_PLUGIN_URL', plugins_url( '', __FILE__ ) );
 define( 'WP_ASP_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
@@ -26,10 +26,10 @@ define( 'WP_ASP_PLUGIN_FILE', __FILE__ );
 class ASPMain {
 
 
-	static $products_slug;
-	static $posts_processed = array();
+	public static $products_slug;
+	public static $posts_processed = array();
 
-	function __construct() {
+	public function __construct() {
 		self::$products_slug = 'asp-products';
 
 		require_once WP_ASP_PLUGIN_PATH . 'includes/class-asp-utils.php';
@@ -61,13 +61,13 @@ class ASPMain {
 		add_action( 'init', array( 'AcceptStripePaymentsShortcodeNG', 'get_instance' ) );
 
 		// register custom post type
-		$ASPProducts = ASPProducts::get_instance();
-		add_action( 'init', array( $ASPProducts, 'register_post_type' ), 0 );
-		$ASPOrder = ASPOrder::get_instance();
-		add_action( 'init', array( $ASPOrder, 'register_post_type' ), 0 );
+		$asp_products = ASPProducts::get_instance();
+		add_action( 'init', array( $asp_products, 'register_post_type' ), 0 );
+		$asp_order = ASPOrder::get_instance();
+		add_action( 'init', array( $asp_order, 'register_post_type' ), 0 );
 	}
 
-	static function load_stripe_lib() {
+	public static function load_stripe_lib() {
 		if ( ! class_exists( '\Stripe\Stripe' ) ) {
 			require_once WP_ASP_PLUGIN_PATH . 'includes/stripe/init.php';
 			\Stripe\Stripe::setAppInfo( 'Stripe Payments', WP_ASP_PLUGIN_VERSION, 'https://wordpress.org/plugins/stripe-payments/' );
