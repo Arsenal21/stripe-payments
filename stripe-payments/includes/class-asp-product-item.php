@@ -47,6 +47,16 @@ class ASP_Product_Item {
 		return $button_class;
 	}
 
+	public function get_stock_items() {
+		$stock_items = get_post_meta( $this->post_id, 'asp_product_stock_items', true );
+		return $stock_items;
+	}
+
+	public function stock_control_enabled() {
+		$stock_control_enabled = get_post_meta( $this->post_id, 'asp_product_enable_stock', true );
+		return $stock_control_enabled;
+	}
+
 	public function get_tax() {
 		$this->tax = get_post_meta( $this->post_id, 'asp_product_tax', true );
 		if ( empty( $this->tax ) ) {

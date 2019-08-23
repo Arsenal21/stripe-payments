@@ -73,7 +73,7 @@ function validate_custom_quantity() {
 		showFormInputErr(vars.str.strQuantityIsZero, quantityErr, quantityInput);
 		return false;
 	} else if (vars.data.stock_control_enabled === true && custom_quantity > vars.data.stock_items) {
-		showFormInputErr(vars.str.strStockNotAvailable.replace('%d', data.stock_items), quantityErr, quantityInput);
+		showFormInputErr(vars.str.strStockNotAvailable.replace('%d', vars.data.stock_items), quantityErr, quantityInput);
 		return false;
 	}
 	quantityErr.style.display = "none";
@@ -240,7 +240,6 @@ form.addEventListener('submit', function (event) {
 					form.elements[i].setAttribute("name", 'asp_' + form.elements[i].name);
 				}
 			}
-
 			form.submit();
 		}
 		return false;
@@ -315,7 +314,8 @@ function requestCS() {
 	httpReqCS.onreadystatechange = alertContents;
 	httpReqCS.open('POST', vars.ajaxURL);
 	httpReqCS.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-	var reqStr = 'action=asp_pp_req_token&amount=' + vars.data.amount + '&curr=' + vars.data.currency + '&prod_id=' + vars.data.product_id;
+	var reqStr = 'action=asp_pp_req_token&amount=' + vars.data.amount + '&curr=' + vars.data.currency + '&product_id=' + vars.data.product_id;
+	reqStr = reqStr + '&quantity=' + vars.data.quantity;
 	if (vars.data.client_secret !== '') {
 		reqStr = reqStr + '&pi=' + vars.data.pi_id;
 	}
@@ -328,6 +328,12 @@ function alertContents() {
 			if (httpReqCS.status === 200) {
 				var resp = JSON.parse(httpReqCS.responseText);
 				console.log(resp);
+				if (typeof resp.stock_items !== "undefined") {
+					if (vars.data.stock_items !== resp.stock_items) {
+						vars.data.stock_items = resp.stock_items;
+						validate_custom_quantity();
+					}
+				}
 				if (!resp.success) {
 					submitBtn.disabled = false;
 					btnSpinner.style.display = "none";

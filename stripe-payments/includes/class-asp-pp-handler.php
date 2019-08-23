@@ -137,6 +137,19 @@ class ASP_PP_Handler {
 			$item_logo = AcceptStripePayments::get_small_product_thumb( $product_id );
 		}
 
+		//stock control
+		$stock_control_enabled = false;
+		$stock_items           = 0;
+		if ( $this->item->stock_control_enabled() ) {
+			$stock_items = $this->item->get_stock_items();
+			if ( empty( $stock_items ) ) {
+				$a['fatal_error'] = __( 'Out of stock', 'stripe-payments' );
+			} else {
+				$stock_control_enabled = true;
+				$stock_items           = $stock_items;
+			}
+		}
+
 		$data               = array();
 		$data['product_id'] = $product_id;
 		$quantity           = get_post_meta( $product_id, 'asp_product_quantity', true );
@@ -148,6 +161,9 @@ class ASP_PP_Handler {
 		$data['amount_variable']   = $a['amount_variable'];
 		$data['currency_variable'] = $a['currency_variable'];
 		$data['currency']          = $a['currency'];
+
+		$data['stock_control_enabled'] = $stock_control_enabled;
+		$data['stock_items']           = $stock_items;
 
 		$data['billing_address']  = $billing_address;
 		$data['shipping_address'] = $shipping_address;
@@ -247,9 +263,29 @@ class ASP_PP_Handler {
 	public function handle_request_token() {
 		$out            = array();
 		$out['success'] = false;
+		$product_id     = filter_input( INPUT_POST, 'product_id', FILTER_SANITIZE_NUMBER_INT );
 		$amount         = filter_input( INPUT_POST, 'amount', FILTER_SANITIZE_NUMBER_FLOAT );
 		$curr           = filter_input( INPUT_POST, 'curr', FILTER_SANITIZE_STRING );
 		$pi_id          = filter_input( INPUT_POST, 'pi', FILTER_SANITIZE_STRING );
+		$quantity       = filter_input( INPUT_POST, 'quantity', FILTER_SANITIZE_NUMBER_INT );
+
+		$item = new ASP_Product_Item( $product_id );
+
+		if ( $item->get_last_error() ) {
+			$out['err'] = __( 'Error occurred:', 'stripe-payments' ) . ' ' . $item->get_last_error();
+			wp_send_json( $out );
+		}
+
+		if ( $item->stock_control_enabled() ) {
+			$stock_items        = $item->get_stock_items();
+			$out['stock_items'] = $stock_items;
+			if ( $quantity > $stock_items ) {
+				// translators: %d is number of items in stock
+				$msg        = apply_filters( 'asp_customize_text_msg', __( 'You cannot order more items than available: %d', 'stripe-payments' ), 'stock_not_available' );
+				$out['err'] = sprintf( $msg, $stock_items );
+				wp_send_json( $out );
+			}
+		}
 
 		try {
 			ASPMain::load_stripe_lib();

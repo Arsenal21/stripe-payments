@@ -123,7 +123,7 @@ class ASP_Process_IPN_NG {
 			} else {
 				$price = $charge->data[0]->amount;
 			}
-			$price = AcceptStripePayments::from_cents( $price, $item->get_currency() / 100 );
+			$price = AcceptStripePayments::from_cents( $price, $item->get_currency() );
 			$item->set_price( $price );
 		}
 
@@ -270,6 +270,17 @@ class ASP_Process_IPN_NG {
 			update_post_meta( $order_post_id, 'charge_data', $data['charge'] );
 			update_post_meta( $order_post_id, 'trans_id', $charge->data[0]->balance_transaction );
 			update_post_meta( $order_post_id, 'pi_id', $pi );
+		}
+
+		//stock control
+		if ( get_post_meta( $data['product_id'], 'asp_product_enable_stock', true ) ) {
+			$stock_items = intval( get_post_meta( $data['product_id'], 'asp_product_stock_items', true ) );
+			$stock_items = $stock_items - $data['item_quantity'];
+			if ( $stock_items < 0 ) {
+				$stock_items = 0;
+			}
+			update_post_meta( $data['product_id'], 'asp_product_stock_items', $stock_items );
+			$data['stock_items'] = $stock_items;
 		}
 
 		//Action hook with the checkout post data parameters.

@@ -536,10 +536,11 @@ class AcceptStripePayments {
 	}
 
 	static function from_cents( $amount, $currency ) {
-		$res = $amount;
-		if ( ! self::is_zero_cents( $currency ) ) {
-			$res = $amount / 100;
+		$prec = 2;
+		if ( self::is_zero_cents( $currency ) ) {
+				$prec = 0;
 		}
+		$res = round( $amount / 100, $prec );
 		return $res;
 	}
 
@@ -608,7 +609,7 @@ class AcceptStripePayments {
 
 		return floatval(
 			preg_replace( '/[^0-9]/', '', substr( $num, 0, $sep ) ) . '.' .
-				preg_replace( '/[^0-9]/', '', substr( $num, $sep + 1, strlen( $num ) ) )
+			preg_replace( '/[^0-9]/', '', substr( $num, $sep + 1, strlen( $num ) ) )
 		);
 	}
 
