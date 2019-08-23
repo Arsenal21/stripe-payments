@@ -676,14 +676,20 @@ class AcceptStripePaymentsShortcodeNG {
 			$this->variations['opts']   = $variations_opts;
 		}
 
-		$home_url=get_home_url(null,'/');
+		$home_url = get_home_url( null, '/' );
 
-		$iframe_url = add_query_arg( array('asp_action' => 'show_pp', 'product_id' => $product_id), $home_url );
+		$iframe_url = add_query_arg(
+			array(
+				'asp_action' => 'show_pp',
+				'product_id' => $product_id,
+			),
+			$home_url
+		);
 
 		$data = array(
 			'is_live'                         => $this->AcceptStripePayments->is_live,
 			'product_id'                      => $product_id,
-			'iframe_url' => $iframe_url,
+			'iframe_url'                      => $iframe_url,
 			'button_key'                      => $button_key,
 			'item_price'                      => isset( $item_price ) ? $item_price : 0,
 			'allowRememberMe'                 => $allowRememberMe,
@@ -804,7 +810,7 @@ class AcceptStripePaymentsShortcodeNG {
 	}
 
 	function get_scripts( $data ) {
-		 $output = '';
+		$output = '';
 		if ( $this->CompatMode ) {
 			ob_start();
 			?>
