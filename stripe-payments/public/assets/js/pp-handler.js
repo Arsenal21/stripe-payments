@@ -6,6 +6,20 @@ function updateAllAmounts() {
 function calcTotal() {
 	var itemSubt = vars.data.item_price;
 	var tAmount = 0;
+	if (vars.data.coupon) {
+		var discountAmount = 0;
+		if (vars.data.coupon.discount_type === 'perc') {
+			discountAmount = Math.round(itemSubt * (vars.data.coupon.discount / 100));
+		} else {
+			if (is_zero_cents(vars.data.currency)) {
+				discountAmount = vars.data.coupon.discount;
+			} else {
+				discountAmount = vars.data.coupon.discount * 100;
+			}
+		}
+		itemSubt = itemSubt - discountAmount;
+		vars.data.coupon.discount_amount = discountAmount;
+	}
 	if (vars.data.tax) {
 		var tax = Math.round(itemSubt * parseFloat(vars.data.tax) / 100);
 		itemSubt = parseInt(itemSubt) + parseInt(tax);
@@ -154,6 +168,70 @@ if (vars.data.currency_variable) {
 		updateAllAmounts();
 	});
 }
+
+if (vars.data.coupons_enabled !== '0' && vars.data.coupons_enabled !== 0) {
+	var couponBtn = document.getElementById('apply-coupon-btn');
+	var couponRemoveBtn = document.getElementById('remove-coupon-btn');
+	var couponResCont = document.getElementById('coupon-res-cont');
+	var couponInputCont = document.getElementById('coupon-input-cont');
+	var couponInput = document.getElementById('coupon-code');
+	var couponErr = document.getElementById('coupon-err');
+	var couponInfo = document.getElementById('coupon-info');
+	couponInput.addEventListener('keydown', function (e) {
+		if (e.keyCode === 13) {
+			e.preventDefault();
+			couponBtn.click();
+			return false;
+		}
+	});
+	couponBtn.addEventListener('click', function (e) {
+		e.preventDefault();
+		couponErr.style.display = "none";
+		if (couponInput.value === '') {
+			return false;
+		}
+		couponBtn.disabled = true;
+		var ajaxData = 'action=asp_pp_check_coupon&product_id=' + vars.data.product_id + '&coupon_code=' + couponInput.value;
+		new ajaxRequest(vars.ajaxURL, ajaxData,
+			function (res) {
+				console.log(res);
+				var resp = JSON.parse(res.responseText);
+				if (resp.err) {
+					delete (vars.data.coupon);
+					console.log(resp.err);
+					showFormInputErr(resp.err, couponErr, couponInput);
+				} else {
+					vars.data.coupon = resp;
+					console.log(vars.data.coupon);
+					calcTotal();
+					couponInfo.innerHTML = vars.data.coupon.code + ': ' + ' - ';
+					if (vars.data.coupon.discount_type === 'perc') {
+						couponInfo.innerHTML = couponInfo.innerHTML + vars.data.coupon.discount + '%';
+					} else {
+						couponInfo.innerHTML = couponInfo.innerHTML + formatMoney(vars.data.coupon.discount_amount);
+					}
+					couponResCont.style.display = 'block';
+					couponInputCont.style.display = 'none';
+				}
+				updateAllAmounts();
+				couponBtn.disabled = false;
+			},
+			function (res, errMsg) {
+				errorCont.innerHTML = errMsg;
+				errorCont.style.display = 'block';
+				couponBtn.disabled = false;
+			}
+		)
+	});
+	couponRemoveBtn.addEventListener('click', function (e) {
+		delete (vars.data.coupon);
+		couponInput.value = '';
+		couponResCont.style.display = 'none';
+		couponInputCont.style.display = 'block';
+		updateAllAmounts();
+	});
+}
+
 var amount = vars.data.amount;
 var clientSecAmount = 0;
 var formCont = document.getElementById('form-container');
@@ -260,7 +338,46 @@ form.addEventListener('submit', function (event) {
 
 	if (vars.data.client_secret === '' || vars.data.amount != clientSecAmount) {
 		console.log('Regen CS');
-		requestCS();
+		var reqStr = 'action=asp_pp_req_token&amount=' + vars.data.amount + '&curr=' + vars.data.currency + '&product_id=' + vars.data.product_id;
+		reqStr = reqStr + '&quantity=' + vars.data.quantity;
+		if (vars.data.client_secret !== '') {
+			reqStr = reqStr + '&pi=' + vars.data.pi_id;
+		}
+		new ajaxRequest(vars.ajaxURL, reqStr,
+			function (res) {
+				try {
+					var resp = JSON.parse(res.responseText);
+					console.log(resp);
+					if (typeof resp.stock_items !== "undefined") {
+						if (vars.data.stock_items !== resp.stock_items) {
+							vars.data.stock_items = resp.stock_items;
+							validate_custom_quantity();
+						}
+					}
+					if (!resp.success) {
+						submitBtn.disabled = false;
+						btnSpinner.style.display = "none";
+						errorCont.innerHTML = resp.err;
+						errorCont.style.display = 'block';
+						return false;
+					}
+					vars.data.client_secret = resp.clientSecret;
+					vars.data.pi_id = resp.pi_id;
+					clientSecAmount = vars.data.amount;
+					handlePayment();
+					return true;
+				} catch (e) {
+					console.log(e);
+					alert('Caught Exception: ' + e.description);
+				}
+			},
+			function (res, errMsg) {
+				submitBtn.disabled = false;
+				btnSpinner.style.display = "none";
+				errorCont.innerHTML = errMsg;
+				errorCont.style.display = 'block';
+			}
+		);
 		return false;
 	}
 
@@ -302,55 +419,35 @@ function handlePayment() {
 	});
 }
 
-var httpReqCS;
-
-function requestCS() {
-	httpReqCS = new XMLHttpRequest();
-
-	if (!httpReqCS) {
-		alert('Giving up :( Cannot create an XMLHTTP instance');
+var ajaxRequest = function (URL, reqStr, doneFunc, failFunc) {
+	var parent = this;
+	this.URL = URL;
+	this.reqStr = reqStr;
+	this.doneFunc = doneFunc;
+	this.failFunc = failFunc;
+	this.XMLHttpReq = new XMLHttpRequest();
+	if (!this.XMLHttpReq) {
+		alert('Cannot create an XMLHTTP instance');
 		return false;
 	}
-	httpReqCS.onreadystatechange = alertContents;
-	httpReqCS.open('POST', vars.ajaxURL);
-	httpReqCS.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-	var reqStr = 'action=asp_pp_req_token&amount=' + vars.data.amount + '&curr=' + vars.data.currency + '&product_id=' + vars.data.product_id;
-	reqStr = reqStr + '&quantity=' + vars.data.quantity;
-	if (vars.data.client_secret !== '') {
-		reqStr = reqStr + '&pi=' + vars.data.pi_id;
-	}
-	httpReqCS.send(reqStr);
-}
 
-function alertContents() {
-	try {
-		if (httpReqCS.readyState === XMLHttpRequest.DONE) {
-			if (httpReqCS.status === 200) {
-				var resp = JSON.parse(httpReqCS.responseText);
-				console.log(resp);
-				if (typeof resp.stock_items !== "undefined") {
-					if (vars.data.stock_items !== resp.stock_items) {
-						vars.data.stock_items = resp.stock_items;
-						validate_custom_quantity();
-					}
-				}
-				if (!resp.success) {
-					submitBtn.disabled = false;
-					btnSpinner.style.display = "none";
-					errorCont.innerHTML = resp.err;
-					errorCont.style.display = 'block';
-					return false;
-				}
-				vars.data.client_secret = resp.clientSecret;
-				vars.data.pi_id = resp.pi_id;
-				clientSecAmount = vars.data.amount;
-				handlePayment();
+	parent.XMLHttpReq.onreadystatechange = function () {
+		if (parent.XMLHttpReq.readyState === XMLHttpRequest.DONE) {
+			if (parent.XMLHttpReq.status === 200) {
+				parent.doneFunc(parent.XMLHttpReq);
 			} else {
-				alert('There was a problem with the request.');
+				console.log('ajaxRequest failed');
+				console.log(parent.XMLHttpReq);
+				var errMsg = "Error occurred:" + ' ' + parent.XMLHttpReq.statusText + "\n";
+				errMsg += 'URL: ' + parent.XMLHttpReq.responseURL + '\n';
+				errMsg += 'Code: ' + parent.XMLHttpReq.status;
+				if (parent.failFunc) {
+					parent.failFunc(parent.XMLHttpReq, errMsg);
+				}
 			}
 		}
-	} catch (e) {
-		console.log(e);
-		alert('Caught Exception: ' + e.description);
 	}
+	parent.XMLHttpReq.open('POST', parent.URL);
+	parent.XMLHttpReq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+	parent.XMLHttpReq.send(reqStr);
 }

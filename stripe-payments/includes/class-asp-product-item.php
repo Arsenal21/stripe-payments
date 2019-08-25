@@ -11,6 +11,7 @@ class ASP_Product_Item {
 	protected $zero_cent = false;
 	protected $price;
 	protected $asp_main;
+	protected $coupon = false;
 
 	public function __construct( $post_id = false ) {
 		$this->asp_main = AcceptStripePayments::get_instance();
@@ -209,6 +210,84 @@ class ASP_Product_Item {
 			$ret[]    = $tax_info;
 		}
 		return $ret;
+	}
+
+	public function get_coupon() {
+		return $this->coupon;
+	}
+
+	private function load_coupon( $coupon_code ) {
+		//let's find coupon
+		$coupon = get_posts(
+			array(
+				'meta_key'       => 'asp_coupon_code',
+				'meta_value'     => $coupon_code,
+				'posts_per_page' => 1,
+				'offset'         => 0,
+				'post_type'      => 'asp_coupons',
+			)
+		);
+		wp_reset_postdata();
+		if ( empty( $coupon ) ) {
+			//coupon not found
+			$this->last_error = __( 'Coupon not found.', 'stripe-payments' );
+			return false;
+		}
+			$coupon = $coupon[0];
+			//check if coupon is active
+		if ( ! get_post_meta( $coupon->ID, 'asp_coupon_active', true ) ) {
+			$this->last_error = __( 'Coupon is not active.', 'stripe-payments' );
+			return false;
+		}
+			//check if coupon start date has come
+			$start_date = get_post_meta( $coupon->ID, 'asp_coupon_start_date', true );
+		if ( empty( $start_date ) || strtotime( $start_date ) > time() ) {
+			$this->last_error = __( 'Coupon is not available yet.', 'stripe-payments' );
+			return false;
+		}
+			//check if coupon has expired
+			$exp_date = get_post_meta( $coupon->ID, 'asp_coupon_exp_date', true );
+		if ( ! empty( $exp_date ) && strtotime( $exp_date ) < time() ) {
+			$this->last_error = __( 'Coupon has expired.', 'stripe-payments' );
+			return false;
+		}
+			//check if redemption limit is reached
+			$red_limit = get_post_meta( $coupon->ID, 'asp_coupon_red_limit', true );
+			$red_count = get_post_meta( $coupon->ID, 'asp_coupon_red_count', true );
+		if ( ! empty( $red_limit ) && intval( $red_count ) >= intval( $red_limit ) ) {
+			$this->last_error = __( 'Coupon redemption limit is reached.', 'stripe-payments' );
+			return false;
+		}
+
+		$this->coupon = array(
+			'code'          => $coupon_code,
+			'id'            => $coupon->ID,
+			'discount'      => get_post_meta( $coupon->ID, 'asp_coupon_discount', true ),
+			'discount_type' => get_post_meta( $coupon->ID, 'asp_coupon_discount_type', true ),
+		);
+		return true;
+	}
+
+	public function check_coupon( $coupon_code = false ) {
+		if ( ! $coupon_code ) {
+			$this->last_error = 'No coupon code provided';
+			return false;
+		}
+		$coupon_code = trim( $coupon_code );
+		$this->load_coupon( $coupon_code );
+		if ( ! $this->coupon ) {
+			return false;
+		}
+		//check if coupon is allowed for the product
+		$only_for_allowed_products = get_post_meta( $this->coupon['id'], 'asp_coupon_only_for_allowed_products', true );
+		if ( $only_for_allowed_products ) {
+			$allowed_products = get_post_meta( $this->coupon['id'], 'asp_coupon_allowed_products', true );
+			if ( is_array( $allowed_products ) && ! in_array( $this->post_id, $allowed_products, true ) ) {
+				$this->last_error = __( 'Coupon is not allowed for this product.', 'stripe-payments' );
+				return false;
+			}
+		}
+		return true;
 	}
 
 	public function load_from_product( $post_id = false ) {

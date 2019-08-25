@@ -102,6 +102,22 @@
 								</div>
 							<?php } ?>
 							<div class="pure-u-1">
+								<?php if ( $a['data']['coupons_enabled'] ) { ?>
+								<div class='pure-u-1'>
+									<label for="coupon"><?php echo esc_html( __( 'Coupon Code', 'stripe-payments' ) ); ?></label>
+									<div id="coupon-input-cont">
+										<div style="position: relative;">
+										<input class="pure-input-1" type="text" id="coupon-code" name="coupon-code">
+											<button id="apply-coupon-btn" class="pure-button" type="button"><?php echo esc_html( __( 'Apply', 'stripe-payments' ) ); ?></button>
+										</div>
+										<div id="coupon-err" class="form-err" role="alert"></div>
+									</div>
+									<div id="coupon-res-cont" style="display: none;">
+										<span id="coupon-info"></span>
+										<button id="remove-coupon-btn" class="pure-button" type="button"><?php echo esc_html( __( 'Remove', 'stripe-payments' ) ); ?></button>
+									</div>
+								</div>
+								<?php } ?>
 								<fieldset>
 									<div class="pure-g">
 										<div class="pure-u-1 pure-u-md-11-24" style="position: relative;">

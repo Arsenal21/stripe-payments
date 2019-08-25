@@ -18,6 +18,8 @@ class ASP_PP_Handler {
 			$this->asp_main = AcceptStripePayments::get_instance();
 			add_action( 'wp_ajax_asp_pp_req_token', array( $this, 'handle_request_token' ) );
 			add_action( 'wp_ajax_nopriv_asp_pp_req_token', array( $this, 'handle_request_token' ) );
+			add_action( 'wp_ajax_asp_pp_check_coupon', array( $this, 'handle_check_coupon' ) );
+			add_action( 'wp_ajax_nopriv_asp_pp_check_coupon', array( $this, 'handle_check_coupon' ) );
 		}
 	}
 
@@ -131,6 +133,14 @@ class ASP_PP_Handler {
 			$a['tos_text'] = $this->asp_main->get_setting( 'tos_text' );
 		}
 
+		$coupons_enabled = get_post_meta( $product_id, 'asp_product_coupons_setting', true );
+		if ( ( '' === $coupons_enabled ) || '2' === $coupons_enabled ) {
+			$coupons_enabled = $this->asp_main->get_setting( 'coupons_enabled' );
+		}
+		if ( $a['amount_variable'] ) {
+			$coupons_enabled = false;
+		}
+
 		$item_logo = '';
 
 		if ( ! get_post_meta( $product_id, 'asp_product_no_popup_thumbnail', true ) ) {
@@ -168,8 +178,9 @@ class ASP_PP_Handler {
 		$data['billing_address']  = $billing_address;
 		$data['shipping_address'] = $shipping_address;
 
-		$data['tos']       = $tos;
-		$data['item_logo'] = $item_logo;
+		$data['coupons_enabled'] = $coupons_enabled;
+		$data['tos']             = $tos;
+		$data['item_logo']       = $item_logo;
 
 		$data['client_secret'] = '';
 		$data['pi_id']         = '';
@@ -387,6 +398,28 @@ class ASP_PP_Handler {
 			add_filter( 'asp_button_output_after_button', array( $this, 'after_button_add_сf_filter' ), 990, 3 );
 		}
 		return $output;
+	}
+
+	public function handle_check_coupon() {
+		$product_id = filter_input( INPUT_POST, 'product_id', FILTER_SANITIZE_NUMBER_INT );
+		$item       = new ASP_Product_Item( $product_id );
+
+		if ( $item->get_last_error() ) {
+			$out['err'] = __( 'Error occurred:', 'stripe-payments' ) . ' ' . $item->get_last_error();
+			wp_send_json( $out );
+		}
+
+		$coupon_code = filter_input( INPUT_POST, 'coupon_code', FILTER_SANITIZE_STRING );
+
+		$coupon_valid = $item->check_coupon( $coupon_code );
+		if ( ! $coupon_valid ) {
+			$out['err'] = $item->get_last_error();
+			wp_send_json( $out );
+		}
+
+		$coupon = $item->get_coupon();
+		wp_send_json( $coupon );
+
 	}
 
 }

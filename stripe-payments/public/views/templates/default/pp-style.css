@@ -159,6 +159,12 @@ html, body {
     position: absolute;
 }
 
+#apply-coupon-btn {
+    position: absolute;
+    bottom: 1px;
+    right: 1px;
+}
+
 /* Icons */
 
 .icon {
