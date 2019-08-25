@@ -87,7 +87,7 @@
 										$output .= sprintf( $tpl, $curr[1], $code, $checked, $curr[0] );
 									}
 								}
-								echo $output;
+								echo $output; //phpcs:ignore
 								?>
 								</select>
 							<?php } ?>
@@ -98,7 +98,7 @@
 							<?php } ?>
 							<?php if ( isset( $a['custom_fields'] ) ) { ?>
 								<div class="pure-u-1">
-									<?php echo $a['custom_fields']; ?>
+									<?php echo $a['custom_fields']; //phpcs:ignore ?>
 								</div>
 							<?php } ?>
 							<div class="pure-u-1">
@@ -108,7 +108,8 @@
 									<div id="coupon-input-cont">
 										<div style="position: relative;">
 										<input class="pure-input-1" type="text" id="coupon-code" name="coupon-code">
-											<button id="apply-coupon-btn" class="pure-button" type="button"><?php echo esc_html( __( 'Apply', 'stripe-payments' ) ); ?></button>
+										<span id="coupon-spinner" class="small-spinner coupon-spinner"></span>
+										<button id="apply-coupon-btn" class="pure-button" type="button"><?php echo esc_html( __( 'Apply', 'stripe-payments' ) ); ?></button>
 										</div>
 										<div id="coupon-err" class="form-err" role="alert"></div>
 									</div>
@@ -152,7 +153,7 @@
 										<div class="pure-u-1 pure-u-md-12-24" style="position: relative;">
 											<label for="country"><?php esc_html_e( 'Country', 'stripe-payments' ); ?></label>
 											<select class="pure-input-1" name="country" id="country" required>
-												<?php echo ASP_Utils::get_countries_opts(); ?>
+												<?php echo ASP_Utils::get_countries_opts(); //phpcs:ignore ?>
 											</select>
 										</div>
 										<?php } ?>
@@ -165,7 +166,7 @@
 								<?php if ( isset( $a['tos'] ) && $a['tos'] ) { ?>
 								<div class="pure-u-1">
 									<label for="tos" class="pure-checkbox">
-										<input id="tos" type="checkbox" value="1"> <?php echo html_entity_decode( $a['tos_text'] ); ?>
+										<input id="tos" type="checkbox" value="1"> <?php echo html_entity_decode( $a['tos_text'] ); //phpcs:ignore?>
 									</label>
 									<div id="tos-error" class="form-err" role="alert"></div>
 								</div>

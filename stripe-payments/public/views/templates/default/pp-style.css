@@ -200,6 +200,10 @@ input.pure-input-1.has-icon, select.pure-input-1.has-icon {
     animation: small-spinner .6s linear infinite;
 }
 
+.coupon-spinner {
+    z-index: 1;
+}
+
 @keyframes small-spinner {
     to {
         transform: rotate(360deg);
@@ -209,6 +213,9 @@ input.pure-input-1.has-icon, select.pure-input-1.has-icon {
 @media only screen and (max-width: 480px) {
     .small-spinner {
         top: 1.1em;
+    }
+    .coupon-spinner {
+        top: .5em;
     }
     #tax-shipping-cont {
         padding-top: 20px;

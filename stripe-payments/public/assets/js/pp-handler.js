@@ -177,6 +177,7 @@ if (vars.data.coupons_enabled !== '0' && vars.data.coupons_enabled !== 0) {
 	var couponInput = document.getElementById('coupon-code');
 	var couponErr = document.getElementById('coupon-err');
 	var couponInfo = document.getElementById('coupon-info');
+	var couponSpinner = document.getElementById('coupon-spinner');
 	couponInput.addEventListener('keydown', function (e) {
 		if (e.keyCode === 13) {
 			e.preventDefault();
@@ -191,6 +192,7 @@ if (vars.data.coupons_enabled !== '0' && vars.data.coupons_enabled !== 0) {
 			return false;
 		}
 		couponBtn.disabled = true;
+		couponSpinner.style.display = 'block';
 		var ajaxData = 'action=asp_pp_check_coupon&product_id=' + vars.data.product_id + '&coupon_code=' + couponInput.value;
 		new ajaxRequest(vars.ajaxURL, ajaxData,
 			function (res) {
@@ -214,6 +216,7 @@ if (vars.data.coupons_enabled !== '0' && vars.data.coupons_enabled !== 0) {
 					couponInputCont.style.display = 'none';
 				}
 				updateAllAmounts();
+				couponSpinner.style.display = 'none';
 				couponBtn.disabled = false;
 			},
 			function (res, errMsg) {

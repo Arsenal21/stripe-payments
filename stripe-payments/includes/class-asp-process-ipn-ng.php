@@ -127,6 +127,10 @@ class ASP_Process_IPN_NG {
 			$item->set_price( $price );
 		}
 
+		//coupon
+		$coupon_code  = filter_input( INPUT_POST, 'asp_coupon-code', FILTER_SANITIZE_STRING );
+		$coupon_valid = $item->check_coupon( $coupon_code );
+
 		$amount_in_cents = intval( $item->get_total( true ) );
 		$amount_paid     = intval( $charge->data[0]->amount );
 		if ( $amount_in_cents !== $amount_paid ) {
@@ -199,32 +203,13 @@ class ASP_Process_IPN_NG {
 		}
 
 		//check if coupon was used
-		if ( isset( $charge->data[0]->metadata['Coupon'] ) ) {
-			$coupon_code = strtoupper( $charge->data[0]->metadata['Coupon'] );
-			$coupon      = AcceptStripePayments_CouponsAdmin::get_coupon( $coupon_code );
-			if ( $coupon['valid'] ) {
-				if ( ! AcceptStripePayments_CouponsAdmin::is_coupon_allowed_for_product( $coupon['id'], $prod_id ) ) {
-					//coupon not allowed for this product
-					unset( $coupon );
-				} else {
-					if ( 'perc' === $coupon['discountType'] ) {
-						$perc            = AcceptStripePayments::is_zero_cents( $currency_code ) ? 0 : 2;
-						$discount_amount = round( $item_price * ( $coupon['discount'] / 100 ), $perc );
-					} else {
-						$discount_amount = $coupon['discount'];
-					}
-					$coupon['discountAmount'] = $discount_amount;
-					$item_price               = $item_price - $discount_amount;
-				}
-			} else {
-				unset( $coupon );
-			}
+		if ( $coupon_valid ) {
+			$coupon = $item->get_coupon();
 		}
-		if ( isset( $coupon ) && $coupon['valid'] ) {
+		if ( isset( $coupon ) ) {
 			// translators: %s is coupon code
 			$data['additional_items'][ sprintf( __( 'Coupon "%s"', 'stripe-payments' ), $coupon['code'] ) ] = floatval( '-' . $coupon['discountAmount'] );
-			$data['additional_items'][ __( 'Subtotal', 'stripe-payments' ) ]                                = $item_price;
-			$item->set_price( $item_price );
+			$data['additional_items'][ __( 'Subtotal', 'stripe-payments' ) ]                                = $item->get_price( false, true );
 			//increase coupon redeem count
 			$curr_redeem_cnt = get_post_meta( $coupon['id'], 'asp_coupon_red_count', true );
 			$curr_redeem_cnt++;
@@ -233,7 +218,7 @@ class ASP_Process_IPN_NG {
 		$tax = $item->get_tax();
 		if ( ! empty( $tax ) ) {
 			$tax_str = apply_filters( 'asp_customize_text_msg', __( 'Tax', 'stripe-payments' ), 'tax_str' );
-			$tax_amt = $item->get_tax_amount( false );
+			$tax_amt = $item->get_tax_amount( false, true );
 			$data['additional_items'][ ucfirst( $tax_str ) ] = $tax_amt;
 			$data['tax_perc']                                = $item->get_tax();
 			$data['tax']                                     = $tax_amt;
