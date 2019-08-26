@@ -317,6 +317,7 @@ if (vars.data.billing_address && vars.data.shipping_address) {
 	var shipaddrCont = document.getElementById('shipping-addr-cont');
 	var baddrToggles = document.getElementsByClassName('baddr-toggle');
 	var baddrHide = document.getElementsByClassName('baddr-hide');
+	var saddrRequired = document.getElementsByClassName('saddr-required');
 	var itemsArr = [];
 	for (var i = 0; i < baddrToggles.length; i++) {
 		(function (index) {
@@ -337,6 +338,11 @@ if (vars.data.billing_address && vars.data.shipping_address) {
 					baddrHide[index].style.display = "inline-block";
 				})(i);
 			}
+			for (var i = 0; i < saddrRequired.length; i++) {
+				(function (index) {
+					saddrRequired[index].required = false;
+				})(i);
+			}
 			billaddrCont.className = "";
 			shipaddrCont.style.display = "none";
 		} else {
@@ -349,6 +355,11 @@ if (vars.data.billing_address && vars.data.shipping_address) {
 			for (var i = 0; i < baddrHide.length; i++) {
 				(function (index) {
 					baddrHide[index].style.display = "none";
+				})(i);
+			}
+			for (var i = 0; i < saddrRequired.length; i++) {
+				(function (index) {
+					saddrRequired[index].required = true;
 				})(i);
 			}
 			billaddrCont.className = "half-width";
@@ -398,6 +409,19 @@ submitBtn.addEventListener('click', function (e) {
 
 form.addEventListener('submit', function (event) {
 	event.preventDefault();
+
+	if (piInput.value !== '') {
+		if (!inIframe()) {
+			console.log('Self-submitting');
+			for (var i = 0; i < form.elements.length; i++) {
+				if (form.elements[i].name) {
+					form.elements[i].setAttribute("name", 'asp_' + form.elements[i].name);
+				}
+			}
+			form.submit();
+		}
+		return false;
+	}
 
 	if (vars.data.amount_variable) {
 		amount = validate_custom_amount();
@@ -466,19 +490,6 @@ form.addEventListener('submit', function (event) {
 	}
 
 	handlePayment();
-
-	if (piInput.value !== '') {
-		if (!inIframe()) {
-			console.log('Self-submitting');
-			for (var i = 0; i < form.elements.length; i++) {
-				if (form.elements[i].name) {
-					form.elements[i].setAttribute("name", 'asp_' + form.elements[i].name);
-				}
-			}
-			form.submit();
-		}
-		return false;
-	}
 
 });
 

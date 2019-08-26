@@ -159,7 +159,6 @@
 									</div>
 								</div>
 								<?php } ?>
-								<fieldset>
 									<div class="pure-g">
 										<div class="pure-u-1 pure-u-md-11-24" style="position: relative;">
 											<label for="billing_name"><?php esc_html_e( 'Name', 'stripe-payments' ); ?></label>
@@ -225,15 +224,15 @@
 												<circle cx="16" cy="11" r="4" />
 												<path d="M24 15 C21 22 16 30 16 30 16 30 11 22 8 15 5 8 10 2 16 2 22 2 27 8 24 15 Z" />
 											</svg>
-											<input class="pure-input-1 has-icon" type="text" id="shipping_address" name="shipping_address" required>
+											<input class="pure-input-1 has-icon saddr-required" type="text" id="shipping_address" name="shipping_address">
 										</div>
 										<div class="pure-u-1" style="position: relative;">
 											<label for="shipping_city"><?php esc_html_e( 'City', 'stripe-payments' ); ?></label>
-											<input class="pure-input-1" type="text" id="shipping_city" name="shipping_city" required>
+											<input class="pure-input-1 saddr-required" type="text" id="shipping_city" name="shipping_city">
 										</div>
 										<div class="pure-u-1" style="position: relative;">
 											<label for="shipping_country"><?php esc_html_e( 'Country', 'stripe-payments' ); ?></label>
-											<select class="pure-input-1" name="shipping_country" id="shipping_country" required>
+											<select class="pure-input-1 saddr-required" name="shipping_country" id="shipping_country">
 												<?php echo ASP_Utils::get_countries_opts(); //phpcs:ignore ?>
 											</select>
 										</div>
@@ -252,7 +251,7 @@
 									</div>
 									<div id="card-errors" class="form-err" role="alert"></div>
 										</div>
-								</fieldset>
+
 								</div>
 								<?php if ( isset( $a['tos'] ) && $a['tos'] ) { ?>
 								<div class="pure-u-1">

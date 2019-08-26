@@ -36,8 +36,8 @@ var stripeHandlerNG = function (data) {
                         });
                         parent.form.append('<input type="hidden" name="asp_process_ipn" value="1">');
                         parent.form.append('<input type="hidden" name="asp_is_live" value="' + parent.data.is_live + '">');
-                        jQuery('div#asp-all-buttons-container-' + data.uniq_id).hide();
-                        jQuery('div#asp-btn-spinner-container-' + data.uniq_id).show();
+                        jQuery('div#asp-all-buttons-container-' + parent.data.uniq_id).hide();
+                        jQuery('div#asp-btn-spinner-container-' + parent.data.uniq_id).show();
                         jQuery('form#asp_ng_form_' + parent.data.uniq_id).submit();
                         parent.modal.fadeOut();
                     }
