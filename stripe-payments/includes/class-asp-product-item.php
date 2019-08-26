@@ -304,6 +304,7 @@ class ASP_Product_Item {
 			$allowed_products = get_post_meta( $this->coupon['id'], 'asp_coupon_allowed_products', true );
 			if ( is_array( $allowed_products ) && ! in_array( $this->post_id, $allowed_products, true ) ) {
 				$this->last_error = __( 'Coupon is not allowed for this product.', 'stripe-payments' );
+				$this->coupon = false;
 				return false;
 			}
 		}

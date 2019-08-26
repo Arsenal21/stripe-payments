@@ -6,6 +6,12 @@ function updateAllAmounts() {
 function calcTotal() {
 	var itemSubt = vars.data.item_price;
 	var tAmount = 0;
+	var grpId;
+	if (vars.data.variations.applied) {
+		for (grpId = 0; grpId < vars.data.variations.applied.length; ++grpId) {
+			itemSubt = itemSubt + amount_to_cents(vars.data.variations.prices[grpId][vars.data.variations.applied[grpId]], vars.data.currency);
+		}
+	}
 	if (vars.data.coupon) {
 		var discountAmount = 0;
 		if (vars.data.coupon.discount_type === 'perc') {
@@ -47,6 +53,13 @@ function cents_to_amount(amount, curr) {
 	return amount;
 }
 
+function amount_to_cents(amount, curr) {
+	if (!is_zero_cents(curr)) {
+		amount = amount * 100;
+	}
+	return amount;
+}
+
 function showFormInputErr(msg, el, inp) {
 	el.innerHTML = msg;
 	el.style.display = "block";
@@ -71,6 +84,18 @@ function inIframe() {
 		return window.self !== window.top;
 	} catch (e) {
 		return true;
+	}
+}
+
+function triggerEvent(el, type) {
+	if ('createEvent' in document) {
+		var e = document.createEvent('HTMLEvents');
+		e.initEvent(type, false, true);
+		el.dispatchEvent(e);
+	} else {
+		var e = document.createEventObject();
+		e.eventType = type;
+		el.fireEvent('on' + e.eventType, e);
 	}
 }
 
@@ -262,6 +287,28 @@ if (vars.data.tos) {
 	tosInput.addEventListener('change', function (event) {
 		tosInputErr.style.display = 'none';
 	})
+}
+
+if (vars.data.variations) {
+	var varInputs = document.getElementsByClassName('variations-input');
+	for (var i = 0; i < varInputs.length; i++) {
+		(function (index) {
+			varInputs[index].addEventListener("change", function () {
+				var grpId = this.getAttribute('data-asp-variations-group-id');
+				var varId = this.value;
+				if (Object.getOwnPropertyNames(vars.data.variations).length !== 0) {
+					if (!vars.data.variations.applied) {
+						vars.data.variations.applied = [];
+					}
+					vars.data.variations.applied[grpId] = varId;
+					updateAllAmounts();
+				}
+			})
+			if (varInputs[index].checked || varInputs[index].tagName === "SELECT") {
+				triggerEvent(varInputs[index], 'change');
+			}
+		})(i);
+	}
 }
 
 var card = elements.create('card', {

@@ -160,6 +160,22 @@ class ASP_PP_Handler {
 			}
 		}
 
+		//variations
+		$this->variations = array();
+		$v                = new ASPVariations( $product_id );
+		if ( ! empty( $v->groups ) && empty( $plan_id ) ) {
+			$this->variations['groups'] = $v->groups;
+			$variations_names           = get_post_meta( $product_id, 'asp_variations_names', true );
+			$variations_prices_orig     = get_post_meta( $product_id, 'asp_variations_prices', true );
+			$variations_prices          = apply_filters( 'asp_variations_prices_filter', $variations_prices_orig, $product_id );
+			$variations_urls            = get_post_meta( $product_id, 'asp_variations_urls', true );
+			$variations_opts            = get_post_meta( $product_id, 'asp_variations_opts', true );
+			$this->variations['names']  = $variations_names;
+			$this->variations['prices'] = $variations_prices;
+			$this->variations['urls']   = $variations_urls;
+			$this->variations['opts']   = $variations_opts;
+		}
+
 		$data               = array();
 		$data['product_id'] = $product_id;
 		$quantity           = get_post_meta( $product_id, 'asp_product_quantity', true );
@@ -189,6 +205,8 @@ class ASP_PP_Handler {
 		$data['tax']           = $this->item->get_tax();
 		$data['shipping']      = $this->item->get_shipping( true );
 		$data['descr']         = $this->item->get_description();
+
+		$data['variations'] = $this->variations;
 
 		$data['is_live'] = $this->asp_main->is_live;
 

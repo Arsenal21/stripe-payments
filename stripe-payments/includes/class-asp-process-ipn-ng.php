@@ -127,6 +127,28 @@ class ASP_Process_IPN_NG {
 			$item->set_price( $price );
 		}
 
+		$item_price = $item->get_price();
+
+		//variatoions
+		$variations        = array();
+		$posted_variations = filter_input( INPUT_POST, 'asp_stripeVariations', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
+		if ( $posted_variations ) {
+			// we got variations posted. Let's get variations from product
+			$v = new ASPVariations( $prod_id );
+			if ( ! empty( $v->variations ) ) {
+				//there are variations configured for the product
+				foreach ( $posted_variations as $grp_id => $var_id ) {
+					$var = $v->get_variation( $grp_id, $var_id[0] );
+					if ( ! empty( $var ) ) {
+						$item_price    = $item_price + $var['price'];
+						$variations[]  = array( $var['group_name'] . ' - ' . $var['name'], $var['price'] );
+						$var_applied[] = $var;
+					}
+				}
+			}
+			$item->set_price( $item_price );
+		}
+
 		//coupon
 		$coupon_code  = filter_input( INPUT_POST, 'asp_coupon-code', FILTER_SANITIZE_STRING );
 		$coupon_valid = $item->check_coupon( $coupon_code );
@@ -202,6 +224,20 @@ class ASP_Process_IPN_NG {
 			$data['custom_fields'] = $custom_fields;
 		}
 
+		if ( ! empty( $var_applied ) ) {
+			//process variations URLs if needed
+			foreach ( $var_applied as $key => $var ) {
+				if ( ! empty( $var['url'] ) ) {
+					$var                 = apply_filters( 'asp_variation_url_process', $var, $data );
+					$var_applied[ $key ] = $var;
+				}
+			}
+			$data['var_applied'] = $var_applied;
+			foreach ( $variations as $variation ) {
+				$data['additional_items'][ $variation[0] ] = $variation[1];
+			}
+		}
+
 		//check if coupon was used
 		if ( $coupon_valid ) {
 			$coupon = $item->get_coupon();
@@ -235,6 +271,7 @@ class ASP_Process_IPN_NG {
 		if ( ! empty( $custom_fields ) ) {
 			$data['custom_fields'] = $custom_fields;
 		}
+
 		$product_details  = __( 'Product Name: ', 'stripe-payments' ) . $data['item_name'] . "\n";
 		$product_details .= __( 'Quantity: ', 'stripe-payments' ) . $data['item_quantity'] . "\n";
 		$product_details .= __( 'Item Price: ', 'stripe-payments' ) . AcceptStripePayments::formatted_price( $data['item_price'], $data['currency_code'] ) . "\n";

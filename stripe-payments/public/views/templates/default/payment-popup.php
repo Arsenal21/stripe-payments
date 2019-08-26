@@ -102,6 +102,46 @@
 								</div>
 							<?php } ?>
 							<div class="pure-u-1">
+		<?php
+		if ( ! empty( $a['data']['variations'] ) ) {
+			$variations_str = '';
+			foreach ( $a['data']['variations']['groups'] as $grp_id => $group ) {
+				if ( ! empty( $a['data']['variations']['names'] ) ) {
+					$variations_str .= '<div class="pure-u-1 pure-u-md-11-24">';
+					$variations_str .= '<label>' . $group . '</label>';
+					if ( isset( $a['data']['variations']['opts'][ $grp_id ] ) && $a['data']['variations']['opts'][ $grp_id ] === '1' ) {
+						//radio buttons output
+					} else {
+						$variations_str .= sprintf( '<select class="pure-input-1 variations-input" data-asp-variations-group-id="%1$d" name="stripeVariations[%1$d][]">', $grp_id );
+					}
+					foreach ( $a['data']['variations']['names'][ $grp_id ] as $var_id => $name ) {
+						if ( isset( $a['data']['variations']['opts'][ $grp_id ] ) && $a['data']['variations']['opts'][ $grp_id ] === '1' ) {
+							$tpl = '<label class="pure-radio"><input class="variations-input" data-asp-variations-group-id="' . $grp_id . '" name="stripeVariations[' . $grp_id . '][]" type="radio" name="123" value="%d"' . ( $var_id === 0 ? 'checked' : '' ) . '> %s %s</label>';
+						} else {
+							$tpl = '<option value="%d">%s %s</option>';
+						}
+						$price_mod = $a['data']['variations']['prices'][ $grp_id ][ $var_id ];
+						if ( ! empty( $price_mod ) ) {
+							$fmt_price = AcceptStripePayments::formatted_price( abs( $price_mod ), $a['data']['currency'] );
+							$price_mod = $price_mod < 0 ? ' - ' . $fmt_price : ' + ' . $fmt_price;
+							$price_mod = '(' . $price_mod . ')';
+						} else {
+							$price_mod = '';
+						}
+						$variations_str .= sprintf( $tpl, $var_id, $name, $price_mod );
+					}
+					if ( isset( $a['data']['variations']['opts'][ $grp_id ] ) && $a['data']['variations']['opts'][ $grp_id ] === '1' ) {
+						//radio buttons output
+					} else {
+						$variations_str .= '</select>';
+					}
+					$variations_str .= '</div>';
+					$variations_str .= '<div class="pure-u-1-24"></div>';
+				}
+			}
+			echo $variations_str;
+		}
+		?>
 								<?php if ( $a['data']['coupons_enabled'] ) { ?>
 								<div class='pure-u-1'>
 									<label for="coupon"><?php echo esc_html( __( 'Coupon Code', 'stripe-payments' ) ); ?></label>
