@@ -139,7 +139,7 @@
 					$variations_str .= '<div class="pure-u-1-24"></div>';
 				}
 			}
-			echo $variations_str;
+			echo $variations_str; //phpcs:ignore
 		}
 		?>
 								<?php if ( $a['data']['coupons_enabled'] ) { ?>
@@ -176,8 +176,17 @@
 											</svg>
 											<input class="pure-input-1 has-icon" type="email" id="email" name="email" required>
 										</div>
+										<?php if ( $a['data']['billing_address'] && $a['data']['shipping_address'] ) { ?>
+											<div class="pure-u-1">
+												<label class="pure-checkbox"><input type="checkbox" id="same-bill-ship-addr" name="same-bill-ship-addr" checked> Same billing and shipping info</label>
+											</div>
+										<?php } ?>
 										<?php if ( $a['data']['billing_address'] ) { ?>
-										<div class="pure-u-1" style="position: relative;">
+											<div id="billing-addr-cont">
+												<div class="half-inner-left">
+												<fieldset>
+											<div class="pure-u-1"><legend><?php esc_html_e( 'Billing info', 'stripe-payments' ); ?></legend></div>
+										<div class="pure-u-1 pure-u-md-14-24 baddr-toggle" style="position: relative;">
 											<label for="address"><?php esc_html_e( 'Address', 'stripe-payments' ); ?></label>
 											<svg id="i-location" class="icon input-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
 												<circle cx="16" cy="11" r="4" />
@@ -185,24 +194,66 @@
 											</svg>
 											<input class="pure-input-1 has-icon" type="text" id="address" name="address" required>
 										</div>
-										<div class="pure-u-1 pure-u-md-11-24" style="position: relative;">
+										<div class="pure-u-md-1-24 baddr-hide"></div>
+										<div class="pure-u-1 pure-u-md-9-24 baddr-toggle" style="position: relative;">
 											<label for="city"><?php esc_html_e( 'City', 'stripe-payments' ); ?></label>
 											<input class="pure-input-1" type="text" id="city" name="city" required>
 										</div>
-										<div class="pure-u-md-1-24"></div>
-										<div class="pure-u-1 pure-u-md-12-24" style="position: relative;">
+										<div class="pure-u-1 pure-u-md-14-24 baddr-toggle" style="position: relative;">
 											<label for="country"><?php esc_html_e( 'Country', 'stripe-payments' ); ?></label>
 											<select class="pure-input-1" name="country" id="country" required>
 												<?php echo ASP_Utils::get_countries_opts(); //phpcs:ignore ?>
 											</select>
 										</div>
+										<div class="pure-u-md-1-24 baddr-hide"></div>
+										<div class="pure-u-1 pure-u-md-9-24 baddr-toggle">
+											<label for="postcode"><?php esc_html_e( 'Postcode', 'stripe-payments' ); ?></label>
+											<input class="pure-u-1" type="text" name="postcode" id="postcode">
+										</div>
+										</fieldset>
+										</div>
+										</div>
 										<?php } ?>
-									</div>
+										<?php if ( $a['data']['shipping_address'] ) { ?>
+											<div id="shipping-addr-cont" class="half-width" style="display: none;">
+											<div class="half-inner-right">
+											<fieldset>
+											<div class="pure-u-1"><legend><?php esc_html_e( 'Shipping info', 'stripe-payments' ); ?></legend></div>
+										<div class="pure-u-1" style="position: relative;">
+											<label for="shipping_address"><?php esc_html_e( 'Address', 'stripe-payments' ); ?></label>
+											<svg id="i-location" class="icon input-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+												<circle cx="16" cy="11" r="4" />
+												<path d="M24 15 C21 22 16 30 16 30 16 30 11 22 8 15 5 8 10 2 16 2 22 2 27 8 24 15 Z" />
+											</svg>
+											<input class="pure-input-1 has-icon" type="text" id="shipping_address" name="shipping_address" required>
+										</div>
+										<div class="pure-u-1" style="position: relative;">
+											<label for="shipping_city"><?php esc_html_e( 'City', 'stripe-payments' ); ?></label>
+											<input class="pure-input-1" type="text" id="shipping_city" name="shipping_city" required>
+										</div>
+										<div class="pure-u-1" style="position: relative;">
+											<label for="shipping_country"><?php esc_html_e( 'Country', 'stripe-payments' ); ?></label>
+											<select class="pure-input-1" name="shipping_country" id="shipping_country" required>
+												<?php echo ASP_Utils::get_countries_opts(); //phpcs:ignore ?>
+											</select>
+										</div>
+										<div class="pure-u-1">
+											<label for="shipping_postcode"><?php esc_html_e( 'Postcode', 'stripe-payments' ); ?></label>
+											<input class="pure-u-1" type="text" name="shipping_postcode" id="shipping_postcode">
+										</div>
+										</fieldset>
+
+										</div>
+										</div>
+										<?php } ?>
+										<div class="pure-u-1">
 									<label for="card-element"><?php esc_html_e( 'Credit or debit card', 'stripe-payments' ); ?></label>
 									<div id="card-element">
 									</div>
 									<div id="card-errors" class="form-err" role="alert"></div>
+										</div>
 								</fieldset>
+								</div>
 								<?php if ( isset( $a['tos'] ) && $a['tos'] ) { ?>
 								<div class="pure-u-1">
 									<label for="tos" class="pure-checkbox">

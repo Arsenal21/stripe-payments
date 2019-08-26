@@ -194,7 +194,7 @@ if (vars.data.currency_variable) {
 	});
 }
 
-if (vars.data.coupons_enabled !== '0' && vars.data.coupons_enabled !== 0) {
+if (vars.data.coupons_enabled) {
 	var couponBtn = document.getElementById('apply-coupon-btn');
 	var couponRemoveBtn = document.getElementById('remove-coupon-btn');
 	var couponResCont = document.getElementById('coupon-res-cont');
@@ -311,8 +311,55 @@ if (vars.data.variations) {
 	}
 }
 
+if (vars.data.billing_address && vars.data.shipping_address) {
+	var billshipSwitch = document.getElementById('same-bill-ship-addr');
+	var billaddrCont = document.getElementById('billing-addr-cont');
+	var shipaddrCont = document.getElementById('shipping-addr-cont');
+	var baddrToggles = document.getElementsByClassName('baddr-toggle');
+	var baddrHide = document.getElementsByClassName('baddr-hide');
+	var itemsArr = [];
+	for (var i = 0; i < baddrToggles.length; i++) {
+		(function (index) {
+			itemsArr.push(baddrToggles[index]);
+		})(i);
+	}
+
+	billshipSwitch.addEventListener('change', function (e) {
+		if (billshipSwitch.checked) {
+			for (var i = 0; i < itemsArr.length; i++) {
+				(function (index) {
+					attr = itemsArr[index].getAttribute('data-class-save');
+					itemsArr[index].className = attr;
+				})(i);
+			}
+			for (var i = 0; i < baddrHide.length; i++) {
+				(function (index) {
+					baddrHide[index].style.display = "inline-block";
+				})(i);
+			}
+			billaddrCont.className = "";
+			shipaddrCont.style.display = "none";
+		} else {
+			for (var i = 0; i < itemsArr.length; i++) {
+				(function (index) {
+					itemsArr[index].setAttribute('data-class-save', itemsArr[index].className);
+					itemsArr[index].className = "pure-u-1";
+				})(i);
+			}
+			for (var i = 0; i < baddrHide.length; i++) {
+				(function (index) {
+					baddrHide[index].style.display = "none";
+				})(i);
+			}
+			billaddrCont.className = "half-width";
+			shipaddrCont.style.display = "inline-block";
+		}
+	})
+}
+
 var card = elements.create('card', {
-	style: style
+	style: style,
+	hidePostalCode: true
 });
 
 card.on('ready', function () {
@@ -358,19 +405,6 @@ form.addEventListener('submit', function (event) {
 			return false;
 		}
 		vars.data.item_price = amount;
-	}
-
-	if (piInput.value !== '') {
-		if (!inIframe()) {
-			console.log('Self-submitting');
-			for (var i = 0; i < form.elements.length; i++) {
-				if (form.elements[i].name) {
-					form.elements[i].setAttribute("name", 'asp_' + form.elements[i].name);
-				}
-			}
-			form.submit();
-		}
-		return false;
 	}
 
 	if (vars.data.tos) {
@@ -432,6 +466,20 @@ form.addEventListener('submit', function (event) {
 	}
 
 	handlePayment();
+
+	if (piInput.value !== '') {
+		if (!inIframe()) {
+			console.log('Self-submitting');
+			for (var i = 0; i < form.elements.length; i++) {
+				if (form.elements[i].name) {
+					form.elements[i].setAttribute("name", 'asp_' + form.elements[i].name);
+				}
+			}
+			form.submit();
+		}
+		return false;
+	}
+
 });
 
 function handlePayment() {
@@ -443,30 +491,62 @@ function handlePayment() {
 		var bAddr = document.getElementById('address');
 		var bCity = document.getElementById('city');
 		var bCountry = document.getElementById('country');
+		var bPostcode = document.getElementById('postcode');
 		billingDetails.address = {
 			line1: bAddr.value,
 			city: bCity.value,
-			country: bCountry.value || bCountry.options[bCountry.selectedIndex].value
+			country: bCountry.value || bCountry.options[bCountry.selectedIndex].value,
+		}
+		var postal_code = bPostcode.value;
+		if (postal_code) {
+			billingDetails.address.postal_code = postal_code;
 		}
 	}
+	if (vars.data.shipping_address) {
+		var shippingDetails = {
+			name: billingNameInput.value
+		}
+		var sAddr = document.getElementById('shipping_address');
+		var sCity = document.getElementById('shipping_city');
+		var sCountry = document.getElementById('shipping_country');
+		var sPostcode = document.getElementById('shipping_postcode');
+		shippingDetails.address = {
+			line1: sAddr.value,
+			city: sCity.value,
+			country: sCountry.value || sCountry.options[sCountry.selectedIndex].value,
+		}
+		var spostal_code = sPostcode.value;
+		if (spostal_code) {
+			shippingDetails.address.postal_code = spostal_code;
+		}
+	}
+	if (vars.data.billing_address && vars.data.shipping_address && billshipSwitch.checked) {
+		var shippingDetails = billingDetails;
+		delete (shippingDetails.email);
+	}
+	var opts = {
+		payment_method_data: {
+			billing_details: billingDetails
+		}
+	}
+	if (shippingDetails) {
+		opts.shipping = shippingDetails;
+	}
+
 	stripe.handleCardPayment(
-		vars.data.client_secret, card, {
-			payment_method_data: {
-				billing_details: billingDetails
+		vars.data.client_secret, card, opts)
+		.then(function (result) {
+			console.log(result);
+			if (result.error) {
+				submitBtn.disabled = false;
+				btnSpinner.style.display = "none";
+				errorCont.innerHTML = result.error.message;
+				errorCont.style.display = 'block';
+			} else {
+				piInput.value = result.paymentIntent.id;
+				form.dispatchEvent(new Event('submit'));
 			}
-		}
-	).then(function (result) {
-		console.log(result);
-		if (result.error) {
-			submitBtn.disabled = false;
-			btnSpinner.style.display = "none";
-			errorCont.innerHTML = result.error.message;
-			errorCont.style.display = 'block';
-		} else {
-			piInput.value = result.paymentIntent.id;
-			form.dispatchEvent(new Event('submit'));
-		}
-	});
+		});
 }
 
 var ajaxRequest = function (URL, reqStr, doneFunc, failFunc) {

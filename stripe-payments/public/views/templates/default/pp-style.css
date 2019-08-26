@@ -137,6 +137,18 @@ html, body {
     text-align: center;
 }
 
+.half-width {
+    width: 50%;
+}
+
+.half-width .half-inner-left {
+    padding-right: 10px;
+}
+
+.half-inner-right {
+    padding-left: 10px;
+}
+
 #tax-shipping-cont {
     padding-top: 10px;
     font-size: 0.85rem;
@@ -226,5 +238,12 @@ input.pure-input-1.has-icon, select.pure-input-1.has-icon {
     #test-mode {
         top: 1px;
         right: auto;
+    }
+    .half-width {
+        width: 100%;
+        display: block;
+    }
+    .half-width .half-inner-left, .half-inner-right {
+        padding: 0;
     }
 }

@@ -122,6 +122,9 @@ class ASP_PP_Handler {
 		$billing_address  = get_post_meta( $product_id, 'asp_product_collect_billing_addr', true );
 		$shipping_address = get_post_meta( $product_id, 'asp_product_collect_shipping_addr', true );
 
+		$billing_address  = empty( $billing_address ) ? false : true;
+		$shipping_address = empty( $shipping_address ) ? false : true;
+
 		if ( ! $billing_address ) {
 			$shipping_address = false;
 		}
@@ -140,6 +143,8 @@ class ASP_PP_Handler {
 		if ( $a['amount_variable'] ) {
 			$coupons_enabled = false;
 		}
+
+		$coupons_enabled = empty( $coupons_enabled ) ? false : true;
 
 		$item_logo = '';
 

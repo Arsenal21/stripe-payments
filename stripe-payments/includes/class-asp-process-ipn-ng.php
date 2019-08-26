@@ -187,21 +187,35 @@ class ASP_Process_IPN_NG {
 		$data['charge_date']        = $purchase_date;
 		$data['charge_date_raw']    = $charge->data[0]->created;
 		$data['txn_id']             = $charge->data[0]->id;
-		//billing address
-		$billing_address = '';
-		$bd              = $charge->data[0]->billing_details;
 
-		$billing_address         .= $bd->name ? $charge->data[0]->billing_details->name . "\n" : '';
-		$billing_address         .= isset( $bd->address->line1 ) ? $bd->address->line1 . "\n" : '';
-		$billing_address         .= isset( $bd->address->line2 ) ? $bd->address->line2 . "\n" : '';
-		$billing_address         .= isset( $bd->address->postal_code ) ? $bd->address->postal_code . "\n" : '';
-		$billing_address         .= isset( $bd->address->city ) ? $bd->address->city . "\n" : '';
-		$billing_address         .= isset( $bd->address->state ) ? $bd->address->state . "\n" : '';
-		$billing_address         .= isset( $bd->address->country ) ? $bd->address->country . "\n" : '';
-		$data['billing_address']  = $billing_address;
+		//billing address
+		$billing_address         = '';
+		$bd                      = $charge->data[0]->billing_details;
+		$billing_address        .= $bd->name ? $charge->data[0]->billing_details->name . "\n" : '';
+		$billing_address        .= isset( $bd->address->line1 ) ? $bd->address->line1 . "\n" : '';
+		$billing_address        .= isset( $bd->address->line2 ) ? $bd->address->line2 . "\n" : '';
+		$billing_address        .= isset( $bd->address->postal_code ) ? $bd->address->postal_code . "\n" : '';
+		$billing_address        .= isset( $bd->address->city ) ? $bd->address->city . "\n" : '';
+		$billing_address        .= isset( $bd->address->state ) ? $bd->address->state . "\n" : '';
+		$billing_address        .= isset( $bd->address->country ) ? $bd->address->country . "\n" : '';
+		$data['billing_address'] = $billing_address;
+
+		//shipping address
+		$shipping_address         = '';
+		$sd                       = $charge->data[0]->shipping;
+		$shipping_address        .= $sd->name ? $charge->data[0]->shipping->name . "\n" : '';
+		$shipping_address        .= isset( $sd->address->line1 ) ? $sd->address->line1 . "\n" : '';
+		$shipping_address        .= isset( $sd->address->line2 ) ? $sd->address->line2 . "\n" : '';
+		$shipping_address        .= isset( $sd->address->postal_code ) ? $sd->address->postal_code . "\n" : '';
+		$shipping_address        .= isset( $sd->address->city ) ? $sd->address->city . "\n" : '';
+		$shipping_address        .= isset( $sd->address->state ) ? $sd->address->state . "\n" : '';
+		$shipping_address        .= isset( $sd->address->country ) ? $sd->address->country . "\n" : '';
+		$data['shipping_address'] = $shipping_address;
+
 		$data['additional_items'] = array();
-		$item_price               = $item->get_price();
-		$currency_code            = $item->get_currency();
+
+		$item_price    = $item->get_price();
+		$currency_code = $item->get_currency();
 
 		$custom_fields = array();
 		$cf_name       = filter_input( INPUT_POST, 'asp_stripeCustomFieldName', FILTER_SANITIZE_STRING );
