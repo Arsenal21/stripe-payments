@@ -31,8 +31,7 @@ class ASP_Session {
 		}
 		$curr_data[ $name ] = wp_json_encode( $data );
 		delete_transient( $this->trans_name );
-		$res = set_transient( $this->trans_name, $curr_data, 3600 );
-		ASP_Debug_Logger::log( sprintf( 'Transient status: %s', $res ? 'true' : 'false' ) );
+		set_transient( $this->trans_name, $curr_data, 3600 );
 	}
 
 	public function get_transient_data( $name, $default = false ) {
