@@ -12,7 +12,7 @@ class ASP_PP_Handler {
 				return;
 			}
 			$this->asp_main = AcceptStripePayments::get_instance();
-			add_action( 'plugins_loaded', array( $this, 'showpp' ) );
+			add_action( 'plugins_loaded', array( $this, 'showpp' ), 2147483647 );
 		}
 		if ( wp_doing_ajax() ) {
 			$this->asp_main = AcceptStripePayments::get_instance();
@@ -203,6 +203,8 @@ class ASP_PP_Handler {
 		$data['tos']             = $tos;
 		$data['item_logo']       = $item_logo;
 
+		$data['url'] = $this->item->get_download_url();
+
 		$data['client_secret'] = '';
 		$data['pi_id']         = '';
 		$data['amount']        = $this->item->get_total( true );
@@ -214,6 +216,8 @@ class ASP_PP_Handler {
 		$data['variations'] = $this->variations;
 
 		$data['is_live'] = $this->asp_main->is_live;
+
+		$data['button_key'] = $this->item->get_button_key();
 
 		$data = apply_filters( 'asp-button-output-data-ready', $data, array( 'product_id' => $product_id ) ); //phpcs:ignore
 

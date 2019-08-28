@@ -13,6 +13,7 @@ class ASP_Product_Item {
 	protected $asp_main;
 	protected $coupon = false;
 	protected $price_with_discount;
+	protected $button_key = false;
 
 	public function __construct( $post_id = false ) {
 		$this->asp_main = AcceptStripePayments::get_instance();
@@ -304,11 +305,43 @@ class ASP_Product_Item {
 			$allowed_products = get_post_meta( $this->coupon['id'], 'asp_coupon_allowed_products', true );
 			if ( is_array( $allowed_products ) && ! in_array( $this->post_id, $allowed_products, true ) ) {
 				$this->last_error = __( 'Coupon is not allowed for this product.', 'stripe-payments' );
-				$this->coupon = false;
+				$this->coupon     = false;
 				return false;
 			}
 		}
 		return true;
+	}
+
+	public function get_download_url() {
+		$post_url = filter_input( INPUT_POST, 'asp_item_url', FILTER_SANITIZE_STRING );
+		if ( $post_url ) {
+			$item_url = $post_url;
+		} else {
+			$item_url = get_post_meta( $this->post_id, 'asp_product_upload', true );
+			$item_url = $item_url ? $item_url : '';
+
+			if ( ! $item_url ) {
+				return '';
+			}
+			$item_url = base64_encode( $item_url );
+		}
+		$item_url = apply_filters(
+			'asp_item_url_process',
+			$item_url,
+			array(
+				'button_key' => $this->get_button_key(),
+				'product_id' => $this->post_id,
+			)
+		);
+		$item_url = base64_decode( $item_url );
+		return $item_url;
+	}
+
+	public function get_button_key() {
+		if ( ! $this->button_key ) {
+			$this->button_key = md5( htmlspecialchars_decode( $this->get_name() ) . $this->get_price( true ) );
+		}
+		return $this->button_key;
 	}
 
 	public function load_from_product( $post_id = false ) {

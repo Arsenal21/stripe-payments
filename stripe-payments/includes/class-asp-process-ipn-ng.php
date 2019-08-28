@@ -11,6 +11,7 @@ class ASP_Process_IPN_NG {
 	}
 
 	public function ipn_completed( $err_msg = '' ) {
+		ob_start();
 		if ( ! empty( $err_msg ) ) {
 			$asp_data = array( 'error_msg' => $err_msg );
 			ASP_Debug_Logger::log( $err_msg, false ); //Log the error
@@ -187,6 +188,11 @@ class ASP_Process_IPN_NG {
 		$data['charge_date']        = $purchase_date;
 		$data['charge_date_raw']    = $charge->data[0]->created;
 		$data['txn_id']             = $charge->data[0]->id;
+		$data['button_key']         = $item->get_button_key();
+
+		$item_url = $item->get_download_url();
+
+		$data['item_url'] = $item_url;
 
 		//billing address
 		$billing_address         = '';
@@ -203,7 +209,7 @@ class ASP_Process_IPN_NG {
 		//shipping address
 		$shipping_address         = '';
 		$sd                       = $charge->data[0]->shipping;
-		$shipping_address        .= $sd->name ? $charge->data[0]->shipping->name . "\n" : '';
+		$shipping_address        .= isset( $sd->name ) ? $sd->name . "\n" : '';
 		$shipping_address        .= isset( $sd->address->line1 ) ? $sd->address->line1 . "\n" : '';
 		$shipping_address        .= isset( $sd->address->line2 ) ? $sd->address->line2 . "\n" : '';
 		$shipping_address        .= isset( $sd->address->postal_code ) ? $sd->address->postal_code . "\n" : '';
@@ -367,6 +373,7 @@ class ASP_Process_IPN_NG {
 				ASP_Debug_Logger::log( 'Notification email sent to seller: ' . $to . ', From email address used: ' . $from );
 			}
 		}
+		ob_end_clean();
 
 		$this->sess->set_transient_data( 'asp_data', $data );
 		$this->ipn_completed();
