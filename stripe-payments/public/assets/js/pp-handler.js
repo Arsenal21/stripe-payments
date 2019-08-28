@@ -555,6 +555,9 @@ function handlePayment() {
 				errorCont.style.display = 'block';
 			} else {
 				piInput.value = result.paymentIntent.id;
+				if (!vars.data.coupon && couponInput) {
+					couponInput.value = '';
+				}
 				form.dispatchEvent(new Event('submit'));
 			}
 		});
