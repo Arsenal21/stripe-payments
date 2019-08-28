@@ -347,7 +347,8 @@ class ASP_Process_IPN_NG {
 				}
 				$headers[] = 'From: ' . $from;
 
-				wp_mail( $to, $subj, $body, $headers );
+				wp_schedule_single_event( time(), 'asp_send_scheduled_email', array( $to, $subj, $body, $headers ) );
+//				wp_mail( $to, $subj, $body, $headers );
 				ASP_Debug_Logger::log( 'Notification email sent to buyer: ' . $to . ', From email address used: ' . $from );
 			}
 		}
@@ -369,7 +370,8 @@ class ASP_Process_IPN_NG {
 				}
 				$headers[] = 'From: ' . $from;
 
-				wp_mail( $to, $subj, $body, $headers );
+				wp_schedule_single_event( time(), 'asp_send_scheduled_email', array( $to, $subj, $body, $headers ) );
+//				wp_mail( $to, $subj, $body, $headers );
 				ASP_Debug_Logger::log( 'Notification email sent to seller: ' . $to . ', From email address used: ' . $from );
 			}
 		}

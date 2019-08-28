@@ -77,6 +77,9 @@ class AcceptStripePayments {
 	 * @since     1.0.0
 	 */
 	private function __construct() {
+
+		add_action( 'asp_send_scheduled_email', array( $this, 'send_scheduled_email' ), 10, 4 );
+
 		$this->settings = (array) get_option( 'AcceptStripePayments-settings' );
 
 		if ( $this->get_setting( 'is_live' ) == 0 ) {
@@ -125,6 +128,10 @@ class AcceptStripePayments {
 				ASP_Debug_Logger::view_log();
 			}
 		}
+	}
+
+	public function send_scheduled_email( $to, $subj, $body, $headers ) {
+		wp_mail( $to, $subj, $body, $headers );
 	}
 
 	public function get_setting( $field, $default = false ) {
