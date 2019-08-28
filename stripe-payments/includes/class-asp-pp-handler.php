@@ -203,7 +203,7 @@ class ASP_PP_Handler {
 		$data['tos']             = $tos;
 		$data['item_logo']       = $item_logo;
 
-		$data['url'] = $this->item->get_download_url();
+		$data['url'] = base64_encode( $this->item->get_download_url() );
 
 		$data['client_secret'] = '';
 		$data['pi_id']         = '';

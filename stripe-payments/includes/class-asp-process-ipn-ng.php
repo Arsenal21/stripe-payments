@@ -6,12 +6,11 @@ class ASP_Process_IPN_NG {
 		$process_ipn = filter_input( INPUT_POST, 'asp_process_ipn', FILTER_SANITIZE_NUMBER_INT );
 		if ( $process_ipn ) {
 			$this->asp_class = AcceptStripePayments::get_instance();
-			add_action( 'init', array( $this, 'process_ipn' ) );
+			add_action( 'plugins_loaded', array( $this, 'process_ipn' ), 2147483647 );
 		}
 	}
 
 	public function ipn_completed( $err_msg = '' ) {
-		ob_start();
 		if ( ! empty( $err_msg ) ) {
 			$asp_data = array( 'error_msg' => $err_msg );
 			ASP_Debug_Logger::log( $err_msg, false ); //Log the error
@@ -111,6 +110,8 @@ class ASP_Process_IPN_NG {
 
 		$this->sess = ASP_Session::get_instance();
 
+		$button_key=$item->get_button_key();
+
 		$post_quantity = filter_input( INPUT_POST, 'asp_quantity', FILTER_SANITIZE_NUMBER_INT );
 		if ( $post_quantity ) {
 			$item->set_quantity( $post_quantity );
@@ -188,7 +189,7 @@ class ASP_Process_IPN_NG {
 		$data['charge_date']        = $purchase_date;
 		$data['charge_date_raw']    = $charge->data[0]->created;
 		$data['txn_id']             = $charge->data[0]->id;
-		$data['button_key']         = $item->get_button_key();
+		$data['button_key']         = $button_key;
 
 		$item_url = $item->get_download_url();
 
@@ -348,7 +349,7 @@ class ASP_Process_IPN_NG {
 				$headers[] = 'From: ' . $from;
 
 				wp_schedule_single_event( time(), 'asp_send_scheduled_email', array( $to, $subj, $body, $headers ) );
-//				wp_mail( $to, $subj, $body, $headers );
+				//wp_mail( $to, $subj, $body, $headers );
 				ASP_Debug_Logger::log( 'Notification email sent to buyer: ' . $to . ', From email address used: ' . $from );
 			}
 		}
@@ -371,13 +372,13 @@ class ASP_Process_IPN_NG {
 				$headers[] = 'From: ' . $from;
 
 				wp_schedule_single_event( time(), 'asp_send_scheduled_email', array( $to, $subj, $body, $headers ) );
-//				wp_mail( $to, $subj, $body, $headers );
+				//wp_mail( $to, $subj, $body, $headers );
 				ASP_Debug_Logger::log( 'Notification email sent to seller: ' . $to . ', From email address used: ' . $from );
 			}
 		}
-		ob_end_clean();
 
 		$this->sess->set_transient_data( 'asp_data', $data );
+
 		$this->ipn_completed();
 	}
 }
