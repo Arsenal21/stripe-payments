@@ -2,7 +2,6 @@
 
 class AcceptStripePaymentsShortcodeNG {
 
-
 	var $AcceptStripePayments = null;
 	var $StripeCSSInserted    = false;
 	var $ProductCSSInserted   = false;
@@ -23,11 +22,17 @@ class AcceptStripePaymentsShortcodeNG {
 	function __construct() {
 		$this->AcceptStripePayments = AcceptStripePayments::get_instance();
 
+		$use_old_api = $this->AcceptStripePayments->get_setting( 'use_old_checkout_api' );
+
 		add_filter( 'the_content', array( $this, 'filter_post_type_content' ) );
 
 		//		add_shortcode('asp_show_all_products', array(&$this, 'shortcode_show_all_products'));
 		add_shortcode( 'asp_product_ng', array( $this, 'shortcode_asp_product' ) );
 		add_shortcode( 'accept_stripe_payment_ng', array( $this, 'shortcode_accept_stripe_payment' ) );
+		if ( ! $use_old_api ) {
+			add_shortcode( 'asp_product', array( $this, 'shortcode_asp_product' ) );
+			add_shortcode( 'accept_stripe_payment', array( $this, 'shortcode_accept_stripe_payment' ) );
+		}
 		//		add_shortcode('accept_stripe_payment_checkout', array(&$this, 'shortcode_accept_stripe_payment_checkout'));
 		//		add_shortcode('accept_stripe_payment_checkout_error', array(&$this, 'shortcode_accept_stripe_payment_checkout_error'));
 		//		add_shortcode('asp_show_my_transactions', array($this, 'show_user_transactions'));
@@ -213,6 +218,15 @@ class AcceptStripePaymentsShortcodeNG {
 		if ( ! $post || ( get_post_type( $id ) != ASPMain::$products_slug && get_post_type( $id ) != ASPMain::$temp_prod_slug ) ) {
 			$error_msg  = '<div class="stripe_payments_error_msg" style="color: red;">';
 			$error_msg .= "Can't find product with ID " . $id;
+			$error_msg .= '</div>';
+			return $error_msg;
+		}
+
+		$plan_id = get_post_meta( $id, 'asp_sub_plan_id', true );
+
+		if ($plan_id) {
+			$error_msg  = '<div class="stripe_payments_error_msg" style="color: red;">';
+			$error_msg .= "Subscriptions via new API are currently not supported.";
 			$error_msg .= '</div>';
 			return $error_msg;
 		}
@@ -814,14 +828,14 @@ class AcceptStripePaymentsShortcodeNG {
 		$output .= '</form>';
 		//before button filter
 		if ( ! $out_of_stock ) {
-			$output = apply_filters( 'asp_button_output_before_button', $output, $data, $class );
+			$output = apply_filters( 'asp_ng_button_output_before_button', $output, $data, $class );
 		}
 		$output .= '<div id="asp-all-buttons-container-' . $uniq_id . '" class="asp_all_buttons_container">';
 		$output .= $button;
 		//after button filter
 		if ( ! $out_of_stock ) {
-			$output = apply_filters( 'asp-button-output-after-button', $output, $data, $class );
-			$output = apply_filters( 'asp_button_output_after_button', $output, $data, $class );
+			$output = apply_filters( 'asp-ng-button-output-after-button', $output, $data, $class );
+			$output = apply_filters( 'asp_ng_button_output_after_button', $output, $data, $class );
 		}
 		$output .= '</div>';
 		$output .= '<div id="asp-btn-spinner-container-' . $uniq_id . '" class="asp-btn-spinner-container" style="display: none !important">'

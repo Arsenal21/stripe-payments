@@ -473,6 +473,9 @@ class AcceptStripePayments_Admin {
 	);
 
 	// Additional Settings
+	add_settings_field( 'use_old_checkout_api', __( 'Use Old Checkout API', 'stripe-payments' ), array( $this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-additional-settings', array( 'field'	 => 'use_old_checkout_api',
+	    'desc'	 => __( "Use deprecated API to process payments. Note old API is not compatible with 3-D Secure and EU's Strong Customer Authentication (PSD2) requirements, is no longer developed and might be disabled by Stripe after 14th of September 2019.", 'stripe-payments' ) )
+	);
 	add_settings_field( 'disable_buttons_before_js_loads', __( 'Disable Buttons Before Javascript Loads', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-additional-settings', array( 'field'	 => 'disable_buttons_before_js_loads',
 	    'desc'	 => __( "If enabled, payment buttons are not clickable until Javascript libraries are loaded on page view. This prevents \"Invalid Stripe Token\" errors on some configurations.", 'stripe-payments' ) )
 	);
@@ -621,7 +624,8 @@ class AcceptStripePayments_Admin {
 	    case 'send_email_on_error':
 	    case 'use_new_button_method':
 	    case 'is_live':
-	    case 'disable_remember_me':
+		case 'disable_remember_me':
+		case 'use_old_checkout_api':
 	    case 'disable_buttons_before_js_loads':
 	    case 'dont_save_card':
 	    case 'custom_field_mandatory':
@@ -793,6 +797,8 @@ class AcceptStripePayments_Admin {
 	$output[ 'send_email_on_error_to' ] = sanitize_text_field( $input[ 'send_email_on_error_to' ] );
 
 	$output[ 'disable_buttons_before_js_loads' ] = empty( $input[ 'disable_buttons_before_js_loads' ] ) ? 0 : 1;
+
+	$output[ 'use_old_checkout_api' ] = empty( $input[ 'use_old_checkout_api' ] ) ? 0 : 1;
 
 	$output[ 'dont_create_order' ] = empty( $input[ 'dont_create_order' ] ) ? 0 : 1;
 
