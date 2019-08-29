@@ -353,7 +353,7 @@ class ASP_Product_Item {
 			return false;
 		}
 		$this->post = get_post( $post_id );
-		if ( ! $this->post || get_post_type( $post_id ) !== ASPMain::$products_slug ) {
+		if ( ! $this->post || ( get_post_type( $post_id ) !== ASPMain::$products_slug && get_post_type( $post_id ) !== ASPMain::$temp_prod_slug ) ) {
 			// translators: %d is product id
 			$this->last_error = sprintf( __( "Can't find product with ID %d", 'stripe-payments' ), $post_id );
 			return false;

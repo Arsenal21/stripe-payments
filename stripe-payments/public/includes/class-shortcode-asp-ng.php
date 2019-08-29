@@ -26,8 +26,8 @@ class AcceptStripePaymentsShortcodeNG {
 		add_filter( 'the_content', array( $this, 'filter_post_type_content' ) );
 
 		//		add_shortcode('asp_show_all_products', array(&$this, 'shortcode_show_all_products'));
-		add_shortcode( 'asp_product_ng', array( &$this, 'shortcode_asp_product' ) );
-		add_shortcode( 'accept_stripe_payment_ng', array( &$this, 'shortcode_accept_stripe_payment' ) );
+		add_shortcode( 'asp_product_ng', array( $this, 'shortcode_asp_product' ) );
+		add_shortcode( 'accept_stripe_payment_ng', array( $this, 'shortcode_accept_stripe_payment' ) );
 		//		add_shortcode('accept_stripe_payment_checkout', array(&$this, 'shortcode_accept_stripe_payment_checkout'));
 		//		add_shortcode('accept_stripe_payment_checkout_error', array(&$this, 'shortcode_accept_stripe_payment_checkout_error'));
 		//		add_shortcode('asp_show_my_transactions', array($this, 'show_user_transactions'));
@@ -210,7 +210,7 @@ class AcceptStripePaymentsShortcodeNG {
 		}
 		$id   = $atts['id'];
 		$post = get_post( $id );
-		if ( ! $post || get_post_type( $id ) != ASPMain::$products_slug ) {
+		if ( ! $post || ( get_post_type( $id ) != ASPMain::$products_slug && get_post_type( $id ) != ASPMain::$temp_prod_slug ) ) {
 			$error_msg  = '<div class="stripe_payments_error_msg" style="color: red;">';
 			$error_msg .= "Can't find product with ID " . $id;
 			$error_msg .= '</div>';
@@ -529,9 +529,11 @@ class AcceptStripePaymentsShortcodeNG {
 		}
 
 		if ( ! empty( $shipping ) ) {
-			$shipping = round( $shipping, 2 );
+			$shipping_filt = round( $shipping, 2 );
 			if ( ! AcceptStripePayments::is_zero_cents( $currency ) ) {
-				$shipping = $shipping * 100;
+				$shipping = $shipping_filt * 100;
+			} else {
+				$shipping = $shipping_filt;
 			}
 		}
 
@@ -546,6 +548,55 @@ class AcceptStripePaymentsShortcodeNG {
 			if ( ! empty( $shipping ) ) {
 				$priceInCents = $priceInCents + $shipping;
 			}
+		}
+
+		if ( empty( $product_id ) ) {
+			$hash = md5( wp_json_encode( $atts ) );
+			//find temp product
+			$temp_post = get_posts(
+				array(
+					'meta_key'       => 'asp_shortcode_hash',
+					'meta_value'     => $hash,
+					'posts_per_page' => 1,
+					'offset'         => 0,
+					'post_type'      => ASPMain::$temp_prod_slug,
+				)
+			);
+			wp_reset_postdata();
+			if ( empty( $temp_post ) ) {
+				// no temp post found. Let's create one
+				$new_post                = array();
+				$new_post['post_type']   = ASPMain::$temp_prod_slug;
+				$new_post['post_title']  = $atts['name'];
+				$new_post['post_status'] = 'publish';
+				$new_post['meta_input']  = array(
+					'asp_shortcode_hash'                => $hash,
+					'asp_product_quantity'              => $quantity,
+					'asp_product_custom_quantity'       => $custom_quantity,
+					'asp_product_price'                 => $price,
+					'asp_product_tax'                   => $tax,
+					'asp_product_shipping'              => $shipping,
+					'asp_product_currency_variable'     => $currency_variable,
+					'asp_product_currency'              => $currency,
+					'asp_product_description'           => $description,
+					'asp_product_button_text'           => $button_text,
+					'asp_product_collect_billing_addr'  => $billing_address,
+					'asp_product_collect_shipping_addr' => $shipping_address,
+					'asp_product_button_class'          => $class,
+					'asp_product_upload'                => $url,
+					'asp_product_thumbnail'             => $item_logo,
+					'asp_product_thankyou_page'         => empty( $thankyou_page_url ) ? '' : base64_decode( $thankyou_page_url ),
+					'asp_product_button_only'           => 1,
+					'asp_product_custom_field'          => 2,
+				);
+				$post_id                 = wp_insert_post( $new_post );
+				$temp_post               = get_post( $post_id );
+			} else {
+				$temp_post = $temp_post[0];
+			}
+			$atts['id'] = $temp_post->ID;
+			$ret        = $this->shortcode_asp_product( $atts );
+			return $ret;
 		}
 
 		$button_key = md5( htmlspecialchars_decode( $name ) . $priceInCents );
@@ -753,7 +804,6 @@ class AcceptStripePaymentsShortcodeNG {
 		$output .= "<input type = 'hidden' value = '{$data['quantity']}' name = 'item_quantity' />";
 		$output .= "<input type = 'hidden' value = '{$data['currency']}' name = 'currency_code' />";
 		$output .= "<input type = 'hidden' value = '{$data['url']}' name = 'item_url' />";
-		$output .= "<input type = 'hidden' value = '{$thankyou_page_url}' name = 'thankyou_page_url' />";
 		$output .= "<input type = 'hidden' value = '{$data['description']}' name = 'charge_description' />"; //
 
 		$trans_name        = 'stripe-payments-' . $button_key; //Create key using the item name.

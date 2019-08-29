@@ -181,6 +181,9 @@ class ASP_PP_Handler {
 			$this->variations['opts']   = $variations_opts;
 		}
 
+		$thankyou_page      = get_post_meta( $product_id, 'asp_product_thankyou_page', true );
+		$a['thankyou_page'] = $thankyou_page;
+
 		$data               = array();
 		$data['product_id'] = $product_id;
 		$quantity           = get_post_meta( $product_id, 'asp_product_quantity', true );

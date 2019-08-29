@@ -299,6 +299,9 @@
 							<?php if ( $a['data']['url'] ) { ?>
 							<input type="hidden" name="item_url" value="<?php echo esc_attr( $a['data']['url'] ); ?>">
 							<?php } ?>
+							<?php if ( ! empty( $a['thankyou_page'] ) ) { ?>
+							<input type="hidden" value="<?php echo esc_attr( base64_encode( $a['thankyou_page'] ) ); ?>" name="thankyou_page_url">
+							<?php } ?>
 						</form>
 					</div>
 				</div>

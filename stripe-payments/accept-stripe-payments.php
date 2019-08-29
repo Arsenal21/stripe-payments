@@ -27,10 +27,12 @@ class ASPMain {
 
 
 	public static $products_slug;
+	public static $temp_prod_slug;
 	public static $posts_processed = array();
 
 	public function __construct() {
 		self::$products_slug = 'asp-products';
+		self::$temp_prod_slug = 'asp-products-temp';
 
 		require_once WP_ASP_PLUGIN_PATH . 'includes/class-asp-utils.php';
 		require_once WP_ASP_PLUGIN_PATH . 'includes/class-debug-logger.php';
