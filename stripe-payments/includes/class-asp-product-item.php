@@ -323,7 +323,7 @@ class ASP_Product_Item {
 			if ( ! $item_url ) {
 				return '';
 			}
-			$item_url = base64_encode( $item_url );
+			$item_url = base64_encode( $item_url ); //phpcs:ignore
 		}
 		$item_url = apply_filters(
 			'asp_item_url_process',
@@ -333,7 +333,7 @@ class ASP_Product_Item {
 				'product_id' => $this->post_id,
 			)
 		);
-		$item_url = base64_decode( $item_url );
+		$item_url = base64_decode( $item_url ); //phpcs:ignore
 		return $item_url;
 	}
 
@@ -352,6 +352,8 @@ class ASP_Product_Item {
 			$this->last_error = __( 'No product ID provided.', 'stripe-payments' );
 			return false;
 		}
+
+		$post_id    = intval( $post_id );
 		$this->post = get_post( $post_id );
 		if ( ! $this->post || ( get_post_type( $post_id ) !== ASPMain::$products_slug && get_post_type( $post_id ) !== ASPMain::$temp_prod_slug ) ) {
 			// translators: %d is product id

@@ -206,44 +206,43 @@ class AcceptStripePaymentsShortcodeNG {
 		return $scClass->process_shortcode( $atts );
 	}
 
+	private function gen_fatal_error_box( $msg ) {
+		$error_msg  = '<div class="stripe_payments_error_msg" style="color: red;">';
+		$error_msg .= $msg;
+		$error_msg .= '</div>';
+		return $error_msg;
+	}
+
 	function shortcode_asp_product( $atts ) {
 		if ( ! isset( $atts['id'] ) || ! is_numeric( $atts['id'] ) ) {
-			$error_msg  = '<div class="stripe_payments_error_msg" style="color: red;">';
-			$error_msg .= 'Error: product ID is invalid.';
-			$error_msg .= '</div>';
+			$msg       = __( 'Error: product ID is invalid.', 'stripe-payments' );
+			$error_msg = $this->gen_fatal_error_box( $msg );
 			return $error_msg;
 		}
+
 		$id   = $atts['id'];
-		$post = get_post( $id );
-		if ( ! $post || ( get_post_type( $id ) != ASPMain::$products_slug && get_post_type( $id ) != ASPMain::$temp_prod_slug ) ) {
-			$error_msg  = '<div class="stripe_payments_error_msg" style="color: red;">';
-			$error_msg .= "Can't find product with ID " . $id;
-			$error_msg .= '</div>';
+		$item = new ASP_Product_Item( $id );
+
+		$last_error = $item->get_last_error();
+
+		if ( $last_error ) {
+			$error_msg = $this->gen_fatal_error_box( $last_error );
 			return $error_msg;
 		}
 
 		$plan_id = get_post_meta( $id, 'asp_sub_plan_id', true );
 
-		if ($plan_id) {
-			$error_msg  = '<div class="stripe_payments_error_msg" style="color: red;">';
-			$error_msg .= "Subscriptions via new API are currently not supported.";
-			$error_msg .= '</div>';
+		if ( $plan_id ) {
+			$msg       = __( 'Subscriptions via new API are currently not supported.', 'stripe-payments' );
+			$error_msg = $this->gen_fatal_error_box( $msg );
 			return $error_msg;
 		}
 
-		$currency = get_post_meta( $id, 'asp_product_currency', true );
+		$currency = $item->get_currency();
 
-		if ( ! $currency ) {
-			$currency = $this->AcceptStripePayments->get_setting( 'currency_code' );
-		}
-
-		$button_text = get_post_meta( $id, 'asp_product_button_text', true );
-		if ( ! $button_text ) {
-			$button_text = $this->AcceptStripePayments->get_setting( 'button_text' );
-		}
+		$button_text = $item->get_button_text();
 
 		//check if we have button_text shortcode parameter. If it's not empty, this should be our button text
-
 		if ( isset( $atts['button_text'] ) && ! empty( $atts['button_text'] ) ) {
 			$button_text = esc_attr( $atts['button_text'] );
 		}
@@ -264,9 +263,8 @@ class AcceptStripePaymentsShortcodeNG {
 		$template_name = 'default'; //this could be made configurable
 		$button_color  = 'blue'; //this could be made configurable
 
-		$price    = get_post_meta( $id, 'asp_product_price', true );
-		$price    = empty( $price ) ? 0 : $price;
-		$shipping = get_post_meta( $id, 'asp_product_shipping', true );
+		$price    = $item->get_price();
+		$shipping = $item->get_shipping();
 
 		//let's apply filter so addons can change price, currency and shipping if needed
 		$price_arr = array(
@@ -274,12 +272,12 @@ class AcceptStripePaymentsShortcodeNG {
 			'currency' => $currency,
 			'shipping' => empty( $shipping ) ? false : $shipping,
 		);
-		$price_arr = apply_filters( 'asp_modify_price_currency_shipping', $price_arr );
+		$price_arr = apply_filters( 'asp_ng_modify_price_currency_shipping', $price_arr );
 		extract( $price_arr, EXTR_OVERWRITE );
 
 		$buy_btn = '';
 
-		$button_class = get_post_meta( $id, 'asp_product_button_class', true );
+		$button_class = $item->get_button_class();
 
 		$class = ! empty( $button_class ) ? $button_class : 'asp_product_buy_btn ' . $button_color;
 
@@ -310,13 +308,13 @@ class AcceptStripePaymentsShortcodeNG {
 			$shipping = 0;
 		}
 
-		$tax = get_post_meta( $id, 'asp_product_tax', true );
+		$tax = $item->get_tax();
 
 		if ( ! $tax ) {
 			$tax = 0;
 		}
 
-		$quantity = get_post_meta( $id, 'asp_product_quantity', true );
+		$quantity = $item->get_quantity();
 
 		$under_price_line = '';
 		$tot_price        = ! empty( $quantity ) ? $price * $quantity : $price;
@@ -370,7 +368,7 @@ class AcceptStripePaymentsShortcodeNG {
 		if ( ! isset( $atts['in_the_loop'] ) || $atts['in_the_loop'] === '1' ) {
 			$sc_params = array(
 				'product_id'        => $id,
-				'name'              => $post->post_title,
+				'name'              => $item->get_name(),
 				'price'             => $price,
 				'currency'          => $currency,
 				'currency_variable' => $currency_variable,
@@ -431,6 +429,7 @@ class AcceptStripePaymentsShortcodeNG {
 		}
 
 		remove_filter( 'the_content', array( $this, 'filter_post_type_content' ) );
+		$post = get_post( $id );
 		setup_postdata( $post );
 		$GLOBALS['post'] = $post;
 		$descr           = $post->post_content;
