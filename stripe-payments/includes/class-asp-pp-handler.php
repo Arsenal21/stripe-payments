@@ -47,7 +47,7 @@ class ASP_PP_Handler {
 		$a['page_title'] = $this->item->get_name();
 		$a['plugin_url'] = WP_ASP_PLUGIN_URL;
 		$a['item_name']  = $this->item->get_name();
-		$a['stripe_key'] = $this->asp_main->APIPubKeyTest;
+		$a['stripe_key'] = $this->asp_main->is_live ? $this->asp_main->APIPubKey : $this->asp_main->APIPubKeyTest;
 
 		//Custom Field if needed
 
