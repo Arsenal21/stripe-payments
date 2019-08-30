@@ -16,11 +16,15 @@ class ASP_PP_Handler {
 		}
 		if ( wp_doing_ajax() ) {
 			$this->asp_main = AcceptStripePayments::get_instance();
-			add_action( 'wp_ajax_asp_pp_req_token', array( $this, 'handle_request_token' ) );
-			add_action( 'wp_ajax_nopriv_asp_pp_req_token', array( $this, 'handle_request_token' ) );
+			add_action( 'plugins_loaded', array( $this, 'add_ajax_handlers' ), 2147483647 );
 			add_action( 'wp_ajax_asp_pp_check_coupon', array( $this, 'handle_check_coupon' ) );
 			add_action( 'wp_ajax_nopriv_asp_pp_check_coupon', array( $this, 'handle_check_coupon' ) );
 		}
+	}
+
+	public function add_ajax_handlers() {
+		add_action( 'wp_ajax_asp_pp_req_token', array( $this, 'handle_request_token' ) );
+		add_action( 'wp_ajax_nopriv_asp_pp_req_token', array( $this, 'handle_request_token' ) );
 	}
 
 	public function showpp() {
@@ -222,7 +226,11 @@ class ASP_PP_Handler {
 
 		$data['button_key'] = $this->item->get_button_key();
 
+		$data['create_token'] = false;
+
 		$data = apply_filters( 'asp-button-output-data-ready', $data, array( 'product_id' => $product_id ) ); //phpcs:ignore
+
+		$this->item->set_price( $data['item_price'], true );
 
 		$a['data'] = $data;
 
@@ -347,6 +355,7 @@ class ASP_PP_Handler {
 			if ( isset( $metadata ) && ! empty( $metadata ) ) {
 				$pi_params['metadata'] = $metadata;
 			}
+			$pi_params = apply_filters( 'asp_ng_before_pi_create_update', $pi_params );
 			if ( $pi_id ) {
 				$intent = \Stripe\PaymentIntent::update( $pi_id, $pi_params );
 			} else {
@@ -360,6 +369,7 @@ class ASP_PP_Handler {
 		$out['success']      = true;
 		$out['clientSecret'] = $intent->client_secret;
 		$out['pi_id']        = $intent->id;
+		$out                 = apply_filters( 'asp_ng_before_pi_result_send', $out, $intent );
 		wp_send_json( $out );
 		exit;
 	}

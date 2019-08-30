@@ -66,13 +66,13 @@
 					</div>
 					<div id="form-container" class="pure-u-1" <?php	echo isset( $a['fatal_error'] ) ? 'style="display: none;"' : ''; ?>>
 						<form method="post" id="payment-form" class="pure-form pure-form-stacked">
-							<?php if ( $a['amount_variable'] ) { ?>
+							<?php if ( $a['data']['amount_variable'] ) { ?>
 								<label for="amount"><?php esc_html_e( 'Enter amount', 'stripe-payments' ); ?></label>
 								<input class="pure-input-1" id="amount" name="amount" inputmode="decimal" required>
 								<div id="amount-error" class="form-err" role="alert"></div>
 							<?php } ?>
 							<?php
-							if ( $a['currency_variable'] ) {
+							if ( $a['data']['currency_variable'] ) {
 								?>
 								<label for="quantity"><?php esc_html_e( 'Select currency', 'stripe-payments' ); ?></label>
 								<select class="pure-input-1" id="currency" name="currency">
@@ -301,6 +301,10 @@
 							<?php } ?>
 							<?php if ( ! empty( $a['thankyou_page'] ) ) { ?>
 							<input type="hidden" value="<?php echo esc_attr( base64_encode( $a['thankyou_page'] ) ); ?>" name="thankyou_page_url">
+							<?php } ?>
+							<?php if ( ! empty( $a['data']['create_token'] ) ) { ?>
+							<input type="hidden" value="1" name="create_token">
+							<input type="hidden" value="" id="sub_id" name="asp_sub_id">
 							<?php } ?>
 						</form>
 					</div>

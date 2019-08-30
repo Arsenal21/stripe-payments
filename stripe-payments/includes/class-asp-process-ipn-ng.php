@@ -110,7 +110,7 @@ class ASP_Process_IPN_NG {
 
 		$this->sess = ASP_Session::get_instance();
 
-		$button_key=$item->get_button_key();
+		$button_key = $item->get_button_key();
 
 		$post_quantity = filter_input( INPUT_POST, 'asp_quantity', FILTER_SANITIZE_NUMBER_INT );
 		if ( $post_quantity ) {
@@ -220,6 +220,8 @@ class ASP_Process_IPN_NG {
 		$data['shipping_address'] = $shipping_address;
 
 		$data['additional_items'] = array();
+
+		$data = apply_filters( 'asp_ng_payment_completed', $data, $prod_id );
 
 		$item_price    = $item->get_price();
 		$currency_code = $item->get_currency();

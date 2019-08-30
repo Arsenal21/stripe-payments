@@ -33,6 +33,15 @@ class ASP_Product_Item {
 		return $amount;
 	}
 
+	private function from_cents( $amount ) {
+		if ( ! $this->zero_cent ) {
+			$amount = round( $amount / 100, 2 );
+		} else {
+			$amount = round( $amount, 0 );
+		}
+		return $amount;
+	}
+
 	public function get_last_error() {
 		return $this->last_error;
 	}
@@ -150,7 +159,10 @@ class ASP_Product_Item {
 		return $total;
 	}
 
-	public function set_price( $price ) {
+	public function set_price( $price, $in_cents = false ) {
+		if ( $in_cents ) {
+			$price = $this->from_cents( $price );
+		}
 		$this->price = $price;
 	}
 

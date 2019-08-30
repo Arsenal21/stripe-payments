@@ -444,7 +444,7 @@ form.addEventListener('submit', function (event) {
 
 	updateAllAmounts();
 
-	if (vars.data.client_secret === '' || vars.data.amount != clientSecAmount) {
+	if (!vars.data.create_token && (vars.data.client_secret === '' || vars.data.amount != clientSecAmount)) {
 		console.log('Regen CS');
 		var reqStr = 'action=asp_pp_req_token&amount=' + vars.data.amount + '&curr=' + vars.data.currency + '&product_id=' + vars.data.product_id;
 		reqStr = reqStr + '&quantity=' + vars.data.quantity;
@@ -542,6 +542,71 @@ function handlePayment() {
 	}
 	if (shippingDetails) {
 		opts.shipping = shippingDetails;
+	}
+
+	if (vars.data.create_token) {
+		console.log('Creating token');
+		var opts = {
+			name: billingNameInput.value
+		}
+		if (vars.data.billing_address) {
+			opts.address_line1 = bAddr.value;
+			opts.address_city = bCity.value;
+			opts.address_country = bCountry.value || bCountry.options[bCountry.selectedIndex].value;
+			if (postal_code) {
+				opts.address_zip = postal_code;
+			}
+		}
+		stripe.createToken(card).then(function (result) {
+			console.log(result);
+			if (result.error) {
+				submitBtn.disabled = false;
+				btnSpinner.style.display = "none";
+				errorCont.innerHTML = result.error.message;
+				errorCont.style.display = 'block';
+			} else {
+				var reqStr = 'action=asp_pp_confirm_token&asp_token_id=' + result.token.id + '&product_id=' + vars.data.product_id;
+				reqStr = reqStr + '&billing_details=' + JSON.stringify(billingDetails);
+				new ajaxRequest(vars.ajaxURL, reqStr,
+					function (res) {
+						try {
+							var resp = JSON.parse(res.responseText);
+							console.log(resp);
+							if (!resp.success) {
+								submitBtn.disabled = false;
+								btnSpinner.style.display = "none";
+								errorCont.innerHTML = resp.err;
+								errorCont.style.display = 'block';
+								return false;
+							}
+							var inputSubId = document.getElementById('sub_id');
+							inputSubId.value = resp.sub_id;
+							if (resp.pi_cs) {
+								vars.data.client_secret = resp.pi_cs;
+								vars.data.create_token = false;
+								handlePayment();
+							} else {
+								piInput.value = resp.pi_id;
+								if (!vars.data.coupon && couponInput) {
+									couponInput.value = '';
+								}
+								form.dispatchEvent(new Event('submit'));
+							}
+						} catch (e) {
+							console.log(e);
+							alert('Caught Exception: ' + e.description);
+						}
+					},
+					function (res, errMsg) {
+						submitBtn.disabled = false;
+						btnSpinner.style.display = "none";
+						errorCont.innerHTML = errMsg;
+						errorCont.style.display = 'block';
+					}
+				);
+			}
+		});
+		return false;
 	}
 
 	stripe.handleCardPayment(

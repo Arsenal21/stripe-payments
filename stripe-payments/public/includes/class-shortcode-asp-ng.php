@@ -230,14 +230,6 @@ class AcceptStripePaymentsShortcodeNG {
 			return $error_msg;
 		}
 
-		$plan_id = get_post_meta( $id, 'asp_sub_plan_id', true );
-
-		if ( $plan_id ) {
-			$msg       = __( 'Subscriptions via new API are currently not supported.', 'stripe-payments' );
-			$error_msg = $this->gen_fatal_error_box( $msg );
-			return $error_msg;
-		}
-
 		$currency = $item->get_currency();
 
 		$button_text = $item->get_button_text();
