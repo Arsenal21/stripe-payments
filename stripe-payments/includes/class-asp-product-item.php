@@ -5,8 +5,8 @@ class ASP_Product_Item {
 
 	protected $post_id = false;
 	protected $post;
-	private $last_error    = '';
-	private $cust_quantity = false;
+	protected $last_error    = '';
+	protected $cust_quantity = false;
 	protected $tax;
 	protected $zero_cent = false;
 	protected $price;
@@ -44,6 +44,10 @@ class ASP_Product_Item {
 
 	public function get_last_error() {
 		return $this->last_error;
+	}
+
+	public function get_product_id() {
+		return $this->post_id;
 	}
 
 	public function get_button_text() {

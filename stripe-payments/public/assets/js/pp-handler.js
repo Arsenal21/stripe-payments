@@ -566,7 +566,14 @@ function handlePayment() {
 				errorCont.style.display = 'block';
 			} else {
 				var reqStr = 'action=asp_pp_confirm_token&asp_token_id=' + result.token.id + '&product_id=' + vars.data.product_id;
+				if (vars.data.currency_variable) {
+					reqStr = reqStr + '&currency=' + data.currency;
+				}
+				if (vars.data.amount_variable) {
+					reqStr = reqStr + '&amount=' + vars.data.item_price;
+				}
 				reqStr = reqStr + '&billing_details=' + JSON.stringify(billingDetails);
+				console.log('Doing action asp_pp_confirm_token');
 				new ajaxRequest(vars.ajaxURL, reqStr,
 					function (res) {
 						try {
@@ -584,9 +591,15 @@ function handlePayment() {
 							if (resp.pi_cs) {
 								vars.data.client_secret = resp.pi_cs;
 								vars.data.create_token = false;
+								if (resp.do_card_setup) {
+									vars.data.do_card_setup = true;
+								}
 								handlePayment();
 							} else {
 								piInput.value = resp.pi_id;
+								if (resp.no_action_required) {
+									vars.data.no_action_required=true;
+								}
 								if (!vars.data.coupon && couponInput) {
 									couponInput.value = '';
 								}
@@ -609,23 +622,50 @@ function handlePayment() {
 		return false;
 	}
 
-	stripe.handleCardPayment(
-		vars.data.client_secret, card, opts)
-		.then(function (result) {
-			console.log(result);
-			if (result.error) {
-				submitBtn.disabled = false;
-				btnSpinner.style.display = "none";
-				errorCont.innerHTML = result.error.message;
-				errorCont.style.display = 'block';
-			} else {
-				piInput.value = result.paymentIntent.id;
-				if (!vars.data.coupon && couponInput) {
-					couponInput.value = '';
+	if (vars.data.no_action_required) {
+		return true;
+	}
+
+	if (vars.data.do_card_setup) {
+		console.log('Doing handleCardSetup()');
+		stripe.handleCardSetup(
+			vars.data.client_secret, card, opts)
+			.then(function (result) {
+				console.log(result);
+				if (result.error) {
+					submitBtn.disabled = false;
+					btnSpinner.style.display = "none";
+					errorCont.innerHTML = result.error.message;
+					errorCont.style.display = 'block';
+				} else {
+					piInput.value = document.getElementById('sub_id').value;
+					if (!vars.data.coupon && couponInput) {
+						couponInput.value = '';
+					}
+					form.dispatchEvent(new Event('submit'));
 				}
-				form.dispatchEvent(new Event('submit'));
-			}
-		});
+			});
+
+	} else {
+		console.log('Doing handleCardPayment()');
+		stripe.handleCardPayment(
+			vars.data.client_secret, card, opts)
+			.then(function (result) {
+				console.log(result);
+				if (result.error) {
+					submitBtn.disabled = false;
+					btnSpinner.style.display = "none";
+					errorCont.innerHTML = result.error.message;
+					errorCont.style.display = 'block';
+				} else {
+					piInput.value = result.paymentIntent.id;
+					if (!vars.data.coupon && couponInput) {
+						couponInput.value = '';
+					}
+					form.dispatchEvent(new Event('submit'));
+				}
+			});
+	}
 }
 
 var ajaxRequest = function (URL, reqStr, doneFunc, failFunc) {

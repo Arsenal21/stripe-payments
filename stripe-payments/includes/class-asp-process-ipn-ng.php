@@ -61,6 +61,8 @@ class ASP_Process_IPN_NG {
 		$prod_id = filter_input( INPUT_POST, 'asp_product_id', FILTER_SANITIZE_NUMBER_INT );
 		$item    = new ASP_Product_Item( $prod_id );
 
+		$item = apply_filters( 'asp_ng_process_ipn_product_item_override', $item );
+
 		$err = $item->get_last_error();
 
 		if ( $err ) {
@@ -89,24 +91,24 @@ class ASP_Process_IPN_NG {
 			exit;
 		}
 
-		$is_live = filter_input( INPUT_POST, 'asp_is_live', FILTER_VALIDATE_BOOLEAN );
+		$p_data = apply_filters( 'asp_ng_process_ipn_payment_data_item_override', false, $pi );
 
-		ASPMain::load_stripe_lib();
-		$key = $is_live ? $this->asp_class->APISecKey : $this->asp_class->APISecKeyTest;
-		\Stripe\Stripe::setApiKey( $key );
+		if ( false === $p_data ) {
 
-		$intent = \Stripe\PaymentIntent::retrieve( $pi );
-		$charge = $intent->charges;
+			$is_live = filter_input( INPUT_POST, 'asp_is_live', FILTER_VALIDATE_BOOLEAN );
 
-		/*
-		echo '<pre>';
-		var_dump($_POST);
-		echo '</pre>';
+			ASPMain::load_stripe_lib();
+			$key = $is_live ? $this->asp_class->APISecKey : $this->asp_class->APISecKeyTest;
+			\Stripe\Stripe::setApiKey( $key );
 
-		echo '<pre>';
-		var_dump($charge);
-		echo '</pre>';
-		*/
+			$p_data = new ASP_Payment_Data( $pi );
+		}
+
+		$p_last_err = $p_data->get_last_error();
+
+		if ( ! empty( $p_last_err ) ) {
+			$this->ipn_completed( $p_last_err );
+		}
 
 		$this->sess = ASP_Session::get_instance();
 
@@ -123,7 +125,7 @@ class ASP_Process_IPN_NG {
 			if ( $post_price ) {
 				$price = $post_price;
 			} else {
-				$price = $charge->data[0]->amount;
+				$price = $p_data->get_amount();
 			}
 			$price = AcceptStripePayments::from_cents( $price, $item->get_currency() );
 			$item->set_price( $price );
@@ -156,68 +158,58 @@ class ASP_Process_IPN_NG {
 		$coupon_valid = $item->check_coupon( $coupon_code );
 
 		$amount_in_cents = intval( $item->get_total( true ) );
-		$amount_paid     = intval( $charge->data[0]->amount );
+		$amount_paid     = $p_data->get_amount();
 		if ( $amount_in_cents !== $amount_paid ) {
-			$err = sprintf(
+			$curr = $p_data->get_currency();
+			$err  = sprintf(
 				// translators: placeholders ar expected and received amounts
 				__( 'Invalid payment amount received. Expected %1$s, got %2$s.', 'stripe-payments' ),
-				AcceptStripePayments::formatted_price( $amount_in_cents, $charge->data[0]->currency, true ),
-				AcceptStripePayments::formatted_price( $amount_paid, $charge->data[0]->currency, true )
+				AcceptStripePayments::formatted_price( $amount_in_cents, $curr, true ),
+				AcceptStripePayments::formatted_price( $amount_paid, $curr, true )
 			);
 			$this->ipn_completed( $err );
 		}
 
 		$opt = get_option( 'AcceptStripePayments-settings' );
 
+//		wp_die();
+
+		$p_curr            = $p_data->get_currency();
+		$p_amount          = $p_data->get_amount();
+		$p_charge_data     = $p_data->get_charge_data();
+		$p_charge_created  = $p_data->get_charge_created();
+		$p_trans_id        = $p_data->get_trans_id();
+		$p_billing_details = $p_data->get_billing_details();
+
 		$data                       = array();
 		$data['product_id']         = $prod_id ? $prod_id : null;
-		$data['paid_amount']        = AcceptStripePayments::from_cents( $charge->data[0]->amount, $charge->data[0]->currency );
-		$data['currency_code']      = strtoupper( $charge->data[0]->currency );
+		$data['paid_amount']        = AcceptStripePayments::from_cents( $p_amount, $p_curr );
+		$data['currency_code']      = strtoupper( $p_curr );
 		$data['item_quantity']      = $item->get_quantity();
-		$data['charge']             = $charge->data[0];
+		$data['charge']             = $p_charge_data;
 		$data['stripeToken']        = '';
 		$data['stripeTokenType']    = 'card';
 		$data['is_live']            = $is_live;
 		$data['charge_description'] = $item->get_description();
 		$data['item_name']          = $item->get_name();
 		$data['item_price']         = $price;
-		$data['stripeEmail']        = $charge->data[0]->billing_details->email;
-		$data['customer_name']      = $charge->data[0]->billing_details->name;
-		$purchase_date              = gmdate( 'Y-m-d H:i:s', $charge->data[0]->created );
+		$data['stripeEmail']        = $p_billing_details->email;
+		$data['customer_name']      = $p_billing_details->name;
+		$purchase_date              = gmdate( 'Y-m-d H:i:s', $p_charge_created );
 		$purchase_date              = get_date_from_gmt( $purchase_date, get_option( 'date_format' ) . ', ' . get_option( 'time_format' ) );
 		$data['purchase_date']      = $purchase_date;
 		$data['charge_date']        = $purchase_date;
-		$data['charge_date_raw']    = $charge->data[0]->created;
-		$data['txn_id']             = $charge->data[0]->id;
+		$data['charge_date_raw']    = $p_charge_created;
+		$data['txn_id']             = $p_trans_id;
 		$data['button_key']         = $button_key;
 
 		$item_url = $item->get_download_url();
 
 		$data['item_url'] = $item_url;
 
-		//billing address
-		$billing_address         = '';
-		$bd                      = $charge->data[0]->billing_details;
-		$billing_address        .= $bd->name ? $charge->data[0]->billing_details->name . "\n" : '';
-		$billing_address        .= isset( $bd->address->line1 ) ? $bd->address->line1 . "\n" : '';
-		$billing_address        .= isset( $bd->address->line2 ) ? $bd->address->line2 . "\n" : '';
-		$billing_address        .= isset( $bd->address->postal_code ) ? $bd->address->postal_code . "\n" : '';
-		$billing_address        .= isset( $bd->address->city ) ? $bd->address->city . "\n" : '';
-		$billing_address        .= isset( $bd->address->state ) ? $bd->address->state . "\n" : '';
-		$billing_address        .= isset( $bd->address->country ) ? $bd->address->country . "\n" : '';
-		$data['billing_address'] = $billing_address;
+		$data['billing_address'] = $p_data->get_billing_addr_str();
 
-		//shipping address
-		$shipping_address         = '';
-		$sd                       = $charge->data[0]->shipping;
-		$shipping_address        .= isset( $sd->name ) ? $sd->name . "\n" : '';
-		$shipping_address        .= isset( $sd->address->line1 ) ? $sd->address->line1 . "\n" : '';
-		$shipping_address        .= isset( $sd->address->line2 ) ? $sd->address->line2 . "\n" : '';
-		$shipping_address        .= isset( $sd->address->postal_code ) ? $sd->address->postal_code . "\n" : '';
-		$shipping_address        .= isset( $sd->address->city ) ? $sd->address->city . "\n" : '';
-		$shipping_address        .= isset( $sd->address->state ) ? $sd->address->state . "\n" : '';
-		$shipping_address        .= isset( $sd->address->country ) ? $sd->address->country . "\n" : '';
-		$data['shipping_address'] = $shipping_address;
+		$data['shipping_address'] = $p_data->get_shipping_addr_str();
 
 		$data['additional_items'] = array();
 
@@ -313,7 +305,7 @@ class ASP_Process_IPN_NG {
 			$data['order_post_id'] = $order_post_id;
 			update_post_meta( $order_post_id, 'order_data', $data );
 			update_post_meta( $order_post_id, 'charge_data', $data['charge'] );
-			update_post_meta( $order_post_id, 'trans_id', $charge->data[0]->balance_transaction );
+			update_post_meta( $order_post_id, 'trans_id', $p_trans_id );
 			update_post_meta( $order_post_id, 'pi_id', $pi );
 		}
 

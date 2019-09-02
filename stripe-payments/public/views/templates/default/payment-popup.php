@@ -304,7 +304,7 @@
 							<?php } ?>
 							<?php if ( ! empty( $a['data']['create_token'] ) ) { ?>
 							<input type="hidden" value="1" name="create_token">
-							<input type="hidden" value="" id="sub_id" name="asp_sub_id">
+							<input type="hidden" value="" id="sub_id" name="sub_id">
 							<?php } ?>
 						</form>
 					</div>

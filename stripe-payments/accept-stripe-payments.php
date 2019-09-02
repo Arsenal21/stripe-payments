@@ -43,6 +43,7 @@ class ASPMain {
 		require_once WP_ASP_PLUGIN_PATH . 'admin/views/blocks.php';
 		require_once WP_ASP_PLUGIN_PATH . 'includes/addons-helper-class.php';
 		require_once WP_ASP_PLUGIN_PATH . 'includes/class-asp-product-item.php';
+		require_once WP_ASP_PLUGIN_PATH . 'includes/class-asp-payment-data.php';
 		require_once WP_ASP_PLUGIN_PATH . 'admin/includes/class-variations.php';
 
 		register_activation_hook( __FILE__, array( 'AcceptStripePayments', 'activate' ) );
