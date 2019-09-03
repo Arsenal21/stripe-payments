@@ -54,6 +54,8 @@ class ASP_Process_IPN_NG {
 	public function process_ipn() {
 		ASP_Debug_Logger::log( 'Payment processing started.' );
 
+		$this->sess = ASP_Session::get_instance();
+
 		$post_thankyou_page_url = filter_input( INPUT_POST, 'asp_thankyou_page_url', FILTER_SANITIZE_STRING );
 
 		$this->asp_redirect_url = empty( $post_thankyou_page_url ) ? $this->asp_class->get_setting( 'checkout_url' ) : base64_decode( $post_thankyou_page_url ); //phpcs:ignore
@@ -91,15 +93,15 @@ class ASP_Process_IPN_NG {
 			exit;
 		}
 
+		$is_live = filter_input( INPUT_POST, 'asp_is_live', FILTER_VALIDATE_BOOLEAN );
+
+		ASPMain::load_stripe_lib();
+		$key = $is_live ? $this->asp_class->APISecKey : $this->asp_class->APISecKeyTest;
+		\Stripe\Stripe::setApiKey( $key );
+
 		$p_data = apply_filters( 'asp_ng_process_ipn_payment_data_item_override', false, $pi );
 
 		if ( false === $p_data ) {
-
-			$is_live = filter_input( INPUT_POST, 'asp_is_live', FILTER_VALIDATE_BOOLEAN );
-
-			ASPMain::load_stripe_lib();
-			$key = $is_live ? $this->asp_class->APISecKey : $this->asp_class->APISecKeyTest;
-			\Stripe\Stripe::setApiKey( $key );
 
 			$p_data = new ASP_Payment_Data( $pi );
 		}
@@ -109,8 +111,6 @@ class ASP_Process_IPN_NG {
 		if ( ! empty( $p_last_err ) ) {
 			$this->ipn_completed( $p_last_err );
 		}
-
-		$this->sess = ASP_Session::get_instance();
 
 		$button_key = $item->get_button_key();
 

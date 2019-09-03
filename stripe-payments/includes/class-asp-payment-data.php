@@ -3,9 +3,11 @@
 class ASP_Payment_Data {
 	protected $obj_id;
 	protected $obj;
+	protected $trans_id             = false;
 	protected $amount               = false;
 	protected $currency             = false;
 	protected $charge_created       = false;
+	protected $charge_data          = false;
 	protected $last_error           = '';
 	protected $billing_details_obj  = false;
 	protected $shipping_details_obj = false;
@@ -36,7 +38,10 @@ class ASP_Payment_Data {
 	}
 
 	public function get_charge_data() {
-		return $this->obj->charges->data[0];
+		if ( false === $this->charge_data ) {
+			$this->charge_data = $this->obj->charges->data[0];
+		}
+		return $this->charge_data;
 	}
 
 	public function get_charge_created() {
@@ -47,7 +52,10 @@ class ASP_Payment_Data {
 	}
 
 	public function get_trans_id() {
-		return $this->obj->charges->data[0]->id;
+		if ( false === $this->trans_id ) {
+			$this->trans_id = $this->obj->charges->data[0]->id;
+		}
+		return $this->trans_id;
 	}
 
 	public function get_billing_details() {
@@ -121,6 +129,7 @@ class ASP_Payment_Data {
 		} catch ( Exception $e ) {
 			$this->last_error     = $e->getMessage();
 			$this->last_error_obj = $e;
+			return false;
 		}
 		$this->obj = $obj;
 	}
