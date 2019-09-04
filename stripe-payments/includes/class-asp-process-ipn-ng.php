@@ -63,6 +63,8 @@ class ASP_Process_IPN_NG {
 		$prod_id = filter_input( INPUT_POST, 'asp_product_id', FILTER_SANITIZE_NUMBER_INT );
 		$item    = new ASP_Product_Item( $prod_id );
 
+		ASP_Debug_Logger::log( 'Firing asp_ng_process_ipn_product_item_override filter.' );
+
 		$item = apply_filters( 'asp_ng_process_ipn_product_item_override', $item );
 
 		$err = $item->get_last_error();
@@ -98,6 +100,8 @@ class ASP_Process_IPN_NG {
 		ASPMain::load_stripe_lib();
 		$key = $is_live ? $this->asp_class->APISecKey : $this->asp_class->APISecKeyTest;
 		\Stripe\Stripe::setApiKey( $key );
+
+		ASP_Debug_Logger::log( 'Firing asp_ng_process_ipn_payment_data_item_override filter.' );
 
 		$p_data = apply_filters( 'asp_ng_process_ipn_payment_data_item_override', false, $pi );
 
@@ -159,6 +163,7 @@ class ASP_Process_IPN_NG {
 
 		$amount_in_cents = intval( $item->get_total( true ) );
 		$amount_paid     = $p_data->get_amount();
+
 		if ( $amount_in_cents !== $amount_paid ) {
 			$curr = $p_data->get_currency();
 			$err  = sprintf(
@@ -172,7 +177,7 @@ class ASP_Process_IPN_NG {
 
 		$opt = get_option( 'AcceptStripePayments-settings' );
 
-//		wp_die();
+		ASP_Debug_Logger::log( 'Constructing checkout result and order data.' );
 
 		$p_curr            = $p_data->get_currency();
 		$p_amount          = $p_data->get_amount();
@@ -212,6 +217,8 @@ class ASP_Process_IPN_NG {
 		$data['shipping_address'] = $p_data->get_shipping_addr_str();
 
 		$data['additional_items'] = array();
+
+		ASP_Debug_Logger::log( 'Firing asp_ng_payment_completed filter.' );
 
 		$data = apply_filters( 'asp_ng_payment_completed', $data, $prod_id );
 
@@ -321,6 +328,7 @@ class ASP_Process_IPN_NG {
 		}
 
 		//Action hook with the checkout post data parameters.
+		ASP_Debug_Logger::log( 'Firing asp_stripe_payment_completed action.' );
 		do_action( 'asp_stripe_payment_completed', $data, $data['charge'] );
 
 		//Let's handle email sending stuff
@@ -342,11 +350,17 @@ class ASP_Process_IPN_NG {
 				}
 				$headers[] = 'From: ' . $from;
 
-				wp_schedule_single_event( time(), 'asp_send_scheduled_email', array( $to, $subj, $body, $headers ) );
-				//wp_mail( $to, $subj, $body, $headers );
-				ASP_Debug_Logger::log( 'Notification email sent to buyer: ' . $to . ', From email address used: ' . $from );
+				$schedule_result = wp_schedule_single_event( time(), 'asp_send_scheduled_email', array( $to, $subj, $body, $headers ) );
+				if ( ! $schedule_result ) {
+					// can't schedule event for email notification. Let's send email without scheduling
+					wp_mail( $to, $subj, $body, $headers );
+					ASP_Debug_Logger::log( 'Notification email sent to buyer: ' . $to . ', from email address used: ' . $from );
+				} else {
+					ASP_Debug_Logger::log( 'Notification email to buyer scheduled: ' . $to . ', from email address used: ' . $from );
+				}
 			}
 		}
+
 		if ( isset( $opt['send_emails_to_seller'] ) ) {
 			if ( $opt['send_emails_to_seller'] ) {
 				$from = $opt['from_email_address'];
@@ -365,9 +379,14 @@ class ASP_Process_IPN_NG {
 				}
 				$headers[] = 'From: ' . $from;
 
-				wp_schedule_single_event( time(), 'asp_send_scheduled_email', array( $to, $subj, $body, $headers ) );
-				//wp_mail( $to, $subj, $body, $headers );
-				ASP_Debug_Logger::log( 'Notification email sent to seller: ' . $to . ', From email address used: ' . $from );
+				$schedule_result = wp_schedule_single_event( time(), 'asp_send_scheduled_email', array( $to, $subj, $body, $headers ) );
+				if ( ! $schedule_result ) {
+					// can't schedule event for email notification. Let's send email without scheduling
+					wp_mail( $to, $subj, $body, $headers );
+					ASP_Debug_Logger::log( 'Notification email sent to seller: ' . $to . ', from email address used: ' . $from );
+				} else {
+					ASP_Debug_Logger::log( 'Notification email to seller scheduled: ' . $to . ', from email address used: ' . $from );
+				}
 			}
 		}
 

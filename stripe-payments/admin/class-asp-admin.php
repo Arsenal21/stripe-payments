@@ -341,6 +341,8 @@ class AcceptStripePayments_Admin {
 	add_settings_field( 'currency_symbol', __( 'Currency Symbol', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-global-section', array( 'field' => 'currency_symbol', 'desc' => '', 'size' => 10 ) );
 	add_settings_field( 'button_text', __( 'Button Text', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-global-section', array( 'field'	 => 'button_text',
 	    'desc'	 => __( 'Example: Buy Now, Pay Now etc.', 'stripe-payments' ) ) );
+	add_settings_field( 'popup_button_text', __( 'Payment Popup Button Text', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-global-section', array( 'field'	 => 'popup_button_text',
+	    'desc'	 => __( '%s is replaced by formatted payment amount.', 'stripe-payments' ) ) );
 	add_settings_field( 'dont_save_card', __( 'Do Not Save Card Data on Stripe', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-global-section', array( 'field'	 => 'dont_save_card',
 	    'desc'	 => __( 'When this checkbox is checked, the transaction won\'t create the customer (no card will be saved for that).', 'stripe-payments' ) ) );
 	add_settings_field( 'disable_remember_me', __( 'Turn Off "Remember me" Option', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-global-section', array( 'field'	 => 'disable_remember_me',
@@ -828,6 +830,12 @@ class AcceptStripePayments_Admin {
 	    $output[ 'button_text' ] = $input[ 'button_text' ];
 	else
 	    add_settings_error( 'AcceptStripePayments-settings', 'invalid-button-text', __( 'Button text should not be empty.', 'stripe-payments' ) );
+
+	if (! empty($input['popup_button_text'])) {
+	    $output[ 'popup_button_text' ] = $input[ 'popup_button_text' ];
+	} else {
+		add_settings_error( 'AcceptStripePayments-settings', 'invalid-popup-button-text', __( 'Popup button text should not be empty.', 'stripe-payments' ) );
+	}
 
 	if ( ! empty( $input[ 'currency_code' ] ) ) {
 	    $output[ 'currency_code' ]	 = $input[ 'currency_code' ];

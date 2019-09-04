@@ -289,6 +289,7 @@ class AcceptStripePayments {
 			'dont_save_card'                  => 0,
 			'currency_code'                   => 'USD',
 			'button_text'                     => __( 'Buy Now', 'stripe-payments' ),
+			'popup_button_text'               => __( 'Pay %s', 'stripe-payments' ),
 			'use_new_button_method'           => 0,
 			'checkout_url'                    => site_url( 'checkout' ),
 			'from_email_address'              => get_bloginfo( 'name' ) . ' <sales@your-domain.com>',

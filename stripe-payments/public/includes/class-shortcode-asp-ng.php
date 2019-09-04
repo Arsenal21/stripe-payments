@@ -809,7 +809,9 @@ class AcceptStripePaymentsShortcodeNG {
 		$output .= "<input type = 'hidden' value = '{$data['quantity']}' name = 'item_quantity' />";
 		$output .= "<input type = 'hidden' value = '{$data['currency']}' name = 'currency_code' />";
 		$output .= "<input type = 'hidden' value = '{$data['url']}' name = 'item_url' />";
-		$output .= "<input type = 'hidden' value = '{$data['description']}' name = 'charge_description' />"; //
+		$output .= "<input type = 'hidden' value = '{$data['description']}' name = 'charge_description' />";
+
+		$output.='<div class="asp-child-hidden-fields" style="display: none !important;"></div>';
 
 		$trans_name        = 'stripe-payments-' . $button_key; //Create key using the item name.
 		$trans['tax']      = $tax;

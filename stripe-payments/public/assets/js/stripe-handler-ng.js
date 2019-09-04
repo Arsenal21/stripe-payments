@@ -29,17 +29,20 @@ var stripeHandlerNG = function (data) {
                     e.preventDefault();
                     var token = parent.iForm.find('input#payment-intent').val();
                     if (token !== '') {
+                        jQuery('div#asp-all-buttons-container-' + parent.data.uniq_id).hide();
+                        jQuery('div#asp-btn-spinner-container-' + parent.data.uniq_id).show();
+                        parent.modal.fadeOut();
+                        var hiddenInputsDiv = parent.form.find('div.asp-child-hidden-fields');
                         parent.iForm.find('[name!=""]').each(function (e) {
                             if (jQuery(this).attr('name')) {
-                                parent.form.append('<input type="hidden" name="asp_' + jQuery(this).attr('name') + '" value="' + jQuery(this).val() + '">');
+                                jQuery(this).attr('name', 'asp_' + jQuery(this).attr('name'));
+                                hiddenInputsDiv.append(jQuery(this));
                             }
                         });
                         parent.form.append('<input type="hidden" name="asp_process_ipn" value="1">');
                         parent.form.append('<input type="hidden" name="asp_is_live" value="' + parent.data.is_live + '">');
-                        jQuery('div#asp-all-buttons-container-' + parent.data.uniq_id).hide();
-                        jQuery('div#asp-btn-spinner-container-' + parent.data.uniq_id).show();
+                        console.log('Parent form submit');
                         jQuery('form#asp_ng_form_' + parent.data.uniq_id).submit();
-                        parent.modal.fadeOut();
                     }
                     return false;
                 });

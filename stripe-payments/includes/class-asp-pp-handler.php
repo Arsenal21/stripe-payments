@@ -234,6 +234,8 @@ class ASP_PP_Handler {
 
 		$a['data'] = $data;
 
+		$pay_btn_text = $this->asp_main->get_setting( 'popup_button_text' );
+
 		$a['vars']['vars'] = array(
 			'data'           => $data,
 			'stripe_key'     => $a['stripe_key'],
@@ -241,7 +243,7 @@ class ASP_PP_Handler {
 			'zeroCents'      => $this->asp_main->zeroCents,
 			'ajaxURL'        => admin_url( 'admin-ajax.php' ),
 			'currencyFormat' => $display_settings,
-			'payBtnText'     => 'Pay %s',
+			'payBtnText'     => $pay_btn_text,
 			'amountOpts'     => array(
 				'applySepOpts' => $this->asp_main->get_setting( 'price_apply_for_input' ),
 				'decimalSep'   => $this->asp_main->get_setting( 'price_decimal_sep' ),
@@ -300,8 +302,7 @@ class ASP_PP_Handler {
 			$a['vars']['vars']['fatal_error'] = $a['fatal_error'];
 		}
 		// translators: %s is payment amount
-		$pay_str           = __( 'Pay %s', 'stripe-payments' );
-		$a['pay_btn_text'] = sprintf( $pay_str, AcceptStripePayments::formatted_price( $this->item->get_total(), $this->item->get_currency() ) );
+		$a['pay_btn_text'] = sprintf( $pay_btn_text, AcceptStripePayments::formatted_price( $this->item->get_total(), $this->item->get_currency() ) );
 		ob_start();
 		require_once WP_ASP_PLUGIN_PATH . 'public/views/templates/default/payment-popup.php';
 		$tpl = ob_get_clean();

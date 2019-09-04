@@ -83,7 +83,7 @@ class ASP_Payment_Data {
 		}
 		$shipping_addr              = new stdClass();
 		$sd                         = $this->obj->charges->data[0]->shipping;
-		$shipping_addr->name        = $this->obj->charges->data[0]->shipping->name;
+		$shipping_addr->name        = isset( $this->obj->charges->data[0]->shipping->name ) ? $this->obj->charges->data[0]->shipping->name : '';
 		$shipping_addr->line1       = isset( $sd->address->line1 ) ? $sd->address->line1 : '';
 		$shipping_addr->line2       = isset( $sd->address->line2 ) ? $sd->address->line2 : '';
 		$shipping_addr->postal_code = isset( $sd->address->postal_code ) ? $sd->address->postal_code : '';
