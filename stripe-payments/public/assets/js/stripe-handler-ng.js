@@ -2,6 +2,7 @@ var stripeHandlerNG = function (data) {
     var parent = this;
     parent.data = data;
     parent.form = jQuery('form#asp_ng_form_' + data.uniq_id);
+    jQuery('#asp_ng_button_' + data.uniq_id).prop('disabled', false);
     jQuery('#asp_ng_button_' + data.uniq_id).click(function (e) {
         e.preventDefault();
         if (!parent.modal) {
