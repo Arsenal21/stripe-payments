@@ -303,6 +303,47 @@ class ASP_Process_IPN_NG {
 			$data['custom_fields'] = $custom_fields;
 		}
 
+		$metadata = array();
+
+		//Check if we need to include custom field in metadata
+		if ( ! empty( $data['custom_fields'] ) ) {
+			$cf_str = '';
+			foreach ( $data['custom_fields'] as $cf ) {
+				$cf_str .= $cf['name'] . ': ' . $cf['value'] . ' | ';
+			}
+			$cf_str = rtrim( $cf_str, ' | ' );
+			//trim the string as metadata value cannot exceed 500 chars
+			$cf_str                    = substr( $cf_str, 0, 499 );
+			$metadata['Custom Fields'] = $cf_str;
+		}
+
+		//Check if we need to include variations data into metadata
+		if ( ! empty( $variations ) ) {
+			$var_str = '';
+			foreach ( $variations as $variation ) {
+				$var_str .= '[' . $variation[0] . '], ';
+			}
+			$var_str = rtrim( $var_str, ', ' );
+			//trim the string as metadata value cannot exceed 500 chars
+			$var_str                = substr( $var_str, 0, 499 );
+			$metadata['Variations'] = $var_str;
+		}
+
+		if ( ! empty( $data['shipping_address'] ) ) {
+			//add shipping address to metadata
+			$shipping_address             = str_replace( "\n", ', ', $data['shipping_address'] );
+			$shipping_address             = rtrim( $shipping_address, ', ' );
+			$metadata['Shipping Address'] = $shipping_address;
+		}
+
+		$metadata_handled = apply_filters( 'asp_ng_handle_metadata', $metadata );
+
+		if ( true !== $metadata_handled ) {
+			// metadata wasn't handled. Let's update metadata
+			ASP_Debug_Logger::log( 'Updating payment metadata.' );
+			$res = \Stripe\PaymentIntent::update( $pi, array( 'metadata' => $metadata ) );
+		}
+
 		$product_details  = __( 'Product Name: ', 'stripe-payments' ) . $data['item_name'] . "\n";
 		$product_details .= __( 'Quantity: ', 'stripe-payments' ) . $data['item_quantity'] . "\n";
 		$product_details .= __( 'Item Price: ', 'stripe-payments' ) . AcceptStripePayments::formatted_price( $data['item_price'], $data['currency_code'] ) . "\n";
