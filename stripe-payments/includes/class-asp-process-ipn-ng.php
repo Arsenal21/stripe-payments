@@ -164,7 +164,7 @@ class ASP_Process_IPN_NG {
 		}
 		$coupon_valid = $item->check_coupon( $coupon_code );
 
-		if ( $coupon_valid ) {
+		if ( $coupon_code && $coupon_valid ) {
 			ASP_Debug_Logger::log( 'Coupon is valid for the product.' );
 		} else {
 			ASP_Debug_Logger::log( 'Coupon is invalid for the product.' );
@@ -336,12 +336,15 @@ class ASP_Process_IPN_NG {
 			$metadata['Shipping Address'] = $shipping_address;
 		}
 
-		$metadata_handled = apply_filters( 'asp_ng_handle_metadata', $metadata );
+		if ( ! empty( $metadata ) ) {
+			ASP_Debug_Logger::log( 'Firing asp_ng_handle_metadata filter.' );
+			$metadata_handled = apply_filters( 'asp_ng_handle_metadata', $metadata );
 
-		if ( true !== $metadata_handled ) {
-			// metadata wasn't handled. Let's update metadata
-			ASP_Debug_Logger::log( 'Updating payment metadata.' );
-			$res = \Stripe\PaymentIntent::update( $pi, array( 'metadata' => $metadata ) );
+			if ( true !== $metadata_handled ) {
+				// metadata wasn't handled. Let's update metadata
+				ASP_Debug_Logger::log( 'Updating payment metadata.' );
+				$res = \Stripe\PaymentIntent::update( $pi, array( 'metadata' => $metadata ) );
+			}
 		}
 
 		$product_details  = __( 'Product Name: ', 'stripe-payments' ) . $data['item_name'] . "\n";

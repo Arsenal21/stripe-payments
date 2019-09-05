@@ -243,6 +243,10 @@ class ASP_PP_Handler {
 
 		$pay_btn_text = $this->asp_main->get_setting( 'popup_button_text' );
 
+		if ( isset( $data['is_trial'] ) && $data['is_trial'] ) {
+			$pay_btn_text = apply_filters( 'asp_customize_text_msg', __( 'Start Free Trial', 'stripe-payments' ), 'start_free_trial' );
+		}
+
 		$a['vars']['vars'] = array(
 			'data'           => $data,
 			'stripe_key'     => $a['stripe_key'],

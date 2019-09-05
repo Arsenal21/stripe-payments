@@ -549,7 +549,6 @@ function handlePayment() {
 	}
 	if (vars.data.billing_address && vars.data.shipping_address && billshipSwitch.checked) {
 		var shippingDetails = billingDetails;
-		delete (shippingDetails.email);
 	}
 	var opts = {
 		payment_method_data: {
@@ -590,6 +589,9 @@ function handlePayment() {
 					reqStr = reqStr + '&amount=' + vars.data.item_price;
 				}
 				reqStr = reqStr + '&billing_details=' + JSON.stringify(billingDetails);
+				if (shippingDetails) {
+					reqStr = reqStr + '&shipping_details=' + JSON.stringify(shippingDetails);
+				}
 				console.log('Doing action asp_pp_confirm_token');
 				new ajaxRequest(vars.ajaxURL, reqStr,
 					function (res) {

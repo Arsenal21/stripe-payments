@@ -113,7 +113,7 @@ class ASP_Payment_Data {
 		$this->get_shipping_details();
 		$shipping_address  = '';
 		$bd                = $this->shipping_details_obj;
-		$shipping_address .= $bd->name ? $bd->name . "\n" : '';
+		$shipping_address .= isset( $bd->name ) ? $bd->name . "\n" : '';
 		$shipping_address .= isset( $bd->line1 ) ? $bd->line1 . "\n" : '';
 		$shipping_address .= isset( $bd->line2 ) ? $bd->line2 . "\n" : '';
 		$shipping_address .= isset( $bd->postal_code ) ? $bd->postal_code . "\n" : '';
