@@ -230,6 +230,13 @@ class AcceptStripePaymentsShortcodeNG {
 			return $error_msg;
 		}
 
+		$plan_id = get_post_meta( $id, 'asp_sub_plan_id', true );
+
+		if ( ! empty( $plan_id ) && class_exists( 'ASPSUB_main' ) && version_compare( ASPSUB_main::ADDON_VER, '2.0.0t1' ) < 0 ) {
+			$error_msg = $this->gen_fatal_error_box( 'Stripe Subscriptions addon version 2.0.0 or newer is required.' );
+			return $error_msg;
+		}
+
 		$currency = $item->get_currency();
 
 		$button_text = $item->get_button_text();
@@ -714,8 +721,6 @@ class AcceptStripePaymentsShortcodeNG {
 		$displayStr['tax']  = '%s (' . strtolower( $taxStr ) . ')';
 		$displayStr['ship'] = '%s (' . strtolower( $shipStr ) . ')';
 
-		$plan_id = get_post_meta( $product_id, 'asp_sub_plan_id', true );
-
 		//variations
 		$this->variations = array();
 		$v                = new ASPVariations( $product_id );
@@ -811,7 +816,7 @@ class AcceptStripePaymentsShortcodeNG {
 		$output .= "<input type = 'hidden' value = '{$data['url']}' name = 'item_url' />";
 		$output .= "<input type = 'hidden' value = '{$data['description']}' name = 'charge_description' />";
 
-		$output.='<div class="asp-child-hidden-fields" style="display: none !important;"></div>';
+		$output .= '<div class="asp-child-hidden-fields" style="display: none !important;"></div>';
 
 		$trans_name        = 'stripe-payments-' . $button_key; //Create key using the item name.
 		$trans['tax']      = $tax;

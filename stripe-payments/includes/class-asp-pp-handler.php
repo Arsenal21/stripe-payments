@@ -36,6 +36,13 @@ class ASP_PP_Handler {
 			exit;
 		}
 
+		$plan_id = get_post_meta( $product_id, 'asp_sub_plan_id', true );
+
+		if ( ! empty( $plan_id ) && class_exists( 'ASPSUB_main' ) && version_compare( ASPSUB_main::ADDON_VER, '2.0.0t1' ) < 0 ) {
+			echo ( 'Stripe Subscriptions addon version 2.0.0 or newer is required.' );
+			exit;
+		}
+
 		$a = array();
 
 		$a['prod_id'] = $product_id;
