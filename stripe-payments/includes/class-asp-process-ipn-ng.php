@@ -15,14 +15,6 @@ class ASP_Process_IPN_NG {
 			$asp_data = array( 'error_msg' => $err_msg );
 			ASP_Debug_Logger::log( $err_msg, false ); //Log the error
 
-			$msg_before_process = __( 'Error occured before user interacted with payment popup. This might be caused by JavaScript errors on page.', 'stripe-payments' );
-			$msg_after_process  = __( 'Error occured after user interacted with popup.', 'stripe-payments' );
-
-			$click_processed = filter_input( INPUT_POST, 'asp_clickProcessed', FILTER_SANITIZE_NUMBER_INT );
-			$additional_msg  = $click_processed ? $msg_after_process : $msg_before_process;
-
-			ASP_Debug_Logger::log( $additional_msg, false );
-
 			$this->sess->set_transient_data( 'asp_data', $asp_data );
 
 			//send email to notify site admin (if option enabled)
@@ -32,16 +24,18 @@ class ASP_Process_IPN_NG {
 				$from    = get_option( 'admin_email' );
 				$headers = 'From: ' . $from . "\r\n";
 				$subj    = __( 'Stripe Payments Error', 'stripe-payments' );
-				$body    = __( 'Following error occured during payment processing:', 'stripe-payments' ) . "\r\n\r\n";
+				$body    = __( 'Following error occurred during payment processing:', 'stripe-payments' ) . "\r\n\r\n";
 				$body   .= $err_msg . "\r\n\r\n";
-				$body   .= $additional_msg . "\r\n";
 				$body   .= __( 'Debug data:', 'stripe-payments' ) . "\r\n";
 				$post    = filter_var( $_POST, FILTER_DEFAULT, FILTER_REQUIRE_ARRAY ); //phpcs:ignore
 				foreach ( $post as $key => $value ) {
 					$value = is_array( $value ) ? wp_json_encode( $value ) : $value;
 					$body .= $key . ': ' . $value . "\r\n";
 				}
-				wp_mail( $to, $subj, $body, $headers );
+				$schedule_result = wp_schedule_single_event( time(), 'asp_send_scheduled_email', array( $to, $subj, $body, $headers ) );
+				if ( ! $schedule_result ) {
+					wp_mail( $to, $subj, $body, $headers );
+				}
 			}
 		} else {
 			ASP_Debug_Logger::log( 'Payment has been processed successfully.' );
@@ -61,7 +55,12 @@ class ASP_Process_IPN_NG {
 		$this->asp_redirect_url = empty( $post_thankyou_page_url ) ? $this->asp_class->get_setting( 'checkout_url' ) : base64_decode( $post_thankyou_page_url ); //phpcs:ignore
 
 		$prod_id = filter_input( INPUT_POST, 'asp_product_id', FILTER_SANITIZE_NUMBER_INT );
-		$item    = new ASP_Product_Item( $prod_id );
+
+		if ( ! empty( $prod_id ) ) {
+			ASP_Debug_Logger::log( sprintf( 'Got product ID: %d', $prod_id ) );
+		}
+
+		$item = new ASP_Product_Item( $prod_id );
 
 		ASP_Debug_Logger::log( 'Firing asp_ng_process_ipn_product_item_override filter.' );
 
@@ -145,6 +144,7 @@ class ASP_Process_IPN_NG {
 			$v = new ASPVariations( $prod_id );
 			if ( ! empty( $v->variations ) ) {
 				//there are variations configured for the product
+				ASP_Debug_Logger::log( 'Processing variations.' );
 				foreach ( $posted_variations as $grp_id => $var_id ) {
 					$var = $v->get_variation( $grp_id, $var_id[0] );
 					if ( ! empty( $var ) ) {
@@ -158,8 +158,17 @@ class ASP_Process_IPN_NG {
 		}
 
 		//coupon
-		$coupon_code  = filter_input( INPUT_POST, 'asp_coupon-code', FILTER_SANITIZE_STRING );
+		$coupon_code = filter_input( INPUT_POST, 'asp_coupon-code', FILTER_SANITIZE_STRING );
+		if ( $coupon_code ) {
+			ASP_Debug_Logger::log( sprintf( 'Coupon code provided: %s', $coupon_code ) );
+		}
 		$coupon_valid = $item->check_coupon( $coupon_code );
+
+		if ( $coupon_valid ) {
+			ASP_Debug_Logger::log( 'Coupon is valid for the product.' );
+		} else {
+			ASP_Debug_Logger::log( 'Coupon is invalid for the product.' );
+		}
 
 		$amount_in_cents = intval( $item->get_total( true ) );
 		$amount_paid     = $p_data->get_amount();
