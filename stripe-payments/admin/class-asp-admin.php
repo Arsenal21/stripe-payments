@@ -341,6 +341,8 @@ class AcceptStripePayments_Admin {
 	add_settings_field( 'currency_symbol', __( 'Currency Symbol', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-global-section', array( 'field' => 'currency_symbol', 'desc' => '', 'size' => 10 ) );
 	add_settings_field( 'button_text', __( 'Button Text', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-global-section', array( 'field'	 => 'button_text',
 	    'desc'	 => __( 'Example: Buy Now, Pay Now etc.', 'stripe-payments' ) ) );
+	add_settings_field( 'popup_button_text', __( 'Payment Popup Button Text', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-global-section', array( 'field'	 => 'popup_button_text',
+	    'desc'	 => __( '%s is replaced by formatted payment amount.', 'stripe-payments' ) ) );
 	add_settings_field( 'dont_save_card', __( 'Do Not Save Card Data on Stripe', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-global-section', array( 'field'	 => 'dont_save_card',
 	    'desc'	 => __( 'When this checkbox is checked, the transaction won\'t create the customer (no card will be saved for that).', 'stripe-payments' ) ) );
 	add_settings_field( 'disable_remember_me', __( 'Turn Off "Remember me" Option', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-global-section', array( 'field'	 => 'disable_remember_me',
@@ -473,6 +475,9 @@ class AcceptStripePayments_Admin {
 	);
 
 	// Additional Settings
+	add_settings_field( 'use_old_checkout_api', __( 'Use Old Checkout API', 'stripe-payments' ), array( $this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-additional-settings', array( 'field'	 => 'use_old_checkout_api',
+	    'desc'	 => __( "Use deprecated API to process payments. Note old API is not compatible with 3-D Secure and EU's Strong Customer Authentication (PSD2) requirements, is no longer developed and might be disabled by Stripe after 14th of September 2019.", 'stripe-payments' ) )
+	);
 	add_settings_field( 'disable_buttons_before_js_loads', __( 'Disable Buttons Before Javascript Loads', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-additional-settings', array( 'field'	 => 'disable_buttons_before_js_loads',
 	    'desc'	 => __( "If enabled, payment buttons are not clickable until Javascript libraries are loaded on page view. This prevents \"Invalid Stripe Token\" errors on some configurations.", 'stripe-payments' ) )
 	);
@@ -621,7 +626,8 @@ class AcceptStripePayments_Admin {
 	    case 'send_email_on_error':
 	    case 'use_new_button_method':
 	    case 'is_live':
-	    case 'disable_remember_me':
+		case 'disable_remember_me':
+		case 'use_old_checkout_api':
 	    case 'disable_buttons_before_js_loads':
 	    case 'dont_save_card':
 	    case 'custom_field_mandatory':
@@ -794,6 +800,8 @@ class AcceptStripePayments_Admin {
 
 	$output[ 'disable_buttons_before_js_loads' ] = empty( $input[ 'disable_buttons_before_js_loads' ] ) ? 0 : 1;
 
+	$output[ 'use_old_checkout_api' ] = empty( $input[ 'use_old_checkout_api' ] ) ? 0 : 1;
+
 	$output[ 'dont_create_order' ] = empty( $input[ 'dont_create_order' ] ) ? 0 : 1;
 
 	$output[ 'enable_zip_validation' ] = empty( $input[ 'enable_zip_validation' ] ) ? 0 : 1;
@@ -822,6 +830,12 @@ class AcceptStripePayments_Admin {
 	    $output[ 'button_text' ] = $input[ 'button_text' ];
 	else
 	    add_settings_error( 'AcceptStripePayments-settings', 'invalid-button-text', __( 'Button text should not be empty.', 'stripe-payments' ) );
+
+	if (! empty($input['popup_button_text'])) {
+	    $output[ 'popup_button_text' ] = $input[ 'popup_button_text' ];
+	} else {
+		add_settings_error( 'AcceptStripePayments-settings', 'invalid-popup-button-text', __( 'Popup button text should not be empty.', 'stripe-payments' ) );
+	}
 
 	if ( ! empty( $input[ 'currency_code' ] ) ) {
 	    $output[ 'currency_code' ]	 = $input[ 'currency_code' ];
