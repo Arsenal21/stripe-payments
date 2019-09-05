@@ -66,6 +66,15 @@ function showFormInputErr(msg, el, inp) {
 	inp.focus();
 }
 
+function smokeScreen(show) {
+	if (show) {
+		display = "block";
+	} else {
+		display = "none";
+	}
+	document.getElementById('smoke-screen').style.display = display;
+}
+
 function formatMoney(n) {
 	n = cents_to_amount(n, vars.data.currency);
 	var c = isNaN(c = Math.abs(vars.currencyFormat.c)) ? 2 : vars.currencyFormat.c,
@@ -218,6 +227,7 @@ if (vars.data.coupons_enabled) {
 		}
 		couponBtn.disabled = true;
 		couponSpinner.style.display = 'block';
+		smokeScreen(true);
 		var ajaxData = 'action=asp_pp_check_coupon&product_id=' + vars.data.product_id + '&coupon_code=' + couponInput.value;
 		new ajaxRequest(vars.ajaxURL, ajaxData,
 			function (res) {
@@ -243,11 +253,13 @@ if (vars.data.coupons_enabled) {
 				updateAllAmounts();
 				couponSpinner.style.display = 'none';
 				couponBtn.disabled = false;
+				smokeScreen(false);
 			},
 			function (res, errMsg) {
 				errorCont.innerHTML = errMsg;
 				errorCont.style.display = 'block';
 				couponBtn.disabled = false;
+				smokeScreen(false);
 			}
 		)
 	});
@@ -442,6 +454,8 @@ form.addEventListener('submit', function (event) {
 	submitBtn.disabled = true;
 	btnSpinner.style.display = "inline-block";
 
+	smokeScreen(true);
+
 	updateAllAmounts();
 
 	if (!vars.data.create_token && (vars.data.client_secret === '' || vars.data.amount != clientSecAmount)) {
@@ -467,6 +481,7 @@ form.addEventListener('submit', function (event) {
 						btnSpinner.style.display = "none";
 						errorCont.innerHTML = resp.err;
 						errorCont.style.display = 'block';
+						smokeScreen(false);
 						return false;
 					}
 					vars.data.client_secret = resp.clientSecret;
@@ -484,6 +499,7 @@ form.addEventListener('submit', function (event) {
 				btnSpinner.style.display = "none";
 				errorCont.innerHTML = errMsg;
 				errorCont.style.display = 'block';
+				smokeScreen(false);
 			}
 		);
 		return false;
@@ -564,6 +580,7 @@ function handlePayment() {
 				btnSpinner.style.display = "none";
 				errorCont.innerHTML = result.error.message;
 				errorCont.style.display = 'block';
+				smokeScreen(false);
 			} else {
 				var reqStr = 'action=asp_pp_confirm_token&asp_token_id=' + result.token.id + '&product_id=' + vars.data.product_id;
 				if (vars.data.currency_variable) {
@@ -584,6 +601,7 @@ function handlePayment() {
 								btnSpinner.style.display = "none";
 								errorCont.innerHTML = resp.err;
 								errorCont.style.display = 'block';
+								smokeScreen(false);
 								return false;
 							}
 							var inputSubId = document.getElementById('sub_id');
@@ -598,7 +616,7 @@ function handlePayment() {
 							} else {
 								piInput.value = resp.pi_id;
 								if (resp.no_action_required) {
-									vars.data.no_action_required=true;
+									vars.data.no_action_required = true;
 								}
 								if (!vars.data.coupon && couponInput) {
 									couponInput.value = '';
@@ -615,6 +633,7 @@ function handlePayment() {
 						btnSpinner.style.display = "none";
 						errorCont.innerHTML = errMsg;
 						errorCont.style.display = 'block';
+						smokeScreen(false);
 					}
 				);
 			}
@@ -637,6 +656,7 @@ function handlePayment() {
 					btnSpinner.style.display = "none";
 					errorCont.innerHTML = result.error.message;
 					errorCont.style.display = 'block';
+					smokeScreen(false);
 				} else {
 					piInput.value = document.getElementById('sub_id').value;
 					if (!vars.data.coupon && couponInput) {
@@ -657,6 +677,7 @@ function handlePayment() {
 					btnSpinner.style.display = "none";
 					errorCont.innerHTML = result.error.message;
 					errorCont.style.display = 'block';
+					smokeScreen(false);
 				} else {
 					piInput.value = result.paymentIntent.id;
 					if (!vars.data.coupon && couponInput) {

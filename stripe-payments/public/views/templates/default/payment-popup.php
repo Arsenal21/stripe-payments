@@ -47,6 +47,7 @@
 			<a href="https://stripe.com/docs/testing#cards" target="_blank" id="test-mode"><?php esc_html_e( 'TEST MODE', 'stripe-payments' ); ?></a>
 		<?php } ?>
 		<div class="Aligner-item">
+		<div id="smoke-screen"></div>
 			<div id="modal-header">
 				<?php if ( $a['data']['item_logo'] ) { ?>
 					<div id="item-logo-cont">
