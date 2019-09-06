@@ -196,7 +196,7 @@ class ASP_PP_Handler {
 		$a['thankyou_page'] = $thankyou_page;
 
 		$cust_email_hardcoded = get_post_meta( $product_id, 'asp_product_customer_email_hardcoded', true );
-		$cust_name_hardcoded = get_post_meta( $product_id, 'asp_product_customer_name_hardcoded', true );
+		$cust_name_hardcoded  = get_post_meta( $product_id, 'asp_product_customer_name_hardcoded', true );
 
 		$data               = array();
 		$data['product_id'] = $product_id;
@@ -239,7 +239,7 @@ class ASP_PP_Handler {
 		$data['create_token'] = false;
 
 		$data['customer_email'] = $cust_email_hardcoded;
-		$data['customer_name'] = $cust_name_hardcoded;
+		$data['customer_name']  = $cust_name_hardcoded;
 
 		$data = apply_filters( 'asp-button-output-data-ready', $data, array( 'product_id' => $product_id ) ); //phpcs:ignore
 
@@ -248,6 +248,10 @@ class ASP_PP_Handler {
 		$a['data'] = $data;
 
 		$pay_btn_text = $this->asp_main->get_setting( 'popup_button_text' );
+
+		if ( empty( $pay_btn_text ) ) {
+			$pay_btn_text = __( 'Pay %s', 'stripe-payments' );
+		}
 
 		if ( isset( $data['is_trial'] ) && $data['is_trial'] ) {
 			$pay_btn_text = apply_filters( 'asp_customize_text_msg', __( 'Start Free Trial', 'stripe-payments' ), 'start_free_trial' );
