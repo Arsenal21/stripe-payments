@@ -2,8 +2,11 @@ var stripeHandlerNG = function (data) {
     var parent = this;
     parent.data = data;
     parent.form = jQuery('form#asp_ng_form_' + data.uniq_id);
+    parent.documentElementOrigOverflow = jQuery('html').css('overflow');
+    console.log(parent.documentElementOrigOverflow);
     jQuery('#asp_ng_button_' + data.uniq_id).prop('disabled', false);
     jQuery('#asp_ng_button_' + data.uniq_id).click(function (e) {
+        jQuery('html').css('overflow', 'hidden');
         e.preventDefault();
         if (!parent.modal) {
             jQuery('body').append('<div id="asp-payment-popup-' + parent.data.uniq_id + '" class="asp-popup-iframe-cont"><div class="asp-popup-spinner-cont"></div><iframe frameborder="0" allowtransparency="true" class="asp-popup-iframe" src="' + parent.data.iframe_url + '"></iframe></div>');
@@ -23,6 +26,7 @@ var stripeHandlerNG = function (data) {
                 //     parent.modal.fadeOut();
                 // })
                 closebtn.on('click', function (e) {
+                    jQuery('html').css('overflow', parent.documentElementOrigOverflow);
                     parent.modal.fadeOut();
                 })
                 parent.iForm = iframe.contents().find('form#payment-form');
