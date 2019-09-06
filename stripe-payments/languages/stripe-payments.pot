@@ -748,7 +748,7 @@ msgstr ""
 
 #: stripe-payments/admin/class-asp-admin.php:855
 #: stripe-payments/includes/class-asp-pp-handler.php:253
-#: stripe-payments/public/class-asp.php:293
+#: stripe-payments/public/class-asp.php:298
 #, php-format
 msgid "Pay %s"
 msgstr ""
@@ -3396,43 +3396,43 @@ msgstr ""
 msgid "Order Info: "
 msgstr ""
 
-#: stripe-payments/public/class-asp.php:292
+#: stripe-payments/public/class-asp.php:297
 msgid "Buy Now"
 msgstr ""
 
-#: stripe-payments/public/class-asp.php:297
+#: stripe-payments/public/class-asp.php:302
 msgid "Thank you for the purchase"
 msgstr ""
 
-#: stripe-payments/public/class-asp.php:298
+#: stripe-payments/public/class-asp.php:303
 msgid "Hello"
 msgstr ""
 
-#: stripe-payments/public/class-asp.php:299
+#: stripe-payments/public/class-asp.php:304
 msgid "Thank you for your purchase! You ordered the following item(s):"
 msgstr ""
 
-#: stripe-payments/public/class-asp.php:302
+#: stripe-payments/public/class-asp.php:307
 msgid "Notification of product sale"
 msgstr ""
 
-#: stripe-payments/public/class-asp.php:303
+#: stripe-payments/public/class-asp.php:308
 msgid "Dear Seller"
 msgstr ""
 
-#: stripe-payments/public/class-asp.php:304
+#: stripe-payments/public/class-asp.php:309
 msgid "This mail is to notify you of a product sale."
 msgstr ""
 
-#: stripe-payments/public/class-asp.php:306
+#: stripe-payments/public/class-asp.php:311
 msgid "The sale was made to"
 msgstr ""
 
-#: stripe-payments/public/class-asp.php:307
+#: stripe-payments/public/class-asp.php:312
 msgid "Thanks"
 msgstr ""
 
-#: stripe-payments/public/class-asp.php:323
+#: stripe-payments/public/class-asp.php:328
 msgid ""
 "I accept the <a href=\"https://example.com/terms-and-conditions/\" target="
 "\"_blank\">Terms and Conditions</a>"
