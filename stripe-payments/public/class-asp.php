@@ -82,6 +82,11 @@ class AcceptStripePayments {
 
 		$this->settings = (array) get_option( 'AcceptStripePayments-settings' );
 
+		if ( ! isset( $this->settings['use_old_checkout_api1'] ) ) {
+			$this->settings['use_old_checkout_api1'] = 1;
+			update_option( 'AcceptStripePayments-settings', $this->settings );
+		}
+
 		if ( $this->get_setting( 'is_live' ) == 0 ) {
 			//use test keys
 			$this->is_live   = false;
