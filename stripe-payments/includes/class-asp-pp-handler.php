@@ -195,6 +195,9 @@ class ASP_PP_Handler {
 		$thankyou_page      = get_post_meta( $product_id, 'asp_product_thankyou_page', true );
 		$a['thankyou_page'] = $thankyou_page;
 
+		$cust_email_hardcoded = get_post_meta( $product_id, 'asp_product_customer_email_hardcoded', true );
+		$cust_name_hardcoded = get_post_meta( $product_id, 'asp_product_customer_name_hardcoded', true );
+
 		$data               = array();
 		$data['product_id'] = $product_id;
 		$quantity           = get_post_meta( $product_id, 'asp_product_quantity', true );
@@ -234,6 +237,9 @@ class ASP_PP_Handler {
 		$data['button_key'] = $this->item->get_button_key();
 
 		$data['create_token'] = false;
+
+		$data['customer_email'] = $cust_email_hardcoded;
+		$data['customer_name'] = $cust_name_hardcoded;
 
 		$data = apply_filters( 'asp-button-output-data-ready', $data, array( 'product_id' => $product_id ) ); //phpcs:ignore
 
