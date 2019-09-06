@@ -106,7 +106,7 @@ function show_admin_notices() {
 	$notice_dismissed = get_option( 'asp_new_api_notice_dismissed' );
 	if ( ! $notice_dismissed ) {
 		$tpl = '<div class="notice notice-%1$s%3$s">%2$s</div>';
-		$msg = '<p>Message about new API</p>';
+		$msg = '<p>The new version of the Stripe payments plugin has the SCA compliant API. You can enable it by going to the Advanced Settings menu of the plugin. Uncheck the "Enable Legacy Checkout API" checkbox to use the new SCA compliant API.</p>';
 		//here's link to advanced settings tab you can use in the message:
 		// <a href="edit.php?post_type=asp-products&page=stripe-payments-settings#advanced">advanced settings</a>
 		$admin_url   = get_admin_url();
@@ -493,8 +493,8 @@ function show_admin_notices() {
 	);
 
 	// Additional Settings
-	add_settings_field( 'use_old_checkout_api1', __( 'Use Old Checkout API', 'stripe-payments' ), array( $this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-additional-settings', array( 'field'	 => 'use_old_checkout_api1',
-	    'desc'	 => __( "Use deprecated API to process payments. Note old API is not compatible with 3-D Secure and EU's Strong Customer Authentication (PSD2) requirements, is no longer developed and might be disabled by Stripe after 14th of September 2019.", 'stripe-payments' ) )
+	add_settings_field( 'use_old_checkout_api1', __( 'Enable Legacy Checkout API', 'stripe-payments' ), array( $this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-additional-settings', array( 'field'	 => 'use_old_checkout_api1',
+	    'desc'	 => __( "Use the legacy API to process payments. Note that the legacy API is not compatible with 3-D Secure and EU's Strong Customer Authentication (SCA) requirements. Stripe may disable this legacy API in the future. If there is a bug in the new API, then continue to use the legacy API while we fix the bug.", 'stripe-payments' ) )
 	);
 	add_settings_field( 'disable_buttons_before_js_loads', __( 'Disable Buttons Before Javascript Loads', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-additional-settings', array( 'field'	 => 'disable_buttons_before_js_loads',
 	    'desc'	 => __( "If enabled, payment buttons are not clickable until Javascript libraries are loaded on page view. This prevents \"Invalid Stripe Token\" errors on some configurations.", 'stripe-payments' ) )

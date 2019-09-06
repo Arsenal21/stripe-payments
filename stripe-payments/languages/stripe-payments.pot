@@ -534,16 +534,12 @@ msgid "Select TOS checkbox position."
 msgstr ""
 
 #: stripe-payments/admin/class-asp-admin.php:478
-msgid "Use Old Checkout API"
+msgid "Enable Legacy Checkout API"
 msgstr ""
 
 #: stripe-payments/admin/class-asp-admin.php:479
 msgid ""
-"Use deprecated API to process payments. Note old API is not compatible with "
-"3-D Secure and EU's Strong Customer Authentication (PSD2) requirements, is "
-"no longer developed and might be disabled by Stripe after 14th of September "
-"2019."
-msgstr ""
+"Use the legacy API to process payments. Note that the legacy API is not compatible with 3-D Secure and EU's Strong Customer Authentication (SCA) requirements. Stripe may disable this legacy API in the future."
 
 #: stripe-payments/admin/class-asp-admin.php:481
 msgid "Disable Buttons Before Javascript Loads"

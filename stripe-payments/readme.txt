@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 4.7
 Tested up to: 5.2
 Requires PHP: 5.4
-Stable tag: 2.0.0t11
+Stable tag: 2.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -151,8 +151,11 @@ None.
 
 == Changelog ==
 
-= WIP 2.0.0 =
-- Added new payment popup that utilizes SCA-complaint payment process.
+= 2.0.1 =
+- Important: This is a major upgrade. We advise that you backup your site before upgrading the plugin.
+- Added new SCA compliant API for checkout. There is a new payment popup that utilizes SCA-complaint payment process.
+- You can enable the new SCA compliant checkout by going to the "Advanced Settings Menu" of the plugin then unchecking the "Enable Legacy Checkout API" checkbox.
+- By default it uses the legacy API to ensure that it is a smooth upgrade. We don't your checkout process to be broken after the upgrade.
 
 = 1.9.25 =
 - Fixed improper frontend total amount display in some circumstances.
