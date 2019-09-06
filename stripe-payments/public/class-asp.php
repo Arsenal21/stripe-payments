@@ -131,6 +131,7 @@ class AcceptStripePayments {
 	}
 
 	public function send_scheduled_email( $to, $subj, $body, $headers ) {
+		ASP_Debug_Logger::log( sprintf( 'Sending scheduled email to %s.', $to ) );
 		wp_mail( $to, $subj, $body, $headers );
 	}
 
