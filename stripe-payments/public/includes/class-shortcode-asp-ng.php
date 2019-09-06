@@ -483,6 +483,7 @@ class AcceptStripePaymentsShortcodeNG {
 					'billing_address'   => '',
 					'shipping_address'  => '',
 					'customer_email'    => '',
+					'customer_name'     => '',
 					'currency'          => $this->AcceptStripePayments->get_setting( 'currency_code' ),
 					'currency_variable' => false,
 					'checkout_lang'     => $this->AcceptStripePayments->get_setting( 'checkout_lang' ),
@@ -563,7 +564,7 @@ class AcceptStripePaymentsShortcodeNG {
 		}
 
 		if ( empty( $product_id ) ) {
-			$hash = md5( wp_json_encode( $atts ) );
+			$hash = md5( wp_json_encode( $atts ) ) . '1';
 			//find temp product
 			$temp_post = get_posts(
 				array(
@@ -582,24 +583,26 @@ class AcceptStripePaymentsShortcodeNG {
 				$new_post['post_title']  = $atts['name'];
 				$new_post['post_status'] = 'publish';
 				$new_post['meta_input']  = array(
-					'asp_shortcode_hash'                => $hash,
-					'asp_product_quantity'              => $quantity,
-					'asp_product_custom_quantity'       => $custom_quantity,
-					'asp_product_price'                 => $price,
-					'asp_product_tax'                   => $tax,
-					'asp_product_shipping'              => $shipping,
-					'asp_product_currency_variable'     => $currency_variable,
-					'asp_product_currency'              => $currency,
-					'asp_product_description'           => $description,
-					'asp_product_button_text'           => $button_text,
-					'asp_product_collect_billing_addr'  => $billing_address,
-					'asp_product_collect_shipping_addr' => $shipping_address,
-					'asp_product_button_class'          => $class,
-					'asp_product_upload'                => $url,
-					'asp_product_thumbnail'             => $item_logo,
-					'asp_product_thankyou_page'         => empty( $thankyou_page_url ) ? '' : base64_decode( $thankyou_page_url ),
-					'asp_product_button_only'           => 1,
-					'asp_product_custom_field'          => 2,
+					'asp_shortcode_hash'                   => $hash,
+					'asp_product_quantity'                 => $quantity,
+					'asp_product_custom_quantity'          => $custom_quantity,
+					'asp_product_price'                    => $price,
+					'asp_product_tax'                      => $tax,
+					'asp_product_shipping'                 => $shipping,
+					'asp_product_currency_variable'        => $currency_variable,
+					'asp_product_currency'                 => $currency,
+					'asp_product_description'              => $description,
+					'asp_product_button_text'              => $button_text,
+					'asp_product_collect_billing_addr'     => $billing_address,
+					'asp_product_collect_shipping_addr'    => $shipping_address,
+					'asp_product_button_class'             => $class,
+					'asp_product_upload'                   => $url,
+					'asp_product_thumbnail'                => $item_logo,
+					'asp_product_thankyou_page'            => empty( $thankyou_page_url ) ? '' : base64_decode( $thankyou_page_url ),
+					'asp_product_button_only'              => 1,
+					'asp_product_custom_field'             => 2,
+					'asp_product_customer_email_hardcoded' => $customer_email,
+					'asp_product_customer_name_hardcoded'  => $customer_name,
 				);
 				$post_id                 = wp_insert_post( $new_post );
 				$temp_post               = get_post( $post_id );

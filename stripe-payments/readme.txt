@@ -156,6 +156,8 @@ None.
 = 2.0.3 =
 - [New API]: Added white background for popup item logo.
 - [New API]: Fixed product description wasn't passed to Stripe.
+- [New API]: Fixed customer_email shortcode parameter was ignored.
+- [New API]: Added customer_name shortcode parameter to prefill customer name in payment popup.
 
 = 2.0.2 =
 - [New API]: Fixed checkout error when both billing and shipping address collection enabled.

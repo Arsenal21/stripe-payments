@@ -166,7 +166,7 @@
 											<svg id="i-user" class="icon input-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
 												<path d="M22 11 C22 16 19 20 16 20 13 20 10 16 10 11 10 6 12 3 16 3 20 3 22 6 22 11 Z M4 30 L28 30 C28 21 22 20 16 20 10 20 4 21 4 30 Z" />
 											</svg>
-											<input class="pure-input-1 has-icon" type="text" id="billing-name" name="billing_name" required>
+											<input class="pure-input-1 has-icon" type="text" id="billing-name" name="billing_name" value="<?php echo esc_attr( $a['data']['customer_name'] ); ?>" required>
 										</div>
 										<div class="pure-u-md-1-24"></div>
 										<div class="pure-u-1 pure-u-md-12-24" style="position: relative;">
@@ -174,7 +174,7 @@
 											<svg id="i-mail" class="icon input-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
 												<path d="M2 26 L30 26 30 6 2 6 Z M2 6 L16 16 30 6" />
 											</svg>
-											<input class="pure-input-1 has-icon" type="email" id="email" name="email" required>
+											<input class="pure-input-1 has-icon" type="email" id="email" name="email" value="<?php echo esc_attr( $a['data']['customer_email'] ); ?>" required>
 										</div>
 										<?php if ( $a['data']['billing_address'] && $a['data']['shipping_address'] ) { ?>
 											<div class="pure-u-1">
