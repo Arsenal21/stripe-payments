@@ -155,7 +155,7 @@ None.
 - Important: This is a major upgrade. We advise that you backup your site before upgrading the plugin.
 - Added new SCA compliant API for checkout. There is a new payment popup that utilizes SCA-complaint payment process.
 - You can enable the new SCA compliant checkout by going to the "Advanced Settings Menu" of the plugin then unchecking the "Enable Legacy Checkout API" checkbox.
-- By default it uses the legacy API to ensure that it is a smooth upgrade. We don't your checkout process to be broken after the upgrade.
+- By default it uses the legacy API to ensure that it is a smooth upgrade. We don't want your checkout process to be broken after the upgrade.
 
 = 1.9.25 =
 - Fixed improper frontend total amount display in some circumstances.
