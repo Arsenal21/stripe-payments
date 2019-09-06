@@ -87,17 +87,17 @@ class ASP_PP_Handler {
 
 		$a['styles'][] = array(
 			'footer' => false,
-			'src'    => WP_ASP_PLUGIN_URL . '/public/views/templates/default/pure.css',
+			'src'    => WP_ASP_PLUGIN_URL . '/public/views/templates/default/pure.css?ver=' . WP_ASP_PLUGIN_VERSION,
 		);
 
 		$a['styles'][] = array(
 			'footer' => false,
-			'src'    => WP_ASP_PLUGIN_URL . '/public/views/templates/default/pp-style.css',
+			'src'    => WP_ASP_PLUGIN_URL . '/public/views/templates/default/pp-style.css?ver=' . WP_ASP_PLUGIN_VERSION,
 		);
 
 		$a['scripts'][] = array(
 			'footer' => true,
-			'src'    => WP_ASP_PLUGIN_URL . '/public/assets/js/pp-handler.js',
+			'src'    => WP_ASP_PLUGIN_URL . '/public/assets/js/pp-handler.js?ver=' . WP_ASP_PLUGIN_VERSION,
 		);
 
 		//vars

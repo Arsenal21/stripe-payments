@@ -155,6 +155,7 @@ None.
 
 = 2.0.2 =
 - [NG] Fixed checkout error when both billing and shipping address collection enabled.
+- [NG] Fixed popup JavaScript caching issue.
 
 = 2.0.1 =
 - Important: This is a major upgrade. We advise that you backup your site before upgrading the plugin.
