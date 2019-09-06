@@ -548,7 +548,8 @@ function handlePayment() {
 		}
 	}
 	if (vars.data.billing_address && vars.data.shipping_address && billshipSwitch.checked) {
-		var shippingDetails = billingDetails;
+		var shippingDetails = JSON.parse(JSON.stringify(billingDetails));
+		delete(shippingDetails.email);
 	}
 	var opts = {
 		payment_method_data: {
