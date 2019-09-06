@@ -154,7 +154,7 @@ None.
 == Changelog ==
 
 = 2.0.3 =
-- [New API]: Fixed new API was enabled by default. Now you need to enable it manually on Advanced Settings tab. 
+- [New API]: Fixed new API was enabled by default. Now you need to disable "Enable Legacy Checkout API" option on Advanced Settings tab to use new API. 
 - [New API]: Fixed popup button text was empty on plugin update. 
 - [New API]: Fixed popup form was not scrollable on some mobile devices.
 - [New API]: Added white background for popup item logo.
