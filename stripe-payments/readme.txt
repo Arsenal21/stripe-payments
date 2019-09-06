@@ -155,6 +155,7 @@ None.
 
 = 2.0.3 =
 - [New API]: Fixed popup button text was empty on plugin update. 
+- [New API]: Fixed popup form was not scrollable on some mobile devices.
 - [New API]: Added white background for popup item logo.
 - [New API]: Fixed product description wasn't passed to Stripe.
 - [New API]: Fixed customer_email shortcode parameter was ignored.
