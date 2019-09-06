@@ -367,6 +367,10 @@ class ASP_PP_Handler {
 			if ( isset( $metadata ) && ! empty( $metadata ) ) {
 				$pi_params['metadata'] = $metadata;
 			}
+			$description = $item->get_description();
+			if ( ! empty( $description ) ) {
+				$pi_params['description'] = $description;
+			}
 			$pi_params = apply_filters( 'asp_ng_before_pi_create_update', $pi_params );
 			if ( $pi_id ) {
 				$intent = \Stripe\PaymentIntent::update( $pi_id, $pi_params );

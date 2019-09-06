@@ -154,11 +154,12 @@ None.
 == Changelog ==
 
 = 2.0.3 =
-- [New API]: Added white background for popup item logo. 
+- [New API]: Added white background for popup item logo.
+- [New API]: Fixed product description wasn't passed to Stripe.
 
 = 2.0.2 =
-- New API related: Fixed checkout error when both billing and shipping address collection enabled.
-- New API related: Fixed popup JavaScript caching issue.
+- [New API]: Fixed checkout error when both billing and shipping address collection enabled.
+- [New API]: Fixed popup JavaScript caching issue.
 
 = 2.0.1 =
 - Important: This is a major upgrade. We advise that you backup your site before upgrading the plugin.
