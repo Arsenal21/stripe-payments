@@ -89,16 +89,34 @@ class AcceptStripePayments_Admin {
 	}
     }
 
-    function show_admin_notices() {
+function show_admin_notices() {
 	$msg_arr = get_transient( 'asp_admin_msg_arr' );
 	if ( ! empty( $msg_arr ) ) {
-	    delete_transient( 'asp_admin_msg_arr' );
-	    $tpl = '<div class="notice notice-%1$s%3$s"><p>%2$s</p></div>';
-	    foreach ( $msg_arr as $msg ) {
-		echo sprintf( $tpl, $msg[ 'type' ], $msg[ 'text' ], $msg[ 'dism' ] === true ? ' is-dismissible' : ''  );
-	    }
+		delete_transient( 'asp_admin_msg_arr' );
+		$tpl = '<div class="notice notice-%1$s%3$s"><p>%2$s</p></div>';
+		foreach ( $msg_arr as $msg ) {
+			echo sprintf( $tpl, $msg['type'], $msg['text'], $msg['dism'] === true ? ' is-dismissible' : '' );
+		}
 	}
-    }
+	//show new API notice
+	$notice_dismissed_get = filter_input( INPUT_GET, 'asp_dismiss_new_api_msg', FILTER_SANITIZE_NUMBER_INT );
+	if ( $notice_dismissed_get ) {
+		update_option( 'asp_new_api_notice_dismissed', true );
+	}
+	$notice_dismissed = get_option( 'asp_new_api_notice_dismissed' );
+	if ( ! $notice_dismissed ) {
+		$tpl = '<div class="notice notice-%1$s%3$s">%2$s</div>';
+		$msg = '<p>Message about new API</p>';
+		//here's link to advanced settings tab you can use in the message:
+		// <a href="edit.php?post_type=asp-products&page=stripe-payments-settings#advanced">advanced settings</a>
+		$admin_url   = get_admin_url();
+		$dismiss_url = add_query_arg( 'asp_dismiss_new_api_msg', '1', $admin_url );
+		$msg        .= '<p><a href="' . $dismiss_url . '">Dismiss this message for now</a></p>';
+		echo sprintf( $tpl, 'warning', $msg, '' );
+	}
+}
+
+
 
     static function add_admin_notice( $type, $text, $dism = true ) {
 	$msg_arr	 = get_transient( 'asp_admin_msg_arr' );
@@ -475,7 +493,7 @@ class AcceptStripePayments_Admin {
 	);
 
 	// Additional Settings
-	add_settings_field( 'use_old_checkout_api', __( 'Use Old Checkout API', 'stripe-payments' ), array( $this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-additional-settings', array( 'field'	 => 'use_old_checkout_api',
+	add_settings_field( 'use_old_checkout_api1', __( 'Use Old Checkout API', 'stripe-payments' ), array( $this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-additional-settings', array( 'field'	 => 'use_old_checkout_api1',
 	    'desc'	 => __( "Use deprecated API to process payments. Note old API is not compatible with 3-D Secure and EU's Strong Customer Authentication (PSD2) requirements, is no longer developed and might be disabled by Stripe after 14th of September 2019.", 'stripe-payments' ) )
 	);
 	add_settings_field( 'disable_buttons_before_js_loads', __( 'Disable Buttons Before Javascript Loads', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-additional-settings', array( 'field'	 => 'disable_buttons_before_js_loads',
@@ -627,7 +645,7 @@ class AcceptStripePayments_Admin {
 	    case 'use_new_button_method':
 	    case 'is_live':
 		case 'disable_remember_me':
-		case 'use_old_checkout_api':
+		case 'use_old_checkout_api1':
 	    case 'disable_buttons_before_js_loads':
 	    case 'dont_save_card':
 	    case 'custom_field_mandatory':
@@ -800,7 +818,7 @@ class AcceptStripePayments_Admin {
 
 	$output[ 'disable_buttons_before_js_loads' ] = empty( $input[ 'disable_buttons_before_js_loads' ] ) ? 0 : 1;
 
-	$output[ 'use_old_checkout_api' ] = empty( $input[ 'use_old_checkout_api' ] ) ? 0 : 1;
+	$output[ 'use_old_checkout_api1' ] = empty( $input[ 'use_old_checkout_api1' ] ) ? 0 : 1;
 
 	$output[ 'dont_create_order' ] = empty( $input[ 'dont_create_order' ] ) ? 0 : 1;
 

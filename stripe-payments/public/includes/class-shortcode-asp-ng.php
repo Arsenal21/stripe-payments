@@ -22,7 +22,7 @@ class AcceptStripePaymentsShortcodeNG {
 	function __construct() {
 		$this->AcceptStripePayments = AcceptStripePayments::get_instance();
 
-		$use_old_api = $this->AcceptStripePayments->get_setting( 'use_old_checkout_api' );
+		$use_old_api = $this->AcceptStripePayments->get_setting( 'use_old_checkout_api1' );
 
 		add_filter( 'the_content', array( $this, 'filter_post_type_content' ) );
 

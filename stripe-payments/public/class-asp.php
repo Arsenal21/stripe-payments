@@ -278,7 +278,7 @@ class AcceptStripePayments {
 	 * @since    1.0.0
 	 */
 	private static function single_activate() {
-		 $admin_email = get_option( 'admin_email' );
+		$admin_email = get_option( 'admin_email' );
 		if ( ! $admin_email ) {
 			$admin_email = '';
 		}
@@ -317,6 +317,7 @@ class AcceptStripePayments {
 			'custom_field_mandatory'          => 0,
 			'send_email_on_error'             => 0,
 			'send_email_on_error_to'          => $admin_email,
+			'use_old_checkout_api1'           => 1,
 			'disable_buttons_before_js_loads' => 0,
 			'tos_text'                        => __( 'I accept the <a href="https://example.com/terms-and-conditions/" target="_blank">Terms and Conditions</a>', 'stripe-payments' ),
 		);
