@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 4.7
 Tested up to: 5.2
 Requires PHP: 5.4
-Stable tag: 2.0.3t2
+Stable tag: 2.0.3t3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -154,6 +154,7 @@ None.
 == Changelog ==
 
 = 2.0.3 =
+- [New API]: Fixed new API was enabled by default. Now you need to enable it manually on Advanced Settings tab. 
 - [New API]: Fixed popup button text was empty on plugin update. 
 - [New API]: Fixed popup form was not scrollable on some mobile devices.
 - [New API]: Added white background for popup item logo.
