@@ -153,6 +153,9 @@ None.
 
 == Changelog ==
 
+= 2.0.3 =
+- [New API]: Added white background for popup item logo. 
+
 = 2.0.2 =
 - New API related: Fixed checkout error when both billing and shipping address collection enabled.
 - New API related: Fixed popup JavaScript caching issue.
