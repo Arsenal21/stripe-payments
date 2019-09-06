@@ -64,6 +64,8 @@ https://www.youtube.com/watch?v=upWqk069Khg
 * Option to enable Alipay payments. So your customers can pay using their Alipay accounts.
 * Option to enable Terms and Conditions that your customers have to accept before they can make a purchase.
 * Ability to configure variable products. You can charge different amount for different options of the product.
+* 3D Secure payments compatible.
+* Strong Customer Authentication (SCA) Compliant.
 
 The setup is very easy. Once you have installed the plugin, all you need to do is enter your Stripe API credentials in the plugin settings and your website will be ready to accept credit card payments.
 
