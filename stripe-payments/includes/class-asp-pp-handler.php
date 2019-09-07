@@ -198,6 +198,8 @@ class ASP_PP_Handler {
 		$cust_email_hardcoded = get_post_meta( $product_id, 'asp_product_customer_email_hardcoded', true );
 		$cust_name_hardcoded  = get_post_meta( $product_id, 'asp_product_customer_name_hardcoded', true );
 
+		$default_country = $this->asp_main->get_setting( 'popup_default_country' );
+
 		$data               = array();
 		$data['product_id'] = $product_id;
 		$quantity           = get_post_meta( $product_id, 'asp_product_quantity', true );
@@ -240,6 +242,8 @@ class ASP_PP_Handler {
 
 		$data['customer_email'] = $cust_email_hardcoded;
 		$data['customer_name']  = $cust_name_hardcoded;
+
+		$data['customer_default_country'] = $default_country;
 
 		$data = apply_filters( 'asp-button-output-data-ready', $data, array( 'product_id' => $product_id ) ); //phpcs:ignore
 

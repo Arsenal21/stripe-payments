@@ -258,12 +258,18 @@ class ASP_Utils {
 		return $countries;
 	}
 
-	public static function get_countries_opts() {
+	public static function get_countries_opts( $selected = false ) {
 		$countries = self::get_countries();
 		$out       = '';
-		$tpl       = '<option value="%s">%s</option>';
+		$tpl       = '<option value="%s"%s>%s</option>';
 		foreach ( $countries as $c_code => $c_name ) {
-			$out .= sprintf( $tpl, esc_attr( $c_code ), esc_html( $c_name ) );
+			$selected_str = '';
+			if ( false !== $selected ) {
+				if ( $c_code === $selected ) {
+					$selected_str = ' selected';
+				}
+			}
+			$out .= sprintf( $tpl, esc_attr( $c_code ), $selected_str, esc_html( $c_name ) );
 		}
 		return $out;
 	}
