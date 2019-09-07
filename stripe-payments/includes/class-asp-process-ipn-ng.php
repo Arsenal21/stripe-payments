@@ -336,15 +336,23 @@ class ASP_Process_IPN_NG {
 			$metadata['Shipping Address'] = $shipping_address;
 		}
 
+		$update_opts = array();
+
 		if ( ! empty( $metadata ) ) {
 			ASP_Debug_Logger::log( 'Firing asp_ng_handle_metadata filter.' );
 			$metadata_handled = apply_filters( 'asp_ng_handle_metadata', $metadata );
-
 			if ( true !== $metadata_handled ) {
-				// metadata wasn't handled. Let's update metadata
 				ASP_Debug_Logger::log( 'Updating payment metadata.' );
-				$res = \Stripe\PaymentIntent::update( $pi, array( 'metadata' => $metadata ) );
+				$update_opts['metadata'] = $metadata;
 			}
+		}
+
+		ASP_Debug_Logger::log( 'Firing asp_ng_payment_completed_update_pi filter.' );
+		$update_opts = apply_filters( 'asp_ng_payment_completed_update_pi', $update_opts, $data );
+
+		if ( ! empty( $update_opts ) ) {
+			ASP_Debug_Logger::log( 'Updating payment intent data.' );
+			$res = \Stripe\PaymentIntent::update( $pi, $update_opts );
 		}
 
 		$product_details  = __( 'Product Name: ', 'stripe-payments' ) . $data['item_name'] . "\n";
