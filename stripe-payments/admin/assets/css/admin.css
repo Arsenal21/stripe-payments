@@ -316,3 +316,7 @@ table.wp-asp-tags-hint td.wp-asp-tag-descr {
     border-bottom: 1px solid #ededed;
 }
 /*----- END Email tags hint ----- */
+
+.asp-new-api-only {
+    color: green;
+}

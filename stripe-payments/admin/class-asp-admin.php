@@ -331,6 +331,9 @@ function show_admin_notices() {
      * @since    1.0.0
      */
     public function register_settings( $value = '' ) {
+
+	$new_api_str='<br><sub class="asp-new-api-only">'.__('New API only','stripe-payments').'</sub>';
+
 	register_setting( 'AcceptStripePayments-settings-group', 'AcceptStripePayments-settings', array( &$this, 'settings_sanitize_field_callback' ) );
 
 	// Add/define the various section/groups (the fields will go under these sections).
@@ -370,7 +373,9 @@ function show_admin_notices() {
 //	add_settings_field( 'use_new_button_method', __( 'Use New Method To Display Buttons', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-global-section', array( 'field'	 => 'use_new_button_method',
 //	    'desc'	 => __( 'Use new method to display Stripe buttons. It makes connection to Stripe website only when button is clicked, which makes the page with buttons load faster. A little drawback is that Stripe pop-up is displayed with a small delay after button click. If you have more than one button on a page, enabling this option is highly recommended.', 'stripe-payments' ) . '<br /><b>' . __( 'Note:', 'stripe-payments' ) . '</b> ' . __( 'old method doesn\'t support custom price and quantity. If your shortcode or product is using one of those features, the new method will be used automatically for that entity.', 'stripe-payments' ) ) );
 	add_settings_field( 'checkout_lang', __( 'Stripe Checkout Language', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-global-section', array( 'field'	 => 'checkout_lang',
-	    'desc'	 => __( 'Specify language to be used in Stripe checkout pop-up or select "Autodetect" to let Stripe handle it.', 'stripe-payments' ) ) );
+	    'desc'	 => __( 'Specify language to be used in Stripe checkout pop-up or select "Autodetect" to let Stripe handle it.', 'stripe-payments' ) .'<br>Note this is not currently supported by new API.' ) );
+	add_settings_field( 'popup_default_country', __( 'Popup Default Country', 'stripe-payments' ).$new_api_str, array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-global-section', array( 'field'	 => 'popup_default_country',
+	    'desc'	 => __( 'Select default country to be set on payment popup for billing and shipping address.', 'stripe-payments' ) ) );
 
 	// Credentials section
 	add_settings_field( 'is_live', __( 'Live Mode', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-credentials-section', array( 'field' => 'is_live', 'desc' => __( 'Check this to run the transaction in live mode. When unchecked it will run in test mode.', 'stripe-payments' ) ) );
@@ -698,6 +703,12 @@ function show_admin_notices() {
 		echo '</select>';
 		echo "<p class=\"description\">{$desc}</p>";
 		break;
+		case 'popup_default_country':
+		echo '<select name="AcceptStripePayments-settings[' . $field . ']">';
+		echo ASP_Utils::get_countries_opts($field_value);
+		echo '</select>';
+		echo "<p class=\"description\">{$desc}</p>";			
+		break;
 	    case 'price_currency_pos':
 		?>
 		<select name="AcceptStripePayments-settings[<?php echo $field; ?>]">
@@ -876,6 +887,8 @@ function show_admin_notices() {
 	    add_settings_error( 'AcceptStripePayments-settings', 'invalid-currency-code', __( 'You must specify payment currency.', 'stripe-payments' ) );
 
 	$output[ 'checkout_lang' ] = $input[ 'checkout_lang' ];
+
+	$output[ 'popup_default_country' ] = $input[ 'popup_default_country' ];
 
 	$output[ 'api_publishable_key' ] = $input[ 'api_publishable_key' ];
 

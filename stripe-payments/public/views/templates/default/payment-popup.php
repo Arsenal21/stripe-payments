@@ -202,7 +202,7 @@
 										<div class="pure-u-1 pure-u-md-14-24 baddr-toggle" style="position: relative;">
 											<label for="country"><?php esc_html_e( 'Country', 'stripe-payments' ); ?></label>
 											<select class="pure-input-1" name="country" id="country" required>
-												<?php echo ASP_Utils::get_countries_opts(); //phpcs:ignore ?>
+												<?php echo ASP_Utils::get_countries_opts($a['data']['customer_default_country']); //phpcs:ignore ?>
 											</select>
 										</div>
 										<div class="pure-u-md-1-24 baddr-hide"></div>
@@ -234,7 +234,7 @@
 										<div class="pure-u-1" style="position: relative;">
 											<label for="shipping_country"><?php esc_html_e( 'Country', 'stripe-payments' ); ?></label>
 											<select class="pure-input-1 saddr-required" name="shipping_country" id="shipping_country">
-												<?php echo ASP_Utils::get_countries_opts(); //phpcs:ignore ?>
+												<?php echo ASP_Utils::get_countries_opts($a['data']['customer_default_country']); //phpcs:ignore ?>
 											</select>
 										</div>
 										<div class="pure-u-1">
