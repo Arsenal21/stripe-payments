@@ -24,7 +24,6 @@ class AcceptStripePaymentsShortcodeNG {
 
 		$use_old_api = $this->AcceptStripePayments->get_setting( 'use_old_checkout_api1' );
 
-		//		add_shortcode('asp_show_all_products', array(&$this, 'shortcode_show_all_products'));
 		add_shortcode( 'asp_product_ng', array( $this, 'shortcode_asp_product' ) );
 		add_shortcode( 'accept_stripe_payment_ng', array( $this, 'shortcode_accept_stripe_payment' ) );
 		if ( ! $use_old_api ) {
@@ -32,12 +31,6 @@ class AcceptStripePaymentsShortcodeNG {
 			add_shortcode( 'accept_stripe_payment', array( $this, 'shortcode_accept_stripe_payment' ) );
 			add_filter( 'the_content', array( $this, 'filter_post_type_content' ) );
 		}
-		//		add_shortcode('accept_stripe_payment_checkout', array(&$this, 'shortcode_accept_stripe_payment_checkout'));
-		//		add_shortcode('accept_stripe_payment_checkout_error', array(&$this, 'shortcode_accept_stripe_payment_checkout_error'));
-		//		add_shortcode('asp_show_my_transactions', array($this, 'show_user_transactions'));
-		//		if (!is_admin()) {
-		//			add_filter('widget_text', 'do_shortcode');
-		//		}
 	}
 
 	public static function filter_post_type_content( $content ) {
@@ -148,21 +141,6 @@ class AcceptStripePaymentsShortcodeNG {
 			add_filter( 'asp_button_output_after_button', array( $this, 'after_button_add_сf_filter' ), 990, 3 );
 		}
 		return $output;
-	}
-
-	function show_user_transactions( $atts ) {
-		$atts = shortcode_atts(
-			array(
-				'items_per_page'           => '20',
-				'show_subscription_cancel' => 0,
-				'show_download_link'       => 1,
-			),
-			$atts,
-			'asp_show_my_transactions'
-		);
-		require_once WP_ASP_PLUGIN_PATH . 'public/includes/shortcodes/show-user-transactions.php';
-		$scClass = new AcceptStripePayments_scUserTransactions();
-		return $scClass->process_shortcode( $atts );
 	}
 
 	private function gen_fatal_error_box( $msg ) {
@@ -817,12 +795,6 @@ class AcceptStripePaymentsShortcodeNG {
 	function get_styles() {
 		 $output = '';
 		if ( ! $this->ButtonCSSInserted || $this->CompatMode ) {
-			//	    $this->ButtonCSSInserted = true;
-			// we need to style custom inputs
-			$style   = file_get_contents( WP_ASP_PLUGIN_PATH . 'public/assets/css/public.css' );
-			$output .= '<style type="text/css">' . $style . '</style>';
-			//addons can output their styles if needed
-			$output = apply_filters( 'asp-button-output-additional-styles', $output );
 			ob_start();
 			?>
 			<div class="asp-processing-cont"><span class="asp-processing">Processing <i>.</i><i>.</i><i>.</i></span></div>
@@ -850,262 +822,6 @@ class AcceptStripePaymentsShortcodeNG {
 		}
 
 		return $output;
-	}
-
-	function shortcode_accept_stripe_payment_checkout( $atts, $content = '' ) {
-		if ( ! defined( 'DONOTCACHEPAGE' ) ) {
-			define( 'DONOTCACHEPAGE', true );
-		}
-
-		$aspData = array();
-		$sess    = ASP_Session::get_instance();
-		$aspData = $sess->get_transient_data( 'asp_data' );
-		if ( empty( $aspData ) ) {
-			// no session data, let's display nothing for now
-			return;
-		}
-		if ( empty( $content ) ) {
-			//this is old shortcode. Let's display the default output for backward compatability
-			if ( isset( $aspData['error_msg'] ) && ! empty( $aspData['error_msg'] ) ) {
-				//some error occurred, let's display it
-				return __( 'System was not able to complete the payment.', 'stripe-payments' ) . ' ' . $aspData['error_msg'];
-			}
-			$output  = '';
-			$output .= '<p class="asp-thank-you-page-msg1">' . __( 'Thank you for your payment.', 'stripe-payments' ) . '</p>';
-			$output .= '<p class="asp-thank-you-page-msg2">' . __( "Here's what you purchased: ", 'stripe-payments' ) . '</p>';
-			$output .= '<div class="asp-thank-you-page-product-name">' . __( 'Product Name', 'stripe-payments' ) . ': {item_name}' . '</div>';
-			$output .= '<div class="asp-thank-you-page-qty">' . __( 'Quantity', 'stripe-payments' ) . ': {item_quantity}' . '</div>';
-			$output .= '<div class="asp-thank-you-page-qty">' . __( 'Item Price', 'stripe-payments' ) . ': {item_price_curr}' . '</div>';
-			//check if there are any additional items available like tax and shipping cost
-			$output .= AcceptStripePayments::gen_additional_items( $aspData, '<br />' );
-			$output .= '<hr />';
-			$output .= '<div class="asp-thank-you-page-qty">' . __( 'Total Amount', 'stripe-payments' ) . ': {paid_amount_curr}' . '</div>';
-			$output .= '<br />';
-			$output .= '<div class="asp-thank-you-page-txn-id">' . __( 'Transaction ID', 'stripe-payments' ) . ': {transaction_id}' . '</div>';
-
-			$download_str = '';
-			if ( ! empty( $aspData['item_url'] ) ) {
-				$download_str .= "<br /><div class='asp-thank-you-page-download-link'>";
-				$download_str .= _x( 'Please ', "Is a part of 'Please click here to download'", 'stripe-payments' ) . "<a href='{item_url}'>" . _x( 'click here', "Is a part of 'Please click here to download'", 'stripe-payments' ) . '</a>' . _x( ' to download.', "Is a part of 'Please click here to download'", 'stripe-payments' );
-				$download_str .= '</div>';
-			}
-
-			//variations download links if needed
-			if ( ! empty( $aspData['var_applied'] ) ) {
-				$download_var_str  = '';
-				$has_download_link = false;
-				$download_var_str .= "<br /><div class='asp-thank-you-page-download-link'>";
-				$download_var_str .= '<span>' . __( 'Download links', 'stripe-payments' ) . ':</span><br/>';
-				$download_txt      = __( 'Click here to download', 'stripe-payments' );
-				$link_tpl          = '<a href="%s">%s</a><br/>';
-				foreach ( $aspData['var_applied'] as $var ) {
-					if ( ! empty( $var['url'] ) ) {
-						$has_download_link = true;
-						$download_var_str .= sprintf( $link_tpl, $var['url'], $download_txt );
-					}
-				}
-				$download_var_str .= '</div>';
-				if ( $has_download_link ) {
-					$download_str .= $download_var_str;
-				}
-			}
-			$output .= $download_str;
-
-			$output = apply_filters( 'asp_stripe_payments_checkout_page_result', $output, $aspData ); //Filter that allows you to modify the output data on the checkout result page
-
-			$output = $this->apply_content_tags( $output, $aspData );
-
-			$output .= '<style>.asp-thank-you-page-msg-wrap {background: #dff0d8; border: 1px solid #C9DEC1; margin: 10px 0px; padding: 15px;}</style>';
-			$wrap    = "<div class='asp-thank-you-page-wrap'>";
-			$wrap   .= "<div class='asp-thank-you-page-msg-wrap'>";
-			$output  = $wrap . $output;
-			$output .= '</div>'; //end of .asp-thank-you-page-msg-wrap
-			$output .= '</div>'; //end of .asp-thank-you-page-wrap
-
-			return $output;
-		}
-		if ( isset( $aspData['error_msg'] ) && ! empty( $aspData['error_msg'] ) ) {
-			//some error occurred. Let's check if we have [accept_stripe_payment_checkout_error] shortcode on page
-			$page_content = get_the_content();
-			if ( ! empty( $page_content ) && ! has_shortcode( $page_content, 'accept_stripe_payment_checkout_error' ) ) {
-				//no error output shortcode found. Let's output default error message
-				return __( 'System was not able to complete the payment.', 'stripe-payments' ) . ' ' . $aspData['error_msg'];
-			}
-			return;
-		}
-
-		$content = apply_filters( 'asp_stripe_payments_checkout_page_result', $content, $aspData );
-
-		$content = $this->apply_content_tags( do_shortcode( $content ), $aspData );
-		return $content;
-	}
-
-	function shortcode_accept_stripe_payment_checkout_error( $atts, $content = '' ) {
-		$aspData = array();
-		$sess    = ASP_Session::get_instance();
-		$aspData = $sess->get_transient_data( 'asp_data' );
-		if ( empty( $aspData ) ) {
-			// no session data, let's display nothing for now
-			return;
-		}
-		if ( isset( $aspData['error_msg'] ) && ! empty( $aspData['error_msg'] ) ) {
-			//some error occured. Let's display error message
-			$content = $this->apply_content_tags( do_shortcode( $content ), $aspData );
-			return $content;
-		}
-		// no error occured - we don't display anything
-		return;
-	}
-
-	function shortcode_show_all_products( $params ) {
-		$params = shortcode_atts(
-			array(
-				'items_per_page' => '30',
-				'sort_by'        => 'none',
-				'sort_order'     => 'desc',
-				'template'       => '',
-				'search_box'     => '1',
-			),
-			$params,
-			'asp_show_all_products'
-		);
-
-		include_once WP_ASP_PLUGIN_PATH . 'public/views/all-products/default/template.php';
-
-		$page = filter_input( INPUT_GET, 'asp_page', FILTER_SANITIZE_NUMBER_INT );
-
-		$page = empty( $page ) ? 1 : $page;
-
-		$q = array(
-			'post_type'      => ASPMain::$products_slug,
-			'post_status'    => 'publish',
-			'posts_per_page' => isset( $params['items_per_page'] ) ? $params['items_per_page'] : 30,
-			'paged'          => $page,
-			'orderby'        => isset( $params['sort_by'] ) ? ( $params['sort_by'] ) : 'none',
-			'order'          => isset( $params['sort_order'] ) ? strtoupper( $params['sort_order'] ) : 'DESC',
-		);
-
-		//handle search
-
-		$search = filter_input( INPUT_GET, 'asp_search', FILTER_SANITIZE_STRING );
-
-		$search = empty( $search ) ? false : $search;
-
-		if ( $search !== false ) {
-			$q['s'] = $search;
-		}
-
-		$products = new WP_Query( $q );
-
-		if ( ! $products->have_posts() ) {
-			//query returned no results. Let's see if that was a search query
-			if ( $search === false ) {
-				//that wasn't search query. That means there is no products configured
-				wp_reset_postdata();
-				return __( 'No products have been configured yet', 'stripe-payments' );
-			}
-		}
-
-		$search_box = ! empty( $params['search_box'] ) ? $params['search_box'] : false;
-
-		if ( $search_box ) {
-			if ( $search !== false ) {
-				$tpl['clear_search_url']   = esc_url( remove_query_arg( array( 'asp_search', 'asp_page' ) ) );
-				$tpl['search_result_text'] = $products->found_posts === 0 ? __( 'Nothing found for', 'stripe-payments' ) . ' "%s".' : __( 'Search results for', 'stripe-payments' ) . ' "%s".';
-				$tpl['search_result_text'] = sprintf( $tpl['search_result_text'], htmlentities( $search ) );
-				$tpl['search_term']        = htmlentities( $search );
-			} else {
-				$tpl['search_result_text']  = '';
-				$tpl['clear_search_button'] = '';
-				$tpl['search_term']         = '';
-			}
-		} else {
-			$tpl['search_box'] = '';
-		}
-
-		$tpl['products_list'] .= $tpl['products_row_start'];
-		$i                     = $tpl['products_per_row']; //items per row
-
-		while ( $products->have_posts() ) {
-			$products->the_post();
-			$i--;
-			if ( $i < 0 ) { //new row
-				$tpl['products_list'] .= $tpl['products_row_end'];
-				$tpl['products_list'] .= $tpl['products_row_start'];
-				$i                     = $tpl['products_per_row'] - 1;
-			}
-
-			$id = get_the_ID();
-
-			$thumb_url = get_post_meta( $id, 'asp_product_thumbnail', true );
-			if ( ! $thumb_url ) {
-				$thumb_url = WP_ASP_PLUGIN_URL . '/assets/product-thumb-placeholder.png';
-			}
-
-			$view_btn = str_replace( '%[product_url]%', get_permalink(), $tpl['view_product_btn'] );
-
-			$price = get_post_meta( $id, 'asp_product_price', true );
-			$curr  = get_post_meta( $id, 'asp_product_currency', true );
-			$price = AcceptStripePayments::formatted_price( $price, $curr );
-			if ( empty( $price ) ) {
-				$price = '&nbsp';
-			}
-
-			$item                  = str_replace(
-				array(
-					'%[product_id]%',
-					'%[product_name]%',
-					'%[product_thumb]%',
-					'%[view_product_btn]%',
-					'%[product_price]%',
-				),
-				array(
-					$id,
-					get_the_title(),
-					$thumb_url,
-					$view_btn,
-					$price,
-				),
-				$tpl['products_item']
-			);
-			$tpl['products_list'] .= $item;
-		}
-
-		$tpl['products_list'] .= $tpl['products_row_end'];
-
-		//pagination
-
-		$tpl['pagination_items'] = '';
-
-		$pages = $products->max_num_pages;
-
-		if ( $pages > 1 ) {
-			$i = 1;
-
-			while ( $i <= $pages ) {
-				if ( $i != $page ) {
-					$url = esc_url( add_query_arg( 'asp_page', $i ) );
-					$str = str_replace( array( '%[url]%', '%[page_num]%' ), array( $url, $i ), $tpl['pagination_item'] );
-				} else {
-					$str = str_replace( '%[page_num]%', $i, $tpl['pagination_item_current'] );
-				}
-				$tpl['pagination_items'] .= $str;
-				$i++;
-			}
-		}
-
-		if ( empty( $tpl['pagination_items'] ) ) {
-			$tpl['pagination'] = '';
-		}
-
-		wp_reset_postdata();
-
-		//Build template
-		foreach ( $tpl as $key => $value ) {
-			$tpl['page'] = str_replace( '_%' . $key . '%_', $value, $tpl['page'] );
-		}
-
-		return $tpl['page'];
 	}
 
 	function apply_content_tags( $content, $data ) {
