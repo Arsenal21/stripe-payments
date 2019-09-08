@@ -155,7 +155,7 @@ None.
 
 = 2.0.4 =
 - [New API]: Added "Popup Default Country" option that sets default country on payment popup for billing and shipping address.
-- Minor bugfixes.
+- Minor bugfixes for the new API.
 
 = 2.0.3 =
 - [New API]: Fixed new API was enabled by default. Now you need to disable "Enable Legacy Checkout API" option on Advanced Settings tab to use new API. 
