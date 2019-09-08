@@ -296,7 +296,7 @@
 							<input type="hidden" id="payment-intent" name="payment_intent" value="">
 							<input type="hidden" id="product-id" name="product_id" value="<?php echo esc_attr( $a['prod_id'] ); ?>">
 							<input type="hidden" name="process_ipn" value="1">
-							<input type="hidden" name="is_live" value="<?php echo $a['is_live'] ? 'true' : 'false'; ?>">
+							<input type="hidden" name="is_live" value="<?php echo $a['is_live'] ? '1' : '0'; ?>">
 							<?php if ( $a['data']['url'] ) { ?>
 							<input type="hidden" name="item_url" value="<?php echo esc_attr( $a['data']['url'] ); ?>">
 							<?php } ?>

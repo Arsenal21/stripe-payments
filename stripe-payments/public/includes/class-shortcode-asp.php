@@ -27,9 +27,8 @@ class AcceptStripePaymentsShortcode {
 		if ($use_old_api) {
 			add_shortcode( 'asp_product', array( &$this, 'shortcode_asp_product' ) );
 			add_shortcode( 'accept_stripe_payment', array( &$this, 'shortcode_accept_stripe_payment' ) );	
+			add_filter( 'the_content', array( $this, 'filter_post_type_content' ) );
 		}
-
-		add_filter( 'the_content', array( $this, 'filter_post_type_content' ) );
 
 		add_action( 'wp_enqueue_scripts', array( $this, 'register_stripe_script' ) );
 

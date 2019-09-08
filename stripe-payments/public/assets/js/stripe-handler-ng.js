@@ -3,7 +3,6 @@ var stripeHandlerNG = function (data) {
     parent.data = data;
     parent.form = jQuery('form#asp_ng_form_' + data.uniq_id);
     parent.documentElementOrigOverflow = jQuery('html').css('overflow');
-    console.log(parent.documentElementOrigOverflow);
     jQuery('#asp_ng_button_' + data.uniq_id).prop('disabled', false);
     jQuery('#asp_ng_button_' + data.uniq_id).click(function (e) {
         jQuery('html').css('overflow', 'hidden');
@@ -44,8 +43,6 @@ var stripeHandlerNG = function (data) {
                                 hiddenInputsDiv.append(jQuery(this));
                             }
                         });
-                        parent.form.append('<input type="hidden" name="asp_process_ipn" value="1">');
-                        parent.form.append('<input type="hidden" name="asp_is_live" value="' + parent.data.is_live + '">');
                         console.log('Parent form submit');
                         jQuery('form#asp_ng_form_' + parent.data.uniq_id).submit();
                     }

@@ -24,14 +24,13 @@ class AcceptStripePaymentsShortcodeNG {
 
 		$use_old_api = $this->AcceptStripePayments->get_setting( 'use_old_checkout_api1' );
 
-		add_filter( 'the_content', array( $this, 'filter_post_type_content' ) );
-
 		//		add_shortcode('asp_show_all_products', array(&$this, 'shortcode_show_all_products'));
 		add_shortcode( 'asp_product_ng', array( $this, 'shortcode_asp_product' ) );
 		add_shortcode( 'accept_stripe_payment_ng', array( $this, 'shortcode_accept_stripe_payment' ) );
 		if ( ! $use_old_api ) {
 			add_shortcode( 'asp_product', array( $this, 'shortcode_asp_product' ) );
 			add_shortcode( 'accept_stripe_payment', array( $this, 'shortcode_accept_stripe_payment' ) );
+			add_filter( 'the_content', array( $this, 'filter_post_type_content' ) );
 		}
 		//		add_shortcode('accept_stripe_payment_checkout', array(&$this, 'shortcode_accept_stripe_payment_checkout'));
 		//		add_shortcode('accept_stripe_payment_checkout_error', array(&$this, 'shortcode_accept_stripe_payment_checkout_error'));
@@ -65,46 +64,6 @@ class AcceptStripePaymentsShortcodeNG {
 		}
 
 		return self::$instance;
-	}
-
-	function get_loc_data() {
-		//localization data, some settings and Stripe API key
-		$key        = $this->AcceptStripePayments->APIPubKey;
-		$key_test   = $this->AcceptStripePayments->APIPubKeyTest;
-		$minAmounts = $this->AcceptStripePayments->minAmounts;
-		$zeroCents  = $this->AcceptStripePayments->zeroCents;
-
-		$amountOpts = array(
-			'applySepOpts' => $this->AcceptStripePayments->get_setting( 'price_apply_for_input' ),
-			'decimalSep'   => $this->AcceptStripePayments->get_setting( 'price_decimal_sep' ),
-			'thousandSep'  => $this->AcceptStripePayments->get_setting( 'price_thousand_sep' ),
-		);
-
-		$loc_data = array(
-			'strEnterValidAmount'         => apply_filters( 'asp_customize_text_msg', __( 'Please enter a valid amount', 'stripe-payments' ), 'enter_valid_amount' ),
-			'strMinAmount'                => apply_filters( 'asp_customize_text_msg', __( 'Minimum amount is', 'stripe-payments' ), 'min_amount_is' ),
-			'strEnterQuantity'            => apply_filters( 'asp_customize_text_msg', __( 'Please enter quantity.', 'stripe-payments' ), 'enter_quantity' ),
-			'strQuantityIsZero'           => apply_filters( 'asp_customize_text_msg', __( 'Quantity can\'t be zero.', 'stripe-payments' ), 'quantity_is_zero' ),
-			'strQuantityIsFloat'          => apply_filters( 'asp_customize_text_msg', __( 'Quantity should be integer value.', 'stripe-payments' ), 'quantity_is_float' ),
-			'strStockNotAvailable'        => apply_filters( 'asp_customize_text_msg', __( 'You cannot order more items than available: %d', 'stripe-payments' ), 'stock_not_available' ),
-			'strTax'                      => apply_filters( 'asp_customize_text_msg', __( 'Tax', 'stripe-payments' ), 'tax_str' ),
-			'strShipping'                 => apply_filters( 'asp_customize_text_msg', __( 'Shipping', 'stripe-payments' ), 'shipping_str' ),
-			'strTotal'                    => __( 'Total:', 'stripe-payments' ),
-			'strPleaseFillIn'             => apply_filters( 'asp_customize_text_msg', __( 'Please fill in this field.', 'stripe-payments' ), 'fill_in_field' ),
-			'strPleaseCheckCheckbox'      => __( 'Please check this checkbox.', 'stripe-payments' ),
-			'strMustAcceptTos'            => apply_filters( 'asp_customize_text_msg', __( 'You must accept the terms before you can proceed.', 'stripe-payments' ), 'accept_terms' ),
-			'strRemoveCoupon'             => apply_filters( 'asp_customize_text_msg', __( 'Remove coupon', 'stripe-payments' ), 'remove_coupon' ),
-			'strRemove'                   => apply_filters( 'asp_customize_text_msg', __( 'Remove', 'stripe-payments' ), 'remove' ),
-			'strStartFreeTrial'           => apply_filters( 'asp_customize_text_msg', __( 'Start Free Trial', 'stripe-payments' ), 'start_free_trial' ),
-			'strInvalidCFValidationRegex' => __( 'Invalid validation RegEx: ', 'stripe-payments' ),
-			'key'                         => $key,
-			'key_test'                    => $key_test,
-			'ajax_url'                    => admin_url( 'admin-ajax.php' ),
-			'minAmounts'                  => $minAmounts,
-			'zeroCents'                   => $zeroCents,
-			'amountOpts'                  => $amountOpts,
-		);
-		return $loc_data;
 	}
 
 	function register_stripe_script() {
@@ -847,9 +806,10 @@ class AcceptStripePaymentsShortcodeNG {
 			. '<div></div>'
 			. '</div>'
 			. '</div>';
-		$output .= $this->get_scripts( $data );
 
-		$output .= '<script>jQuery(document).ready(function() {new stripeHandlerNG(' . json_encode( $data ) . ')});</script>';
+		$output .= '<script>';
+		$output .= 'jQuery(document).ready(function() {new stripeHandlerNG(' . wp_json_encode( $data ) . ')});';
+		$output .= '</script>';
 
 		return $output;
 	}
@@ -871,36 +831,6 @@ class AcceptStripePaymentsShortcodeNG {
 			//remove newline symbols for compatability with some page builders
 			$output = str_replace( array( "\r\n", "\n", "\t" ), '', $output );
 		}
-		return $output;
-	}
-
-	function get_scripts( $data ) {
-		$output = '';
-		if ( $this->CompatMode ) {
-			ob_start();
-			?>
-			<script type='text/javascript'>
-				var stripehandler = <?php echo json_encode( $this->get_loc_data() ); ?>;
-			</script>
-			<script type='text/javascript'>
-				var stripehandler<?php echo $data['uniq_id']; ?> = <?php echo json_encode( array( 'data' => $data ) ); ?>;
-			</script>
-			<script type='text/javascript' src='https://checkout.stripe.com/checkout.js'></script>
-			<script type='text/javascript' src='<?php echo WP_ASP_PLUGIN_URL; ?>/public/assets/js/stripe-handler.js?ver=<?php echo WP_ASP_PLUGIN_VERSION; ?>'></script>
-			<?php
-			$output .= ob_get_clean();
-			//remove newline symbols for compatability with some page builders
-			$output = str_replace( array( "\r\n", "\n", "\t" ), '', $output );
-		} else {
-			//Let's enqueue Stripe js
-			wp_enqueue_script( 'stripe-script' );
-			//using nested array in order to ensure boolean values are not converted to strings by wp_localize_script function
-			wp_localize_script( 'stripe-handler', 'stripehandler' . $data['uniq_id'], array( 'data' => $data ) );
-			//enqueue our script that handles the stuff
-			wp_enqueue_script( 'stripe-handler' );
-		}
-		//addons can enqueue their scripts if needed
-		do_action( 'asp-button-output-enqueue-script' );
 		return $output;
 	}
 
