@@ -375,7 +375,7 @@ function show_admin_notices() {
 	add_settings_field( 'checkout_lang', __( 'Stripe Checkout Language', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-global-section', array( 'field'	 => 'checkout_lang',
 	    'desc'	 => __( 'Specify language to be used in Stripe checkout pop-up or select "Autodetect" to let Stripe handle it.', 'stripe-payments' ) .'<br>Note this is not currently supported by new API.' ) );
 	add_settings_field( 'popup_default_country', __( 'Popup Default Country', 'stripe-payments' ).$new_api_str, array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-global-section', array( 'field'	 => 'popup_default_country',
-	    'desc'	 => __( 'Select default country to be set on payment popup for billing and shipping address.', 'stripe-payments' ) ) );
+	    'desc'	 => __( 'Select the default country that should be set on the payment popup window for billing and shipping address.', 'stripe-payments' ) ) );
 
 	// Credentials section
 	add_settings_field( 'is_live', __( 'Live Mode', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-credentials-section', array( 'field' => 'is_live', 'desc' => __( 'Check this to run the transaction in live mode. When unchecked it will run in test mode.', 'stripe-payments' ) ) );
