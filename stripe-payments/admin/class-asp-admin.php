@@ -363,7 +363,7 @@ function show_admin_notices() {
 	add_settings_field( 'button_text', __( 'Button Text', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-global-section', array( 'field'	 => 'button_text',
 	    'desc'	 => __( 'Example: Buy Now, Pay Now etc.', 'stripe-payments' ) ) );
 	add_settings_field( 'popup_button_text', __( 'Payment Popup Button Text', 'stripe-payments' ).$new_api_str, array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-global-section', array( 'field'	 => 'popup_button_text',
-	    'desc'	 => __( '%s is replaced by formatted payment amount. If empty, it defaults to "Pay %s"', 'stripe-payments' ) ) );
+	    'desc'	 => __( '%s is replaced by formatted payment amount (example: Pay $29.90). If this field is empty, it defaults to "Pay %s"', 'stripe-payments' ) ) );
 	add_settings_field( 'dont_save_card', __( 'Do Not Save Card Data on Stripe', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-global-section', array( 'field'	 => 'dont_save_card',
 	    'desc'	 => __( 'When this checkbox is checked, the transaction won\'t create the customer (no card will be saved for that).', 'stripe-payments' ) ) );
 	add_settings_field( 'disable_remember_me', __( 'Turn Off "Remember me" Option', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-global-section', array( 'field'	 => 'disable_remember_me',

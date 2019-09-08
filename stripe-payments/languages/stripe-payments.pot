@@ -143,7 +143,7 @@ msgstr ""
 #: stripe-payments/admin/class-asp-admin.php:363
 #, php-format
 msgid ""
-"%s is replaced by formatted payment amount. If empty, it defaults to \"Pay %s"
+"%s is replaced by formatted payment amount (example: Pay $29.90). If this field is empty, it defaults to \"Pay %s"
 "\""
 msgstr ""
 
