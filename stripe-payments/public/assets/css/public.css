@@ -192,7 +192,7 @@ CSS class names should use dashes. Example: asp-product-description
     z-index: 2147483647;
     background: rgba(0, 0, 0, 0.004);
     border: 0px none transparent;
-    overflow: hidden auto;
+    overflow: auto;
     visibility: visible;
     margin: 0px;
     padding: 0px;
