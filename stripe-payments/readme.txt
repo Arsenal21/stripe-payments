@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 4.7
 Tested up to: 5.2
 Requires PHP: 5.4
-Stable tag: 2.0.5t2
+Stable tag: 2.0.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -152,6 +152,11 @@ Yes, please visit Stripe Payments > Settings screen for options.
 None.
 
 == Changelog ==
+
+= 2.0.5 =
+- [New API]: Fixed payment popup was not scrollable on Apple devices.
+- [New API]: Added "Send Emails In Parallel" option that should speed up checkout process.
+- [New API]: Removed excess output for buttons when new API is used.
 
 = 2.0.4 =
 - [New API]: Added "Popup Default Country" option that sets default country on payment popup for billing and shipping address.
