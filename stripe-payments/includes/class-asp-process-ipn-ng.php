@@ -32,7 +32,7 @@ class ASP_Process_IPN_NG {
 					$value = is_array( $value ) ? wp_json_encode( $value ) : $value;
 					$body .= $key . ': ' . $value . "\r\n";
 				}
-				$schedule_result = wp_schedule_single_event( time(), 'asp_send_scheduled_email', array( $to, $subj, $body, $headers ) );
+				$schedule_result = wp_schedule_single_event( time() - 10, 'asp_send_scheduled_email', array( $to, $subj, $body, $headers ) );
 				if ( ! $schedule_result ) {
 					wp_mail( $to, $subj, $body, $headers );
 				}
@@ -411,7 +411,7 @@ class ASP_Process_IPN_NG {
 				}
 				$headers[] = 'From: ' . $from;
 
-				$schedule_result = wp_schedule_single_event( time(), 'asp_send_scheduled_email', array( $to, $subj, $body, $headers ) );
+				$schedule_result = wp_schedule_single_event( time() - 10, 'asp_send_scheduled_email', array( $to, $subj, $body, $headers ) );
 				if ( ! $schedule_result ) {
 					// can't schedule event for email notification. Let's send email without scheduling
 					wp_mail( $to, $subj, $body, $headers );
@@ -440,7 +440,7 @@ class ASP_Process_IPN_NG {
 				}
 				$headers[] = 'From: ' . $from;
 
-				$schedule_result = wp_schedule_single_event( time(), 'asp_send_scheduled_email', array( $to, $subj, $body, $headers ) );
+				$schedule_result = wp_schedule_single_event( time() - 10, 'asp_send_scheduled_email', array( $to, $subj, $body, $headers ) );
 				if ( ! $schedule_result ) {
 					// can't schedule event for email notification. Let's send email without scheduling
 					wp_mail( $to, $subj, $body, $headers );
