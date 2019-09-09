@@ -344,6 +344,7 @@ function show_admin_notices() {
 
 	add_settings_section( 'AcceptStripePayments-email-section', __( 'Email Settings', 'stripe-payments' ), null, $this->plugin_slug . '-email' );
 	add_settings_section( 'AcceptStripePayments-error-email-section', __( 'Transaction Error Email Settings', 'stripe-payments' ), null, $this->plugin_slug . '-email' );
+	add_settings_section( 'AcceptStripePayments-additional-email-section', __( 'Additional Email Settings', 'stripe-payments' ), null, $this->plugin_slug . '-email' );
 
 	add_settings_section( 'AcceptStripePayments-price-display', __( 'Price Display Settings', 'stripe-payments' ), null, $this->plugin_slug . '-advanced' );
 	add_settings_section( 'AcceptStripePayments-custom-field', __( 'Custom Field Settings', 'stripe-payments' ), null, $this->plugin_slug . '-advanced' );
@@ -436,6 +437,11 @@ function show_admin_notices() {
 	add_settings_field( 'send_email_on_error_to', __( 'Send Error Email To', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-email', 'AcceptStripePayments-error-email-section', array( 'field'	 => 'send_email_on_error_to',
 	    'desc'	 => __( 'Enter recipient address of error email.', 'stripe-payments' ) )
 	);
+
+	// Additional Email Settings
+	add_settings_field( 'enable_email_schedule', __( 'Send Emails In Parallel', 'stripe-payments' ).$new_api_str, array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-email', 'AcceptStripePayments-additional-email-section', array( 'field'	 => 'enable_email_schedule',
+	    'desc'	 => __( 'Enabling this option should speed up checkout process for customers. Test this before enabling on production as it may not work properly on some setups.', 'stripe-payments' ) )
+	);	
 
 	// Price Display section
 	add_settings_field( 'price_currency_pos', __( 'Currency Position', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-price-display', array( 'field'	 => 'price_currency_pos',
@@ -655,7 +661,8 @@ function show_admin_notices() {
 	    case 'dont_save_card':
 	    case 'custom_field_mandatory':
 	    case 'enable_zip_validation':
-	    case 'dont_create_order':
+		case 'dont_create_order':
+		case 'enable_email_schedule':
 		echo "<input type='checkbox' name='AcceptStripePayments-settings[{$field}]' value='1' " . ($field_value ? 'checked=checked' : '') . " /><p class=\"description\">{$desc}</p>";
 		break;
 	    case 'custom_field_enabled':
@@ -770,6 +777,8 @@ function show_admin_notices() {
 	$output [ 'tos_position' ] = sanitize_text_field( $input[ 'tos_position' ] );
 
 	$output [ 'tos_store_ip' ] = empty( $input[ 'tos_store_ip' ] ) ? 0 : 1;
+
+	$output [ 'enable_email_schedule' ] = empty( $input[ 'enable_email_schedule' ] ) ? 0 : 1;
 
 	$output[ 'tos_text' ] = ! empty( $input[ 'tos_text' ] ) ? $input[ 'tos_text' ] : '';
 

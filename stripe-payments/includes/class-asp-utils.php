@@ -317,4 +317,17 @@ class ASP_Utils {
 		return $currencies;
 	}
 
+	public static function mail( $to, $subj, $body, $headers ) {
+		$opts            = get_option( 'AcceptStripePayments-settings' );
+		$schedule_result = false;
+		if ( isset( $opts['enable_email_schedule'] ) && $opts['enable_email_schedule'] ) {
+			$schedule_result = wp_schedule_single_event( time() - 10, 'asp_send_scheduled_email', array( $to, $subj, $body, $headers ) );
+		}
+		if ( ! $schedule_result ) {
+			// can't schedule event for email notification. Let's send email without scheduling
+			wp_mail( $to, $subj, $body, $headers );
+		}
+		return $schedule_result;
+	}
+
 }

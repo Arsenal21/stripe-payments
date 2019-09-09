@@ -32,9 +32,11 @@ class ASP_Process_IPN_NG {
 					$value = is_array( $value ) ? wp_json_encode( $value ) : $value;
 					$body .= $key . ': ' . $value . "\r\n";
 				}
-				$schedule_result = wp_schedule_single_event( time() - 10, 'asp_send_scheduled_email', array( $to, $subj, $body, $headers ) );
+				$schedule_result = ASP_Utils::mail( $to, $subj, $body, $headers );
 				if ( ! $schedule_result ) {
-					wp_mail( $to, $subj, $body, $headers );
+					ASP_Debug_Logger::log( 'Error email sent to ' . $to . ', from email address used: ' . $from );
+				} else {
+					ASP_Debug_Logger::log( 'Error email scheduled to ' . $to . ', from email address used: ' . $from );
 				}
 			}
 		} else {
@@ -411,10 +413,9 @@ class ASP_Process_IPN_NG {
 				}
 				$headers[] = 'From: ' . $from;
 
-				$schedule_result = wp_schedule_single_event( time() - 10, 'asp_send_scheduled_email', array( $to, $subj, $body, $headers ) );
+				$schedule_result = ASP_Utils::mail( $to, $subj, $body, $headers );
+
 				if ( ! $schedule_result ) {
-					// can't schedule event for email notification. Let's send email without scheduling
-					wp_mail( $to, $subj, $body, $headers );
 					ASP_Debug_Logger::log( 'Notification email sent to buyer: ' . $to . ', from email address used: ' . $from );
 				} else {
 					ASP_Debug_Logger::log( 'Notification email to buyer scheduled: ' . $to . ', from email address used: ' . $from );
@@ -440,10 +441,8 @@ class ASP_Process_IPN_NG {
 				}
 				$headers[] = 'From: ' . $from;
 
-				$schedule_result = wp_schedule_single_event( time() - 10, 'asp_send_scheduled_email', array( $to, $subj, $body, $headers ) );
+				$schedule_result = ASP_Utils::mail( $to, $subj, $body, $headers );
 				if ( ! $schedule_result ) {
-					// can't schedule event for email notification. Let's send email without scheduling
-					wp_mail( $to, $subj, $body, $headers );
 					ASP_Debug_Logger::log( 'Notification email sent to seller: ' . $to . ', from email address used: ' . $from );
 				} else {
 					ASP_Debug_Logger::log( 'Notification email to seller scheduled: ' . $to . ', from email address used: ' . $from );
