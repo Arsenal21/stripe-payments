@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 4.7
 Tested up to: 5.2
 Requires PHP: 5.4
-Stable tag: 2.0.5
+Stable tag: 2.0.6t1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -152,6 +152,10 @@ Yes, please visit Stripe Payments > Settings screen for options.
 None.
 
 == Changelog ==
+
+= 2.0.6 =
+- [New API]: Added "Perfill Logged In User Name and Email" option to prefill corresponding payment popup fields with logged in user's name and email.
+- Added 'asp_stripe_order_register_post_type_args' filter to override 'stripe-order' post type args.
 
 = 2.0.5 =
 - [New API]: Fixed payment popup was not scrollable on Apple devices.
