@@ -377,6 +377,8 @@ function show_admin_notices() {
 	    'desc'	 => __( 'Specify language to be used in Stripe checkout pop-up or select "Autodetect" to let Stripe handle it.', 'stripe-payments' ) .'<br>Note this is not currently supported by new API.' ) );
 	add_settings_field( 'popup_default_country', __( 'Popup Default Country', 'stripe-payments' ).$new_api_str, array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-global-section', array( 'field'	 => 'popup_default_country',
 	    'desc'	 => __( 'Select the default country that should be set on the payment popup window for billing and shipping address.', 'stripe-payments' ) ) );
+	add_settings_field( 'prefill_wp_user_details', __( 'Perfill Logged In User Name and Email', 'stripe-payments' ).$new_api_str, array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-global-section', array( 'field'	 => 'prefill_wp_user_details',
+	    'desc'	 => __( 'When payment is made by logged in WordPress user, his\her name and email are prefilled to corresponding payment popup fields.', 'stripe-payments' ) ) );
 
 	// Credentials section
 	add_settings_field( 'is_live', __( 'Live Mode', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-credentials-section', array( 'field' => 'is_live', 'desc' => __( 'Check this to run the transaction in live mode. When unchecked it will run in test mode.', 'stripe-payments' ) ) );
@@ -653,7 +655,8 @@ function show_admin_notices() {
 	    case 'send_emails_to_buyer':
 	    case 'stripe_receipt_email':
 	    case 'send_email_on_error':
-	    case 'use_new_button_method':
+		case 'use_new_button_method':
+		case 'prefill_wp_user_details':
 	    case 'is_live':
 		case 'disable_remember_me':
 		case 'use_old_checkout_api1':
@@ -825,6 +828,8 @@ function show_admin_notices() {
 	$output[ 'disable_remember_me' ] = empty( $input[ 'disable_remember_me' ] ) ? 0 : 1;
 
 	$output[ 'use_new_button_method' ] = empty( $input[ 'use_new_button_method' ] ) ? 0 : 1;
+
+	$output[ 'prefill_wp_user_details' ] = empty( $input[ 'prefill_wp_user_details' ] ) ? 0 : 1;
 
 	$output[ 'send_emails_to_buyer' ] = empty( $input[ 'send_emails_to_buyer' ] ) ? 0 : 1;
 

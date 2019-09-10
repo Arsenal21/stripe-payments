@@ -198,6 +198,21 @@ class ASP_PP_Handler {
 		$cust_email_hardcoded = get_post_meta( $product_id, 'asp_product_customer_email_hardcoded', true );
 		$cust_name_hardcoded  = get_post_meta( $product_id, 'asp_product_customer_name_hardcoded', true );
 
+		$user_id              = get_current_user_id();
+		$prefill_user_details = $this->asp_main->get_setting( 'prefill_wp_user_details' );
+
+		if ( $user_id && $prefill_user_details ) {
+			$user_info = get_userdata( $user_id );
+			if ( false !== $user_info ) {
+				if ( empty( $cust_email_hardcoded ) ) {
+					$cust_email_hardcoded = $user_info->user_email;
+				}
+				if ( empty( $cust_name_hardcoded ) ) {
+					$cust_name_hardcoded = $user_info->first_name . ' ' . $user_info->last_name;
+				}
+			}
+		}
+
 		$default_country = $this->asp_main->get_setting( 'popup_default_country' );
 
 		$data               = array();
