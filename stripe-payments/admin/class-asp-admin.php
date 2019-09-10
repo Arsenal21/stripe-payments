@@ -439,7 +439,7 @@ function show_admin_notices() {
 	);
 
 	// Additional Email Settings
-	add_settings_field( 'enable_email_schedule', __( 'Send Emails In Parallel', 'stripe-payments' ).$new_api_str, array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-email', 'AcceptStripePayments-additional-email-section', array( 'field'	 => 'enable_email_schedule',
+	add_settings_field( 'enable_email_schedule', __( 'Send Emails in Parallel', 'stripe-payments' ).$new_api_str, array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-email', 'AcceptStripePayments-additional-email-section', array( 'field'	 => 'enable_email_schedule',
 	    'desc'	 => __( 'Enabling this option should speed up checkout process for customers. Test this before enabling on production as it may not work properly on some setups.', 'stripe-payments' ) )
 	);	
 
