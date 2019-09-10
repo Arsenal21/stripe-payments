@@ -13,7 +13,6 @@ class ASPOrder {
 
 	public function __construct() {
 		$this->AcceptStripePayments = AcceptStripePayments::get_instance();
-		$this->text_domain          = 'stripe-payments';
 	}
 
 	public function register_post_type() {
@@ -51,6 +50,8 @@ class ASPOrder {
 			'map_meta_cap'        => true,
 		);
 
+		$args = apply_filters( 'asp_stripe_order_register_post_type_args', $args );
+
 		register_post_type( 'stripe_order', $args );
 	}
 
@@ -64,7 +65,7 @@ class ASPOrder {
 	public static function get_instance() {
 
 		// If the single instance hasn't been set, set it now.
-		if ( null == self::$instance ) {
+		if ( null === self::$instance ) {
 			self::$instance = new self();
 		}
 
