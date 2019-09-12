@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 4.7
 Tested up to: 5.2
 Requires PHP: 5.4
-Stable tag: 2.0.6t2
+Stable tag: 2.0.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -211,36 +211,5 @@ None.
 - Product description now supports WP embeds.
 - Tweaks for better compatability with various page builders.
 - Other minor bugfixes.
-
-= 1.9.22 =
-- Fixed archive pages list could be messed up when plugin is enabled.
-- Fixed the "asp_stripe_payments_checkout_page_result" filter hook not triggering correctly.
-
-= 1.9.21 =
-- Fixed frontend discount amount display when custom quantity is enabled and initial quantity is set to 0 or empty.
-- Fixed adding groups to existing product with variations caused improper variations placement.
-- Fixed tax amount was displayed rounded down on frontend under some circumstances (wasn't affecting actual payment amount).
-- Product variations are now added to payment metadata in Stripe account.
-- Added admin side notice if required PHP modules are not installed on the server.
-
-= 1.9.20 =
-- Added Stripe Payments Product Gutenberg block.
-- Added button_only parameter to [asp_product] shortcode. When set to "1", no product title and info is displayed.
-- Fixed PHP notices when viewing some products with variations.
-
-= 1.9.19 =
-- Fixed issues on Settings page that prevented it from being properly displayed in some versions of Safari browser.
-- Stripe Payments menu icon color changed to white to have better contrast with dark menu background.
-- Fixed minor HTML-related admin interface issues.
-
-= 1.9.18 =
-- Trial subscriptions are now displaying 0 as payment amount on checkout results and email receipts.
-Payment button in Stripe pop-up for those now shows "Start Free Trial" instead of payment amount.
-Requires Subscriptions addon 1.4.5+
-- Added validation for custom filed. You can use your own validation rules via custom JavaScript RegExp.
-- Fixed invalid amount was displayed on Stripe pop-up when variable price and quantity is used.
-- {product_details} merge tag is available for custom checkout results page.
-- Purchase date is now displayed using WP date\time format settings and considers timezone.
-- Added option to display product variations as radio buttons (can be set per product on product edit page).
 
 Previous versions changelog available in changelog.txt file.
