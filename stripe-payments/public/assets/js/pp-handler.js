@@ -458,53 +458,6 @@ form.addEventListener('submit', function (event) {
 
 	updateAllAmounts();
 
-	if (!vars.data.create_token && (vars.data.client_secret === '' || vars.data.amount != clientSecAmount)) {
-		console.log('Regen CS');
-		var reqStr = 'action=asp_pp_req_token&amount=' + vars.data.amount + '&curr=' + vars.data.currency + '&product_id=' + vars.data.product_id;
-		reqStr = reqStr + '&quantity=' + vars.data.quantity;
-		if (vars.data.client_secret !== '') {
-			reqStr = reqStr + '&pi=' + vars.data.pi_id;
-		}
-		new ajaxRequest(vars.ajaxURL, reqStr,
-			function (res) {
-				try {
-					var resp = JSON.parse(res.responseText);
-					console.log(resp);
-					if (typeof resp.stock_items !== "undefined") {
-						if (vars.data.stock_items !== resp.stock_items) {
-							vars.data.stock_items = resp.stock_items;
-							validate_custom_quantity();
-						}
-					}
-					if (!resp.success) {
-						submitBtn.disabled = false;
-						btnSpinner.style.display = "none";
-						errorCont.innerHTML = resp.err;
-						errorCont.style.display = 'block';
-						smokeScreen(false);
-						return false;
-					}
-					vars.data.client_secret = resp.clientSecret;
-					vars.data.pi_id = resp.pi_id;
-					clientSecAmount = vars.data.amount;
-					handlePayment();
-					return true;
-				} catch (e) {
-					console.log(e);
-					alert('Caught Exception: ' + e.description);
-				}
-			},
-			function (res, errMsg) {
-				submitBtn.disabled = false;
-				btnSpinner.style.display = "none";
-				errorCont.innerHTML = errMsg;
-				errorCont.style.display = 'block';
-				smokeScreen(false);
-			}
-		);
-		return false;
-	}
-
 	handlePayment();
 
 });
@@ -549,7 +502,7 @@ function handlePayment() {
 	}
 	if (vars.data.billing_address && vars.data.shipping_address && billshipSwitch.checked) {
 		var shippingDetails = JSON.parse(JSON.stringify(billingDetails));
-		delete(shippingDetails.email);
+		delete (shippingDetails.email);
 	}
 	var opts = {
 		payment_method_data: {
@@ -558,6 +511,59 @@ function handlePayment() {
 	}
 	if (shippingDetails) {
 		opts.shipping = shippingDetails;
+	}
+
+	//regen cs
+	if (!vars.data.create_token && (vars.data.client_secret === '' || vars.data.amount != clientSecAmount)) {
+		console.log('Regen CS');
+		var reqStr = 'action=asp_pp_req_token&amount=' + vars.data.amount + '&curr=' + vars.data.currency + '&product_id=' + vars.data.product_id;
+		reqStr = reqStr + '&quantity=' + vars.data.quantity;
+		if (vars.data.cust_id) {
+			reqStr = reqStr + '&cust_id' + vars.data.cust_id;
+		}
+		if (vars.data.client_secret !== '') {
+			reqStr = reqStr + '&pi=' + vars.data.pi_id;
+		}
+		reqStr = reqStr + '&billing_details=' + JSON.stringify(billingDetails);
+		new ajaxRequest(vars.ajaxURL, reqStr,
+			function (res) {
+				try {
+					var resp = JSON.parse(res.responseText);
+					console.log(resp);
+					if (typeof resp.stock_items !== "undefined") {
+						if (vars.data.stock_items !== resp.stock_items) {
+							vars.data.stock_items = resp.stock_items;
+							validate_custom_quantity();
+						}
+					}
+					if (!resp.success) {
+						submitBtn.disabled = false;
+						btnSpinner.style.display = "none";
+						errorCont.innerHTML = resp.err;
+						errorCont.style.display = 'block';
+						smokeScreen(false);
+						return false;
+					}
+					vars.data.client_secret = resp.clientSecret;
+					vars.data.pi_id = resp.pi_id;
+					vars.data.cust_id = resp.cust_id;
+					clientSecAmount = vars.data.amount;
+					handlePayment();
+					return true;
+				} catch (e) {
+					console.log(e);
+					alert('Caught Exception: ' + e.description);
+				}
+			},
+			function (res, errMsg) {
+				submitBtn.disabled = false;
+				btnSpinner.style.display = "none";
+				errorCont.innerHTML = errMsg;
+				errorCont.style.display = 'block';
+				smokeScreen(false);
+			}
+		);
+		return false;
 	}
 
 	if (vars.data.create_token) {
@@ -670,6 +676,10 @@ function handlePayment() {
 			});
 
 	} else {
+		if (vars.data.dont_save_card !== false) {
+			opts.save_payment_method = true;
+			opts.setup_future_usage = "off_session";
+		}
 		console.log('Doing handleCardPayment()');
 		stripe.handleCardPayment(
 			vars.data.client_secret, card, opts)

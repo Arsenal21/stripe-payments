@@ -215,6 +215,8 @@ class ASP_PP_Handler {
 
 		$default_country = $this->asp_main->get_setting( 'popup_default_country' );
 
+		$dont_save_card = $this->asp_main->get_setting( 'dont_save_card' );
+
 		$data               = array();
 		$data['product_id'] = $product_id;
 		$quantity           = get_post_meta( $product_id, 'asp_product_quantity', true );
@@ -257,6 +259,8 @@ class ASP_PP_Handler {
 
 		$data['customer_email'] = $cust_email_hardcoded;
 		$data['customer_name']  = $cust_name_hardcoded;
+
+		$data['dont_save_card'] = empty( $dont_save_card ) ? true : false;
 
 		$data['customer_default_country'] = $default_country;
 
@@ -357,6 +361,7 @@ class ASP_PP_Handler {
 		$amount         = filter_input( INPUT_POST, 'amount', FILTER_SANITIZE_NUMBER_FLOAT );
 		$curr           = filter_input( INPUT_POST, 'curr', FILTER_SANITIZE_STRING );
 		$pi_id          = filter_input( INPUT_POST, 'pi', FILTER_SANITIZE_STRING );
+		$cust_id        = filter_input( INPUT_POST, 'cust_id', FILTER_SANITIZE_STRING );
 		$quantity       = filter_input( INPUT_POST, 'quantity', FILTER_SANITIZE_NUMBER_INT );
 
 		$item = new ASP_Product_Item( $product_id );
@@ -389,10 +394,90 @@ class ASP_PP_Handler {
 		$metadata = array();
 
 		try {
+
 			$pi_params = array(
 				'amount'   => $amount,
 				'currency' => $curr,
 			);
+
+			$dont_save_card = $this->asp_main->get_setting( 'dont_save_card' );
+
+			if ( ! $dont_save_card ) {
+				$post_billing_details = filter_input( INPUT_POST, 'billing_details', FILTER_SANITIZE_STRING );
+
+				$post_shipping_details = filter_input( INPUT_POST, 'shipping_details', FILTER_SANITIZE_STRING );
+
+				$customer_opts = array();
+
+				if ( isset( $post_billing_details ) ) {
+					$post_billing_details = html_entity_decode( $post_billing_details );
+
+					$billing_details = json_decode( $post_billing_details );
+
+					if ( $billing_details->name ) {
+						$customer_opts['name'] = $billing_details->name;
+					}
+
+					if ( $billing_details->email ) {
+						$customer_opts['email'] = $billing_details->email;
+					}
+
+					if ( isset( $billing_details->address ) && isset( $billing_details->address->line1 ) ) {
+						//we have address
+						$addr = array(
+							'line1'   => $billing_details->address->line1,
+							'city'    => isset( $billing_details->address->city ) ? $billing_details->address->city : null,
+							'country' => isset( $billing_details->address->country ) ? $billing_details->address->country : null,
+						);
+
+						if ( isset( $billing_details->address->postal_code ) ) {
+							$addr['postal_code'] = $billing_details->address->postal_code;
+						}
+
+						$customer_opts['address'] = $addr;
+					}
+				}
+
+				if ( isset( $post_shipping_details ) ) {
+					$post_shipping_details = html_entity_decode( $post_shipping_details );
+
+					$shipping_details = json_decode( $post_shipping_details );
+
+					$shipping = array();
+
+					if ( $shipping_details->name ) {
+						$shipping['name'] = $shipping_details->name;
+					}
+
+					if ( isset( $shipping_details->address ) && isset( $shipping_details->address->line1 ) ) {
+						//we have address
+						$addr = array(
+							'line1'   => $shipping_details->address->line1,
+							'city'    => isset( $shipping_details->address->city ) ? $shipping_details->address->city : null,
+							'country' => isset( $shipping_details->address->country ) ? $shipping_details->address->country : null,
+						);
+
+						if ( isset( $shipping_details->address->postal_code ) ) {
+							$addr['postal_code'] = $shipping_details->address->postal_code;
+						}
+
+						$shipping['address'] = $addr;
+
+						$customer_opts['shipping'] = $shipping;
+					}
+				}
+
+				$customer_opts = apply_filters( 'asp_ng_before_customer_create_update', $customer_opts, empty( $cust_id ) ? false : $cust_id );
+
+				if ( empty( $cust_id ) ) {
+					$customer = \Stripe\Customer::create( $customer_opts );
+					$cust_id  = $customer->id;
+				} else {
+					$customer = \Stripe\Customer::update( $cust_id, $customer_opts );
+				}
+				$pi_params['customer'] = $cust_id;
+			}
+
 			if ( isset( $metadata ) && ! empty( $metadata ) ) {
 				$pi_params['metadata'] = $metadata;
 			}
@@ -414,6 +499,7 @@ class ASP_PP_Handler {
 		$out['success']      = true;
 		$out['clientSecret'] = $intent->client_secret;
 		$out['pi_id']        = $intent->id;
+		$out['cust_id']      = $cust_id;
 		$out                 = apply_filters( 'asp_ng_before_pi_result_send', $out, $intent );
 		wp_send_json( $out );
 		exit;
