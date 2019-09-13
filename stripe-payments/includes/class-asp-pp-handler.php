@@ -318,7 +318,9 @@ class ASP_PP_Handler {
 			ASPMain::load_stripe_lib();
 			$key = $this->asp_main->is_live ? $this->asp_main->APISecKey : $this->asp_main->APISecKeyTest;
 			\Stripe\Stripe::setApiKey( $key );
-		} catch ( Exception $e ) {
+		} catch ( \Exception $e ) {
+			$a['fatal_error'] = __( 'Stripe API error occurred:', 'stripe-payments' ) . ' ' . $e->getMessage();
+		} catch ( \Throwable $e ) {
 			$a['fatal_error'] = __( 'Stripe API error occurred:', 'stripe-payments' ) . ' ' . $e->getMessage();
 		}
 		/*
@@ -386,7 +388,10 @@ class ASP_PP_Handler {
 			ASPMain::load_stripe_lib();
 			$key = $this->asp_main->is_live ? $this->asp_main->APISecKey : $this->asp_main->APISecKeyTest;
 			\Stripe\Stripe::setApiKey( $key );
-		} catch ( Exception $e ) {
+		} catch ( \Exception $e ) {
+			$out['err'] = __( 'Stripe API error occurred:', 'stripe-payments' ) . ' ' . $e->getMessage();
+			wp_send_json( $out );
+		} catch ( \Throwable $e ) {
 			$out['err'] = __( 'Stripe API error occurred:', 'stripe-payments' ) . ' ' . $e->getMessage();
 			wp_send_json( $out );
 		}
@@ -491,8 +496,11 @@ class ASP_PP_Handler {
 			} else {
 				$intent = \Stripe\PaymentIntent::create( $pi_params );
 			}
-		} catch ( Exception $e ) {
-			$out['err'] = $e->getMessage();
+		} catch ( \Exception $e ) {
+			$out['err'] = __( 'Error occurred:', 'stripe-payments' ) . ' ' . $e->getMessage();
+			wp_send_json( $out );
+		} catch ( \Throwable $e ) {
+			$out['err'] = __( 'Error occurred:', 'stripe-payments' ) . ' ' . $e->getMessage();
 			wp_send_json( $out );
 		}
 
@@ -502,7 +510,6 @@ class ASP_PP_Handler {
 		$out['cust_id']      = $cust_id;
 		$out                 = apply_filters( 'asp_ng_before_pi_result_send', $out, $intent );
 		wp_send_json( $out );
-		exit;
 	}
 
 	public function tpl_get_cf( $output = '' ) {

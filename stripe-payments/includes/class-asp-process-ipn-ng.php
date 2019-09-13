@@ -48,7 +48,7 @@ class ASP_Process_IPN_NG {
 	}
 
 	public function process_ipn() {
-		ASP_Debug_Logger::log( 'Payment processing started.' );
+		ASP_Debug_Logger::log( "\r\n" . 'Payment processing started.' );
 
 		$this->sess = ASP_Session::get_instance();
 
