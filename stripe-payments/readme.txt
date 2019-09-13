@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 4.7
 Tested up to: 5.2
 Requires PHP: 5.4
-Stable tag: 2.0.6
+Stable tag: 2.0.7t1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -152,6 +152,9 @@ Yes, please visit Stripe Payments > Settings screen for options.
 None.
 
 == Changelog ==
+
+= WIP 2.0.7 =
+- [New API]: Moved process_ipn action to wp_loaded hook. Should fix issues with "The site is experiencing technical problems" error during payment processing on some configurations.
 
 = 2.0.6 =
 - [New API]: Customer info and card data is now saved on Stripe unless "Do Not Save Card Data on Stripe" option is enabled.
