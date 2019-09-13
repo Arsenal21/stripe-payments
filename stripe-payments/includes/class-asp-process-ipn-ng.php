@@ -48,7 +48,7 @@ class ASP_Process_IPN_NG {
 	}
 
 	public function process_ipn() {
-		ASP_Debug_Logger::log( "\r\n" . 'Payment processing started.' );
+		ASP_Debug_Logger::log( 'Payment processing started.' );
 
 		$this->sess = ASP_Session::get_instance();
 
@@ -166,10 +166,12 @@ class ASP_Process_IPN_NG {
 		}
 		$coupon_valid = $item->check_coupon( $coupon_code );
 
-		if ( $coupon_code && $coupon_valid ) {
-			ASP_Debug_Logger::log( 'Coupon is valid for the product.' );
-		} else {
-			ASP_Debug_Logger::log( 'Coupon is invalid for the product.' );
+		if ( ! empty( $coupon_code ) ) {
+			if ( $coupon_valid ) {
+				ASP_Debug_Logger::log( 'Coupon is valid for the product.' );
+			} else {
+				ASP_Debug_Logger::log( 'Coupon is invalid for the product.' );
+			}
 		}
 
 		$amount_in_cents = intval( $item->get_total( true ) );
