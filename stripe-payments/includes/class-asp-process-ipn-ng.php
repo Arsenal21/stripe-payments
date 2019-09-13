@@ -6,7 +6,7 @@ class ASP_Process_IPN_NG {
 		$process_ipn = filter_input( INPUT_POST, 'asp_process_ipn', FILTER_SANITIZE_NUMBER_INT );
 		if ( $process_ipn ) {
 			$this->asp_class = AcceptStripePayments::get_instance();
-			add_action( 'plugins_loaded', array( $this, 'process_ipn' ), 2147483647 );
+			add_action( 'wp_loaded', array( $this, 'process_ipn' ), 2147483647 );
 		}
 	}
 
