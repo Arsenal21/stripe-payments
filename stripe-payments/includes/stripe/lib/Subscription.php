@@ -28,6 +28,7 @@ namespace Stripe;
  * @property string $latest_invoice
  * @property boolean $livemode
  * @property StripeObject $metadata
+ * @property string $pending_setup_intent
  * @property Plan $plan
  * @property int $quantity
  * @property SubscriptionSchedule $schedule
@@ -42,7 +43,6 @@ namespace Stripe;
  */
 class Subscription extends ApiResource
 {
-
     const OBJECT_NAME = "subscription";
 
     use ApiOperations\All;
