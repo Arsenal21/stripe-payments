@@ -87,8 +87,11 @@ class ASPMain {
 				$lib_warning_last_logged_time = get_option( 'asp_lib_warning_last_logged_time' );
 				$time                         = time();
 				if ( $time - ( 60 * 60 * 6 ) > $lib_warning_last_logged_time ) {
-					ASP_Debug_Logger::log( sprintf( "WARNING: Stripe PHP library conflict! Another Stripe PHP SDK library is being used. Please disable plugin or theme that provides it as it can cause issues during payment process.\r\nLibrary path: %s", $path ) );
-					update_option( 'asp_lib_warning_last_logged_time', $time );
+					$opts = get_option( 'AcceptStripePayments-settings' );
+					if ( $opts['debug_log_enable'] ) {
+						ASP_Debug_Logger::log( sprintf( "WARNING: Stripe PHP library conflict! Another Stripe PHP SDK library is being used. Please disable plugin or theme that provides it as it can cause issues during payment process.\r\nLibrary path: %s", $path ) );
+						update_option( 'asp_lib_warning_last_logged_time', $time );
+					}
 				}
 			}
 		}
