@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 4.7
 Tested up to: 5.2
 Requires PHP: 5.4
-Stable tag: 2.0.7t1
+Stable tag: 2.0.7t2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -155,6 +155,10 @@ None.
 
 = WIP 2.0.7 =
 - [New API]: Moved process_ipn action to wp_loaded hook. Should fix issues with "The site is experiencing technical problems" error during payment processing on some configurations.
+- [New API]: Updated Stripe PHP SDK library to 6.43.1.
+- [New API]: Added debug log warning when another Stripe PHP SDK is loaded. Warning is logged once per 6 hours in order to not flood the log.
+- [New API]: Payment popup server interaction errors are now more informative.
+- [New Api]: Removed excess "Coupon is invalid for the product" debug log message when no coupon code provided.
 
 = 2.0.6 =
 - [New API]: Customer info and card data is now saved on Stripe unless "Do Not Save Card Data on Stripe" option is enabled.
