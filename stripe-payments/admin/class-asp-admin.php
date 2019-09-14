@@ -377,7 +377,7 @@ function show_admin_notices() {
 	    'desc'	 => __( 'Specify language to be used in Stripe checkout pop-up or select "Autodetect" to let Stripe handle it.', 'stripe-payments' ) .'<br>Note this is not currently supported by new API.' ) );
 	add_settings_field( 'popup_default_country', __( 'Popup Default Country', 'stripe-payments' ).$new_api_str, array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-global-section', array( 'field'	 => 'popup_default_country',
 	    'desc'	 => __( 'Select the default country that should be set on the payment popup window for billing and shipping address.', 'stripe-payments' ) ) );
-	add_settings_field( 'prefill_wp_user_details', __( 'Perfill Logged In User Name and Email', 'stripe-payments' ).$new_api_str, array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-global-section', array( 'field'	 => 'prefill_wp_user_details',
+	add_settings_field( 'prefill_wp_user_details', __( 'Prefill Logged In User Name and Email', 'stripe-payments' ).$new_api_str, array( &$this, 'settings_field_callback' ), $this->plugin_slug, 'AcceptStripePayments-global-section', array( 'field'	 => 'prefill_wp_user_details',
 	    'desc'	 => __( 'When payment is made by logged in WordPress user, his\her name and email are prefilled to corresponding payment popup fields.', 'stripe-payments' ) ) );
 
 	// Credentials section

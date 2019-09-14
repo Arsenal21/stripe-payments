@@ -209,7 +209,7 @@ msgid ""
 msgstr ""
 
 #: stripe-payments/admin/class-asp-admin.php:380
-msgid "Perfill Logged In User Name and Email"
+msgid "Prefill Logged In User Name and Email"
 msgstr ""
 
 #: stripe-payments/admin/class-asp-admin.php:381

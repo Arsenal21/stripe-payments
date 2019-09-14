@@ -162,7 +162,7 @@ None.
 
 = 2.0.6 =
 - [New API]: Customer info and card data is now saved on Stripe unless "Do Not Save Card Data on Stripe" option is enabled.
-- [New API]: Added "Perfill Logged In User Name and Email" option to prefill corresponding payment popup fields with logged in user's name and email.
+- [New API]: Added "Prefill Logged In User Name and Email" option to prefill corresponding payment popup fields with logged in user's name and email.
 - Added 'asp_stripe_order_register_post_type_args' filter to override 'stripe-order' post type args.
 
 = 2.0.5 =
