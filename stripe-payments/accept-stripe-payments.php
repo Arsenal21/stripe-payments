@@ -11,6 +11,9 @@
  * Text Domain: stripe-payments
  * Domain Path: /languages
  */
+
+use stripepayments\convertKit\subscriber;
+
 //Slug - asp
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -74,6 +77,14 @@ class ASPMain {
 		if ( ! class_exists( '\Stripe\Stripe' ) ) {
 			require_once WP_ASP_PLUGIN_PATH . 'includes/stripe/init.php';
 			\Stripe\Stripe::setAppInfo( 'Stripe Payments', WP_ASP_PLUGIN_VERSION, 'https://wordpress.org/plugins/stripe-payments/' );
+		} else {
+			$declared = new \ReflectionClass( '\Stripe\Stripe' );
+			$path     = $declared->getFileName();
+			$own_path = WP_ASP_PLUGIN_PATH . 'includes/stripe/lib/Stripe.php';
+			if ( strtolower( $path ) !== strtolower( $own_path ) ) {
+				// Stripe library is loaded from other location
+				ASP_Debug_Logger::log( sprintf( 'WARNING: Another Stripe PHP SDK library is being used. Please disable plugin or theme that provides it as it can cause issues during payment process. Library path: %s' ), $path );
+			}
 		}
 	}
 }
