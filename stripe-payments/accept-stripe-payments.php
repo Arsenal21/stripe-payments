@@ -83,7 +83,13 @@ class ASPMain {
 			$own_path = WP_ASP_PLUGIN_PATH . 'includes/stripe/lib/Stripe.php';
 			if ( strtolower( $path ) !== strtolower( $own_path ) ) {
 				// Stripe library is loaded from other location
-				ASP_Debug_Logger::log( sprintf( 'WARNING: Another Stripe PHP SDK library is being used. Please disable plugin or theme that provides it as it can cause issues during payment process. Library path: %s' ), $path );
+				// Let's only log one warning per 6 hours in order to not flood the log
+				$lib_warning_last_logged_time = get_option( 'asp_lib_warning_last_logged_time' );
+				$time                         = time();
+				if ( $time - ( 60 * 60 * 6 ) > $lib_warning_last_logged_time ) {
+					ASP_Debug_Logger::log( sprintf( "WARNING: Stripe PHP library conflict! Another Stripe PHP SDK library is being used. Please disable plugin or theme that provides it as it can cause issues during payment process.\r\nLibrary path: %s", $path ) );
+					update_option( 'asp_lib_warning_last_logged_time', $time );
+				}
 			}
 		}
 	}
