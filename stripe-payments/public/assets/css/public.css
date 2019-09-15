@@ -106,12 +106,6 @@ CSS class names should use dashes. Example: asp-product-description
     padding: 0;
 }
 
-.asp_product_coupon_input_container input.asp_coupon_apply_btn {}
-
-.asp_product_coupon_input_container input.asp_coupon_apply_btn:hover {}
-
-.asp_product_coupon_input_container input.asp_coupon_apply_btn:active {}
-
 .asp_product_custom_field_error {
     display: none;
     color: red;
@@ -139,8 +133,6 @@ CSS class names should use dashes. Example: asp-product-description
 .asp_product_coupon_field_label {
     margin-right: 10px;
 }
-
-.asp_product_coupon_input_container input.asp_coupon_apply_btn {}
 
 .asp_product_coupon_input_container input.asp_product_coupon_field_input {
     width: auto;
@@ -193,6 +185,7 @@ CSS class names should use dashes. Example: asp-product-description
     background: rgba(0, 0, 0, 0.004);
     border: 0px none transparent;
     overflow: auto;
+    -webkit-overflow-scrolling: touch !important;
     visibility: visible;
     margin: 0px;
     padding: 0px;
@@ -202,12 +195,6 @@ CSS class names should use dashes. Example: asp-product-description
     top: 0px;
     width: 100%;
     height: 100%;
-}
-
-.asp-popup-spinner-cont {
-    text-align: center;
-    height: 85px;
-    padding-top: 10px;
 }
 
 .asp-popup-iframe-cont {
@@ -227,6 +214,12 @@ CSS class names should use dashes. Example: asp-product-description
     top: 0px;
     width: 100%;
     height: 100%;
+}
+
+.asp-popup-spinner-cont {
+    text-align: center;
+    height: 85px;
+    padding-top: 10px;
 }
 
 @media (max-width: 500px) {
