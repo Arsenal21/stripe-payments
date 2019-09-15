@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; //Exit if accessed directly
 }
 
-define( 'WP_ASP_PLUGIN_VERSION', '2.0.7t1' );
+define( 'WP_ASP_PLUGIN_VERSION', '2.0.7t2' );
 define( 'WP_ASP_MIN_PHP_VERSION', '5.4' );
 define( 'WP_ASP_PLUGIN_URL', plugins_url( '', __FILE__ ) );
 define( 'WP_ASP_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );

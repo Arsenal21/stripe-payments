@@ -268,6 +268,10 @@
 									<button type="submit" id="submit-btn" class="pure-button pure-button-primary" disabled><?php echo esc_html( $a['pay_btn_text'] ); ?></button>
 									<span id="btn-spinner" class="small-spinner"></span>
 								</div>
+								<?php
+									$out = apply_filters( 'asp_ng_pp_after_button', '', $a['data'], '' );
+									echo $out;
+								?>
 							</div>
 							<div class="pure-u-1"<?php echo ( ! $a['data']['tax'] && ! $a['data']['shipping'] ) ? ' style="display: none;"' : ''; ?>>
 								<div id="tax-shipping-cont" class="pure-u-5-5 centered">

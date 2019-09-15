@@ -219,7 +219,9 @@ class ASP_PP_Handler {
 
 		$data               = array();
 		$data['product_id'] = $product_id;
-		$quantity           = get_post_meta( $product_id, 'asp_product_quantity', true );
+		$data['item_name']  = $this->item->get_name();
+
+		$quantity = get_post_meta( $product_id, 'asp_product_quantity', true );
 		if ( ! $quantity ) {
 			$quantity = 1;
 		}
@@ -264,7 +266,11 @@ class ASP_PP_Handler {
 
 		$data['customer_default_country'] = $default_country;
 
+		$data['addons'] = array();
+
 		$data = apply_filters( 'asp-button-output-data-ready', $data, array( 'product_id' => $product_id ) ); //phpcs:ignore
+
+		$data = apply_filters( 'asp_ng_pp_data_ready', $data, array( 'product_id' => $product_id ) ); //phpcs:ignore
 
 		$this->item->set_price( $data['item_price'], true );
 

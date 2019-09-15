@@ -400,7 +400,41 @@ card.addEventListener('change', function (event) {
 	}
 });
 
-submitBtn.addEventListener('click', function (e) {
+form.addEventListener('submit', function (event) {
+	event.preventDefault();
+
+	if (!canProceed()) {
+		return false;
+	}
+
+	errorCont.style.display = 'none';
+	submitBtn.disabled = true;
+	btnSpinner.style.display = "inline-block";
+
+	updateAllAmounts();
+
+	smokeScreen(true);
+
+	if (vars.data.addons) {
+		vars.data.addons.forEach(function (addon) {
+			console.log(addon.name + ' readyToProceed()');
+			addon.obj.readyToProceed();
+		});
+	}
+
+	handlePayment();
+
+});
+
+if (vars.data.addons) {
+	vars.data.addons.forEach(function (addon) {
+		console.log(addon.handler + ' init');
+		addon.obj = new window[addon.handler](vars.data);
+		addon.obj.init();
+	});
+}
+
+function canProceed() {
 	if (vars.data.amount_variable) {
 		amount = validate_custom_amount();
 		if (amount === false) {
@@ -417,10 +451,6 @@ submitBtn.addEventListener('click', function (e) {
 		}
 		vars.data.quantity = quantity;
 	}
-});
-
-form.addEventListener('submit', function (event) {
-	event.preventDefault();
 
 	if (piInput.value !== '') {
 		if (!inIframe()) {
@@ -449,18 +479,8 @@ form.addEventListener('submit', function (event) {
 			return false;
 		}
 	}
-
-	errorCont.style.display = 'none';
-	submitBtn.disabled = true;
-	btnSpinner.style.display = "inline-block";
-
-	smokeScreen(true);
-
-	updateAllAmounts();
-
-	handlePayment();
-
-});
+	return true;
+}
 
 function handlePayment() {
 	var billingDetails = {
@@ -548,6 +568,15 @@ function handlePayment() {
 					vars.data.pi_id = resp.pi_id;
 					vars.data.cust_id = resp.cust_id;
 					clientSecAmount = vars.data.amount;
+					if (vars.data.addons) {
+						vars.data.addons.forEach(function (addon) {
+							console.log(addon.name + ' csRegenCompleted()');
+							addon.obj.csRegenCompleted();
+						});
+					}		
+					if (vars.data.doNotProceed) {
+						return false;
+					}
 					handlePayment();
 					return true;
 				} catch (e) {
@@ -685,20 +714,24 @@ function handlePayment() {
 			vars.data.client_secret, card, opts)
 			.then(function (result) {
 				console.log(result);
-				if (result.error) {
-					submitBtn.disabled = false;
-					btnSpinner.style.display = "none";
-					errorCont.innerHTML = result.error.message;
-					errorCont.style.display = 'block';
-					smokeScreen(false);
-				} else {
-					piInput.value = result.paymentIntent.id;
-					if (!vars.data.coupon && couponInput) {
-						couponInput.value = '';
-					}
-					form.dispatchEvent(new Event('submit'));
-				}
+				handleCardPaymentResult(result);
 			});
+	}
+}
+
+function handleCardPaymentResult(result) {
+	if (result.error) {
+		submitBtn.disabled = false;
+		btnSpinner.style.display = "none";
+		errorCont.innerHTML = result.error.message;
+		errorCont.style.display = 'block';
+		smokeScreen(false);
+	} else {
+		piInput.value = result.paymentIntent.id;
+		if (!vars.data.coupon && couponInput) {
+			couponInput.value = '';
+		}
+		form.dispatchEvent(new Event('submit'));
 	}
 }
 

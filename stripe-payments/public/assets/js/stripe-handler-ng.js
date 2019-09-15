@@ -8,7 +8,7 @@ var stripeHandlerNG = function (data) {
 		jQuery('html').css('overflow', 'hidden');
 		e.preventDefault();
 		if (!parent.modal) {
-			jQuery('body').append('<div id="asp-payment-popup-' + parent.data.uniq_id + '" class="asp-popup-iframe-cont"><div class="asp-popup-spinner-cont"></div><iframe frameborder="0" allowtransparency="true" class="asp-popup-iframe" src="' + parent.data.iframe_url + '"></iframe></div>');
+			jQuery('body').append('<div id="asp-payment-popup-' + parent.data.uniq_id + '" class="asp-popup-iframe-cont"><div class="asp-popup-spinner-cont"></div><iframe frameborder="0" allowtransparency="true" class="asp-popup-iframe" allow="payment" allowpaymentrequest="true" src="' + parent.data.iframe_url + '"></iframe></div>');
 			parent.modal = jQuery('#asp-payment-popup-' + parent.data.uniq_id);
 			parent.modal.css("display", "flex");
 			parent.modal.find('.asp-popup-spinner-cont').append(jQuery('div#asp-btn-spinner-container-' + parent.data.uniq_id).html());
