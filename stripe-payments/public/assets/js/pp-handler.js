@@ -400,6 +400,12 @@ card.addEventListener('change', function (event) {
 	}
 });
 
+submitBtn.addEventListener('click', function (e) {
+	if (!vars.data.isEvent) {
+		vars.data.buttonClicked = '';
+	}
+});
+
 form.addEventListener('submit', function (event) {
 	event.preventDefault();
 
@@ -415,12 +421,7 @@ form.addEventListener('submit', function (event) {
 
 	smokeScreen(true);
 
-	if (vars.data.addons) {
-		vars.data.addons.forEach(function (addon) {
-			console.log(addon.name + ' readyToProceed()');
-			addon.obj.readyToProceed();
-		});
-	}
+	doAddonAction('readyToProceed');
 
 	handlePayment();
 
@@ -568,12 +569,7 @@ function handlePayment() {
 					vars.data.pi_id = resp.pi_id;
 					vars.data.cust_id = resp.cust_id;
 					clientSecAmount = vars.data.amount;
-					if (vars.data.addons) {
-						vars.data.addons.forEach(function (addon) {
-							console.log(addon.name + ' csRegenCompleted()');
-							addon.obj.csRegenCompleted();
-						});
-					}		
+					doAddonAction('csRegenCompleted');
 					if (vars.data.doNotProceed) {
 						return false;
 					}
@@ -592,6 +588,12 @@ function handlePayment() {
 				smokeScreen(false);
 			}
 		);
+		return false;
+	}
+
+	doAddonAction('csReady');
+
+	if (vars.data.doNotProceed) {
 		return false;
 	}
 
@@ -732,6 +734,20 @@ function handleCardPaymentResult(result) {
 			couponInput.value = '';
 		}
 		form.dispatchEvent(new Event('submit'));
+	}
+}
+
+function doAddonAction(action) {
+	vars.data.doNotProceed = false;
+	if (vars.data.addons) {
+		if (vars.data.addons) {
+			vars.data.addons.forEach(function (addon) {
+				if (typeof addon.obj[action] === "function") {
+					console.log(addon.name + ': ' + action);
+					addon.obj[action]();
+				}
+			});
+		}
 	}
 }
 

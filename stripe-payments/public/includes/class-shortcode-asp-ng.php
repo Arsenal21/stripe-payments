@@ -574,9 +574,6 @@ class AcceptStripePaymentsShortcodeNG {
 			$is_disabled = ' disabled';
 		}
 
-		//This is public.css stylesheet
-		//wp_enqueue_style('stripe-button-public');
-		//$button = "<button id = '{$button_id}' type = 'submit' class = '{$class}'><span>{$button_text}</span></button>";
 		$button = sprintf( '<div class="asp_product_buy_btn_container"><button id="%s" type="submit" class="%s"%s><span>%s</span></button></div>', esc_attr( $button_id ), esc_attr( $class ), $is_disabled, sanitize_text_field( $button_text ) );
 
 		$out_of_stock          = false;
