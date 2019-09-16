@@ -68,7 +68,7 @@ function showFormInputErr(msg, el, inp) {
 
 function smokeScreen(show) {
 	if (show) {
-		display = "block";
+		display = "flex";
 	} else {
 		display = "none";
 	}

@@ -47,7 +47,9 @@
 			<a href="https://stripe.com/docs/testing#cards" target="_blank" id="test-mode"><?php esc_html_e( 'TEST MODE', 'stripe-payments' ); ?></a>
 		<?php } ?>
 		<div class="Aligner-item">
-		<div id="smoke-screen"></div>
+		<div id="smoke-screen">
+			<span id="btn-spinner" class="small-spinner"></span>
+		</div>
 			<div id="modal-header">
 				<?php if ( $a['data']['item_logo'] ) { ?>
 					<div id="item-logo-cont">
@@ -161,6 +163,7 @@
 								</div>
 								<?php } ?>
 									<div class="pure-g">
+										<fieldset style="width: 100%;">
 										<div class="pure-u-1 pure-u-md-11-24" style="position: relative;">
 											<label for="billing_name"><?php esc_html_e( 'Name', 'stripe-payments' ); ?></label>
 											<svg id="i-user" class="icon input-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
@@ -176,6 +179,7 @@
 											</svg>
 											<input class="pure-input-1 has-icon" type="email" id="email" name="email" value="<?php echo esc_attr( $a['data']['customer_email'] ); ?>" required>
 										</div>
+										</fieldset>
 										<?php if ( $a['data']['billing_address'] && $a['data']['shipping_address'] ) { ?>
 											<div class="pure-u-1">
 												<label class="pure-checkbox"><input type="checkbox" id="same-bill-ship-addr" name="same-bill-ship-addr" checked> Same billing and shipping info</label>
@@ -263,15 +267,15 @@
 								</div>
 								<?php } ?>
 							</div>
-							<div class="pure-u-5-5 centered">
-								<div id="submit-btn-cont">
+							<div id="buttons-container">
+							<div class="pure-u-5-5" style="position: relative;">
+								<div id="submit-btn-cont" class="pure-u-5-5 centered">
 									<button type="submit" id="submit-btn" class="pure-button pure-button-primary" disabled><?php echo esc_html( $a['pay_btn_text'] ); ?></button>
-									<span id="btn-spinner" class="small-spinner"></span>
 								</div>
-								<?php
+							<?php
 									$out = apply_filters( 'asp_ng_pp_after_button', '', $a['data'], '' );
 									echo $out;
-								?>
+							?>
 							</div>
 							<div class="pure-u-1"<?php echo ( ! $a['data']['tax'] && ! $a['data']['shipping'] ) ? ' style="display: none;"' : ''; ?>>
 								<div id="tax-shipping-cont" class="pure-u-5-5 centered">
@@ -297,6 +301,7 @@
 									?>
 								</div>
 							</div>
+								</div>
 							<input type="hidden" id="payment-intent" name="payment_intent" value="">
 							<input type="hidden" id="product-id" name="product_id" value="<?php echo esc_attr( $a['prod_id'] ); ?>">
 							<input type="hidden" name="process_ipn" value="1">

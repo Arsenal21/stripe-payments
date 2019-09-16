@@ -6,6 +6,11 @@ html, body {
     overflow: auto;
 }
 
+html {
+    overflow: scroll; 
+    -webkit-overflow-scrolling: touch;
+}
+
 #test-mode {
     position: fixed;
     z-index: 10000;
@@ -38,9 +43,13 @@ html, body {
     width: 100%;
     height: 100%;
     top: 0;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
     left: 0;
-    z-index:100;
+    z-index: 100;
     cursor: wait;
+    background: rgba(255, 255, 255, .3);
 }
 
 .Aligner-item {
@@ -130,7 +139,7 @@ html, body {
 #submit-btn-cont {
     position: relative;
     height: 34px;
-    width: auto;
+    width: 100%;
     display: inline-block;
     margin-top: 5px;
 }
@@ -212,17 +221,14 @@ input.pure-input-1.has-icon, select.pure-input-1.has-icon {
 /* Small Spinner */
 
 .small-spinner {
-    vertical-align: middle;
-    right: 10px;
-    top: 0.5em;
     display: none;
     box-sizing: border-box;
-    position: absolute;
-    width: 20px;
-    height: 20px;
+    position: relative;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
-    border: 2px solid #ccc;
-    border-top-color: #333;
+    border: 7px solid #ccc;
+    border-top-color: #0078e7;
     animation: small-spinner .6s linear infinite;
 }
 
@@ -250,8 +256,9 @@ input.pure-input-1.has-icon, select.pure-input-1.has-icon {
 
 @media screen and (max-width: 48em) {
     #test-mode {
-        top: 1px;
+        top: 5px;
         right: auto;
+        left: 5px;
     }
     .half-width {
         width: 100%;
@@ -259,5 +266,40 @@ input.pure-input-1.has-icon, select.pure-input-1.has-icon {
     }
     .half-width .half-inner-left, .half-inner-right {
         padding: 0;
+    }
+    #Aligner {
+        display: block;
+    }
+    .Aligner-item {
+        margin: 0;
+        max-width: 100%;
+        border-radius: 0;
+        box-shadow: none;
+    }
+    #modal-header {
+        border-radius: 0;
+    }
+    #item-logo-cont {
+        text-align: center;
+        display: inline-block;
+        width: 100%;    
+    }
+    #item-logo {
+        top: 10px;
+        position: relative;
+    }
+    #buttons-container {
+        margin-top: 20px;
+        margin-bottom: 50px;
+    }
+    #submit-btn-cont {
+        height: auto;
+    }
+    #submit-btn {
+        width: 90%;
+        height: 50px;
+    }
+    #billing-addr-cont, #shipping-addr-cont {
+        width: 100%;
     }
 }
