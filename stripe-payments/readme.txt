@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 4.7
 Tested up to: 5.2
 Requires PHP: 5.4
-Stable tag: 2.0.7t3
+Stable tag: 2.0.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -154,8 +154,8 @@ None.
 == Changelog ==
 
 = WIP 2.0.7 =
-- [New API]: Restyled payment popup for better responsiveness on mobile devices.
 - [New API]: Moved process_ipn action to wp_loaded hook. Should fix issues with "The site is experiencing technical problems" error during payment processing on some configurations.
+- [New API]: Restyled payment popup for better responsiveness on mobile devices.
 - [New API]: Updated Stripe PHP SDK library to 6.43.1.
 - [New API]: Added debug log warning when another Stripe PHP SDK is loaded. Warning is logged once per 6 hours in order to not flood the log.
 - [New API]: Payment popup server interaction errors are now more informative.
