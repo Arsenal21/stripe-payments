@@ -153,7 +153,10 @@ None.
 
 == Changelog ==
 
-= WIP 2.0.7 =
+= 2.0.7.1 =
+- [New API]: Fixed visual bug on payment popup when coupons are enabled.
+
+= 2.0.7 =
 - [New API]: Moved process_ipn action to wp_loaded hook. Should fix issues with "The site is experiencing technical problems" error during payment processing on some configurations.
 - [New API]: Restyled payment popup for better responsiveness on mobile devices.
 - [New API]: Updated Stripe PHP SDK library to 6.43.1.
