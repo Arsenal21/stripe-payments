@@ -92,7 +92,7 @@ class ASP_PP_Handler {
 		// Yeah, I know, it's not considered "fancy" anymore, but things become overcomplicated with vanilla JS sometimes.
 		// So screw those hipster things, there is no shame in using a good tool only because some ppl think it's "old".
 		// My coming out: I'm using jQuery!
-		$site_url     = get_site_url();
+		$site_url       = get_site_url();
 		$a['scripts'][] = array(
 			'src'    => $site_url . '/wp-includes/js/jquery/jquery.js',
 			'footer' => true,
@@ -284,6 +284,11 @@ class ASP_PP_Handler {
 		$data['customer_default_country'] = $default_country;
 
 		$data['addons'] = array();
+
+		$data['payment_methods'][] = array(
+			'id'  => 'def',
+			'title' => __( 'Credit or debit card', 'stripe-payments' ),
+		);
 
 		$data = apply_filters( 'asp-button-output-data-ready', $data, array( 'product_id' => $product_id ) ); //phpcs:ignore
 

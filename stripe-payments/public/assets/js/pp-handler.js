@@ -211,7 +211,6 @@ if (vars.data.coupons_enabled) {
 	var couponInput = document.getElementById('coupon-code');
 	var couponErr = document.getElementById('coupon-err');
 	var couponInfo = document.getElementById('coupon-info');
-	var couponSpinner = document.getElementById('coupon-spinner');
 	couponInput.addEventListener('keydown', function (e) {
 		if (e.keyCode === 13) {
 			e.preventDefault();
@@ -226,7 +225,6 @@ if (vars.data.coupons_enabled) {
 			return false;
 		}
 		couponBtn.disabled = true;
-		couponSpinner.style.display = 'block';
 		smokeScreen(true);
 		var ajaxData = 'action=asp_pp_check_coupon&product_id=' + vars.data.product_id + '&coupon_code=' + couponInput.value;
 		new ajaxRequest(vars.ajaxURL, ajaxData,
@@ -251,7 +249,6 @@ if (vars.data.coupons_enabled) {
 					couponInputCont.style.display = 'none';
 				}
 				updateAllAmounts();
-				couponSpinner.style.display = 'none';
 				couponBtn.disabled = false;
 				smokeScreen(false);
 			},
@@ -286,7 +283,6 @@ var style = {
 };
 
 var submitBtn = document.getElementById('submit-btn');
-var btnSpinner = document.getElementById('btn-spinner');
 var billingNameInput = document.getElementById('billing-name');
 var emailInput = document.getElementById('email');
 var piInput = document.getElementById('payment-intent');
@@ -415,7 +411,6 @@ form.addEventListener('submit', function (event) {
 
 	errorCont.style.display = 'none';
 	submitBtn.disabled = true;
-	btnSpinner.style.display = "inline-block";
 
 	updateAllAmounts();
 
@@ -427,13 +422,22 @@ form.addEventListener('submit', function (event) {
 
 });
 
-if (vars.data.addons) {
-	vars.data.addons.forEach(function (addon) {
-		console.log(addon.handler + ' init');
-		addon.obj = new window[addon.handler](vars.data);
-		addon.obj.init();
-	});
+vars.data.initRemoveSmoke=true;
+
+doAddonAction('init');
+
+if (vars.data.initRemoveSmoke) {
+	smokeScreen(false);
 }
+
+jQuery('.pm-select-btn').click(function (e) {
+	vars.data.currentPM = jQuery(this).data('pm-id');
+	jQuery('.pm-select-btn').removeClass('pure-button-active');
+	jQuery(this).addClass('pure-button-active');
+	doAddonAction('pmSelectClicked');
+	jQuery('#payment-form').find('[data-pm-name][data-pm-name!="' + vars.data.currentPM + '"]').hide();
+	jQuery('#payment-form').find('[data-pm-name="' + vars.data.currentPM + '"]').show();
+})
 
 function canProceed() {
 	if (vars.data.amount_variable) {
@@ -559,7 +563,6 @@ function handlePayment() {
 					}
 					if (!resp.success) {
 						submitBtn.disabled = false;
-						btnSpinner.style.display = "none";
 						errorCont.innerHTML = resp.err;
 						errorCont.style.display = 'block';
 						smokeScreen(false);
@@ -582,7 +585,6 @@ function handlePayment() {
 			},
 			function (res, errMsg) {
 				submitBtn.disabled = false;
-				btnSpinner.style.display = "none";
 				errorCont.innerHTML = errMsg;
 				errorCont.style.display = 'block';
 				smokeScreen(false);
@@ -614,7 +616,6 @@ function handlePayment() {
 			console.log(result);
 			if (result.error) {
 				submitBtn.disabled = false;
-				btnSpinner.style.display = "none";
 				errorCont.innerHTML = result.error.message;
 				errorCont.style.display = 'block';
 				smokeScreen(false);
@@ -638,7 +639,6 @@ function handlePayment() {
 							console.log(resp);
 							if (!resp.success) {
 								submitBtn.disabled = false;
-								btnSpinner.style.display = "none";
 								errorCont.innerHTML = resp.err;
 								errorCont.style.display = 'block';
 								smokeScreen(false);
@@ -670,7 +670,6 @@ function handlePayment() {
 					},
 					function (res, errMsg) {
 						submitBtn.disabled = false;
-						btnSpinner.style.display = "none";
 						errorCont.innerHTML = errMsg;
 						errorCont.style.display = 'block';
 						smokeScreen(false);
@@ -693,7 +692,6 @@ function handlePayment() {
 				console.log(result);
 				if (result.error) {
 					submitBtn.disabled = false;
-					btnSpinner.style.display = "none";
 					errorCont.innerHTML = result.error.message;
 					errorCont.style.display = 'block';
 					smokeScreen(false);
@@ -724,7 +722,6 @@ function handlePayment() {
 function handleCardPaymentResult(result) {
 	if (result.error) {
 		submitBtn.disabled = false;
-		btnSpinner.style.display = "none";
 		errorCont.innerHTML = result.error.message;
 		errorCont.style.display = 'block';
 		smokeScreen(false);
@@ -740,14 +737,36 @@ function handleCardPaymentResult(result) {
 function doAddonAction(action) {
 	vars.data.doNotProceed = false;
 	if (vars.data.addons) {
-		if (vars.data.addons) {
-			vars.data.addons.forEach(function (addon) {
-				if (typeof addon.obj[action] === "function") {
-					console.log(addon.name + ': ' + action);
-					addon.obj[action]();
-				}
-			});
+		vars.data.addons.forEach(function (addon) {
+			if (typeof addon.obj === "undefined") {
+				addon.obj = new window[addon.handler](vars.data);
+			}
+			if (typeof addon.obj[action] === "function") {
+				console.log(addon.name + ': ' + action);
+				addon.obj[action]();
+			}
+		});
+	}
+}
+
+function toggleRequiredElements(els, hide) {
+	els.forEach(function (el) {
+		if (hide) {
+			jQuery('#' + el).hide();
+		} else {
+			jQuery('#' + el).show();
 		}
+	});
+	if (hide) {
+		jQuery('#payment-form').find('[required]').each(function (id, el) {
+			jQuery(el).prop('required', false);
+			jQuery(el).attr('data-required-hidden', 1);
+		});
+	} else {
+		jQuery('#payment-form').find('[data-required-hidden="1"]').each(function (id, el) {
+			jQuery(el).prop('required', true);
+			jQuery(el).attr('data-required-hidden', 0);
+		});
 	}
 }
 
