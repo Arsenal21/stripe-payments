@@ -151,7 +151,6 @@
 									<div id="coupon-input-cont">
 										<div style="position: relative;">
 										<input class="pure-input-1" type="text" id="coupon-code" name="coupon-code">
-										<span id="coupon-spinner" class="small-spinner coupon-spinner"></span>
 										<button id="apply-coupon-btn" class="pure-button" type="button"><?php echo esc_html( __( 'Apply', 'stripe-payments' ) ); ?></button>
 										</div>
 										<div id="coupon-err" class="form-err" role="alert"></div>

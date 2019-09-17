@@ -211,7 +211,6 @@ if (vars.data.coupons_enabled) {
 	var couponInput = document.getElementById('coupon-code');
 	var couponErr = document.getElementById('coupon-err');
 	var couponInfo = document.getElementById('coupon-info');
-	var couponSpinner = document.getElementById('coupon-spinner');
 	couponInput.addEventListener('keydown', function (e) {
 		if (e.keyCode === 13) {
 			e.preventDefault();
@@ -226,7 +225,6 @@ if (vars.data.coupons_enabled) {
 			return false;
 		}
 		couponBtn.disabled = true;
-		couponSpinner.style.display = 'block';
 		smokeScreen(true);
 		var ajaxData = 'action=asp_pp_check_coupon&product_id=' + vars.data.product_id + '&coupon_code=' + couponInput.value;
 		new ajaxRequest(vars.ajaxURL, ajaxData,
@@ -251,7 +249,6 @@ if (vars.data.coupons_enabled) {
 					couponInputCont.style.display = 'none';
 				}
 				updateAllAmounts();
-				couponSpinner.style.display = 'none';
 				couponBtn.disabled = false;
 				smokeScreen(false);
 			},
