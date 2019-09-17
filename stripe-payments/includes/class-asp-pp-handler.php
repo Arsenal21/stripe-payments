@@ -88,6 +88,16 @@ class ASP_PP_Handler {
 			'src'    => 'https://js.stripe.com/v3/',
 		);
 
+		// jQuery
+		// Yeah, I know, it's not considered "fancy" anymore, but things become overcomplicated with vanilla JS sometimes.
+		// So screw those hipster things, there is no shame in using a good tool only because some ppl think it's "old".
+		// My coming out: I'm using jQuery!
+		$site_url     = get_site_url();
+		$a['scripts'][] = array(
+			'src'    => $site_url . '/wp-includes/js/jquery/jquery.js',
+			'footer' => true,
+		);
+
 		$a['styles']  = apply_filters( 'asp_ng_pp_output_add_styles', $a['styles'] );
 		$a['scripts'] = apply_filters( 'asp_ng_pp_output_add_scripts', $a['scripts'] );
 		$a['vars']    = apply_filters( 'asp_ng_pp_output_add_vars', $a['vars'] );
