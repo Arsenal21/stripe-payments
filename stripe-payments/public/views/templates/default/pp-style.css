@@ -244,7 +244,8 @@ input.pure-input-1.has-icon, select.pure-input-1.has-icon {
 
 @media only screen and (max-width: 480px) {
     .small-spinner {
-        top: 1.1em;
+        top: 50%;
+        position: fixed;
     }
     .coupon-spinner {
         top: .5em;
@@ -301,5 +302,8 @@ input.pure-input-1.has-icon, select.pure-input-1.has-icon {
     }
     #billing-addr-cont, #shipping-addr-cont {
         width: 100%;
+    }
+    #modal-body {
+        padding: 25px 25px 25px 15px;
     }
 }
