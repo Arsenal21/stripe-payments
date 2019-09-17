@@ -204,8 +204,7 @@
 									<?php if ( $a['data']['billing_address'] && $a['data']['shipping_address'] ) { ?>
 									<div class="pure-u-1">
 										<label class="pure-checkbox"><input type="checkbox" id="same-bill-ship-addr"
-												name="same-bill-ship-addr" checked> Same billing and shipping
-											info</label>
+												name="same-bill-ship-addr" checked> Same billing and shipping info</label>
 									</div>
 									<?php } ?>
 									<?php if ( $a['data']['billing_address'] ) { ?>
@@ -383,7 +382,6 @@
 		</div>
 	</div>
 </body>
-<script src="https://js.stripe.com/v3/"></script>
 <?php
 foreach ( $a['scripts'] as $script ) {
 	if ( $script['footer'] ) {

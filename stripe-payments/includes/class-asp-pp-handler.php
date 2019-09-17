@@ -81,6 +81,13 @@ class ASP_PP_Handler {
 		$a['scripts'] = array();
 		$a['styles']  = array();
 		$a['vars']    = array();
+
+		// Stripe script should come first
+		$a['scripts'][] = array(
+			'footer' => true,
+			'src'    => 'https://js.stripe.com/v3/',
+		);
+
 		$a['styles']  = apply_filters( 'asp_ng_pp_output_add_styles', $a['styles'] );
 		$a['scripts'] = apply_filters( 'asp_ng_pp_output_add_scripts', $a['scripts'] );
 		$a['vars']    = apply_filters( 'asp_ng_pp_output_add_vars', $a['vars'] );
