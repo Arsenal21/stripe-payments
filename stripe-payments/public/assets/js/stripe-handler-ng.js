@@ -1,32 +1,26 @@
 var stripeHandlerNG = function (data) {
-	var parent = this;
-	parent.data = data;
-	parent.form = jQuery('form#asp_ng_form_' + data.uniq_id);
-	parent.documentElementOrigOverflow = jQuery('html').css('overflow');
-	jQuery('#asp_ng_button_' + data.uniq_id).prop('disabled', false);
-	jQuery('#asp_ng_button_' + data.uniq_id).click(function (e) {
-		jQuery('html').css('overflow', 'hidden');
-		e.preventDefault();
+
+	this.handleModal = function (show) {
 		if (!parent.modal) {
-			jQuery('body').append('<div id="asp-payment-popup-' + parent.data.uniq_id + '" class="asp-popup-iframe-cont"><div class="asp-popup-spinner-cont"></div><iframe frameborder="0" allowtransparency="true" class="asp-popup-iframe" allow="payment" allowpaymentrequest="true" src="' + parent.data.iframe_url + '"></iframe></div>');
+			jQuery('body').append('<div id="asp-payment-popup-' + parent.data.uniq_id + '" style="display: none;" class="asp-popup-iframe-cont"><div class="asp-popup-spinner-cont"></div><iframe frameborder="0" allowtransparency="true" class="asp-popup-iframe" allow="payment" allowpaymentrequest="true" src="' + parent.data.iframe_url + '"></iframe></div>');
 			parent.modal = jQuery('#asp-payment-popup-' + parent.data.uniq_id);
-			parent.modal.css("display", "flex");
-			parent.modal.find('.asp-popup-spinner-cont').append(jQuery('div#asp-btn-spinner-container-' + parent.data.uniq_id).html());
+			if (show) {
+				parent.modal.css('display', 'flex');
+				parent.modal.find('.asp-popup-spinner-cont').append(jQuery('div#asp-btn-spinner-container-' + parent.data.uniq_id).html());
+			}
 			var iframe = parent.modal.find('iframe');
-			iframe.on('load', function (e) {
+			iframe.on('load', function () {
 				parent.modal.find('.asp-popup-spinner-cont').hide();
 				var closebtn = iframe.contents().find('#modal-close-btn');
-				closebtn.fadeIn();
-				// aligner.on('click', function (e) {
-				//     if (e.target !== e.currentTarget) {
-				//         return;
-				//     }
-				//     parent.modal.fadeOut();
-				// })
-				closebtn.on('click', function (e) {
+				if (show) {
+					closebtn.fadeIn();
+				} else {
+					closebtn.css('display','inline');
+				}
+				closebtn.on('click', function () {
 					jQuery('html').css('overflow', parent.documentElementOrigOverflow);
 					parent.modal.fadeOut();
-				})
+				});
 				parent.iForm = iframe.contents().find('form#payment-form');
 				parent.iForm.on('submit', function (e) {
 					e.preventDefault();
@@ -36,7 +30,7 @@ var stripeHandlerNG = function (data) {
 						jQuery('div#asp-btn-spinner-container-' + parent.data.uniq_id).show();
 						parent.modal.fadeOut();
 						var hiddenInputsDiv = parent.form.find('div.asp-child-hidden-fields');
-						parent.iForm.find('[name!=""]').each(function (e) {
+						parent.iForm.find('[name!=""]').each(function () {
 							if (jQuery(this).attr('name')) {
 								jQuery(this).attr('name', 'asp_' + jQuery(this).attr('name'));
 								hiddenInputsDiv.append(jQuery(this));
@@ -49,7 +43,23 @@ var stripeHandlerNG = function (data) {
 				});
 			});
 		} else {
-			parent.modal.css("display", "flex").hide().fadeIn();
+			parent.modal.css('display', 'flex').hide().fadeIn();
 		}
+
+	};
+
+	var parent = this;
+	parent.preload = false;
+	parent.data = data;
+	parent.form = jQuery('form#asp_ng_form_' + data.uniq_id);
+	parent.documentElementOrigOverflow = jQuery('html').css('overflow');
+	jQuery('#asp_ng_button_' + data.uniq_id).prop('disabled', false);
+	if (parent.preload) {
+		parent.handleModal(false);
+	}
+	jQuery('#asp_ng_button_' + data.uniq_id).click(function (e) {
+		jQuery('html').css('overflow', 'hidden');
+		e.preventDefault();
+		parent.handleModal(true);
 	});
-}
+};
