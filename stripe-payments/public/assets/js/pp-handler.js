@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 function updateAllAmounts() {
 	calcTotal();
 	submitBtn.innerHTML = vars.payBtnText.replace(/%s/g, formatMoney(vars.data.amount));
@@ -62,15 +63,15 @@ function amount_to_cents(amount, curr) {
 
 function showFormInputErr(msg, el, inp) {
 	el.innerHTML = msg;
-	el.style.display = "block";
+	el.style.display = 'block';
 	inp.focus();
 }
 
 function smokeScreen(show) {
 	if (show) {
-		display = "flex";
+		display = 'flex';
 	} else {
-		display = "none";
+		display = 'none';
 	}
 	document.getElementById('smoke-screen').style.display = display;
 }
@@ -78,14 +79,14 @@ function smokeScreen(show) {
 function formatMoney(n) {
 	n = cents_to_amount(n, vars.data.currency);
 	var c = isNaN(c = Math.abs(vars.currencyFormat.c)) ? 2 : vars.currencyFormat.c,
-		d = d == undefined ? "." : vars.currencyFormat.d,
-		t = t == undefined ? "," : vars.currencyFormat.t,
-		s = n < 0 ? "-" : "",
+		d = d == undefined ? '.' : vars.currencyFormat.d,
+		t = t == undefined ? ',' : vars.currencyFormat.t,
+		s = n < 0 ? '-' : '',
 		i = String(parseInt(n = Math.abs(Number(n) || 0).toFixed(c))),
 		j = (j = i.length) > 3 ? j % 3 : 0;
 
-	var result = s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
-	return (vars.currencyFormat.pos !== "right" ? vars.currencyFormat.s + result : result + vars.currencyFormat.s);
+	var result = s + (j ? i.substr(0, j) + t : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, '$1' + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : '');
+	return (vars.currencyFormat.pos !== 'right' ? vars.currencyFormat.s + result : result + vars.currencyFormat.s);
 }
 
 function inIframe() {
@@ -124,7 +125,7 @@ function validate_custom_quantity() {
 		showFormInputErr(vars.str.strStockNotAvailable.replace('%d', vars.data.stock_items), quantityErr, quantityInput);
 		return false;
 	}
-	quantityErr.style.display = "none";
+	quantityErr.style.display = 'none';
 	vars.data.quantity = custom_quantity;
 	return custom_quantity;
 }
@@ -161,7 +162,7 @@ function validate_custom_amount() {
 		showFormInputErr(vars.str.strMinAmount + ' 0.5', amountErr, amountInput);
 		return false;
 	}
-	amountErr.style.display = "none";
+	amountErr.style.display = 'none';
 	amountInput.value = displayAmount;
 	return cAmount;
 }
@@ -220,7 +221,7 @@ if (vars.data.coupons_enabled) {
 	});
 	couponBtn.addEventListener('click', function (e) {
 		e.preventDefault();
-		couponErr.style.display = "none";
+		couponErr.style.display = 'none';
 		if (couponInput.value === '') {
 			return false;
 		}
@@ -258,7 +259,7 @@ if (vars.data.coupons_enabled) {
 				couponBtn.disabled = false;
 				smokeScreen(false);
 			}
-		)
+		);
 	});
 	couponRemoveBtn.addEventListener('click', function (e) {
 		delete (vars.data.coupon);
@@ -271,8 +272,6 @@ if (vars.data.coupons_enabled) {
 
 var amount = vars.data.amount;
 var clientSecAmount = 0;
-var formCont = document.getElementById('form-container');
-var background = document.getElementById('Aligner');
 var stripe = Stripe(vars.stripe_key);
 var elements = stripe.elements();
 
@@ -294,14 +293,14 @@ if (vars.data.tos) {
 	var tosInputErr = document.getElementById('tos-error');
 	tosInput.addEventListener('change', function (event) {
 		tosInputErr.style.display = 'none';
-	})
+	});
 }
 
 if (vars.data.variations) {
 	var varInputs = document.getElementsByClassName('variations-input');
 	for (var i = 0; i < varInputs.length; i++) {
 		(function (index) {
-			varInputs[index].addEventListener("change", function () {
+			varInputs[index].addEventListener('change', function () {
 				var grpId = this.getAttribute('data-asp-variations-group-id');
 				var varId = this.value;
 				if (Object.getOwnPropertyNames(vars.data.variations).length !== 0) {
@@ -311,8 +310,8 @@ if (vars.data.variations) {
 					vars.data.variations.applied[grpId] = varId;
 					updateAllAmounts();
 				}
-			})
-			if (varInputs[index].checked || varInputs[index].tagName === "SELECT") {
+			});
+			if (varInputs[index].checked || varInputs[index].tagName === 'SELECT') {
 				triggerEvent(varInputs[index], 'change');
 			}
 		})(i);
@@ -343,7 +342,7 @@ if (vars.data.billing_address && vars.data.shipping_address) {
 			}
 			for (var i = 0; i < baddrHide.length; i++) {
 				(function (index) {
-					baddrHide[index].style.display = "inline-block";
+					baddrHide[index].style.display = 'inline-block';
 				})(i);
 			}
 			for (var i = 0; i < saddrRequired.length; i++) {
@@ -351,18 +350,18 @@ if (vars.data.billing_address && vars.data.shipping_address) {
 					saddrRequired[index].required = false;
 				})(i);
 			}
-			billaddrCont.className = "";
-			shipaddrCont.style.display = "none";
+			billaddrCont.className = '';
+			shipaddrCont.style.display = 'none';
 		} else {
 			for (var i = 0; i < itemsArr.length; i++) {
 				(function (index) {
 					itemsArr[index].setAttribute('data-class-save', itemsArr[index].className);
-					itemsArr[index].className = "pure-u-1";
+					itemsArr[index].className = 'pure-u-1';
 				})(i);
 			}
 			for (var i = 0; i < baddrHide.length; i++) {
 				(function (index) {
-					baddrHide[index].style.display = "none";
+					baddrHide[index].style.display = 'none';
 				})(i);
 			}
 			for (var i = 0; i < saddrRequired.length; i++) {
@@ -370,10 +369,10 @@ if (vars.data.billing_address && vars.data.shipping_address) {
 					saddrRequired[index].required = true;
 				})(i);
 			}
-			billaddrCont.className = "half-width";
-			shipaddrCont.style.display = "inline-block";
+			billaddrCont.className = 'half-width';
+			shipaddrCont.style.display = 'inline-block';
 		}
-	})
+	});
 }
 
 var card = elements.create('card', {
@@ -422,7 +421,7 @@ form.addEventListener('submit', function (event) {
 
 });
 
-vars.data.initRemoveSmoke=true;
+vars.data.initRemoveSmoke = true;
 
 doAddonAction('init');
 
@@ -432,12 +431,12 @@ if (vars.data.initRemoveSmoke) {
 
 jQuery('.pm-select-btn').click(function (e) {
 	vars.data.currentPM = jQuery(this).data('pm-id');
-	jQuery('.pm-select-btn').removeClass('pure-button-active');
-	jQuery(this).addClass('pure-button-active');
+	jQuery('.pm-select-btn').parent().removeClass('pure-menu-selected');
+	jQuery(this).parent().addClass('pure-menu-selected');
 	doAddonAction('pmSelectClicked');
 	jQuery('#payment-form').find('[data-pm-name][data-pm-name!="' + vars.data.currentPM + '"]').hide();
 	jQuery('#payment-form').find('[data-pm-name="' + vars.data.currentPM + '"]').show();
-})
+});
 
 function canProceed() {
 	if (vars.data.amount_variable) {
@@ -445,7 +444,7 @@ function canProceed() {
 		if (amount === false) {
 			event.preventDefault();
 			return false;
-		};
+		}
 		vars.data.item_price = amount;
 	}
 	if (vars.data.custom_quantity) {
@@ -462,7 +461,7 @@ function canProceed() {
 			console.log('Self-submitting');
 			for (var i = 0; i < form.elements.length; i++) {
 				if (form.elements[i].name) {
-					form.elements[i].setAttribute("name", 'asp_' + form.elements[i].name);
+					form.elements[i].setAttribute('name', 'asp_' + form.elements[i].name);
 				}
 			}
 			form.submit();
@@ -491,7 +490,7 @@ function handlePayment() {
 	var billingDetails = {
 		name: billingNameInput.value,
 		email: emailInput.value,
-	}
+	};
 	if (vars.data.billing_address) {
 		var bAddr = document.getElementById('address');
 		var bCity = document.getElementById('city');
@@ -501,7 +500,7 @@ function handlePayment() {
 			line1: bAddr.value,
 			city: bCity.value,
 			country: bCountry.value || bCountry.options[bCountry.selectedIndex].value,
-		}
+		};
 		var postal_code = bPostcode.value;
 		if (postal_code) {
 			billingDetails.address.postal_code = postal_code;
@@ -510,7 +509,7 @@ function handlePayment() {
 	if (vars.data.shipping_address) {
 		var shippingDetails = {
 			name: billingNameInput.value
-		}
+		};
 		var sAddr = document.getElementById('shipping_address');
 		var sCity = document.getElementById('shipping_city');
 		var sCountry = document.getElementById('shipping_country');
@@ -519,7 +518,7 @@ function handlePayment() {
 			line1: sAddr.value,
 			city: sCity.value,
 			country: sCountry.value || sCountry.options[sCountry.selectedIndex].value,
-		}
+		};
 		var spostal_code = sPostcode.value;
 		if (spostal_code) {
 			shippingDetails.address.postal_code = spostal_code;
@@ -533,7 +532,7 @@ function handlePayment() {
 		payment_method_data: {
 			billing_details: billingDetails
 		}
-	}
+	};
 	if (shippingDetails) {
 		opts.shipping = shippingDetails;
 	}
@@ -555,7 +554,7 @@ function handlePayment() {
 				try {
 					var resp = JSON.parse(res.responseText);
 					console.log(resp);
-					if (typeof resp.stock_items !== "undefined") {
+					if (typeof resp.stock_items !== 'undefined') {
 						if (vars.data.stock_items !== resp.stock_items) {
 							vars.data.stock_items = resp.stock_items;
 							validate_custom_quantity();
@@ -603,7 +602,7 @@ function handlePayment() {
 		console.log('Creating token');
 		var opts = {
 			name: billingNameInput.value
-		}
+		};
 		if (vars.data.billing_address) {
 			opts.address_line1 = bAddr.value;
 			opts.address_city = bCity.value;
@@ -707,7 +706,7 @@ function handlePayment() {
 	} else {
 		if (vars.data.dont_save_card !== false) {
 			opts.save_payment_method = true;
-			opts.setup_future_usage = "off_session";
+			opts.setup_future_usage = 'off_session';
 		}
 		console.log('Doing handleCardPayment()');
 		stripe.handleCardPayment(
@@ -738,10 +737,10 @@ function doAddonAction(action) {
 	vars.data.doNotProceed = false;
 	if (vars.data.addons) {
 		vars.data.addons.forEach(function (addon) {
-			if (typeof addon.obj === "undefined") {
+			if (typeof addon.obj === 'undefined') {
 				addon.obj = new window[addon.handler](vars.data);
 			}
-			if (typeof addon.obj[action] === "function") {
+			if (typeof addon.obj[action] === 'function') {
 				console.log(addon.name + ': ' + action);
 				addon.obj[action]();
 			}
@@ -758,7 +757,7 @@ function toggleRequiredElements(els, hide) {
 		}
 	});
 	if (hide) {
-		jQuery('#payment-form').find('[required]').each(function (id, el) {
+		jQuery('#payment-form').find('[required]:hidden').each(function (id, el) {
 			jQuery(el).prop('required', false);
 			jQuery(el).attr('data-required-hidden', 1);
 		});
@@ -789,7 +788,7 @@ var ajaxRequest = function (URL, reqStr, doneFunc, failFunc) {
 			} else {
 				console.log('ajaxRequest failed');
 				console.log(parent.XMLHttpReq);
-				var errMsg = "Error occurred:" + ' ' + parent.XMLHttpReq.statusText + "\n";
+				var errMsg = 'Error occurred:' + ' ' + parent.XMLHttpReq.statusText + '\n';
 				errMsg += 'URL: ' + parent.XMLHttpReq.responseURL + '\n';
 				errMsg += 'Code: ' + parent.XMLHttpReq.status;
 				if (parent.failFunc) {
@@ -797,8 +796,8 @@ var ajaxRequest = function (URL, reqStr, doneFunc, failFunc) {
 				}
 			}
 		}
-	}
+	};
 	parent.XMLHttpReq.open('POST', parent.URL);
 	parent.XMLHttpReq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 	parent.XMLHttpReq.send(reqStr);
-}
+};

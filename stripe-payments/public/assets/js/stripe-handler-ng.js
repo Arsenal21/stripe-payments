@@ -15,8 +15,7 @@ var stripeHandlerNG = function (data) {
 			var iframe = parent.modal.find('iframe');
 			iframe.on('load', function (e) {
 				parent.modal.find('.asp-popup-spinner-cont').hide();
-				var aligner = iframe.contents().find('#Aligner');
-				closebtn = iframe.contents().find('#modal-close-btn');
+				var closebtn = iframe.contents().find('#modal-close-btn');
 				closebtn.fadeIn();
 				// aligner.on('click', function (e) {
 				//     if (e.target !== e.currentTarget) {

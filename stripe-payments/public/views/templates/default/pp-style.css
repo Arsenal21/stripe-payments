@@ -218,6 +218,11 @@ input.pure-input-1.has-icon, select.pure-input-1.has-icon {
     padding-left: 40px;
 }
 
+#buttons-container {
+    border-top: 1px solid #e5e5e5;
+    padding-top: 10px;
+}
+
 /* Small Spinner */
 
 .small-spinner {
@@ -229,10 +234,6 @@ input.pure-input-1.has-icon, select.pure-input-1.has-icon {
     border: 7px solid #ccc;
     border-top-color: #0078e7;
     animation: small-spinner .6s linear infinite;
-}
-
-.coupon-spinner {
-    z-index: 1;
 }
 
 @keyframes small-spinner {

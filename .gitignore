@@ -1,2 +1,5 @@
 /nbproject/private/
 /stripe-payments/*_debug_log.txt
+node_modules
+.eslintrc.json
+package.json

@@ -44,8 +44,7 @@
 <body>
 	<div id="Aligner" class="Aligner">
 		<?php if ( ! $a['data']['is_live'] ) { ?>
-		<a href="https://stripe.com/docs/testing#cards" target="_blank"
-			id="test-mode"><?php esc_html_e( 'TEST MODE', 'stripe-payments' ); ?></a>
+		<a href="https://stripe.com/docs/testing#cards" target="_blank" id="test-mode"><?php esc_html_e( 'TEST MODE', 'stripe-payments' ); ?></a>
 		<?php } ?>
 		<div class="Aligner-item">
 			<div id="smoke-screen">
@@ -57,34 +56,29 @@
 					<img id="item-logo" src="<?php echo esc_url( $a['data']['item_logo'] ); ?>">
 				</div>
 				<?php } ?>
-				<span id="modal-close-btn" title="<?php esc_html_e( 'Close', 'stripe-payments' ); ?>"><img
-						src="<?php echo esc_url( $a['plugin_url'] ); ?>/public/views/templates/default/close-btn.png"></span>
+				<span id="modal-close-btn" title="<?php esc_html_e( 'Close', 'stripe-payments' ); ?>"><img src="<?php echo esc_url( $a['plugin_url'] ); ?>/public/views/templates/default/close-btn.png"></span>
 				<div id="item-name"><?php echo esc_html( $a['item_name'] ); ?></div>
 				<div id="item-descr"><?php echo esc_html( $a['data']['descr'] ); ?></div>
 			</div>
 			<div id="modal-body">
 				<div class="pure-g">
 					<div class="pure-u-1">
-						<div id="global-error"
-							<?php echo isset( $a['fatal_error'] ) ? 'style="display: block"' : ''; ?>>
+						<div id="global-error" <?php echo isset( $a['fatal_error'] ) ? 'style="display: block"' : ''; ?>>
 							<?php echo isset( $a['fatal_error'] ) ? esc_html( $a['fatal_error'] ) : ''; ?>
 						</div>
 					</div>
-					<div id="form-container" class="pure-u-1"
-						<?php echo isset( $a['fatal_error'] ) ? 'style="display: none;"' : ''; ?>>
+					<div id="form-container" class="pure-u-1" <?php echo isset( $a['fatal_error'] ) ? 'style="display: none;"' : ''; ?>>
 						<form method="post" id="payment-form" class="pure-form pure-form-stacked">
 							<?php if ( count( $a['data']['payment_methods'] ) > 1 ) { ?>
 							<fieldset>
 								<legend>Select payment method</legend>
-								<div class="pure-button-group" role="group" aria-label="Payment methods">
-									<?php
-									$out = '';
-									foreach ( $a['data']['payment_methods'] as $pm ) {
-										$out .= sprintf( '<button type="button" class="pm-select-btn pure-button%s" data-pm-id="%s">%s</button>', empty( $out ) ? ' pure-button-active' : '', $pm['id'], $pm['title'] );
-									}
+								<?php
+										$out = '';
+								foreach ( $a['data']['payment_methods'] as $pm ) {
+									$out .= sprintf( '<div class="pure-u-1 pure-u-md-1-3"><label class="pure-radio"><input name="pm" class="pm-select-btn" type="radio"%s data-pm-id="%s"> %s</label></div>', empty( $out ) ? ' checked' : '', $pm['id'], $pm['title'] );
+								}
 									echo $out; //phpcs:ignore
-									?>
-								</div>
+								?>
 							</fieldset>
 							<?php } ?>
 							<?php if ( $a['data']['amount_variable'] ) { ?>
@@ -114,13 +108,12 @@
 							<?php } ?>
 							<?php if ( $a['data']['custom_quantity'] ) { ?>
 							<label for="quantity"><?php esc_html_e( 'Enter quantity', 'stripe-payments' ); ?></label>
-							<input type="number" min="1" class="pure-input-1" id="quantity" name="quantity"
-								inputmode="numeric" value="<?php echo esc_attr( $a['data']['quantity'] ); ?>" required>
+							<input type="number" min="1" class="pure-input-1" id="quantity" name="quantity" inputmode="numeric" value="<?php echo esc_attr( $a['data']['quantity'] ); ?>" required>
 							<div id="quantity-error" class="form-err" role="alert"></div>
 							<?php } ?>
 							<?php if ( isset( $a['custom_fields'] ) ) { ?>
 							<div class="pure-u-1">
-                                <?php echo $a['custom_fields']; //phpcs:ignore ?>
+								<?php echo $a['custom_fields']; //phpcs:ignore ?>
 							</div>
 							<?php } ?>
 							<div class="pure-u-1">
@@ -166,62 +159,45 @@
 								?>
 								<?php if ( $a['data']['coupons_enabled'] ) { ?>
 								<div class='pure-u-1'>
-									<label
-										for="coupon"><?php echo esc_html( __( 'Coupon Code', 'stripe-payments' ) ); ?></label>
+									<label for="coupon"><?php echo esc_html( __( 'Coupon Code', 'stripe-payments' ) ); ?></label>
 									<div id="coupon-input-cont">
 										<div style="position: relative;">
 											<input class="pure-input-1" type="text" id="coupon-code" name="coupon-code">
-											<button id="apply-coupon-btn" class="pure-button"
-												type="button"><?php echo esc_html( __( 'Apply', 'stripe-payments' ) ); ?></button>
+											<button id="apply-coupon-btn" class="pure-button" type="button"><?php echo esc_html( __( 'Apply', 'stripe-payments' ) ); ?></button>
 										</div>
 										<div id="coupon-err" class="form-err" role="alert"></div>
 									</div>
 									<div id="coupon-res-cont" style="display: none;">
 										<span id="coupon-info"></span>
-										<button id="remove-coupon-btn" class="pure-button"
-											type="button"><?php echo esc_html( __( 'Remove', 'stripe-payments' ) ); ?></button>
+										<button id="remove-coupon-btn" class="pure-button" type="button"><?php echo esc_html( __( 'Remove', 'stripe-payments' ) ); ?></button>
 									</div>
 								</div>
 								<?php } ?>
 								<div class="pure-g">
 									<fieldset id="name-email-cont" style="width: 100%;">
 										<div class="pure-u-1 pure-u-md-11-24" style="position: relative;">
-											<label
-												for="billing_name"><?php esc_html_e( 'Name', 'stripe-payments' ); ?></label>
-											<svg id="i-user" class="icon input-icon" xmlns="http://www.w3.org/2000/svg"
-												viewBox="0 0 32 32" width="32" height="32" fill="none"
-												stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round"
-												stroke-width="2">
-												<path
-													d="M22 11 C22 16 19 20 16 20 13 20 10 16 10 11 10 6 12 3 16 3 20 3 22 6 22 11 Z M4 30 L28 30 C28 21 22 20 16 20 10 20 4 21 4 30 Z" />
+											<label for="billing_name"><?php esc_html_e( 'Name', 'stripe-payments' ); ?></label>
+											<svg id="i-user" class="icon input-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+												<path d="M22 11 C22 16 19 20 16 20 13 20 10 16 10 11 10 6 12 3 16 3 20 3 22 6 22 11 Z M4 30 L28 30 C28 21 22 20 16 20 10 20 4 21 4 30 Z" />
 											</svg>
-											<input class="pure-input-1 has-icon" type="text" id="billing-name"
-												name="billing_name"
-												value="<?php echo esc_attr( $a['data']['customer_name'] ); ?>" required>
+											<input class="pure-input-1 has-icon" type="text" id="billing-name" name="billing_name" value="<?php echo esc_attr( $a['data']['customer_name'] ); ?>" required>
 										</div>
 										<div class="pure-u-md-1-24"></div>
 										<div class="pure-u-1 pure-u-md-12-24" style="position: relative;">
-											<label
-												for="email"><?php esc_html_e( 'Email', 'stripe-payments' ); ?></label>
-											<svg id="i-mail" class="icon input-icon" xmlns="http://www.w3.org/2000/svg"
-												viewBox="0 0 32 32" width="32" height="32" fill="none"
-												stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round"
-												stroke-width="2">
+											<label for="email"><?php esc_html_e( 'Email', 'stripe-payments' ); ?></label>
+											<svg id="i-mail" class="icon input-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
 												<path d="M2 26 L30 26 30 6 2 6 Z M2 6 L16 16 30 6" />
 											</svg>
-											<input class="pure-input-1 has-icon" type="email" id="email" name="email"
-												value="<?php echo esc_attr( $a['data']['customer_email'] ); ?>"
-												required>
+											<input class="pure-input-1 has-icon" type="email" id="email" name="email" value="<?php echo esc_attr( $a['data']['customer_email'] ); ?>" required>
 										</div>
 									</fieldset>
 									<?php if ( $a['data']['billing_address'] || $a['data']['shipping_address'] ) { ?>
-									<div id="addr-cont">
+									<div id="addr-cont" class="pure-g">
 										<?php } ?>
 										<?php if ( $a['data']['billing_address'] && $a['data']['shipping_address'] ) { ?>
 										<div class="pure-u-1">
 											<label class="pure-checkbox">
-												<input type="checkbox" id="same-bill-ship-addr"
-													name="same-bill-ship-addr" checked> Same billing and shipping
+												<input type="checkbox" id="same-bill-ship-addr" name="same-bill-ship-addr" checked> Same billing and shipping
 												info</label>
 										</div>
 										<?php } ?>
@@ -234,45 +210,29 @@
 															<?php esc_html_e( 'Billing info', 'stripe-payments' ); ?>
 														</legend>
 													</div>
-													<div class="pure-u-1 pure-u-md-14-24 baddr-toggle"
-														style="position: relative;">
-														<label
-															for="address"><?php esc_html_e( 'Address', 'stripe-payments' ); ?></label>
-														<svg id="i-location" class="icon input-icon"
-															xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"
-															width="32" height="32" fill="none" stroke="currentcolor"
-															stroke-linecap="round" stroke-linejoin="round"
-															stroke-width="2">
+													<div class="pure-u-1 pure-u-md-14-24 baddr-toggle" style="position: relative;">
+														<label for="address"><?php esc_html_e( 'Address', 'stripe-payments' ); ?></label>
+														<svg id="i-location" class="icon input-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
 															<circle cx="16" cy="11" r="4" />
-															<path
-																d="M24 15 C21 22 16 30 16 30 16 30 11 22 8 15 5 8 10 2 16 2 22 2 27 8 24 15 Z" />
+															<path d="M24 15 C21 22 16 30 16 30 16 30 11 22 8 15 5 8 10 2 16 2 22 2 27 8 24 15 Z" />
 														</svg>
-														<input class="pure-input-1 has-icon" type="text" id="address"
-															name="address" required>
+														<input class="pure-input-1 has-icon" type="text" id="address" name="address" required>
 													</div>
 													<div class="pure-u-md-1-24 baddr-hide"></div>
-													<div class="pure-u-1 pure-u-md-9-24 baddr-toggle"
-														style="position: relative;">
-														<label
-															for="city"><?php esc_html_e( 'City', 'stripe-payments' ); ?></label>
-														<input class="pure-input-1" type="text" id="city" name="city"
-															required>
+													<div class="pure-u-1 pure-u-md-9-24 baddr-toggle" style="position: relative;">
+														<label for="city"><?php esc_html_e( 'City', 'stripe-payments' ); ?></label>
+														<input class="pure-input-1" type="text" id="city" name="city" required>
 													</div>
-													<div class="pure-u-1 pure-u-md-14-24 baddr-toggle"
-														style="position: relative;">
-														<label
-															for="country"><?php esc_html_e( 'Country', 'stripe-payments' ); ?></label>
-														<select class="pure-input-1" name="country" id="country"
-															required>
-                                                            <?php echo ASP_Utils::get_countries_opts($a['data']['customer_default_country']); //phpcs:ignore ?>
+													<div class="pure-u-1 pure-u-md-14-24 baddr-toggle" style="position: relative;">
+														<label for="country"><?php esc_html_e( 'Country', 'stripe-payments' ); ?></label>
+														<select class="pure-input-1" name="country" id="country" required>
+															<?php echo ASP_Utils::get_countries_opts($a['data']['customer_default_country']); //phpcs:ignore ?>
 														</select>
 													</div>
 													<div class="pure-u-md-1-24 baddr-hide"></div>
 													<div class="pure-u-1 pure-u-md-9-24 baddr-toggle">
-														<label
-															for="postcode"><?php esc_html_e( 'Postcode', 'stripe-payments' ); ?></label>
-														<input class="pure-u-1" type="text" name="postcode"
-															id="postcode">
+														<label for="postcode"><?php esc_html_e( 'Postcode', 'stripe-payments' ); ?></label>
+														<input class="pure-u-1" type="text" name="postcode" id="postcode">
 													</div>
 												</fieldset>
 											</div>
@@ -288,39 +248,26 @@
 														</legend>
 													</div>
 													<div class="pure-u-1" style="position: relative;">
-														<label
-															for="shipping_address"><?php esc_html_e( 'Address', 'stripe-payments' ); ?></label>
-														<svg id="i-location" class="icon input-icon"
-															xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"
-															width="32" height="32" fill="none" stroke="currentcolor"
-															stroke-linecap="round" stroke-linejoin="round"
-															stroke-width="2">
+														<label for="shipping_address"><?php esc_html_e( 'Address', 'stripe-payments' ); ?></label>
+														<svg id="i-location" class="icon input-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
 															<circle cx="16" cy="11" r="4" />
-															<path
-																d="M24 15 C21 22 16 30 16 30 16 30 11 22 8 15 5 8 10 2 16 2 22 2 27 8 24 15 Z" />
+															<path d="M24 15 C21 22 16 30 16 30 16 30 11 22 8 15 5 8 10 2 16 2 22 2 27 8 24 15 Z" />
 														</svg>
-														<input class="pure-input-1 has-icon saddr-required" type="text"
-															id="shipping_address" name="shipping_address">
+														<input class="pure-input-1 has-icon saddr-required" type="text" id="shipping_address" name="shipping_address">
 													</div>
 													<div class="pure-u-1" style="position: relative;">
-														<label
-															for="shipping_city"><?php esc_html_e( 'City', 'stripe-payments' ); ?></label>
-														<input class="pure-input-1 saddr-required" type="text"
-															id="shipping_city" name="shipping_city">
+														<label for="shipping_city"><?php esc_html_e( 'City', 'stripe-payments' ); ?></label>
+														<input class="pure-input-1 saddr-required" type="text" id="shipping_city" name="shipping_city">
 													</div>
 													<div class="pure-u-1" style="position: relative;">
-														<label
-															for="shipping_country"><?php esc_html_e( 'Country', 'stripe-payments' ); ?></label>
-														<select class="pure-input-1 saddr-required"
-															name="shipping_country" id="shipping_country">
-                                                            <?php echo ASP_Utils::get_countries_opts($a['data']['customer_default_country']); //phpcs:ignore ?>
+														<label for="shipping_country"><?php esc_html_e( 'Country', 'stripe-payments' ); ?></label>
+														<select class="pure-input-1 saddr-required" name="shipping_country" id="shipping_country">
+															<?php echo ASP_Utils::get_countries_opts($a['data']['customer_default_country']); //phpcs:ignore ?>
 														</select>
 													</div>
 													<div class="pure-u-1">
-														<label
-															for="shipping_postcode"><?php esc_html_e( 'Postcode', 'stripe-payments' ); ?></label>
-														<input class="pure-u-1" type="text" name="shipping_postcode"
-															id="shipping_postcode">
+														<label for="shipping_postcode"><?php esc_html_e( 'Postcode', 'stripe-payments' ); ?></label>
+														<input class="pure-u-1" type="text" name="shipping_postcode" id="shipping_postcode">
 													</div>
 												</fieldset>
 											</div>
@@ -330,8 +277,7 @@
 									</div>
 									<?php } ?>
 									<div id="card-cont" class="pure-u-1">
-										<label
-											for="card-element"><?php esc_html_e( 'Credit or debit card', 'stripe-payments' ); ?></label>
+										<label for="card-element"><?php esc_html_e( 'Credit or debit card', 'stripe-payments' ); ?></label>
 										<div id="card-element">
 										</div>
 										<div id="card-errors" class="form-err" role="alert"></div>
@@ -342,7 +288,7 @@
 								<div class="pure-u-1">
 									<label for="tos" class="pure-checkbox">
 										<input id="tos" type="checkbox" value="1">
-                                        <?php echo html_entity_decode( $a['tos_text'] ); //phpcs:ignore?>
+										<?php echo html_entity_decode( $a['tos_text'] ); //phpcs:ignore?>
 									</label>
 									<div id="tos-error" class="form-err" role="alert"></div>
 								</div>
@@ -351,16 +297,14 @@
 							<div id="buttons-container">
 								<div class="pure-u-5-5" style="position: relative;">
 									<div id="submit-btn-cont" data-pm-name="def" class="pure-u-5-5 centered">
-										<button type="submit" id="submit-btn" class="pure-button pure-button-primary"
-											disabled><?php echo esc_html( $a['pay_btn_text'] ); ?></button>
+										<button type="submit" id="submit-btn" class="pure-button pure-button-primary" disabled><?php echo esc_html( $a['pay_btn_text'] ); ?></button>
 									</div>
 									<?php
 									$out = apply_filters( 'asp_ng_pp_after_button', '', $a['data'], '' );
 									echo $out;
 									?>
 								</div>
-								<div class="pure-u-1"
-									<?php echo ( ! $a['data']['tax'] && ! $a['data']['shipping'] ) ? ' style="display: none;"' : ''; ?>>
+								<div class="pure-u-1" <?php echo ( ! $a['data']['tax'] && ! $a['data']['shipping'] ) ? ' style="display: none;"' : ''; ?>>
 									<div id="tax-shipping-cont" class="pure-u-5-5 centered">
 										<?php
 										$out = array();
@@ -386,16 +330,14 @@
 								</div>
 							</div>
 							<input type="hidden" id="payment-intent" name="payment_intent" value="">
-							<input type="hidden" id="product-id" name="product_id"
-								value="<?php echo esc_attr( $a['prod_id'] ); ?>">
+							<input type="hidden" id="product-id" name="product_id" value="<?php echo esc_attr( $a['prod_id'] ); ?>">
 							<input type="hidden" name="process_ipn" value="1">
 							<input type="hidden" name="is_live" value="<?php echo $a['is_live'] ? '1' : '0'; ?>">
 							<?php if ( $a['data']['url'] ) { ?>
 							<input type="hidden" name="item_url" value="<?php echo esc_attr( $a['data']['url'] ); ?>">
 							<?php } ?>
 							<?php if ( ! empty( $a['thankyou_page'] ) ) { ?>
-							<input type="hidden" value="<?php echo esc_attr( base64_encode( $a['thankyou_page'] ) ); ?>"
-								name="thankyou_page_url">
+							<input type="hidden" value="<?php echo esc_attr( base64_encode( $a['thankyou_page'] ) ); ?>" name="thankyou_page_url">
 							<?php } ?>
 							<?php if ( ! empty( $a['data']['create_token'] ) ) { ?>
 							<input type="hidden" value="1" name="create_token">
