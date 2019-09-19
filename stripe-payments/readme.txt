@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 4.7
 Tested up to: 5.2
 Requires PHP: 5.4
-Stable tag: 2.0.8t1
+Stable tag: 2.0.8t2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -153,7 +153,14 @@ None.
 
 == Changelog ==
 
-= WIP 2.0.7 =
+= WIP 2.0.8 =
+- [New API]: Added compatability with optimization plugins that do minify\combine JavaScript.
+- [New API]: Added suport for reCaptcha addon. reCatpcha addon version 2.0.0+ is required to work with new payment popup.
+
+= 2.0.7.1 =
+- [New API]: Fixed visual bug on payment popup when coupons are enabled.
+
+= 2.0.7 =
 - [New API]: Moved process_ipn action to wp_loaded hook. Should fix issues with "The site is experiencing technical problems" error during payment processing on some configurations.
 - [New API]: Restyled payment popup for better responsiveness on mobile devices.
 - [New API]: Updated Stripe PHP SDK library to 6.43.1.
