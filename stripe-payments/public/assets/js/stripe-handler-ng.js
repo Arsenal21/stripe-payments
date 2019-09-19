@@ -15,7 +15,7 @@ var stripeHandlerNG = function (data) {
 				if (show) {
 					closebtn.fadeIn();
 				} else {
-					closebtn.css('display','inline');
+					closebtn.css('display', 'inline');
 				}
 				closebtn.on('click', function () {
 					jQuery('html').css('overflow', parent.documentElementOrigOverflow);
@@ -63,3 +63,25 @@ var stripeHandlerNG = function (data) {
 		parent.handleModal(true);
 	});
 };
+
+function WPASPDocReady(callbackFunc) {
+	if (document.readyState !== 'loading') {
+		callbackFunc();
+	} else if (document.addEventListener) {
+		document.addEventListener('DOMContentLoaded', callbackFunc);
+	} else {
+		document.attachEvent('onreadystatechange', function () {
+			if (document.readyState === 'complete') {
+				callbackFunc();
+			}
+		});
+	}
+}
+
+WPASPDocReady(function () {
+	if (typeof wpaspInitOnDocReady !== 'undefined') {
+		wpaspInitOnDocReady.forEach(function (data) {
+			new stripeHandlerNG(data);
+		});
+	}
+});

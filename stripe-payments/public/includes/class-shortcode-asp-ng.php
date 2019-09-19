@@ -783,7 +783,7 @@ class AcceptStripePaymentsShortcodeNG {
 			. '</div>';
 
 		$output .= '<script>';
-		$output .= 'jQuery(document).ready(function() {new stripeHandlerNG(' . wp_json_encode( $data ) . ')});';
+		$output .= 'var wpaspData = ' . wp_json_encode( $data ) . '; if(typeof jQuery!=="undefined") {jQuery(document).ready(function() {new stripeHandlerNG(wpaspData);})} else { if (typeof wpaspInitOnDocReady==="undefined") {wpaspInitOnDocReady=[];} wpaspInitOnDocReady.push(wpaspData);}';
 		$output .= '</script>';
 
 		return $output;
