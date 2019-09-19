@@ -70,7 +70,7 @@
 					<div id="form-container" class="pure-u-1" <?php echo isset( $a['fatal_error'] ) ? 'style="display: none;"' : ''; ?>>
 						<form method="post" id="payment-form" class="pure-form pure-form-stacked">
 							<?php if ( count( $a['data']['payment_methods'] ) > 1 ) { ?>
-							<fieldset>
+							<fieldset id="pm-select-cont">
 								<legend>Select payment method</legend>
 								<?php
 										$out = '';
@@ -294,6 +294,10 @@
 								</div>
 								<?php } ?>
 							</div>
+							<?php
+							$out = apply_filters( 'asp_ng_pp_output_before_buttons', '', $a['data'] );
+							echo $out;
+							?>
 							<div id="buttons-container">
 								<div class="pure-u-5-5" style="position: relative;">
 									<div id="submit-btn-cont" data-pm-name="def" class="pure-u-5-5 centered">

@@ -290,6 +290,8 @@ class ASP_PP_Handler {
 			'title' => __( 'Credit or debit card', 'stripe-payments' ),
 		);
 
+		$data['addonHooks'] = array();
+
 		$data = apply_filters( 'asp-button-output-data-ready', $data, array( 'product_id' => $product_id ) ); //phpcs:ignore
 
 		$data = apply_filters( 'asp_ng_pp_data_ready', $data, array( 'product_id' => $product_id ) ); //phpcs:ignore

@@ -483,6 +483,15 @@ function canProceed() {
 			return false;
 		}
 	}
+
+	vars.data.canProceed = true;
+
+	doAddonAction('submitCanProceed');
+
+	if (!vars.data.canProceed) {
+		return false;
+	}
+
 	return true;
 }
 
@@ -737,10 +746,10 @@ function doAddonAction(action) {
 	vars.data.doNotProceed = false;
 	if (vars.data.addons) {
 		vars.data.addons.forEach(function (addon) {
-			if (typeof addon.obj === 'undefined') {
+			if (typeof addon.obj === 'undefined' && typeof window[addon.handler] !== 'undefined') {
 				addon.obj = new window[addon.handler](vars.data);
 			}
-			if (typeof addon.obj[action] === 'function') {
+			if (typeof addon.obj !== 'undefined' && typeof addon.obj[action] === 'function') {
 				console.log(addon.name + ': ' + action);
 				addon.obj[action]();
 			}
