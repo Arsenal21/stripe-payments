@@ -156,6 +156,10 @@ html {
     font-size: 0.9rem;
 }
 
+#card-errors.form-err {
+	display: block;
+}
+
 .centered {
     text-align: center;
 }
