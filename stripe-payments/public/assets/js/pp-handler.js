@@ -29,6 +29,7 @@ function calcTotal() {
 	}
 	if (vars.data.tax) {
 		var tax = Math.round(itemSubt * parseFloat(vars.data.tax) / 100);
+		vars.data.taxAmount = tax;
 		itemSubt = parseInt(itemSubt) + parseInt(tax);
 	}
 
@@ -552,7 +553,7 @@ function handlePayment() {
 		var reqStr = 'action=asp_pp_req_token&amount=' + vars.data.amount + '&curr=' + vars.data.currency + '&product_id=' + vars.data.product_id;
 		reqStr = reqStr + '&quantity=' + vars.data.quantity;
 		if (vars.data.cust_id) {
-			reqStr = reqStr + '&cust_id' + vars.data.cust_id;
+			reqStr = reqStr + '&cust_id=' + vars.data.cust_id;
 		}
 		if (vars.data.client_secret !== '') {
 			reqStr = reqStr + '&pi=' + vars.data.pi_id;
