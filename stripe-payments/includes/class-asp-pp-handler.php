@@ -286,7 +286,7 @@ class ASP_PP_Handler {
 		$data['addons'] = array();
 
 		$data['payment_methods'][] = array(
-			'id'  => 'def',
+			'id'    => 'def',
 			'title' => __( 'Credit or debit card', 'stripe-payments' ),
 		);
 
@@ -598,13 +598,8 @@ class ASP_PP_Handler {
 				'</div>';
 			$this->tpl_cf = $tpl_cf;
 		}
-		$cf_pos = $this->asp_main->get_setting( 'custom_field_position' );
-		if ( 'below' !== $cf_pos ) {
 			$output      .= $this->tpl_cf;
 			$this->tpl_cf = '';
-		} else {
-			add_filter( 'asp_button_output_after_button', array( $this, 'after_button_add_сf_filter' ), 990, 3 );
-		}
 		return $output;
 	}
 

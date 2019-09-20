@@ -479,7 +479,7 @@ function show_admin_notices() {
 	    'desc'	 => __( 'Select field description location. Placeholder: description is displayed inside text input (default). Below Input: description is displayed below text input.', 'stripe-payments' ) )
 	);
 	add_settings_field( 'custom_field_position', __( 'Position', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-custom-field', array( 'field'	 => 'custom_field_position',
-	    'desc'	 => __( 'Select custom field position.', 'stripe-payments' ) )
+	    'desc'	 => __( 'Select custom field position.', 'stripe-payments' ).' '.__('This option is for legacy API only.','stripe-payments') )
 	);
 	add_settings_field( 'custom_field_type', __( 'Field Type', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-custom-field', array( 'field'	 => 'custom_field_type',
 	    'desc'	 => __( 'Select custom field type.', 'stripe-payments' ) )
