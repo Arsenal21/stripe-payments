@@ -273,6 +273,7 @@ if (vars.data.coupons_enabled) {
 
 var amount = vars.data.amount;
 var clientSecAmount = 0;
+var clientSecCurrency = '';
 var stripe = Stripe(vars.stripe_key);
 var elements = stripe.elements();
 
@@ -548,7 +549,7 @@ function handlePayment() {
 	}
 
 	//regen cs
-	if (!vars.data.create_token && (vars.data.client_secret === '' || vars.data.amount != clientSecAmount)) {
+	if (!vars.data.create_token && (vars.data.client_secret === '' || vars.data.amount != clientSecAmount || vars.data.currency !== clientSecCurrency)) {
 		console.log('Regen CS');
 		var reqStr = 'action=asp_pp_req_token&amount=' + vars.data.amount + '&curr=' + vars.data.currency + '&product_id=' + vars.data.product_id;
 		reqStr = reqStr + '&quantity=' + vars.data.quantity;
@@ -581,6 +582,7 @@ function handlePayment() {
 					vars.data.pi_id = resp.pi_id;
 					vars.data.cust_id = resp.cust_id;
 					clientSecAmount = vars.data.amount;
+					clientSecCurrency = vars.data.currency;
 					doAddonAction('csRegenCompleted');
 					if (vars.data.doNotProceed) {
 						return false;
