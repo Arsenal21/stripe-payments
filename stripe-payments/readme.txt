@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 4.7
 Tested up to: 5.2
 Requires PHP: 5.4
-Stable tag: 2.0.8t3
+Stable tag: 2.0.8t4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -154,8 +154,14 @@ None.
 == Changelog ==
 
 = WIP 2.0.8 =
+- [New API]: Fixed currency wasn't properly updated for variable currency payments in some situations. 
 - [New API]: Added compatability with optimization plugins that do minify\combine JavaScript.
+- [New API]: Fixed checkbox custom field display issue.
+- [New API]: Added mandatory inputs validation for browsers that don't provide it.
+- [New API]: Fixed rare issue that could break payment process if payment button was clicked multiple times.
+- [New API]: Some visual tweaks and fixes for payment popup.
 - [New API]: Added suport for reCaptcha addon. reCatpcha addon version 2.0.0+ is required to work with new payment popup.
+- Fixed custom input wasn't properly validating and honoring "Mandatory" option if position was "Below Button" (legacy API only).
 
 = 2.0.7.1 =
 - [New API]: Fixed visual bug on payment popup when coupons are enabled.
