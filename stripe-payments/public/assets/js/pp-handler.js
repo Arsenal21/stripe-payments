@@ -483,14 +483,19 @@ function canProceed() {
 	var autoRequiredEmpty = false;
 
 	jQuery('#payment-form').find('[required]:visible').each(function (id, el) {
-		if (jQuery(el).val() === '') {
+		if (jQuery(el).val() === '' || (jQuery(el).attr('type') === 'checkbox' && !jQuery(el).prop('checked'))) {
 			jQuery(el).focus();
-			jQuery(el).one('keyup', function () {
+			jQuery(el).one('keyup change', function () {
 				jQuery(this).siblings('.auto-required-err-msg').remove();
+				jQuery(this).parent().siblings('.auto-required-err-msg').remove();
 			});
 			autoRequiredEmpty = true;
 			jQuery('#payment-form').find('.auto-required-err-msg').remove();
-			jQuery(el).after(jQuery('<span class="form-err auto-required-err-msg" role="alert">' + vars.str.strPleaseFillIn + '</span>').fadeIn());
+			if (jQuery(el).attr('type') === 'checkbox') {
+				jQuery(el).parent().after(jQuery('<span class="form-err auto-required-err-msg" role="alert">' + vars.str.strPleaseCheckCheckbox + '</span>').fadeIn());
+			} else {
+				jQuery(el).after(jQuery('<span class="form-err auto-required-err-msg" role="alert">' + vars.str.strPleaseFillIn + '</span>').fadeIn());
+			}
 			return false;
 		}
 	});
