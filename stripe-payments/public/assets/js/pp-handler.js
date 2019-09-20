@@ -441,6 +441,7 @@ jQuery('.pm-select-btn').click(function () {
 });
 
 function canProceed() {
+
 	if (vars.data.amount_variable) {
 		amount = validate_custom_amount();
 		if (amount === false) {
@@ -477,6 +478,25 @@ function canProceed() {
 			return false;
 		}
 		vars.data.item_price = amount;
+	}
+
+	var autoRequiredEmpty = false;
+
+	jQuery('#payment-form').find('[required]:visible').each(function (id, el) {
+		if (jQuery(el).val() === '') {
+			jQuery(el).focus();
+			jQuery(el).one('keyup', function () {
+				jQuery(this).siblings('.auto-required-err-msg').remove();
+			});
+			autoRequiredEmpty = true;
+			jQuery('#payment-form').find('.auto-required-err-msg').remove();
+			jQuery(el).after(jQuery('<span class="form-err auto-required-err-msg" role="alert">' + vars.str.strPleaseFillIn + '</span>').fadeIn());
+			return false;
+		}
+	});
+
+	if (autoRequiredEmpty) {
+		return false;
 	}
 
 	if (vars.data.tos) {

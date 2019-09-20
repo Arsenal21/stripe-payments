@@ -177,18 +177,22 @@
 									<fieldset id="name-email-cont" style="width: 100%;">
 										<div class="pure-u-1 pure-u-md-11-24" style="position: relative;">
 											<label for="billing_name"><?php esc_html_e( 'Name', 'stripe-payments' ); ?></label>
-											<svg id="i-user" class="icon input-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-												<path d="M22 11 C22 16 19 20 16 20 13 20 10 16 10 11 10 6 12 3 16 3 20 3 22 6 22 11 Z M4 30 L28 30 C28 21 22 20 16 20 10 20 4 21 4 30 Z" />
-											</svg>
-											<input class="pure-input-1 has-icon" type="text" id="billing-name" name="billing_name" value="<?php echo esc_attr( $a['data']['customer_name'] ); ?>" required>
+											<div style="position: relative;">
+												<svg id="i-user" class="icon input-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+													<path d="M22 11 C22 16 19 20 16 20 13 20 10 16 10 11 10 6 12 3 16 3 20 3 22 6 22 11 Z M4 30 L28 30 C28 21 22 20 16 20 10 20 4 21 4 30 Z" />
+												</svg>
+												<input class="pure-input-1 has-icon" type="text" id="billing-name" name="billing_name" value="<?php echo esc_attr( $a['data']['customer_name'] ); ?>" required>
+											</div>
 										</div>
 										<div class="pure-u-md-1-24"></div>
 										<div class="pure-u-1 pure-u-md-12-24" style="position: relative;">
 											<label for="email"><?php esc_html_e( 'Email', 'stripe-payments' ); ?></label>
-											<svg id="i-mail" class="icon input-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-												<path d="M2 26 L30 26 30 6 2 6 Z M2 6 L16 16 30 6" />
-											</svg>
-											<input class="pure-input-1 has-icon" type="email" id="email" name="email" value="<?php echo esc_attr( $a['data']['customer_email'] ); ?>" required>
+											<div style="position: relative;">
+												<svg id="i-mail" class="icon input-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+													<path d="M2 26 L30 26 30 6 2 6 Z M2 6 L16 16 30 6" />
+												</svg>
+												<input class="pure-input-1 has-icon" type="email" id="email" name="email" value="<?php echo esc_attr( $a['data']['customer_email'] ); ?>" required>
+											</div>
 										</div>
 									</fieldset>
 									<?php if ( $a['data']['billing_address'] || $a['data']['shipping_address'] ) { ?>
@@ -212,10 +216,12 @@
 													</div>
 													<div class="pure-u-1 pure-u-md-14-24 baddr-toggle" style="position: relative;">
 														<label for="address"><?php esc_html_e( 'Address', 'stripe-payments' ); ?></label>
-														<svg id="i-location" class="icon input-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-															<circle cx="16" cy="11" r="4" />
-															<path d="M24 15 C21 22 16 30 16 30 16 30 11 22 8 15 5 8 10 2 16 2 22 2 27 8 24 15 Z" />
-														</svg>
+														<div style="position: relative;">
+															<svg id="i-location" class="icon input-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+																<circle cx="16" cy="11" r="4" />
+																<path d="M24 15 C21 22 16 30 16 30 16 30 11 22 8 15 5 8 10 2 16 2 22 2 27 8 24 15 Z" />
+															</svg>
+														</div>
 														<input class="pure-input-1 has-icon" type="text" id="address" name="address" required>
 													</div>
 													<div class="pure-u-md-1-24 baddr-hide"></div>
@@ -249,11 +255,13 @@
 													</div>
 													<div class="pure-u-1" style="position: relative;">
 														<label for="shipping_address"><?php esc_html_e( 'Address', 'stripe-payments' ); ?></label>
-														<svg id="i-location" class="icon input-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-															<circle cx="16" cy="11" r="4" />
-															<path d="M24 15 C21 22 16 30 16 30 16 30 11 22 8 15 5 8 10 2 16 2 22 2 27 8 24 15 Z" />
-														</svg>
-														<input class="pure-input-1 has-icon saddr-required" type="text" id="shipping_address" name="shipping_address">
+														<div style="position: relative;">
+															<svg id="i-location" class="icon input-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+																<circle cx="16" cy="11" r="4" />
+																<path d="M24 15 C21 22 16 30 16 30 16 30 11 22 8 15 5 8 10 2 16 2 22 2 27 8 24 15 Z" />
+															</svg>
+															<input class="pure-input-1 has-icon saddr-required" type="text" id="shipping_address" name="shipping_address">
+														</div>
 													</div>
 													<div class="pure-u-1" style="position: relative;">
 														<label for="shipping_city"><?php esc_html_e( 'City', 'stripe-payments' ); ?></label>
