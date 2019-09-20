@@ -138,8 +138,8 @@ function validate_custom_amount() {
 		cAmount = cAmount.replace(vars.amountOpts.decimalSep, '.');
 	} else {
 		cAmount = cAmount.replace(/\$/g, '');
-		cAmount = cAmount.replace(/\,/g, '');
-		cAmount = cAmount.replace(/\ /g, '');
+		cAmount = cAmount.replace(/,/g, '');
+		cAmount = cAmount.replace(/ /g, '');
 	}
 	cAmount = parseFloat(cAmount);
 
@@ -176,7 +176,7 @@ if (vars.fatal_error) {
 if (vars.data.amount_variable) {
 	var amountInput = document.getElementById('amount');
 	var amountErr = document.getElementById('amount-error');
-	amountInput.addEventListener('change', function (e) {
+	amountInput.addEventListener('change', function () {
 		amount = validate_custom_amount();
 		if (amount !== false) {
 			vars.data.item_price = amount;
@@ -187,7 +187,7 @@ if (vars.data.amount_variable) {
 if (vars.data.custom_quantity) {
 	var quantityInput = document.getElementById('quantity');
 	var quantityErr = document.getElementById('quantity-error');
-	quantityInput.addEventListener('change', function (e) {
+	quantityInput.addEventListener('change', function () {
 		quantity = validate_custom_quantity();
 		if (quantity !== false) {
 			vars.data.quantity = quantity;
@@ -198,7 +198,7 @@ if (vars.data.custom_quantity) {
 
 if (vars.data.currency_variable) {
 	var currencyInput = document.getElementById('currency');
-	currencyInput.addEventListener('change', function (e) {
+	currencyInput.addEventListener('change', function () {
 		vars.data.currency = currencyInput.value || currencyInput.options[currencyInput.selectedIndex];
 		vars.currencyFormat.s = currencyInput.options[currencyInput.selectedIndex].getAttribute('data-asp-curr-sym');
 		updateAllAmounts();
@@ -262,7 +262,7 @@ if (vars.data.coupons_enabled) {
 			}
 		);
 	});
-	couponRemoveBtn.addEventListener('click', function (e) {
+	couponRemoveBtn.addEventListener('click', function () {
 		delete (vars.data.coupon);
 		couponInput.value = '';
 		couponResCont.style.display = 'none';
@@ -293,7 +293,7 @@ var form = document.getElementById('payment-form');
 if (vars.data.tos) {
 	var tosInput = document.getElementById('tos');
 	var tosInputErr = document.getElementById('tos-error');
-	tosInput.addEventListener('change', function (event) {
+	tosInput.addEventListener('change', function () {
 		tosInputErr.style.display = 'none';
 	});
 }
@@ -334,7 +334,7 @@ if (vars.data.billing_address && vars.data.shipping_address) {
 		})(i);
 	}
 
-	billshipSwitch.addEventListener('change', function (e) {
+	billshipSwitch.addEventListener('change', function () {
 		if (billshipSwitch.checked) {
 			for (var i = 0; i < itemsArr.length; i++) {
 				(function (index) {
@@ -397,7 +397,7 @@ card.addEventListener('change', function (event) {
 	}
 });
 
-submitBtn.addEventListener('click', function (e) {
+submitBtn.addEventListener('click', function () {
 	if (!vars.data.isEvent) {
 		vars.data.buttonClicked = '';
 	}
@@ -431,7 +431,7 @@ if (vars.data.initRemoveSmoke) {
 	smokeScreen(false);
 }
 
-jQuery('.pm-select-btn').click(function (e) {
+jQuery('.pm-select-btn').click(function () {
 	vars.data.currentPM = jQuery(this).data('pm-id');
 	jQuery('.pm-select-btn').parent().removeClass('pure-menu-selected');
 	jQuery(this).parent().addClass('pure-menu-selected');
