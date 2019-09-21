@@ -2,8 +2,11 @@ var stripeHandlerNG = function (data) {
 
 	this.handleModal = function (show) {
 		if (!parent.modal) {
-			jQuery('body').append('<div id="asp-payment-popup-' + parent.data.uniq_id + '" style="display: none;" class="asp-popup-iframe-cont"><div class="asp-popup-spinner-cont"></div><iframe frameborder="0" allowtransparency="true" class="asp-popup-iframe" allow="payment" allowpaymentrequest="true" src="' + parent.data.iframe_url + '"></iframe></div>');
-			parent.modal = jQuery('#asp-payment-popup-' + parent.data.uniq_id);
+			parent.modal = jQuery('div[data-asp-iframe-prod-id="' + parent.data.product_id + '"]');
+			if (parent.modal.length === 0) {
+				jQuery('body').append('<div id="asp-payment-popup-' + parent.data.uniq_id + '" style="display: none;" data-asp-iframe-prod-id="' + parent.data.product_id + '" class="asp-popup-iframe-cont"><div class="asp-popup-spinner-cont"></div><iframe frameborder="0" allowtransparency="true" class="asp-popup-iframe" allow="payment" allowpaymentrequest="true" src="' + parent.data.iframe_url + '"></iframe></div>');
+				parent.modal = jQuery('#asp-payment-popup-' + parent.data.uniq_id);
+			}
 			if (show) {
 				parent.modal.css('display', 'flex');
 				parent.modal.find('.asp-popup-spinner-cont').append(jQuery('div#asp-btn-spinner-container-' + parent.data.uniq_id).html());
@@ -108,7 +111,7 @@ WPASPDocReady(function () {
 
 	function WPASPAttach(el, prodId) {
 		var uniqId = Math.random().toString(36).substr(2, 9);
-		var sg = new stripeHandlerNG({ 'uniq_id': uniqId, 'doSelfSubmit': true, 'iframe_url': wpASPNG.iframeUrl + '&product_id=' + prodId });
+		var sg = new stripeHandlerNG({ 'uniq_id': uniqId, 'product_id': prodId, 'doSelfSubmit': true, 'iframe_url': wpASPNG.iframeUrl + '&product_id=' + prodId });
 		jQuery(el).on('click', function (e) {
 			e.preventDefault();
 			sg.handleModal(true);
