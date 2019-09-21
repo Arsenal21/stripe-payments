@@ -10,7 +10,12 @@ var stripeHandlerNG = function (data) {
 			}
 			var iframe = parent.modal.find('iframe');
 			iframe.on('load', function () {
+				if (parent.redirectToResult) {
+					window.location.href = iframe[0].contentWindow.location.href;
+					return false;
+				}
 				parent.modal.find('.asp-popup-spinner-cont').hide();
+				iframe[0].contentWindow['doSelfSubmit'] = data.doSelfSubmit;
 				var closebtn = iframe.contents().find('#modal-close-btn');
 				if (show) {
 					closebtn.fadeIn();
@@ -26,6 +31,11 @@ var stripeHandlerNG = function (data) {
 					e.preventDefault();
 					var token = parent.iForm.find('input#payment-intent').val();
 					if (token !== '') {
+						if (parent.form.length === 0) {
+							console.log('Waiting for iframe to complete loading');
+							parent.redirectToResult = true;
+							return true;
+						}
 						jQuery('div#asp-all-buttons-container-' + parent.data.uniq_id).hide();
 						jQuery('div#asp-btn-spinner-container-' + parent.data.uniq_id).show();
 						parent.modal.fadeOut();
@@ -84,4 +94,24 @@ WPASPDocReady(function () {
 			new stripeHandlerNG(data);
 		});
 	}
+	jQuery('[class*="asp-attach-product-"]').each(function (id, el) {
+		var classStr = jQuery(el).attr('class');
+		var meinClass = classStr.match(/asp-attach-product-[0-9]*/);
+		if (meinClass[0]) {
+			var productId = meinClass[0].match(/([0-9].*)/);
+			if (productId[0]) {
+				WPASPAttach(el, productId[0]);
+			}
+		}
+	});
+
+	function WPASPAttach(el, prodId) {
+		var uniqId = Math.random().toString(36).substr(2, 9);
+		var sg = new stripeHandlerNG({ 'uniq_id': uniqId, 'doSelfSubmit': true, 'iframe_url': wpASPNG.iframeUrl + '&product_id=' + prodId });
+		jQuery(el).on('click', function (e) {
+			e.preventDefault();
+			sg.handleModal(true);
+		});
+	}
+
 });

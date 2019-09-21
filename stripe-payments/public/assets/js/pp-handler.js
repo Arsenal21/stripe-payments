@@ -460,7 +460,7 @@ function canProceed() {
 	}
 
 	if (piInput.value !== '') {
-		if (!inIframe()) {
+		if (!inIframe() || window.doSelfSubmit) {
 			console.log('Self-submitting');
 			for (var i = 0; i < form.elements.length; i++) {
 				if (form.elements[i].name) {
