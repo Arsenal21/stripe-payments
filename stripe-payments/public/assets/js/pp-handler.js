@@ -111,22 +111,30 @@ function triggerEvent(el, type) {
 }
 
 function validate_custom_quantity() {
-	var custom_quantity_orig = quantityInput.value;
+	var custom_quantity_orig;
+	var errObj;
+	if (vars.data.custom_quantity) {
+		errObj = quantityErr;
+		custom_quantity_orig = quantityInput.value;
+	} else {
+		errObj = errorCont;
+		custom_quantity_orig = vars.data.quantity;
+	}
 	var custom_quantity = parseInt(custom_quantity_orig);
 	if (isNaN(custom_quantity)) {
-		showFormInputErr(vars.str.strEnterQuantity, quantityErr, quantityInput);
+		showFormInputErr(vars.str.strEnterQuantity, errObj, quantityInput);
 		return false;
 	} else if (custom_quantity_orig % 1 !== 0) {
-		showFormInputErr(vars.str.strQuantityIsFloat, quantityErr, quantityInput);
+		showFormInputErr(vars.str.strQuantityIsFloat, errObj, quantityInput);
 		return false;
 	} else if (custom_quantity <= 0) {
-		showFormInputErr(vars.str.strQuantityIsZero, quantityErr, quantityInput);
+		showFormInputErr(vars.str.strQuantityIsZero, errObj, quantityInput);
 		return false;
 	} else if (vars.data.stock_control_enabled === true && custom_quantity > vars.data.stock_items) {
-		showFormInputErr(vars.str.strStockNotAvailable.replace('%d', vars.data.stock_items), quantityErr, quantityInput);
+		showFormInputErr(vars.str.strStockNotAvailable.replace('%d', vars.data.stock_items), errObj, quantityInput);
 		return false;
 	}
-	quantityErr.style.display = 'none';
+	errObj.style.display = 'none';
 	vars.data.quantity = custom_quantity;
 	return custom_quantity;
 }
@@ -170,6 +178,7 @@ function validate_custom_amount() {
 
 var errorCont = document.getElementById('global-error');
 if (vars.fatal_error) {
+	smokeScreen(false);
 	throw new Error(vars.fatal_error);
 }
 
