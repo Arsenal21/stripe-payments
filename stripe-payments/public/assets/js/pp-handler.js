@@ -64,8 +64,8 @@ function amount_to_cents(amount, curr) {
 
 function showFormInputErr(msg, el, inp) {
 	el.innerHTML = msg;
-	el.style.display = 'block';
-	inp.focus();
+	jQuery(el).show().hide().fadeIn();
+	jQuery(inp).focus();
 }
 
 function smokeScreen(show) {
