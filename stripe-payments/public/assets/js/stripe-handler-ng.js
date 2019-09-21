@@ -50,7 +50,7 @@ var stripeHandlerNG = function (data) {
 							}
 						});
 						console.log('Parent form submit');
-						jQuery('form#asp_ng_form_' + parent.data.uniq_id).submit();
+						parent.form.submit();
 					}
 					return false;
 				});
@@ -93,7 +93,7 @@ function WPASPDocReady(callbackFunc) {
 
 WPASPDocReady(function () {
 	if (typeof wpaspInitOnDocReady !== 'undefined') {
-		console.log("ASP: Creating buttons on page load");
+		console.log('ASP: Creating buttons on page load');
 		wpaspInitOnDocReady.forEach(function (data) {
 			new stripeHandlerNG(data);
 		});
