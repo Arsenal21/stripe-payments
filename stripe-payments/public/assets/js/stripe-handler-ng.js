@@ -61,13 +61,13 @@ var stripeHandlerNG = function (data) {
 	var parent = this;
 	parent.preload = false;
 	parent.data = data;
-	parent.form = jQuery('form#asp_ng_form_' + data.uniq_id);
+	parent.form = jQuery('form#asp_ng_form_' + parent.data.uniq_id);
 	parent.documentElementOrigOverflow = jQuery('html').css('overflow');
-	jQuery('#asp_ng_button_' + data.uniq_id).prop('disabled', false);
+	jQuery('#asp_ng_button_' + parent.data.uniq_id).prop('disabled', false);
 	if (parent.preload) {
 		parent.handleModal(false);
 	}
-	jQuery('#asp_ng_button_' + data.uniq_id).click(function (e) {
+	jQuery('#asp_ng_button_' + parent.data.uniq_id).click(function (e) {
 		jQuery('html').css('overflow', 'hidden');
 		e.preventDefault();
 		parent.handleModal(true);
@@ -90,6 +90,7 @@ function WPASPDocReady(callbackFunc) {
 
 WPASPDocReady(function () {
 	if (typeof wpaspInitOnDocReady !== 'undefined') {
+		console.log("ASP: Creating buttons on page load");
 		wpaspInitOnDocReady.forEach(function (data) {
 			new stripeHandlerNG(data);
 		});
