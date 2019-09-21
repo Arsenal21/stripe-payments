@@ -242,7 +242,7 @@ class ASP_Shortcode_NG {
 			$button_only = $sc_params['button_only'];
 		}
 
-		if ( ( isset( $atts['fancy'] ) && '0' === $atts['fancy'] ) || 1 === $button_only ) {
+		if ( ( isset( $atts['fancy'] ) && empty( $atts['fancy'] ) ) || $button_only ) {
 			//Just show the stripe payment button (no fancy template)
 			$tpl = '<div class="asp_product_buy_button">' . $buy_btn . '</div>';
 			$tpl = "<link rel='stylesheet' href='" . WP_ASP_PLUGIN_URL . '/public/views/templates/default/style.css' . "' type='text/css' media='all' />" . $tpl; //phpcs:ignore
@@ -266,7 +266,7 @@ class ASP_Shortcode_NG {
 		$price_line = empty( $price ) ? '' : AcceptStripePayments::formatted_price( $price, $currency );
 
 		$qnt_str = '';
-		if ( $quantity && 1 !== $quantity ) {
+		if ( $quantity && 1 > $quantity ) {
 			$qnt_str = 'x ' . $quantity;
 		}
 
@@ -375,7 +375,7 @@ class ASP_Shortcode_NG {
 		self::$payment_buttons[] = $button_id;
 
 		$item_price     = $price;
-		$payment_amount = ( 1 === $custom_quantity ? $price : ( floatval( $price ) * $quantity ) );
+		$payment_amount = ( $custom_quantity ? $price : ( floatval( $price ) * $quantity ) );
 		if ( AcceptStripePayments::is_zero_cents( $currency ) ) {
 			//this is zero-cents currency, amount shouldn't be multiplied by 100
 			$price_in_cents = $payment_amount;
