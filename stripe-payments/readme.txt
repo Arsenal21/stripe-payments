@@ -154,8 +154,9 @@ None.
 == Changelog ==
 
 = WIP 2.0.8 =
-- [New API]: Fixed currency wasn't properly updated for variable currency payments in some situations. 
 - [New API]: Added compatability with optimization plugins that do minify\combine JavaScript.
+- [New API]: Fixed currency wasn't properly updated for variable currency payments in some situations. 
+- [New API]: Fixed product with stock control enabled could produce fatal error during payment process under some circumstances. 
 - [New API]: Fixed checkbox custom field display issue.
 - [New API]: Added mandatory inputs validation for browsers that don't provide it.
 - [New API]: Fixed rare issue that could break payment process if payment button was clicked multiple times.
