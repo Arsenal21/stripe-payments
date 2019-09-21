@@ -61,10 +61,10 @@ class ASPMain {
 
 		require_once WP_ASP_PLUGIN_PATH . 'includes/session-handler-class.php';
 		require_once WP_ASP_PLUGIN_PATH . 'public/includes/class-shortcode-asp.php';
-		require_once WP_ASP_PLUGIN_PATH . 'public/includes/class-shortcode-asp-ng.php';
+		require_once WP_ASP_PLUGIN_PATH . 'public/includes/class-asp-shortcode-ng.php';
 
 		add_action( 'init', array( 'AcceptStripePaymentsShortcode', 'get_instance' ) );
-		add_action( 'init', array( 'AcceptStripePaymentsShortcodeNG', 'get_instance' ) );
+		add_action( 'init', array( 'ASP_Shortcode_NG', 'get_instance' ) );
 
 		// register custom post type
 		$asp_products = ASPProducts::get_instance();
