@@ -319,6 +319,8 @@ class ASP_PP_Handler {
 			$pay_btn_text = apply_filters( 'asp_customize_text_msg', __( 'Start Free Trial', 'stripe-payments' ), 'start_free_trial' );
 		}
 
+		$a['item'] = $this->item;
+
 		$a['vars']['vars'] = array(
 			'data'           => $data,
 			'stripe_key'     => $a['stripe_key'],

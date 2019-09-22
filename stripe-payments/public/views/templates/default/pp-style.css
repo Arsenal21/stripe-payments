@@ -156,6 +156,18 @@ html {
 	font-size: 0.9rem;
 }
 
+#your-order table {
+	border: 0;
+}
+
+#order-total {
+	font-weight: bold;
+}
+
+#your-order table thead {
+	background-color: #ececec;
+}
+
 #card-errors.form-err {
 	display: block;
 }
@@ -299,7 +311,6 @@ input.pure-input-1.has-icon, select.pure-input-1.has-icon {
 		position: relative;
 	}
 	#buttons-container {
-		margin-top: 20px;
 		margin-bottom: 50px;
 	}
 	#submit-btn-cont {

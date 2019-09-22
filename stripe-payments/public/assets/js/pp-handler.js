@@ -1,7 +1,32 @@
 /* eslint-disable no-undef */
 function updateAllAmounts() {
 	calcTotal();
+
 	submitBtn.innerHTML = vars.payBtnText.replace(/%s/g, formatMoney(vars.data.amount));
+	jQuery('#order-total').html(formatMoney(vars.data.amount));
+	jQuery('#order-item-price').html(formatMoney(vars.data.item_price*vars.data.quantity));
+	jQuery('#order-quantity').html(vars.data.quantity);
+	jQuery('#order-tax').html(formatMoney(vars.data.taxAmount*vars.data.quantity));
+	if (vars.data.coupon) {
+		if (jQuery('tr#order-coupon-line').length === 0) {
+			var couponOrderLine = '<tr id="order-coupon-line"><td>Coupon "' + vars.data.coupon.code + '"</td><td>- <span id="order-coupon"></span></td></tr>';
+			if (jQuery('tr.variation-line').last().length !== 0) {
+				jQuery('tr.variation-line').last().after(couponOrderLine);
+			} else {
+				jQuery('tr#order-item-line').after(couponOrderLine);
+			}
+		}
+		jQuery('#order-coupon').html(formatMoney(vars.data.coupon.discount_amount*vars.data.quantity));
+	}
+	if (vars.data.variations.applied) {
+		for (grpId = 0; grpId < vars.data.variations.applied.length; ++grpId) {
+			if (jQuery('#order-variation-' + grpId + '-line').length === 0) {
+				jQuery('tr#order-item-line').after('<tr id="order-variation-' + grpId + '-line" class="variation-line"><td class="variation-name"></td><td class="variation-price"></td></tr>');
+			}
+			jQuery('#order-variation-' + grpId + '-line').find('.variation-name').html(vars.data.variations.groups[grpId] + '<br>' + vars.data.variations.names[grpId][vars.data.variations.applied[grpId]]);
+			jQuery('#order-variation-' + grpId + '-line').find('.variation-price').html(formatMoney(amount_to_cents(vars.data.variations.prices[grpId][vars.data.variations.applied[grpId]], vars.data.currency)*vars.data.quantity));
+		}
+	}
 }
 
 function calcTotal() {
@@ -78,6 +103,11 @@ function smokeScreen(show) {
 }
 
 function formatMoney(n) {
+	var negative = false;
+	if (n < 0) {
+		n = (0 - n);
+		negative = true;
+	}
 	n = cents_to_amount(n, vars.data.currency);
 	var c = isNaN(c = Math.abs(vars.currencyFormat.c)) ? 2 : vars.currencyFormat.c,
 		d = d == undefined ? '.' : vars.currencyFormat.d,
@@ -87,7 +117,8 @@ function formatMoney(n) {
 		j = (j = i.length) > 3 ? j % 3 : 0;
 
 	var result = s + (j ? i.substr(0, j) + t : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, '$1' + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : '');
-	return (vars.currencyFormat.pos !== 'right' ? vars.currencyFormat.s + result : result + vars.currencyFormat.s);
+	result = (vars.currencyFormat.pos !== 'right' ? vars.currencyFormat.s + result : result + vars.currencyFormat.s);
+	return (negative ? '- ' + result : result);
 }
 
 function inIframe() {
@@ -99,12 +130,13 @@ function inIframe() {
 }
 
 function triggerEvent(el, type) {
+	var e;
 	if ('createEvent' in document) {
-		var e = document.createEvent('HTMLEvents');
+		e = document.createEvent('HTMLEvents');
 		e.initEvent(type, false, true);
 		el.dispatchEvent(e);
 	} else {
-		var e = document.createEventObject();
+		e = document.createEventObject();
 		e.eventType = type;
 		el.fireEvent('on' + e.eventType, e);
 	}
@@ -273,6 +305,7 @@ if (vars.data.coupons_enabled) {
 	});
 	couponRemoveBtn.addEventListener('click', function () {
 		delete (vars.data.coupon);
+		jQuery('#order-coupon-line').remove();
 		couponInput.value = '';
 		couponResCont.style.display = 'none';
 		couponInputCont.style.display = 'block';
@@ -293,8 +326,6 @@ var style = {
 };
 
 var submitBtn = document.getElementById('submit-btn');
-var billingNameInput = document.getElementById('billing-name');
-var emailInput = document.getElementById('email');
 var piInput = document.getElementById('payment-intent');
 var cardErrorCont = document.getElementById('card-errors');
 var form = document.getElementById('payment-form');
@@ -344,19 +375,20 @@ if (vars.data.billing_address && vars.data.shipping_address) {
 	}
 
 	billshipSwitch.addEventListener('change', function () {
+		var i;
 		if (billshipSwitch.checked) {
-			for (var i = 0; i < itemsArr.length; i++) {
+			for (i = 0; i < itemsArr.length; i++) {
 				(function (index) {
 					attr = itemsArr[index].getAttribute('data-class-save');
 					itemsArr[index].className = attr;
 				})(i);
 			}
-			for (var i = 0; i < baddrHide.length; i++) {
+			for (i = 0; i < baddrHide.length; i++) {
 				(function (index) {
 					baddrHide[index].style.display = 'inline-block';
 				})(i);
 			}
-			for (var i = 0; i < saddrRequired.length; i++) {
+			for (i = 0; i < saddrRequired.length; i++) {
 				(function (index) {
 					saddrRequired[index].required = false;
 				})(i);
@@ -364,18 +396,18 @@ if (vars.data.billing_address && vars.data.shipping_address) {
 			billaddrCont.className = '';
 			shipaddrCont.style.display = 'none';
 		} else {
-			for (var i = 0; i < itemsArr.length; i++) {
+			for (i = 0; i < itemsArr.length; i++) {
 				(function (index) {
 					itemsArr[index].setAttribute('data-class-save', itemsArr[index].className);
 					itemsArr[index].className = 'pure-u-1';
 				})(i);
 			}
-			for (var i = 0; i < baddrHide.length; i++) {
+			for (i = 0; i < baddrHide.length; i++) {
 				(function (index) {
 					baddrHide[index].style.display = 'none';
 				})(i);
 			}
-			for (var i = 0; i < saddrRequired.length; i++) {
+			for (i = 0; i < saddrRequired.length; i++) {
 				(function (index) {
 					saddrRequired[index].required = true;
 				})(i);
@@ -436,9 +468,7 @@ vars.data.initRemoveSmoke = true;
 
 doAddonAction('init');
 
-if (vars.data.initRemoveSmoke) {
-	smokeScreen(false);
-}
+smokeScreen(!vars.data.initRemoveSmoke);
 
 jQuery('.pm-select-btn').click(function () {
 	vars.data.currentPM = jQuery(this).data('pm-id');
@@ -532,6 +562,8 @@ function canProceed() {
 }
 
 function handlePayment() {
+	var billingNameInput = document.getElementById('billing-name');
+	var emailInput = document.getElementById('email');
 	var billingDetails = {
 		name: billingNameInput.value,
 		email: emailInput.value,
@@ -570,7 +602,7 @@ function handlePayment() {
 		}
 	}
 	if (vars.data.billing_address && vars.data.shipping_address && billshipSwitch.checked) {
-		var shippingDetails = JSON.parse(JSON.stringify(billingDetails));
+		shippingDetails = JSON.parse(JSON.stringify(billingDetails));
 		delete (shippingDetails.email);
 	}
 	var opts = {
@@ -646,7 +678,7 @@ function handlePayment() {
 
 	if (vars.data.create_token) {
 		console.log('Creating token');
-		var opts = {
+		opts = {
 			name: billingNameInput.value
 		};
 		if (vars.data.billing_address) {
@@ -794,6 +826,7 @@ function doAddonAction(action) {
 	}
 }
 
+// eslint-disable-next-line no-unused-vars
 function toggleRequiredElements(els, hide) {
 	els.forEach(function (el) {
 		if (hide) {
