@@ -3,3 +3,4 @@
 node_modules
 .eslintrc.json
 package.json
+stripe-payments_*.zip
