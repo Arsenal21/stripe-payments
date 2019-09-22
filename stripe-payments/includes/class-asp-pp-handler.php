@@ -102,20 +102,29 @@ class ASP_PP_Handler {
 		$a['scripts'] = apply_filters( 'asp_ng_pp_output_add_scripts', $a['scripts'] );
 		$a['vars']    = apply_filters( 'asp_ng_pp_output_add_vars', $a['vars'] );
 
-		$a['styles'][] = array(
-			'footer' => false,
-			'src'    => WP_ASP_PLUGIN_URL . '/public/views/templates/default/pure.css?ver=' . WP_ASP_PLUGIN_VERSION,
-		);
-
-		$a['styles'][] = array(
-			'footer' => false,
-			'src'    => WP_ASP_PLUGIN_URL . '/public/views/templates/default/pp-style.css?ver=' . WP_ASP_PLUGIN_VERSION,
-		);
-
-		$a['scripts'][] = array(
-			'footer' => true,
-			'src'    => WP_ASP_PLUGIN_URL . '/public/assets/js/pp-handler.js?ver=' . WP_ASP_PLUGIN_VERSION,
-		);
+		if ( ! defined( 'WP_ASP_DEV_MODE' ) ) {
+			$a['styles'][]  = array(
+				'footer' => false,
+				'src'    => WP_ASP_PLUGIN_URL . '/public/views/templates/default/pp-combined.min.css?ver=' . WP_ASP_PLUGIN_VERSION,
+			);
+			$a['scripts'][] = array(
+				'footer' => true,
+				'src'    => WP_ASP_PLUGIN_URL . '/public/assets/js/pp-handler.min.js?ver=' . WP_ASP_PLUGIN_VERSION,
+			);
+		} else {
+			$a['styles'][]  = array(
+				'footer' => false,
+				'src'    => WP_ASP_PLUGIN_URL . '/public/views/templates/default/pure.css?ver=' . WP_ASP_PLUGIN_VERSION,
+			);
+			$a['styles'][]  = array(
+				'footer' => false,
+				'src'    => WP_ASP_PLUGIN_URL . '/public/views/templates/default/pp-style.css?ver=' . WP_ASP_PLUGIN_VERSION,
+			);
+			$a['scripts'][] = array(
+				'footer' => true,
+				'src'    => WP_ASP_PLUGIN_URL . '/public/assets/js/pp-handler.js?ver=' . WP_ASP_PLUGIN_VERSION,
+			);
+		}
 
 		//vars
 
