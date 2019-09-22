@@ -122,8 +122,8 @@
 									$variations_str = '';
 									foreach ( $a['data']['variations']['groups'] as $grp_id => $group ) {
 										if ( ! empty( $a['data']['variations']['names'] ) ) {
-											$variations_str .= '<div class="pure-u-1 pure-u-md-11-24">';
-											$variations_str .= '<label>' . $group . '</label>';
+											$variations_str .= '<div class="pure-u-1 pure-u-md-11-24"><fieldset>';
+											$variations_str .= '<legend>' . $group . '</legend>';
 											if ( isset( $a['data']['variations']['opts'][ $grp_id ] ) && $a['data']['variations']['opts'][ $grp_id ] === '1' ) {
 												//radio buttons output
 											} else {
@@ -150,8 +150,8 @@
 											} else {
 												$variations_str .= '</select>';
 											}
-											$variations_str .= '</div>';
-											$variations_str .= '<div class="pure-u-1-24"></div>';
+											$variations_str .= '</fieldset></div>';
+											$variations_str .= '<div class="pure-u-md-1-24"></div>';
 										}
 									}
 									echo $variations_str; //phpcs:ignore
