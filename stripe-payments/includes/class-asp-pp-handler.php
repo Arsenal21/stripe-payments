@@ -292,6 +292,8 @@ class ASP_PP_Handler {
 
 		$data['customer_default_country'] = $default_country;
 
+		$data['show_your_order'] = get_post_meta( $product_id, 'asp_product_show_your_order', true );
+
 		$data['addons'] = array();
 
 		$data['payment_methods'][] = array(
@@ -306,8 +308,6 @@ class ASP_PP_Handler {
 		$data = apply_filters( 'asp_ng_pp_data_ready', $data, array( 'product_id' => $product_id ) ); //phpcs:ignore
 
 		$this->item->set_price( $data['item_price'], true );
-
-		$a['show_your_order'] = get_post_meta( $product_id, 'asp_product_show_your_order', true );
 
 		$a['data'] = $data;
 

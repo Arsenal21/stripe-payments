@@ -60,13 +60,11 @@
 				<div id="item-name"><?php echo esc_html( $a['item_name'] ); ?></div>
 				<div id="item-descr"><?php echo esc_html( $a['data']['descr'] ); ?></div>
 			</div>
-			<div id="modal-body">
-				<div class="pure-g">
-					<div class="pure-u-1">
+			<div id="modal-body" class="pure-g">
+				<div class="pure-u-1">
 						<div id="global-error" <?php echo isset( $a['fatal_error'] ) ? 'style="display: block"' : ''; ?>>
 							<?php echo isset( $a['fatal_error'] ) ? esc_html( $a['fatal_error'] ) : ''; ?>
 						</div>
-					</div>
 					<form method="post" id="payment-form" class="pure-form pure-form-stacked" <?php echo isset( $a['fatal_error'] ) ? 'style="display: none;"' : ''; ?>>
 						<?php if ( $a['data']['amount_variable'] ) { ?>
 						<div class="pure-u-1">
@@ -164,7 +162,7 @@
 								</div>
 							</div>
 							<?php } ?>
-							<?php if ( $a['show_your_order'] ) { ?>
+							<?php if ( $a['data']['show_your_order'] ) { ?>
 							<div id="your-order" class="pure-u-1">
 								<fieldset>
 									<legend><?php esc_html_e( 'Your order', 'stripe-payments' ); ?></legend>
@@ -204,13 +202,13 @@
 							</div>
 										<?php } ?>
 							<?php if ( count( $a['data']['payment_methods'] ) > 1 ) { ?>
-							<div class="pure-u-1">
+							<div id="pm-select-cont" class="pure-u-1">
 								<fieldset id="pm-select-cont">
 									<legend>Select payment method</legend>
 									<?php
 										$out = '';
 									foreach ( $a['data']['payment_methods'] as $pm ) {
-										$out .= sprintf( '<div class="pure-u-1 pure-u-md-1-3"><label class="pure-radio"><input name="pm" class="pm-select-btn" type="radio"%s data-pm-id="%s"> %s</label></div>', empty( $out ) ? ' checked' : '', $pm['id'], $pm['title'] );
+										$out .= sprintf( '<div class="pure-u-1 pure-u-md-1-3"><label class="pure-radio"><input name="pm" class="pm-select-btn" type="radio"%s value="%s" data-pm-id="%s"> %s</label></div>', empty( $out ) ? ' checked' : '', $pm['id'], $pm['id'], $pm['title'] );
 									}
 									echo $out; //phpcs:ignore
 									?>

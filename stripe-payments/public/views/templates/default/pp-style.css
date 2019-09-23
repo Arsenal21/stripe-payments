@@ -11,6 +11,10 @@ html {
 	-webkit-overflow-scrolling: touch;
 }
 
+body {
+	overflow-y: scroll;
+}
+
 #test-mode {
 	position: fixed;
 	z-index: 10000;
@@ -88,6 +92,7 @@ html {
 	background-color: red;
 	color: white;
 	display: none;
+	margin-bottom: 5px;
 }
 
 #modal-header {
