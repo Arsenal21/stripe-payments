@@ -1,4 +1,8 @@
 #!/bin/bash
+
+#regenerate .pot file
+sh ./genpot.sh
+
 #minify and combine css
 cat ./stripe-payments/public/views/templates/default/pure.css ./stripe-payments/public/views/templates/default/pp-style.css | cleancss -o ./stripe-payments/public/views/templates/default/pp-combined.min.css --s0
 
