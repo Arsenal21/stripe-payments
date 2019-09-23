@@ -307,6 +307,8 @@ class ASP_PP_Handler {
 
 		$this->item->set_price( $data['item_price'], true );
 
+		$a['show_your_order'] = get_post_meta( $product_id, 'asp_product_show_your_order', true );
+
 		$a['data'] = $data;
 
 		$pay_btn_text = $this->asp_main->get_setting( 'popup_button_text' );

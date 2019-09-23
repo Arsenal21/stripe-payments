@@ -164,6 +164,7 @@
 								</div>
 							</div>
 							<?php } ?>
+							<?php if ( $a['show_your_order'] ) { ?>
 							<div id="your-order" class="pure-u-1">
 								<fieldset>
 									<legend><?php esc_html_e( 'Your order', 'stripe-payments' ); ?></legend>
@@ -201,6 +202,7 @@
 									</table>
 								</fieldset>
 							</div>
+										<?php } ?>
 							<?php if ( count( $a['data']['payment_methods'] ) > 1 ) { ?>
 							<div class="pure-u-1">
 								<fieldset id="pm-select-cont">
