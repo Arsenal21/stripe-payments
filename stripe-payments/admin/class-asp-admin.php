@@ -70,7 +70,8 @@ class AcceptStripePayments_Admin {
 	wp_register_style( 'asp-admin-styles', WP_ASP_PLUGIN_URL . '/admin/assets/css/admin.css', array(), WP_ASP_PLUGIN_VERSION );
 
 	switch ( $hook ) {
-	    case 'asp-products_page_stripe-payments-settings':
+		case 'asp-products_page_stripe-payments-settings':
+		case 'asp-products_page_stripe-payments-addons':
 		//settings page
 		wp_register_script( 'asp-admin-settings-js', WP_ASP_PLUGIN_URL . '/admin/assets/js/settings.js', array( 'jquery' ), WP_ASP_PLUGIN_VERSION, true );
 		wp_enqueue_script( 'asp-admin-general-js' );
@@ -273,7 +274,7 @@ function show_admin_notices() {
 //
 //        $screen = get_current_screen();
 //        if ($this->plugin_screen_hook_suffix == $screen->id) {
-	wp_enqueue_style( $this->plugin_slug . '-admin-styles', plugins_url( 'assets/css/admin.css', __FILE__ ), array(), AcceptStripePayments::VERSION );
+		wp_enqueue_style( 'asp-admin-styles' );
 //        }
     }
 
