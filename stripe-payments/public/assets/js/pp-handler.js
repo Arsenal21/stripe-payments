@@ -285,30 +285,32 @@ jQuery('.pm-select-btn').click(function () {
 
 function updateAllAmounts() {
 	calcTotal();
-
 	submitBtn.innerHTML = vars.payBtnText.replace(/%s/g, formatMoney(vars.data.amount));
-	jQuery('#order-total').html(formatMoney(vars.data.amount));
-	jQuery('#order-item-price').html(formatMoney(vars.data.item_price * vars.data.quantity));
-	jQuery('#order-quantity').html(vars.data.quantity);
-	jQuery('#order-tax').html(formatMoney(vars.data.taxAmount * vars.data.quantity));
-	if (vars.data.coupon) {
-		if (jQuery('tr#order-coupon-line').length === 0) {
-			var couponOrderLine = '<tr id="order-coupon-line"><td>Coupon "' + vars.data.coupon.code + '"</td><td>- <span id="order-coupon"></span></td></tr>';
-			if (jQuery('tr.variation-line').last().length !== 0) {
-				jQuery('tr.variation-line').last().after(couponOrderLine);
-			} else {
-				jQuery('tr#order-item-line').after(couponOrderLine);
+
+	if (vars.data.show_your_order === 1) {
+		jQuery('#order-total').html(formatMoney(vars.data.amount));
+		jQuery('#order-item-price').html(formatMoney(vars.data.item_price * vars.data.quantity));
+		jQuery('#order-quantity').html(vars.data.quantity);
+		jQuery('#order-tax').html(formatMoney(vars.data.taxAmount * vars.data.quantity));
+		if (vars.data.coupon) {
+			if (jQuery('tr#order-coupon-line').length === 0) {
+				var couponOrderLine = '<tr id="order-coupon-line"><td>Coupon "' + vars.data.coupon.code + '"</td><td>- <span id="order-coupon"></span></td></tr>';
+				if (jQuery('tr.variation-line').last().length !== 0) {
+					jQuery('tr.variation-line').last().after(couponOrderLine);
+				} else {
+					jQuery('tr#order-item-line').after(couponOrderLine);
+				}
 			}
+			jQuery('#order-coupon').html(formatMoney(vars.data.coupon.discount_amount * vars.data.quantity));
 		}
-		jQuery('#order-coupon').html(formatMoney(vars.data.coupon.discount_amount * vars.data.quantity));
-	}
-	if (vars.data.variations.applied) {
-		for (grpId = 0; grpId < vars.data.variations.applied.length; ++grpId) {
-			if (jQuery('#order-variation-' + grpId + '-line').length === 0) {
-				jQuery('tr#order-item-line').after('<tr id="order-variation-' + grpId + '-line" class="variation-line"><td class="variation-name"></td><td class="variation-price"></td></tr>');
+		if (vars.data.variations.applied) {
+			for (grpId = 0; grpId < vars.data.variations.applied.length; ++grpId) {
+				if (jQuery('#order-variation-' + grpId + '-line').length === 0) {
+					jQuery('tr#order-item-line').after('<tr id="order-variation-' + grpId + '-line" class="variation-line"><td class="variation-name"></td><td class="variation-price"></td></tr>');
+				}
+				jQuery('#order-variation-' + grpId + '-line').find('.variation-name').html(vars.data.variations.groups[grpId] + '<br>' + vars.data.variations.names[grpId][vars.data.variations.applied[grpId]]);
+				jQuery('#order-variation-' + grpId + '-line').find('.variation-price').html(formatMoney(amount_to_cents(vars.data.variations.prices[grpId][vars.data.variations.applied[grpId]], vars.data.currency) * vars.data.quantity));
 			}
-			jQuery('#order-variation-' + grpId + '-line').find('.variation-name').html(vars.data.variations.groups[grpId] + '<br>' + vars.data.variations.names[grpId][vars.data.variations.applied[grpId]]);
-			jQuery('#order-variation-' + grpId + '-line').find('.variation-price').html(formatMoney(amount_to_cents(vars.data.variations.prices[grpId][vars.data.variations.applied[grpId]], vars.data.currency) * vars.data.quantity));
 		}
 	}
 	doAddonAction('allAmountsUpdated');
