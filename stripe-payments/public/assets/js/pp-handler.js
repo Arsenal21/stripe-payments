@@ -1,4 +1,288 @@
 /* eslint-disable no-undef */
+var errorCont = document.getElementById('global-error');
+if (vars.fatal_error) {
+	jQuery('#Aligner-item').show();
+	throw new Error(vars.fatal_error);
+}
+
+var stripe = Stripe(vars.stripe_key);
+var elements = stripe.elements();
+
+vars.data.temp = [];
+
+if (vars.data.amount_variable) {
+	var amountInput = document.getElementById('amount');
+	var amountErr = document.getElementById('amount-error');
+	amountInput.addEventListener('change', function () {
+		amount = validate_custom_amount();
+		if (amount !== false) {
+			vars.data.item_price = amount;
+			updateAllAmounts();
+		}
+	});
+}
+if (vars.data.custom_quantity) {
+	var quantityInput = document.getElementById('quantity');
+	var quantityErr = document.getElementById('quantity-error');
+	quantityInput.addEventListener('change', function () {
+		quantity = validate_custom_quantity();
+		if (quantity !== false) {
+			vars.data.quantity = quantity;
+			updateAllAmounts();
+		}
+	});
+}
+
+if (vars.data.currency_variable) {
+	var currencyInput = document.getElementById('currency');
+	currencyInput.addEventListener('change', function () {
+		vars.data.currency = currencyInput.value || currencyInput.options[currencyInput.selectedIndex];
+		vars.currencyFormat.s = currencyInput.options[currencyInput.selectedIndex].getAttribute('data-asp-curr-sym');
+		updateAllAmounts();
+	});
+}
+
+if (vars.data.coupons_enabled) {
+	var couponBtn = document.getElementById('apply-coupon-btn');
+	var couponRemoveBtn = document.getElementById('remove-coupon-btn');
+	var couponResCont = document.getElementById('coupon-res-cont');
+	var couponInputCont = document.getElementById('coupon-input-cont');
+	var couponInput = document.getElementById('coupon-code');
+	var couponErr = document.getElementById('coupon-err');
+	var couponInfo = document.getElementById('coupon-info');
+	couponInput.addEventListener('keydown', function (e) {
+		if (e.keyCode === 13) {
+			e.preventDefault();
+			couponBtn.click();
+			return false;
+		}
+	});
+	couponBtn.addEventListener('click', function (e) {
+		e.preventDefault();
+		couponErr.style.display = 'none';
+		if (couponInput.value === '') {
+			return false;
+		}
+		couponBtn.disabled = true;
+		smokeScreen(true);
+		var ajaxData = 'action=asp_pp_check_coupon&product_id=' + vars.data.product_id + '&coupon_code=' + couponInput.value;
+		new ajaxRequest(vars.ajaxURL, ajaxData,
+			function (res) {
+				console.log(res);
+				var resp = JSON.parse(res.responseText);
+				if (resp.err) {
+					delete (vars.data.coupon);
+					console.log(resp.err);
+					showFormInputErr(resp.err, couponErr, couponInput);
+				} else {
+					vars.data.coupon = resp;
+					console.log(vars.data.coupon);
+					calcTotal();
+					couponInfo.innerHTML = vars.data.coupon.code + ': ' + ' - ';
+					if (vars.data.coupon.discount_type === 'perc') {
+						couponInfo.innerHTML = couponInfo.innerHTML + vars.data.coupon.discount + '%';
+					} else {
+						couponInfo.innerHTML = couponInfo.innerHTML + formatMoney(vars.data.coupon.discount_amount);
+					}
+					couponResCont.style.display = 'block';
+					couponInputCont.style.display = 'none';
+				}
+				updateAllAmounts();
+				couponBtn.disabled = false;
+				smokeScreen(false);
+			},
+			function (res, errMsg) {
+				errorCont.innerHTML = errMsg;
+				errorCont.style.display = 'block';
+				couponBtn.disabled = false;
+				smokeScreen(false);
+			}
+		);
+	});
+	couponRemoveBtn.addEventListener('click', function () {
+		delete (vars.data.coupon);
+		jQuery('#order-coupon-line').remove();
+		couponInput.value = '';
+		couponResCont.style.display = 'none';
+		couponInputCont.style.display = 'block';
+		updateAllAmounts();
+	});
+}
+
+var amount = vars.data.amount;
+var clientSecAmount = 0;
+var clientSecCurrency = '';
+
+var style = {
+	base: {
+		fontSize: '16px',
+	}
+};
+
+var submitBtn = document.getElementById('submit-btn');
+var piInput = document.getElementById('payment-intent');
+var cardErrorCont = document.getElementById('card-errors');
+var form = document.getElementById('payment-form');
+
+if (vars.data.tos) {
+	var tosInput = document.getElementById('tos');
+	var tosInputErr = document.getElementById('tos-error');
+	tosInput.addEventListener('change', function () {
+		tosInputErr.style.display = 'none';
+	});
+}
+
+if (!jQuery.isEmptyObject(vars.data.variations)) {
+	var varInputs = document.getElementsByClassName('variations-input');
+	vars.data.temp.prePopupDisplayVariationsUpdate = true;
+	for (var i = 0; i < varInputs.length; i++) {
+		(function (index) {
+			varInputs[index].addEventListener('change', function () {
+				var grpId = this.getAttribute('data-asp-variations-group-id');
+				var varId = this.value;
+				if (Object.getOwnPropertyNames(vars.data.variations).length !== 0) {
+					if (!vars.data.variations.applied) {
+						vars.data.variations.applied = [];
+					}
+					vars.data.variations.applied[grpId] = varId;
+					if (vars.data.temp.prePopupDisplayVariationsUpdate) {
+						calcTotal();
+					} else {
+						updateAllAmounts();
+					}
+				}
+			});
+			if (varInputs[index].checked || varInputs[index].tagName === 'SELECT') {
+				triggerEvent(varInputs[index], 'change');
+			}
+		})(i);
+	}
+	vars.data.temp.prePopupDisplayVariationsUpdate = false;
+	updateAllAmounts();
+}
+
+if (vars.data.billing_address && vars.data.shipping_address) {
+	var billshipSwitch = document.getElementById('same-bill-ship-addr');
+	var billaddrCont = document.getElementById('billing-addr-cont');
+	var shipaddrCont = document.getElementById('shipping-addr-cont');
+	var baddrToggles = document.getElementsByClassName('baddr-toggle');
+	var baddrHide = document.getElementsByClassName('baddr-hide');
+	var saddrRequired = document.getElementsByClassName('saddr-required');
+	var itemsArr = [];
+	for (var i = 0; i < baddrToggles.length; i++) {
+		(function (index) {
+			itemsArr.push(baddrToggles[index]);
+		})(i);
+	}
+
+	billshipSwitch.addEventListener('change', function () {
+		var i;
+		if (billshipSwitch.checked) {
+			for (i = 0; i < itemsArr.length; i++) {
+				(function (index) {
+					attr = itemsArr[index].getAttribute('data-class-save');
+					itemsArr[index].className = attr;
+				})(i);
+			}
+			for (i = 0; i < baddrHide.length; i++) {
+				(function (index) {
+					baddrHide[index].style.display = 'inline-block';
+				})(i);
+			}
+			for (i = 0; i < saddrRequired.length; i++) {
+				(function (index) {
+					saddrRequired[index].required = false;
+				})(i);
+			}
+			billaddrCont.className = '';
+			shipaddrCont.style.display = 'none';
+		} else {
+			for (i = 0; i < itemsArr.length; i++) {
+				(function (index) {
+					itemsArr[index].setAttribute('data-class-save', itemsArr[index].className);
+					itemsArr[index].className = 'pure-u-1';
+				})(i);
+			}
+			for (i = 0; i < baddrHide.length; i++) {
+				(function (index) {
+					baddrHide[index].style.display = 'none';
+				})(i);
+			}
+			for (i = 0; i < saddrRequired.length; i++) {
+				(function (index) {
+					saddrRequired[index].required = true;
+				})(i);
+			}
+			billaddrCont.className = 'half-width';
+			shipaddrCont.style.display = 'inline-block';
+		}
+	});
+}
+
+var card = elements.create('card', {
+	style: style,
+	hidePostalCode: true
+});
+
+card.on('ready', function () {
+	submitBtn.disabled = false;
+});
+
+card.mount('#card-element');
+
+card.addEventListener('change', function (event) {
+	errorCont.style.display = 'none';
+	if (event.error) {
+		cardErrorCont.textContent = event.error.message;
+	} else {
+		cardErrorCont.textContent = '';
+	}
+});
+
+submitBtn.addEventListener('click', function () {
+	if (!vars.data.isEvent) {
+		vars.data.buttonClicked = '';
+	}
+});
+
+form.addEventListener('submit', function (event) {
+	event.preventDefault();
+
+	if (!canProceed()) {
+		return false;
+	}
+
+	errorCont.style.display = 'none';
+	submitBtn.disabled = true;
+
+	updateAllAmounts();
+
+	smokeScreen(true);
+
+	doAddonAction('readyToProceed');
+
+	handlePayment();
+
+});
+
+vars.data.initShowPopup = true;
+
+doAddonAction('init');
+
+if (vars.data.initShowPopup) {
+	showPopup();
+}
+
+jQuery('.pm-select-btn').click(function () {
+	vars.data.currentPM = jQuery(this).data('pm-id');
+	jQuery('.pm-select-btn').parent().removeClass('pure-menu-selected');
+	jQuery(this).parent().addClass('pure-menu-selected');
+	doAddonAction('pmSelectClicked');
+	jQuery('#payment-form').find('[data-pm-name][data-pm-name!="' + vars.data.currentPM + '"]').hide();
+	jQuery('#payment-form').find('[data-pm-name="' + vars.data.currentPM + '"]').show();
+});
+
+
 function updateAllAmounts() {
 	calcTotal();
 
@@ -92,6 +376,10 @@ function showFormInputErr(msg, el, inp) {
 	el.innerHTML = msg;
 	jQuery(el).show().hide().fadeIn();
 	jQuery(inp).focus();
+}
+
+function showPopup() {
+	jQuery('#Aligner-item').addClass('popup-show').hide().fadeIn();
 }
 
 function smokeScreen(show) {
@@ -208,277 +496,6 @@ function validate_custom_amount() {
 	amountInput.value = displayAmount;
 	return cAmount;
 }
-
-var errorCont = document.getElementById('global-error');
-if (vars.fatal_error) {
-	smokeScreen(false);
-	throw new Error(vars.fatal_error);
-}
-
-if (vars.data.amount_variable) {
-	var amountInput = document.getElementById('amount');
-	var amountErr = document.getElementById('amount-error');
-	amountInput.addEventListener('change', function () {
-		amount = validate_custom_amount();
-		if (amount !== false) {
-			vars.data.item_price = amount;
-			updateAllAmounts();
-		}
-	});
-}
-if (vars.data.custom_quantity) {
-	var quantityInput = document.getElementById('quantity');
-	var quantityErr = document.getElementById('quantity-error');
-	quantityInput.addEventListener('change', function () {
-		quantity = validate_custom_quantity();
-		if (quantity !== false) {
-			vars.data.quantity = quantity;
-			updateAllAmounts();
-		}
-	});
-}
-
-if (vars.data.currency_variable) {
-	var currencyInput = document.getElementById('currency');
-	currencyInput.addEventListener('change', function () {
-		vars.data.currency = currencyInput.value || currencyInput.options[currencyInput.selectedIndex];
-		vars.currencyFormat.s = currencyInput.options[currencyInput.selectedIndex].getAttribute('data-asp-curr-sym');
-		updateAllAmounts();
-	});
-}
-
-if (vars.data.coupons_enabled) {
-	var couponBtn = document.getElementById('apply-coupon-btn');
-	var couponRemoveBtn = document.getElementById('remove-coupon-btn');
-	var couponResCont = document.getElementById('coupon-res-cont');
-	var couponInputCont = document.getElementById('coupon-input-cont');
-	var couponInput = document.getElementById('coupon-code');
-	var couponErr = document.getElementById('coupon-err');
-	var couponInfo = document.getElementById('coupon-info');
-	couponInput.addEventListener('keydown', function (e) {
-		if (e.keyCode === 13) {
-			e.preventDefault();
-			couponBtn.click();
-			return false;
-		}
-	});
-	couponBtn.addEventListener('click', function (e) {
-		e.preventDefault();
-		couponErr.style.display = 'none';
-		if (couponInput.value === '') {
-			return false;
-		}
-		couponBtn.disabled = true;
-		smokeScreen(true);
-		var ajaxData = 'action=asp_pp_check_coupon&product_id=' + vars.data.product_id + '&coupon_code=' + couponInput.value;
-		new ajaxRequest(vars.ajaxURL, ajaxData,
-			function (res) {
-				console.log(res);
-				var resp = JSON.parse(res.responseText);
-				if (resp.err) {
-					delete (vars.data.coupon);
-					console.log(resp.err);
-					showFormInputErr(resp.err, couponErr, couponInput);
-				} else {
-					vars.data.coupon = resp;
-					console.log(vars.data.coupon);
-					calcTotal();
-					couponInfo.innerHTML = vars.data.coupon.code + ': ' + ' - ';
-					if (vars.data.coupon.discount_type === 'perc') {
-						couponInfo.innerHTML = couponInfo.innerHTML + vars.data.coupon.discount + '%';
-					} else {
-						couponInfo.innerHTML = couponInfo.innerHTML + formatMoney(vars.data.coupon.discount_amount);
-					}
-					couponResCont.style.display = 'block';
-					couponInputCont.style.display = 'none';
-				}
-				updateAllAmounts();
-				couponBtn.disabled = false;
-				smokeScreen(false);
-			},
-			function (res, errMsg) {
-				errorCont.innerHTML = errMsg;
-				errorCont.style.display = 'block';
-				couponBtn.disabled = false;
-				smokeScreen(false);
-			}
-		);
-	});
-	couponRemoveBtn.addEventListener('click', function () {
-		delete (vars.data.coupon);
-		jQuery('#order-coupon-line').remove();
-		couponInput.value = '';
-		couponResCont.style.display = 'none';
-		couponInputCont.style.display = 'block';
-		updateAllAmounts();
-	});
-}
-
-var amount = vars.data.amount;
-var clientSecAmount = 0;
-var clientSecCurrency = '';
-var stripe = Stripe(vars.stripe_key);
-var elements = stripe.elements();
-
-var style = {
-	base: {
-		fontSize: '16px',
-	}
-};
-
-var submitBtn = document.getElementById('submit-btn');
-var piInput = document.getElementById('payment-intent');
-var cardErrorCont = document.getElementById('card-errors');
-var form = document.getElementById('payment-form');
-
-if (vars.data.tos) {
-	var tosInput = document.getElementById('tos');
-	var tosInputErr = document.getElementById('tos-error');
-	tosInput.addEventListener('change', function () {
-		tosInputErr.style.display = 'none';
-	});
-}
-
-if (vars.data.variations) {
-	var varInputs = document.getElementsByClassName('variations-input');
-	for (var i = 0; i < varInputs.length; i++) {
-		(function (index) {
-			varInputs[index].addEventListener('change', function () {
-				var grpId = this.getAttribute('data-asp-variations-group-id');
-				var varId = this.value;
-				if (Object.getOwnPropertyNames(vars.data.variations).length !== 0) {
-					if (!vars.data.variations.applied) {
-						vars.data.variations.applied = [];
-					}
-					vars.data.variations.applied[grpId] = varId;
-					updateAllAmounts();
-				}
-			});
-			if (varInputs[index].checked || varInputs[index].tagName === 'SELECT') {
-				triggerEvent(varInputs[index], 'change');
-			}
-		})(i);
-	}
-}
-
-if (vars.data.billing_address && vars.data.shipping_address) {
-	var billshipSwitch = document.getElementById('same-bill-ship-addr');
-	var billaddrCont = document.getElementById('billing-addr-cont');
-	var shipaddrCont = document.getElementById('shipping-addr-cont');
-	var baddrToggles = document.getElementsByClassName('baddr-toggle');
-	var baddrHide = document.getElementsByClassName('baddr-hide');
-	var saddrRequired = document.getElementsByClassName('saddr-required');
-	var itemsArr = [];
-	for (var i = 0; i < baddrToggles.length; i++) {
-		(function (index) {
-			itemsArr.push(baddrToggles[index]);
-		})(i);
-	}
-
-	billshipSwitch.addEventListener('change', function () {
-		var i;
-		if (billshipSwitch.checked) {
-			for (i = 0; i < itemsArr.length; i++) {
-				(function (index) {
-					attr = itemsArr[index].getAttribute('data-class-save');
-					itemsArr[index].className = attr;
-				})(i);
-			}
-			for (i = 0; i < baddrHide.length; i++) {
-				(function (index) {
-					baddrHide[index].style.display = 'inline-block';
-				})(i);
-			}
-			for (i = 0; i < saddrRequired.length; i++) {
-				(function (index) {
-					saddrRequired[index].required = false;
-				})(i);
-			}
-			billaddrCont.className = '';
-			shipaddrCont.style.display = 'none';
-		} else {
-			for (i = 0; i < itemsArr.length; i++) {
-				(function (index) {
-					itemsArr[index].setAttribute('data-class-save', itemsArr[index].className);
-					itemsArr[index].className = 'pure-u-1';
-				})(i);
-			}
-			for (i = 0; i < baddrHide.length; i++) {
-				(function (index) {
-					baddrHide[index].style.display = 'none';
-				})(i);
-			}
-			for (i = 0; i < saddrRequired.length; i++) {
-				(function (index) {
-					saddrRequired[index].required = true;
-				})(i);
-			}
-			billaddrCont.className = 'half-width';
-			shipaddrCont.style.display = 'inline-block';
-		}
-	});
-}
-
-var card = elements.create('card', {
-	style: style,
-	hidePostalCode: true
-});
-
-card.on('ready', function () {
-	submitBtn.disabled = false;
-});
-
-card.mount('#card-element');
-
-card.addEventListener('change', function (event) {
-	errorCont.style.display = 'none';
-	if (event.error) {
-		cardErrorCont.textContent = event.error.message;
-	} else {
-		cardErrorCont.textContent = '';
-	}
-});
-
-submitBtn.addEventListener('click', function () {
-	if (!vars.data.isEvent) {
-		vars.data.buttonClicked = '';
-	}
-});
-
-form.addEventListener('submit', function (event) {
-	event.preventDefault();
-
-	if (!canProceed()) {
-		return false;
-	}
-
-	errorCont.style.display = 'none';
-	submitBtn.disabled = true;
-
-	updateAllAmounts();
-
-	smokeScreen(true);
-
-	doAddonAction('readyToProceed');
-
-	handlePayment();
-
-});
-
-vars.data.initRemoveSmoke = true;
-
-doAddonAction('init');
-
-smokeScreen(!vars.data.initRemoveSmoke);
-
-jQuery('.pm-select-btn').click(function () {
-	vars.data.currentPM = jQuery(this).data('pm-id');
-	jQuery('.pm-select-btn').parent().removeClass('pure-menu-selected');
-	jQuery(this).parent().addClass('pure-menu-selected');
-	doAddonAction('pmSelectClicked');
-	jQuery('#payment-form').find('[data-pm-name][data-pm-name!="' + vars.data.currentPM + '"]').hide();
-	jQuery('#payment-form').find('[data-pm-name="' + vars.data.currentPM + '"]').show();
-});
 
 function canProceed() {
 
@@ -837,7 +854,7 @@ function toggleRequiredElements(els, hide) {
 		}
 	});
 	if (hide) {
-		jQuery('#payment-form').find('[required]:hidden').each(function (id, el) {
+		jQuery('#payment-form').find('[required]').not(':visible').each(function (id, el) {
 			jQuery(el).prop('required', false);
 			jQuery(el).attr('data-required-hidden', 1);
 		});

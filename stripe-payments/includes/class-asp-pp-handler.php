@@ -78,56 +78,6 @@ class ASP_PP_Handler {
 
 		$currency = $this->item->get_currency();
 
-		$a['scripts'] = array();
-		$a['styles']  = array();
-		$a['vars']    = array();
-
-		// Stripe script should come first
-		$a['scripts'][] = array(
-			'footer' => true,
-			'src'    => 'https://js.stripe.com/v3/',
-		);
-
-		// jQuery
-		// Yeah, I know, it's not considered "fancy" anymore, but things become overcomplicated with vanilla JS sometimes.
-		// So screw those hipster things, there is no shame in using a good tool only because some ppl think it's "old".
-		// My coming out: I'm using jQuery!
-		$site_url       = get_site_url();
-		$a['scripts'][] = array(
-			'src'    => $site_url . '/wp-includes/js/jquery/jquery.js',
-			'footer' => true,
-		);
-
-		$a['styles']  = apply_filters( 'asp_ng_pp_output_add_styles', $a['styles'] );
-		$a['scripts'] = apply_filters( 'asp_ng_pp_output_add_scripts', $a['scripts'] );
-		$a['vars']    = apply_filters( 'asp_ng_pp_output_add_vars', $a['vars'] );
-
-		if ( ! defined( 'WP_ASP_DEV_MODE' ) ) {
-			$a['styles'][]  = array(
-				'footer' => false,
-				'src'    => WP_ASP_PLUGIN_URL . '/public/views/templates/default/pp-combined.min.css?ver=' . WP_ASP_PLUGIN_VERSION,
-			);
-			$a['scripts'][] = array(
-				'footer' => true,
-				'src'    => WP_ASP_PLUGIN_URL . '/public/assets/js/pp-handler.min.js?ver=' . WP_ASP_PLUGIN_VERSION,
-			);
-		} else {
-			$a['styles'][]  = array(
-				'footer' => false,
-				'src'    => WP_ASP_PLUGIN_URL . '/public/views/templates/default/pure.css?ver=' . WP_ASP_PLUGIN_VERSION,
-			);
-			$a['styles'][]  = array(
-				'footer' => false,
-				'src'    => WP_ASP_PLUGIN_URL . '/public/views/templates/default/pp-style.css?ver=' . WP_ASP_PLUGIN_VERSION,
-			);
-			$a['scripts'][] = array(
-				'footer' => true,
-				'src'    => WP_ASP_PLUGIN_URL . '/public/assets/js/pp-handler.js?ver=' . WP_ASP_PLUGIN_VERSION,
-			);
-		}
-
-		//vars
-
 		//Currency Display settings
 		$display_settings      = array();
 		$display_settings['c'] = $this->asp_main->get_setting( 'price_decimals_num', 2 );
@@ -310,6 +260,51 @@ class ASP_PP_Handler {
 		$this->item->set_price( $data['item_price'], true );
 
 		$a['data'] = $data;
+
+		$a['scripts'] = array();
+		$a['styles']  = array();
+		$a['vars']    = array();
+
+		// Stripe script should come first
+		$a['scripts'][] = array(
+			'footer' => true,
+			'src'    => 'https://js.stripe.com/v3/',
+		);
+
+		$site_url       = get_site_url();
+		$a['scripts'][] = array(
+			'src'    => $site_url . '/wp-includes/js/jquery/jquery.js',
+			'footer' => true,
+		);
+
+		//filters for addons to add styles, scripts and vars
+		$a['styles']  = apply_filters( 'asp_ng_pp_output_add_styles', $a['styles'] );
+		$a['scripts'] = apply_filters( 'asp_ng_pp_output_add_scripts', $a['scripts'] );
+		$a['vars']    = apply_filters( 'asp_ng_pp_output_add_vars', $a['vars'] );
+
+		if ( ! defined( 'WP_ASP_DEV_MODE' ) ) {
+			$a['styles'][]  = array(
+				'footer' => false,
+				'src'    => WP_ASP_PLUGIN_URL . '/public/views/templates/default/pp-combined.min.css?ver=' . WP_ASP_PLUGIN_VERSION,
+			);
+			$a['scripts'][] = array(
+				'footer' => true,
+				'src'    => WP_ASP_PLUGIN_URL . '/public/assets/js/pp-handler.min.js?ver=' . WP_ASP_PLUGIN_VERSION,
+			);
+		} else {
+			$a['styles'][]  = array(
+				'footer' => false,
+				'src'    => WP_ASP_PLUGIN_URL . '/public/views/templates/default/pure.css?ver=' . WP_ASP_PLUGIN_VERSION,
+			);
+			$a['styles'][]  = array(
+				'footer' => false,
+				'src'    => WP_ASP_PLUGIN_URL . '/public/views/templates/default/pp-style.css?ver=' . WP_ASP_PLUGIN_VERSION,
+			);
+			$a['scripts'][] = array(
+				'footer' => true,
+				'src'    => WP_ASP_PLUGIN_URL . '/public/assets/js/pp-handler.js?ver=' . WP_ASP_PLUGIN_VERSION,
+			);
+		}
 
 		$pay_btn_text = $this->asp_main->get_setting( 'popup_button_text' );
 

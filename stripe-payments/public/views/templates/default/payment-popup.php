@@ -46,7 +46,7 @@
 		<?php if ( ! $a['data']['is_live'] ) { ?>
 		<a href="https://stripe.com/docs/testing#cards" target="_blank" id="test-mode"><?php esc_html_e( 'TEST MODE', 'stripe-payments' ); ?></a>
 		<?php } ?>
-		<div class="Aligner-item">
+		<div id="Aligner-item">
 			<div id="smoke-screen">
 				<span id="btn-spinner" class="small-spinner"></span>
 			</div>
@@ -203,7 +203,7 @@
 										<?php } ?>
 							<?php if ( count( $a['data']['payment_methods'] ) > 1 ) { ?>
 							<div id="pm-select-cont" class="pure-u-1">
-								<fieldset id="pm-select-cont">
+								<fieldset>
 									<legend>Select payment method</legend>
 									<?php
 										$out = '';

@@ -4,12 +4,11 @@ var stripeHandlerNG = function (data) {
 		if (!parent.modal) {
 			parent.modal = jQuery('div[data-asp-iframe-prod-id="' + parent.data.product_id + '"]');
 			if (parent.modal.length === 0) {
-				jQuery('body').append('<div id="asp-payment-popup-' + parent.data.uniq_id + '" style="display: none;" data-asp-iframe-prod-id="' + parent.data.product_id + '" class="asp-popup-iframe-cont"><div class="asp-popup-spinner-cont"></div><iframe frameborder="0" allowtransparency="true" class="asp-popup-iframe" allow="payment" allowpaymentrequest="true" src="' + parent.data.iframe_url + '"></iframe></div>');
+				jQuery('body').append('<div id="asp-payment-popup-' + parent.data.uniq_id + '" style="display: none;" data-asp-iframe-prod-id="' + parent.data.product_id + '" class="asp-popup-iframe-cont"><div class="asp-popup-spinner-cont"><div class="asp-btn-spinner"><div></div><div></div><div></div><div></div></div></div><iframe frameborder="0" allowtransparency="true" class="asp-popup-iframe" allow="payment" allowpaymentrequest="true" src="' + parent.data.iframe_url + '"></iframe></div>');
 				parent.modal = jQuery('#asp-payment-popup-' + parent.data.uniq_id);
 			}
 			if (show) {
-				parent.modal.css('display', 'flex');
-				parent.modal.find('.asp-popup-spinner-cont').append(jQuery('div#asp-btn-spinner-container-' + parent.data.uniq_id).html());
+				parent.modal.css('display', 'flex').hide().fadeIn();
 			}
 			var iframe = parent.modal.find('iframe');
 			iframe.on('load', function () {
@@ -39,14 +38,14 @@ var stripeHandlerNG = function (data) {
 							parent.redirectToResult = true;
 							return true;
 						}
-						jQuery('div#asp-all-buttons-container-' + parent.data.uniq_id).hide();
-						jQuery('div#asp-btn-spinner-container-' + parent.data.uniq_id).show();
-						parent.modal.fadeOut();
+						//jQuery('div#asp-all-buttons-container-' + parent.data.uniq_id).hide();
+						//jQuery('div#asp-btn-spinner-container-' + parent.data.uniq_id).show();
+						//parent.modal.fadeOut();
 						var hiddenInputsDiv = parent.form.find('div.asp-child-hidden-fields');
 						parent.iForm.find('[name!=""]').each(function () {
 							if (jQuery(this).attr('name')) {
 								jQuery(this).attr('name', 'asp_' + jQuery(this).attr('name'));
-								hiddenInputsDiv.append(jQuery(this));
+								hiddenInputsDiv.append(jQuery(this).clone());
 							}
 						});
 						console.log('Parent form submit');
