@@ -145,9 +145,7 @@ if (!jQuery.isEmptyObject(vars.data.variations)) {
 						vars.data.variations.applied = [];
 					}
 					vars.data.variations.applied[grpId] = varId;
-					if (vars.data.temp.prePopupDisplayVariationsUpdate) {
-						calcTotal();
-					} else {
+					if (!vars.data.temp.prePopupDisplayVariationsUpdate) {
 						updateAllAmounts();
 					}
 				}
