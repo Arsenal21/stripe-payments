@@ -24,9 +24,9 @@ class AcceptStripePaymentsShortcode {
 
 		$use_old_api = $this->AcceptStripePayments->get_setting( 'use_old_checkout_api1' );
 
-		if ($use_old_api) {
+		if ( $use_old_api ) {
 			add_shortcode( 'asp_product', array( &$this, 'shortcode_asp_product' ) );
-			add_shortcode( 'accept_stripe_payment', array( &$this, 'shortcode_accept_stripe_payment' ) );	
+			add_shortcode( 'accept_stripe_payment', array( &$this, 'shortcode_accept_stripe_payment' ) );
 			add_filter( 'the_content', array( $this, 'filter_post_type_content' ) );
 		}
 
@@ -1239,8 +1239,9 @@ class AcceptStripePaymentsShortcode {
 			}
 			$data['custom_field']       = rtrim( $data['custom_field'], "\r\n" );
 			$data['custom_field']       = nl2br( $data['custom_field'] );
-			$data['custom_field_name']  = $data['custom_fields'][0]['name'];
-			$data['custom_field_value'] = $data['custom_fields'][0]['value'];
+			$first_item                 = reset( $data['custom_fields'] );
+			$data['custom_field_name']  = $first_item;
+			$data['custom_field_value'] = $first_item;
 		} else {
 			$data['custom_field']       = null;
 			$data['custom_field_name']  = null;

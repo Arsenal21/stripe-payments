@@ -70,7 +70,8 @@ class AcceptStripePayments_Admin {
 	wp_register_style( 'asp-admin-styles', WP_ASP_PLUGIN_URL . '/admin/assets/css/admin.css', array(), WP_ASP_PLUGIN_VERSION );
 
 	switch ( $hook ) {
-	    case 'asp-products_page_stripe-payments-settings':
+		case 'asp-products_page_stripe-payments-settings':
+		case 'asp-products_page_stripe-payments-addons':
 		//settings page
 		wp_register_script( 'asp-admin-settings-js', WP_ASP_PLUGIN_URL . '/admin/assets/js/settings.js', array( 'jquery' ), WP_ASP_PLUGIN_VERSION, true );
 		wp_enqueue_script( 'asp-admin-general-js' );
@@ -273,7 +274,7 @@ function show_admin_notices() {
 //
 //        $screen = get_current_screen();
 //        if ($this->plugin_screen_hook_suffix == $screen->id) {
-	wp_enqueue_style( $this->plugin_slug . '-admin-styles', plugins_url( 'assets/css/admin.css', __FILE__ ), array(), AcceptStripePayments::VERSION );
+		wp_enqueue_style( 'asp-admin-styles' );
 //        }
     }
 
@@ -479,7 +480,7 @@ function show_admin_notices() {
 	    'desc'	 => __( 'Select field description location. Placeholder: description is displayed inside text input (default). Below Input: description is displayed below text input.', 'stripe-payments' ) )
 	);
 	add_settings_field( 'custom_field_position', __( 'Position', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-custom-field', array( 'field'	 => 'custom_field_position',
-	    'desc'	 => __( 'Select custom field position.', 'stripe-payments' ) )
+	    'desc'	 => __( 'Select custom field position.', 'stripe-payments' ).' '.__('This option is for legacy API only.','stripe-payments') )
 	);
 	add_settings_field( 'custom_field_type', __( 'Field Type', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-custom-field', array( 'field'	 => 'custom_field_type',
 	    'desc'	 => __( 'Select custom field type.', 'stripe-payments' ) )
@@ -509,6 +510,9 @@ function show_admin_notices() {
 	add_settings_field( 'use_old_checkout_api1', __( 'Enable Legacy Checkout API', 'stripe-payments' ), array( $this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-additional-settings', array( 'field'	 => 'use_old_checkout_api1',
 	    'desc'	 => __( "Use the legacy API to process payments. Note that the legacy API is not compatible with 3-D Secure and EU's Strong Customer Authentication (SCA) requirements. Stripe may disable this legacy API in the future. If there is a bug in the new API, then continue to use the legacy API while we fix the bug.", 'stripe-payments' ) )
 	);
+	add_settings_field( 'new_product_edit_interface', __( 'Enable New Product Edit Interface', 'stripe-payments' ), array( $this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-additional-settings', array( 'field'	 => 'new_product_edit_interface',
+	    'desc'	 => __( "Try the new, comfortable product edit interface.", 'stripe-payments' ) )
+	);	
 	add_settings_field( 'disable_buttons_before_js_loads', __( 'Disable Buttons Before Javascript Loads', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-additional-settings', array( 'field'	 => 'disable_buttons_before_js_loads',
 	    'desc'	 => __( "If enabled, payment buttons are not clickable until Javascript libraries are loaded on page view. This prevents \"Invalid Stripe Token\" errors on some configurations.", 'stripe-payments' ) )
 	);
@@ -660,6 +664,7 @@ function show_admin_notices() {
 	    case 'is_live':
 		case 'disable_remember_me':
 		case 'use_old_checkout_api1':
+		case 'new_product_edit_interface':
 	    case 'disable_buttons_before_js_loads':
 	    case 'dont_save_card':
 	    case 'custom_field_mandatory':
@@ -845,6 +850,8 @@ function show_admin_notices() {
 
 	$output[ 'use_old_checkout_api1' ] = empty( $input[ 'use_old_checkout_api1' ] ) ? 0 : 1;
 
+	$output[ 'new_product_edit_interface' ] = empty( $input[ 'new_product_edit_interface' ] ) ? 0 : 1;
+	
 	$output[ 'dont_create_order' ] = empty( $input[ 'dont_create_order' ] ) ? 0 : 1;
 
 	$output[ 'enable_zip_validation' ] = empty( $input[ 'enable_zip_validation' ] ) ? 0 : 1;

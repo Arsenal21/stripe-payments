@@ -630,6 +630,15 @@ class AcceptStripePayments {
 
 	public function enqueue_frontend_scripts_styles() {
 		wp_register_script( 'stripe-handler-ng', WP_ASP_PLUGIN_URL . '/public/assets/js/stripe-handler-ng.js', array( 'jquery' ), WP_ASP_PLUGIN_VERSION, true );
+		$home_url = get_home_url( null, '/' );
+
+		$iframe_url = add_query_arg(
+			array(
+				'asp_action' => 'show_pp',
+			),
+			$home_url
+		);
+		wp_localize_script( 'stripe-handler-ng', 'wpASPNG', array( 'iframeUrl' => $iframe_url ) );
 		wp_enqueue_script( 'stripe-handler-ng' );
 		wp_register_style( 'stripe-handler-ng-style', WP_ASP_PLUGIN_URL . '/public/assets/css/public.css', array(), WP_ASP_PLUGIN_VERSION );
 		wp_enqueue_style( 'stripe-handler-ng-style' );

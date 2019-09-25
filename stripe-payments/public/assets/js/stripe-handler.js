@@ -285,7 +285,7 @@ function wp_asp_can_proceed(data, openHandler) {
 
 	if (data.custom_field != '0') {
 		jQuery('form#stripe_form_' + data.uniq_id).find('.asp_product_custom_field_error').hide();
-		customInputs = jQuery('form#stripe_form_' + data.uniq_id).find('.asp_product_custom_field_input').toArray();
+		var customInputs = jQuery('form#stripe_form_' + data.uniq_id+', #asp-all-buttons-container-'+data.uniq_id).find('.asp_product_custom_field_input').toArray();
 		var valid = true;
 		if (typeof (data.custom_field_validation_regex) !== "undefined" && data.custom_field_validation_regex !== '') {
 			try {

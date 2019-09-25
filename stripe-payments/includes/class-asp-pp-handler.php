@@ -78,30 +78,6 @@ class ASP_PP_Handler {
 
 		$currency = $this->item->get_currency();
 
-		$a['scripts'] = array();
-		$a['styles']  = array();
-		$a['vars']    = array();
-		$a['styles']  = apply_filters( 'asp_ng_pp_output_add_styles', $a['styles'] );
-		$a['scripts'] = apply_filters( 'asp_ng_pp_output_add_scripts', $a['scripts'] );
-		$a['vars']    = apply_filters( 'asp_ng_pp_output_add_vars', $a['vars'] );
-
-		$a['styles'][] = array(
-			'footer' => false,
-			'src'    => WP_ASP_PLUGIN_URL . '/public/views/templates/default/pure.css?ver=' . WP_ASP_PLUGIN_VERSION,
-		);
-
-		$a['styles'][] = array(
-			'footer' => false,
-			'src'    => WP_ASP_PLUGIN_URL . '/public/views/templates/default/pp-style.css?ver=' . WP_ASP_PLUGIN_VERSION,
-		);
-
-		$a['scripts'][] = array(
-			'footer' => true,
-			'src'    => WP_ASP_PLUGIN_URL . '/public/assets/js/pp-handler.js?ver=' . WP_ASP_PLUGIN_VERSION,
-		);
-
-		//vars
-
 		//Currency Display settings
 		$display_settings      = array();
 		$display_settings['c'] = $this->asp_main->get_setting( 'price_decimals_num', 2 );
@@ -266,7 +242,17 @@ class ASP_PP_Handler {
 
 		$data['customer_default_country'] = $default_country;
 
+		$data['show_your_order'] = get_post_meta( $product_id, 'asp_product_show_your_order', true );
+		$data['show_your_order'] = $data['show_your_order'] ? 1 : 0;
+
 		$data['addons'] = array();
+
+		$data['payment_methods'][] = array(
+			'id'    => 'def',
+			'title' => __( 'Credit or debit card', 'stripe-payments' ),
+		);
+
+		$data['addonHooks'] = array();
 
 		$data = apply_filters( 'asp-button-output-data-ready', $data, array( 'product_id' => $product_id ) ); //phpcs:ignore
 
@@ -275,6 +261,51 @@ class ASP_PP_Handler {
 		$this->item->set_price( $data['item_price'], true );
 
 		$a['data'] = $data;
+
+		$a['scripts'] = array();
+		$a['styles']  = array();
+		$a['vars']    = array();
+
+		// Stripe script should come first
+		$a['scripts'][] = array(
+			'footer' => true,
+			'src'    => 'https://js.stripe.com/v3/',
+		);
+
+		$site_url       = get_site_url();
+		$a['scripts'][] = array(
+			'src'    => $site_url . '/wp-includes/js/jquery/jquery.js',
+			'footer' => true,
+		);
+
+		//filters for addons to add styles, scripts and vars
+		$a['styles']  = apply_filters( 'asp_ng_pp_output_add_styles', $a['styles'] );
+		$a['scripts'] = apply_filters( 'asp_ng_pp_output_add_scripts', $a['scripts'] );
+		$a['vars']    = apply_filters( 'asp_ng_pp_output_add_vars', $a['vars'] );
+
+		if ( ! defined( 'WP_ASP_DEV_MODE' ) ) {
+			$a['styles'][]  = array(
+				'footer' => false,
+				'src'    => WP_ASP_PLUGIN_URL . '/public/views/templates/default/pp-combined.min.css?ver=' . WP_ASP_PLUGIN_VERSION,
+			);
+			$a['scripts'][] = array(
+				'footer' => true,
+				'src'    => WP_ASP_PLUGIN_URL . '/public/assets/js/pp-handler.min.js?ver=' . WP_ASP_PLUGIN_VERSION,
+			);
+		} else {
+			$a['styles'][]  = array(
+				'footer' => false,
+				'src'    => WP_ASP_PLUGIN_URL . '/public/views/templates/default/pure.css?ver=' . WP_ASP_PLUGIN_VERSION,
+			);
+			$a['styles'][]  = array(
+				'footer' => false,
+				'src'    => WP_ASP_PLUGIN_URL . '/public/views/templates/default/pp-style.css?ver=' . WP_ASP_PLUGIN_VERSION,
+			);
+			$a['scripts'][] = array(
+				'footer' => true,
+				'src'    => WP_ASP_PLUGIN_URL . '/public/assets/js/pp-handler.js?ver=' . WP_ASP_PLUGIN_VERSION,
+			);
+		}
 
 		$pay_btn_text = $this->asp_main->get_setting( 'popup_button_text' );
 
@@ -285,6 +316,8 @@ class ASP_PP_Handler {
 		if ( isset( $data['is_trial'] ) && $data['is_trial'] ) {
 			$pay_btn_text = apply_filters( 'asp_customize_text_msg', __( 'Start Free Trial', 'stripe-payments' ), 'start_free_trial' );
 		}
+
+		$a['item'] = $this->item;
 
 		$a['vars']['vars'] = array(
 			'data'           => $data,
@@ -566,7 +599,7 @@ class ASP_PP_Handler {
 					}
 					break;
 				case 'checkbox':
-					$tpl_cf .= '<label class="pure-checkbox asp_product_custom_field_label"><input id="asp-custom-field" class="pure-input-1 asp_product_custom_field_input" type="checkbox"' . ( $mandatory ? ' data-asp-custom-mandatory' : '' ) . ' name="stripeCustomField"' . ( $mandatory ? ' required' : '' ) . '>' . $field_descr . '</label>';
+					$tpl_cf .= '<label class="pure-checkbox asp_product_custom_field_label"><input id="asp-custom-field" class="asp_product_custom_field_input" type="checkbox"' . ( $mandatory ? ' data-asp-custom-mandatory' : '' ) . ' name="stripeCustomField"' . ( $mandatory ? ' required' : '' ) . '> ' . $field_descr . '</label>';
 					break;
 			}
 			$tpl_cf      .= "<span id='custom_field_error_explanation' class='pure-form-message asp_product_custom_field_error'></span>" .
@@ -574,13 +607,8 @@ class ASP_PP_Handler {
 				'</div>';
 			$this->tpl_cf = $tpl_cf;
 		}
-		$cf_pos = $this->asp_main->get_setting( 'custom_field_position' );
-		if ( 'below' !== $cf_pos ) {
 			$output      .= $this->tpl_cf;
 			$this->tpl_cf = '';
-		} else {
-			add_filter( 'asp_button_output_after_button', array( $this, 'after_button_add_сf_filter' ), 990, 3 );
-		}
 		return $output;
 	}
 

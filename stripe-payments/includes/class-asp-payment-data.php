@@ -11,6 +11,7 @@ class ASP_Payment_Data {
 	protected $last_error           = '';
 	protected $billing_details_obj  = false;
 	protected $shipping_details_obj = false;
+	protected $customer_obj         = false;
 	protected $last_error_obj;
 	public function __construct( $obj_id = false ) {
 		if ( false !== $obj_id ) {
@@ -81,9 +82,19 @@ class ASP_Payment_Data {
 		if ( false !== $this->shipping_details_obj ) {
 			return $this->shipping_details_obj;
 		}
-		$shipping_addr              = new stdClass();
-		$sd                         = $this->obj->charges->data[0]->shipping;
-		$shipping_addr->name        = isset( $this->obj->charges->data[0]->shipping->name ) ? $this->obj->charges->data[0]->shipping->name : '';
+		$shipping_addr = new stdClass();
+		$sd            = $this->obj->charges->data[0]->shipping;
+		if ( empty( $sd ) ) {
+			if ( empty( $this->customer_obj ) && ! empty( $this->obj->customer ) ) {
+				try {
+					$this->customer_obj = \Stripe\Customer::retrieve( $this->obj->customer );
+					$sd                 = $this->customer_obj->shipping;
+				} catch ( Exception $e ) {
+					$this->last_error = $e->getMessage();
+				}
+			}
+		}
+		$shipping_addr->name        = isset( $sd->name ) ? $sd->name : '';
 		$shipping_addr->line1       = isset( $sd->address->line1 ) ? $sd->address->line1 : '';
 		$shipping_addr->line2       = isset( $sd->address->line2 ) ? $sd->address->line2 : '';
 		$shipping_addr->postal_code = isset( $sd->address->postal_code ) ? $sd->address->postal_code : '';

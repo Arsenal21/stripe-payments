@@ -3,7 +3,7 @@
 /**
  * Plugin Name: Stripe Payments
  * Description: Easily accept credit card payments via Stripe payment gateway in WordPress.
- * Version: 2.0.7.1
+ * Version: 2.0.8
  * Author: Tips and Tricks HQ, wptipsntricks
  * Author URI: https://www.tipsandtricks-hq.com/
  * Plugin URI: https://s-plugins.com
@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; //Exit if accessed directly
 }
 
-define( 'WP_ASP_PLUGIN_VERSION', '2.0.7.1' );
+define( 'WP_ASP_PLUGIN_VERSION', '2.0.8' );
 define( 'WP_ASP_MIN_PHP_VERSION', '5.4' );
 define( 'WP_ASP_PLUGIN_URL', plugins_url( '', __FILE__ ) );
 define( 'WP_ASP_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
@@ -61,10 +61,10 @@ class ASPMain {
 
 		require_once WP_ASP_PLUGIN_PATH . 'includes/session-handler-class.php';
 		require_once WP_ASP_PLUGIN_PATH . 'public/includes/class-shortcode-asp.php';
-		require_once WP_ASP_PLUGIN_PATH . 'public/includes/class-shortcode-asp-ng.php';
+		require_once WP_ASP_PLUGIN_PATH . 'public/includes/class-asp-shortcode-ng.php';
 
 		add_action( 'init', array( 'AcceptStripePaymentsShortcode', 'get_instance' ) );
-		add_action( 'init', array( 'AcceptStripePaymentsShortcodeNG', 'get_instance' ) );
+		add_action( 'init', array( 'ASP_Shortcode_NG', 'get_instance' ) );
 
 		// register custom post type
 		$asp_products = ASPProducts::get_instance();
