@@ -36,17 +36,20 @@ class ASPProductsMetaboxes {
 		}
 
 		do_action( 'asp_edit_product_metabox' );
-		global $wp_meta_boxes;
-		global $post;
-		$skip_metaboxes = array( 'wsp_content', 'asp_short_description_meta_box' );
-		foreach ( $wp_meta_boxes[ ASPMain::$products_slug ]['normal']['default'] as $box ) {
-			if ( in_array( $box['id'], $skip_metaboxes, true ) ) {
-				continue;
+		$new_product_edit_interface = $this->asp_main->get_setting( 'new_product_edit_interface' );
+		if ( $new_product_edit_interface ) {
+			global $wp_meta_boxes;
+			global $post;
+			$skip_metaboxes = array( 'wsp_content', 'asp_short_description_meta_box' );
+			foreach ( $wp_meta_boxes[ ASPMain::$products_slug ]['normal']['default'] as $box ) {
+				if ( in_array( $box['id'], $skip_metaboxes, true ) ) {
+					continue;
+				}
+				$this->metaboxes[] = $box;
+				unset( $wp_meta_boxes[ ASPMain::$products_slug ]['normal']['default'][ $box['id'] ] );
 			}
-			$this->metaboxes[] = $box;
-			unset( $wp_meta_boxes[ ASPMain::$products_slug ]['normal']['default'][ $box['id'] ] );
+			add_meta_box( 'asp_product_metaboxes_meta_box', __( 'Product Options', 'stripe-payments' ), array( $this, 'display_metaboxes_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 		}
-		add_meta_box( 'asp_product_metaboxes_meta_box', __( 'Product Options', 'stripe-payments' ), array( $this, 'display_metaboxes_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 	}
 
 	public function display_metaboxes_meta_box( $post ) {
