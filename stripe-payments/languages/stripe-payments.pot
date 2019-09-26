@@ -596,7 +596,7 @@ msgid "Enable New Product Edit Interface"
 msgstr ""
 
 #: stripe-payments/admin/class-asp-admin.php:514
-msgid "Try the new, comfortable product edit interface."
+msgid "Switch to the compact product edit interface."
 msgstr ""
 
 #: stripe-payments/admin/class-asp-admin.php:516
@@ -1732,9 +1732,7 @@ msgstr ""
 
 #: stripe-payments/admin/includes/class-products-meta-boxes.php:447
 msgid ""
-"If enabled, additional \"Your order\" box with detailed product financial "
-"info (shipping, tax amount, variations etc) will be displayed on payment "
-"popup."
+"If enabled, an additional \"Your order\" section with itemized product info (shipping, tax amount, variations etc) will be displayed on payment popup."
 msgstr ""
 
 #: stripe-payments/admin/includes/class-products-meta-boxes.php:464
