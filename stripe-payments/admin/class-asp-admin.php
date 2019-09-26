@@ -510,8 +510,8 @@ function show_admin_notices() {
 	add_settings_field( 'use_old_checkout_api1', __( 'Enable Legacy Checkout API', 'stripe-payments' ), array( $this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-additional-settings', array( 'field'	 => 'use_old_checkout_api1',
 	    'desc'	 => __( "Use the legacy API to process payments. Note that the legacy API is not compatible with 3-D Secure and EU's Strong Customer Authentication (SCA) requirements. Stripe may disable this legacy API in the future. If there is a bug in the new API, then continue to use the legacy API while we fix the bug.", 'stripe-payments' ) )
 	);
-	add_settings_field( 'new_product_edit_interface', __( 'Enable New Product Edit Interface', 'stripe-payments' ), array( $this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-additional-settings', array( 'field'	 => 'new_product_edit_interface',
-	    'desc'	 => __( "Try the new, comfortable product edit interface.", 'stripe-payments' ) )
+	add_settings_field( 'new_product_edit_interface', __( 'Enable Compact Product Edit Interface', 'stripe-payments' ), array( $this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-additional-settings', array( 'field'	 => 'new_product_edit_interface',
+	    'desc'	 => __( "Switch to the compact product edit interface.", 'stripe-payments' ) )
 	);	
 	add_settings_field( 'disable_buttons_before_js_loads', __( 'Disable Buttons Before Javascript Loads', 'stripe-payments' ), array( &$this, 'settings_field_callback' ), $this->plugin_slug . '-advanced', 'AcceptStripePayments-additional-settings', array( 'field'	 => 'disable_buttons_before_js_loads',
 	    'desc'	 => __( "If enabled, payment buttons are not clickable until Javascript libraries are loaded on page view. This prevents \"Invalid Stripe Token\" errors on some configurations.", 'stripe-payments' ) )

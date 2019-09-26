@@ -165,7 +165,7 @@ None.
 - [New API]: Added support for Additional Payment Methods addon. APM addon version 2.0.0+ is required to work with new payment popup.
 - [New API]: Some visual tweaks and fixes for payment popup.
 - Fixed custom input wasn't properly validating and honoring "Mandatory" option if position was "Below Button" (legacy API only).
-- Added new product edit interface. To see it in action, tick "Enable New Product Edit Interface" checkbox on Advanced Settings tab.
+- Added new product edit interface. To see it in action, check the "Enable Compact Product Edit Interface" checkbox in the Advanced Settings tab.
 
 = 2.0.7.1 =
 - [New API]: Fixed visual bug on payment popup when coupons are enabled.

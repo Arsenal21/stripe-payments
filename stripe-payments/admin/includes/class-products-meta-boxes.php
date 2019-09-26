@@ -444,7 +444,7 @@ jQuery(document).ready(function($) {
 <fieldset>
 	<legend><?php esc_html_e( 'Payment Popup Options', 'stripe-payments' ); ?></legend>
 	<label><input type="checkbox" name="asp_product_show_your_order" value="1" <?php echo $show_your_order ? ' checked' : ''; ?>> <?php esc_html_e( 'Show Order Total On Payment Popup', 'stripe-payments' ); ?></label>
-	<p class="description"><?php _e( 'If enabled, additional "Your order" box with detailed product financial info (shipping, tax amount, variations etc) will be displayed on payment popup.', 'stripe-payments' ); ?></p>
+	<p class="description"><?php _e( 'If enabled, an additional "Your order" section with itemized product info (shipping, tax amount, variations etc) will be displayed on payment popup.', 'stripe-payments' ); ?></p>
 </fieldset>
 
 		<?php
