@@ -201,7 +201,7 @@ class ASP_Process_IPN_NG {
 
 		$data                       = array();
 		$data['product_id']         = $prod_id ? $prod_id : null;
-		$data['paid_amount']        = AcceptStripePayments::from_cents( $p_amount, $p_curr );
+		$data['paid_amount']        = AcceptStripePayments::is_zero_cents( $p_curr ) ? $p_amount : AcceptStripePayments::from_cents( $p_amount, $p_curr );
 		$data['currency_code']      = strtoupper( $p_curr );
 		$data['item_quantity']      = $item->get_quantity();
 		$data['charge']             = $p_charge_data;
