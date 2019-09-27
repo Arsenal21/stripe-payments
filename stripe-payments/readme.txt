@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 4.7
 Tested up to: 5.2
 Requires PHP: 5.4
-Stable tag: 2.0.8
+Stable tag: 2.0.9t1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -152,6 +152,13 @@ Yes, please visit Stripe Payments > Settings screen for options.
 None.
 
 == Changelog ==
+
+= WIP 2.0.9 =
+- [New API]: Fixed zero cents currencies were divided by 100 on payments result page and order info.
+- [New API]: Fixed Stripe receipt wasn't sent if "Do Not Save Card Data on Stripe" option enabled.
+- [New API]: ZIP\postal code is now requested on credit card input when "Validate ZIP Code" option enabled and address collection disabled for a product.
+- [New API]: Product name and ID are now saved in payment metadata on Stripe Dashboard.
+- [New API]: If product short description is empty, product name is used for payment details "Description" on Stripe Dashboard.
 
 = 2.0.8 =
 - [New API]: Added compatability with optimization plugins that do minify\combine JavaScript.
