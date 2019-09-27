@@ -529,12 +529,17 @@ class ASP_PP_Handler {
 				$pi_params['customer'] = $cust_id;
 			}
 
+			$metadata['Product Name'] = $item->get_name();
+			$metadata['Product ID']   = $product_id;
+
 			if ( isset( $metadata ) && ! empty( $metadata ) ) {
 				$pi_params['metadata'] = $metadata;
 			}
 			$description = $item->get_description();
 			if ( ! empty( $description ) ) {
 				$pi_params['description'] = $description;
+			} else {
+				$pi_params['description'] = $item->get_name();
 			}
 
 			$stripe_receipt_email = $this->asp_main->get_setting( 'stripe_receipt_email' );
