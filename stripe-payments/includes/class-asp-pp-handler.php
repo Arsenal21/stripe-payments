@@ -444,19 +444,22 @@ class ASP_PP_Handler {
 				'currency' => $curr,
 			);
 
+			$post_billing_details = filter_input( INPUT_POST, 'billing_details', FILTER_SANITIZE_STRING );
+
+			$post_shipping_details = filter_input( INPUT_POST, 'shipping_details', FILTER_SANITIZE_STRING );
+
+			if ( isset( $post_billing_details ) ) {
+				$post_billing_details = html_entity_decode( $post_billing_details );
+
+				$billing_details = json_decode( $post_billing_details );
+			}
+
 			$dont_save_card = $this->asp_main->get_setting( 'dont_save_card' );
 
 			if ( ! $dont_save_card ) {
-				$post_billing_details = filter_input( INPUT_POST, 'billing_details', FILTER_SANITIZE_STRING );
-
-				$post_shipping_details = filter_input( INPUT_POST, 'shipping_details', FILTER_SANITIZE_STRING );
-
 				$customer_opts = array();
 
-				if ( isset( $post_billing_details ) ) {
-					$post_billing_details = html_entity_decode( $post_billing_details );
-
-					$billing_details = json_decode( $post_billing_details );
+				if ( isset( $billing_details ) ) {
 
 					if ( $billing_details->name ) {
 						$customer_opts['name'] = $billing_details->name;
@@ -529,6 +532,15 @@ class ASP_PP_Handler {
 			if ( ! empty( $description ) ) {
 				$pi_params['description'] = $description;
 			}
+
+			$stripe_receipt_email = $this->asp_main->get_setting( 'stripe_receipt_email' );
+
+			if ( $stripe_receipt_email ) {
+				if ( isset( $billing_details ) && isset( $billing_details->email ) ) {
+					$pi_params['receipt_email'] = $billing_details->email;
+				}
+			}
+
 			$pi_params = apply_filters( 'asp_ng_before_pi_create_update', $pi_params );
 			if ( $pi_id ) {
 				$intent = \Stripe\PaymentIntent::update( $pi_id, $pi_params );
