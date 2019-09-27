@@ -193,6 +193,8 @@ class ASP_PP_Handler {
 
 		$dont_save_card = $this->asp_main->get_setting( 'dont_save_card' );
 
+		$verify_zip = $this->asp_main->get_setting( 'enable_zip_validation' );
+
 		$data               = array();
 		$data['product_id'] = $product_id;
 		$data['item_name']  = $this->item->get_name();
@@ -238,7 +240,9 @@ class ASP_PP_Handler {
 		$data['customer_email'] = $cust_email_hardcoded;
 		$data['customer_name']  = $cust_name_hardcoded;
 
-		$data['dont_save_card'] = empty( $dont_save_card ) ? true : false;
+		$data['dont_save_card'] = ! $dont_save_card ? false : true;
+
+		$data['verify_zip'] = ! $verify_zip ? false : true;
 
 		$data['customer_default_country'] = $default_country;
 

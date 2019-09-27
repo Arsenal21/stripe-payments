@@ -219,7 +219,7 @@ if (vars.data.billing_address && vars.data.shipping_address) {
 
 var card = elements.create('card', {
 	style: style,
-	hidePostalCode: true
+	hidePostalCode: !(vars.data.verify_zip && !vars.data.billing_address)
 });
 
 card.on('ready', function () {
@@ -800,7 +800,7 @@ function handlePayment() {
 			});
 
 	} else {
-		if (vars.data.dont_save_card !== false) {
+		if (!vars.data.dont_save_card) {
 			opts.save_payment_method = true;
 			opts.setup_future_usage = 'off_session';
 		}
