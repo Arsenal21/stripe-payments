@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 var errorCont = document.getElementById('global-error');
 if (vars.fatal_error) {
-	jQuery('#Aligner-item').show();
+	showPopup();
 	throw new Error(vars.fatal_error);
 }
 
