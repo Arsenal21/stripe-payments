@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 4.7
 Tested up to: 5.2
 Requires PHP: 5.4
-Stable tag: 2.0.9t1
+Stable tag: 2.0.9t2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -159,6 +159,8 @@ None.
 - [New API]: ZIP\postal code is now requested on credit card input when "Validate ZIP Code" option enabled and address collection disabled for a product.
 - [New API]: Product name and ID are now saved in payment metadata on Stripe Dashboard.
 - [New API]: If product short description is empty, product name is used for payment details "Description" on Stripe Dashboard.
+- [New API]: Added spinner after payment popup form submission.
+- [New API]: Adjusted payment popup display on mobile devices.
 
 = 2.0.8 =
 - [New API]: Added compatability with optimization plugins that do minify\combine JavaScript.
