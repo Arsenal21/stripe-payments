@@ -379,6 +379,7 @@ function showFormInputErr(msg, el, inp) {
 }
 
 function showPopup() {
+	jQuery('#global-spinner').hide();
 	jQuery('#Aligner-item').addClass('popup-show').hide().fadeIn();
 }
 
@@ -517,6 +518,8 @@ function canProceed() {
 	}
 
 	if (piInput.value !== '') {
+		jQuery('#Aligner-item').fadeOut();
+		jQuery('#global-spinner').show();
 		if (!inIframe() || window.doSelfSubmit) {
 			console.log('Self-submitting');
 			for (var i = 0; i < form.elements.length; i++) {

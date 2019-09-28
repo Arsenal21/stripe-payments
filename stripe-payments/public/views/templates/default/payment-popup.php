@@ -46,6 +46,7 @@
 		<?php if ( ! $a['data']['is_live'] ) { ?>
 		<a href="https://stripe.com/docs/testing#cards" target="_blank" id="test-mode"><?php esc_html_e( 'TEST MODE', 'stripe-payments' ); ?></a>
 		<?php } ?>
+		<div id="global-spinner" class="small-spinner"></div>
 		<div id="Aligner-item">
 			<div id="smoke-screen">
 				<span id="btn-spinner" class="small-spinner"></span>
