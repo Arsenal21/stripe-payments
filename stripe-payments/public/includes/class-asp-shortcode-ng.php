@@ -627,6 +627,22 @@ class ASP_Shortcode_NG {
 		$output .= 'if(typeof jQuery!=="undefined") {jQuery(document).ready(function() {new stripeHandlerNG(' . wp_json_encode( $data ) . ');})} else { if (typeof wpaspInitOnDocReady==="undefined") {wpaspInitOnDocReady=[];} wpaspInitOnDocReady.push(' . wp_json_encode( $data ) . ');}';
 		$output .= '</script>';
 
+		$prefetch = $this->asp_main->get_setting( 'enable_frontend_prefetch' );
+		if ( $prefetch ) {
+			$output .= '<link rel="prefetch" href="' . $data['iframe_url'] . '" />';
+			$output .= '<link rel="prefetch" href="https://js.stripe.com/v3/" />';
+			$output .= '<link rel="dns-prefetch" href="https://q.stripe.com" />';
+
+			if ( ! defined( 'WP_ASP_DEV_MODE' ) ) {
+				$output .= '<link rel="prefetch" href="' . WP_ASP_PLUGIN_URL . '/public/views/templates/default/pp-combined.min.css?ver=' . WP_ASP_PLUGIN_VERSION . '" />';
+				$output .= '<link rel="prefetch" href="' . WP_ASP_PLUGIN_URL . '/public/assets/js/pp-handler.min.js?ver=' . WP_ASP_PLUGIN_VERSION . '" />';
+			} else {
+				$output .= '<link rel="prefetch" href="' . WP_ASP_PLUGIN_URL . '/public/views/templates/default/pure.css?ver=' . WP_ASP_PLUGIN_VERSION . '" />';
+				$output .= '<link rel="prefetch" href="' . WP_ASP_PLUGIN_URL . '/public/views/templates/default/pp-style.css?ver=' . WP_ASP_PLUGIN_VERSION . '" />';
+				$output .= '<link rel="prefetch" href="' . WP_ASP_PLUGIN_URL . '/public/assets/js/pp-handler.js?ver=' . WP_ASP_PLUGIN_VERSION . '" />';
+
+			}
+		}
 		return $output;
 	}
 
