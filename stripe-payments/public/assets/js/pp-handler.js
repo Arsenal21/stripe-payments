@@ -518,8 +518,9 @@ function canProceed() {
 	}
 
 	if (piInput.value !== '') {
-		jQuery('#Aligner-item').fadeOut();
-		jQuery('#global-spinner').show();
+		jQuery('#Aligner-item').fadeOut(function () {
+			jQuery('#global-spinner').show();			
+		});
 		if (!inIframe() || window.doSelfSubmit) {
 			console.log('Self-submitting');
 			for (var i = 0; i < form.elements.length; i++) {
