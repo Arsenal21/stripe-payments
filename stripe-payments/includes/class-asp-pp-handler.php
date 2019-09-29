@@ -278,7 +278,7 @@ class ASP_PP_Handler {
 
 		$site_url       = get_site_url();
 		$a['scripts'][] = array(
-			'src'    => $site_url . '/wp-includes/js/jquery/jquery.js',
+			'src'    => $site_url . '/wp-includes/js/jquery/jquery.js?ver=1.12.4-wp',
 			'footer' => true,
 		);
 
