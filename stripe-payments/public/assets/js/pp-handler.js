@@ -275,8 +275,13 @@ jQuery('.pm-select-btn').click(function () {
 	vars.data.currentPM = jQuery(this).data('pm-id');
 	jQuery('.pm-select-btn').parent().removeClass('pure-menu-selected');
 	jQuery(this).parent().addClass('pure-menu-selected');
+	vars.data.dont_hide_button = false;
 	doAddonAction('pmSelectClicked');
-	jQuery('#payment-form').find('[data-pm-name][data-pm-name!="' + vars.data.currentPM + '"]').hide();
+	var sel = jQuery('#payment-form').find('[data-pm-name][data-pm-name!="' + vars.data.currentPM + '"]');
+	if (vars.data.dont_hide_button) {
+		sel = jQuery(sel.not('#submit-btn-cont'));
+	}
+	sel.hide();
 	jQuery('#payment-form').find('[data-pm-name="' + vars.data.currentPM + '"]').show();
 });
 
@@ -519,7 +524,7 @@ function canProceed() {
 
 	if (piInput.value !== '') {
 		jQuery('#Aligner-item').fadeOut(function () {
-			jQuery('#global-spinner').show();			
+			jQuery('#global-spinner').show();
 		});
 		if (!inIframe() || window.doSelfSubmit) {
 			console.log('Self-submitting');
@@ -636,9 +641,16 @@ function handlePayment() {
 		opts.shipping = shippingDetails;
 	}
 
+	vars.data.billingDetails = billingDetails;
+
+	doAddonAction('csBeforeRegen');
+
+	if (vars.data.doNotProceed) {
+		return false;
+	}
+
 	//regen cs
 	if (!vars.data.create_token && (vars.data.client_secret === '' || vars.data.amount != clientSecAmount || vars.data.currency !== clientSecCurrency)) {
-		console.log('Regen CS');
 		var reqStr = 'action=asp_pp_req_token&amount=' + vars.data.amount + '&curr=' + vars.data.currency + '&product_id=' + vars.data.product_id;
 		reqStr = reqStr + '&quantity=' + vars.data.quantity;
 		if (vars.data.cust_id) {
@@ -648,7 +660,10 @@ function handlePayment() {
 			reqStr = reqStr + '&pi=' + vars.data.pi_id;
 		}
 		reqStr = reqStr + '&billing_details=' + JSON.stringify(billingDetails);
-		new ajaxRequest(vars.ajaxURL, reqStr,
+		vars.data.csRegenParams = reqStr;
+		doAddonAction('csBeforeRegenParams');
+		console.log('Regen CS');
+		new ajaxRequest(vars.ajaxURL, vars.data.csRegenParams,
 			function (res) {
 				try {
 					var resp = JSON.parse(res.responseText);
