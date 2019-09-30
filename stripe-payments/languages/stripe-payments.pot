@@ -935,7 +935,7 @@ msgstr ""
 #: stripe-payments/admin/includes/class-cooupons-list-table.php:51
 #: stripe-payments/admin/includes/class-coupons.php:351
 #: stripe-payments/public/includes/class-shortcode-asp.php:946
-#: stripe-payments/public/views/templates/default/payment-popup.php:154
+#: stripe-payments/public/views/templates/default/payment-popup.php:162
 msgid "Coupon Code"
 msgstr ""
 
@@ -1493,7 +1493,7 @@ msgid "Radio Buttons"
 msgstr ""
 
 #: stripe-payments/admin/includes/class-products-meta-boxes.php:171
-#: stripe-payments/public/views/templates/default/payment-popup.php:224
+#: stripe-payments/public/views/templates/default/payment-popup.php:232
 msgid "Name"
 msgstr ""
 
@@ -2140,7 +2140,7 @@ msgid ""
 msgstr ""
 
 #: stripe-payments/includes/class-asp-pp-handler.php:256
-#: stripe-payments/public/views/templates/default/payment-popup.php:332
+#: stripe-payments/public/views/templates/default/payment-popup.php:340
 msgid "Credit or debit card"
 msgstr ""
 
@@ -2191,7 +2191,7 @@ msgstr ""
 #: stripe-payments/public/includes/class-shortcode-asp.php:101
 #: stripe-payments/public/includes/class-shortcode-asp.php:332
 #: stripe-payments/public/includes/class-shortcode-asp.php:677
-#: stripe-payments/public/views/templates/default/payment-popup.php:186
+#: stripe-payments/public/views/templates/default/payment-popup.php:194
 msgid "Tax"
 msgstr ""
 
@@ -2204,7 +2204,7 @@ msgstr ""
 #: stripe-payments/public/includes/class-shortcode-asp.php:102
 #: stripe-payments/public/includes/class-shortcode-asp.php:342
 #: stripe-payments/public/includes/class-shortcode-asp.php:678
-#: stripe-payments/public/views/templates/default/payment-popup.php:192
+#: stripe-payments/public/views/templates/default/payment-popup.php:200
 msgid "Shipping"
 msgstr ""
 
@@ -2237,7 +2237,7 @@ msgstr ""
 
 #: stripe-payments/includes/class-asp-pp-handler.php:354
 #: stripe-payments/public/includes/class-shortcode-asp.php:108
-#: stripe-payments/public/views/templates/default/payment-popup.php:164
+#: stripe-payments/public/views/templates/default/payment-popup.php:172
 msgid "Remove"
 msgstr ""
 
@@ -3532,7 +3532,7 @@ msgid "X item(s)"
 msgstr ""
 
 #: stripe-payments/public/includes/class-shortcode-asp.php:948
-#: stripe-payments/public/views/templates/default/payment-popup.php:158
+#: stripe-payments/public/views/templates/default/payment-popup.php:166
 msgid "Apply"
 msgstr ""
 
@@ -3618,48 +3618,48 @@ msgstr ""
 msgid "Select currency"
 msgstr ""
 
-#: stripe-payments/public/views/templates/default/payment-popup.php:171
+#: stripe-payments/public/views/templates/default/payment-popup.php:179
 msgid "Your order"
 msgstr ""
 
-#: stripe-payments/public/views/templates/default/payment-popup.php:175
+#: stripe-payments/public/views/templates/default/payment-popup.php:183
 msgid "Item"
 msgstr ""
 
-#: stripe-payments/public/views/templates/default/payment-popup.php:176
-#: stripe-payments/public/views/templates/default/payment-popup.php:199
+#: stripe-payments/public/views/templates/default/payment-popup.php:184
+#: stripe-payments/public/views/templates/default/payment-popup.php:207
 msgid "Total"
 msgstr ""
 
-#: stripe-payments/public/views/templates/default/payment-popup.php:234
+#: stripe-payments/public/views/templates/default/payment-popup.php:242
 msgid "Email"
 msgstr ""
 
-#: stripe-payments/public/views/templates/default/payment-popup.php:259
+#: stripe-payments/public/views/templates/default/payment-popup.php:267
 msgid "Billing info"
 msgstr ""
 
-#: stripe-payments/public/views/templates/default/payment-popup.php:262
-#: stripe-payments/public/views/templates/default/payment-popup.php:301
+#: stripe-payments/public/views/templates/default/payment-popup.php:270
+#: stripe-payments/public/views/templates/default/payment-popup.php:309
 msgid "Address"
 msgstr ""
 
-#: stripe-payments/public/views/templates/default/payment-popup.php:273
-#: stripe-payments/public/views/templates/default/payment-popup.php:311
+#: stripe-payments/public/views/templates/default/payment-popup.php:281
+#: stripe-payments/public/views/templates/default/payment-popup.php:319
 msgid "City"
 msgstr ""
 
-#: stripe-payments/public/views/templates/default/payment-popup.php:277
-#: stripe-payments/public/views/templates/default/payment-popup.php:315
+#: stripe-payments/public/views/templates/default/payment-popup.php:285
+#: stripe-payments/public/views/templates/default/payment-popup.php:323
 msgid "Country"
 msgstr ""
 
-#: stripe-payments/public/views/templates/default/payment-popup.php:284
-#: stripe-payments/public/views/templates/default/payment-popup.php:321
+#: stripe-payments/public/views/templates/default/payment-popup.php:292
+#: stripe-payments/public/views/templates/default/payment-popup.php:329
 msgid "Postcode"
 msgstr ""
 
-#: stripe-payments/public/views/templates/default/payment-popup.php:297
+#: stripe-payments/public/views/templates/default/payment-popup.php:305
 msgid "Shipping info"
 msgstr ""
 
