@@ -3,9 +3,9 @@ class ASP_Process_IPN_NG {
 
 	public $asp_redirect_url = '';
 	public function __construct() {
-		$process_ipn = filter_input( INPUT_POST, 'asp_process_ipn', FILTER_SANITIZE_NUMBER_INT );
+		$process_ipn     = filter_input( INPUT_POST, 'asp_process_ipn', FILTER_SANITIZE_NUMBER_INT );
+		$this->asp_class = AcceptStripePayments::get_instance();
 		if ( $process_ipn ) {
-			$this->asp_class = AcceptStripePayments::get_instance();
 			add_action( 'wp_loaded', array( $this, 'process_ipn' ), 2147483647 );
 		}
 	}
@@ -47,16 +47,32 @@ class ASP_Process_IPN_NG {
 		exit;
 	}
 
-	public function process_ipn() {
+	private function get_post_var( $var, $filter, $opts = null ) {
+		if ( isset( $this->post_data ) ) {
+			if ( isset( $this->post_data[ $var ] ) ) {
+				return $this->post_data[ $var ];
+			} else {
+				return null;
+			}
+		}
+		$val = filter_input( INPUT_POST, $var, $filter, $opts );
+		return $val;
+	}
+
+	public function process_ipn( $post_data = array() ) {
 		ASP_Debug_Logger::log( 'Payment processing started.' );
+
+		if ( ! empty( $post_data ) ) {
+			$this->post_data = $post_data;
+		}
 
 		$this->sess = ASP_Session::get_instance();
 
-		$post_thankyou_page_url = filter_input( INPUT_POST, 'asp_thankyou_page_url', FILTER_SANITIZE_STRING );
+		$post_thankyou_page_url = $this->get_post_var( 'asp_thankyou_page_url', FILTER_SANITIZE_STRING );
 
 		$this->asp_redirect_url = empty( $post_thankyou_page_url ) ? $this->asp_class->get_setting( 'checkout_url' ) : base64_decode( $post_thankyou_page_url ); //phpcs:ignore
 
-		$prod_id = filter_input( INPUT_POST, 'asp_product_id', FILTER_SANITIZE_NUMBER_INT );
+		$prod_id = $this->get_post_var( 'asp_product_id', FILTER_SANITIZE_NUMBER_INT );
 
 		if ( ! empty( $prod_id ) ) {
 			ASP_Debug_Logger::log( sprintf( 'Got product ID: %d', $prod_id ) );
@@ -78,7 +94,7 @@ class ASP_Process_IPN_NG {
 			$this->asp_redirect_url = $item->get_redir_url();
 		}
 
-		$pi = filter_input( INPUT_POST, 'asp_payment_intent', FILTER_SANITIZE_STRING );
+		$pi = $this->get_post_var( 'asp_payment_intent', FILTER_SANITIZE_STRING );
 
 		$completed_order = get_posts(
 			array(
@@ -96,7 +112,7 @@ class ASP_Process_IPN_NG {
 			exit;
 		}
 
-		$is_live = filter_input( INPUT_POST, 'asp_is_live', FILTER_VALIDATE_BOOLEAN );
+		$is_live = $this->get_post_var( 'asp_is_live', FILTER_VALIDATE_BOOLEAN );
 
 		ASPMain::load_stripe_lib();
 		$key = $is_live ? $this->asp_class->APISecKey : $this->asp_class->APISecKeyTest;
@@ -119,14 +135,14 @@ class ASP_Process_IPN_NG {
 
 		$button_key = $item->get_button_key();
 
-		$post_quantity = filter_input( INPUT_POST, 'asp_quantity', FILTER_SANITIZE_NUMBER_INT );
+		$post_quantity = $this->get_post_var( 'asp_quantity', FILTER_SANITIZE_NUMBER_INT );
 		if ( $post_quantity ) {
 			$item->set_quantity( $post_quantity );
 		}
 
 		$price = $item->get_price();
 		if ( empty( $price ) ) {
-			$post_price = filter_input( INPUT_POST, 'asp_amount', FILTER_SANITIZE_NUMBER_FLOAT );
+			$post_price = $this->get_post_var( 'asp_amount', FILTER_SANITIZE_NUMBER_FLOAT );
 			if ( $post_price ) {
 				$price = $post_price;
 			} else {
@@ -140,7 +156,7 @@ class ASP_Process_IPN_NG {
 
 		//variatoions
 		$variations        = array();
-		$posted_variations = filter_input( INPUT_POST, 'asp_stripeVariations', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
+		$posted_variations = $this->get_post_var( 'asp_stripeVariations', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
 		if ( $posted_variations ) {
 			// we got variations posted. Let's get variations from product
 			$v = new ASPVariations( $prod_id );
@@ -160,7 +176,7 @@ class ASP_Process_IPN_NG {
 		}
 
 		//coupon
-		$coupon_code = filter_input( INPUT_POST, 'asp_coupon-code', FILTER_SANITIZE_STRING );
+		$coupon_code = $this->get_post_var( 'asp_coupon-code', FILTER_SANITIZE_STRING );
 		if ( $coupon_code ) {
 			ASP_Debug_Logger::log( sprintf( 'Coupon code provided: %s', $coupon_code ) );
 		}
@@ -239,9 +255,9 @@ class ASP_Process_IPN_NG {
 		$currency_code = $item->get_currency();
 
 		$custom_fields = array();
-		$cf_name       = filter_input( INPUT_POST, 'asp_stripeCustomFieldName', FILTER_SANITIZE_STRING );
+		$cf_name       = $this->get_post_var( 'asp_stripeCustomFieldName', FILTER_SANITIZE_STRING );
 		if ( $cf_name ) {
-			$cf_value        = filter_input( INPUT_POST, 'asp_stripeCustomField', FILTER_SANITIZE_STRING );
+			$cf_value        = $this->get_post_var( 'asp_stripeCustomField', FILTER_SANITIZE_STRING );
 			$custom_fields[] = array(
 				'name'  => $cf_name,
 				'value' => $cf_value,
@@ -249,7 +265,7 @@ class ASP_Process_IPN_NG {
 		}
 
 		//compatability with ACF addon
-		$acf_fields = filter_input( INPUT_POST, 'asp_stripeCustomFields', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
+		$acf_fields = $this->get_post_var( 'asp_stripeCustomFields', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
 		if ( $acf_fields ) {
 			$_POST['stripeCustomFields'] = $acf_fields;
 		}
