@@ -3,8 +3,10 @@ class ASP_Process_IPN_NG {
 
 	public $asp_redirect_url = '';
 	public function __construct() {
-		$process_ipn     = filter_input( INPUT_POST, 'asp_process_ipn', FILTER_SANITIZE_NUMBER_INT );
-		$this->asp_class = AcceptStripePayments::get_instance();
+		$process_ipn            = filter_input( INPUT_POST, 'asp_process_ipn', FILTER_SANITIZE_NUMBER_INT );
+		$this->asp_class        = AcceptStripePayments::get_instance();
+		$this->sess             = ASP_Session::get_instance();
+		$this->asp_redirect_url = $this->asp_class->get_setting( 'checkout_url' );
 		if ( $process_ipn ) {
 			add_action( 'wp_loaded', array( $this, 'process_ipn' ), 2147483647 );
 		}
