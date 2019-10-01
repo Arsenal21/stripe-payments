@@ -23,7 +23,7 @@ $output = '';
 			'thumbnail'    => WP_ASP_PLUGIN_URL . '/admin/assets/images/subscription-payments.png',
 			'description'  => __( 'This addon allows you to configure and sell subscription and recurring payments to your customers.', 'stripe-payments' ),
 			'page_url'     => 'https://s-plugins.com/stripe-subscription-payments-addon/',
-			'settings_url' => 'edit.php?post_type=asp-products&page=stripe-payments-settings#sub',
+			'settings_url' => 'edit.php?post_type='.ASPMain::$products_slug.'&page=stripe-payments-settings#sub',
 			'installed'    => class_exists( 'ASPSUB_main' ) ? true : false,
 		);
 		array_push( $addons_data, $addon_1 );
@@ -33,7 +33,7 @@ $output = '';
 			'thumbnail'    => WP_ASP_PLUGIN_URL . '/admin/assets/images/apple-android-pay.png',
 			'description'  => __( 'This addon allows you to accept payments from your customers using Apple and Google Pay.', 'stripe-payments' ),
 			'page_url'     => 'https://s-plugins.com/stripe-additional-payment-methods-addon/',
-			'settings_url' => 'edit.php?post_type=asp-products&page=stripe-payments-settings#apm',
+			'settings_url' => 'edit.php?post_type='.ASPMain::$products_slug.'&page=stripe-payments-settings#apm',
 			'installed'    => class_exists( 'ASPAPM_main' ) ? true : false,
 		);
 		array_push( $addons_data, $addon_2 );
@@ -43,7 +43,7 @@ $output = '';
 			'thumbnail'    => WP_ASP_PLUGIN_URL . '/admin/assets/images/secure-downloads.png',
 			'description'  => __( 'Digital products sold to your customers are secured by an encrypted download link that expires automatically.', 'stripe-payments' ),
 			'page_url'     => 'https://s-plugins.com/protecting-your-digital-downloads-using-the-secure-downloads-addon/',
-			'settings_url' => 'edit.php?post_type=asp-products&page=stripe-payments-settings#securedownloads',
+			'settings_url' => 'edit.php?post_type='.ASPMain::$products_slug.'&page=stripe-payments-settings#securedownloads',
 			'installed'    => class_exists( 'ASPSD_main' ) ? true : false,
 		);
 		array_push( $addons_data, $addon_3 );
@@ -53,7 +53,7 @@ $output = '';
 			'thumbnail'    => WP_ASP_PLUGIN_URL . '/admin/assets/images/maichimp-integration.png',
 			'description'  => __( 'This extension allows you to add customers to your Mailchimp list after they purchase a product.', 'stripe-payments' ),
 			'page_url'     => 'https://s-plugins.com/mailchimp-integration-addon-stripe-payments/',
-			'settings_url' => 'edit.php?post_type=asp-products&page=stripe-payments-settings#mailchimp',
+			'settings_url' => 'edit.php?post_type='.ASPMain::$products_slug.'&page=stripe-payments-settings#mailchimp',
 			'installed'    => class_exists( 'ASPMCI_main' ) ? true : false,
 		);
 		array_push( $addons_data, $addon_4 );
@@ -63,7 +63,7 @@ $output = '';
 			'thumbnail'    => WP_ASP_PLUGIN_URL . '/admin/assets/images/google-recaptcha.png',
 			'description'  => __( 'When you enable this addon, the reCAPTCHA popup will appear when customers click a Stripe payment button.', 'stripe-payments' ),
 			'page_url'     => 'https://s-plugins.com/stripe-payments-recaptcha-addon/',
-			'settings_url' => 'edit.php?post_type=asp-products&page=stripe-payments-settings#recaptcha',
+			'settings_url' => 'edit.php?post_type='.ASPMain::$products_slug.'&page=stripe-payments-settings#recaptcha',
 			'installed'    => class_exists( 'ASPRECAPTCHA_main' ) ? true : false,
 		);
 		array_push( $addons_data, $addon_5 );
@@ -73,7 +73,7 @@ $output = '';
 			'thumbnail'    => WP_ASP_PLUGIN_URL . '/admin/assets/images/alipay-stripe-payments-addon.png',
 			'description'  => __( 'When you enable this addon, it gives you the ability to accept payments via Alipay on your website', 'stripe-payments' ),
 			'page_url'     => 'https://s-plugins.com/alipay-addon-stripe-payments-plugin/',
-			'settings_url' => 'edit.php?post_type=asp-products&page=stripe-payments-settings#alipay',
+			'settings_url' => 'edit.php?post_type='.ASPMain::$products_slug.'&page=stripe-payments-settings#alipay',
 			'installed'    => class_exists( 'ASPALI_main' ) ? true : false,
 		);
 		array_push( $addons_data, $addon_6 );
@@ -93,7 +93,7 @@ $output = '';
 			'thumbnail'    => WP_ASP_PLUGIN_URL . '/admin/assets/images/stripe-multi-currency-addon.png',
 			'description'  => __( 'The multi-currency addon allows your customers to pick a currency and pay for the item in that currency.', 'stripe-payments' ),
 			'page_url'     => 'https://s-plugins.com/stripe-payments-multi-currency-addon/',
-			'settings_url' => 'edit.php?post_type=asp-products&page=stripe-payments-settings#multicurr',
+			'settings_url' => 'edit.php?post_type='.ASPMain::$products_slug.'&page=stripe-payments-settings#multicurr',
 			'installed'    => class_exists( 'ASPMULTICURR_main' ) ? true : false,
 		);
 		array_push( $addons_data, $addon_8 );
@@ -103,7 +103,7 @@ $output = '';
 			'thumbnail'    => WP_ASP_PLUGIN_URL . '/admin/assets/images/stripe-custom-messages-addon.png',
 			'description'  => __( 'This addon allows you to customize a number of common messages displayed by the Stripe Payments Plugin.', 'stripe-payments' ),
 			'page_url'     => 'https://s-plugins.com/stripe-payments-custom-messages-addon/',
-			'settings_url' => 'edit.php?post_type=asp-products&page=stripe-payments-settings#custmsg',
+			'settings_url' => 'edit.php?post_type='.ASPMain::$products_slug.'&page=stripe-payments-settings#custmsg',
 			'installed'    => class_exists( 'ASPCUSTMSG_main' ) ? true : false,
 		);
 		array_push( $addons_data, $addon_9 );
@@ -113,7 +113,7 @@ $output = '';
 			'thumbnail'    => WP_ASP_PLUGIN_URL . '/admin/assets/images/aweber-integration-addon.png',
 			'description'  => __( 'This addon allows you to add customers to your AWeber list after they purchase a product.', 'stripe-payments' ),
 			'page_url'     => 'https://s-plugins.com/aweber-integration-addon-for-stripe-payments/',
-			'settings_url' => 'edit.php?post_type=asp-products&page=stripe-payments-settings#aweber',
+			'settings_url' => 'edit.php?post_type='.ASPMain::$products_slug.'&page=stripe-payments-settings#aweber',
 			'installed'    => class_exists( 'ASPAWEBER_main' ) ? true : false,
 		);
 		array_push( $addons_data, $addon_10 );
@@ -123,7 +123,7 @@ $output = '';
 			'thumbnail'    => WP_ASP_PLUGIN_URL . '/admin/assets/images/convertkit-integration.png',
 			'description'  => __( 'This addon allows you to add customers to your ConvertKit list after they purchase a product.', 'stripe-payments' ),
 			'page_url'     => 'https://s-plugins.com/stripe-convertkit-integration-addon/',
-			'settings_url' => 'edit.php?post_type=asp-products&page=stripe-payments-settings#convertkit',
+			'settings_url' => 'edit.php?post_type='.ASPMain::$products_slug.'&page=stripe-payments-settings#convertkit',
 			'installed'    => class_exists( 'ASPCK_main' ) ? true : false,
 		);
 		array_push( $addons_data, $addon_11 );
@@ -133,7 +133,7 @@ $output = '';
 			'thumbnail'    => WP_ASP_PLUGIN_URL . '/admin/assets/images/post-payment-actions.png',
 			'description'  => __( 'Post Payment Actions are triggered after a successful Stripe Payments transaction has been completed.', 'stripe-payments' ),
 			'page_url'     => 'https://s-plugins.com/post-payment-actions-addon-for-stripe-payments/',
-			'settings_url' => 'edit.php?post_type=asp-products&page=stripe-payments-settings#ppa',
+			'settings_url' => 'edit.php?post_type='.ASPMain::$products_slug.'&page=stripe-payments-settings#ppa',
 			'installed'    => class_exists( 'ASPPPA_main' ) ? true : false,
 		);
 		array_push( $addons_data, $addon_12 );
@@ -143,7 +143,7 @@ $output = '';
 			'thumbnail'    => WP_ASP_PLUGIN_URL . '/admin/assets/images/sofort-payments.png',
 			'description'  => __( 'The SOFORT Addon can be used along side the Stripe Payments Plugin to allow your customers to pay using SOFORT.', 'stripe-payments' ),
 			'page_url'     => 'https://s-plugins.com/stripe-sofort-payment-addon/',
-			'settings_url' => 'edit.php?post_type=asp-products&page=stripe-payments-settings#sofort',
+			'settings_url' => 'edit.php?post_type='.ASPMain::$products_slug.'&page=stripe-payments-settings#sofort',
 			'installed'    => class_exists( 'ASPSOFORT_main' ) ? true : false,
 		);
 		array_push( $addons_data, $addon_13 );
@@ -153,7 +153,7 @@ $output = '';
 			'thumbnail'    => WP_ASP_PLUGIN_URL . '/admin/assets/images/additional-custom-fields.png',
 			'description'  => __( 'The Additional Custom Fields Addon allows you to collect information from your customers before they proceed to checkout.', 'stripe-payments' ),
 			'page_url'     => 'https://s-plugins.com/stripe-payments-additional-custom-fields-addon/',
-			'settings_url' => 'edit.php?post_type=asp-products&page=stripe-payments-settings#acf',
+			'settings_url' => 'edit.php?post_type='.ASPMain::$products_slug.'&page=stripe-payments-settings#acf',
 			'installed'    => class_exists( 'ASPACF_main' ) ? true : false,
 		);
 		array_push( $addons_data, $addon_14 );

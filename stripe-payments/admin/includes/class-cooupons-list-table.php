@@ -69,10 +69,10 @@ class ASP_Coupons_Table extends WP_List_Table {
 		$str	 = '';
 		ob_start();
 		?>
-		<a href="edit.php?post_type=asp-products&page=stripe-payments-coupons&action=asp_add_edit_coupon&asp_coupon_id=<?php echo $item[ 'id' ]; ?>" aria-label="<?php _e( 'Edit coupon', 'stripe-payments' ); ?>"><?php echo $item[ $column_name ]; ?></a>
+		<a href="edit.php?post_type=<?php echo esc_attr(ASPMain::$products_slug);?>&page=stripe-payments-coupons&action=asp_add_edit_coupon&asp_coupon_id=<?php echo $item[ 'id' ]; ?>" aria-label="<?php _e( 'Edit coupon', 'stripe-payments' ); ?>"><?php echo $item[ $column_name ]; ?></a>
 		<div class="row-actions">
-		    <span class="edit"><a href="edit.php?post_type=asp-products&page=stripe-payments-coupons&action=asp_add_edit_coupon&asp_coupon_id=<?php echo $item[ 'id' ]; ?>" aria-label="<?php _e( 'Edit coupon', 'stripe-payments' ); ?>"><?php _e( 'Edit', 'stripe-payments' ); ?></a> | </span>
-		    <span class="trash"><a href="<?php echo wp_nonce_url( 'edit.php?post_type=asp-products&page=stripe-payments-coupons&action=asp_delete_coupon&asp_coupon_id=' . $item[ 'id' ], 'delete-coupon_' . $item[ 'id' ] ); ?>" class="submitdelete" aria-label="<?php _e( 'Delete coupon', 'stripe-payments' ); ?>" onclick="return confirm('<?php echo esc_js( sprintf( __( 'Are you sure you want to delete "%s" coupon? This can\'t be undone.', 'stripe-payments' ), $item[ 'coupon' ] ) ); ?>');"><?php _e( 'Delete', 'stripe-payments' ); ?></a></span>
+		    <span class="edit"><a href="edit.php?post_type=<?php echo esc_attr(ASPMain::$products_slug);?>&page=stripe-payments-coupons&action=asp_add_edit_coupon&asp_coupon_id=<?php echo $item[ 'id' ]; ?>" aria-label="<?php _e( 'Edit coupon', 'stripe-payments' ); ?>"><?php _e( 'Edit', 'stripe-payments' ); ?></a> | </span>
+		    <span class="trash"><a href="<?php echo wp_nonce_url( 'edit.php?post_type='.ASPMain::$products_slug.'&page=stripe-payments-coupons&action=asp_delete_coupon&asp_coupon_id=' . $item[ 'id' ], 'delete-coupon_' . $item[ 'id' ] ); ?>" class="submitdelete" aria-label="<?php _e( 'Delete coupon', 'stripe-payments' ); ?>" onclick="return confirm('<?php echo esc_js( sprintf( __( 'Are you sure you want to delete "%s" coupon? This can\'t be undone.', 'stripe-payments' ), $item[ 'coupon' ] ) ); ?>');"><?php _e( 'Delete', 'stripe-payments' ); ?></a></span>
 		</div>
 		<?php
 		$str	 .= ob_get_clean();

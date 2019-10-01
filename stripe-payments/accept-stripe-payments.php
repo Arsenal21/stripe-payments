@@ -66,11 +66,18 @@ class ASPMain {
 		add_action( 'init', array( 'AcceptStripePaymentsShortcode', 'get_instance' ) );
 		add_action( 'init', array( 'ASP_Shortcode_NG', 'get_instance' ) );
 
+		add_action( 'init', array( $this, 'init_handler' ), 0 );
+
 		// register custom post type
 		$asp_products = ASPProducts::get_instance();
 		add_action( 'init', array( $asp_products, 'register_post_type' ), 0 );
 		$asp_order = ASPOrder::get_instance();
 		add_action( 'init', array( $asp_order, 'register_post_type' ), 0 );
+	}
+
+	public function init_handler() {
+		// hook to change product slug
+		self::$products_slug = apply_filters( 'asp_change_products_slug', self::$products_slug );
 	}
 
 	public static function load_stripe_lib() {

@@ -53,7 +53,7 @@ class ASPAddonsHelper {
 
     function settings_link( $links, $file ) {
 	if ( $file === plugin_basename( $this->addon->file ) ) {
-	    $settings_link = sprintf( '<a href="edit.php?post_type=asp-products&page=stripe-payments-settings#%s">%s</a>', $this->addon->SETTINGS_TAB_NAME, __( 'Settings', 'stripe-payments' ) );
+	    $settings_link = sprintf( '<a href="edit.php?post_type='.ASPMain::$products_slug.'&page=stripe-payments-settings#%s">%s</a>', $this->addon->SETTINGS_TAB_NAME, __( 'Settings', 'stripe-payments' ) );
 	    array_unshift( $links, $settings_link );
 	}
 	return $links;

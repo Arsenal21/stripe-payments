@@ -59,6 +59,8 @@ class ASPProducts {
 			'menu_icon'          => $menu_icon,
 		);
 
+		$args = apply_filters( 'asp_products_post_type_before_register', $args );
+
 		register_post_type( ASPMain::$products_slug, $args );
 
 		//add custom columns for list view

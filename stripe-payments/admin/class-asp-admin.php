@@ -58,7 +58,7 @@ class AcceptStripePayments_Admin {
     }
 
     public function add_settings_link( $links ) {
-	$settings_link = '<a href="edit.php?post_type=asp-products&page=stripe-payments-settings#general">' . __( 'Settings', 'stripe-payments' ) . '</a>';
+	$settings_link = sprintf('<a href="edit.php?post_type=%s&page=stripe-payments-settings#general">',ASPMain::$products_slug) . __( 'Settings', 'stripe-payments' ) . '</a>';
 	array_unshift( $links, $settings_link );
 	return $links;
     }
@@ -70,8 +70,8 @@ class AcceptStripePayments_Admin {
 	wp_register_style( 'asp-admin-styles', WP_ASP_PLUGIN_URL . '/admin/assets/css/admin.css', array(), WP_ASP_PLUGIN_VERSION );
 
 	switch ( $hook ) {
-		case 'asp-products_page_stripe-payments-settings':
-		case 'asp-products_page_stripe-payments-addons':
+		case ASPMain::$products_slug.'_page_stripe-payments-settings':
+		case ASPMain::$products_slug.'_page_stripe-payments-addons':
 		//settings page
 		wp_register_script( 'asp-admin-settings-js', WP_ASP_PLUGIN_URL . '/admin/assets/js/settings.js', array( 'jquery' ), WP_ASP_PLUGIN_VERSION, true );
 		wp_enqueue_script( 'asp-admin-general-js' );

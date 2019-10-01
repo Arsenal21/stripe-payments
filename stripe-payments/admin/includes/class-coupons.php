@@ -266,7 +266,7 @@ class AcceptStripePayments_CouponsAdmin {
 			</div>
 			</div>
 		</div></div>
-		<h2><?php _e( 'Coupons', 'stripe-payments' ); ?> <a class="page-title-action" href="?post_type=asp-products&page=stripe-payments-coupons&action=asp_add_edit_coupon"><?php _e( 'Add a Coupon', 'stripe-payments' ); ?></a></h2>
+		<h2><?php _e( 'Coupons', 'stripe-payments' ); ?> <a class="page-title-action" href="?post_type=<?php echo esc_attr( ASPMain::$products_slug );?>&page=stripe-payments-coupons&action=asp_add_edit_coupon"><?php _e( 'Add a Coupon', 'stripe-payments' ); ?></a></h2>
 		<?php $coupons_tbl->display(); ?>
 	</div>
 		<?php
@@ -503,7 +503,7 @@ class AcceptStripePayments_CouponsAdmin {
 		do_action( 'asp_admin_save_coupon', $coupon_id, $coupon );
 		set_transient( 'asp_coupons_admin_notice', sprintf( $is_edit ? __( 'Coupon "%s" has been updated.', 'stripe-payments' ) : __( 'Coupon "%s" has been created.', 'stripe-payments' ), $coupon['code'] ), 60 * 60 );
 
-		wp_safe_redirect( 'edit.php?post_type=asp-products&page=stripe-payments-coupons' );
+		wp_safe_redirect( 'edit.php?post_type='.ASPMain::$products_slug.'&page=stripe-payments-coupons' );
 		exit;
 	}
 
