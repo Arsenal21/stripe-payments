@@ -465,11 +465,11 @@ class ASP_PP_Handler {
 
 				if ( isset( $billing_details ) ) {
 
-					if ( $billing_details->name ) {
+					if ( ! empty( $billing_details->name ) ) {
 						$customer_opts['name'] = $billing_details->name;
 					}
 
-					if ( $billing_details->email ) {
+					if ( ! empty( $billing_details->email ) ) {
 						$customer_opts['email'] = $billing_details->email;
 					}
 
@@ -545,7 +545,7 @@ class ASP_PP_Handler {
 			$stripe_receipt_email = $this->asp_main->get_setting( 'stripe_receipt_email' );
 
 			if ( $stripe_receipt_email ) {
-				if ( isset( $billing_details ) && isset( $billing_details->email ) ) {
+				if ( isset( $billing_details ) && isset( $billing_details->email ) && ! empty( $billing_details->email ) ) {
 					$pi_params['receipt_email'] = $billing_details->email;
 				}
 			}
