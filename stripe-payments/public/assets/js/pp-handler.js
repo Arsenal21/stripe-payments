@@ -694,7 +694,7 @@ function handlePayment() {
 					return true;
 				} catch (e) {
 					console.log(e);
-					alert('Caught Exception: ' + e.description);
+					alert('Caught Exception: ' + e);
 				}
 			},
 			function (res, errMsg) {
@@ -779,7 +779,7 @@ function handlePayment() {
 							}
 						} catch (e) {
 							console.log(e);
-							alert('Caught Exception: ' + e.description);
+							alert('Caught Exception: ' + e);
 						}
 					},
 					function (res, errMsg) {
