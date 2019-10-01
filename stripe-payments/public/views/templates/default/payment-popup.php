@@ -336,7 +336,7 @@
 								<?php if ( $a['data']['billing_address'] || $a['data']['shipping_address'] ) { ?>
 							</div>
 							<?php } ?>
-							<div id="card-cont" class="pure-u-1">
+							<div id="card-cont" data-pm-name="def" class="pure-u-1">
 								<label for="card-element"><?php esc_html_e( 'Credit or debit card', 'stripe-payments' ); ?></label>
 								<div id="card-element">
 								</div>

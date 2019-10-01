@@ -279,6 +279,7 @@ jQuery('.pm-select-btn').click(function () {
 	doAddonAction('pmSelectClicked');
 	var sel = jQuery('#payment-form').find('[data-pm-name][data-pm-name!="' + vars.data.currentPM + '"]');
 	if (vars.data.dont_hide_button) {
+		jQuery('#submit-btn-cont').show();
 		sel = jQuery(sel.not('#submit-btn-cont'));
 	}
 	sel.hide();
