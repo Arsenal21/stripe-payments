@@ -1240,13 +1240,13 @@ msgstr ""
 
 #: stripe-payments/admin/includes/class-order.php:30
 #: stripe-payments/admin/includes/class-products.php:39
-#: stripe-payments/admin/includes/class-products.php:84
+#: stripe-payments/admin/includes/class-products.php:86
 msgid "Not found"
 msgstr ""
 
 #: stripe-payments/admin/includes/class-order.php:31
 #: stripe-payments/admin/includes/class-products.php:40
-#: stripe-payments/admin/includes/class-products.php:85
+#: stripe-payments/admin/includes/class-products.php:87
 msgid "Not found in Trash"
 msgstr ""
 
@@ -1281,7 +1281,7 @@ msgid "Description"
 msgstr ""
 
 #: stripe-payments/admin/includes/class-order.php:114
-#: stripe-payments/admin/includes/class-products.php:130
+#: stripe-payments/admin/includes/class-products.php:132
 #: stripe-payments/includes/process_ipn.php:760
 #: stripe-payments/public/includes/class-shortcode-asp.php:994
 msgid "Product Name"
@@ -1387,7 +1387,7 @@ msgid "Custom Field"
 msgstr ""
 
 #: stripe-payments/admin/includes/class-products-meta-boxes.php:30
-#: stripe-payments/admin/includes/class-products.php:135
+#: stripe-payments/admin/includes/class-products.php:137
 msgid "Shortcode"
 msgstr ""
 
@@ -1421,7 +1421,7 @@ msgid ""
 msgstr ""
 
 #: stripe-payments/admin/includes/class-products-meta-boxes.php:111
-#: stripe-payments/admin/includes/class-products.php:133
+#: stripe-payments/admin/includes/class-products.php:135
 msgid "Price"
 msgstr ""
 
@@ -1788,13 +1788,13 @@ msgid ""
 msgstr ""
 
 #: stripe-payments/admin/includes/class-products.php:28
-#: stripe-payments/admin/includes/class-products.php:74
+#: stripe-payments/admin/includes/class-products.php:76
 msgctxt "Post Type General Name"
 msgid "Products"
 msgstr ""
 
 #: stripe-payments/admin/includes/class-products.php:29
-#: stripe-payments/admin/includes/class-products.php:75
+#: stripe-payments/admin/includes/class-products.php:77
 msgctxt "Post Type Singular Name"
 msgid "Product"
 msgstr ""
@@ -1804,84 +1804,84 @@ msgid "Stripe Payments"
 msgstr ""
 
 #: stripe-payments/admin/includes/class-products.php:32
-#: stripe-payments/admin/includes/class-products.php:77
+#: stripe-payments/admin/includes/class-products.php:79
 msgid "Products"
 msgstr ""
 
 #: stripe-payments/admin/includes/class-products.php:33
-#: stripe-payments/admin/includes/class-products.php:78
+#: stripe-payments/admin/includes/class-products.php:80
 msgid "View Product"
 msgstr ""
 
 #: stripe-payments/admin/includes/class-products.php:34
 #: stripe-payments/admin/includes/class-products.php:35
-#: stripe-payments/admin/includes/class-products.php:79
-#: stripe-payments/admin/includes/class-products.php:80
+#: stripe-payments/admin/includes/class-products.php:81
+#: stripe-payments/admin/includes/class-products.php:82
 msgid "Add New Product"
 msgstr ""
 
 #: stripe-payments/admin/includes/class-products.php:36
-#: stripe-payments/admin/includes/class-products.php:81
-#: stripe-payments/admin/includes/class-products.php:160
+#: stripe-payments/admin/includes/class-products.php:83
+#: stripe-payments/admin/includes/class-products.php:162
 msgid "Edit Product"
 msgstr ""
 
 #: stripe-payments/admin/includes/class-products.php:37
-#: stripe-payments/admin/includes/class-products.php:82
+#: stripe-payments/admin/includes/class-products.php:84
 msgid "Update Products"
 msgstr ""
 
 #: stripe-payments/admin/includes/class-products.php:38
-#: stripe-payments/admin/includes/class-products.php:83
+#: stripe-payments/admin/includes/class-products.php:85
 msgid "Search Product"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products.php:113
+#: stripe-payments/admin/includes/class-products.php:115
 msgid "View product"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products.php:115
+#: stripe-payments/admin/includes/class-products.php:117
 msgid "Preview product"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products.php:117
-#: stripe-payments/admin/includes/class-products.php:118
+#: stripe-payments/admin/includes/class-products.php:119
+#: stripe-payments/admin/includes/class-products.php:120
 msgid "Product updated."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products.php:119
+#: stripe-payments/admin/includes/class-products.php:121
 msgid "Product published."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products.php:120
+#: stripe-payments/admin/includes/class-products.php:122
 msgid "Product saved."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products.php:121
+#: stripe-payments/admin/includes/class-products.php:123
 msgid "Product submitted."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products.php:122
+#: stripe-payments/admin/includes/class-products.php:124
 msgid "Product draft updated."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products.php:131
+#: stripe-payments/admin/includes/class-products.php:133
 msgid "Thumbnail"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products.php:132
+#: stripe-payments/admin/includes/class-products.php:134
 msgid "ID"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products.php:134
+#: stripe-payments/admin/includes/class-products.php:136
 msgid "Stock"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products.php:136
+#: stripe-payments/admin/includes/class-products.php:138
 msgid "Date"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products.php:149
+#: stripe-payments/admin/includes/class-products.php:151
 #: stripe-payments/includes/class-asp-pp-handler.php:148
 #: stripe-payments/public/includes/class-asp-shortcode-ng.php:493
 #: stripe-payments/public/includes/class-shortcode-asp.php:609
@@ -2183,7 +2183,7 @@ msgid "You cannot order more items than available: %d"
 msgstr ""
 
 #: stripe-payments/includes/class-asp-pp-handler.php:347
-#: stripe-payments/includes/class-asp-process-ipn-ng.php:291
+#: stripe-payments/includes/class-asp-process-ipn-ng.php:309
 #: stripe-payments/includes/class-asp-product-item.php:229
 #: stripe-payments/includes/process_ipn.php:560
 #: stripe-payments/public/includes/class-asp-shortcode-ng.php:166
@@ -2196,7 +2196,7 @@ msgid "Tax"
 msgstr ""
 
 #: stripe-payments/includes/class-asp-pp-handler.php:348
-#: stripe-payments/includes/class-asp-process-ipn-ng.php:299
+#: stripe-payments/includes/class-asp-process-ipn-ng.php:317
 #: stripe-payments/includes/class-asp-product-item.php:240
 #: stripe-payments/includes/process_ipn.php:567
 #: stripe-payments/public/includes/class-asp-shortcode-ng.php:176
@@ -2253,49 +2253,49 @@ msgstr ""
 msgid "Stripe API error occurred:"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-process-ipn-ng.php:26
+#: stripe-payments/includes/class-asp-process-ipn-ng.php:28
 #: stripe-payments/includes/process_ipn.php:54
 msgid "Stripe Payments Error"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-process-ipn-ng.php:27
+#: stripe-payments/includes/class-asp-process-ipn-ng.php:29
 msgid "Following error occurred during payment processing:"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-process-ipn-ng.php:29
+#: stripe-payments/includes/class-asp-process-ipn-ng.php:31
 #: stripe-payments/includes/process_ipn.php:58
 msgid "Debug data:"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-process-ipn-ng.php:184
+#: stripe-payments/includes/class-asp-process-ipn-ng.php:202
 #, php-format
 msgid "Invalid payment amount received. Expected %1$s, got %2$s."
 msgstr ""
 
-#: stripe-payments/includes/class-asp-process-ipn-ng.php:282
+#: stripe-payments/includes/class-asp-process-ipn-ng.php:300
 #: stripe-payments/includes/process_ipn.php:555
 #, php-format
 msgid "Coupon \"%s\""
 msgstr ""
 
-#: stripe-payments/includes/class-asp-process-ipn-ng.php:283
+#: stripe-payments/includes/class-asp-process-ipn-ng.php:301
 #: stripe-payments/includes/process_ipn.php:556
 msgid "Subtotal"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-process-ipn-ng.php:362
+#: stripe-payments/includes/class-asp-process-ipn-ng.php:380
 msgid "Product Name: "
 msgstr ""
 
-#: stripe-payments/includes/class-asp-process-ipn-ng.php:363
+#: stripe-payments/includes/class-asp-process-ipn-ng.php:381
 msgid "Quantity: "
 msgstr ""
 
-#: stripe-payments/includes/class-asp-process-ipn-ng.php:364
+#: stripe-payments/includes/class-asp-process-ipn-ng.php:382
 msgid "Item Price: "
 msgstr ""
 
-#: stripe-payments/includes/class-asp-process-ipn-ng.php:369
+#: stripe-payments/includes/class-asp-process-ipn-ng.php:387
 msgid "Total Amount: "
 msgstr ""
 
@@ -3325,110 +3325,114 @@ msgid "Australian Dollars (AUD)"
 msgstr ""
 
 #: stripe-payments/includes/class-asp-utils.php:284
-msgid "Brazilian Real (BRL)"
+msgid "Bosnia and Herzegovina Convertible Mark"
 msgstr ""
 
 #: stripe-payments/includes/class-asp-utils.php:285
-msgid "Canadian Dollars (CAD)"
+msgid "Brazilian Real (BRL)"
 msgstr ""
 
 #: stripe-payments/includes/class-asp-utils.php:286
-msgid "Chinese Yuan (CNY)"
+msgid "Canadian Dollars (CAD)"
 msgstr ""
 
 #: stripe-payments/includes/class-asp-utils.php:287
-msgid "Czech Koruna (CZK)"
+msgid "Chinese Yuan (CNY)"
 msgstr ""
 
 #: stripe-payments/includes/class-asp-utils.php:288
-msgid "Danish Krone (DKK)"
+msgid "Czech Koruna (CZK)"
 msgstr ""
 
 #: stripe-payments/includes/class-asp-utils.php:289
-msgid "Hong Kong Dollar (HKD)"
+msgid "Danish Krone (DKK)"
 msgstr ""
 
 #: stripe-payments/includes/class-asp-utils.php:290
-msgid "Hungarian Forint (HUF)"
+msgid "Hong Kong Dollar (HKD)"
 msgstr ""
 
 #: stripe-payments/includes/class-asp-utils.php:291
-msgid "Indian Rupee (INR)"
+msgid "Hungarian Forint (HUF)"
 msgstr ""
 
 #: stripe-payments/includes/class-asp-utils.php:292
-msgid "Indonesia Rupiah (IDR)"
+msgid "Indian Rupee (INR)"
 msgstr ""
 
 #: stripe-payments/includes/class-asp-utils.php:293
-msgid "Israeli Shekel (ILS)"
+msgid "Indonesia Rupiah (IDR)"
 msgstr ""
 
 #: stripe-payments/includes/class-asp-utils.php:294
-msgid "Japanese Yen (JPY)"
+msgid "Israeli Shekel (ILS)"
 msgstr ""
 
 #: stripe-payments/includes/class-asp-utils.php:295
-msgid "Malaysian Ringgits (MYR)"
+msgid "Japanese Yen (JPY)"
 msgstr ""
 
 #: stripe-payments/includes/class-asp-utils.php:296
-msgid "Mexican Peso (MXN)"
+msgid "Malaysian Ringgits (MYR)"
 msgstr ""
 
 #: stripe-payments/includes/class-asp-utils.php:297
-msgid "New Zealand Dollar (NZD)"
+msgid "Mexican Peso (MXN)"
 msgstr ""
 
 #: stripe-payments/includes/class-asp-utils.php:298
-msgid "Norwegian Krone (NOK)"
+msgid "New Zealand Dollar (NZD)"
 msgstr ""
 
 #: stripe-payments/includes/class-asp-utils.php:299
-msgid "Philippine Pesos (PHP)"
+msgid "Norwegian Krone (NOK)"
 msgstr ""
 
 #: stripe-payments/includes/class-asp-utils.php:300
-msgid "Polish Zloty (PLN)"
+msgid "Philippine Pesos (PHP)"
 msgstr ""
 
 #: stripe-payments/includes/class-asp-utils.php:301
-msgid "Russian Ruble (RUB)"
+msgid "Polish Zloty (PLN)"
 msgstr ""
 
 #: stripe-payments/includes/class-asp-utils.php:302
-msgid "Singapore Dollar (SGD)"
+msgid "Russian Ruble (RUB)"
 msgstr ""
 
 #: stripe-payments/includes/class-asp-utils.php:303
-msgid "South African Rand (ZAR)"
+msgid "Singapore Dollar (SGD)"
 msgstr ""
 
 #: stripe-payments/includes/class-asp-utils.php:304
-msgid "South Korean Won (KRW)"
+msgid "South African Rand (ZAR)"
 msgstr ""
 
 #: stripe-payments/includes/class-asp-utils.php:305
-msgid "Swedish Krona (SEK)"
+msgid "South Korean Won (KRW)"
 msgstr ""
 
 #: stripe-payments/includes/class-asp-utils.php:306
-msgid "Swiss Franc (CHF)"
+msgid "Swedish Krona (SEK)"
 msgstr ""
 
 #: stripe-payments/includes/class-asp-utils.php:307
-msgid "Taiwan New Dollars (TWD)"
+msgid "Swiss Franc (CHF)"
 msgstr ""
 
 #: stripe-payments/includes/class-asp-utils.php:308
-msgid "Thai Baht (THB)"
+msgid "Taiwan New Dollars (TWD)"
 msgstr ""
 
 #: stripe-payments/includes/class-asp-utils.php:309
-msgid "Turkish Lira (TRY)"
+msgid "Thai Baht (THB)"
 msgstr ""
 
 #: stripe-payments/includes/class-asp-utils.php:310
+msgid "Turkish Lira (TRY)"
+msgstr ""
+
+#: stripe-payments/includes/class-asp-utils.php:311
 msgid "Vietnamese Dong (VND)"
 msgstr ""
 
