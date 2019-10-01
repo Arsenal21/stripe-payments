@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 4.7
 Tested up to: 5.2
 Requires PHP: 5.4
-Stable tag: 2.0.10t1
+Stable tag: 2.0.10t2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -156,6 +156,7 @@ None.
 = WIP 2.0.10 =
 - [New API]: Adde Alipay addon support. Requires Alipay addon version 2.0.0+.
 - Added Bosnia and Herzegovina Convertible Mark (BAM) currency.
+- Fixed "Invalid email address" error when APM addon is installed and "Send Receipt Email From Stripe" option enabled.
 
 = 2.0.9 =
 - [New API]: Fixed zero cents currencies were divided by 100 on payments result page and order info.
