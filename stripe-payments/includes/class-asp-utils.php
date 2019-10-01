@@ -281,6 +281,7 @@ class ASP_Utils {
 			'EUR' => array( __( 'Euros (EUR)', 'stripe-payments' ), '€' ),
 			'GBP' => array( __( 'Pounds Sterling (GBP)', 'stripe-payments' ), '£' ),
 			'AUD' => array( __( 'Australian Dollars (AUD)', 'stripe-payments' ), 'AU$' ),
+			'BAM' => array( __( 'Bosnia and Herzegovina Convertible Mark', 'stripe-payments' ), 'KM' ),
 			'BRL' => array( __( 'Brazilian Real (BRL)', 'stripe-payments' ), 'R$' ),
 			'CAD' => array( __( 'Canadian Dollars (CAD)', 'stripe-payments' ), 'CA$' ),
 			'CNY' => array( __( 'Chinese Yuan (CNY)', 'stripe-payments' ), 'CN￥' ),
