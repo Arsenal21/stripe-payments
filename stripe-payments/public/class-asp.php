@@ -323,7 +323,7 @@ class AcceptStripePayments {
 			'custom_field_mandatory'          => 0,
 			'send_email_on_error'             => 0,
 			'send_email_on_error_to'          => $admin_email,
-			'use_old_checkout_api1'           => 1,
+			'use_old_checkout_api1'           => 0,
 			'disable_buttons_before_js_loads' => 0,
 			'tos_text'                        => __( 'I accept the <a href="https://example.com/terms-and-conditions/" target="_blank">Terms and Conditions</a>', 'stripe-payments' ),
 		);
