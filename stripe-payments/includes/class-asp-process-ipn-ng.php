@@ -52,7 +52,7 @@ class ASP_Process_IPN_NG {
 	private function get_post_var( $var, $filter, $opts = null ) {
 		if ( isset( $this->post_data ) ) {
 			if ( isset( $this->post_data[ $var ] ) ) {
-				return $this->post_data[ $var ];
+				return filter_var( $this->post_data[ $var ], $filter, $opts );
 			} else {
 				return null;
 			}
