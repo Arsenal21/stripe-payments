@@ -41,7 +41,11 @@ var stripeHandlerNG = function (data) {
 						parent.iForm.find('[name!=""]').each(function () {
 							if (jQuery(this).attr('name')) {
 								jQuery(this).attr('name', 'asp_' + jQuery(this).attr('name'));
-								hiddenInputsDiv.append(jQuery(this).clone());
+								var clonedItem = jQuery(this).clone();
+								if (jQuery(this).is('select')) {
+									clonedItem.prop('selectedIndex', jQuery(this).prop('selectedIndex'));
+								}
+								hiddenInputsDiv.append(clonedItem);
 							}
 						});
 						console.log('Parent form submit');
