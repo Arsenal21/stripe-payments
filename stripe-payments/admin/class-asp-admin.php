@@ -99,24 +99,29 @@ function show_admin_notices() {
 			echo sprintf( $tpl, $msg['type'], $msg['text'], $msg['dism'] === true ? ' is-dismissible' : '' );
 		}
 	}
-	//show new API notice
+
 	$notice_dismissed_get = filter_input( INPUT_GET, 'asp_dismiss_new_api_msg', FILTER_SANITIZE_NUMBER_INT );
 	if ( $notice_dismissed_get ) {
-		update_option( 'asp_new_api_notice_dismissed', true );
+		update_option( 'asp_new_api_notice_dismissed1', true );
 	}
-	$notice_dismissed = get_option( 'asp_new_api_notice_dismissed' );
-	if ( ! $notice_dismissed ) {
-		$tpl = '<div class="notice notice-%1$s%3$s">%2$s</div>';
-		$msg = '<p>The new version of the Stripe payments plugin has the SCA compliant API. You can enable it by going to the Advanced Settings menu of the plugin. Uncheck the "Enable Legacy Checkout API" checkbox to use the new SCA compliant API.</p>';
-		//here's link to advanced settings tab you can use in the message:
-		// <a href="edit.php?post_type=asp-products&page=stripe-payments-settings#advanced">advanced settings</a>
-		$admin_url   = get_admin_url();
-		$dismiss_url = add_query_arg( 'asp_dismiss_new_api_msg', '1', $admin_url );
-		$msg        .= '<p><a href="' . $dismiss_url . '">Dismiss this message for now</a></p>';
-		echo sprintf( $tpl, 'warning', $msg, '' );
+
+	//show new API notice
+	$opt = get_option( 'AcceptStripePayments-settings' );
+	if ( isset( $opt['use_old_checkout_api1'] ) && $opt['use_old_checkout_api1'] ) {
+		$notice_dismissed = get_option( 'asp_new_api_notice_dismissed1' );
+		if ( ! $notice_dismissed ) {
+			$tpl = '<div class="notice notice-%1$s%3$s">%2$s</div>';
+			$msg = '<p>The new version of the Stripe Payments plugin has the SCA compliant API support. However, you\'re still using legacy API.<br/><br/>' .
+			'<a href="https://stripe.com/docs/strong-customer-authentication/doineed" target="_blank">Click here</a> to check whether your business need to support SCA. If it does, disable legacy API by  unchecking the "Enable Legacy Checkout API" checkbox on <a href="edit.php?post_type=asp-products&page=stripe-payments-settings#advanced">Advanced Settings tab</a> of the plugin.</p>';
+			//here's link to advanced settings tab you can use in the message:
+			// <a href="edit.php?post_type=asp-products&page=stripe-payments-settings#advanced">advanced settings</a>
+			$admin_url   = get_admin_url();
+			$dismiss_url = add_query_arg( 'asp_dismiss_new_api_msg', '1', $admin_url );
+			$msg        .= '<p><a style="text-decoration: none; border-bottom: 1px dashed;" href="' . $dismiss_url . '">Don\'t show this message again</a></p>';
+			echo sprintf( $tpl, 'warning', $msg, '' );
+		}
 	}
 }
-
 
 
     static function add_admin_notice( $type, $text, $dism = true ) {
