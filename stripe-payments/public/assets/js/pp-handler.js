@@ -589,7 +589,7 @@ function canProceed() {
 	return true;
 }
 
-function handlePayment() {
+async function handlePayment() {
 	var billingNameInput = document.getElementById('billing-name');
 	var emailInput = document.getElementById('email');
 	var billingDetails = {
@@ -652,59 +652,37 @@ function handlePayment() {
 
 	//regen cs
 	if (!vars.data.create_token && (vars.data.client_secret === '' || vars.data.amount != clientSecAmount || vars.data.currency !== clientSecCurrency)) {
-		var reqStr = 'action=asp_pp_req_token&amount=' + vars.data.amount + '&curr=' + vars.data.currency + '&product_id=' + vars.data.product_id;
-		reqStr = reqStr + '&quantity=' + vars.data.quantity;
+		var reqStr = {
+			action: 'asp_pp_req_token',
+			amount: vars.data.amount,
+			curr: vars.data.currency,
+			product_id: vars.data.product_id,
+			quantity: vars.data.quantity
+		};
 		if (vars.data.cust_id) {
-			reqStr = reqStr + '&cust_id=' + vars.data.cust_id;
+			reqStr.cust_id = vars.data.cust_id;
 		}
 		if (vars.data.client_secret !== '') {
-			reqStr = reqStr + '&pi=' + vars.data.pi_id;
+			reqStr.pi = vars.data.pi_id;
 		}
-		reqStr = reqStr + '&billing_details=' + JSON.stringify(billingDetails);
+		reqStr.billing_details = JSON.stringify(billingDetails);
 		vars.data.csRegenParams = reqStr;
 		doAddonAction('csBeforeRegenParams');
 		console.log('Regen CS');
-		new ajaxRequest(vars.ajaxURL, vars.data.csRegenParams,
-			function (res) {
-				try {
-					var resp = JSON.parse(res.responseText);
-					console.log(resp);
-					if (typeof resp.stock_items !== 'undefined') {
-						if (vars.data.stock_items !== resp.stock_items) {
-							vars.data.stock_items = resp.stock_items;
-							validate_custom_quantity();
-						}
-					}
-					if (!resp.success) {
-						submitBtn.disabled = false;
-						errorCont.innerHTML = resp.err;
-						errorCont.style.display = 'block';
-						smokeScreen(false);
-						return false;
-					}
-					vars.data.client_secret = resp.clientSecret;
-					vars.data.pi_id = resp.pi_id;
-					vars.data.cust_id = resp.cust_id;
-					clientSecAmount = vars.data.amount;
-					clientSecCurrency = vars.data.currency;
-					doAddonAction('csRegenCompleted');
-					if (vars.data.doNotProceed) {
-						return false;
-					}
-					handlePayment();
-					return true;
-				} catch (e) {
-					console.log(e);
-					alert('Caught Exception: ' + e);
-				}
-			},
-			function (res, errMsg) {
-				submitBtn.disabled = false;
-				errorCont.innerHTML = errMsg;
-				errorCont.style.display = 'block';
-				smokeScreen(false);
-			}
-		);
+		if (vars.data.doAsyncAjax) {
+			vars.data.doAsyncAjax = false;
+			await doAsyncAjax(vars.data.csRegenParams, csRegenSuccess ,csRegenError);
+			return true;
+		}
+
+		jQuery.ajax({
+			url: vars.ajaxURL,
+			type: 'POST',
+			data: vars.data.csRegenParams,
+			success: csRegenSuccess,
+			error: csRegenError
+		});
+
 		return false;
 	}
 
@@ -884,6 +862,57 @@ function toggleRequiredElements(els, hide) {
 			jQuery(el).attr('data-required-hidden', 0);
 		});
 	}
+}
+
+function csRegenSuccess(resp) {
+	try {
+		console.log(resp);
+		if (typeof resp.stock_items !== 'undefined') {
+			if (vars.data.stock_items !== resp.stock_items) {
+				vars.data.stock_items = resp.stock_items;
+				validate_custom_quantity();
+			}
+		}
+		if (!resp.success) {
+			submitBtn.disabled = false;
+			errorCont.innerHTML = resp.err;
+			errorCont.style.display = 'block';
+			smokeScreen(false);
+			return false;
+		}
+		vars.data.client_secret = resp.clientSecret;
+		vars.data.pi_id = resp.pi_id;
+		vars.data.cust_id = resp.cust_id;
+		clientSecAmount = vars.data.amount;
+		clientSecCurrency = vars.data.currency;
+		doAddonAction('csRegenCompleted');
+		if (vars.data.doNotProceed) {
+			return false;
+		}
+		handlePayment();
+		return true;
+	} catch (e) {
+		console.log(e);
+		alert('Caught Exception: ' + e);
+	}
+}
+
+function csRegenError(res) {
+	submitBtn.disabled = false;
+	errorCont.innerHTML = res;
+	errorCont.style.display = 'block';
+	smokeScreen(false);
+}
+
+async function doAsyncAjax(args, success, error) {
+	const result = await jQuery.ajax({
+		url: vars.ajaxURL,
+		type: 'POST',
+		data: args,
+		success: success,
+		error: error
+	});
+	return result;
 }
 
 var ajaxRequest = function (URL, reqStr, doneFunc, failFunc) {
