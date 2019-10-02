@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 4.7
 Tested up to: 5.2
 Requires PHP: 5.4
-Stable tag: 2.0.10t2
+Stable tag: 2.0.10
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -153,10 +153,13 @@ None.
 
 == Changelog ==
 
-= WIP 2.0.10 =
-- [New API]: Adde Alipay addon support. Requires Alipay addon version 2.0.0+.
+= 2.0.10 =
+- [New API]: Fixed selected variations weren't properly passed upon payment form submission.
+- [New API]: Fixed "Invalid email address" error when APM addon is installed and "Send Receipt Email From Stripe" option enabled.
+- [New API]: Added Alipay addon support. Requires Alipay addon version 2.0.0+.
+- Legacy API is disabled by default for fresh plugin installations.
+- Added admin area notice regarding SCA compatibility.
 - Added Bosnia and Herzegovina Convertible Mark (BAM) currency.
-- Fixed "Invalid email address" error when APM addon is installed and "Send Receipt Email From Stripe" option enabled.
 
 = 2.0.9 =
 - [New API]: Fixed zero cents currencies were divided by 100 on payments result page and order info.
@@ -169,7 +172,7 @@ None.
 - [New API]: Adjusted payment popup display on mobile devices.
 
 = 2.0.8 =
-- [New API]: Added compatability with optimization plugins that do minify\combine JavaScript.
+- [New API]: Added compatibility with optimization plugins that do minify\combine JavaScript.
 - [New API]: Fixed currency wasn't properly updated for variable currency payments in some situations. 
 - [New API]: Fixed product with stock control enabled could produce fatal error during payment process under some circumstances. 
 - [New API]: Fixed checkbox custom field display issue.
@@ -249,7 +252,7 @@ None.
 - Frontend amount and quantity inputs are disabled on payment form submit to prevent "Token can't be used more than once" error.
 - Fixed zero-cent currencies displaying and handling issues.
 - Product description now supports WP embeds.
-- Tweaks for better compatability with various page builders.
+- Tweaks for better compatibility with various page builders.
 - Other minor bugfixes.
 
 Previous versions changelog available in changelog.txt file.
