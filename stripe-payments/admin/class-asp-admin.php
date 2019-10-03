@@ -111,8 +111,8 @@ function show_admin_notices() {
 		$notice_dismissed = get_option( 'asp_new_api_notice_dismissed1' );
 		if ( ! $notice_dismissed ) {
 			$tpl = '<div class="notice notice-%1$s%3$s">%2$s</div>';
-			$msg = '<p>The new version of the Stripe Payments plugin has the SCA compliant API support. However, you\'re still using legacy API.<br/><br/>' .
-			'<a href="https://stripe.com/docs/strong-customer-authentication/doineed" target="_blank">Click here</a> to check whether your business need to support SCA. If it does, disable legacy API by  unchecking the "Enable Legacy Checkout API" checkbox on <a href="edit.php?post_type=asp-products&page=stripe-payments-settings#advanced">Advanced Settings tab</a> of the plugin.</p>';
+			$msg = '<p>The new version of the Stripe Payments plugin has the SCA compliant API support. However, you\'re still using the legacy API.<br/><br/>' .
+			'<a href="https://stripe.com/docs/strong-customer-authentication/doineed" target="_blank">Click here</a> to check whether your business needs to support Strong Customer Authentication (SCA). If it does, disable legacy API by  unchecking the "Enable Legacy Checkout API" checkbox in the <a href="edit.php?post_type=asp-products&page=stripe-payments-settings#advanced">Advanced Settings tab</a> of the plugin.</p>';
 			//here's link to advanced settings tab you can use in the message:
 			// <a href="edit.php?post_type=asp-products&page=stripe-payments-settings#advanced">advanced settings</a>
 			$admin_url   = get_admin_url();
