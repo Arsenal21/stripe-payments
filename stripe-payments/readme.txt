@@ -25,11 +25,11 @@ The transaction info is also captured in the orders menu of the plugin. You can 
 
 = Setup and Usage Video =
 
-https://www.youtube.com/watch?v=yQB6IKz73g4
+https://www.youtube.com/watch?v=L0n_jlEhmoA
 
 = Checkout Demo Video =
 
-https://www.youtube.com/watch?v=upWqk069Khg
+https://www.youtube.com/watch?v=b6owgRBTUwA
 
 = Features =
 
