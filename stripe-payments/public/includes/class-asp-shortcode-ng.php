@@ -651,7 +651,7 @@ class ASP_Shortcode_NG {
 		if ( ! $this->button_css_inserted || $this->compat_mode ) {
 			ob_start();
 			?>
-			<div class="asp-processing-cont"><span class="asp-processing">Processing <i>.</i><i>.</i><i>.</i></span></div>
+			<div class="asp-processing-cont" style="display:none;"><span class="asp-processing">Processing <i>.</i><i>.</i><i>.</i></span></div>
 			<?php
 			$output .= ob_get_clean();
 			//remove newline symbols for compatability with some page builders

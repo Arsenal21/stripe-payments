@@ -810,7 +810,7 @@ class AcceptStripePaymentsShortcode {
 			$output = apply_filters( 'asp-button-output-additional-styles', $output );
 			ob_start();
 			?>
-		<div class="asp-processing-cont"><span class="asp-processing">Processing <i>.</i><i>.</i><i>.</i></span></div>
+		<div class="asp-processing-cont" style="display:none;"><span class="asp-processing">Processing <i>.</i><i>.</i><i>.</i></span></div>
 			<?php
 			$output .= ob_get_clean();
 			//remove newline symbols for compatability with some page builders
