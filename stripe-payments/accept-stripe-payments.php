@@ -83,7 +83,7 @@ class ASPMain {
 	public static function load_stripe_lib() {
 		if ( ! class_exists( '\Stripe\Stripe' ) ) {
 			require_once WP_ASP_PLUGIN_PATH . 'includes/stripe/init.php';
-			\Stripe\Stripe::setAppInfo( 'Stripe Payments', WP_ASP_PLUGIN_VERSION, 'https://wordpress.org/plugins/stripe-payments/' );
+			\Stripe\Stripe::setAppInfo( 'Stripe Payments', WP_ASP_PLUGIN_VERSION, 'https://wordpress.org/plugins/stripe-payments/', 'pp_partner_Fvas9OJ0jQ2oNQ' );
 		} else {
 			$declared = new \ReflectionClass( '\Stripe\Stripe' );
 			$path     = $declared->getFileName();
