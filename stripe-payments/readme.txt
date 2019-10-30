@@ -153,6 +153,12 @@ None.
 
 == Changelog ==
 
+= 2.0.11=
+- Fixed an issue with duplicate buy emails being sent on some browsers.
+- Fixed "Processing" text was showing in the product insert block.
+- Added the Spanish language translation file.
+- Fixed subscription payment with tax not processing correctly.
+
 = 2.0.10 =
 - [New API]: Fixed selected variations weren't properly passed upon payment form submission.
 - [New API]: Fixed "Invalid email address" error when APM addon is installed and "Send Receipt Email From Stripe" option enabled.
