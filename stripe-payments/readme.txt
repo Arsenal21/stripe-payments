@@ -153,7 +153,7 @@ None.
 
 == Changelog ==
 
-= 2.0.11=
+= 2.0.11 =
 - Fixed an issue with duplicate buy emails being sent on some browsers.
 - Fixed "Processing" text was showing in the product insert block.
 - Added the Spanish language translation file.
