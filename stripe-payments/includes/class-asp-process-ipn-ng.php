@@ -61,13 +61,28 @@ class ASP_Process_IPN_NG {
 		return $val;
 	}
 
+	private function paid_amount_valid( $amount_in_cents, $amount_paid, $item ) {
+		if ( $amount_in_cents !== $amount_paid ) {
+			//check if this is a subs product
+			if ( method_exists( $item, 'get_plan_id' ) ) {
+				//this is subs product. Let's check if subs addon version is prior to 2.0.1.
+				if ( version_compare( ASPSUB_main::ADDON_VER, '2.0.1' ) < 0 ) {
+					//subs addon version is prior to 2.0.1. This means error is most likely not legit.
+					return true;
+				}
+			}
+			return false;
+		}
+		return true;
+	}
+
 	public function process_ipn( $post_data = array() ) {
 		ASP_Debug_Logger::log( 'Payment processing started.' );
 
 		if ( ! empty( $post_data ) ) {
 			$this->post_data = $post_data;
 		}
-                
+
 		$this->sess = ASP_Session::get_instance();
 
 		$post_thankyou_page_url = $this->get_post_var( 'asp_thankyou_page_url', FILTER_SANITIZE_STRING );
@@ -88,7 +103,7 @@ class ASP_Process_IPN_NG {
 
 		$err = $item->get_last_error();
 
-		if ( !empty($err) ) {
+		if ( ! empty( $err ) ) {
 			$this->ipn_completed( $err );
 		}
 
@@ -120,7 +135,7 @@ class ASP_Process_IPN_NG {
 		$key = $is_live ? $this->asp_class->APISecKey : $this->asp_class->APISecKeyTest;
 		\Stripe\Stripe::setApiKey( $key );
 
-                //Get Payment Data
+				//Get Payment Data
 		ASP_Debug_Logger::log( 'Firing asp_ng_process_ipn_payment_data_item_override filter.' );
 
 		$p_data = apply_filters( 'asp_ng_process_ipn_payment_data_item_override', false, $pi );
@@ -135,37 +150,37 @@ class ASP_Process_IPN_NG {
 		if ( ! empty( $p_last_err ) ) {
 			$this->ipn_completed( $p_last_err );
 		}
-                //End retrieval of payment data
-                
-                //Mechanism to lock the txn that is being processed.
-                $txn_being_processed = get_option('asp_ng_ipn_txn_being_processed');
-                $notification_txn_id = $p_data->get_trans_id();
-                ASP_Debug_Logger::log('The transaction ID of this notification is: ' . $notification_txn_id);
-                if (!empty($txn_being_processed) && $txn_being_processed == $notification_txn_id){
-                    //No need to process this transaction as it is already being processed.
-                    ASP_Debug_Logger::log('This transaction ('.$notification_txn_id.') is already being procesed. This is likely a duplicate notification. Nothing to do.');
-                    return true;
-                }
-                update_option('asp_ng_ipn_txn_being_processed', $notification_txn_id);
-                //End of transaction processing lock mechanism
-                
-                //Button key
+				//End retrieval of payment data
+
+				//Mechanism to lock the txn that is being processed.
+				$txn_being_processed = get_option( 'asp_ng_ipn_txn_being_processed' );
+				$notification_txn_id = $p_data->get_trans_id();
+				ASP_Debug_Logger::log( 'The transaction ID of this notification is: ' . $notification_txn_id );
+		if ( ! empty( $txn_being_processed ) && $txn_being_processed == $notification_txn_id ) {
+			//No need to process this transaction as it is already being processed.
+			ASP_Debug_Logger::log( 'This transaction (' . $notification_txn_id . ') is already being procesed. This is likely a duplicate notification. Nothing to do.' );
+			return true;
+		}
+		update_option( 'asp_ng_ipn_txn_being_processed', $notification_txn_id );
+		//End of transaction processing lock mechanism
+
+		//Button key
 		$button_key = $item->get_button_key();
 
-                //Item quantity
+		//Item quantity
 		$post_quantity = $this->get_post_var( 'asp_quantity', FILTER_SANITIZE_NUMBER_INT );
 		if ( $post_quantity ) {
 			$item->set_quantity( $post_quantity );
 		}
 
-                //Item price
+		//Item price
 		$price = $item->get_price();
 		if ( empty( $price ) ) {
 			$post_price = $this->get_post_var( 'asp_amount', FILTER_SANITIZE_NUMBER_FLOAT );
 			if ( $post_price ) {
 				$price = $post_price;
 			} else {
-				$price = $p_data->get_amount();
+				$price = $p_data->get_amount( false );
 			}
 			$price = AcceptStripePayments::from_cents( $price, $item->get_currency() );
 			$item->set_price( $price );
@@ -210,26 +225,20 @@ class ASP_Process_IPN_NG {
 		}
 
 		$amount_in_cents = intval( $item->get_total( true ) );
-		$amount_paid     = $p_data->get_amount();
+		$amount_paid     = intval( $p_data->get_amount() );
 
-                $asp_plan_id = get_post_meta( $prod_id, 'asp_sub_plan_id', true );
-                if ( !empty( $asp_plan_id ) ) {
-                    //This is a subscription type product.
-                    //Nothing to do here in the core plugin.
-                }
-                else {
-                    //This is a normal (one time charge) product.
-                    if ( $amount_in_cents !== $amount_paid ) {
-                            $curr = $p_data->get_currency();
-                            $err  = sprintf(
-                                    // translators: placeholders ar expected and received amounts
-                                    __( 'Invalid payment amount received. Expected %1$s, got %2$s.', 'stripe-payments' ),
-                                    AcceptStripePayments::formatted_price( $amount_in_cents, $curr, true ),
-                                    AcceptStripePayments::formatted_price( $amount_paid, $curr, true )
-                            );
-                            $this->ipn_completed( $err );
-                    }
-                }
+		$paid_amount_valid = $this->paid_amount_valid( $amount_in_cents, $amount_paid, $item );
+
+		if ( ! $paid_amount_valid ) {
+			$curr = $p_data->get_currency();
+			$err  = sprintf(
+				// translators: placeholders are expected and received amounts
+				__( 'Invalid payment amount received. Expected %1$s, got %2$s.', 'stripe-payments' ),
+				AcceptStripePayments::formatted_price( $amount_in_cents, $curr, true ),
+				AcceptStripePayments::formatted_price( $amount_paid, $curr, true )
+			);
+			$this->ipn_completed( $err );
+		}
 
 		$opt = get_option( 'AcceptStripePayments-settings' );
 
@@ -497,9 +506,9 @@ class ASP_Process_IPN_NG {
 
 		$this->sess->set_transient_data( 'asp_data', $data );
 
-                //Clear the txn lock
-                update_option('asp_ng_ipn_txn_being_processed', '');
-                
+				//Clear the txn lock
+				update_option( 'asp_ng_ipn_txn_being_processed', '' );
+
 		$this->ipn_completed();
 	}
 }

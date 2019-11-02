@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 4.7
 Tested up to: 5.3
 Requires PHP: 5.4
-Stable tag: 2.0.10
+Stable tag: 2.0.12t1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -152,6 +152,9 @@ Yes, please visit Stripe Payments > Settings screen for options.
 None.
 
 == Changelog ==
+
+= WIP 2.0.12 =
+- Fixed subscription payment with tax validity check.
 
 = 2.0.11 =
 - Fixed an issue with duplicate buy emails being sent on some browsers.
