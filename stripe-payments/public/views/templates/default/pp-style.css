@@ -240,6 +240,10 @@ body {
 	right: 1px;
 }
 
+#pm-select-cont img {
+	vertical-align: middle;
+}
+
 /* Icons */
 
 .icon {
