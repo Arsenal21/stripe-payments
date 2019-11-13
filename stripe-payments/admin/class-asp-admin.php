@@ -504,6 +504,13 @@ class AcceptStripePayments_Admin {
 				) . '<br>Note this is not currently supported by new API.',
 			)
 		);
+		$country_autodetect_addon_txt = '';
+		if ( ! class_exists( 'ASPCOUNTRYAUTODETECT_main' ) ) {
+			$country_autodetect_addon_txt = sprintf(
+				'<br>' . __( 'Install free <a href="%s" target="_blank">Country Autodetect addon</a> to detect customer country automatically.', 'stripe-payments' ),
+				'https://s-plugins.com/stripe-country-autodetect-addon/'
+			);
+		}
 		add_settings_field(
 			'popup_default_country',
 			__( 'Popup Default Country', 'stripe-payments' ) . $new_api_str,
@@ -515,7 +522,7 @@ class AcceptStripePayments_Admin {
 				'desc'  => __(
 					'Select the default country that should be set on the payment popup window for billing and shipping address.',
 					'stripe-payments'
-				),
+				) . $country_autodetect_addon_txt,
 			)
 		);
 		add_settings_field(
