@@ -34,6 +34,9 @@
 	if ( $icon ) {
 		printf( '<link rel="icon" href="%s" />' . "\r\n", esc_url( $icon ) );
 	}
+
+	$a['data']['customer_default_country'] = apply_filters( 'asp_ng_pp_default_country_override', $a['data']['customer_default_country'] );
+
 	?>
 	<!--[if lt IE 9]>
 <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -215,11 +218,21 @@
 							<?php if ( count( $a['data']['payment_methods'] ) > 1 ) { ?>
 							<div id="pm-select-cont" class="pure-u-1">
 								<fieldset>
-									<legend>Select payment method</legend>
+									<legend><?php esc_html_e( 'Select payment method', 'stripe-payments' ); ?></legend>
 									<?php
 										$out = '';
 									foreach ( $a['data']['payment_methods'] as $pm ) {
-										$out .= sprintf( '<div class="pure-u-1 pure-u-md-1-3"><label class="pure-radio"><input name="pm" class="pm-select-btn" type="radio"%s value="%s" data-pm-id="%s"> %s</label></div>', empty( $out ) ? ' checked' : '', $pm['id'], $pm['id'], $pm['title'] );
+										$img = '';
+										if ( isset( $pm['img'] ) ) {
+											$img = sprintf(
+												' <img alt="%s" height="%s" width="%s" src="%s">',
+												$pm['title'],
+												isset( $pm['img_height'] ) ? $pm['img_height'] : 32,
+												isset( $pm['img_width'] ) ? $pm['img_width'] : 32,
+												$pm['img']
+											);
+										}
+										$out .= sprintf( '<div class="pure-u-1 pure-u-md-1-3"><label class="pure-radio"><input name="pm" class="pm-select-btn" type="radio"%s value="%s" data-pm-id="%s">%s%s %s</label></div>', empty( $out ) ? ' checked' : '', $pm['id'], $pm['id'], isset( $pm['before_title'] ) ? $pm['before_title'] : '', ! empty( $img ) ? $img : '', $pm['title'] );
 									}
 									echo $out; //phpcs:ignore
 									?>

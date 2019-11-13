@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 4.7
 Tested up to: 5.3
 Requires PHP: 5.4
-Stable tag: 2.0.12t1
+Stable tag: 2.0.12
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -153,8 +153,9 @@ None.
 
 == Changelog ==
 
-= WIP 2.0.12 =
+= 2.0.12 =
 - Fixed subscription payment with tax validity check.
+- Added support for iDEAL and Country Autodetect addons.
 
 = 2.0.11 =
 - Fixed an issue with duplicate buy emails being sent on some browsers.

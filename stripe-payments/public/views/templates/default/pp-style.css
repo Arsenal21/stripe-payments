@@ -78,7 +78,7 @@ body {
 	border-radius: 6px;
 	background-color: #f5f5f7;
 	box-shadow: 0 12px 30px 0 rgba(0, 0, 0, .5), inset 0 1px 0 0 hsla(0, 0%, 100%, .65);
-	max-width: 600px;
+	max-width: 700px;
 	margin: 45px 10px 50px 10px;
 	width: 0;
 }
@@ -238,6 +238,14 @@ body {
 	position: absolute;
 	bottom: 1px;
 	right: 1px;
+}
+
+#pm-select-cont img, #pm-select-cont svg {
+	vertical-align: middle;
+}
+
+.pm-select-btn {
+	vertical-align: middle;
 }
 
 /* Icons */
