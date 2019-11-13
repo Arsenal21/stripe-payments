@@ -147,17 +147,17 @@ $output = '';
 			'installed'    => class_exists( 'ASPSOFORT_main' ) ? true : false,
 		);
 		array_push( $addons_data, $addon_13 );
-		/*
+
 		$addon = array(
 			'name'         => __( 'iDEAL Payments Addon', 'stripe-payments' ),
-			'thumbnail'    => WP_ASP_PLUGIN_URL . '/admin/assets/images/ideal-payments.png',
+			'thumbnail'    => WP_ASP_PLUGIN_URL . '/admin/assets/images/iDEAL-payment-gateway-addon.png',
 			'description'  => __( 'The iDEAL Addon can be used along side the Stripe Payments Plugin to allow your customers to pay using iDEAL.', 'stripe-payments' ),
 			'page_url'     => 'https://s-plugins.com/stripe-ideal-payment-addon/',
 			'settings_url' => 'edit.php?post_type=' . ASPMain::$products_slug . '&page=stripe-payments-settings#ideal',
 			'installed'    => class_exists( 'ASPIDEAL_main' ) ? true : false,
 		);
 		array_push( $addons_data, $addon );
-		*/
+
 		$addon_14 = array(
 			'name'         => __( 'Additional Custom Fields', 'stripe-payments' ),
 			'thumbnail'    => WP_ASP_PLUGIN_URL . '/admin/assets/images/additional-custom-fields.png',
