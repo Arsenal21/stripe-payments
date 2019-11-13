@@ -155,7 +155,8 @@ None.
 
 = 2.0.12 =
 - Fixed subscription payment with tax validity check.
-- Added support for iDEAL and Country Autodetect addons.
+- Fixed subscription payment invalid tax amount displayed on checkout results page.
+- Added support for [iDEAL](https://s-plugins.com/stripe-ideal-payment-addon/) and [Country Autodetect](https://s-plugins.com/stripe-country-autodetect-addon/) addons.
 
 = 2.0.11 =
 - Fixed an issue with duplicate buy emails being sent on some browsers.
