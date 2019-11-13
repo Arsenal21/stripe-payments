@@ -2033,7 +2033,7 @@ msgstr ""
 #: stripe-payments/admin/views/addons-listing.php:154
 msgid ""
 "The iDEAL Addon can be used along side the Stripe Payments Plugin to allow "
-"your customers to pay using iDEAL."
+"your customers to pay using iDEAL gateway."
 msgstr ""
 
 #: stripe-payments/admin/views/addons-listing.php:162
