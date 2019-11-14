@@ -202,8 +202,8 @@ msgstr ""
 #: stripe-payments/admin/class-asp-admin.php:510
 #, php-format
 msgid ""
-"Install free <a href=\"%s\" target=\"_blank\">Country Autodetect addon</a> "
-"to detect customer country automatically."
+"You can install the free <a href=\"%s\" target=\"_blank\">Country Autodetect addon</a> "
+"to detect customer's country automatically."
 msgstr ""
 
 #: stripe-payments/admin/class-asp-admin.php:516

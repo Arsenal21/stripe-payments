@@ -507,7 +507,7 @@ class AcceptStripePayments_Admin {
 		$country_autodetect_addon_txt = '';
 		if ( ! class_exists( 'ASPCOUNTRYAUTODETECT_main' ) ) {
 			$country_autodetect_addon_txt = sprintf(
-				'<br>' . __( 'Install free <a href="%s" target="_blank">Country Autodetect addon</a> to detect customer country automatically.', 'stripe-payments' ),
+				'<br>' . __( 'You can install the free <a href="%s" target="_blank">Country Autodetect Addon</a> to detect customer\'s country automatically.', 'stripe-payments' ),
 				'https://s-plugins.com/stripe-country-autodetect-addon/'
 			);
 		}
