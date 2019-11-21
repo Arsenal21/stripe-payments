@@ -123,8 +123,21 @@ class AcceptStripePayments {
 		add_action( 'after_switch_theme', array( $this, 'rewrite_flush' ) );
 	}
 
+	public function handle_connect_reply() {
+		$nonce = FILTER_INPUT( INPUT_POST, 'nonce', FILTER_SANITIZE_STRING );
+		if ( ! wp_verify_nonce( $nonce, 'asp_handle_connect_reply' ) ) {
+			wp_send_json( array( 'success' => false ) );
+		}
+		var_dump( $_POST );
+		wp_die();
+	}
+
 	function plugins_loaded() {
-		 //check if we have view_log request with token
+		//Handle connect reply
+		add_action( 'wp_ajax_asp_handle_connect_reply', array( $this, 'handle_connect_reply' ) );
+		add_action( 'wp_ajax_nopriv_asp_handle_connect_reply', array( $this, 'handle_connect_reply' ) );
+
+		//check if we have view_log request with token
 		$action = filter_input( INPUT_GET, 'asp_action', FILTER_SANITIZE_STRING );
 		$token  = filter_input( INPUT_GET, 'token', FILTER_SANITIZE_STRING );
 		if ( isset( $action ) && $action === 'view_log' && isset( $token ) ) {
@@ -553,7 +566,7 @@ class AcceptStripePayments {
 	static function from_cents( $amount, $currency ) {
 		$prec = 2;
 		if ( self::is_zero_cents( $currency ) ) {
-				$prec = 0;
+			$prec = 0;
 		}
 		$res = round( $amount / 100, $prec );
 		return $res;

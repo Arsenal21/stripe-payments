@@ -556,6 +556,17 @@ class AcceptStripePayments_Admin {
 			)
 		);
 		add_settings_field(
+			'connect',
+			__( 'Connect Stripe Account', 'stripe-payments' ),
+			array( &$this, 'settings_field_callback' ),
+			$this->plugin_slug,
+			'AcceptStripePayments-credentials-section',
+			array(
+				'field' => 'connect',
+				'desc'  => '',
+			)
+		);
+		add_settings_field(
 			'api_publishable_key',
 			__( 'Live Stripe Publishable Key', 'stripe-payments' ),
 			array( &$this, 'settings_field_callback' ),
@@ -1275,6 +1286,12 @@ class AcceptStripePayments_Admin {
 				echo '<p class="description">' . $desc . '</p>';
 				?>
 				<?php
+				break;
+			case 'connect':
+				$i             = wp_nonce_tick();
+				$connect_nonce = substr( wp_hash( $i . '|asp_handle_connect_reply|' . 0 . '|', 'nonce' ), -12, 10 );
+				$connect_url   = sprintf( 'https://connect.s-plugins.com/?a=connect_init&site=%s&nonce=%s', admin_url(), $connect_nonce );
+				echo sprintf( '<a href="%s">Connect</a>', $connect_url );
 				break;
 			default:
 				echo "<input type='text' name='AcceptStripePayments-settings[{$field}]' value='{$field_value}' size='{$size}' /> <p class=\"description\">{$desc}</p>";
