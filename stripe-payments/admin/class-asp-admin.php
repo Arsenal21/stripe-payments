@@ -124,7 +124,7 @@ class AcceptStripePayments_Admin {
 	}
 
 
-	static function add_admin_notice( $type, $text, $dism = true ) {
+	public static function add_admin_notice( $type, $text, $dism = true ) {
 		$msg_arr   = get_transient( 'asp_admin_msg_arr' );
 		$msg_arr   = empty( $msg_arr ) ? array() : $msg_arr;
 		$msg_arr[] = array(
@@ -556,13 +556,13 @@ class AcceptStripePayments_Admin {
 			)
 		);
 		add_settings_field(
-			'connect',
+			'asp_connect',
 			__( 'Connect Stripe Account', 'stripe-payments' ),
 			array( &$this, 'settings_field_callback' ),
 			$this->plugin_slug,
 			'AcceptStripePayments-credentials-section',
 			array(
-				'field' => 'connect',
+				'field' => 'asp_connect',
 				'desc'  => '',
 			)
 		);
@@ -1287,11 +1287,18 @@ class AcceptStripePayments_Admin {
 				?>
 				<?php
 				break;
-			case 'connect':
-				$i             = wp_nonce_tick();
-				$connect_nonce = substr( wp_hash( $i . '|asp_handle_connect_reply|' . 0 . '|', 'nonce' ), -12, 10 );
-				$connect_url   = sprintf( 'https://connect.s-plugins.com/?a=connect_init&site=%s&nonce=%s', admin_url(), $connect_nonce );
-				echo sprintf( '<a href="%s">Connect</a>', $connect_url );
+			case 'asp_connect':
+				$asp_class    = AcceptStripePayments::get_instance();
+				$connect_opts = $asp_class->get_setting( 'connect', array() );
+				if ( isset( $connect_opts['livemode'] ) ) {
+					$disconnect_nonce = ASP_Utils::create_nonce( 'asp_connect_disconnect_nonce' );
+					$disconnect_url   = sprintf( 'https://connect.s-plugins.com/?a=disconnect&site=%s&nonce=%s', admin_url(), $disconnect_nonce );
+					echo sprintf( '<a class="button" href="%s">Disconnect</a>', $disconnect_url );
+				} else {
+					$connect_nonce = ASP_Utils::create_nonce( 'asp_handle_connect_reply' );
+					$connect_url   = sprintf( 'https://connect.s-plugins.com/?a=connect_init&site=%s&nonce=%s', admin_url(), $connect_nonce );
+					echo sprintf( '<a class="button" href="%s">Connect</a>', $connect_url );
+				}
 				break;
 			default:
 				echo "<input type='text' name='AcceptStripePayments-settings[{$field}]' value='{$field_value}' size='{$size}' /> <p class=\"description\">{$desc}</p>";
