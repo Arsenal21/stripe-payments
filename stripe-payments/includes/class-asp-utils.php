@@ -331,4 +331,10 @@ class ASP_Utils {
 		return $schedule_result;
 	}
 
+	public static function create_nonce( $name ) {
+		$i     = wp_nonce_tick();
+		$nonce = substr( wp_hash( $i . '|' . $name . '|' . 0 . '|', 'nonce' ), -12, 10 );
+		return $nonce;
+	}
+
 }
