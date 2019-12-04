@@ -1293,11 +1293,20 @@ class AcceptStripePayments_Admin {
 				if ( isset( $connect_opts['livemode'] ) ) {
 					$disconnect_nonce = ASP_Utils::create_nonce( 'asp_connect_disconnect_nonce' );
 					$disconnect_url   = sprintf( 'https://connect.s-plugins.com/?a=disconnect&site=%s&nonce=%s', admin_url(), $disconnect_nonce );
-					echo sprintf( '<a class="button" href="%s">Disconnect</a>', $disconnect_url );
+					echo sprintf(
+						'<a class="button" onclick="return confirm(\'%s\');" href="%s">%s</a>',
+						esc_js( __( "Disconnecting your Stripe account would prevent your website from accepting payments.\r\n\r\nAre you sure want to disconnect?", 'stripe-payments' ) ),
+						esc_attr( $disconnect_url ),
+						esc_html( __( 'Disconnect', 'stripe-payments' ) )
+					);
 				} else {
 					$connect_nonce = ASP_Utils::create_nonce( 'asp_handle_connect_reply' );
 					$connect_url   = sprintf( 'https://connect.s-plugins.com/?a=connect_init&site=%s&nonce=%s', admin_url(), $connect_nonce );
-					echo sprintf( '<a class="button" href="%s">Connect</a>', $connect_url );
+					echo sprintf(
+						'<a class="button" href="%s">%s</a>',
+						esc_attr( $connect_url ),
+						esc_html( __( 'Connect', 'stripe-payments' ) )
+					);
 				}
 				break;
 			default:

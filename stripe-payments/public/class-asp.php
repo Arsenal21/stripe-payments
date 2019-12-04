@@ -123,77 +123,11 @@ class AcceptStripePayments {
 		add_action( 'after_switch_theme', array( $this, 'rewrite_flush' ) );
 	}
 
-	public function handle_connect_reply() {
-		$admin_url   = admin_url( 'edit.php' );
-		$redirect_to = add_query_arg(
-			array(
-				'post_type' => ASPMain::$products_slug,
-				'page'      => 'stripe-payments-settings#general',
-			),
-			$admin_url
-		);
-
-		$nonce = FILTER_INPUT( INPUT_POST, 'nonce', FILTER_SANITIZE_STRING );
-		if ( ! wp_verify_nonce( $nonce, 'asp_handle_connect_reply' ) ) {
-			AcceptStripePayments_Admin::add_admin_notice( 'error', __( 'Error occurred during Stripe account connection.', 'stripe-payments' ) );
-			wp_send_json(
-				array(
-					'success'     => false,
-					'err_msg'     => __( 'Nonce check failed', 'stripe-payments' ),
-					'redirect_to' => $redirect_to,
-				)
-			);
+	public function plugins_loaded() {
+		//handle Stripe Connect stuff
+		if ( wp_doing_ajax() ) {
+			require_once WP_ASP_PLUGIN_PATH . 'includes/class-asp-stripe-connect.php';
 		}
-
-		$connect_opts = $this->get_setting( 'connect', array() );
-
-		$access_token                 = filter_input( INPUT_POST, 'sec_key', FILTER_SANITIZE_STRING );
-		$connect_opts['access_token'] = $access_token;
-
-		$publishable_key                 = filter_input( INPUT_POST, 'pub_key', FILTER_SANITIZE_STRING );
-		$connect_opts['publishable_key'] = $publishable_key;
-
-		$stripe_user_id                 = filter_input( INPUT_POST, 'user_id', FILTER_SANITIZE_STRING );
-		$connect_opts['stripe_user_id'] = $stripe_user_id;
-
-		$refresh_token                 = filter_input( INPUT_POST, 'refresh_token', FILTER_SANITIZE_STRING );
-		$connect_opts['refresh_token'] = $refresh_token;
-
-		$livemode                 = filter_input( INPUT_POST, 'livemode', FILTER_SANITIZE_NUMBER_INT );
-		$livemode                 = empty( $livemode ) ? false : true;
-		$connect_opts['livemode'] = $livemode;
-
-		if ( false === $livemode ) {
-			//we got test credentials only
-			$this->set_setting( 'api_secret_key_test', $access_token );
-			$this->set_setting( 'api_publishable_key_test', $publishable_key );
-		} else {
-			//we got live and test credentials
-			$this->set_setting( 'api_secret_key', $access_token );
-			$this->set_setting( 'api_publishable_key', $publishable_key );
-
-			$api_secret_key_test = filter_input( INPUT_POST, 'sec_key_test', FILTER_SANITIZE_STRING );
-			$api_pub_key_test    = filter_input( INPUT_POST, 'pub_key_test', FILTER_SANITIZE_STRING );
-
-			$this->set_setting( 'api_secret_key_test', $api_secret_key_test );
-			$this->set_setting( 'api_publishable_key_test', $api_pub_key_test );
-		}
-
-		$this->set_setting( 'connect', $connect_opts );
-
-		AcceptStripePayments_Admin::add_admin_notice( 'success', __( 'Your Stripe account has been successfully connected. You can accept payments now.', 'stripe-payments' ) );
-		wp_send_json(
-			array(
-				'success'     => true,
-				'redirect_to' => $redirect_to,
-			)
-		);
-	}
-
-	function plugins_loaded() {
-		//Handle connect reply
-		add_action( 'wp_ajax_asp_handle_connect_reply', array( $this, 'handle_connect_reply' ) );
-		add_action( 'wp_ajax_nopriv_asp_handle_connect_reply', array( $this, 'handle_connect_reply' ) );
 
 		//check if we have view_log request with token
 		$action = filter_input( INPUT_GET, 'asp_action', FILTER_SANITIZE_STRING );
