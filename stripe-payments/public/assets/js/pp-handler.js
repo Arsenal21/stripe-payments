@@ -4,10 +4,16 @@ if (vars.fatal_error) {
 	showPopup();
 	throw new Error(vars.fatal_error);
 }
-
-var stripe = Stripe(vars.stripe_key);
-var elements = stripe.elements();
-
+try {
+	var stripe = Stripe(vars.stripe_key);
+	var elements = stripe.elements();
+} catch (error) {	
+	showPopup();
+	errorCont.innerHTML = error;
+	errorCont.style.display = 'block';
+	jQuery('#payment-form').hide();
+	throw new Error(error);
+}
 vars.data.temp = [];
 
 if (vars.data.amount_variable) {
