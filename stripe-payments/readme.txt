@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 4.7
 Tested up to: 5.3
 Requires PHP: 5.4
-Stable tag: 2.0.12
+Stable tag: 2.0.13t1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -152,6 +152,10 @@ Yes, please visit Stripe Payments > Settings screen for options.
 None.
 
 == Changelog ==
+
+= 2.0.13 =
+- Fixed malformed download URL when [accept_stripe_payment] shortcode is used.
+- Proper error message is now displayed if error occurs during frontend Stripe scripts init on payment popup.
 
 = 2.0.12 =
 - Fixed subscription payment with tax validity check.
