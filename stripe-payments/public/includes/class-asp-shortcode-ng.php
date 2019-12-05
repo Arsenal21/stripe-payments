@@ -407,7 +407,7 @@ class ASP_Shortcode_NG {
 		}
 
 		if ( empty( $product_id ) ) {
-			$hash = md5( wp_json_encode( $atts ) ) . '1';
+			$hash = md5( wp_json_encode( $atts ) ) . '2';
 			//find temp product
 			$temp_post = get_posts(
 				array(
@@ -439,7 +439,7 @@ class ASP_Shortcode_NG {
 					'asp_product_collect_billing_addr'     => $billing_address,
 					'asp_product_collect_shipping_addr'    => $shipping_address,
 					'asp_product_button_class'             => $class,
-					'asp_product_upload'                   => $url,
+					'asp_product_upload'                   => base64_decode( $url ), //phpcs:ignore
 					'asp_product_thumbnail'                => $item_logo,
 					'asp_product_thankyou_page'            => empty( $thankyou_page_url ) ? '' : base64_decode( $thankyou_page_url ), //phpcs:ignore
 					'asp_product_button_only'              => 1,
