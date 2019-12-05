@@ -136,7 +136,7 @@ class ASP_PP_Handler {
 		$item_logo = '';
 
 		if ( ! get_post_meta( $product_id, 'asp_product_no_popup_thumbnail', true ) ) {
-			$item_logo = AcceptStripePayments::get_small_product_thumb( $product_id );
+			$item_logo = ASP_Utils::get_small_product_thumb( $product_id );
 		}
 
 		//stock control

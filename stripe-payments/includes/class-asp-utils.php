@@ -331,4 +331,93 @@ class ASP_Utils {
 		return $schedule_result;
 	}
 
+	public static function get_small_product_thumb( $prod_id, $force_regen = false ) {
+		$ret = '';
+		//check if we have a thumbnail
+		$curr_thumb = get_post_meta( $prod_id, 'asp_product_thumbnail', true );
+		if ( empty( $curr_thumb ) ) {
+			return $ret;
+		}
+		$ret = $curr_thumb;
+		//check if we have 100x100 preview generated
+		$thumb_thumb = get_post_meta( $prod_id, 'asp_product_thumbnail_thumb', true );
+		if ( empty( $thumb_thumb ) || $force_regen ) {
+			//looks like we don't have one. Let's generate it
+			$thumb_thumb = '';
+			$image       = wp_get_image_editor( $curr_thumb );
+			if ( ! is_wp_error( $image ) ) {
+				$image->resize( 100, 100, true );
+				$upload_dir = wp_upload_dir();
+				$ext        = pathinfo( $curr_thumb, PATHINFO_EXTENSION );
+				$file_name  = 'asp_product_' . $prod_id . '_thumb_' . md5( $curr_thumb ) . '.' . $ext;
+				$res        = $image->save( $upload_dir['path'] . '/' . $file_name );
+				if ( ! is_wp_error( $res ) ) {
+					$thumb_thumb = $upload_dir['url'] . '/' . $file_name;
+				} else {
+					//error saving thumb image
+					return $ret;
+				}
+			} else {
+				//error occured during image load
+				return $ret;
+			}
+			update_post_meta( $prod_id, 'asp_product_thumbnail_thumb', $thumb_thumb );
+			$ret = $thumb_thumb;
+		} else {
+			// we have one. Let's return it
+			$ret = $thumb_thumb;
+		}
+		return $ret;
+	}
+
+	public static function formatted_price( $price, $curr = '', $price_is_cents = false ) {
+		if ( empty( $price ) ) {
+			$price = 0;
+		}
+
+		$opts = get_option( 'AcceptStripePayments-settings' );
+
+		if ( $curr === false ) {
+			//if curr set to false, we format price without currency symbol or code
+			$curr_sym = '';
+		} else {
+
+			if ( $curr === '' ) {
+				//if currency not specified, let's use default currency set in options
+				$curr = $opts['currency_code'];
+			}
+
+			$curr = strtoupper( $curr );
+
+			$currencies = self::get_currencies();
+			if ( isset( $currencies[ $curr ] ) ) {
+				$curr_sym = $currencies[ $curr ][1];
+			} else {
+				//no currency code found, let's just use currency code instead of symbol
+				$curr_sym = $curr;
+			}
+		}
+
+		//check if price is in cents
+		if ( $price_is_cents && ! self::is_zero_cents( $curr ) ) {
+			$price = intval( $price ) / 100;
+		}
+
+		$out = number_format( $price, $opts['price_decimals_num'], $opts['price_decimal_sep'], $opts['price_thousand_sep'] );
+
+		switch ( $opts['price_currency_pos'] ) {
+			case 'left':
+				$out = $curr_sym . '' . $out;
+				break;
+			case 'right':
+				$out .= '' . $curr_sym;
+				break;
+			default:
+				$out .= '' . $curr_sym;
+				break;
+		}
+
+		return $out;
+	}
+
 }

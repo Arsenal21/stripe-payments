@@ -188,7 +188,7 @@ class ASP_Shortcode_NG {
 		}
 
 		if ( get_post_meta( $id, 'asp_product_no_popup_thumbnail', true ) !== 1 ) {
-			$item_logo = AcceptStripePayments::get_small_product_thumb( $id );
+			$item_logo = ASP_Utils::get_small_product_thumb( $id );
 		} else {
 			$item_logo = '';
 		}
