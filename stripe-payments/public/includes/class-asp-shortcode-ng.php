@@ -407,7 +407,7 @@ class ASP_Shortcode_NG {
 		}
 
 		if ( empty( $product_id ) ) {
-			$hash = md5( wp_json_encode( $atts ) ) . '2';
+			$hash = md5( wp_json_encode( $atts ) ) . '5';
 			//find temp product
 			$temp_post = get_posts(
 				array(
@@ -589,12 +589,6 @@ class ASP_Shortcode_NG {
 
 		$output .= $this->get_button_code_new_method( $data );
 
-		$output .= "<input type = 'hidden' value = '" . esc_attr( $data['name'] ) . "' name = 'item_name' />";
-		$output .= "<input type = 'hidden' value = '{$data['quantity']}' name = 'item_quantity' />";
-		$output .= "<input type = 'hidden' value = '{$data['currency']}' name = 'currency_code' />";
-		$output .= "<input type = 'hidden' value = '{$data['url']}' name = 'item_url' />";
-		$output .= "<input type = 'hidden' value = '{$data['description']}' name = 'charge_description' />";
-
 		$output .= '<div class="asp-child-hidden-fields" style="display: none !important;"></div>';
 
 		$trans_name        = 'stripe-payments-' . $button_key; //Create key using the item name.
@@ -667,12 +661,6 @@ class ASP_Shortcode_NG {
 			if ( 0 !== $data['product_id'] ) {
 				$output .= "<input type='hidden' name='asp_product_id' value='{$data['product_id']}' />";
 			}
-			$output .= "<input type='hidden' name='stripeButtonKey' value='{$data['button_key']}' />"
-				. "<input type='hidden' name='stripeItemPrice' value='{$data['amount']}' />"
-				. "<input type='hidden' data-stripe-button-uid='{$data['uniq_id']}' />"
-				. "<input type='hidden' name='stripeTax' value='{$data['tax']}' />"
-				. "<input type='hidden' name='stripeShipping' value='{$data['shipping']}' />"
-				. "<input type='hidden' name='stripeItemCost' value='{$data['item_price']}' />";
 		}
 
 		return $output;
