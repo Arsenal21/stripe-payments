@@ -63,9 +63,6 @@ class ASPMain {
 		require_once WP_ASP_PLUGIN_PATH . 'public/includes/class-shortcode-asp.php';
 		require_once WP_ASP_PLUGIN_PATH . 'public/includes/class-asp-shortcode-ng.php';
 
-		add_action( 'init', array( 'AcceptStripePaymentsShortcode', 'get_instance' ) );
-		add_action( 'init', array( 'ASP_Shortcode_NG', 'get_instance' ) );
-
 		add_action( 'init', array( $this, 'init_handler' ), 0 );
 
 		// register custom post type
@@ -73,6 +70,9 @@ class ASPMain {
 		add_action( 'init', array( $asp_products, 'register_post_type' ), 0 );
 		$asp_order = ASPOrder::get_instance();
 		add_action( 'init', array( $asp_order, 'register_post_type' ), 0 );
+
+		add_action( 'init', array( 'AcceptStripePaymentsShortcode', 'get_instance' ) );
+		add_action( 'init', array( 'ASP_Shortcode_NG', 'get_instance' ) );
 	}
 
 	public function init_handler() {
@@ -80,28 +80,11 @@ class ASPMain {
 		self::$products_slug = apply_filters( 'asp_change_products_slug', self::$products_slug );
 	}
 
+	/**
+	 * Use ASP_Utils::load_stripe_lib() instead
+	 */
 	public static function load_stripe_lib() {
-		if ( ! class_exists( '\Stripe\Stripe' ) ) {
-			require_once WP_ASP_PLUGIN_PATH . 'includes/stripe/init.php';
-			\Stripe\Stripe::setAppInfo( 'Stripe Payments', WP_ASP_PLUGIN_VERSION, 'https://wordpress.org/plugins/stripe-payments/', 'pp_partner_Fvas9OJ0jQ2oNQ' );
-		} else {
-			$declared = new \ReflectionClass( '\Stripe\Stripe' );
-			$path     = $declared->getFileName();
-			$own_path = WP_ASP_PLUGIN_PATH . 'includes/stripe/lib/Stripe.php';
-			if ( strtolower( $path ) !== strtolower( $own_path ) ) {
-				// Stripe library is loaded from other location
-				// Let's only log one warning per 6 hours in order to not flood the log
-				$lib_warning_last_logged_time = get_option( 'asp_lib_warning_last_logged_time' );
-				$time                         = time();
-				if ( $time - ( 60 * 60 * 6 ) > $lib_warning_last_logged_time ) {
-					$opts = get_option( 'AcceptStripePayments-settings' );
-					if ( $opts['debug_log_enable'] ) {
-						ASP_Debug_Logger::log( sprintf( "WARNING: Stripe PHP library conflict! Another Stripe PHP SDK library is being used. Please disable plugin or theme that provides it as it can cause issues during payment process.\r\nLibrary path: %s", $path ) );
-						update_option( 'asp_lib_warning_last_logged_time', $time );
-					}
-				}
-			}
-		}
+		ASP_Utils::load_stripe_lib();
 	}
 }
 
