@@ -1013,6 +1013,20 @@ class AcceptStripePayments_Admin {
 			)
 		);
 		add_settings_field(
+			'frontend_prefetch_scripts',
+			__( 'Prefetch Payment Popup Scripts', 'stripe-payments' ) . $new_api_str,
+			array( $this, 'settings_field_callback' ),
+			$this->plugin_slug . '-advanced',
+			'AcceptStripePayments-additional-settings',
+			array(
+				'field' => 'frontend_prefetch_scripts',
+				'desc'  => __(
+					'Enable this to speed up payment popup display after customer clicks payment button.',
+					'stripe-payments'
+				),
+			)
+		);
+		add_settings_field(
 			'disable_buttons_before_js_loads',
 			__( 'Disable Buttons Before Javascript Loads', 'stripe-payments' ),
 			array( &$this, 'settings_field_callback' ),
@@ -1186,6 +1200,7 @@ class AcceptStripePayments_Admin {
 			case 'enable_zip_validation':
 			case 'dont_create_order':
 			case 'enable_email_schedule':
+			case 'frontend_prefetch_scripts':
 				echo "<input type='checkbox' name='AcceptStripePayments-settings[{$field}]' value='1' " . ( $field_value ? 'checked=checked' : '' ) . " /><p class=\"description\">{$desc}</p>";
 				break;
 			case 'custom_field_enabled':
@@ -1309,6 +1324,8 @@ class AcceptStripePayments_Admin {
 		$output ['tos_store_ip'] = empty( $input['tos_store_ip'] ) ? 0 : 1;
 
 		$output ['enable_email_schedule'] = empty( $input['enable_email_schedule'] ) ? 0 : 1;
+
+		$output ['frontend_prefetch_scripts'] = empty( $input['frontend_prefetch_scripts'] ) ? 0 : 1;
 
 		$output['tos_text'] = ! empty( $input['tos_text'] ) ? $input['tos_text'] : '';
 
