@@ -623,20 +623,19 @@ class ASP_Shortcode_NG {
 
 		$prefetch = $this->asp_main->get_setting( 'frontend_prefetch_scripts' );
 		if ( $prefetch ) {
-			$output .= '<link rel="prefetch" href="' . $data['iframe_url'] . '" />';
+			$this->asp_main->footer_scripts .= '<link rel="prefetch" href="' . $data['iframe_url'] . '" />';
 
 			if ( empty( $this->asp_main->sc_scripts_prefetched ) ) {
-				$output .= '<link rel="prefetch" href="https://js.stripe.com/v3/" />';
-				$output .= '<link rel="dns-prefetch" href="https://q.stripe.com" />';
+				$this->asp_main->footer_scripts .= '<link rel="prefetch" href="https://js.stripe.com/v3/" />';
+				$this->asp_main->footer_scripts .= '<link rel="dns-prefetch" href="https://q.stripe.com" />';
 				if ( ! defined( 'WP_ASP_DEV_MODE' ) ) {
-					$output .= '<link rel="prefetch" href="' . WP_ASP_PLUGIN_URL . '/public/views/templates/default/pp-combined.min.css?ver=' . WP_ASP_PLUGIN_VERSION . '" />';
-					$output .= '<link rel="prefetch" href="' . WP_ASP_PLUGIN_URL . '/public/assets/js/pp-handler.min.js?ver=' . WP_ASP_PLUGIN_VERSION . '" />';
+					$this->asp_main->footer_scripts .= '<link rel="prefetch" href="' . WP_ASP_PLUGIN_URL . '/public/views/templates/default/pp-combined.min.css?ver=' . WP_ASP_PLUGIN_VERSION . '" />';
+					$this->asp_main->footer_scripts .= '<link rel="prefetch" href="' . WP_ASP_PLUGIN_URL . '/public/assets/js/pp-handler.min.js?ver=' . WP_ASP_PLUGIN_VERSION . '" />';
 				} else {
-					$output .= '<link rel="prefetch" href="' . WP_ASP_PLUGIN_URL . '/public/views/templates/default/pure.css?ver=' . WP_ASP_PLUGIN_VERSION . '" />';
-					$output .= '<link rel="prefetch" href="' . WP_ASP_PLUGIN_URL . '/public/views/templates/default/pp-style.css?ver=' . WP_ASP_PLUGIN_VERSION . '" />';
-					$output .= '<link rel="prefetch" href="' . WP_ASP_PLUGIN_URL . '/public/assets/js/pp-handler.js?ver=' . WP_ASP_PLUGIN_VERSION . '" />';
+					$this->asp_main->footer_scripts .= '<link rel="prefetch" href="' . WP_ASP_PLUGIN_URL . '/public/views/templates/default/pure.css?ver=' . WP_ASP_PLUGIN_VERSION . '" />';
+					$this->asp_main->footer_scripts .= '<link rel="prefetch" href="' . WP_ASP_PLUGIN_URL . '/public/views/templates/default/pp-style.css?ver=' . WP_ASP_PLUGIN_VERSION . '" />';
+					$this->asp_main->footer_scripts .= '<link rel="prefetch" href="' . WP_ASP_PLUGIN_URL . '/public/assets/js/pp-handler.js?ver=' . WP_ASP_PLUGIN_VERSION . '" />';
 				}
-				$this->asp_main->sc_scripts_prefetched = true;
 			}
 		}
 		return $output;

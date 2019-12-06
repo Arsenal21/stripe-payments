@@ -2,9 +2,9 @@
 
 class AcceptStripePayments {
 
-
-	var $zeroCents     = array( 'JPY', 'MGA', 'VND', 'KRW' );
-	var $minAmounts    = array(
+	public $footer_scripts = '';
+	var $zeroCents         = array( 'JPY', 'MGA', 'VND', 'KRW' );
+	var $minAmounts        = array(
 		'USD' => 50,
 		'AUD' => 50,
 		'BRL' => 50,
@@ -21,12 +21,12 @@ class AcceptStripePayments {
 		'SEK' => 300,
 		'SGD' => 50,
 	);
-	var $APISecKey     = '';
-	var $APIPubKey     = '';
-	var $APIPubKeyTest = '';
-	var $APISecKeyLive = '';
-	var $APISecKeyTest = '';
-	var $is_live       = false;
+	var $APISecKey         = '';
+	var $APIPubKey         = '';
+	var $APIPubKeyTest     = '';
+	var $APISecKeyLive     = '';
+	var $APISecKeyTest     = '';
+	var $is_live           = false;
 
 	/**
 	 * Plugin version, used for cache-busting of style and script file references.
@@ -123,6 +123,10 @@ class AcceptStripePayments {
 			if ( $this->get_setting( 'debug_log_access_token' ) === $token ) {
 				ASP_Debug_Logger::view_log();
 			}
+		}
+
+		if ( ! is_admin() ) {
+			add_action( 'wp_print_footer_scripts', array( $this, 'frontend_print_footer_scripts' ) );
 		}
 	}
 
@@ -548,6 +552,12 @@ class AcceptStripePayments {
 		wp_enqueue_script( 'stripe-handler-ng' );
 		wp_register_style( 'stripe-handler-ng-style', WP_ASP_PLUGIN_URL . '/public/assets/css/public.css', array(), WP_ASP_PLUGIN_VERSION );
 		wp_enqueue_style( 'stripe-handler-ng-style' );
+	}
+
+	public function frontend_print_footer_scripts() {
+		if ( ! empty( $this->footer_scripts ) ) {
+			echo $this->footer_scripts;
+		}
 	}
 
 }
