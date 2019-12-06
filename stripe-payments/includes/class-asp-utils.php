@@ -399,7 +399,7 @@ class ASP_Utils {
 		}
 
 		//check if price is in cents
-		if ( $price_is_cents && ! self::is_zero_cents( $curr ) ) {
+		if ( $price_is_cents && ! AcceptStripePayments::is_zero_cents( $curr ) ) {
 			$price = intval( $price ) / 100;
 		}
 
