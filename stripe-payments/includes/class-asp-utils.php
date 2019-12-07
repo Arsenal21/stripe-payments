@@ -377,12 +377,12 @@ class ASP_Utils {
 
 		$opts = get_option( 'AcceptStripePayments-settings' );
 
-		if ( $curr === false ) {
+		if ( false === $curr ) {
 			//if curr set to false, we format price without currency symbol or code
 			$curr_sym = '';
 		} else {
 
-			if ( $curr === '' ) {
+			if ( '' === $curr ) {
 				//if currency not specified, let's use default currency set in options
 				$curr = $opts['currency_code'];
 			}

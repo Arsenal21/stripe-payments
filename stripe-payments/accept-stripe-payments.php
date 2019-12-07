@@ -38,13 +38,13 @@ class ASPMain {
 		self::$temp_prod_slug = 'asp-products-temp';
 
 		require_once WP_ASP_PLUGIN_PATH . 'includes/class-asp-utils.php';
-		require_once WP_ASP_PLUGIN_PATH . 'includes/class-debug-logger.php';
+		require_once WP_ASP_PLUGIN_PATH . 'includes/class-asp-debug-logger.php';
 		require_once WP_ASP_PLUGIN_PATH . 'public/class-asp.php';
 		require_once WP_ASP_PLUGIN_PATH . 'admin/includes/class-products.php';
 		require_once WP_ASP_PLUGIN_PATH . 'admin/includes/class-coupons.php';
 		require_once WP_ASP_PLUGIN_PATH . 'admin/includes/class-order.php';
 		require_once WP_ASP_PLUGIN_PATH . 'admin/views/blocks.php';
-		require_once WP_ASP_PLUGIN_PATH . 'includes/addons-helper-class.php';
+		require_once WP_ASP_PLUGIN_PATH . 'includes/class-asp-addons-helper.php';
 		require_once WP_ASP_PLUGIN_PATH . 'includes/class-asp-product-item.php';
 		require_once WP_ASP_PLUGIN_PATH . 'includes/class-asp-payment-data.php';
 		require_once WP_ASP_PLUGIN_PATH . 'admin/includes/class-variations.php';

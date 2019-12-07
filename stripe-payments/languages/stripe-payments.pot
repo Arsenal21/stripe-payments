@@ -2,7 +2,7 @@
 #: stripe-payments/admin/class-asp-admin.php:330
 #: stripe-payments/admin/class-asp-admin.php:331
 #: stripe-payments/admin/views/addons-listing.php:196
-#: stripe-payments/includes/addons-helper-class.php:59
+#: stripe-payments/includes/class-asp-addons-helper.php:59
 msgid "Settings"
 msgstr ""
 
@@ -2160,7 +2160,7 @@ msgstr ""
 msgid "(Select product)"
 msgstr ""
 
-#: stripe-payments/includes/addons-helper-class.php:67
+#: stripe-payments/includes/class-asp-addons-helper.php:67
 #, php-format
 msgid ""
 "%1$s requires Stripe Payments plugin minimum version to be %2$s (you have "
