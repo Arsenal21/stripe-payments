@@ -154,7 +154,7 @@ class ASPProducts {
 				}
 				break;
 			case 'thumbnail':
-				$thumb_url = AcceptStripePayments::get_small_product_thumb( $post_id );
+				$thumb_url = ASP_Utils::get_small_product_thumb( $post_id );
 				if ( ! $thumb_url ) {
 					$thumb_url = WP_ASP_PLUGIN_URL . '/assets/product-thumb-placeholder.png';
 				}

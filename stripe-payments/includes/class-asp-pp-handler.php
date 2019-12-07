@@ -72,8 +72,22 @@ class ASP_PP_Handler {
 		$this->custom_field = $custom_field;
 		$this->prod_id      = $product_id;
 
+		$cf_validation_regex   = '';
+		$cf_validation_err_msg = '';
+
 		if ( $custom_field ) {
 			$a['custom_fields'] = $this->tpl_get_cf();
+			//check if we have custom field validation enabled
+			$custom_validation = $this->asp_main->get_setting( 'custom_field_validation' );
+			if ( ! empty( $custom_validation ) ) {
+				if ( 'num' === $custom_validation ) {
+					$cf_validation_regex   = '^[0-9]+$';
+					$cf_validation_err_msg = __( 'Only numbers are allowed: 0-9', 'stripe-payments' );
+				} elseif ( 'custom' === $custom_validation ) {
+					$cf_validation_regex   = $this->asp_main->get_setting( 'custom_field_custom_validation_regex' );
+					$cf_validation_err_msg = $this->asp_main->get_setting( 'custom_field_custom_validation_err_msg' );
+				}
+			}
 		}
 
 		$currency = $this->item->get_currency();
@@ -136,7 +150,7 @@ class ASP_PP_Handler {
 		$item_logo = '';
 
 		if ( ! get_post_meta( $product_id, 'asp_product_no_popup_thumbnail', true ) ) {
-			$item_logo = AcceptStripePayments::get_small_product_thumb( $product_id );
+			$item_logo = ASP_Utils::get_small_product_thumb( $product_id );
 		}
 
 		//stock control
@@ -228,6 +242,10 @@ class ASP_PP_Handler {
 		$data['tax']           = $this->item->get_tax();
 		$data['shipping']      = $this->item->get_shipping( true );
 		$data['descr']         = $this->item->get_description();
+
+		$data['custom_field']                    = $custom_field;
+		$data['custom_field_validation_regex']   = $cf_validation_regex;
+		$data['custom_field_validation_err_msg'] = $cf_validation_err_msg;
 
 		$data['variations'] = $this->variations;
 
@@ -627,7 +645,7 @@ class ASP_PP_Handler {
 					$tpl_cf .= '<label class="pure-checkbox asp_product_custom_field_label"><input id="asp-custom-field" class="asp_product_custom_field_input" type="checkbox"' . ( $mandatory ? ' data-asp-custom-mandatory' : '' ) . ' name="stripeCustomField"' . ( $mandatory ? ' required' : '' ) . '> ' . $field_descr . '</label>';
 					break;
 			}
-			$tpl_cf      .= "<span id='custom_field_error_explanation' class='pure-form-message asp_product_custom_field_error'></span>" .
+			$tpl_cf      .= '<div id="custom-field-error" class="form-err" role="alert"></div>' .
 				'</fieldset>' .
 				'</div>';
 			$this->tpl_cf = $tpl_cf;

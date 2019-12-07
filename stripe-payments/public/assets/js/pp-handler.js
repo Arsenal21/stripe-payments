@@ -7,7 +7,7 @@ if (vars.fatal_error) {
 try {
 	var stripe = Stripe(vars.stripe_key);
 	var elements = stripe.elements();
-} catch (error) {	
+} catch (error) {
 	showPopup();
 	errorCont.innerHTML = error;
 	errorCont.style.display = 'block';
@@ -46,6 +46,16 @@ if (vars.data.currency_variable) {
 		vars.currencyFormat.s = currencyInput.options[currencyInput.selectedIndex].getAttribute('data-asp-curr-sym');
 		updateAllAmounts();
 	});
+}
+
+if (vars.data.custom_field) {
+	var customFieldInput = document.getElementById('asp-custom-field');
+	var customFieldErr = document.getElementById('custom-field-error');
+	if (customFieldInput) {
+		customFieldInput.addEventListener('change', function () {
+			validate_custom_field();
+		});
+	}
 }
 
 if (vars.data.coupons_enabled) {
@@ -444,6 +454,26 @@ function triggerEvent(el, type) {
 	}
 }
 
+function validate_custom_field() {
+	if (!customFieldInput) {
+		return true;
+	}
+	if (vars.custom_field_validation_regex !== '') {
+		try {
+			var re = new RegExp(vars.data.custom_field_validation_regex);
+		} catch (error) {
+			showFormInputErr(vars.str.strInvalidCFValidationRegex + ' ' + vars.data.custom_field_validation_regex + '\n' + error, errorCont, customFieldInput);
+			return false;
+		}
+	}
+	if (customFieldInput.type === 'text' && customFieldInput.value && !re.test(customFieldInput.value)) {
+		showFormInputErr(vars.data.custom_field_validation_err_msg, customFieldErr, customFieldInput);
+		return false;
+	}
+	customFieldErr.style.display = 'none';
+	return true;
+}
+
 function validate_custom_quantity() {
 	var custom_quantity_orig;
 	var errObj;
@@ -527,6 +557,14 @@ function canProceed() {
 			return false;
 		}
 		vars.data.quantity = quantity;
+	}
+
+	if (vars.data.custom_field) {
+		var custom_field_valid = validate_custom_field();
+		if (custom_field_valid === false) {
+			event.preventDefault();
+			return false;
+		}
 	}
 
 	if (piInput.value !== '') {

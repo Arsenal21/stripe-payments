@@ -188,7 +188,7 @@ class ASP_Shortcode_NG {
 		}
 
 		if ( get_post_meta( $id, 'asp_product_no_popup_thumbnail', true ) !== 1 ) {
-			$item_logo = AcceptStripePayments::get_small_product_thumb( $id );
+			$item_logo = ASP_Utils::get_small_product_thumb( $id );
 		} else {
 			$item_logo = '';
 		}
@@ -407,7 +407,7 @@ class ASP_Shortcode_NG {
 		}
 
 		if ( empty( $product_id ) ) {
-			$hash = md5( wp_json_encode( $atts ) ) . '2';
+			$hash = md5( wp_json_encode( $atts ) ) . '5';
 			//find temp product
 			$temp_post = get_posts(
 				array(
@@ -589,12 +589,6 @@ class ASP_Shortcode_NG {
 
 		$output .= $this->get_button_code_new_method( $data );
 
-		$output .= "<input type = 'hidden' value = '" . esc_attr( $data['name'] ) . "' name = 'item_name' />";
-		$output .= "<input type = 'hidden' value = '{$data['quantity']}' name = 'item_quantity' />";
-		$output .= "<input type = 'hidden' value = '{$data['currency']}' name = 'currency_code' />";
-		$output .= "<input type = 'hidden' value = '{$data['url']}' name = 'item_url' />";
-		$output .= "<input type = 'hidden' value = '{$data['description']}' name = 'charge_description' />";
-
 		$output .= '<div class="asp-child-hidden-fields" style="display: none !important;"></div>';
 
 		$trans_name        = 'stripe-payments-' . $button_key; //Create key using the item name.
@@ -627,20 +621,21 @@ class ASP_Shortcode_NG {
 		$output .= 'if(typeof jQuery!=="undefined") {jQuery(document).ready(function() {new stripeHandlerNG(' . wp_json_encode( $data ) . ');})} else { if (typeof wpaspInitOnDocReady==="undefined") {wpaspInitOnDocReady=[];} wpaspInitOnDocReady.push(' . wp_json_encode( $data ) . ');}';
 		$output .= '</script>';
 
-		$prefetch = $this->asp_main->get_setting( 'enable_frontend_prefetch' );
+		$prefetch = $this->asp_main->get_setting( 'frontend_prefetch_scripts' );
 		if ( $prefetch ) {
-			$output .= '<link rel="prefetch" href="' . $data['iframe_url'] . '" />';
-			$output .= '<link rel="prefetch" href="https://js.stripe.com/v3/" />';
-			$output .= '<link rel="dns-prefetch" href="https://q.stripe.com" />';
+			$this->asp_main->footer_scripts .= '<link rel="prefetch" href="' . $data['iframe_url'] . '" />';
 
-			if ( ! defined( 'WP_ASP_DEV_MODE' ) ) {
-				$output .= '<link rel="prefetch" href="' . WP_ASP_PLUGIN_URL . '/public/views/templates/default/pp-combined.min.css?ver=' . WP_ASP_PLUGIN_VERSION . '" />';
-				$output .= '<link rel="prefetch" href="' . WP_ASP_PLUGIN_URL . '/public/assets/js/pp-handler.min.js?ver=' . WP_ASP_PLUGIN_VERSION . '" />';
-			} else {
-				$output .= '<link rel="prefetch" href="' . WP_ASP_PLUGIN_URL . '/public/views/templates/default/pure.css?ver=' . WP_ASP_PLUGIN_VERSION . '" />';
-				$output .= '<link rel="prefetch" href="' . WP_ASP_PLUGIN_URL . '/public/views/templates/default/pp-style.css?ver=' . WP_ASP_PLUGIN_VERSION . '" />';
-				$output .= '<link rel="prefetch" href="' . WP_ASP_PLUGIN_URL . '/public/assets/js/pp-handler.js?ver=' . WP_ASP_PLUGIN_VERSION . '" />';
-
+			if ( empty( $this->asp_main->sc_scripts_prefetched ) ) {
+				$this->asp_main->footer_scripts .= '<link rel="prefetch" href="https://js.stripe.com/v3/" />';
+				$this->asp_main->footer_scripts .= '<link rel="dns-prefetch" href="https://q.stripe.com" />';
+				if ( ! defined( 'WP_ASP_DEV_MODE' ) ) {
+					$this->asp_main->footer_scripts .= '<link rel="prefetch" href="' . WP_ASP_PLUGIN_URL . '/public/views/templates/default/pp-combined.min.css?ver=' . WP_ASP_PLUGIN_VERSION . '" />';
+					$this->asp_main->footer_scripts .= '<link rel="prefetch" href="' . WP_ASP_PLUGIN_URL . '/public/assets/js/pp-handler.min.js?ver=' . WP_ASP_PLUGIN_VERSION . '" />';
+				} else {
+					$this->asp_main->footer_scripts .= '<link rel="prefetch" href="' . WP_ASP_PLUGIN_URL . '/public/views/templates/default/pure.css?ver=' . WP_ASP_PLUGIN_VERSION . '" />';
+					$this->asp_main->footer_scripts .= '<link rel="prefetch" href="' . WP_ASP_PLUGIN_URL . '/public/views/templates/default/pp-style.css?ver=' . WP_ASP_PLUGIN_VERSION . '" />';
+					$this->asp_main->footer_scripts .= '<link rel="prefetch" href="' . WP_ASP_PLUGIN_URL . '/public/assets/js/pp-handler.js?ver=' . WP_ASP_PLUGIN_VERSION . '" />';
+				}
 			}
 		}
 		return $output;
@@ -667,12 +662,6 @@ class ASP_Shortcode_NG {
 			if ( 0 !== $data['product_id'] ) {
 				$output .= "<input type='hidden' name='asp_product_id' value='{$data['product_id']}' />";
 			}
-			$output .= "<input type='hidden' name='stripeButtonKey' value='{$data['button_key']}' />"
-				. "<input type='hidden' name='stripeItemPrice' value='{$data['amount']}' />"
-				. "<input type='hidden' data-stripe-button-uid='{$data['uniq_id']}' />"
-				. "<input type='hidden' name='stripeTax' value='{$data['tax']}' />"
-				. "<input type='hidden' name='stripeShipping' value='{$data['shipping']}' />"
-				. "<input type='hidden' name='stripeItemCost' value='{$data['item_price']}' />";
 		}
 
 		return $output;

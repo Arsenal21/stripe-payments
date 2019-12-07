@@ -530,7 +530,7 @@ jQuery(document).ready(function($) {
 				$force_regen = $thumb_url === $curr_thumb ? false : true;
 				update_post_meta( $post_id, 'asp_product_thumbnail', $thumb_url );
 				//generate small 100x100 thumbnail
-				AcceptStripePayments::get_small_product_thumb( $post_id, $force_regen );
+				ASP_Utils::get_small_product_thumb( $post_id, $force_regen );
 			} else {
 				//thumbnail is removed
 				update_post_meta( $post_id, 'asp_product_thumbnail', '' );
