@@ -1,4 +1,4 @@
-Latest changes are available in readme.txt file.
+Latest changes are available in the readme.txt file.
 
 = 1.9.25 =
 - Fixed improper frontend total amount display in some circumstances.

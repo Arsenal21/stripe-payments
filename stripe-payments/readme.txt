@@ -247,4 +247,4 @@ None.
 - You can enable the new SCA compliant checkout by going to the "Advanced Settings Menu" of the plugin then unchecking the "Enable Legacy Checkout API" checkbox.
 - By default it uses the legacy API to ensure that it is a smooth upgrade. We don't want your checkout process to be broken after the upgrade.
 
-Previous versions changelog available in changelog.txt file.
+Older versions changelog available in changelog.txt file.
