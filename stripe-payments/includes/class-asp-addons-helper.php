@@ -29,7 +29,7 @@ class ASP_Addons_Helper {
 		if ( file_exists( $lib_path ) ) {
 			include_once $lib_path;
 			$my_update_checker = Puc_v4_Factory::buildUpdateChecker(
-				'https://s-plugins.com/updates/?action=get_metadata&slug=' . $this->addon->SLUG,
+				'https://s-plugins.com:8080/?action=get_metadata&slug=' . $this->addon->SLUG,
 				$this->addon->file,
 				$this->addon->SLUG
 			);
