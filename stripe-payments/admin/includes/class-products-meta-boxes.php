@@ -499,7 +499,7 @@ jQuery(document).ready(function($) {
 	<legend><?php echo esc_html( __( 'Shortcode', 'stripe-payments' ) ); ?></leneged>
 </fieldset>
 <input type="text" name="asp_product_shortcode" style="width: 100%;" class="asp-select-on-click" readonly value="[asp_product id=&quot;<?php echo $post->ID; ?>&quot;]">
-<p class="description"><?php esc_html( __( 'Use this shortcode to display button for your product.', 'stripe-payments' ) ); ?></p>
+<p class="description"><?php echo esc_html( __( 'Use this shortcode to display button for your product.', 'stripe-payments' ) ); ?></p>
 <fieldset>
 	<legend><?php echo esc_html( __( 'CSS Class', 'stripe-payments' ) ); ?></leneged>
 </fieldset>
