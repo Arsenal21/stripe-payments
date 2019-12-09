@@ -108,6 +108,17 @@ WPASPDocReady(function () {
 		}
 	});
 
+	jQuery('a[href*="asp_action=show_pp&product_id="]').each(function (id, el) {
+		var hrefStr = jQuery(el).attr('href');
+		var meinHref = hrefStr.match(/asp_action=show_pp&product_id=[0-9]*/);
+		if (meinHref[0]) {
+			var productId = meinHref[0].match(/([0-9].*)/);
+			if (productId[0]) {
+				WPASPAttach(el, productId[0]);
+			}
+		}
+	});
+
 	function WPASPAttach(el, prodId) {
 		var uniqId = Math.random().toString(36).substr(2, 9);
 		var sg = new stripeHandlerNG({ 'uniq_id': uniqId, 'product_id': prodId, 'doSelfSubmit': true, 'iframe_url': wpASPNG.iframeUrl + '&product_id=' + prodId });
