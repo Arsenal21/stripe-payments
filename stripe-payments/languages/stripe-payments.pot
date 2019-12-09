@@ -1021,27 +1021,27 @@ msgid "Delete coupon"
 msgstr ""
 
 #: stripe-payments/admin/includes/class-coupons.php:37
-#: stripe-payments/includes/class-asp-product-item.php:270
+#: stripe-payments/includes/class-asp-product-item.php:273
 msgid "Coupon not found."
 msgstr ""
 
 #: stripe-payments/admin/includes/class-coupons.php:44
-#: stripe-payments/includes/class-asp-product-item.php:276
+#: stripe-payments/includes/class-asp-product-item.php:279
 msgid "Coupon is not active."
 msgstr ""
 
 #: stripe-payments/admin/includes/class-coupons.php:51
-#: stripe-payments/includes/class-asp-product-item.php:282
+#: stripe-payments/includes/class-asp-product-item.php:285
 msgid "Coupon is not available yet."
 msgstr ""
 
 #: stripe-payments/admin/includes/class-coupons.php:58
-#: stripe-payments/includes/class-asp-product-item.php:288
+#: stripe-payments/includes/class-asp-product-item.php:291
 msgid "Coupon has expired."
 msgstr ""
 
 #: stripe-payments/admin/includes/class-coupons.php:66
-#: stripe-payments/includes/class-asp-product-item.php:295
+#: stripe-payments/includes/class-asp-product-item.php:298
 msgid "Coupon redemption limit is reached."
 msgstr ""
 
@@ -1054,7 +1054,7 @@ msgid "No product ID specified."
 msgstr ""
 
 #: stripe-payments/admin/includes/class-coupons.php:116
-#: stripe-payments/includes/class-asp-product-item.php:323
+#: stripe-payments/includes/class-asp-product-item.php:326
 msgid "Coupon is not allowed for this product."
 msgstr ""
 
@@ -1405,8 +1405,7 @@ msgid "Custom Field"
 msgstr ""
 
 #: stripe-payments/admin/includes/class-products-meta-boxes.php:30
-#: stripe-payments/admin/includes/class-products.php:137
-msgid "Shortcode"
+msgid "Embed"
 msgstr ""
 
 #: stripe-payments/admin/includes/class-products-meta-boxes.php:35
@@ -1783,22 +1782,43 @@ msgstr ""
 msgid "Select how Coupons should be handled for this product."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:490
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:499
+#: stripe-payments/admin/includes/class-products.php:137
+msgid "Shortcode"
+msgstr ""
+
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:502
 msgid "Use this shortcode to display button for your product."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:506
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:504
+msgid "CSS Class"
+msgstr ""
+
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:507
+msgid "Attach this product to any html element by adding this CSS class to it."
+msgstr ""
+
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:509
+msgid "Link URL"
+msgstr ""
+
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:512
+msgid "Use this URL link to attach this product to any &lt;a&gt; tag."
+msgstr ""
+
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:528
 msgid "Please specify product name."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:573
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:595
 #, php-format
 msgid ""
 "<b>Invalid product price</b>: minimum price in %1$s should be %2$s, you "
 "specified %3$s. This price limitation comes from Stripe."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:582
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:604
 #, php-format
 msgid ""
 "<b>Invalid product price</b>: maximum allowed product price is %1$s, you "
@@ -1901,7 +1921,7 @@ msgstr ""
 
 #: stripe-payments/admin/includes/class-products.php:151
 #: stripe-payments/includes/class-asp-pp-handler.php:162
-#: stripe-payments/public/includes/class-asp-shortcode-ng.php:493
+#: stripe-payments/public/includes/class-asp-shortcode-ng.php:491
 #: stripe-payments/public/includes/class-shortcode-asp.php:609
 msgid "Out of stock"
 msgstr ""
@@ -2217,10 +2237,10 @@ msgstr ""
 
 #: stripe-payments/includes/class-asp-pp-handler.php:369
 #: stripe-payments/includes/class-asp-process-ipn-ng.php:343
-#: stripe-payments/includes/class-asp-product-item.php:229
+#: stripe-payments/includes/class-asp-product-item.php:232
 #: stripe-payments/includes/process_ipn.php:560
 #: stripe-payments/public/includes/class-asp-shortcode-ng.php:166
-#: stripe-payments/public/includes/class-asp-shortcode-ng.php:526
+#: stripe-payments/public/includes/class-asp-shortcode-ng.php:524
 #: stripe-payments/public/includes/class-shortcode-asp.php:101
 #: stripe-payments/public/includes/class-shortcode-asp.php:332
 #: stripe-payments/public/includes/class-shortcode-asp.php:677
@@ -2230,10 +2250,10 @@ msgstr ""
 
 #: stripe-payments/includes/class-asp-pp-handler.php:370
 #: stripe-payments/includes/class-asp-process-ipn-ng.php:351
-#: stripe-payments/includes/class-asp-product-item.php:240
+#: stripe-payments/includes/class-asp-product-item.php:243
 #: stripe-payments/includes/process_ipn.php:567
 #: stripe-payments/public/includes/class-asp-shortcode-ng.php:176
-#: stripe-payments/public/includes/class-asp-shortcode-ng.php:527
+#: stripe-payments/public/includes/class-asp-shortcode-ng.php:525
 #: stripe-payments/public/includes/class-shortcode-asp.php:102
 #: stripe-payments/public/includes/class-shortcode-asp.php:342
 #: stripe-payments/public/includes/class-shortcode-asp.php:678
@@ -2332,11 +2352,11 @@ msgstr ""
 msgid "Total Amount: "
 msgstr ""
 
-#: stripe-payments/includes/class-asp-product-item.php:368
+#: stripe-payments/includes/class-asp-product-item.php:371
 msgid "No product ID provided."
 msgstr ""
 
-#: stripe-payments/includes/class-asp-product-item.php:376
+#: stripe-payments/includes/class-asp-product-item.php:379
 #, php-format
 msgid "Can't find product with ID %d"
 msgstr ""
@@ -3543,7 +3563,7 @@ msgstr ""
 msgid "Error: product ID is invalid."
 msgstr ""
 
-#: stripe-payments/public/includes/class-asp-shortcode-ng.php:502
+#: stripe-payments/public/includes/class-asp-shortcode-ng.php:500
 #: stripe-payments/public/includes/class-shortcode-asp.php:618
 msgid ""
 "Stripe Payments requires Javascript to be supported by the browser in order "
