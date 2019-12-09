@@ -109,6 +109,9 @@ class ASP_Product_Item {
 
 	public function get_quantity() {
 		$this->quantity = get_post_meta( $this->post_id, 'asp_product_quantity', true );
+		if ( ! is_numeric( $this->quantity ) ) {
+			$this->quantity = absint( $this->quantity );
+		}
 		if ( empty( $this->quantity ) ) {
 			$this->quantity = 1;
 		}

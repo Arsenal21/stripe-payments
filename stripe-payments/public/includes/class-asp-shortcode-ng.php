@@ -359,23 +359,21 @@ class ASP_Shortcode_NG {
 			$thankyou_page_url = '';
 		}
 
+		if ( ! is_numeric( $quantity ) ) {
+			$quantity = absint( $quantity );
+		}
+
 		if ( empty( $quantity ) && '1' !== $custom_quantity ) {
 			$quantity = 1;
 		}
 
-		if ( ! is_numeric( $quantity ) ) {
-			$quantity = strtoupper( $quantity );
-		}
-		if ( 'N/A' === $quantity ) {
-			$quantity = 'NA';
-		}
 		$price                   = floatval( $price );
 		$uniq_id                 = count( self::$payment_buttons ) . uniqid();
 		$button_id               = 'asp_ng_button_' . $uniq_id;
 		self::$payment_buttons[] = $button_id;
 
 		$item_price     = $price;
-		$payment_amount = ( $custom_quantity ? $price : ( floatval( $price ) * $quantity ) );
+		$payment_amount = $custom_quantity ? $price : floatval( $price ) * $quantity;
 		if ( AcceptStripePayments::is_zero_cents( $currency ) ) {
 			//this is zero-cents currency, amount shouldn't be multiplied by 100
 			$price_in_cents = $payment_amount;
