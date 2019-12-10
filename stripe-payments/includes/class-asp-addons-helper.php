@@ -25,9 +25,9 @@ class ASP_Addons_Helper {
 	}
 
 	public function check_updates() {
-		$lib_path = plugin_dir_path( $this->addon->file ) . 'lib/plugin-update-checker/plugin-update-checker.php';
+		$lib_path = WP_ASP_PLUGIN_PATH . 'includes/plugin-update-checker/plugin-update-checker.php';
 		if ( file_exists( $lib_path ) ) {
-			include_once $lib_path;
+			require_once $lib_path;
 			$my_update_checker = Puc_v4_Factory::buildUpdateChecker(
 				'https://s-plugins.com:8080/?action=get_metadata&slug=' . $this->addon->SLUG,
 				$this->addon->file,
