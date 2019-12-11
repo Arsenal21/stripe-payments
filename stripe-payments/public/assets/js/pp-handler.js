@@ -781,7 +781,7 @@ function handlePayment() {
 			} else {
 				var reqStr = 'action=asp_pp_confirm_token&asp_token_id=' + result.token.id + '&product_id=' + vars.data.product_id;
 				if (vars.data.currency_variable) {
-					reqStr = reqStr + '&currency=' + data.currency;
+					reqStr = reqStr + '&currency=' + vars.data.currency;
 				}
 				if (vars.data.amount_variable) {
 					reqStr = reqStr + '&amount=' + vars.data.item_price;
