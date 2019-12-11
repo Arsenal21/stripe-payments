@@ -1405,7 +1405,7 @@ msgid "Custom Field"
 msgstr ""
 
 #: stripe-payments/admin/includes/class-products-meta-boxes.php:30
-msgid "Embed"
+msgid "Embed / Attach"
 msgstr ""
 
 #: stripe-payments/admin/includes/class-products-meta-boxes.php:35

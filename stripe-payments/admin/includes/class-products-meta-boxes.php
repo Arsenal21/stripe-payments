@@ -27,7 +27,7 @@ class ASPProductsMetaboxes {
 		add_meta_box( 'asp_appearance_meta_box', __( 'Appearance', 'stripe-payments' ), array( $this, 'display_appearance_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 		add_meta_box( 'asp_coupons_meta_box', __( 'Coupons Settings', 'stripe-payments' ), array( $this, 'display_coupons_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 		add_meta_box( 'asp_custom_field_meta_box', __( 'Custom Field', 'stripe-payments' ), array( $this, 'display_custom_field_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
-		add_meta_box( 'asp_embed_meta_box', __( 'Embed', 'stripe-payments' ), array( $this, 'display_embed_meta_box' ), ASPMain::$products_slug, 'side', 'default' );
+		add_meta_box( 'asp_embed_meta_box', __( 'Embed / Attach', 'stripe-payments' ), array( $this, 'display_embed_meta_box' ), ASPMain::$products_slug, 'side', 'default' );
 
 		//check if eStore installed
 		if ( function_exists( 'wp_eMember_install' ) ) {
