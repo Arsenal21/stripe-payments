@@ -27,7 +27,7 @@ class ASPProductsMetaboxes {
 		add_meta_box( 'asp_appearance_meta_box', __( 'Appearance', 'stripe-payments' ), array( $this, 'display_appearance_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 		add_meta_box( 'asp_coupons_meta_box', __( 'Coupons Settings', 'stripe-payments' ), array( $this, 'display_coupons_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 		add_meta_box( 'asp_custom_field_meta_box', __( 'Custom Field', 'stripe-payments' ), array( $this, 'display_custom_field_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
-		add_meta_box( 'asp_embed_meta_box', __( 'Embed / Attach', 'stripe-payments' ), array( $this, 'display_embed_meta_box' ), ASPMain::$products_slug, 'side', 'default' );
+		add_meta_box( 'asp_embed_meta_box', __( 'Embed Product', 'stripe-payments' ), array( $this, 'display_embed_meta_box' ), ASPMain::$products_slug, 'side', 'default' );
 
 		//check if eStore installed
 		if ( function_exists( 'wp_eMember_install' ) ) {
@@ -499,7 +499,7 @@ jQuery(document).ready(function($) {
 	<legend><?php echo esc_html( __( 'Shortcode', 'stripe-payments' ) ); ?></leneged>
 </fieldset>
 <input type="text" name="asp_product_shortcode" style="width: 100%;" class="asp-select-on-click" readonly value="[asp_product id=&quot;<?php echo $post->ID; ?>&quot;]">
-<p class="description"><?php echo esc_html( __( 'Use this shortcode to display button for your product.', 'stripe-payments' ) ); ?></p>
+<p class="description"><?php echo esc_html( __( 'Use this shortcode to display this product.', 'stripe-payments' ) ); ?> Usage instructions <a href="https://s-plugins.com/embedding-products-post-page/" target="_blank">here</a>.</p>
 <fieldset>
 	<legend><?php echo esc_html( __( 'CSS Class', 'stripe-payments' ) ); ?></leneged>
 </fieldset>
@@ -509,7 +509,7 @@ jQuery(document).ready(function($) {
 	<legend><?php echo esc_html( __( 'Link URL', 'stripe-payments' ) ); ?></leneged>
 </fieldset>
 <textarea class="asp-select-on-click" style="width: 100%;word-break: break-all;" rows="3" readonly><?php echo esc_html( $embed_url ); ?></textarea>
-<p class="description"><?php echo esc_html( __( 'Use this URL link to attach this product to any &lt;a&gt; tag.', 'stripe-payments' ) ); ?></p>
+<p class="description"><?php echo esc_html( __( 'Use this URL to create a custom payment button using a text or image link.', 'stripe-payments' ) ); ?></p>
 		<?php
 	}
 
