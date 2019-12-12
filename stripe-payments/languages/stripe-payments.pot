@@ -1405,7 +1405,7 @@ msgid "Custom Field"
 msgstr ""
 
 #: stripe-payments/admin/includes/class-products-meta-boxes.php:30
-msgid "Embed / Attach"
+msgid "Embed Product"
 msgstr ""
 
 #: stripe-payments/admin/includes/class-products-meta-boxes.php:35
@@ -1788,7 +1788,7 @@ msgid "Shortcode"
 msgstr ""
 
 #: stripe-payments/admin/includes/class-products-meta-boxes.php:502
-msgid "Use this shortcode to display button for your product."
+msgid "Use this shortcode to display this product."
 msgstr ""
 
 #: stripe-payments/admin/includes/class-products-meta-boxes.php:504
@@ -1804,7 +1804,8 @@ msgid "Link URL"
 msgstr ""
 
 #: stripe-payments/admin/includes/class-products-meta-boxes.php:512
-msgid "Use this URL link to attach this product to any &lt;a&gt; tag."
+msgid ""
+"Use this URL to create a custom payment button using a text or image link."
 msgstr ""
 
 #: stripe-payments/admin/includes/class-products-meta-boxes.php:528
@@ -3487,46 +3488,6 @@ msgstr ""
 
 #: stripe-payments/includes/class-asp-utils.php:311
 msgid "Vietnamese Dong (VND)"
-msgstr ""
-
-#: stripe-payments/includes/plugin-update-checker/Puc/v4p8/Plugin/Ui.php:54
-msgid "View details"
-msgstr ""
-
-#: stripe-payments/includes/plugin-update-checker/Puc/v4p8/Plugin/Ui.php:77
-#, php-format
-msgid "More information about %s"
-msgstr ""
-
-#: stripe-payments/includes/plugin-update-checker/Puc/v4p8/Plugin/Ui.php:128
-msgid "Check for updates"
-msgstr ""
-
-#: stripe-payments/includes/plugin-update-checker/Puc/v4p8/Plugin/Ui.php:213
-#, php-format
-msgctxt "the plugin title"
-msgid "The %s plugin is up to date."
-msgstr ""
-
-#: stripe-payments/includes/plugin-update-checker/Puc/v4p8/Plugin/Ui.php:215
-#, php-format
-msgctxt "the plugin title"
-msgid "A new version of the %s plugin is available."
-msgstr ""
-
-#: stripe-payments/includes/plugin-update-checker/Puc/v4p8/Plugin/Ui.php:217
-#, php-format
-msgctxt "the plugin title"
-msgid "Could not determine if updates are available for %s."
-msgstr ""
-
-#: stripe-payments/includes/plugin-update-checker/Puc/v4p8/Plugin/Ui.php:223
-#, php-format
-msgid "Unknown update checker status \"%s\""
-msgstr ""
-
-#: stripe-payments/includes/plugin-update-checker/Puc/v4p8/Vcs/PluginUpdateChecker.php:98
-msgid "There is no changelog available."
 msgstr ""
 
 #: stripe-payments/includes/process_ipn.php:35
