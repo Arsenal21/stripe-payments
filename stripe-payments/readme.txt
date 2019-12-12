@@ -154,7 +154,7 @@ None.
 == Changelog ==
 
 = 2.0.14 =
-- Added "Embed / Attach" metabox to product edit page with available options to embed/attach payment buttons to any page or HTML element.
+- Added "Embed Product" metabox to product edit page with available options to embed/attach payment buttons to any page or HTML element.
 - Fixed payment popup issue when variable currency was set for subscription product.
 - Addons update checker library is now bundled with core plugin.
 
