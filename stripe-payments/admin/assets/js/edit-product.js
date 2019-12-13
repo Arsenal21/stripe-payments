@@ -106,8 +106,8 @@ jQuery(document).ready(function ($) {
 			return false;
 		}
 		var itemId = $(this).data('asp-nav-item');
-		$('.wp-asp-product-tab-item').hide();
-		$('#' + itemId).show();
+		$('.wp-asp-product-tab-item').removeClass('wp-asp-product-tab-item-visible');
+		$('#' + itemId).addClass('wp-asp-product-tab-item-visible');
 		$('a.wp-asp-product-menu-nav-item').removeClass('nav-tab-active');
 		$(this).addClass('nav-tab-active');
 	});
