@@ -58,6 +58,7 @@ https://www.youtube.com/watch?v=b6owgRBTUwA
 * Ability to have custom thank you page on a per product basis.
 * Ability to customize the message on the thank you page using tags.
 * Ability to customize the price display with currency symbol.
+* Ability to use a link URL to create custom payment button for your products.
 * Option to send receipt email to your customers from Stripe for each transaction.
 * Option to collect a custom input from your customers for products (useful if you are selling products that need special instructions from the customers).
 * Stock control option. You can limit the number of quantity available for a product.
@@ -155,6 +156,7 @@ None.
 
 = 2.0.14 =
 - Added "Embed Product" metabox to product edit page with available options to embed/attach payment buttons to any page or HTML element.
+- Added a new feature that allows you to use a URL to make the payment button. Tutorial https://s-plugins.com/using-a-text-link-instead-of-the-buy-now-button-shortcode/
 - Fixed payment popup issue when variable currency was set for subscription product.
 - Addons update checker library is now bundled with core plugin.
 
