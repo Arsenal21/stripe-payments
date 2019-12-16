@@ -153,7 +153,7 @@ $output = '';
 			'thumbnail'    => WP_ASP_PLUGIN_URL . '/admin/assets/images/iDEAL-payment-gateway-addon.png',
 			'description'  => __( 'The iDEAL Addon can be used along side the Stripe Payments Plugin to allow your customers to pay using iDEAL gateway.', 'stripe-payments' ),
 			'page_url'     => 'https://s-plugins.com/stripe-ideal-payment-addon/',
-			'settings_url' => sprintf( 'edit.php?post_type=%s&page=stripe-payments-settings#apm', ASPMain::$products_slug ),
+			'settings_url' => sprintf( 'edit.php?post_type=%s&page=stripe-payments-settings#ideal', ASPMain::$products_slug ),
 			'installed'    => class_exists( 'ASPIDEAL_main' ) ? true : false,
 		);
 		array_push( $addons_data, $addon_14 );
@@ -167,6 +167,16 @@ $output = '';
 			'installed'    => class_exists( 'ASPACF_main' ) ? true : false,
 		);
 		array_push( $addons_data, $addon_15 );
+
+		$addon_16 = array(
+			'name'         => __( 'MailerLite Addon', 'stripe-payments' ),
+			'thumbnail'    => WP_ASP_PLUGIN_URL . '/admin/assets/images/mailer-lite-integration.png',
+			'description'  => __( 'This addon allows you to add customers to your MailerLite group after they purchase a product.', 'stripe-payments' ),
+			'page_url'     => 'https://s-plugins.com/stripe-payments-mailerlite-integration-addon/',
+			'settings_url' => 'edit.php?post_type=' . ASPMain::$products_slug . '&page=stripe-payments-settings#mailerlite',
+			'installed'    => class_exists( 'ASP_Mailerlite_Main' ) ? true : false,
+		);
+		array_push( $addons_data, $addon_16 );
 
 		/* Show the addons list */
 		foreach ( $addons_data as $addon ) {
