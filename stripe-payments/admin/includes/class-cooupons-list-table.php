@@ -49,8 +49,8 @@ class ASP_Coupons_Table extends WP_List_Table {
 
 	public function get_columns() {
 		$columns = array(
-			'id'         => 'ID',
 			'coupon'     => __( 'Coupon Code', 'stripe-payments' ),
+			'id'         => 'ID',
 			'active'     => __( 'Active', 'stripe-payments' ),
 			'discount'   => __( 'Discount Value', 'stripe-payments' ),
 			'red_count'  => __( 'Redemption Count', 'stripe-payments' ),
