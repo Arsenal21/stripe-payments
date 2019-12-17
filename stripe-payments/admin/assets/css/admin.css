@@ -54,6 +54,7 @@ fieldset legend {
 
 .wp-asp-product-settings-menu {
 	display: inline-block;
+	position: relative;
 	width: 20%;
 }
 
@@ -69,6 +70,27 @@ fieldset legend {
 
 .wp-asp-product-tab-item-visible {
 	display: inline-block;
+}
+
+#wp-asp-product-settings-menu-icon {
+	height: 38px;
+	width: 38px;
+	display: none;
+	cursor: pointer;
+	vertical-align: top;
+	position: absolute;
+	right: 0px;
+}
+
+#wp-asp-product-settings-menu-icon span {
+	vertical-align: middle;
+	font-size: 38px;
+	width: auto;
+	height: auto;
+}
+
+#wp-asp-product-settings-menu-icon.menu-visible {
+	float: none;
 }
 
 a.wp-asp-product-menu-nav-item {
@@ -123,6 +145,15 @@ a.wp-asp-product-menu-nav-item.nav-tab-active:focus {
 	}
 	.wp-asp-product-tab-item input[type=text] {
 		width: 100%;
+	}
+	a.wp-asp-product-menu-nav-item {
+		display: none;
+	}
+	a.wp-asp-product-menu-nav-item.nav-tab-active {
+		display: inline-block !important;
+	}
+	#wp-asp-product-settings-menu-icon {
+		display: inline-block;
 	}
 	.wp-asp-product-tab-item-visible {
 		display: block;

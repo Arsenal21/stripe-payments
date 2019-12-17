@@ -55,6 +55,7 @@ class ASPProductsMetaboxes {
 	public function display_metaboxes_meta_box( $post ) {
 		echo '<div id="wp-asp-product-settings-cont">';
 		echo '<div class="wp-asp-product-settings-menu">';
+		echo '<div id="wp-asp-product-settings-menu-icon"><span class="dashicons dashicons-menu"></span></div>';
 		$first = true;
 		foreach ( $this->metaboxes as $box ) {
 			echo sprintf( '<a class="nav-tab wp-asp-product-menu-nav-item%s" data-asp-nav-item="%s" href="#"><span>%s</span></a>', $first ? ' nav-tab-active' : '', $box['id'], $box['title'] );
