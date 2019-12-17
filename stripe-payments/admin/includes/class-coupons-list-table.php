@@ -69,23 +69,27 @@ class ASP_Coupons_Table extends WP_List_Table {
 				return $item[ $column_name ] == 0 ? __( 'No', 'stripe-payments' ) : __( 'Yes', 'stripe-payments' );
 			case 'coupon':
 				$str = '';
+				// translators: %s is coupon code
+				$confirm_coupon_delete_msg = sprintf( __( 'Are you sure you want to delete "%s" coupon? This can\'t be undone.', 'stripe-payments' ), $item['coupon'] );
 				ob_start();
 				?>
-		<a href="edit.php?post_type=<?php echo esc_attr( ASPMain::$products_slug ); ?>&page=stripe-payments-coupons&action=asp_add_edit_coupon&asp_coupon_id=<?php echo $item['id']; ?>" aria-label="<?php _e( 'Edit coupon', 'stripe-payments' ); ?>"><?php echo $item[ $column_name ]; ?></a>
-		<div class="row-actions">
-			<span class="edit"><a href="edit.php?post_type=<?php echo esc_attr( ASPMain::$products_slug ); ?>&page=stripe-payments-coupons&action=asp_add_edit_coupon&asp_coupon_id=<?php echo $item['id']; ?>" aria-label="<?php _e( 'Edit coupon', 'stripe-payments' ); ?>"><?php _e( 'Edit', 'stripe-payments' ); ?></a> | </span>
-			<span class="trash"><a href="<?php echo wp_nonce_url( 'edit.php?post_type=' . ASPMain::$products_slug . '&page=stripe-payments-coupons&action=asp_delete_coupon&asp_coupon_id=' . $item['id'], 'delete-coupon_' . $item['id'] ); ?>" class="submitdelete" aria-label="<?php _e( 'Delete coupon', 'stripe-payments' ); ?>" onclick="return confirm('<?php echo esc_js( sprintf( __( 'Are you sure you want to delete "%s" coupon? This can\'t be undone.', 'stripe-payments' ), $item['coupon'] ) ); ?>');"><?php _e( 'Delete', 'stripe-payments' ); ?></a></span>
-		</div>
+<a href="edit.php?post_type=<?php echo esc_attr( ASPMain::$products_slug ); ?>&page=stripe-payments-coupons&action=asp_add_edit_coupon&asp_coupon_id=<?php echo esc_attr( $item['id'] ); ?>" aria-label="<?php echo esc_attr( __( 'Edit coupon', 'stripe-payments' ) ); ?>"><?php echo esc_html( $item[ $column_name ] ); ?></a>
+<div class="row-actions">
+	<span class="edit">
+		<a href="edit.php?post_type=<?php echo esc_attr( ASPMain::$products_slug ); ?>&page=stripe-payments-coupons&action=asp_add_edit_coupon&asp_coupon_id=<?php echo esc_attr( $item['id'] ); ?>" aria-label="<?php echo esc_attr( __( 'Edit coupon', 'stripe-payments' ) ); ?>"><?php echo esc_html( __( 'Edit', 'stripe-payments' ) ); ?></a> |
+	</span>
+	<span class="trash">
+		<a href="<?php echo esc_attr( wp_nonce_url( 'edit.php?post_type=' . ASPMain::$products_slug . '&page=stripe-payments-coupons&action=asp_delete_coupon&asp_coupon_id=' . $item['id'], 'delete-coupon_' . $item['id'] ) ); ?>" class="submitdelete" aria-label="<?php echo esc_attr( __( 'Delete coupon', 'stripe-payments' ) ); ?>" onclick="return confirm('<?php echo esc_js( $confirm_coupon_delete_msg ); ?>');"><?php echo esc_attr( __( 'Delete', 'stripe-payments' ) ); ?></a>
+	</span>
+</div>
 				<?php
 				$str .= ob_get_clean();
 				return $str;
-			break;
 			case 'discount':
 				if ( $item['discount_type'] === 'perc' ) {
 					return $item[ $column_name ] . '%';
 				}
 				return $item[ $column_name ];
-			break;
 			case 'red_limit':
 				return ! empty( $item[ $column_name ] ) ? $item[ $column_name ] : '—';
 			default:
