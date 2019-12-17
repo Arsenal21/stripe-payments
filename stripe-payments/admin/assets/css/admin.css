@@ -158,6 +158,14 @@ a.wp-asp-product-menu-nav-item.nav-tab-active:focus {
 	.wp-asp-product-tab-item-visible {
 		display: block;
 	}
+	input[type=text] {
+		max-width: 100%;
+	}
+	fieldset {
+		width: auto;
+		max-width: 100%;
+		min-inline-size: auto;
+	}
 }
 
 /*----- END Product Settings ----- */
