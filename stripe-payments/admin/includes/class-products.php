@@ -129,8 +129,8 @@ class ASPProducts {
 	function manage_columns( $columns ) {
 		unset( $columns );
 		$columns = array(
-			'title'     => __( 'Product Name', 'stripe-payments' ),
 			'thumbnail' => __( 'Thumbnail', 'stripe-payments' ),
+			'title'     => __( 'Product Name', 'stripe-payments' ),
 			'id'        => __( 'ID', 'stripe-payments' ),
 			'price'     => __( 'Price', 'stripe-payments' ),
 			'stock'     => __( 'Stock', 'stripe-payments' ),

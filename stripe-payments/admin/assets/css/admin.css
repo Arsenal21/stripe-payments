@@ -331,16 +331,22 @@ a.wp-asp-product-menu-nav-item.nav-tab-active:focus {
 
 /*----- Admin Products Table ----- */
 
-th.column-id, th.column-price, th.column-stock {
-	width: 10%;
+th.column-thumbnail {
+	max-width: 110px;
+	width: 110px;
 }
 
-th.column-thumbnail {
-	width: 15%
+th.column-title {
+	width: 20%;
 }
 
 th.column-shortcode {
-	width: 20%
+	width: 20%;
+}
+
+.column-shortcode input {
+	width: auto;
+	max-width: 100%;
 }
 
 .asp-product-thumbnail-container img {
@@ -354,6 +360,19 @@ th.column-shortcode {
 
 .asp-product-thumbnail-container a:focus {
 	box-shadow: none;
+}
+
+@media screen and (max-width: 782px) {
+	th.column-thumbnail {
+		display: none;
+	}
+	td.thumbnail.column-thumbnail::before {
+		content: '' !important;
+	}
+	.asp-product-thumbnail-container img {
+		width: 50px;
+		height: 50px;
+	}
 }
 
 /*----- END Admin Products Table ----- */
