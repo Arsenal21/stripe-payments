@@ -248,6 +248,10 @@ body {
 	vertical-align: middle;
 }
 
+.pm-disabled {
+	opacity: 0.5;
+}
+
 /* Icons */
 
 .icon {
@@ -304,15 +308,12 @@ input.pure-input-1.has-icon, select.pure-input-1.has-icon {
 }
 
 @media screen and (max-width: 48em) {
-
 	#variations-cont .variation:nth-child(odd) fieldset {
 		margin-right: 0;
 	}
-	
 	#variations-cont .variation:nth-child(even) fieldset {
 		margin-left: 0;
 	}
-
 	#test-mode {
 		top: 5px;
 		right: auto;
