@@ -6,8 +6,26 @@ class ASP_Addons_Helper {
 	public $section;
 	public $ASPAdmin;
 
+	protected $addons = array(
+		array( 'stripe-payments-recaptcha', 'stripe-payments-recaptcha/asp-recaptcha-main.php', 'stripe-payments-recaptcha', 'google-recaptcha.png' ),
+		array( 'stripe-payments-country-autodetect', 'stripe-payments-country-autodetect/asp-country-autodetect-main.php', 'stripe-payments-country-autodetect', '' ),
+		array( 'stripe-payments-custom-messages', 'stripe-payments-custom-messages/asp-custmsg-main.php', 'stripe-payments-custom-messages', 'stripe-custom-messages-addon.png' ),
+	);
+
+	private $icons_path = WP_ASP_PLUGIN_URL . '/admin/assets/images/';
+	private $icons      = array();
+
 	public function __construct( $addon ) {
 		$this->addon = $addon;
+
+		if ( is_admin() ) {
+			foreach ( $this->addons as $addon ) {
+				if ( ! empty( $addon[3] ) ) {
+					$this->icons[ $addon[2] ] = $this->icons_path . $addon[3];
+					add_filter( 'puc_request_info_result-' . $addon[2], array( $this, 'set_icon' ) );
+				}
+			}
+		}
 	}
 
 	public function init_tasks() {
@@ -24,7 +42,17 @@ class ASP_Addons_Helper {
 		}
 	}
 
+	public function set_icon( $data ) {
+		if ( isset( $this->icons[ $data->slug ] ) ) {
+			$data->icons = array( 'default' => $this->icons[ $data->slug ] );
+		}
+		return $data;
+	}
+
 	public function check_updates() {
+		if ( ! is_admin() ) {
+			return;
+		}
 		$lib_path = WP_ASP_PLUGIN_PATH . 'includes/plugin-update-checker/plugin-update-checker.php';
 		if ( file_exists( $lib_path ) ) {
 			if ( ! class_exists( 'Puc_v4_Factory' ) ) {
