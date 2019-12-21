@@ -501,7 +501,7 @@ class AcceptStripePayments_Admin {
 				'desc'  => __(
 					'Specify language to be used in Stripe checkout pop-up or select "Autodetect" to let Stripe handle it.',
 					'stripe-payments'
-				) . '<br>Note this is not currently supported by new API.',
+				) . '<br>Note this currently only affects "Card Number", "MM/YY" and "CVC" placeholders.',
 			)
 		);
 		$country_autodetect_addon_txt = '';
@@ -1072,8 +1072,16 @@ class AcceptStripePayments_Admin {
 	}
 
 	public function get_checkout_lang_options( $selected_value = '' ) {
-		$data_arr = array(
-			''   => __( 'Autodetect', 'stripe-payments' ),
+		$languages_arr = array(
+			'ar' => __( 'Arabic', 'stripe-payments' ),
+			'he' => __( 'Hebrew', 'stripe-payments' ),
+			'lv' => __( 'Latvian', 'stripe-payments' ),
+			'lt' => __( 'Lithuanian', 'stripe-payments' ),
+			'ms' => __( 'Malay', 'stripe-payments' ),
+			'nb' => __( 'Norwegian Bokmål', 'stripe-payments' ),
+			'pl' => __( 'Polish', 'stripe-payments' ),
+			'pt' => __( 'Portuguese', 'stripe-payments' ),
+			'ru' => __( 'Russian', 'stripe-payments' ),
 			'da' => __( 'Danish', 'stripe-payments' ),
 			'nl' => __( 'Dutch', 'stripe-payments' ),
 			'en' => __( 'English', 'stripe-payments' ),
@@ -1087,8 +1095,12 @@ class AcceptStripePayments_Admin {
 			'es' => __( 'Spanish', 'stripe-payments' ),
 			'sv' => __( 'Swedish', 'stripe-payments' ),
 		);
-		$opt_tpl  = '<option value="%val%"%selected%>%name%</option>';
-		$opts     = $selected_value === false ? '<option value="" selected>' . __( '(Default)', 'stripe-payments' ) . '</option>' : '';
+		asort( $languages_arr );
+		$data_arr = array( '' => __( 'Autodetect', 'stripe-payments' ) );
+		$data_arr = $data_arr + $languages_arr;
+
+		$opt_tpl = '<option value="%val%"%selected%>%name%</option>';
+		$opts    = $selected_value === false ? '<option value="" selected>' . __( '(Default)', 'stripe-payments' ) . '</option>' : '';
 		foreach ( $data_arr as $key => $value ) {
 			$selected = $selected_value == $key ? ' selected' : '';
 			$opts    .= str_replace( array( '%val%', '%name%', '%selected%' ), array( $key, $value, $selected ), $opt_tpl );
