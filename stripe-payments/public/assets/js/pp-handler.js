@@ -6,7 +6,7 @@ if (vars.fatal_error) {
 }
 try {
 	var stripe = Stripe(vars.stripe_key);
-	var elements = stripe.elements();
+	var elements = stripe.elements({ locale: vars.data.checkout_lang });
 } catch (error) {
 	showPopup();
 	errorCont.innerHTML = error;
