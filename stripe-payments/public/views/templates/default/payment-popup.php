@@ -73,7 +73,7 @@
 						<?php if ( $a['data']['amount_variable'] ) { ?>
 						<div class="pure-u-1">
 							<label for="amount"><?php esc_html_e( 'Enter amount', 'stripe-payments' ); ?></label>
-							<input class="pure-input-1" id="amount" name="amount" inputmode="decimal" required>
+							<input class="pure-input-1" id="amount" name="amount" inputmode="decimal" value="<?php echo esc_attr( ! empty( $a['data']['item_price'] ) ? ASP_Utils::formatted_price( $a['data']['item_price'], false, true ) : '' ); ?>" required>
 							<div id="amount-error" class="form-err" role="alert"></div>
 						</div>
 						<?php } ?>

@@ -111,6 +111,12 @@ class ASP_PP_Handler {
 		$a['amount_variable'] = false;
 		if ( $this->item->get_price() === 0 ) {
 			$a['amount_variable'] = true;
+			//let's check to see if he have item_price passed via URL parameter
+			$passed_item_price = filter_input( INPUT_GET, 'price', FILTER_SANITIZE_STRING );
+			$passed_item_price = abs( floatval( $passed_item_price ) );
+			if ( ! empty( $passed_item_price ) ) {
+				$this->item->set_price( $passed_item_price );
+			}
 		}
 
 		$a['currency_variable'] = false;
@@ -209,6 +215,10 @@ class ASP_PP_Handler {
 
 		$verify_zip = $this->asp_main->get_setting( 'enable_zip_validation' );
 
+		$checkout_lang = $this->asp_main->get_setting( 'checkout_lang' );
+
+		$checkout_lang = empty( $checkout_lang ) ? 'auto' : $checkout_lang;
+
 		$data               = array();
 		$data['product_id'] = $product_id;
 		$data['item_name']  = $this->item->get_name();
@@ -237,11 +247,14 @@ class ASP_PP_Handler {
 
 		$data['client_secret'] = '';
 		$data['pi_id']         = '';
-		$data['amount']        = $this->item->get_total( true );
-		$data['item_price']    = $this->item->get_price( true );
-		$data['tax']           = $this->item->get_tax();
-		$data['shipping']      = $this->item->get_shipping( true );
-		$data['descr']         = $this->item->get_description();
+
+		$data['amount'] = $this->item->get_total( true );
+
+		$data['item_price'] = $this->item->get_price( true );
+
+		$data['tax']      = $this->item->get_tax();
+		$data['shipping'] = $this->item->get_shipping( true );
+		$data['descr']    = $this->item->get_description();
 
 		$data['custom_field']                    = $custom_field;
 		$data['custom_field_validation_regex']   = $cf_validation_regex;
@@ -261,6 +274,8 @@ class ASP_PP_Handler {
 		$data['dont_save_card'] = ! $dont_save_card ? false : true;
 
 		$data['verify_zip'] = ! $verify_zip ? false : true;
+
+		$data['checkout_lang'] = $checkout_lang;
 
 		$data['customer_default_country'] = $default_country;
 

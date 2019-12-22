@@ -49,6 +49,11 @@ class ASP_Addons_Helper {
 		return $data;
 	}
 
+	public function set_request_options( $options ) {
+		$options['timeout'] = 5;
+		return $options;
+	}
+
 	public function check_updates() {
 		if ( ! is_admin() ) {
 			return;
@@ -58,8 +63,10 @@ class ASP_Addons_Helper {
 			if ( ! class_exists( 'Puc_v4_Factory' ) ) {
 				require_once $lib_path;
 			}
-			$my_update_checker = Puc_v4_Factory::buildUpdateChecker(
-				'https://s-plugins.com:8080/?action=get_metadata&slug=' . $this->addon->SLUG,
+			// change timeout from default 10 seconds to 5
+			add_filter( 'puc_request_info_options-' . $this->addon->SLUG, array( $this, 'set_request_options' ) );
+			Puc_v4_Factory::buildUpdateChecker(
+				'https://s-plugins.com/updates/?action=get_metadata&slug=' . $this->addon->SLUG,
 				$this->addon->file,
 				$this->addon->SLUG
 			);
