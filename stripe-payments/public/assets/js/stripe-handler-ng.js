@@ -2,7 +2,7 @@ var stripeHandlerNG = function (data) {
 
 	this.handleModal = function (show) {
 		if (!parent.modal) {
-			parent.modal = jQuery('div[data-asp-iframe-prod-id="' + parent.data.product_id + '"]');
+			parent.modal = jQuery('div[data-asp-iframe-prod-id="' + parent.data.product_id + '"][id="asp-payment-popup-' + parent.data.uniq_id + '"]');
 			if (parent.modal.length === 0) {
 				jQuery('body').append('<div id="asp-payment-popup-' + parent.data.uniq_id + '" style="display: none;" data-asp-iframe-prod-id="' + parent.data.product_id + '" class="asp-popup-iframe-cont"><iframe frameborder="0" allowtransparency="true" class="asp-popup-iframe" allow="payment" allowpaymentrequest="true" src="' + parent.data.iframe_url + '"></iframe></div>');
 				parent.modal = jQuery('#asp-payment-popup-' + parent.data.uniq_id);
@@ -76,6 +76,38 @@ var stripeHandlerNG = function (data) {
 	});
 };
 
+function WPASPAttachToAElement(el) {
+	var hrefStr = jQuery(el).attr('href');
+	var meinHref = hrefStr.match(/asp_action=show_pp&product_id=[0-9]*(.*)/);
+	if (meinHref[0]) {
+		var productId = meinHref[0].match(/product_id=([0-9]+)/);
+		if (productId[1]) {
+			var params = '';
+			if (meinHref[1]) {
+				params = meinHref[1];
+			}
+			WPASPAttach(el, productId[1], params);
+		}
+	}
+}
+
+function WPASPAttach(el, prodId, params) {
+
+	function elHandler(e) {
+		e.preventDefault();
+		sg.handleModal(true);
+	}
+
+	var uniqId = Math.random().toString(36).substr(2, 9);
+	var item_price = jQuery(el).data('asp-price');
+	if (item_price) {
+		params += '&price=' + item_price;
+	}
+	var sg = new stripeHandlerNG({ 'uniq_id': uniqId, 'product_id': prodId, 'doSelfSubmit': true, 'iframe_url': wpASPNG.iframeUrl + '&product_id=' + prodId + params });
+	jQuery(el).off('click');
+	jQuery(el).on('click', el, elHandler);
+}
+
 function WPASPDocReady(callbackFunc) {
 	if (document.readyState !== 'loading') {
 		callbackFunc();
@@ -103,29 +135,13 @@ WPASPDocReady(function () {
 		if (meinClass[0]) {
 			var productId = meinClass[0].match(/([0-9].*)/);
 			if (productId[0]) {
-				WPASPAttach(el, productId[0]);
+				WPASPAttach(el, productId[0], '');
 			}
 		}
 	});
 
 	jQuery('a[href*="asp_action=show_pp&product_id="]').each(function (id, el) {
-		var hrefStr = jQuery(el).attr('href');
-		var meinHref = hrefStr.match(/asp_action=show_pp&product_id=[0-9]*/);
-		if (meinHref[0]) {
-			var productId = meinHref[0].match(/([0-9].*)/);
-			if (productId[0]) {
-				WPASPAttach(el, productId[0]);
-			}
-		}
+		WPASPAttachToAElement(el);
 	});
-
-	function WPASPAttach(el, prodId) {
-		var uniqId = Math.random().toString(36).substr(2, 9);
-		var sg = new stripeHandlerNG({ 'uniq_id': uniqId, 'product_id': prodId, 'doSelfSubmit': true, 'iframe_url': wpASPNG.iframeUrl + '&product_id=' + prodId });
-		jQuery(el).on('click', function (e) {
-			e.preventDefault();
-			sg.handleModal(true);
-		});
-	}
 
 });
