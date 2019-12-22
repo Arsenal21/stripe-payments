@@ -1078,7 +1078,7 @@ class AcceptStripePayments_Admin {
 			'lv' => __( 'Latvian', 'stripe-payments' ),
 			'lt' => __( 'Lithuanian', 'stripe-payments' ),
 			'ms' => __( 'Malay', 'stripe-payments' ),
-			'nb' => __( 'Norwegian Bokmål', 'stripe-payments' ),
+			'nb' => __( 'Norwegian Bokmal', 'stripe-payments' ),
 			'pl' => __( 'Polish', 'stripe-payments' ),
 			'pt' => __( 'Portuguese', 'stripe-payments' ),
 			'ru' => __( 'Russian', 'stripe-payments' ),
