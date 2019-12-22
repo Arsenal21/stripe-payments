@@ -438,7 +438,7 @@ class AcceptStripePayments_Admin {
 			array(
 				'field' => 'popup_button_text',
 				'desc'  => __(
-					'%1$s is replaced by formatted payment amount (example: Pay $29.90). If this field is empty, it defaults to "Pay %2$s"',
+					'%s is replaced by formatted payment amount (example: Pay $29.90). If this field is empty, it defaults to "Pay %s"', //phpcs:ignore
 					'stripe-payments'
 				),
 			)
