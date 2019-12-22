@@ -78,6 +78,9 @@ var stripeHandlerNG = function (data) {
 
 function WPASPAttachToAElement(el) {
 	var hrefStr = jQuery(el).attr('href');
+	if (!hrefStr) {
+		return false;
+	}
 	var meinHref = hrefStr.match(/asp_action=show_pp&product_id=[0-9]*(.*)/);
 	if (meinHref[0]) {
 		var productId = meinHref[0].match(/product_id=([0-9]+)/);
@@ -89,6 +92,7 @@ function WPASPAttachToAElement(el) {
 			WPASPAttach(el, productId[1], params);
 		}
 	}
+	return true;
 }
 
 function WPASPAttach(el, prodId, params) {
