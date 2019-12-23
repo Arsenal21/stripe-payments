@@ -142,7 +142,7 @@ class ASP_Product_Item {
 	}
 
 	public function get_total( $in_cents = false ) {
-		$total = $this->get_price();
+		$total = $this->get_price( $in_cents );
 		if ( $this->coupon ) {
 			if ( 'perc' === $this->coupon['discount_type'] ) {
 				$perc            = AcceptStripePayments::is_zero_cents( $this->get_currency() ) ? 0 : 2;
@@ -154,14 +154,11 @@ class ASP_Product_Item {
 			$total                          = $total - $discount_amount;
 		}
 		if ( $this->get_tax() ) {
-			$total = $total + $this->get_tax_amount( false, true );
+			$total = $total + $this->get_tax_amount( $in_cents, true );
 		}
 		$total = $total * $this->get_quantity();
 		if ( $this->get_shipping() ) {
 			$total = $total + $this->get_shipping();
-		}
-		if ( $in_cents ) {
-			$total = $this->in_cents( $total );
 		}
 		return $total;
 	}

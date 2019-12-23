@@ -182,7 +182,9 @@ class ASP_Process_IPN_NG {
 			} else {
 				$price = $p_data->get_amount( false );
 			}
-			$price = AcceptStripePayments::from_cents( $price, $item->get_currency() );
+			if ( ! AcceptStripePayments::is_zero_cents( $item->get_currency() ) ) {
+				$price = AcceptStripePayments::from_cents( $price, $item->get_currency() );
+			}
 			$item->set_price( $price );
 		}
 
@@ -262,7 +264,7 @@ class ASP_Process_IPN_NG {
 		$data['is_live']            = $is_live;
 		$data['charge_description'] = $item->get_description();
 		$data['item_name']          = $item->get_name();
-		$data['item_price']         = $price;
+		$data['item_price']         = $item->get_price( AcceptStripePayments::is_zero_cents( $data['currency_code'] ) );
 		$data['stripeEmail']        = $p_billing_details->email;
 		$data['customer_name']      = $p_billing_details->name;
 		$purchase_date              = gmdate( 'Y-m-d H:i:s', $p_charge_created );
@@ -287,8 +289,8 @@ class ASP_Process_IPN_NG {
 
 		$data = apply_filters( 'asp_ng_payment_completed', $data, $prod_id );
 
-		$item_price    = $item->get_price();
 		$currency_code = $item->get_currency();
+		$item_price    = $item->get_price( AcceptStripePayments::is_zero_cents( $currency_code ) );
 
 		$custom_fields = array();
 		$cf_name       = $this->get_post_var( 'asp_stripeCustomFieldName', FILTER_SANITIZE_STRING );
@@ -327,6 +329,7 @@ class ASP_Process_IPN_NG {
 
 		//check if coupon was used
 		if ( $coupon_valid ) {
+			$item->get_total( false );
 			$coupon = $item->get_coupon();
 		}
 		if ( isset( $coupon ) ) {

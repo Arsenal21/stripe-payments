@@ -155,6 +155,7 @@ None.
 == Changelog ==
 
 = 2.0.15 =
+- Fixed issues with zero-cents currency amounts display and payment processing.
 - Payment popup now considers "Stripe Checkout Language" settings option.
 - Made most admin interface pages responsive.
 - Added MailerLite addon to addons listing menu.

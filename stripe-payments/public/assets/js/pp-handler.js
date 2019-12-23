@@ -374,7 +374,7 @@ function calcTotal() {
 }
 
 function is_zero_cents(curr) {
-	if (vars.zeroCents.indexOf(curr) === -1) {
+	if (vars.zeroCents.indexOf(curr.toUpperCase()) === -1) {
 		return false;
 	}
 	return true;
@@ -388,6 +388,7 @@ function cents_to_amount(amount, curr) {
 }
 
 function amount_to_cents(amount, curr) {
+	amount = parseFloat(amount);
 	if (!is_zero_cents(curr)) {
 		amount = amount * 100;
 	}
