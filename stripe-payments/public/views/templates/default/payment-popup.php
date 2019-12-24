@@ -242,7 +242,7 @@
 							<div class="pure-g">
 								<fieldset id="name-email-cont" style="width: 100%;">
 									<div class="pure-u-1 pure-u-md-11-24">
-										<label for="billing_name"><?php esc_html_e( 'Name', 'stripe-payments' ); ?></label>
+										<label for="billing_name"><?php echo esc_html( _x( 'Name', 'Customer name', 'stripe-payments' ) ); ?></label>
 										<div style="position: relative;">
 											<svg id="i-user" class="icon input-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
 												<path d="M22 11 C22 16 19 20 16 20 13 20 10 16 10 11 10 6 12 3 16 3 20 3 22 6 22 11 Z M4 30 L28 30 C28 21 22 20 16 20 10 20 4 21 4 30 Z" />
@@ -268,8 +268,9 @@
 								<?php if ( $a['data']['billing_address'] && $a['data']['shipping_address'] ) { ?>
 								<div class="pure-u-1">
 									<label class="pure-checkbox">
-										<input type="checkbox" id="same-bill-ship-addr" name="same-bill-ship-addr" checked> Same billing and shipping
-										info</label>
+										<input type="checkbox" id="same-bill-ship-addr" name="same-bill-ship-addr" checked> 
+										<?php echo esc_html( __( 'Same billing and shipping info', 'stripe-payments' ) ); ?>
+									</label>
 								</div>
 								<?php } ?>
 								<?php if ( $a['data']['billing_address'] ) { ?>
