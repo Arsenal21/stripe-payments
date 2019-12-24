@@ -155,12 +155,12 @@ None.
 == Changelog ==
 
 = 2.0.15 =
-- Fixed issues with zero-cents currency amounts display and payment processing.
 - Payment popup now considers "Stripe Checkout Language" settings option.
 - Made most admin interface pages responsive.
 - Added MailerLite addon to addons listing menu.
 - Fixed potential addon update checking issues on some servers.
-- Various bugfixes and optimizations.
+- Some minor bugfixes and optimizations.
+- Fixed issues with zero-cents currency amounts display and payment processing.
 
 = 2.0.14 =
 - Added "Embed Product" metabox to product edit page with available options to embed/attach payment buttons to any page or HTML element.
