@@ -679,7 +679,8 @@ function handlePayment() {
 		delete (shippingDetails.email);
 	}
 	var opts = {
-		payment_method_data: {
+		payment_method: {
+			card: card,
 			billing_details: billingDetails
 		}
 	};
@@ -808,28 +809,11 @@ function handlePayment() {
 							inputSubId.value = resp.sub_id;
 							if (resp.pi_cs) {
 								vars.data.client_secret = resp.pi_cs;
+								clientSecAmount = vars.data.amount;
+								clientSecCurrency = vars.data.currency;
 								vars.data.create_token = false;
 								if (resp.do_card_setup) {
 									vars.data.do_card_setup = true;
-								}
-								if (resp.confirm_payment) {
-									console.log('Doing confirmCardPayment()');
-									stripe.confirmCardPayment(vars.data.client_secret).then(function (result) {
-										console.log(result);
-										if (result.error) {
-											submitBtn.disabled = false;
-											errorCont.innerHTML = result.error.message;
-											errorCont.style.display = 'block';
-											smokeScreen(false);
-										} else {
-											piInput.value = result.paymentIntent.id;
-											if (!vars.data.coupon && couponInput) {
-												couponInput.value = '';
-											}
-											form.dispatchEvent(new Event('submit'));
-										}
-									});
-									return;
 								}
 								handlePayment();
 							} else {
@@ -864,9 +848,12 @@ function handlePayment() {
 	}
 
 	if (vars.data.do_card_setup) {
-		console.log('Doing handleCardSetup()');
-		stripe.handleCardSetup(
-			vars.data.client_secret, card, opts)
+		if (opts.shipping) {
+			opts.shipping = undefined;
+		}
+		console.log('Doing confirmCardSetup()');
+		stripe.confirmCardSetup(
+			vars.data.client_secret, opts)
 			.then(function (result) {
 				console.log(result);
 				if (result.error) {
@@ -888,9 +875,8 @@ function handlePayment() {
 			opts.save_payment_method = true;
 			opts.setup_future_usage = 'off_session';
 		}
-		console.log('Doing handleCardPayment()');
-		stripe.handleCardPayment(
-			vars.data.client_secret, card, opts)
+		console.log('Doing confirmCardPayment()');
+		stripe.confirmCardPayment(vars.data.client_secret, opts)
 			.then(function (result) {
 				console.log(result);
 				handleCardPaymentResult(result);
