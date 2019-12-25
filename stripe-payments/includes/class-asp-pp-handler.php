@@ -4,9 +4,11 @@ class ASP_PP_Handler {
 	protected $tpl_cf;
 	protected $uniq_id;
 	protected $asp_main;
+
 	public function __construct() {
 		$action = filter_input( INPUT_GET, 'asp_action', FILTER_SANITIZE_STRING );
 		if ( 'show_pp' === $action ) {
+//			ASP_Utils::set_custom_lang_if_needed();
 			$process_ipn = filter_input( INPUT_POST, 'asp_process_ipn', FILTER_SANITIZE_NUMBER_INT );
 			if ( $process_ipn ) {
 				return;
@@ -15,6 +17,7 @@ class ASP_PP_Handler {
 			add_action( 'plugins_loaded', array( $this, 'showpp' ), 2147483647 );
 		}
 		if ( wp_doing_ajax() ) {
+//			ASP_Utils::set_custom_lang_if_needed();
 			$this->asp_main = AcceptStripePayments::get_instance();
 			add_action( 'plugins_loaded', array( $this, 'add_ajax_handlers' ), 2147483647 );
 			add_action( 'wp_ajax_asp_pp_check_coupon', array( $this, 'handle_check_coupon' ) );
@@ -355,6 +358,8 @@ class ASP_PP_Handler {
 
 		if ( empty( $pay_btn_text ) ) {
 			$pay_btn_text = __( 'Pay %s', 'stripe-payments' );
+		} else {
+			$pay_btn_text = __( $pay_btn_text, 'stripe-payments' ); //phpcs:ignore
 		}
 
 		if ( isset( $data['is_trial'] ) && $data['is_trial'] ) {
@@ -430,8 +435,8 @@ class ASP_PP_Handler {
 		if ( isset( $a['fatal_error'] ) ) {
 			$a['vars']['vars']['fatal_error'] = $a['fatal_error'];
 		}
-		// translators: %s is payment amount
 		$a['pay_btn_text'] = sprintf( $pay_btn_text, AcceptStripePayments::formatted_price( $this->item->get_total(), $this->item->get_currency() ) );
+
 		ob_start();
 		require_once WP_ASP_PLUGIN_PATH . 'public/views/templates/default/payment-popup.php';
 		$tpl = ob_get_clean();

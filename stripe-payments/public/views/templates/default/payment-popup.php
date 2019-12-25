@@ -124,14 +124,14 @@
 										}
 										$variations_str .= '<fieldset>';
 										$variations_str .= '<legend>' . $group . '</legend>';
-										if ( isset( $a['data']['variations']['opts'][ $grp_id ] ) && $a['data']['variations']['opts'][ $grp_id ] === '1' ) {
+										if ( isset( $a['data']['variations']['opts'][ $grp_id ] ) && '1' === $a['data']['variations']['opts'][ $grp_id ] ) {
 											//radio buttons output
 										} else {
 											$variations_str .= sprintf( '<select class="pure-input-1 variations-input" data-asp-variations-group-id="%1$d" name="stripeVariations[%1$d][]">', $grp_id );
 										}
 										foreach ( $a['data']['variations']['names'][ $grp_id ] as $var_id => $name ) {
-											if ( isset( $a['data']['variations']['opts'][ $grp_id ] ) && $a['data']['variations']['opts'][ $grp_id ] === '1' ) {
-												$tpl = '<label class="pure-radio"><input class="variations-input" data-asp-variations-group-id="' . $grp_id . '" name="stripeVariations[' . $grp_id . '][]" type="radio" name="123" value="%d"' . ( $var_id === 0 ? 'checked' : '' ) . '> %s %s</label>';
+											if ( isset( $a['data']['variations']['opts'][ $grp_id ] ) && '1' === $a['data']['variations']['opts'][ $grp_id ] ) {
+												$tpl = '<label class="pure-radio"><input class="variations-input" data-asp-variations-group-id="' . $grp_id . '" name="stripeVariations[' . $grp_id . '][]" type="radio" name="123" value="%d"' . ( 0 === $var_id ? 'checked' : '' ) . '> %s %s</label>';
 											} else {
 												$tpl = '<option value="%d">%s %s</option>';
 											}
@@ -145,7 +145,7 @@
 											}
 											$variations_str .= sprintf( $tpl, $var_id, $name, $price_mod );
 										}
-										if ( isset( $a['data']['variations']['opts'][ $grp_id ] ) && $a['data']['variations']['opts'][ $grp_id ] === '1' ) {
+										if ( isset( $a['data']['variations']['opts'][ $grp_id ] ) && '1' === $a['data']['variations']['opts'][ $grp_id ] ) {
 											//radio buttons output
 										} else {
 											$variations_str .= '</select>';
@@ -189,7 +189,7 @@
 										</thead>
 										<tbody>
 											<tr id="order-item-line">
-												<td><?php echo $a['item_name'] . ' × <span id="order-quantity">' . $a['item']->get_quantity() . '</span>'; ?></td>
+												<td><?php echo wp_kses( sprintf( '%s × <span id="order-quantity">%d</span>', $a['item_name'], $a['item']->get_quantity() ), array( 'span' => array( 'id' => array() ) ) ); ?></td>
 												<td><span id="order-item-price"><?php echo esc_html( AcceptStripePayments::formatted_price( $this->item->get_price(), $this->item->get_currency() ) ); ?></span></td>
 											</tr>
 											<?php
@@ -197,13 +197,13 @@
 												$tax_str        = apply_filters( 'asp_customize_text_msg', __( 'Tax', 'stripe-payments' ), 'tax_str' );
 												$tax_amount_str = AcceptStripePayments::formatted_price( $a['item']->get_tax_amount(), $this->item->get_currency() );
 												$out            = sprintf( '<tr><td>%s (%s%%)</td><td><span id="order-tax">%s</span></td></tr>', $tax_str, $a['item']->get_tax(), $tax_amount_str );
-												echo $out;
+												echo $out; //phpcs:ignore
 											}
 											if ( $a['data']['shipping'] ) {
 												$ship_str        = apply_filters( 'asp_customize_text_msg', __( 'Shipping', 'stripe-payments' ), 'shipping_str' );
 												$ship_amount_str = AcceptStripePayments::formatted_price( $a['item']->get_shipping(), $this->item->get_currency() );
 												$out             = sprintf( '<tr><td>%s</td><td><span id="shipping">%s</span></td></tr>', $ship_str, $ship_amount_str );
-												echo $out;
+												echo $out; //phpcs:ignore
 											}
 											?>
 											<tr>
@@ -242,7 +242,7 @@
 							<div class="pure-g">
 								<fieldset id="name-email-cont" style="width: 100%;">
 									<div class="pure-u-1 pure-u-md-11-24">
-										<label for="billing_name"><?php esc_html_e( 'Name', 'stripe-payments' ); ?></label>
+										<label for="billing_name"><?php echo esc_html( _x( 'Name', 'Customer name', 'stripe-payments' ) ); ?></label>
 										<div style="position: relative;">
 											<svg id="i-user" class="icon input-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
 												<path d="M22 11 C22 16 19 20 16 20 13 20 10 16 10 11 10 6 12 3 16 3 20 3 22 6 22 11 Z M4 30 L28 30 C28 21 22 20 16 20 10 20 4 21 4 30 Z" />
@@ -268,8 +268,9 @@
 								<?php if ( $a['data']['billing_address'] && $a['data']['shipping_address'] ) { ?>
 								<div class="pure-u-1">
 									<label class="pure-checkbox">
-										<input type="checkbox" id="same-bill-ship-addr" name="same-bill-ship-addr" checked> Same billing and shipping
-										info</label>
+										<input type="checkbox" id="same-bill-ship-addr" name="same-bill-ship-addr" checked> 
+										<?php echo esc_html( __( 'Same billing and shipping info', 'stripe-payments' ) ); ?>
+									</label>
 								</div>
 								<?php } ?>
 								<?php if ( $a['data']['billing_address'] ) { ?>
@@ -376,7 +377,7 @@
 								</div>
 								<?php
 									$out = apply_filters( 'asp_ng_pp_after_button', '', $a['data'], '' );
-									echo $out;
+									echo $out; //phpcs:ignore
 								?>
 							</div>
 						</div>

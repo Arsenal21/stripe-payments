@@ -1,6 +1,34 @@
 <?php
 
 class ASP_Utils {
+
+	protected static $textdomain_paths = array(
+		WP_ASP_PLUGIN_PATH . '/languages/',
+		WP_CONTENT_DIR . '/languages/plugins/',
+		WP_CONTENT_DIR . '/languages/loco/plugins/',
+	);
+
+	protected static $lang_code_locale = array(
+		'fr' => 'fr_FR',
+		'de' => 'de_DE',
+		'da' => 'da_DK',
+		'nl' => 'nl_NL',
+		'en' => 'en_US',
+		'he' => 'he_IL',
+		'it' => 'it_IT',
+		'lt' => 'lt_LT',
+		'ms' => 'ms_MY',
+		'nb' => 'nb_NO',
+		'pl' => 'pl_PL',
+		'pt' => 'pt_PT',
+		'ru' => 'ru_RU',
+		'zh' => 'zh_CN',
+		'es' => 'es_ES',
+		'sv' => 'sv_SE',
+	);
+
+	protected static $textdomain_backup;
+
 	public static function get_countries() {
 		$countries = array(
 			''   => '—',
@@ -281,7 +309,7 @@ class ASP_Utils {
 			'EUR' => array( __( 'Euros (EUR)', 'stripe-payments' ), '€' ),
 			'GBP' => array( __( 'Pounds Sterling (GBP)', 'stripe-payments' ), '£' ),
 			'AUD' => array( __( 'Australian Dollars (AUD)', 'stripe-payments' ), 'AU$' ),
-			'BAM' => array( __( 'Bosnia and Herzegovina Convertible Mark', 'stripe-payments' ), 'KM' ),
+			'BAM' => array( __( 'Bosnia and Herzegovina Convertible Mark (BAM)', 'stripe-payments' ), 'KM' ),
 			'BRL' => array( __( 'Brazilian Real (BRL)', 'stripe-payments' ), 'R$' ),
 			'CAD' => array( __( 'Canadian Dollars (CAD)', 'stripe-payments' ), 'CA$' ),
 			'CNY' => array( __( 'Chinese Yuan (CNY)', 'stripe-payments' ), 'CN￥' ),
@@ -418,6 +446,80 @@ class ASP_Utils {
 		}
 
 		return $out;
+	}
+
+	public static function get_visitor_preferred_lang() {
+		$langs = array();
+		preg_match_all( '~([\w-]+)(?:[^,\d]+([\d.]+))?~', strtolower( $_SERVER['HTTP_ACCEPT_LANGUAGE'] ), $matches, PREG_SET_ORDER );
+		foreach ( $matches as $match ) {
+
+			list($a, $b) = explode( '-', $match[1] ) + array( '', '' );
+			$value       = isset( $match[2] ) ? (float) $match[2] : 1.0;
+
+				$langs[ $match[1] ] = $value;
+
+				$langs[ $a ] = $value - 0.1;
+		}
+		arsort( $langs );
+
+		if ( empty( $langs ) ) {
+			return '';
+		}
+
+		reset( $langs );
+		$lang = key( $langs );
+
+		if ( strlen( $lang ) < 2 && strlen( $lang ) > 6 ) {
+			return '';
+		}
+
+		if ( strlen( $lang ) >= 5 ) {
+			$lang_parts = explode( '-', $lang );
+			if ( 2 === count( $lang_parts ) ) {
+				$lang = $lang_parts[0] . '_' . strtoupper( $lang_parts[1] );
+			}
+		}
+
+		return $lang;
+	}
+
+	public static function load_custom_lang( $lang ) {
+		global $l10n;
+		$textdomain = 'stripe-payments';
+
+		if ( isset( $l10n[ $textdomain ] ) ) {
+			self::$textdomain_backup = $l10n[ $textdomain ];
+		}
+
+		$mo_file = '';
+
+		foreach ( self::$textdomain_paths as $path ) {
+			if ( file_exists( $path . $textdomain . '-' . $lang . '.mo' ) ) {
+				$mo_file = $path . $textdomain . '-' . $lang . '.mo';
+				break;
+			}
+		}
+
+		if ( empty( $mo_file ) ) {
+			return;
+		}
+
+		load_textdomain( $textdomain, $mo_file );
+	}
+
+	public static function set_custom_lang_if_needed() {
+		$asp_class = AcceptStripePayments::get_instance();
+		$lang      = $asp_class->get_setting( 'checkout_lang' );
+
+		if ( empty( $lang ) ) {
+			$lang = self::get_visitor_preferred_lang();
+		} else {
+			if ( isset( self::$lang_code_locale[ $lang ] ) ) {
+				$lang = self::$lang_code_locale[ $lang ];
+			}
+		}
+
+		self::load_custom_lang( $lang );
 	}
 
 	public static function load_stripe_lib() {
