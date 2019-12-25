@@ -830,9 +830,8 @@ function handlePayment() {
 										}
 									});
 									return;
-								} else {
-									handlePayment();
 								}
+								handlePayment();
 							} else {
 								piInput.value = resp.pi_id;
 								if (resp.no_action_required) {
