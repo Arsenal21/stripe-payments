@@ -812,7 +812,27 @@ function handlePayment() {
 								if (resp.do_card_setup) {
 									vars.data.do_card_setup = true;
 								}
-								handlePayment();
+								if (resp.confirm_payment) {
+									console.log('Doing confirmCardPayment()');
+									stripe.confirmCardPayment(vars.data.client_secret).then(function (result) {
+										console.log(result);
+										if (result.error) {
+											submitBtn.disabled = false;
+											errorCont.innerHTML = result.error.message;
+											errorCont.style.display = 'block';
+											smokeScreen(false);
+										} else {
+											piInput.value = result.paymentIntent.id;
+											if (!vars.data.coupon && couponInput) {
+												couponInput.value = '';
+											}
+											form.dispatchEvent(new Event('submit'));
+										}
+									});
+									return;
+								} else {
+									handlePayment();
+								}
 							} else {
 								piInput.value = resp.pi_id;
 								if (resp.no_action_required) {
