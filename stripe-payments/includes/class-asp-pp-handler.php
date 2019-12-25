@@ -8,7 +8,7 @@ class ASP_PP_Handler {
 	public function __construct() {
 		$action = filter_input( INPUT_GET, 'asp_action', FILTER_SANITIZE_STRING );
 		if ( 'show_pp' === $action ) {
-			ASP_Utils::set_custom_lang_if_needed();
+//			ASP_Utils::set_custom_lang_if_needed();
 			$process_ipn = filter_input( INPUT_POST, 'asp_process_ipn', FILTER_SANITIZE_NUMBER_INT );
 			if ( $process_ipn ) {
 				return;
@@ -17,7 +17,7 @@ class ASP_PP_Handler {
 			add_action( 'plugins_loaded', array( $this, 'showpp' ), 2147483647 );
 		}
 		if ( wp_doing_ajax() ) {
-			ASP_Utils::set_custom_lang_if_needed();
+//			ASP_Utils::set_custom_lang_if_needed();
 			$this->asp_main = AcceptStripePayments::get_instance();
 			add_action( 'plugins_loaded', array( $this, 'add_ajax_handlers' ), 2147483647 );
 			add_action( 'wp_ajax_asp_pp_check_coupon', array( $this, 'handle_check_coupon' ) );
