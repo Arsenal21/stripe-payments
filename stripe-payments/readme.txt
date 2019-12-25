@@ -157,7 +157,8 @@ None.
 = 2.0.16 =
 - Fixed "Incomplete" subscription status when 3D Secure card is used for payments.
 - Replaced depracated stripe.js functions to prevent potential issues with payments.
-- Made more strings available for translations. 
+- Forced payment token regeneration if payment amount or currency changed.
+- Made more strings available for translation. 
 
 = 2.0.15 =
 - Payment popup now considers "Stripe Checkout Language" settings option.
