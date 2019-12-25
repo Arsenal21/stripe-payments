@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 4.7
 Tested up to: 5.3
 Requires PHP: 5.4
-Stable tag: 2.0.16t1
+Stable tag: 2.0.16
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -154,8 +154,10 @@ None.
 
 == Changelog ==
 
-= WIP 2.0.16 =
-- "Stripe Checkout Language" now tries to use specified language for all strings on payment popup (if available).
+= 2.0.16 =
+- Fixed "Incomplete" subscription status when 3D Secure card is used for payments.
+- Replaced depracated stripe.js functions to prevent potential issues with payments.
+- Made more strings available for translations. 
 
 = 2.0.15 =
 - Payment popup now considers "Stripe Checkout Language" settings option.
