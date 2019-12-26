@@ -155,7 +155,7 @@ None.
 == Changelog ==
 
 = 2.0.16 =
-- Replaced depracated stripe.js functions to prevent potential issues with payments.
+- Replaced deprecated stripe.js functions to prevent potential issues with payments.
 - Forced payment token regeneration if payment amount or currency changed.
 - Made more strings available for translation.
 - Fixed "Incomplete" subscription status when 3D Secure card is used for payments.
