@@ -155,6 +155,7 @@ None.
 == Changelog ==
 
 = 2.0.16 =
+- Fixed random issues (like payment emails duplication etc.) caused by multiple execution of some code parts.
 - Fixed "Incomplete" subscription status when 3D Secure card is used for payments.
 - Replaced depracated stripe.js functions to prevent potential issues with payments.
 - Forced payment token regeneration if payment amount or currency changed.
