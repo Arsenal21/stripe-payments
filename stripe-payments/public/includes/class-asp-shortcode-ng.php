@@ -17,6 +17,8 @@ class ASP_Shortcode_NG {
 	protected static $payment_buttons = array();
 
 	public function __construct() {
+		self::$instance = $this;
+
 		$this->asp_main = AcceptStripePayments::get_instance();
 
 		$use_old_api = $this->asp_main->get_setting( 'use_old_checkout_api1' );

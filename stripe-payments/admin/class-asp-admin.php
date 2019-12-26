@@ -28,7 +28,7 @@ class AcceptStripePayments_Admin {
 	 * @since     1.0.0
 	 */
 	private function __construct() {
-
+		self::$instance = $this;
 		/*
 		* Call $plugin_slug from public plugin class.
 		*/
@@ -260,7 +260,7 @@ class AcceptStripePayments_Admin {
 	public static function get_instance() {
 
 		// If the single instance hasn't been set, set it now.
-		if ( null == self::$instance ) {
+		if ( null === self::$instance ) {
 			self::$instance = new self();
 		}
 

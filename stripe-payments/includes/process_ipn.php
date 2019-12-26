@@ -8,11 +8,12 @@ class AcceptStripePayments_Process_IPN {
 	var $sess;
 
 	function __construct() {
+		self::$instance = $this;
 		add_action( 'init', array( $this, 'init' ) );
 	}
 
 	public static function get_instance() {
-		if ( null == self::$instance ) {
+		if ( null === self::$instance ) {
 			self::$instance = new self();
 		}
 		return self::$instance;
