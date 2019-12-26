@@ -69,6 +69,8 @@ class AcceptStripePayments {
 	 */
 	private function __construct() {
 
+		self::$instance = $this;
+
 		add_action( 'asp_send_scheduled_email', array( $this, 'send_scheduled_email' ), 10, 4 );
 
 		$this->settings = (array) get_option( 'AcceptStripePayments-settings' );

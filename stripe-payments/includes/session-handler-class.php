@@ -7,6 +7,7 @@ class ASP_Session {
 	private $trans_name;
 
 	public function __construct() {
+		self::$instance = $this;
 		$this->init();
 	}
 
