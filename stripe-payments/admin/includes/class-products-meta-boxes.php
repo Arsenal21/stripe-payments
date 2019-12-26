@@ -497,20 +497,20 @@ jQuery(document).ready(function($) {
 		$css_class = sprintf( 'asp-attach-product-%d', $post->ID );
 		?>
 <fieldset>
-	<legend><?php echo esc_html( __( 'Shortcode', 'stripe-payments' ) ); ?></leneged>
+	<legend><?php echo esc_html( __( 'Shortcode', 'stripe-payments' ) ); ?></legend>
+	<input type="text" name="asp_product_shortcode" style="width: 100%;" class="asp-select-on-click" readonly value="[asp_product id=&quot;<?php echo $post->ID; ?>&quot;]">
+	<p class="description"><?php echo esc_html( __( 'Use this shortcode to display this product.', 'stripe-payments' ) ); ?> Usage instructions <a href="https://s-plugins.com/embedding-products-post-page/" target="_blank">here</a>.</p>
 </fieldset>
-<input type="text" name="asp_product_shortcode" style="width: 100%;" class="asp-select-on-click" readonly value="[asp_product id=&quot;<?php echo $post->ID; ?>&quot;]">
-<p class="description"><?php echo esc_html( __( 'Use this shortcode to display this product.', 'stripe-payments' ) ); ?> Usage instructions <a href="https://s-plugins.com/embedding-products-post-page/" target="_blank">here</a>.</p>
 <fieldset>
-	<legend><?php echo esc_html( __( 'CSS Class', 'stripe-payments' ) ); ?></leneged>
+	<legend><?php echo esc_html( __( 'CSS Class', 'stripe-payments' ) ); ?></legend>
+	<input type="text" style="width: 100%;" class="asp-select-on-click" readonly value="<?php echo esc_attr( $css_class ); ?>">
+	<p class="description"><?php echo esc_html( __( 'Attach this product to any html element by adding this CSS class to it.', 'stripe-payments' ) ); ?></p>
 </fieldset>
-<input type="text" style="width: 100%;" class="asp-select-on-click" readonly value="<?php echo esc_attr( $css_class ); ?>">
-<p class="description"><?php echo esc_html( __( 'Attach this product to any html element by adding this CSS class to it.', 'stripe-payments' ) ); ?></p>
 <fieldset>
-	<legend><?php echo esc_html( __( 'Link URL', 'stripe-payments' ) ); ?></leneged>
+	<legend><?php echo esc_html( __( 'Link URL', 'stripe-payments' ) ); ?></legend>
+	<textarea class="asp-select-on-click" style="width: 100%;word-break: break-all;" rows="3" readonly><?php echo esc_html( $embed_url ); ?></textarea>
+	<p class="description"><?php echo esc_html( __( 'Use this URL to create a custom payment button using a text or image link.', 'stripe-payments' ) ); ?></p>
 </fieldset>
-<textarea class="asp-select-on-click" style="width: 100%;word-break: break-all;" rows="3" readonly><?php echo esc_html( $embed_url ); ?></textarea>
-<p class="description"><?php echo esc_html( __( 'Use this URL to create a custom payment button using a text or image link.', 'stripe-payments' ) ); ?></p>
 		<?php
 	}
 
