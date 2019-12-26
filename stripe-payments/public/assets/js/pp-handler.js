@@ -733,7 +733,6 @@ function handlePayment() {
 					vars.data.cust_id = resp.cust_id;
 					clientSecAmount = vars.data.amount;
 					clientSecCurrency = vars.data.currency;
-					vars.data.create_token = true;
 					doAddonAction('csRegenCompleted');
 					if (vars.data.doNotProceed) {
 						return false;
