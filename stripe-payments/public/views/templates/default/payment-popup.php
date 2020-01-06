@@ -124,10 +124,10 @@
 			<div id="modal-header">
 				<?php if ( $a['data']['item_logo'] ) { ?>
 				<div id="item-logo-cont">
-					<img id="item-logo" loading="lazy" src="<?php echo esc_url( $a['data']['item_logo'] ); ?>">
+					<img id="item-logo" loading="lazy" width="70" height="70" src="<?php echo esc_url( $a['data']['item_logo'] ); ?>">
 				</div>
 				<?php } ?>
-				<span id="modal-close-btn" title="<?php esc_html_e( 'Close', 'stripe-payments' ); ?>"><img loading="lazy" src="<?php echo esc_url( $a['plugin_url'] ); ?>/public/views/templates/default/close-btn.png"></span>
+				<span id="modal-close-btn" title="<?php esc_html_e( 'Close', 'stripe-payments' ); ?>"><img loading="lazy" width="17" height="18" src="<?php echo esc_url( $a['plugin_url'] ); ?>/public/views/templates/default/close-btn.png"></span>
 				<div id="item-name"><?php echo esc_html( $a['item_name'] ); ?></div>
 				<div id="item-descr"><?php echo esc_html( $a['data']['descr'] ); ?></div>
 			</div>
