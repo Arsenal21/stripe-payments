@@ -1,20 +1,3 @@
-html, body {
-	width: 100%;
-	height: 100%;
-	margin: 0;
-	padding: 0;
-	overflow: auto;
-}
-
-html {
-	/* overflow: scroll;  */
-	-webkit-overflow-scrolling: touch;
-}
-
-body {
-	overflow-y: scroll;
-}
-
 #test-mode {
 	position: fixed;
 	z-index: 10000;
@@ -29,16 +12,7 @@ body {
 	height: 20px;
 	text-decoration: none;
 	border-radius: 5px;
-}
-
-.Aligner {
-	background: rgba(0, 0, 0, .3);
-	z-index: -1;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	height: auto;
-	min-height: 100%;
+	display: block;
 }
 
 #smoke-screen {
@@ -68,19 +42,6 @@ body {
 	height: auto;
 	overflow: visible;
 	width: 100%;
-}
-
-#Aligner-item {
-	height: 0;
-	min-height: 0;
-	overflow: hidden;
-	position: relative;
-	border-radius: 6px;
-	background-color: #f5f5f7;
-	box-shadow: 0 12px 30px 0 rgba(0, 0, 0, .5), inset 0 1px 0 0 hsla(0, 0%, 100%, .65);
-	max-width: 700px;
-	margin: 45px 10px 50px 10px;
-	width: 0;
 }
 
 #card-element {
@@ -273,38 +234,6 @@ input.pure-input-1.has-icon, select.pure-input-1.has-icon {
 #buttons-container {
 	border-top: 1px solid #e5e5e5;
 	padding-top: 10px;
-}
-
-/* Small Spinner */
-
-.small-spinner {
-	box-sizing: border-box;
-	position: relative;
-	width: 40px;
-	height: 40px;
-	border-radius: 50%;
-	border: 7px solid #ccc;
-	border-top-color: #0078e7;
-	animation: small-spinner .6s linear infinite;
-}
-
-@keyframes small-spinner {
-	to {
-		transform: rotate(360deg);
-	}
-}
-
-@media only screen and (max-width: 480px) {
-	.small-spinner {
-		top: 50%;
-		position: fixed;
-	}
-	.coupon-spinner {
-		top: .5em;
-	}
-	#tax-shipping-cont {
-		padding-top: 20px;
-	}
 }
 
 @media screen and (max-width: 48em) {

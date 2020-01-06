@@ -6,12 +6,85 @@
 	<meta charset="utf-8">
 	<title><?php echo esc_html( $a['page_title'] ); ?></title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<?php
-	foreach ( $a['styles'] as $style ) {
-		if ( ! $style['footer'] ) {
-			printf( '<link rel="stylesheet" href="%s">' . "\r\n", esc_url( $style['src'] ) ); //phpcs:ignore
+	<style>
+	html,
+	body {
+		width: 100%;
+		height: 100%;
+		margin: 0;
+		padding: 0;
+		overflow: auto;
+	}
+
+	html {
+		-webkit-overflow-scrolling: touch;
+	}
+
+	body {
+		overflow-y: scroll;
+	}
+
+	.small-spinner {
+		box-sizing: border-box;
+		position: relative;
+		width: 40px;
+		height: 40px;
+		border-radius: 50%;
+		border: 7px solid #ccc;
+		border-top-color: #0078e7;
+		animation: small-spinner .6s linear infinite;
+	}
+
+	@keyframes small-spinner {
+		to {
+			transform: rotate(360deg);
 		}
 	}
+
+	@media only screen and (max-width: 480px) {
+		.small-spinner {
+			top: 50%;
+			position: fixed;
+		}
+
+		.coupon-spinner {
+			top: .5em;
+		}
+
+		#tax-shipping-cont {
+			padding-top: 20px;
+		}
+	}
+
+	.Aligner {
+		background: rgba(0, 0, 0, .3);
+		z-index: -1;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		height: auto;
+		min-height: 100%;
+	}
+
+	#Aligner-item {
+		height: 0;
+		min-height: 0;
+		overflow: hidden;
+		position: relative;
+		border-radius: 6px;
+		background-color: #f5f5f7;
+		box-shadow: 0 12px 30px 0 rgba(0, 0, 0, .5), inset 0 1px 0 0 hsla(0, 0%, 100%, .65);
+		max-width: 700px;
+		margin: 45px 10px 50px 10px;
+		width: 0;
+	}
+
+	#test-mode {
+		display: none;
+	}
+	</style>
+	<?php
+
 	foreach ( $a['vars'] as $var => $data ) {
 		printf(
 			"<script type='text/javascript'>
@@ -22,12 +95,6 @@
 			esc_js( $var ),
 			wp_json_encode( $data )
 		);
-	}
-
-	foreach ( $a['scripts'] as $script ) {
-		if ( ! $script['footer'] ) {
-			printf( '<script src="%s"></script>' . "\r\n", esc_url( $script['src'] ) ); //phpcs:ignore
-		}
 	}
 
 	$icon = get_site_icon_url();
@@ -57,18 +124,18 @@
 			<div id="modal-header">
 				<?php if ( $a['data']['item_logo'] ) { ?>
 				<div id="item-logo-cont">
-					<img id="item-logo" src="<?php echo esc_url( $a['data']['item_logo'] ); ?>">
+					<img id="item-logo" loading="lazy" src="<?php echo esc_url( $a['data']['item_logo'] ); ?>">
 				</div>
 				<?php } ?>
-				<span id="modal-close-btn" title="<?php esc_html_e( 'Close', 'stripe-payments' ); ?>"><img src="<?php echo esc_url( $a['plugin_url'] ); ?>/public/views/templates/default/close-btn.png"></span>
+				<span id="modal-close-btn" title="<?php esc_html_e( 'Close', 'stripe-payments' ); ?>"><img loading="lazy" src="<?php echo esc_url( $a['plugin_url'] ); ?>/public/views/templates/default/close-btn.png"></span>
 				<div id="item-name"><?php echo esc_html( $a['item_name'] ); ?></div>
 				<div id="item-descr"><?php echo esc_html( $a['data']['descr'] ); ?></div>
 			</div>
 			<div id="modal-body" class="pure-g">
 				<div class="pure-u-1">
-						<div id="global-error" <?php echo isset( $a['fatal_error'] ) ? 'style="display: block"' : ''; ?>>
-							<?php echo isset( $a['fatal_error'] ) ? esc_html( $a['fatal_error'] ) : ''; ?>
-						</div>
+					<div id="global-error" <?php echo isset( $a['fatal_error'] ) ? 'style="display: block"' : ''; ?>>
+						<?php echo isset( $a['fatal_error'] ) ? esc_html( $a['fatal_error'] ) : ''; ?>
+					</div>
 					<form method="post" id="payment-form" class="pure-form pure-form-stacked" <?php echo isset( $a['fatal_error'] ) ? 'style="display: none;"' : ''; ?>>
 						<?php if ( $a['data']['amount_variable'] ) { ?>
 						<div class="pure-u-1">
@@ -214,7 +281,7 @@
 									</table>
 								</fieldset>
 							</div>
-										<?php } ?>
+							<?php } ?>
 							<?php if ( count( $a['data']['payment_methods'] ) > 1 ) { ?>
 							<div id="pm-select-cont" class="pure-u-1">
 								<fieldset>
@@ -225,7 +292,7 @@
 										$img = '';
 										if ( isset( $pm['img'] ) ) {
 											$img = sprintf(
-												' <img alt="%s" height="%s" width="%s" src="%s">',
+												' <img loading="lazy" alt="%s" height="%s" width="%s" src="%s">',
 												$pm['title'],
 												isset( $pm['img_height'] ) ? $pm['img_height'] : 32,
 												isset( $pm['img_width'] ) ? $pm['img_width'] : 32,
@@ -268,7 +335,7 @@
 								<?php if ( $a['data']['billing_address'] && $a['data']['shipping_address'] ) { ?>
 								<div class="pure-u-1">
 									<label class="pure-checkbox">
-										<input type="checkbox" id="same-bill-ship-addr" name="same-bill-ship-addr" checked> 
+										<input type="checkbox" id="same-bill-ship-addr" name="same-bill-ship-addr" checked>
 										<?php echo esc_html( __( 'Same billing and shipping info', 'stripe-payments' ) ); ?>
 									</label>
 								</div>
@@ -402,6 +469,18 @@
 	</div>
 </body>
 <?php
+
+foreach ( $a['styles'] as $style ) {
+	if ( ! $style['footer'] ) {
+		printf( '<link rel="stylesheet" href="%s">' . "\r\n", esc_url( $style['src'] ) ); //phpcs:ignore
+	}
+}
+foreach ( $a['scripts'] as $script ) {
+	if ( ! $script['footer'] ) {
+		printf( '<script src="%s"></script>' . "\r\n", esc_url( $script['src'] ) ); //phpcs:ignore
+	}
+}
+
 foreach ( $a['scripts'] as $script ) {
 	if ( $script['footer'] ) {
 		printf( '<script src="%s"></script>' . "\r\n", esc_url( $script['src'] ) ); //phpcs:ignore
