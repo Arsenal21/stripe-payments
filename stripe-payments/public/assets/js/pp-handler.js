@@ -697,7 +697,7 @@ function handlePayment() {
 	}
 
 	//regen cs
-	if (vars.data.client_secret === '' || vars.data.amount !== clientSecAmount || vars.data.currency !== clientSecCurrency) {
+	if (!vars.data.token_not_required && (vars.data.client_secret === '' || vars.data.amount !== clientSecAmount || vars.data.currency !== clientSecCurrency)) {
 		var reqStr = 'action=asp_pp_req_token&amount=' + vars.data.amount + '&curr=' + vars.data.currency + '&product_id=' + vars.data.product_id;
 		reqStr = reqStr + '&quantity=' + vars.data.quantity;
 		if (vars.data.cust_id) {
@@ -773,7 +773,7 @@ function handlePayment() {
 				opts.address_zip = postal_code;
 			}
 		}
-		stripe.createToken(card).then(function (result) {
+		stripe.createToken(card, opts).then(function (result) {
 			console.log(result);
 			if (result.error) {
 				submitBtn.disabled = false;
@@ -782,6 +782,9 @@ function handlePayment() {
 				smokeScreen(false);
 			} else {
 				var reqStr = 'action=asp_pp_confirm_token&asp_token_id=' + result.token.id + '&product_id=' + vars.data.product_id;
+				if (vars.data.cust_id) {
+					reqStr = reqStr + '&cust_id=' + vars.data.cust_id;
+				}
 				if (vars.data.currency_variable) {
 					reqStr = reqStr + '&currency=' + vars.data.currency;
 				}
@@ -807,6 +810,9 @@ function handlePayment() {
 							}
 							var inputSubId = document.getElementById('sub_id');
 							inputSubId.value = resp.sub_id;
+							if (resp.cust_id) {
+								vars.data.cust_id = resp.cust_id;
+							}
 							if (resp.pi_cs) {
 								vars.data.client_secret = resp.pi_cs;
 								vars.data.create_token = false;
