@@ -989,7 +989,7 @@ msgstr ""
 #: stripe-payments/admin/includes/class-coupons-list-table.php:52
 #: stripe-payments/admin/includes/class-coupons.php:351
 #: stripe-payments/public/includes/class-shortcode-asp.php:948
-#: stripe-payments/public/views/templates/default/payment-popup.php:165
+#: stripe-payments/public/views/templates/default/payment-popup.php:232
 msgid "Coupon Code"
 msgstr ""
 
@@ -1473,7 +1473,7 @@ msgid ""
 "item."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:112
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:140
 #: stripe-payments/admin/includes/class-products.php:135
 msgid "Price"
 msgstr ""
@@ -1818,12 +1818,12 @@ msgstr ""
 msgid "Select how Coupons should be handled for this product."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:500
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:530
 #: stripe-payments/admin/includes/class-products.php:137
 msgid "Shortcode"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:502
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:532
 msgid "Use this shortcode to display this product."
 msgstr ""
 
@@ -1831,7 +1831,7 @@ msgstr ""
 msgid "CSS Class"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:507
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:537
 msgid "Attach this product to any html element by adding this CSS class to it."
 msgstr ""
 
@@ -1839,7 +1839,7 @@ msgstr ""
 msgid "Link URL"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:512
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:542
 msgid ""
 "Use this URL to create a custom payment button using a text or image link."
 msgstr ""
@@ -2295,7 +2295,7 @@ msgstr ""
 #: stripe-payments/public/includes/class-shortcode-asp.php:103
 #: stripe-payments/public/includes/class-shortcode-asp.php:334
 #: stripe-payments/public/includes/class-shortcode-asp.php:679
-#: stripe-payments/public/views/templates/default/payment-popup.php:197
+#: stripe-payments/public/views/templates/default/payment-popup.php:264
 msgid "Tax"
 msgstr ""
 
@@ -2308,7 +2308,7 @@ msgstr ""
 #: stripe-payments/public/includes/class-shortcode-asp.php:104
 #: stripe-payments/public/includes/class-shortcode-asp.php:344
 #: stripe-payments/public/includes/class-shortcode-asp.php:680
-#: stripe-payments/public/views/templates/default/payment-popup.php:203
+#: stripe-payments/public/views/templates/default/payment-popup.php:270
 msgid "Shipping"
 msgstr ""
 
@@ -2341,7 +2341,7 @@ msgstr ""
 
 #: stripe-payments/includes/class-asp-pp-handler.php:399
 #: stripe-payments/public/includes/class-shortcode-asp.php:110
-#: stripe-payments/public/views/templates/default/payment-popup.php:175
+#: stripe-payments/public/views/templates/default/payment-popup.php:242
 msgid "Remove"
 msgstr ""
 
@@ -3622,12 +3622,12 @@ msgid ""
 msgstr ""
 
 #: stripe-payments/public/includes/class-shortcode-asp.php:856
-#: stripe-payments/public/views/templates/default/payment-popup.php:75
+#: stripe-payments/public/views/templates/default/payment-popup.php:142
 msgid "Enter amount"
 msgstr ""
 
 #: stripe-payments/public/includes/class-shortcode-asp.php:886
-#: stripe-payments/public/views/templates/default/payment-popup.php:102
+#: stripe-payments/public/views/templates/default/payment-popup.php:169
 msgid "Enter quantity"
 msgstr ""
 
@@ -3636,7 +3636,7 @@ msgid "X item(s)"
 msgstr ""
 
 #: stripe-payments/public/includes/class-shortcode-asp.php:950
-#: stripe-payments/public/views/templates/default/payment-popup.php:169
+#: stripe-payments/public/views/templates/default/payment-popup.php:236
 msgid "Apply"
 msgstr ""
 
