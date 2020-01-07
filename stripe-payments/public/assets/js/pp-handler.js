@@ -879,6 +879,9 @@ function handlePayment() {
 			opts.save_payment_method = true;
 			opts.setup_future_usage = 'off_session';
 		}
+		if (vars.data.stripe_receipt_email) {
+			opts.receipt_email = emailInput.value;
+		}
 		console.log('Doing confirmCardPayment()');
 		stripe.confirmCardPayment(vars.data.client_secret, opts)
 			.then(function (result) {

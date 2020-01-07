@@ -2,7 +2,7 @@
 #: stripe-payments/admin/class-asp-admin.php:330
 #: stripe-payments/admin/class-asp-admin.php:331
 #: stripe-payments/admin/views/addons-listing.php:206
-#: stripe-payments/includes/class-asp-addons-helper.php:96
+#: stripe-payments/includes/class-asp-addons-helper.php:99
 msgid "Settings"
 msgstr ""
 
@@ -852,7 +852,7 @@ msgid "Button text should not be empty."
 msgstr ""
 
 #: stripe-payments/admin/class-asp-admin.php:1440
-#: stripe-payments/includes/class-asp-pp-handler.php:360
+#: stripe-payments/includes/class-asp-pp-handler.php:362
 #: stripe-payments/public/class-asp.php:295
 #, php-format
 msgid "Pay %s"
@@ -1435,7 +1435,7 @@ msgid "Coupons Settings"
 msgstr ""
 
 #: stripe-payments/admin/includes/class-products-meta-boxes.php:29
-#: stripe-payments/includes/class-asp-pp-handler.php:639
+#: stripe-payments/includes/class-asp-pp-handler.php:641
 #: stripe-payments/public/includes/class-shortcode-asp.php:178
 msgid "Custom Field"
 msgstr ""
@@ -2212,10 +2212,10 @@ msgid "Log cleared."
 msgstr ""
 
 #: stripe-payments/admin/views/admin.php:116
-#: stripe-payments/includes/class-asp-pp-handler.php:460
-#: stripe-payments/includes/class-asp-pp-handler.php:605
-#: stripe-payments/includes/class-asp-pp-handler.php:608
-#: stripe-payments/includes/class-asp-pp-handler.php:686
+#: stripe-payments/includes/class-asp-pp-handler.php:462
+#: stripe-payments/includes/class-asp-pp-handler.php:607
+#: stripe-payments/includes/class-asp-pp-handler.php:610
+#: stripe-payments/includes/class-asp-pp-handler.php:688
 msgid "Error occurred:"
 msgstr ""
 
@@ -2231,7 +2231,7 @@ msgstr ""
 msgid "(Select product)"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-addons-helper.php:104
+#: stripe-payments/includes/class-asp-addons-helper.php:107
 #, php-format
 msgid ""
 "%1$s requires Stripe Payments plugin minimum version to be %2$s (you have "
@@ -2243,50 +2243,50 @@ msgstr ""
 msgid "Only numbers are allowed: 0-9"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-pp-handler.php:295
+#: stripe-payments/includes/class-asp-pp-handler.php:297
 #: stripe-payments/public/views/templates/default/payment-popup.php:421
 msgid "Credit or debit card"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-pp-handler.php:366
-#: stripe-payments/includes/class-asp-pp-handler.php:400
+#: stripe-payments/includes/class-asp-pp-handler.php:368
+#: stripe-payments/includes/class-asp-pp-handler.php:402
 #: stripe-payments/public/includes/class-shortcode-asp.php:111
 msgid "Start Free Trial"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-pp-handler.php:385
+#: stripe-payments/includes/class-asp-pp-handler.php:387
 #: stripe-payments/public/includes/class-shortcode-asp.php:97
 msgid "Please enter a valid amount"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-pp-handler.php:386
+#: stripe-payments/includes/class-asp-pp-handler.php:388
 #: stripe-payments/public/includes/class-shortcode-asp.php:98
 msgid "Minimum amount is"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-pp-handler.php:387
+#: stripe-payments/includes/class-asp-pp-handler.php:389
 #: stripe-payments/public/includes/class-shortcode-asp.php:99
 msgid "Please enter quantity."
 msgstr ""
 
-#: stripe-payments/includes/class-asp-pp-handler.php:388
+#: stripe-payments/includes/class-asp-pp-handler.php:390
 #: stripe-payments/public/includes/class-shortcode-asp.php:100
 msgid "Quantity can't be zero."
 msgstr ""
 
-#: stripe-payments/includes/class-asp-pp-handler.php:389
+#: stripe-payments/includes/class-asp-pp-handler.php:391
 #: stripe-payments/public/includes/class-shortcode-asp.php:101
 msgid "Quantity should be integer value."
 msgstr ""
 
-#: stripe-payments/includes/class-asp-pp-handler.php:391
-#: stripe-payments/includes/class-asp-pp-handler.php:469
+#: stripe-payments/includes/class-asp-pp-handler.php:393
+#: stripe-payments/includes/class-asp-pp-handler.php:471
 #: stripe-payments/public/includes/class-shortcode-asp.php:102
 #, php-format
 msgid "You cannot order more items than available: %d"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-pp-handler.php:392
+#: stripe-payments/includes/class-asp-pp-handler.php:394
 #: stripe-payments/includes/class-asp-process-ipn-ng.php:346
 #: stripe-payments/includes/class-asp-product-item.php:229
 #: stripe-payments/includes/process_ipn.php:561
@@ -2299,7 +2299,7 @@ msgstr ""
 msgid "Tax"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-pp-handler.php:393
+#: stripe-payments/includes/class-asp-pp-handler.php:395
 #: stripe-payments/includes/class-asp-process-ipn-ng.php:354
 #: stripe-payments/includes/class-asp-product-item.php:240
 #: stripe-payments/includes/process_ipn.php:568
@@ -2312,48 +2312,48 @@ msgstr ""
 msgid "Shipping"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-pp-handler.php:394
+#: stripe-payments/includes/class-asp-pp-handler.php:396
 #: stripe-payments/public/includes/class-asp-shortcode-ng.php:189
 #: stripe-payments/public/includes/class-shortcode-asp.php:105
 #: stripe-payments/public/includes/class-shortcode-asp.php:355
 msgid "Total:"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-pp-handler.php:395
+#: stripe-payments/includes/class-asp-pp-handler.php:397
 #: stripe-payments/public/includes/class-shortcode-asp.php:106
 msgid "Please fill in this field."
 msgstr ""
 
-#: stripe-payments/includes/class-asp-pp-handler.php:396
+#: stripe-payments/includes/class-asp-pp-handler.php:398
 #: stripe-payments/public/includes/class-shortcode-asp.php:107
 msgid "Please check this checkbox."
 msgstr ""
 
-#: stripe-payments/includes/class-asp-pp-handler.php:397
+#: stripe-payments/includes/class-asp-pp-handler.php:399
 #: stripe-payments/public/includes/class-shortcode-asp.php:108
 msgid "You must accept the terms before you can proceed."
 msgstr ""
 
-#: stripe-payments/includes/class-asp-pp-handler.php:398
+#: stripe-payments/includes/class-asp-pp-handler.php:400
 #: stripe-payments/public/includes/class-shortcode-asp.php:109
 msgid "Remove coupon"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-pp-handler.php:399
+#: stripe-payments/includes/class-asp-pp-handler.php:401
 #: stripe-payments/public/includes/class-shortcode-asp.php:110
 #: stripe-payments/public/views/templates/default/payment-popup.php:242
 msgid "Remove"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-pp-handler.php:401
+#: stripe-payments/includes/class-asp-pp-handler.php:403
 #: stripe-payments/public/includes/class-shortcode-asp.php:112
 msgid "Invalid validation RegEx: "
 msgstr ""
 
-#: stripe-payments/includes/class-asp-pp-handler.php:410
 #: stripe-payments/includes/class-asp-pp-handler.php:412
-#: stripe-payments/includes/class-asp-pp-handler.php:480
-#: stripe-payments/includes/class-asp-pp-handler.php:483
+#: stripe-payments/includes/class-asp-pp-handler.php:414
+#: stripe-payments/includes/class-asp-pp-handler.php:482
+#: stripe-payments/includes/class-asp-pp-handler.php:485
 msgid "Stripe API error occurred:"
 msgstr ""
 
