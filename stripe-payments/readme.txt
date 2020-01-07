@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 4.7
 Tested up to: 5.3
 Requires PHP: 5.4
-Stable tag: 2.0.17t2
+Stable tag: 2.0.17
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -154,7 +154,10 @@ None.
 
 == Changelog ==
 
-= WIP 2.0.17 =
+= 2.0.17 =
+- Fixed coupon discount was improperly calculated for fixed amount coupons.
+- Fixed Stripe receipt is not sent when "Send Receipt Email From Stripe" option enabled (new API only).
+- Fixed update checker fatal error on some servers.
 - Fixed excess "Incomplete" payment was created on Stripe Dashboard along with subscription initial payment.
 - Improved prefetch payment scripts functionality.
 - Speed up payment popup display by adding essential CSS code directly into HTML page.
