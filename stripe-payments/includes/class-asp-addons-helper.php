@@ -63,6 +63,9 @@ class ASP_Addons_Helper {
 			if ( ! class_exists( 'Puc_v4_Factory' ) ) {
 				require_once $lib_path;
 			}
+			if ( empty( $this->addon->SLUG ) || empty( $this->addon->file ) ) {
+				return;
+			}
 			// change timeout from default 10 seconds to 5
 			add_filter( 'puc_request_info_options-' . $this->addon->SLUG, array( $this, 'set_request_options' ) );
 			Puc_v4_Factory::buildUpdateChecker(
