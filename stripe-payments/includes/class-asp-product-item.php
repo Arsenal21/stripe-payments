@@ -149,6 +149,9 @@ class ASP_Product_Item {
 				$discount_amount = round( $total * ( $this->coupon['discount'] / 100 ), $perc );
 			} else {
 				$discount_amount = $this->coupon['discount'];
+				if ( $in_cents && ! AcceptStripePayments::is_zero_cents( $this->get_currency() ) ) {
+					$discount_amount = $discount_amount * 100;
+				}
 			}
 			$this->coupon['discountAmount'] = $discount_amount;
 			$total                          = $total - $discount_amount;
