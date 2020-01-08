@@ -1167,10 +1167,28 @@ class AcceptStripePaymentsShortcode {
 
 			$price = get_post_meta( $id, 'asp_product_price', true );
 			$curr  = get_post_meta( $id, 'asp_product_currency', true );
+
+			//let's apply filter so addons can change price, currency and shipping if needed
+			$price_arr = array(
+				'price'    => $price,
+				'currency' => $curr,
+				'shipping' => empty( $shipping ) ? false : $shipping,
+			);
+			$price_arr = apply_filters( 'asp_modify_price_currency_shipping', $price_arr );
+			extract( $price_arr, EXTR_OVERWRITE );
+
+			$curr = $currency;
+
 			$price = AcceptStripePayments::formatted_price( $price, $curr );
 			if ( empty( $price ) ) {
 				$price = '&nbsp';
 			}
+
+			$item_tags = array('price'=>$price);
+
+			$item_tags = apply_filters( 'asp_product_tpl_tags_arr', $item_tags, $id );
+
+			$price= $item_tags['price'];
 
 			$item                  = str_replace(
 				array(
@@ -1189,6 +1207,7 @@ class AcceptStripePaymentsShortcode {
 				),
 				$tpl['products_item']
 			);
+
 			$tpl['products_list'] .= $item;
 		}
 
