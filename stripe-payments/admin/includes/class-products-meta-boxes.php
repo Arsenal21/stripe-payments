@@ -256,8 +256,9 @@ class ASPProductsMetaboxes {
 	<input type="text" name="asp_product_shipping" value="<?php echo esc_attr( $current_shipping ); ?>">
 	<p class="description">
 		<?php
-		esc_html_e( 'Numbers only, no need to put currency symbol. Example: 5.90', 'stripe-payments' ) .
-		'<br>' . esc_html_e( 'Leave it blank if you are not shipping your product or not charging additional shipping costs.', 'stripe-payments' );
+		esc_html_e( 'Numbers only, no need to put currency symbol. Example: 5.90', 'stripe-payments' );
+		echo '<br>';
+		esc_html_e( 'Leave it blank if you are not shipping your product or not charging additional shipping costs.', 'stripe-payments' );
 		?>
 	</p>
 </div>
@@ -266,8 +267,9 @@ class ASPProductsMetaboxes {
 <input type="text" name="asp_product_tax" value="<?php echo esc_attr( $current_tax ); ?>">
 <p class="description">
 		<?php
-		esc_html_e( 'Enter tax (in percent) which should be added to product price during purchase.', 'stripe-payments' ) .
-		'<br>' . esc_html_e( 'Leave it blank if you don\'t want to apply tax.', 'stripe-payments' );
+		esc_html_e( 'Enter tax (in percent) which should be added to product price during purchase.', 'stripe-payments' );
+		echo '<br>';
+		esc_html_e( 'Leave it blank if you don\'t want to apply tax.', 'stripe-payments' );
 		?>
 </p>
 		<?php
