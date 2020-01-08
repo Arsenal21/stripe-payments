@@ -157,6 +157,7 @@ None.
 = 2.0.18 =
 - Fixed shipping value miscalculation during payment processing.
 - Fixed invalid price displayed for subscription products on "All products" page.
+- Fixed conflict with other plugins when "Enable Compact Product Edit Interface" option enabled.
 - Fixed minor issue with text display on product edit page.
 
 = 2.0.17 =
