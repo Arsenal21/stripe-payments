@@ -1057,27 +1057,27 @@ msgid "Delete coupon"
 msgstr ""
 
 #: stripe-payments/admin/includes/class-coupons.php:37
-#: stripe-payments/includes/class-asp-product-item.php:273
+#: stripe-payments/includes/class-asp-product-item.php:277
 msgid "Coupon not found."
 msgstr ""
 
 #: stripe-payments/admin/includes/class-coupons.php:44
-#: stripe-payments/includes/class-asp-product-item.php:279
+#: stripe-payments/includes/class-asp-product-item.php:283
 msgid "Coupon is not active."
 msgstr ""
 
 #: stripe-payments/admin/includes/class-coupons.php:51
-#: stripe-payments/includes/class-asp-product-item.php:285
+#: stripe-payments/includes/class-asp-product-item.php:289
 msgid "Coupon is not available yet."
 msgstr ""
 
 #: stripe-payments/admin/includes/class-coupons.php:58
-#: stripe-payments/includes/class-asp-product-item.php:291
+#: stripe-payments/includes/class-asp-product-item.php:295
 msgid "Coupon has expired."
 msgstr ""
 
 #: stripe-payments/admin/includes/class-coupons.php:66
-#: stripe-payments/includes/class-asp-product-item.php:298
+#: stripe-payments/includes/class-asp-product-item.php:302
 msgid "Coupon redemption limit is reached."
 msgstr ""
 
@@ -1090,7 +1090,7 @@ msgid "No product ID specified."
 msgstr ""
 
 #: stripe-payments/admin/includes/class-coupons.php:116
-#: stripe-payments/includes/class-asp-product-item.php:326
+#: stripe-payments/includes/class-asp-product-item.php:330
 msgid "Coupon is not allowed for this product."
 msgstr ""
 
@@ -2288,7 +2288,7 @@ msgstr ""
 
 #: stripe-payments/includes/class-asp-pp-handler.php:394
 #: stripe-payments/includes/class-asp-process-ipn-ng.php:346
-#: stripe-payments/includes/class-asp-product-item.php:232
+#: stripe-payments/includes/class-asp-product-item.php:236
 #: stripe-payments/includes/process_ipn.php:561
 #: stripe-payments/public/includes/class-asp-shortcode-ng.php:168
 #: stripe-payments/public/includes/class-asp-shortcode-ng.php:526
@@ -2301,7 +2301,7 @@ msgstr ""
 
 #: stripe-payments/includes/class-asp-pp-handler.php:395
 #: stripe-payments/includes/class-asp-process-ipn-ng.php:354
-#: stripe-payments/includes/class-asp-product-item.php:243
+#: stripe-payments/includes/class-asp-product-item.php:247
 #: stripe-payments/includes/process_ipn.php:568
 #: stripe-payments/public/includes/class-asp-shortcode-ng.php:178
 #: stripe-payments/public/includes/class-asp-shortcode-ng.php:527
@@ -2403,11 +2403,11 @@ msgstr ""
 msgid "Total Amount: "
 msgstr ""
 
-#: stripe-payments/includes/class-asp-product-item.php:371
+#: stripe-payments/includes/class-asp-product-item.php:375
 msgid "No product ID provided."
 msgstr ""
 
-#: stripe-payments/includes/class-asp-product-item.php:379
+#: stripe-payments/includes/class-asp-product-item.php:383
 #, php-format
 msgid "Can't find product with ID %d"
 msgstr ""
