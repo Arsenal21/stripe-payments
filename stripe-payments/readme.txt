@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 4.7
 Tested up to: 5.3
 Requires PHP: 5.4
-Stable tag: 2.0.18t2
+Stable tag: 2.0.18
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -154,7 +154,7 @@ None.
 
 == Changelog ==
 
-= WIP 2.0.18 =
+= 2.0.18 =
 - Fixed shipping value miscalculation during payment processing.
 - Fixed invalid price displayed for subscription products on "All products" page.
 - Fixed minor issue with text display on product edit page.
