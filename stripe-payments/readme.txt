@@ -155,12 +155,12 @@ None.
 == Changelog ==
 
 = 2.0.17 =
+- Improved prefetch payment scripts functionality.
+- Optimization improvement to speed up the payment popup display by adding the essential CSS code directly into HTML page.
 - Fixed coupon discount was improperly calculated for fixed amount coupons.
 - Fixed Stripe receipt is not sent when "Send Receipt Email From Stripe" option enabled (new API only).
-- Fixed update checker fatal error on some servers.
-- Fixed excess "Incomplete" payment was created on Stripe Dashboard along with subscription initial payment.
-- Improved prefetch payment scripts functionality.
-- Speed up payment popup display by adding essential CSS code directly into HTML page.
+- On some servers, the update checker was causing an error. This has been fixed.
+- Subscription product: removed the excess "Incomplete" payment entry that was being created in the Stripe Dashboard for the initial subscription charge.
 
 = 2.0.16 =
 - Replaced deprecated stripe.js functions to prevent potential issues with payments.
