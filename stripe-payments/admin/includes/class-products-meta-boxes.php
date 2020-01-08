@@ -58,6 +58,9 @@ class ASPProductsMetaboxes {
 		echo '<div id="wp-asp-product-settings-menu-icon"><span class="dashicons dashicons-menu"></span></div>';
 		$first = true;
 		foreach ( $this->metaboxes as $box ) {
+			if ( ! is_callable( array( $box['callback'][0], $box['callback'][1] ) ) ) {
+				continue;
+			}
 			echo wp_kses(
 				sprintf( '<a class="nav-tab wp-asp-product-menu-nav-item%s" data-asp-nav-item="%s" href="#"><span>%s</span></a>', $first ? ' nav-tab-active' : '', $box['id'], $box['title'] ),
 				array(
@@ -75,7 +78,7 @@ class ASPProductsMetaboxes {
 		$first = true;
 		foreach ( $this->metaboxes as $box ) {
 			if ( ! is_callable( array( $box['callback'][0], $box['callback'][1] ) ) ) {
-				return;
+				continue;
 			}
 			echo wp_kses(
 				sprintf( '<div id="%s" class="wp-asp-product-tab-item%s">', $box['id'], $first ? ' wp-asp-product-tab-item-visible' : '' ),
