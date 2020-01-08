@@ -159,9 +159,13 @@ class ASP_Product_Item {
 		if ( $this->get_tax() ) {
 			$total = $total + $this->get_tax_amount( $in_cents, true );
 		}
+
 		$total = $total * $this->get_quantity();
-		if ( $this->get_shipping() ) {
-			$total = $total + $this->get_shipping();
+
+		$shipping = $this->get_shipping( $in_cents );
+
+		if ( ! empty( $shipping ) ) {
+			$total = $total + $this->get_shipping( $in_cents );
 		}
 		return $total;
 	}
