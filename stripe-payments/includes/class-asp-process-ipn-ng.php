@@ -79,6 +79,9 @@ class ASP_Process_IPN_NG {
 	public function process_ipn( $post_data = array() ) {
 		ASP_Debug_Logger::log( 'Payment processing started.' );
 
+		var_dump($_POST);
+		wp_die();
+
 		if ( ! empty( $post_data ) ) {
 			$this->post_data = $post_data;
 		}
