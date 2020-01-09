@@ -155,11 +155,11 @@ None.
 == Changelog ==
 
 = 2.0.18 =
-- Fixed shipping value miscalculation during payment processing.
-- Fixed customer redirected to login page instead checkout results page on some configurations.
-- Fixed invalid price displayed for subscription products on "All products" page.
-- Fixed conflict with other plugins when "Enable Compact Product Edit Interface" option enabled.
-- Fixed minor issue with text display on product edit page.
+- The invalid price display for subscription items on the "All products" page is fixed.
+- Updated the code to remove a conflict with other plugins when "Enable Compact Product Edit Interface" option is enabled.
+- Shipping value miscalculation during payment processing is fixed.
+- Fixed an issue where the customer was getting redirected to login page instead of "checkout results" page on some configurations.
+- Improved some text messages on the product edit interface.
 
 = 2.0.17 =
 - Improved prefetch payment scripts functionality.
