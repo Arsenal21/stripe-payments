@@ -45,7 +45,7 @@ class ASP_Process_IPN_NG {
 			ASP_Debug_Logger::log( 'Payment has been processed successfully.' );
 		}
 		ASP_Debug_Logger::log( sprintf( 'Redirecting to results page "%s"', $this->asp_redirect_url ) . "\r\n" );
-		wp_safe_redirect( $this->asp_redirect_url );
+		wp_redirect( $this->asp_redirect_url ); //phpcs:ignore
 		exit;
 	}
 
