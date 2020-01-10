@@ -13,11 +13,18 @@ class ASP_Payment_Data {
 	protected $shipping_details_obj = false;
 	protected $customer_obj         = false;
 	protected $last_error_obj;
-	public function __construct( $obj_id = false ) {
+
+	public $is_zero_value = false;
+
+	public function __construct( $obj_id = false, $zero_value = false ) {
 		if ( false !== $obj_id ) {
 			$this->obj_id = $obj_id;
 		}
-		$this->load_from_obj();
+		if ( $zero_value ) {
+			$this->construct_zero_value();
+		} else {
+			$this->load_from_obj();
+		}
 	}
 
 	public function get_last_error() {
@@ -143,5 +150,43 @@ class ASP_Payment_Data {
 			return false;
 		}
 		$this->obj = $obj;
+	}
+
+	public function construct_zero_value() {
+		$this->charge_data          = new stdClass();
+		$this->charge_data->id      = $this->obj_id;
+		$this->trans_id             = $this->charge_data->id;
+		$this->charge_data->created = time();
+		$this->charge_created       = $this->charge_data->created;
+
+		$ipn_ng_class = ASP_Process_IPN_NG::get_instance();
+
+		$bd = new stdClass();
+
+		//Billing details
+		$b_name   = $ipn_ng_class->get_post_var( 'asp_billing_name', FILTER_SANITIZE_STRING );
+		$bd->name = empty( $b_name ) ? '' : $b_name;
+
+		$b_email   = $ipn_ng_class->get_post_var( 'asp_email', FILTER_SANITIZE_STRING );
+		$bd->email = empty( $b_email ) ? '' : $b_email;
+
+		$this->billing_details_obj = $bd;
+
+		//Shipping details
+		$same_addr = $ipn_ng_class->get_post_var( 'asp_same-bill-ship-addr', FILTER_SANITIZE_STRING );
+
+		if ( ! empty( $same_addr ) ) {
+			$this->shipping_details_obj = $this->billing_details_obj;
+		} else {
+			$sd = new stdClass();
+
+			$this->shipping_details_obj = $sd;
+		}
+
+		$this->amount = 0;
+
+		$this->currency = $ipn_ng_class->item->get_currency();
+
+		$this->is_zero_value = true;
 	}
 }
