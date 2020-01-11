@@ -119,10 +119,10 @@ class ASP_Payment_Data {
 		$bd               = $this->billing_details_obj;
 		$billing_address .= $bd->name ? $bd->name . "\n" : '';
 		$billing_address .= isset( $bd->line1 ) ? $bd->line1 . "\n" : '';
-		$billing_address .= isset( $bd->line2 ) ? $bd->line2 . "\n" : '';
+		$billing_address .= empty( $bd->line2 ) ? $bd->line2 . "\n" : '';
 		$billing_address .= isset( $bd->postal_code ) ? $bd->postal_code . "\n" : '';
 		$billing_address .= isset( $bd->city ) ? $bd->city . "\n" : '';
-		$billing_address .= isset( $bd->state ) ? $bd->state . "\n" : '';
+		$billing_address .= empty( $bd->state ) ? $bd->state . "\n" : '';
 		$billing_address .= isset( $bd->country ) ? $bd->country . "\n" : '';
 		return $billing_address;
 	}
@@ -133,10 +133,10 @@ class ASP_Payment_Data {
 		$bd                = $this->shipping_details_obj;
 		$shipping_address .= isset( $bd->name ) ? $bd->name . "\n" : '';
 		$shipping_address .= isset( $bd->line1 ) ? $bd->line1 . "\n" : '';
-		$shipping_address .= isset( $bd->line2 ) ? $bd->line2 . "\n" : '';
+		$shipping_address .= empty( $bd->line2 ) ? $bd->line2 . "\n" : '';
 		$shipping_address .= isset( $bd->postal_code ) ? $bd->postal_code . "\n" : '';
 		$shipping_address .= isset( $bd->city ) ? $bd->city . "\n" : '';
-		$shipping_address .= isset( $bd->state ) ? $bd->state . "\n" : '';
+		$shipping_address .= empty( $bd->state ) ? $bd->state . "\n" : '';
 		$shipping_address .= isset( $bd->country ) ? $bd->country . "\n" : '';
 		return $shipping_address;
 	}
@@ -170,6 +170,21 @@ class ASP_Payment_Data {
 		$b_email   = $ipn_ng_class->get_post_var( 'asp_email', FILTER_SANITIZE_STRING );
 		$bd->email = empty( $b_email ) ? '' : $b_email;
 
+		$b_addr    = $ipn_ng_class->get_post_var( 'asp_address', FILTER_SANITIZE_STRING );
+		$bd->line1 = empty( $b_addr ) ? '' : $b_addr;
+		$bd->line2 = '';
+
+		$b_postal_code   = $ipn_ng_class->get_post_var( 'asp_postcode', FILTER_SANITIZE_STRING );
+		$bd->postal_code = empty( $b_postal_code ) ? '' : $b_postal_code;
+
+		$b_city   = $ipn_ng_class->get_post_var( 'asp_city', FILTER_SANITIZE_STRING );
+		$bd->city = empty( $b_city ) ? '' : $b_city;
+
+		$b_country   = $ipn_ng_class->get_post_var( 'asp_country', FILTER_SANITIZE_STRING );
+		$bd->country = empty( $b_country ) ? '' : $b_country;
+
+		$bd->state = '';
+
 		$this->billing_details_obj = $bd;
 
 		//Shipping details
@@ -180,6 +195,21 @@ class ASP_Payment_Data {
 		} else {
 			$sd = new stdClass();
 
+			$s_addr    = $ipn_ng_class->get_post_var( 'asp_shipping_address', FILTER_SANITIZE_STRING );
+			$sd->line1 = empty( $s_addr ) ? '' : $s_addr;
+			$sd->line2 = '';
+
+			$s_postal_code   = $ipn_ng_class->get_post_var( 'asp_shipping_postcode', FILTER_SANITIZE_STRING );
+			$sd->postal_code = empty( $s_postal_code ) ? '' : $s_postal_code;
+
+			$s_city   = $ipn_ng_class->get_post_var( 'asp_shipping_city', FILTER_SANITIZE_STRING );
+			$sd->city = empty( $s_city ) ? '' : $s_city;
+
+			$s_country   = $ipn_ng_class->get_post_var( 'asp_shipping_country', FILTER_SANITIZE_STRING );
+			$sd->country = empty( $s_country ) ? '' : $s_country;
+
+			$sd->state = '';
+
 			$this->shipping_details_obj = $sd;
 		}
 
@@ -188,5 +218,6 @@ class ASP_Payment_Data {
 		$this->currency = $ipn_ng_class->item->get_currency();
 
 		$this->is_zero_value = true;
+
 	}
 }
