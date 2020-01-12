@@ -348,7 +348,7 @@ function calcTotal() {
 	if (vars.data.coupon) {
 		var discountAmount = 0;
 		if (vars.data.coupon.discount_type === 'perc') {
-			discountAmount = Math.round(itemSubt * (vars.data.coupon.discount / 100));
+			discountAmount = PHP_round(itemSubt * (vars.data.coupon.discount / 100), 0);
 		} else {
 			if (is_zero_cents(vars.data.currency)) {
 				discountAmount = vars.data.coupon.discount;
@@ -360,17 +360,22 @@ function calcTotal() {
 		vars.data.coupon.discount_amount = discountAmount;
 	}
 	if (vars.data.tax) {
-		var tax = Math.round(itemSubt * parseFloat(vars.data.tax) / 100);
+		var tax = PHP_round(itemSubt * vars.data.tax / 100, 0);
 		vars.data.taxAmount = tax;
-		itemSubt = parseInt(itemSubt) + parseInt(tax);
+		itemSubt = itemSubt + tax;
 	}
 
 	tAmount = itemSubt * vars.data.quantity;
 
 	if (vars.data.shipping) {
-		tAmount = tAmount + parseInt(vars.data.shipping);
+		tAmount = tAmount + vars.data.shipping;
 	}
-	vars.data.amount = tAmount;
+	vars.data.amount = PHP_round(tAmount, 0);
+}
+
+function PHP_round(num, dec) {
+	var num_sign = num >= 0 ? 1 : -1;
+	return parseFloat((Math.round((num * Math.pow(10, dec)) + (num_sign * 0.0001)) / Math.pow(10, dec)).toFixed(dec));
 }
 
 function is_zero_cents(curr) {
@@ -525,7 +530,7 @@ function validate_custom_amount() {
 		displayAmount = displayAmount.replace('.', vars.amountOpts.decimalSep);
 	}
 	if (!is_zero_cents(vars.data.currency)) {
-		cAmount = Math.round(cAmount * 100);
+		cAmount = PHP_round(cAmount * 100, 0);
 	}
 	if (typeof vars.minAmounts[vars.data.currency] !== 'undefined') {
 		if (vars.minAmounts[vars.data.currency] > cAmount) {
