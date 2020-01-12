@@ -595,9 +595,14 @@ function canProceed() {
 	}
 
 	if (piInput.value !== '') {
-		jQuery('#Aligner-item').fadeOut(function () {
-			jQuery('#global-spinner').show();
-		});
+		jQuery('#btn-spinner').hide();
+		jQuery('#checkmark-cont').css('display', 'flex');
+		setTimeout(function () {
+			jQuery('#Aligner-item').fadeOut(function () {
+				smokeScreen(false);
+				jQuery('#global-spinner').show();
+			});
+		}, 1500);
 		if (!inIframe() || window.doSelfSubmit) {
 			console.log('Self-submitting');
 			for (var i = 0; i < form.elements.length; i++) {
