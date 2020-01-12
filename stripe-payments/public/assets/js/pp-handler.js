@@ -102,6 +102,11 @@ if (vars.data.coupons_enabled) {
 					}
 					couponResCont.style.display = 'block';
 					couponInputCont.style.display = 'none';
+					if (is_full_discount()) {
+						jQuery('[data-pm-id="def"]').click();
+						jQuery('#pm-select-cont').hide();
+						jQuery('#card-cont').hide();
+					}
 				}
 				updateAllAmounts();
 				couponBtn.disabled = false;
@@ -116,6 +121,10 @@ if (vars.data.coupons_enabled) {
 		);
 	});
 	couponRemoveBtn.addEventListener('click', function () {
+		if (is_full_discount()) {
+			jQuery('#pm-select-cont').show();
+			jQuery('#card-cont').show();
+		}
 		delete (vars.data.coupon);
 		jQuery('#order-coupon-line').remove();
 		couponInput.value = '';
@@ -305,7 +314,12 @@ jQuery('.pm-select-btn').click(function () {
 
 function updateAllAmounts() {
 	calcTotal();
-	submitBtn.innerHTML = vars.payBtnText.replace(/%s/g, formatMoney(vars.data.amount));
+
+	if (is_full_discount()) {
+		submitBtn.innerHTML = vars.str.strGetForFree;
+	} else {
+		submitBtn.innerHTML = vars.payBtnText.replace(/%s/g, formatMoney(vars.data.amount));
+	}
 
 	if (vars.data.show_your_order === 1) {
 		jQuery('#order-total').html(formatMoney(vars.data.amount));
@@ -445,6 +459,13 @@ function inIframe() {
 	} catch (e) {
 		return true;
 	}
+}
+
+function is_full_discount() {
+	if (vars.data.coupon && vars.data.coupon.discount_type === 'perc' && parseFloat(vars.data.coupon.discount) === 100) {
+		return true;
+	}
+	return false;
 }
 
 function triggerEvent(el, type) {
@@ -702,7 +723,7 @@ function handlePayment() {
 	}
 
 	//regen cs
-	if (!vars.data.token_not_required && (vars.data.client_secret === '' || vars.data.amount !== clientSecAmount || vars.data.currency !== clientSecCurrency)) {
+	if (!is_full_discount() && !vars.data.token_not_required && (vars.data.client_secret === '' || vars.data.amount !== clientSecAmount || vars.data.currency !== clientSecCurrency)) {
 		var reqStr = 'action=asp_pp_req_token&amount=' + vars.data.amount + '&curr=' + vars.data.currency + '&product_id=' + vars.data.product_id;
 		reqStr = reqStr + '&quantity=' + vars.data.quantity;
 		if (vars.data.cust_id) {
@@ -765,7 +786,7 @@ function handlePayment() {
 		return false;
 	}
 
-	if (vars.data.create_token) {
+	if (!is_full_discount() && vars.data.create_token) {
 		console.log('Creating token');
 		opts = {
 			name: billingNameInput.value
@@ -854,6 +875,11 @@ function handlePayment() {
 
 	if (vars.data.no_action_required) {
 		return true;
+	}
+
+	if (is_full_discount()) {
+		handleCardPaymentResult({ paymentIntent: { id: 'free_' + (Math.floor(Math.random() * Math.floor(999999999999999))) } });
+		return false;
 	}
 
 	if (vars.data.do_card_setup) {
