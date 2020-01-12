@@ -859,7 +859,7 @@ function handlePayment() {
 								if (!vars.data.coupon && couponInput) {
 									couponInput.value = '';
 								}
-								form.dispatchEvent(new Event('submit'));
+								triggerEvent(form, 'submit');
 							}
 						} catch (e) {
 							console.log(e);
@@ -906,7 +906,7 @@ function handlePayment() {
 					if (!vars.data.coupon && couponInput) {
 						couponInput.value = '';
 					}
-					form.dispatchEvent(new Event('submit'));
+					triggerEvent(form, 'submit');
 				}
 			});
 
@@ -938,7 +938,7 @@ function handleCardPaymentResult(result) {
 		if (!vars.data.coupon && couponInput) {
 			couponInput.value = '';
 		}
-		form.dispatchEvent(new Event('submit'));
+		triggerEvent(form, 'submit');
 	}
 }
 
