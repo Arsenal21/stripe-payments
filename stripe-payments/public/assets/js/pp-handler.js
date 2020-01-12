@@ -102,6 +102,11 @@ if (vars.data.coupons_enabled) {
 					}
 					couponResCont.style.display = 'block';
 					couponInputCont.style.display = 'none';
+					if (is_full_discount()) {
+						jQuery('[data-pm-id="def"]').click();
+						jQuery('#pm-select-cont').hide();
+						jQuery('#card-cont').hide();
+					}
 				}
 				updateAllAmounts();
 				couponBtn.disabled = false;
@@ -116,6 +121,10 @@ if (vars.data.coupons_enabled) {
 		);
 	});
 	couponRemoveBtn.addEventListener('click', function () {
+		if (is_full_discount()) {
+			jQuery('#pm-select-cont').show();
+			jQuery('#card-cont').show();
+		}
 		delete (vars.data.coupon);
 		jQuery('#order-coupon-line').remove();
 		couponInput.value = '';
@@ -307,7 +316,7 @@ function updateAllAmounts() {
 	calcTotal();
 
 	if (is_full_discount()) {
-		submitBtn.innerHTML = 'Get For Free';
+		submitBtn.innerHTML = vars.str.strGetForFree;
 	} else {
 		submitBtn.innerHTML = vars.payBtnText.replace(/%s/g, formatMoney(vars.data.amount));
 	}
