@@ -1435,7 +1435,7 @@ msgid "Coupons Settings"
 msgstr ""
 
 #: stripe-payments/admin/includes/class-products-meta-boxes.php:29
-#: stripe-payments/includes/class-asp-pp-handler.php:641
+#: stripe-payments/includes/class-asp-pp-handler.php:642
 #: stripe-payments/public/includes/class-shortcode-asp.php:178
 msgid "Custom Field"
 msgstr ""
@@ -2212,10 +2212,10 @@ msgid "Log cleared."
 msgstr ""
 
 #: stripe-payments/admin/views/admin.php:116
-#: stripe-payments/includes/class-asp-pp-handler.php:462
-#: stripe-payments/includes/class-asp-pp-handler.php:607
-#: stripe-payments/includes/class-asp-pp-handler.php:610
-#: stripe-payments/includes/class-asp-pp-handler.php:688
+#: stripe-payments/includes/class-asp-pp-handler.php:463
+#: stripe-payments/includes/class-asp-pp-handler.php:608
+#: stripe-payments/includes/class-asp-pp-handler.php:611
+#: stripe-payments/includes/class-asp-pp-handler.php:689
 msgid "Error occurred:"
 msgstr ""
 
@@ -2280,14 +2280,14 @@ msgid "Quantity should be integer value."
 msgstr ""
 
 #: stripe-payments/includes/class-asp-pp-handler.php:393
-#: stripe-payments/includes/class-asp-pp-handler.php:471
+#: stripe-payments/includes/class-asp-pp-handler.php:472
 #: stripe-payments/public/includes/class-shortcode-asp.php:102
 #, php-format
 msgid "You cannot order more items than available: %d"
 msgstr ""
 
 #: stripe-payments/includes/class-asp-pp-handler.php:394
-#: stripe-payments/includes/class-asp-process-ipn-ng.php:346
+#: stripe-payments/includes/class-asp-process-ipn-ng.php:362
 #: stripe-payments/includes/class-asp-product-item.php:249
 #: stripe-payments/includes/process_ipn.php:561
 #: stripe-payments/public/includes/class-asp-shortcode-ng.php:168
@@ -2300,7 +2300,7 @@ msgid "Tax"
 msgstr ""
 
 #: stripe-payments/includes/class-asp-pp-handler.php:395
-#: stripe-payments/includes/class-asp-process-ipn-ng.php:354
+#: stripe-payments/includes/class-asp-process-ipn-ng.php:370
 #: stripe-payments/includes/class-asp-product-item.php:260
 #: stripe-payments/includes/process_ipn.php:568
 #: stripe-payments/public/includes/class-asp-shortcode-ng.php:178
@@ -2350,56 +2350,60 @@ msgstr ""
 msgid "Invalid validation RegEx: "
 msgstr ""
 
-#: stripe-payments/includes/class-asp-pp-handler.php:412
-#: stripe-payments/includes/class-asp-pp-handler.php:414
-#: stripe-payments/includes/class-asp-pp-handler.php:482
-#: stripe-payments/includes/class-asp-pp-handler.php:485
+#: stripe-payments/includes/class-asp-pp-handler.php:404
+msgid "Get For Free"
+msgstr ""
+
+#: stripe-payments/includes/class-asp-pp-handler.php:413
+#: stripe-payments/includes/class-asp-pp-handler.php:415
+#: stripe-payments/includes/class-asp-pp-handler.php:483
+#: stripe-payments/includes/class-asp-pp-handler.php:486
 msgid "Stripe API error occurred:"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-process-ipn-ng.php:28
+#: stripe-payments/includes/class-asp-process-ipn-ng.php:42
 #: stripe-payments/includes/process_ipn.php:55
 msgid "Stripe Payments Error"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-process-ipn-ng.php:29
+#: stripe-payments/includes/class-asp-process-ipn-ng.php:43
 msgid "Following error occurred during payment processing:"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-process-ipn-ng.php:31
+#: stripe-payments/includes/class-asp-process-ipn-ng.php:45
 #: stripe-payments/includes/process_ipn.php:59
 msgid "Debug data:"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-process-ipn-ng.php:238
+#: stripe-payments/includes/class-asp-process-ipn-ng.php:254
 #, php-format
 msgid "Invalid payment amount received. Expected %1$s, got %2$s."
 msgstr ""
 
-#: stripe-payments/includes/class-asp-process-ipn-ng.php:337
+#: stripe-payments/includes/class-asp-process-ipn-ng.php:353
 #: stripe-payments/includes/process_ipn.php:556
 #, php-format
 msgid "Coupon \"%s\""
 msgstr ""
 
-#: stripe-payments/includes/class-asp-process-ipn-ng.php:338
+#: stripe-payments/includes/class-asp-process-ipn-ng.php:354
 #: stripe-payments/includes/process_ipn.php:557
 msgid "Subtotal"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-process-ipn-ng.php:417
+#: stripe-payments/includes/class-asp-process-ipn-ng.php:433
 msgid "Product Name: "
 msgstr ""
 
-#: stripe-payments/includes/class-asp-process-ipn-ng.php:418
+#: stripe-payments/includes/class-asp-process-ipn-ng.php:434
 msgid "Quantity: "
 msgstr ""
 
-#: stripe-payments/includes/class-asp-process-ipn-ng.php:419
+#: stripe-payments/includes/class-asp-process-ipn-ng.php:435
 msgid "Item Price: "
 msgstr ""
 
-#: stripe-payments/includes/class-asp-process-ipn-ng.php:424
+#: stripe-payments/includes/class-asp-process-ipn-ng.php:440
 msgid "Total Amount: "
 msgstr ""
 
