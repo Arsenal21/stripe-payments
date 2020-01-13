@@ -883,7 +883,7 @@ function handlePayment() {
 	}
 
 	if (is_full_discount()) {
-		handleCardPaymentResult({ paymentIntent: { id: 'free_' + (Math.floor(Math.random() * Math.floor(999999999999999))) } });
+		handleCardPaymentResult({ paymentIntent: { id: vars.data.coupon.zero_value_id } });
 		return false;
 	}
 
