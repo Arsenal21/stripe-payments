@@ -30,9 +30,6 @@ var stripeHandlerNG = function (data) {
 				parent.iForm = iframe.contents().find('form#payment-form');
 				parent.iForm.on('submit', function (e) {
 					e.preventDefault();
-					if (parent.form_submitted) {
-						return false;
-					}
 					var token = parent.iForm.find('input#payment-intent').val();
 					if (token !== '') {
 						if (parent.form.length === 0) {
@@ -52,7 +49,6 @@ var stripeHandlerNG = function (data) {
 							}
 						});
 						console.log('Parent form submit');
-						parent.form_submitted = true;
 						parent.form.submit();
 					}
 					return false;

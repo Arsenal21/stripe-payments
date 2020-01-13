@@ -2,28 +2,14 @@
 class ASP_Process_IPN_NG {
 
 	public $asp_redirect_url = '';
-	public $item;
-
-	protected static $instance = null;
-
 	public function __construct() {
-		self::$instance = $this;
-
 		$process_ipn            = filter_input( INPUT_POST, 'asp_process_ipn', FILTER_SANITIZE_NUMBER_INT );
 		$this->asp_class        = AcceptStripePayments::get_instance();
 		$this->sess             = ASP_Session::get_instance();
 		$this->asp_redirect_url = $this->asp_class->get_setting( 'checkout_url' );
 		if ( $process_ipn ) {
-			add_action( 'asp_ng_process_ipn_payment_data_item_override', array( $this, 'payment_data_override' ), 10, 2 );
 			add_action( 'wp_loaded', array( $this, 'process_ipn' ), 2147483647 );
 		}
-	}
-
-	public static function get_instance() {
-		if ( null === self::$instance ) {
-			self::$instance = new self();
-		}
-		return self::$instance;
 	}
 
 	public function ipn_completed( $err_msg = '' ) {
@@ -63,7 +49,7 @@ class ASP_Process_IPN_NG {
 		exit;
 	}
 
-	public function get_post_var( $var, $filter, $opts = null ) {
+	private function get_post_var( $var, $filter, $opts = null ) {
 		if ( isset( $this->post_data ) ) {
 			if ( isset( $this->post_data[ $var ] ) ) {
 				return filter_var( $this->post_data[ $var ], $filter, $opts );
@@ -121,8 +107,6 @@ class ASP_Process_IPN_NG {
 			$this->ipn_completed( $err );
 		}
 
-		$this->item = $item;
-
 		if ( $item->get_redir_url() ) {
 			$this->asp_redirect_url = $item->get_redir_url();
 		}
@@ -151,7 +135,7 @@ class ASP_Process_IPN_NG {
 		$key = $is_live ? $this->asp_class->APISecKey : $this->asp_class->APISecKeyTest;
 		\Stripe\Stripe::setApiKey( $key );
 
-		//Get Payment Data
+				//Get Payment Data
 		ASP_Debug_Logger::log( 'Firing asp_ng_process_ipn_payment_data_item_override filter.' );
 
 		$p_data = apply_filters( 'asp_ng_process_ipn_payment_data_item_override', false, $pi );
@@ -166,13 +150,13 @@ class ASP_Process_IPN_NG {
 		if ( ! empty( $p_last_err ) ) {
 			$this->ipn_completed( $p_last_err );
 		}
-		//End retrieval of payment data
+				//End retrieval of payment data
 
-		//Mechanism to lock the txn that is being processed.
-		$txn_being_processed = get_option( 'asp_ng_ipn_txn_being_processed' );
-		$notification_txn_id = $p_data->get_trans_id();
-		ASP_Debug_Logger::log( 'The transaction ID of this notification is: ' . $notification_txn_id );
-		if ( ! empty( $txn_being_processed ) && $txn_being_processed === $notification_txn_id ) {
+				//Mechanism to lock the txn that is being processed.
+				$txn_being_processed = get_option( 'asp_ng_ipn_txn_being_processed' );
+				$notification_txn_id = $p_data->get_trans_id();
+				ASP_Debug_Logger::log( 'The transaction ID of this notification is: ' . $notification_txn_id );
+		if ( ! empty( $txn_being_processed ) && $txn_being_processed == $notification_txn_id ) {
 			//No need to process this transaction as it is already being processed.
 			ASP_Debug_Logger::log( 'This transaction (' . $notification_txn_id . ') is already being procesed. This is likely a duplicate notification. Nothing to do.' );
 			return true;
@@ -425,7 +409,7 @@ class ASP_Process_IPN_NG {
 		ASP_Debug_Logger::log( 'Firing asp_ng_payment_completed_update_pi filter.' );
 		$update_opts = apply_filters( 'asp_ng_payment_completed_update_pi', $update_opts, $data );
 
-		if ( ! empty( $update_opts && ! $p_data->is_zero_value ) ) {
+		if ( ! empty( $update_opts ) ) {
 			ASP_Debug_Logger::log( 'Updating payment intent data.' );
 			$res = \Stripe\PaymentIntent::update( $pi, $update_opts );
 		}
@@ -525,35 +509,10 @@ class ASP_Process_IPN_NG {
 
 		$this->sess->set_transient_data( 'asp_data', $data );
 
-		//Clear the txn lock
-		update_option( 'asp_ng_ipn_txn_being_processed', '' );
+				//Clear the txn lock
+				update_option( 'asp_ng_ipn_txn_being_processed', '' );
 
 		$this->ipn_completed();
-	}
-
-	public function payment_data_override( $p_data, $pi ) {
-		//check if this is zero-value transaction
-		if ( 'free' === substr( $pi, 0, 4 ) ) {
-			//this is zero-value transaction
-			$coupon_code = $this->get_post_var( 'asp_coupon-code', FILTER_SANITIZE_STRING );
-			if ( empty( $coupon_code ) ) {
-				return $p_data;
-			}
-			$coupon_valid = $this->item->check_coupon( $coupon_code );
-
-			if ( ! $coupon_valid ) {
-				return $p_data;
-			}
-
-			$coupon = $this->item->get_coupon();
-
-			if ( 'perc' !== $coupon['discount_type'] && 100 !== $coupon['discount'] ) {
-				return $p_data;
-			}
-
-			$p_data = new ASP_Payment_Data( $pi, true );
-		}
-		return $p_data;
 	}
 }
 
