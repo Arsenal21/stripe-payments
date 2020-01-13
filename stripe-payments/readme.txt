@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 4.7
 Tested up to: 5.3
 Requires PHP: 5.4
-Stable tag: 2.0.19t1
+Stable tag: 2.0.19
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -154,11 +154,12 @@ None.
 
 == Changelog ==
 
-= WIP 2.0.19 =
+= 2.0.19 =
 - Added 100% discount coupons support.
 - Made amounts rounding more consistent between frontend and backend.
 - Added payment popup animation to indicate payment is accepted.
-- Made payment popup compatibile with some older browsers (like IE11).
+- Improved payment popup appearance on mobile devices.
+- Made payment popup compatible with some older browsers (like IE11).
 
 = 2.0.18 =
 - Fixed shipping value miscalculation during payment processing.
