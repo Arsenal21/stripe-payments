@@ -102,6 +102,11 @@ if (vars.data.coupons_enabled) {
 					}
 					couponResCont.style.display = 'block';
 					couponInputCont.style.display = 'none';
+					if (is_full_discount()) {
+						jQuery('[data-pm-id="def"]').click();
+						jQuery('#pm-select-cont').hide();
+						jQuery('#card-cont').hide();
+					}
 				}
 				updateAllAmounts();
 				couponBtn.disabled = false;
@@ -116,6 +121,10 @@ if (vars.data.coupons_enabled) {
 		);
 	});
 	couponRemoveBtn.addEventListener('click', function () {
+		if (is_full_discount()) {
+			jQuery('#pm-select-cont').show();
+			jQuery('#card-cont').show();
+		}
 		delete (vars.data.coupon);
 		jQuery('#order-coupon-line').remove();
 		couponInput.value = '';
@@ -305,7 +314,12 @@ jQuery('.pm-select-btn').click(function () {
 
 function updateAllAmounts() {
 	calcTotal();
-	submitBtn.innerHTML = vars.payBtnText.replace(/%s/g, formatMoney(vars.data.amount));
+
+	if (is_full_discount()) {
+		submitBtn.innerHTML = vars.str.strGetForFree;
+	} else {
+		submitBtn.innerHTML = vars.payBtnText.replace(/%s/g, formatMoney(vars.data.amount));
+	}
 
 	if (vars.data.show_your_order === 1) {
 		jQuery('#order-total').html(formatMoney(vars.data.amount));
@@ -348,7 +362,7 @@ function calcTotal() {
 	if (vars.data.coupon) {
 		var discountAmount = 0;
 		if (vars.data.coupon.discount_type === 'perc') {
-			discountAmount = Math.round(itemSubt * (vars.data.coupon.discount / 100));
+			discountAmount = PHP_round(itemSubt * (vars.data.coupon.discount / 100), 0);
 		} else {
 			if (is_zero_cents(vars.data.currency)) {
 				discountAmount = vars.data.coupon.discount;
@@ -360,17 +374,22 @@ function calcTotal() {
 		vars.data.coupon.discount_amount = discountAmount;
 	}
 	if (vars.data.tax) {
-		var tax = Math.round(itemSubt * parseFloat(vars.data.tax) / 100);
+		var tax = PHP_round(itemSubt * vars.data.tax / 100, 0);
 		vars.data.taxAmount = tax;
-		itemSubt = parseInt(itemSubt) + parseInt(tax);
+		itemSubt = itemSubt + tax;
 	}
 
 	tAmount = itemSubt * vars.data.quantity;
 
 	if (vars.data.shipping) {
-		tAmount = tAmount + parseInt(vars.data.shipping);
+		tAmount = tAmount + vars.data.shipping;
 	}
-	vars.data.amount = tAmount;
+	vars.data.amount = PHP_round(tAmount, 0);
+}
+
+function PHP_round(num, dec) {
+	var num_sign = num >= 0 ? 1 : -1;
+	return parseFloat((Math.round((num * Math.pow(10, dec)) + (num_sign * 0.0001)) / Math.pow(10, dec)).toFixed(dec));
 }
 
 function is_zero_cents(curr) {
@@ -440,6 +459,13 @@ function inIframe() {
 	} catch (e) {
 		return true;
 	}
+}
+
+function is_full_discount() {
+	if (vars.data.coupon && vars.data.coupon.discount_type === 'perc' && parseFloat(vars.data.coupon.discount) === 100) {
+		return true;
+	}
+	return false;
 }
 
 function triggerEvent(el, type) {
@@ -525,7 +551,7 @@ function validate_custom_amount() {
 		displayAmount = displayAmount.replace('.', vars.amountOpts.decimalSep);
 	}
 	if (!is_zero_cents(vars.data.currency)) {
-		cAmount = Math.round(cAmount * 100);
+		cAmount = PHP_round(cAmount * 100, 0);
 	}
 	if (typeof vars.minAmounts[vars.data.currency] !== 'undefined') {
 		if (vars.minAmounts[vars.data.currency] > cAmount) {
@@ -569,9 +595,14 @@ function canProceed() {
 	}
 
 	if (piInput.value !== '') {
-		jQuery('#Aligner-item').fadeOut(function () {
-			jQuery('#global-spinner').show();
-		});
+		jQuery('#btn-spinner').hide();
+		jQuery('#checkmark-cont').css('display', 'flex');
+		setTimeout(function () {
+			jQuery('#Aligner-item').fadeOut(function () {
+				smokeScreen(false);
+				jQuery('#global-spinner').show();
+			});
+		}, 1500);
 		if (!inIframe() || window.doSelfSubmit) {
 			console.log('Self-submitting');
 			for (var i = 0; i < form.elements.length; i++) {
@@ -697,7 +728,7 @@ function handlePayment() {
 	}
 
 	//regen cs
-	if (!vars.data.token_not_required && (vars.data.client_secret === '' || vars.data.amount !== clientSecAmount || vars.data.currency !== clientSecCurrency)) {
+	if (!is_full_discount() && !vars.data.token_not_required && (vars.data.client_secret === '' || vars.data.amount !== clientSecAmount || vars.data.currency !== clientSecCurrency)) {
 		var reqStr = 'action=asp_pp_req_token&amount=' + vars.data.amount + '&curr=' + vars.data.currency + '&product_id=' + vars.data.product_id;
 		reqStr = reqStr + '&quantity=' + vars.data.quantity;
 		if (vars.data.cust_id) {
@@ -760,7 +791,7 @@ function handlePayment() {
 		return false;
 	}
 
-	if (vars.data.create_token) {
+	if (!is_full_discount() && vars.data.create_token) {
 		console.log('Creating token');
 		opts = {
 			name: billingNameInput.value
@@ -828,7 +859,7 @@ function handlePayment() {
 								if (!vars.data.coupon && couponInput) {
 									couponInput.value = '';
 								}
-								form.dispatchEvent(new Event('submit'));
+								triggerEvent(form, 'submit');
 							}
 						} catch (e) {
 							console.log(e);
@@ -851,6 +882,11 @@ function handlePayment() {
 		return true;
 	}
 
+	if (is_full_discount()) {
+		handleCardPaymentResult({ paymentIntent: { id: vars.data.coupon.zero_value_id } });
+		return false;
+	}
+
 	if (vars.data.do_card_setup) {
 		if (opts.shipping) {
 			opts.shipping = undefined;
@@ -870,7 +906,7 @@ function handlePayment() {
 					if (!vars.data.coupon && couponInput) {
 						couponInput.value = '';
 					}
-					form.dispatchEvent(new Event('submit'));
+					triggerEvent(form, 'submit');
 				}
 			});
 
@@ -902,7 +938,7 @@ function handleCardPaymentResult(result) {
 		if (!vars.data.coupon && couponInput) {
 			couponInput.value = '';
 		}
-		form.dispatchEvent(new Event('submit'));
+		triggerEvent(form, 'submit');
 	}
 }
 

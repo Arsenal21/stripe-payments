@@ -401,6 +401,7 @@ class ASP_PP_Handler {
 				'strRemove'                   => apply_filters( 'asp_customize_text_msg', __( 'Remove', 'stripe-payments' ), 'remove' ),
 				'strStartFreeTrial'           => apply_filters( 'asp_customize_text_msg', __( 'Start Free Trial', 'stripe-payments' ), 'start_free_trial' ),
 				'strInvalidCFValidationRegex' => __( 'Invalid validation RegEx: ', 'stripe-payments' ),
+				'strGetForFree'               => __( 'Get For Free', 'stripe-payments' ),
 			),
 		);
 
@@ -698,6 +699,13 @@ class ASP_PP_Handler {
 		}
 
 		$coupon = $item->get_coupon();
+
+		if ( 'perc' === $coupon['discount_type'] && 100 === intval( $coupon['discount'] ) ) {
+			//this is 100% discount coupon. Let's also generate zero-value payment id
+			$zero_value_id           = str_replace( '.', '', uniqid( 'free_', true ) );
+			$coupon['zero_value_id'] = $zero_value_id;
+		}
+
 		wp_send_json( $coupon );
 
 	}
