@@ -31,6 +31,11 @@ class ASP_Payment_Data {
 		return $this->last_error;
 	}
 
+	public function get_price() {
+		$price = $this->get_amount();
+		return $price;
+	}
+
 	public function get_amount() {
 		if ( false === $this->amount ) {
 			$this->amount = $this->obj->charges->data[0]->amount;

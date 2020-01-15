@@ -830,6 +830,9 @@ function handlePayment() {
 				if (vars.data.amount_variable) {
 					reqStr = reqStr + '&amount=' + vars.data.item_price;
 				}
+				if (vars.data.quantity > 1) {
+					reqStr = reqStr + '&quantity=' + vars.data.quantity;
+				}
 				reqStr = reqStr + '&billing_details=' + JSON.stringify(billingDetails);
 				if (shippingDetails) {
 					reqStr = reqStr + '&shipping_details=' + JSON.stringify(shippingDetails);
