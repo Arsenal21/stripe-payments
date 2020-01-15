@@ -2351,7 +2351,7 @@ msgid "Invalid validation RegEx: "
 msgstr ""
 
 #: stripe-payments/includes/class-asp-pp-handler.php:404
-msgid "Get For Free"
+msgid "Purchase for Free"
 msgstr ""
 
 #: stripe-payments/includes/class-asp-pp-handler.php:413
