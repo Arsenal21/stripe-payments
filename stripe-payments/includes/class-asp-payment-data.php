@@ -124,10 +124,10 @@ class ASP_Payment_Data {
 		$bd               = $this->billing_details_obj;
 		$billing_address .= $bd->name ? $bd->name . "\n" : '';
 		$billing_address .= isset( $bd->line1 ) ? $bd->line1 . "\n" : '';
-		$billing_address .= empty( $bd->line2 ) ? $bd->line2 . "\n" : '';
+		$billing_address .= isset( $bd->line2 ) ? $bd->line2 . "\n" : '';
 		$billing_address .= isset( $bd->postal_code ) ? $bd->postal_code . "\n" : '';
 		$billing_address .= isset( $bd->city ) ? $bd->city . "\n" : '';
-		$billing_address .= empty( $bd->state ) ? $bd->state . "\n" : '';
+		$billing_address .= isset( $bd->state ) ? $bd->state . "\n" : '';
 		$billing_address .= isset( $bd->country ) ? $bd->country . "\n" : '';
 		return $billing_address;
 	}
@@ -138,10 +138,10 @@ class ASP_Payment_Data {
 		$bd                = $this->shipping_details_obj;
 		$shipping_address .= isset( $bd->name ) ? $bd->name . "\n" : '';
 		$shipping_address .= isset( $bd->line1 ) ? $bd->line1 . "\n" : '';
-		$shipping_address .= empty( $bd->line2 ) ? $bd->line2 . "\n" : '';
+		$shipping_address .= isset( $bd->line2 ) ? $bd->line2 . "\n" : '';
 		$shipping_address .= isset( $bd->postal_code ) ? $bd->postal_code . "\n" : '';
 		$shipping_address .= isset( $bd->city ) ? $bd->city . "\n" : '';
-		$shipping_address .= empty( $bd->state ) ? $bd->state . "\n" : '';
+		$shipping_address .= isset( $bd->state ) ? $bd->state . "\n" : '';
 		$shipping_address .= isset( $bd->country ) ? $bd->country . "\n" : '';
 		return $shipping_address;
 	}
