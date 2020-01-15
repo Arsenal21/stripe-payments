@@ -124,6 +124,9 @@ if (vars.data.coupons_enabled) {
 		if (is_full_discount()) {
 			jQuery('#pm-select-cont').show();
 			jQuery('#card-cont').show();
+			if (vars.data.shipping_orig) {
+				vars.data.shipping = vars.data.shipping_orig;
+			}
 		}
 		delete (vars.data.coupon);
 		jQuery('#order-coupon-line').remove();
@@ -326,6 +329,7 @@ function updateAllAmounts() {
 		jQuery('#order-item-price').html(formatMoney(vars.data.item_price * vars.data.quantity));
 		jQuery('#order-quantity').html(vars.data.quantity);
 		jQuery('#order-tax').html(formatMoney(vars.data.taxAmount * vars.data.quantity));
+		jQuery('#shipping').html(formatMoney(vars.data.shipping));
 		if (vars.data.coupon) {
 			if (jQuery('tr#order-coupon-line').length === 0) {
 				var couponOrderLine = '<tr id="order-coupon-line"><td>Coupon "' + vars.data.coupon.code + '"</td><td>- <span id="order-coupon"></span></td></tr>';
@@ -372,6 +376,10 @@ function calcTotal() {
 		}
 		itemSubt = itemSubt - discountAmount;
 		vars.data.coupon.discount_amount = discountAmount;
+		if (is_full_discount() && vars.data.shipping) {
+			vars.data.shipping_orig = vars.data.shipping;
+			vars.data.shipping = 0;
+		}
 	}
 	if (vars.data.tax) {
 		var tax = PHP_round(itemSubt * vars.data.tax / 100, 0);
