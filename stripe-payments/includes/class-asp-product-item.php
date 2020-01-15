@@ -8,6 +8,7 @@ class ASP_Product_Item {
 	protected $last_error    = '';
 	protected $cust_quantity = false;
 	protected $tax;
+	protected $shipping;
 	protected $zero_cent = false;
 	protected $price;
 	protected $asp_main;
@@ -82,7 +83,9 @@ class ASP_Product_Item {
 	}
 
 	public function get_shipping( $in_cents = false ) {
-		$this->shipping = get_post_meta( $this->post_id, 'asp_product_shipping', true );
+		if ( ! isset( $this->shipping ) ) {
+			$this->shipping = get_post_meta( $this->post_id, 'asp_product_shipping', true );
+		}
 		if ( empty( $this->shipping ) ) {
 			$this->shipping = 0;
 		}
@@ -90,6 +93,10 @@ class ASP_Product_Item {
 			return $this->in_cents( $this->shipping );
 		}
 		return $this->shipping;
+	}
+
+	public function set_shipping ($shipping) {
+		$this->shipping = $shipping;
 	}
 
 	public function get_thumb() {

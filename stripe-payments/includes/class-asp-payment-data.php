@@ -217,6 +217,8 @@ class ASP_Payment_Data {
 
 		$this->currency = $ipn_ng_class->item->get_currency();
 
+		$ipn_ng_class->item->set_shipping( 0 );
+
 		$this->is_zero_value = true;
 
 	}
