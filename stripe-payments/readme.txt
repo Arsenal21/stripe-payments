@@ -158,8 +158,10 @@ None.
 - Added 100% discount coupons support.
 - Made amounts rounding more consistent between frontend and backend.
 - Added payment popup animation to indicate payment is accepted.
+- Added quantity support for subscription products (requires Subscriptions addon 2.0.8+).
 - Improved payment popup appearance on mobile devices.
 - Made payment popup compatible with some older browsers (like IE11).
+- Minor backend improvements and fixes.
 
 = 2.0.18 =
 - The invalid price display for subscription items on the "All products" page is fixed.
