@@ -156,7 +156,7 @@ None.
 
 = 2.0.19 =
 - Added 100% discount coupons support.
-- Made amounts rounding more consistent between frontend and backend.
+- Made amount rounding more consistent between frontend and backend.
 - Added payment popup animation to indicate payment is accepted.
 - Added quantity support for subscription products (requires Subscriptions addon 2.0.8+).
 - Improved payment popup appearance on mobile devices.
