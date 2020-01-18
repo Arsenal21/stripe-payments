@@ -145,7 +145,7 @@ class ASPProductsMetaboxes {
 		?>
 <label><?php esc_html_e( 'Price', 'stripe-payments' ); ?></label>
 <br />
-<input type="text" name="asp_product_price" value="<?php echo esc_attr( $current_price ); ?>">
+<input type="number" step="any" min="0" name="asp_product_price" value="<?php echo esc_attr( $current_price ); ?>">
 <p class="description">
 		<?php
 		echo esc_html( __( 'Item price. Numbers only, no need to put currency symbol. Example: 99.95', 'stripe-payments' ) ) .
@@ -256,7 +256,7 @@ class ASPProductsMetaboxes {
 <div id="asp_shipping_cost_container">
 	<label><?php esc_html_e( 'Shipping Cost', 'stripe-payments' ); ?></label>
 	<br />
-	<input type="text" name="asp_product_shipping" value="<?php echo esc_attr( $current_shipping ); ?>">
+	<input type="number" step="any" min="0" name="asp_product_shipping" value="<?php echo esc_attr( $current_shipping ); ?>">
 	<p class="description">
 		<?php
 		esc_html_e( 'Numbers only, no need to put currency symbol. Example: 5.90', 'stripe-payments' );
@@ -267,7 +267,7 @@ class ASPProductsMetaboxes {
 </div>
 <label><?php esc_html_e( 'Tax (%)', 'stripe-payments' ); ?></label>
 <br />
-<input type="text" name="asp_product_tax" value="<?php echo esc_attr( $current_tax ); ?>">
+<input type="number" step="any" min="0" name="asp_product_tax" value="<?php echo esc_attr( $current_tax ); ?>"><span>%</span>
 <p class="description">
 		<?php
 		esc_html_e( 'Enter tax (in percent) which should be added to product price during purchase.', 'stripe-payments' );
@@ -293,7 +293,7 @@ class ASPProductsMetaboxes {
 <p class="description"><?php echo esc_html( __( 'When checked, users can enter quantity they want to buy.', 'stripe-payments' ) ); ?></p>
 
 <div style="margin-top: 20px;"><label><?php esc_html_e( 'Set Quantity:', 'stripe-payments' ); ?>
-		<input type="text" name="asp_product_quantity" value="<?php echo esc_attr( $current_val ); ?>">
+		<input type="number" min="1" step="1" name="asp_product_quantity" value="<?php echo esc_attr( $current_val ); ?>">
 	</label>
 	<p class="description"><?php esc_html_e( 'If you want to use a set quanity for this item then enter the value in this field.', 'stripe-payments' ); ?></p>
 </div>
@@ -306,8 +306,8 @@ class ASPProductsMetaboxes {
 </label>
 <p class="description"><?php esc_html_e( 'When enabled, you can specify the quantity available for this product. It will be decreased each time the item is purchased. When stock reaches zero, an "Out of stock" message will be displayed instead of the buy button.', 'stripe-payments' ); ?></p>
 
-<div style="margin-top: 20px;"><label><?php _e( 'Quantity Available:', 'stripe-payments' ); ?>
-		<input type="number" name="asp_product_stock_items" value="<?php echo ! $stock_items ? 0 : $stock_items; ?>">
+<div style="margin-top: 20px;"><label><?php esc_html_e( 'Quantity Available:', 'stripe-payments' ); ?>
+		<input type="number" min="0" step="1" name="asp_product_stock_items" value="<?php echo ! $stock_items ? 0 : $stock_items; ?>">
 	</label>
 	<p class="description"><?php _e( 'Specify the quantity available for this product.', 'stripe-payments' ); ?></p>
 </div>
@@ -571,11 +571,20 @@ jQuery(document).ready(function($) {
 			}
 			$currency = filter_input( INPUT_POST, 'asp_product_currency', FILTER_SANITIZE_STRING );
 			update_post_meta( $post_id, 'asp_product_currency', sanitize_text_field( $currency ) );
+
 			$shipping = filter_input( INPUT_POST, 'asp_product_shipping', FILTER_SANITIZE_STRING );
 			$shipping = ! empty( $shipping ) ? AcceptStripePayments::tofloat( $shipping ) : $shipping;
 			update_post_meta( $post_id, 'asp_product_shipping', $shipping );
-			update_post_meta( $post_id, 'asp_product_tax', sanitize_text_field( $_POST['asp_product_tax'] ) );
-			update_post_meta( $post_id, 'asp_product_quantity', sanitize_text_field( $_POST['asp_product_quantity'] ) );
+
+			$tax = filter_input( INPUT_POST, 'asp_product_tax', FILTER_SANITIZE_STRING );
+			$tax = floatval( $tax );
+			$tax = empty( $tax ) ? '' : $tax;
+			update_post_meta( $post_id, 'asp_product_tax', $tax );
+
+			$quantity = filter_input( INPUT_POST, 'asp_product_quantity', FILTER_SANITIZE_NUMBER_INT );
+			$quantity = empty( $quantity ) ? '' : $quantity;
+			update_post_meta( $post_id, 'asp_product_quantity', $quantity );
+
 			update_post_meta( $post_id, 'asp_product_custom_quantity', isset( $_POST['asp_product_custom_quantity'] ) ? '1' : false );
 			update_post_meta( $post_id, 'asp_product_enable_stock', isset( $_POST['asp_product_enable_stock'] ) ? '1' : false );
 			update_post_meta( $post_id, 'asp_product_stock_items', sanitize_text_field( absint( $_POST['asp_product_stock_items'] ) ) );
