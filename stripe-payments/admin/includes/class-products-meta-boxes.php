@@ -154,7 +154,7 @@ class ASPProductsMetaboxes {
 </p>
 <label><?php esc_html_e( 'Currency', 'stripe-payments' ); ?></label>
 <br />
-<select name="asp_product_currency" id="asp_currency_select"><?php echo AcceptStripePayments_Admin::get_currency_options( $current_curr ); ?></select>
+<select name="asp_product_currency" id="asp_currency_select"><?php echo esc_attr( AcceptStripePayments_Admin::get_currency_options( $current_curr ) ); ?></select>
 <p class="description"><?php esc_html_e( 'Leave "(Default)" option selected if you want to use currency specified on settings page.', 'stripe-payments' ); ?></p>
 <label>
 	<input type="checkbox" name="asp_product_currency_variable" value="1" <?php echo esc_attr( ! empty( $current_curr_var ) ? ' checked' : '' ); ?>> <?php esc_html_e( 'Allow customers to specify currency', 'stripe-payments' ); ?>
@@ -301,15 +301,15 @@ class ASPProductsMetaboxes {
 <hr />
 
 <label>
-	<input type="checkbox" name="asp_product_enable_stock" value="1" <?php echo ( $enable_stock === '1' ) ? ' checked' : ''; ?>>
+	<input type="checkbox" name="asp_product_enable_stock" value="1" <?php echo esc_attr( ( '1' === $enable_stock ) ? ' checked' : '' ); ?>>
 		<?php esc_html_e( 'Enable stock control', 'stripe-payments' ); ?>
 </label>
 <p class="description"><?php esc_html_e( 'When enabled, you can specify the quantity available for this product. It will be decreased each time the item is purchased. When stock reaches zero, an "Out of stock" message will be displayed instead of the buy button.', 'stripe-payments' ); ?></p>
 
 <div style="margin-top: 20px;"><label><?php esc_html_e( 'Quantity Available:', 'stripe-payments' ); ?>
-		<input type="number" min="0" step="1" name="asp_product_stock_items" value="<?php echo ! $stock_items ? 0 : $stock_items; ?>">
+		<input type="number" min="0" step="1" name="asp_product_stock_items" value="<?php echo esc_attr( ! $stock_items ? 0 : $stock_items ); ?>">
 	</label>
-	<p class="description"><?php _e( 'Specify the quantity available for this product.', 'stripe-payments' ); ?></p>
+	<p class="description"><?php esc_html_e( 'Specify the quantity available for this product.', 'stripe-payments' ); ?></p>
 </div>
 
 		<?php
@@ -318,25 +318,25 @@ class ASPProductsMetaboxes {
 	public function display_upload_meta_box( $post ) {
 		$current_val = get_post_meta( $post->ID, 'asp_product_upload', true );
 		?>
-<p><?php echo __( 'URL of your product (if you\'re selling digital products).', 'stripe-payments' ); ?></p>
+<p><?php esc_html_e( 'URL of your product (if you\'re selling digital products).', 'stripe-payments' ); ?></p>
 
 <div>
 	<input id="asp_product_upload" type="text" style="width: 100%" name="asp_product_upload" value="<?php echo esc_attr( $current_val ); ?>" placeholder="https://..." />
 
 	<p class="description">
-		<?php _e( 'Manually enter a valid URL of the file in the text box below, or click "Select File" button to upload (or choose) the downloadable file.', 'stripe-payments' ); ?>
+		<?php esc_html_e( 'Manually enter a valid URL of the file in the text box below, or click "Select File" button to upload (or choose) the downloadable file.', 'stripe-payments' ); ?>
 	</p>
 </div>
 <p>
-	<input id="asp_select_upload_btn" type="button" class="button" value="<?php echo __( 'Select File', 'stripe-payments' ); ?>" />
+	<input id="asp_select_upload_btn" type="button" class="button" value="<?php esc_attr_e( 'Select File', 'stripe-payments' ); ?>" />
 		<?php do_action( 'asp_product_upload_metabox_after_button', $post ); ?>
 </p>
 <div>
-		<?php _e( 'Steps to upload a file or choose one from your media library:', 'stripe-payments' ); ?>
+		<?php esc_html_e( 'Steps to upload a file or choose one from your media library:', 'stripe-payments' ); ?>
 	<ol>
-		<li><?php _e( 'Hit the "Select File" button.', 'stripe-payments' ); ?></li>
-		<li><?php _e( 'Upload a new file or choose an existing one from your media library.', 'stripe-payments' ); ?></li>
-		<li><?php _e( 'Click the "Insert" button, this will populate the uploaded file\'s URL in the above text field.', 'stripe-payments' ); ?></li>
+		<li><?php esc_html_e( 'Hit the "Select File" button.', 'stripe-payments' ); ?></li>
+		<li><?php esc_html_e( 'Upload a new file or choose an existing one from your media library.', 'stripe-payments' ); ?></li>
+		<li><?php esc_html_e( 'Click the "Insert" button, this will populate the uploaded file\'s URL in the above text field.', 'stripe-payments' ); ?></li>
 	</ol>
 </div>
 <script>
@@ -346,9 +346,9 @@ jQuery(document).ready(function($) {
 	$('#asp_select_upload_btn').click(function(e) {
 		e.preventDefault();
 		asp_selectFileFrame = wp.media({
-			title: "<?php echo __( 'Select File', 'stripe-payments' ); ?>",
+			title: "<?php esc_html_e( 'Select File', 'stripe-payments' ); ?>",
 			button: {
-				text: "<?php echo __( 'Insert', 'stripe-payments' ); ?>"
+				text: "<?php esc_html_e( 'Insert', 'stripe-payments' ); ?>"
 			},
 			multiple: false
 		});
