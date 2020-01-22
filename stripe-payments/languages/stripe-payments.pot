@@ -1848,14 +1848,14 @@ msgstr ""
 msgid "Please specify product name."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:669
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:678
 #, php-format
 msgid ""
 "<b>Invalid product price</b>: minimum price in %1$s should be %2$s, you "
 "specified %3$s. This price limitation comes from Stripe."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:678
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:687
 #, php-format
 msgid ""
 "<b>Invalid product price</b>: maximum allowed product price is %1$s, you "
