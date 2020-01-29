@@ -137,7 +137,7 @@
 <![endif]-->
 </head>
 
-<body>
+<body<?php echo isset( $a['prod_id'] ) ? sprintf( ' class="product-%d"', esc_attr( $a['prod_id'] ) ) : ''; ?>>
 	<div id="Aligner" class="Aligner">
 		<?php if ( ! $a['data']['is_live'] ) { ?>
 		<a href="https://stripe.com/docs/testing#cards" target="_blank" id="test-mode"><?php esc_html_e( 'TEST MODE', 'stripe-payments' ); ?></a>
