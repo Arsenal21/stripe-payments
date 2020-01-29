@@ -833,6 +833,9 @@ function handlePayment() {
 				if (vars.data.quantity > 1) {
 					reqStr = reqStr + '&quantity=' + vars.data.quantity;
 				}
+				if (vars.data.coupon) {
+					reqStr = reqStr + '&coupon=' + vars.data.coupon.code;
+				}
 				reqStr = reqStr + '&billing_details=' + JSON.stringify(billingDetails);
 				if (shippingDetails) {
 					reqStr = reqStr + '&shipping_details=' + JSON.stringify(shippingDetails);
