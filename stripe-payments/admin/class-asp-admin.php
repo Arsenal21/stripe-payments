@@ -198,16 +198,9 @@ class AcceptStripePayments_Admin {
 	public function asp_print_admin_scripts() {
 		//The following is used by the TinyMCE button.
 		?>
-<script type="text/javascript">
-var asp_admin_ajax_url = '
-		<?php
-		echo admin_url(
-			'
-admin - ajax.php ? action = ajax '
-		);
-		?>
-							';
-</script>
+	<script type="text/javascript">
+		var asp_admin_ajax_url = '<?php echo esc_js( admin_url( 'admin-ajax.php?action=ajax' ) ); ?>';
+	</script>
 		<?php
 	}
 
