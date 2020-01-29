@@ -498,31 +498,30 @@
 			</div>
 		</div>
 	</div>
+	<?php
+
+	foreach ( $a['styles'] as $style ) {
+		if ( ! $style['footer'] ) {
+			printf( '<link rel="stylesheet" href="%s">' . "\r\n", esc_url( $style['src'] ) ); //phpcs:ignore
+		}
+	}
+	foreach ( $a['scripts'] as $script ) {
+		if ( ! $script['footer'] ) {
+			printf( '<script src="%s"></script>' . "\r\n", esc_url( $script['src'] ) ); //phpcs:ignore
+		}
+	}
+
+	foreach ( $a['scripts'] as $script ) {
+		if ( $script['footer'] ) {
+			printf( '<script src="%s"></script>' . "\r\n", esc_url( $script['src'] ) ); //phpcs:ignore
+		}
+	}
+
+	foreach ( $a['styles'] as $style ) {
+		if ( $style['footer'] ) {
+			printf( '<link rel="stylesheet" href="%s">' . "\r\n", esc_url( $style['src'] ) ); //phpcs:ignore
+		}
+	}
+	?>
 </body>
-<?php
-
-foreach ( $a['styles'] as $style ) {
-	if ( ! $style['footer'] ) {
-		printf( '<link rel="stylesheet" href="%s">' . "\r\n", esc_url( $style['src'] ) ); //phpcs:ignore
-	}
-}
-foreach ( $a['scripts'] as $script ) {
-	if ( ! $script['footer'] ) {
-		printf( '<script src="%s"></script>' . "\r\n", esc_url( $script['src'] ) ); //phpcs:ignore
-	}
-}
-
-foreach ( $a['scripts'] as $script ) {
-	if ( $script['footer'] ) {
-		printf( '<script src="%s"></script>' . "\r\n", esc_url( $script['src'] ) ); //phpcs:ignore
-	}
-}
-
-foreach ( $a['styles'] as $style ) {
-	if ( $style['footer'] ) {
-		printf( '<link rel="stylesheet" href="%s">' . "\r\n", esc_url( $style['src'] ) ); //phpcs:ignore
-	}
-}
-?>
-
 </html>
