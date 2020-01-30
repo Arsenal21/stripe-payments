@@ -6,12 +6,111 @@
 	<meta charset="utf-8">
 	<title><?php echo esc_html( $a['page_title'] ); ?></title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<?php
-	foreach ( $a['styles'] as $style ) {
-		if ( ! $style['footer'] ) {
-			printf( '<link rel="stylesheet" href="%s">' . "\r\n", esc_url( $style['src'] ) ); //phpcs:ignore
+	<style>
+	html,
+	body {
+		width: 100%;
+		height: 100%;
+		margin: 0;
+		padding: 0;
+		overflow: auto;
+	}
+
+	html {
+		-webkit-overflow-scrolling: touch;
+	}
+
+	body {
+		overflow-y: scroll;
+	}
+
+	#checkmark-cont {
+		display: none;
+		position: relative;
+	}
+
+	#smoke-screen {
+		display: none;
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		top: 0;
+		align-items: center;
+		justify-content: center;
+		text-align: center;
+		left: 0;
+		z-index: 100;
+		cursor: wait;
+		background: rgba(255, 255, 255, .3);
+	}
+
+	.small-spinner {
+		box-sizing: border-box;
+		position: relative;
+		width: 40px;
+		height: 40px;
+		border-radius: 50%;
+		border: 7px solid #ccc;
+		border-top-color: #0078e7;
+		animation: small-spinner .6s linear infinite;
+	}
+
+	@keyframes small-spinner {
+		to {
+			transform: rotate(360deg);
 		}
 	}
+
+	@media only screen and (max-width: 480px) {
+		.small-spinner {
+			top: 50%;
+			position: fixed;
+		}
+
+		#checkmark-cont {
+			top: 50%;
+			position: fixed;
+			margin-top: -15px;
+		}
+
+		.coupon-spinner {
+			top: .5em;
+		}
+
+		#tax-shipping-cont {
+			padding-top: 20px;
+		}
+	}
+
+	.Aligner {
+		background: rgba(0, 0, 0, .3);
+		z-index: -1;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		height: auto;
+		min-height: 100%;
+	}
+
+	#Aligner-item {
+		height: 0;
+		min-height: 0;
+		overflow: hidden;
+		position: relative;
+		border-radius: 6px;
+		background-color: #f5f5f7;
+		box-shadow: 0 12px 30px 0 rgba(0, 0, 0, .5), inset 0 1px 0 0 hsla(0, 0%, 100%, .65);
+		max-width: 700px;
+		margin: 45px 10px 50px 10px;
+		width: 0;
+	}
+
+	#test-mode {
+		display: none;
+	}
+	</style>
+	<?php
+
 	foreach ( $a['vars'] as $var => $data ) {
 		printf(
 			"<script type='text/javascript'>
@@ -22,12 +121,6 @@
 			esc_js( $var ),
 			wp_json_encode( $data )
 		);
-	}
-
-	foreach ( $a['scripts'] as $script ) {
-		if ( ! $script['footer'] ) {
-			printf( '<script src="%s"></script>' . "\r\n", esc_url( $script['src'] ) ); //phpcs:ignore
-		}
 	}
 
 	$icon = get_site_icon_url();
@@ -53,27 +146,32 @@
 		<div id="Aligner-item">
 			<div id="smoke-screen">
 				<span id="btn-spinner" class="small-spinner"></span>
+				<div id="checkmark-cont">
+					<svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+						<circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" />
+						<path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" /></svg>
+				</div>
 			</div>
 			<div id="modal-header">
 				<?php if ( $a['data']['item_logo'] ) { ?>
 				<div id="item-logo-cont">
-					<img id="item-logo" src="<?php echo esc_url( $a['data']['item_logo'] ); ?>">
+					<img id="item-logo" loading="lazy" width="70" height="70" src="<?php echo esc_url( $a['data']['item_logo'] ); ?>">
 				</div>
 				<?php } ?>
-				<span id="modal-close-btn" title="<?php esc_html_e( 'Close', 'stripe-payments' ); ?>"><img src="<?php echo esc_url( $a['plugin_url'] ); ?>/public/views/templates/default/close-btn.png"></span>
+				<span id="modal-close-btn" title="<?php esc_html_e( 'Close', 'stripe-payments' ); ?>"><img loading="lazy" width="17" height="18" src="<?php echo esc_url( $a['plugin_url'] ); ?>/public/views/templates/default/close-btn.png"></span>
 				<div id="item-name"><?php echo esc_html( $a['item_name'] ); ?></div>
 				<div id="item-descr"><?php echo esc_html( $a['data']['descr'] ); ?></div>
 			</div>
 			<div id="modal-body" class="pure-g">
 				<div class="pure-u-1">
-						<div id="global-error" <?php echo isset( $a['fatal_error'] ) ? 'style="display: block"' : ''; ?>>
-							<?php echo isset( $a['fatal_error'] ) ? esc_html( $a['fatal_error'] ) : ''; ?>
-						</div>
+					<div id="global-error" <?php echo isset( $a['fatal_error'] ) ? 'style="display: block"' : ''; ?>>
+						<?php echo isset( $a['fatal_error'] ) ? esc_html( $a['fatal_error'] ) : ''; ?>
+					</div>
 					<form method="post" id="payment-form" class="pure-form pure-form-stacked" <?php echo isset( $a['fatal_error'] ) ? 'style="display: none;"' : ''; ?>>
 						<?php if ( $a['data']['amount_variable'] ) { ?>
 						<div class="pure-u-1">
 							<label for="amount"><?php esc_html_e( 'Enter amount', 'stripe-payments' ); ?></label>
-							<input class="pure-input-1" id="amount" name="amount" inputmode="decimal" required>
+							<input class="pure-input-1" id="amount" name="amount" inputmode="decimal" value="<?php echo esc_attr( ! empty( $a['data']['item_price'] ) ? ASP_Utils::formatted_price( $a['data']['item_price'], false, true ) : '' ); ?>" required>
 							<div id="amount-error" class="form-err" role="alert"></div>
 						</div>
 						<?php } ?>
@@ -124,14 +222,14 @@
 										}
 										$variations_str .= '<fieldset>';
 										$variations_str .= '<legend>' . $group . '</legend>';
-										if ( isset( $a['data']['variations']['opts'][ $grp_id ] ) && $a['data']['variations']['opts'][ $grp_id ] === '1' ) {
+										if ( isset( $a['data']['variations']['opts'][ $grp_id ] ) && '1' === $a['data']['variations']['opts'][ $grp_id ] ) {
 											//radio buttons output
 										} else {
 											$variations_str .= sprintf( '<select class="pure-input-1 variations-input" data-asp-variations-group-id="%1$d" name="stripeVariations[%1$d][]">', $grp_id );
 										}
 										foreach ( $a['data']['variations']['names'][ $grp_id ] as $var_id => $name ) {
-											if ( isset( $a['data']['variations']['opts'][ $grp_id ] ) && $a['data']['variations']['opts'][ $grp_id ] === '1' ) {
-												$tpl = '<label class="pure-radio"><input class="variations-input" data-asp-variations-group-id="' . $grp_id . '" name="stripeVariations[' . $grp_id . '][]" type="radio" name="123" value="%d"' . ( $var_id === 0 ? 'checked' : '' ) . '> %s %s</label>';
+											if ( isset( $a['data']['variations']['opts'][ $grp_id ] ) && '1' === $a['data']['variations']['opts'][ $grp_id ] ) {
+												$tpl = '<label class="pure-radio"><input class="variations-input" data-asp-variations-group-id="' . $grp_id . '" name="stripeVariations[' . $grp_id . '][]" type="radio" name="123" value="%d"' . ( 0 === $var_id ? 'checked' : '' ) . '> %s %s</label>';
 											} else {
 												$tpl = '<option value="%d">%s %s</option>';
 											}
@@ -145,7 +243,7 @@
 											}
 											$variations_str .= sprintf( $tpl, $var_id, $name, $price_mod );
 										}
-										if ( isset( $a['data']['variations']['opts'][ $grp_id ] ) && $a['data']['variations']['opts'][ $grp_id ] === '1' ) {
+										if ( isset( $a['data']['variations']['opts'][ $grp_id ] ) && '1' === $a['data']['variations']['opts'][ $grp_id ] ) {
 											//radio buttons output
 										} else {
 											$variations_str .= '</select>';
@@ -189,7 +287,7 @@
 										</thead>
 										<tbody>
 											<tr id="order-item-line">
-												<td><?php echo $a['item_name'] . ' × <span id="order-quantity">' . $a['item']->get_quantity() . '</span>'; ?></td>
+												<td><?php echo wp_kses( sprintf( '%s × <span id="order-quantity">%d</span>', $a['item_name'], $a['item']->get_quantity() ), array( 'span' => array( 'id' => array() ) ) ); ?></td>
 												<td><span id="order-item-price"><?php echo esc_html( AcceptStripePayments::formatted_price( $this->item->get_price(), $this->item->get_currency() ) ); ?></span></td>
 											</tr>
 											<?php
@@ -197,13 +295,13 @@
 												$tax_str        = apply_filters( 'asp_customize_text_msg', __( 'Tax', 'stripe-payments' ), 'tax_str' );
 												$tax_amount_str = AcceptStripePayments::formatted_price( $a['item']->get_tax_amount(), $this->item->get_currency() );
 												$out            = sprintf( '<tr><td>%s (%s%%)</td><td><span id="order-tax">%s</span></td></tr>', $tax_str, $a['item']->get_tax(), $tax_amount_str );
-												echo $out;
+												echo $out; //phpcs:ignore
 											}
 											if ( $a['data']['shipping'] ) {
 												$ship_str        = apply_filters( 'asp_customize_text_msg', __( 'Shipping', 'stripe-payments' ), 'shipping_str' );
 												$ship_amount_str = AcceptStripePayments::formatted_price( $a['item']->get_shipping(), $this->item->get_currency() );
 												$out             = sprintf( '<tr><td>%s</td><td><span id="shipping">%s</span></td></tr>', $ship_str, $ship_amount_str );
-												echo $out;
+												echo $out; //phpcs:ignore
 											}
 											?>
 											<tr>
@@ -214,7 +312,7 @@
 									</table>
 								</fieldset>
 							</div>
-										<?php } ?>
+							<?php } ?>
 							<?php if ( count( $a['data']['payment_methods'] ) > 1 ) { ?>
 							<div id="pm-select-cont" class="pure-u-1">
 								<fieldset>
@@ -225,7 +323,7 @@
 										$img = '';
 										if ( isset( $pm['img'] ) ) {
 											$img = sprintf(
-												' <img alt="%s" height="%s" width="%s" src="%s">',
+												' <img loading="lazy" alt="%s" height="%s" width="%s" src="%s">',
 												$pm['title'],
 												isset( $pm['img_height'] ) ? $pm['img_height'] : 32,
 												isset( $pm['img_width'] ) ? $pm['img_width'] : 32,
@@ -242,7 +340,7 @@
 							<div class="pure-g">
 								<fieldset id="name-email-cont" style="width: 100%;">
 									<div class="pure-u-1 pure-u-md-11-24">
-										<label for="billing_name"><?php esc_html_e( 'Name', 'stripe-payments' ); ?></label>
+										<label for="billing_name"><?php echo esc_html( _x( 'Name', 'Customer name', 'stripe-payments' ) ); ?></label>
 										<div style="position: relative;">
 											<svg id="i-user" class="icon input-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
 												<path d="M22 11 C22 16 19 20 16 20 13 20 10 16 10 11 10 6 12 3 16 3 20 3 22 6 22 11 Z M4 30 L28 30 C28 21 22 20 16 20 10 20 4 21 4 30 Z" />
@@ -268,8 +366,9 @@
 								<?php if ( $a['data']['billing_address'] && $a['data']['shipping_address'] ) { ?>
 								<div class="pure-u-1">
 									<label class="pure-checkbox">
-										<input type="checkbox" id="same-bill-ship-addr" name="same-bill-ship-addr" checked> Same billing and shipping
-										info</label>
+										<input type="checkbox" id="same-bill-ship-addr" name="same-bill-ship-addr" checked>
+										<?php echo esc_html( __( 'Same billing and shipping info', 'stripe-payments' ) ); ?>
+									</label>
 								</div>
 								<?php } ?>
 								<?php if ( $a['data']['billing_address'] ) { ?>
@@ -376,7 +475,7 @@
 								</div>
 								<?php
 									$out = apply_filters( 'asp_ng_pp_after_button', '', $a['data'], '' );
-									echo $out;
+									echo $out; //phpcs:ignore
 								?>
 							</div>
 						</div>
@@ -401,6 +500,18 @@
 	</div>
 </body>
 <?php
+
+foreach ( $a['styles'] as $style ) {
+	if ( ! $style['footer'] ) {
+		printf( '<link rel="stylesheet" href="%s">' . "\r\n", esc_url( $style['src'] ) ); //phpcs:ignore
+	}
+}
+foreach ( $a['scripts'] as $script ) {
+	if ( ! $script['footer'] ) {
+		printf( '<script src="%s"></script>' . "\r\n", esc_url( $script['src'] ) ); //phpcs:ignore
+	}
+}
+
 foreach ( $a['scripts'] as $script ) {
 	if ( $script['footer'] ) {
 		printf( '<script src="%s"></script>' . "\r\n", esc_url( $script['src'] ) ); //phpcs:ignore

@@ -231,7 +231,7 @@ class AcceptStripePayments_CouponsAdmin {
 			require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
 		}
 
-		require_once WP_ASP_PLUGIN_PATH . 'admin/includes/class-cooupons-list-table.php';
+		require_once WP_ASP_PLUGIN_PATH . 'admin/includes/class-coupons-list-table.php';
 
 		$coupons_tbl = new ASP_Coupons_Table();
 		$coupons_tbl->prepare_items();

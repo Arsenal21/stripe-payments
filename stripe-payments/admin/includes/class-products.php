@@ -4,7 +4,9 @@ class ASPProducts {
 
 	protected static $instance = null;
 
-	function __construct() {
+	public function __construct() {
+		self::$instance = $this;
+
 		if ( is_admin() ) {
 			//products meta boxes handler
 			require_once WP_ASP_PLUGIN_PATH . 'admin/includes/class-products-meta-boxes.php';
@@ -14,21 +16,20 @@ class ASPProducts {
 	public static function get_instance() {
 
 		// If the single instance hasn't been set, set it now.
-		if ( null == self::$instance ) {
+		if ( null === self::$instance ) {
 			self::$instance = new self();
 		}
 
 		return self::$instance;
 	}
 
-	function register_post_type() {
+	public function register_post_type() {
 
 		// Products post type
 		$labels    = array(
 			'name'               => _x( 'Products', 'Post Type General Name', 'stripe-payments' ),
 			'singular_name'      => _x( 'Product', 'Post Type Singular Name', 'stripe-payments' ),
 			'menu_name'          => __( 'Stripe Payments', 'stripe-payments' ),
-			//'parent_item_colon'  => __( 'Parent Order:', 'stripe-payments' ),
 			'all_items'          => __( 'Products', 'stripe-payments' ),
 			'view_item'          => __( 'View Product', 'stripe-payments' ),
 			'add_new_item'       => __( 'Add New Product', 'stripe-payments' ),
@@ -75,7 +76,6 @@ class ASPProducts {
 		$labels   = array(
 			'name'               => _x( 'Products', 'Post Type General Name', 'stripe-payments' ),
 			'singular_name'      => _x( 'Product', 'Post Type Singular Name', 'stripe-payments' ),
-			//'parent_item_colon'  => __( 'Parent Order:', 'stripe-payments' ),
 			'all_items'          => __( 'Products', 'stripe-payments' ),
 			'view_item'          => __( 'View Product', 'stripe-payments' ),
 			'add_new_item'       => __( 'Add New Product', 'stripe-payments' ),
@@ -106,11 +106,11 @@ class ASPProducts {
 		);
 	}
 
-	function post_updated_messages( $messages ) {
+	public function post_updated_messages( $messages ) {
 		$post      = get_post();
 		$post_type = get_post_type( $post );
 		$slug      = ASPMain::$products_slug;
-		if ( $post_type === ASPMain::$products_slug ) {
+		if ( ASPMain::$products_slug === $post_type ) {
 			$permalink             = get_permalink( $post->ID );
 			$view_link             = sprintf( ' <a href="%s">%s</a>', esc_url( $permalink ), __( 'View product', 'stripe-payments' ) );
 			$preview_permalink     = add_query_arg( 'preview', 'true', $permalink );
@@ -126,11 +126,11 @@ class ASPProducts {
 		return $messages;
 	}
 
-	function manage_columns( $columns ) {
+	public function manage_columns( $columns ) {
 		unset( $columns );
 		$columns = array(
-			'title'     => __( 'Product Name', 'stripe-payments' ),
 			'thumbnail' => __( 'Thumbnail', 'stripe-payments' ),
+			'title'     => __( 'Product Name', 'stripe-payments' ),
 			'id'        => __( 'ID', 'stripe-payments' ),
 			'price'     => __( 'Price', 'stripe-payments' ),
 			'stock'     => __( 'Stock', 'stripe-payments' ),
@@ -140,10 +140,10 @@ class ASPProducts {
 		return $columns;
 	}
 
-	function manage_custom_columns( $column, $post_id ) {
+	public function manage_custom_columns( $column, $post_id ) {
 		switch ( $column ) {
 			case 'id':
-				echo $post_id;
+				echo esc_html( $post_id );
 				break;
 			case 'stock':
 				if ( get_post_meta( $post_id, 'asp_product_enable_stock', true ) ) {
@@ -154,7 +154,7 @@ class ASPProducts {
 				}
 				break;
 			case 'thumbnail':
-				$thumb_url = AcceptStripePayments::get_small_product_thumb( $post_id );
+				$thumb_url = ASP_Utils::get_small_product_thumb( $post_id );
 				if ( ! $thumb_url ) {
 					$thumb_url = WP_ASP_PLUGIN_URL . '/assets/product-thumb-placeholder.png';
 				}
@@ -169,8 +169,6 @@ class ASPProducts {
 				<?php
 				break;
 			case 'price':
-				//let's apply filter to let addons change price if needed
-				// addons haven't provided any info, so let's get and display price and currency
 				$price    = get_post_meta( $post_id, 'asp_product_price', true );
 				$currency = get_post_meta( $post_id, 'asp_product_currency', true );
 				if ( ! $currency ) {
@@ -179,23 +177,23 @@ class ASPProducts {
 					$currency = $asp->get_setting( 'currency_code' );
 				}
 				if ( $price ) {
-
 					$output = AcceptStripePayments::formatted_price( $price, $currency );
 				} else {
-					$output = 'Custom';
+					$output = __( 'Custom', 'stripe-payments' );
 				}
+				//let's apply filter to let addons change price column output if needed
 				$output = apply_filters( 'asp_products_table_price_column', $output, $price, $currency, $post_id );
 				echo $output;
 				break;
 			case 'shortcode':
 				?>
-		<input type="text" name="asp_product_shortcode" class="asp-select-on-click" readonly value="[asp_product id=&quot;<?php echo $post_id; ?>&quot;]">
+		<input type="text" name="asp_product_shortcode" class="asp-select-on-click" readonly value="[asp_product id=&quot;<?php echo esc_attr( $post_id ); ?>&quot;]">
 				<?php
 				break;
 		}
 	}
 
-	function manage_sortable_columns( $columns ) {
+	public function manage_sortable_columns( $columns ) {
 		$columns['id']    = 'id';
 		$columns['price'] = 'price';
 		$columns['stock'] = 'stock';

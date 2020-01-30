@@ -28,7 +28,7 @@ class AcceptStripePayments_Admin {
 	 * @since     1.0.0
 	 */
 	private function __construct() {
-
+		self::$instance = $this;
 		/*
 		* Call $plugin_slug from public plugin class.
 		*/
@@ -260,7 +260,7 @@ class AcceptStripePayments_Admin {
 	public static function get_instance() {
 
 		// If the single instance hasn't been set, set it now.
-		if ( null == self::$instance ) {
+		if ( null === self::$instance ) {
 			self::$instance = new self();
 		}
 
@@ -438,7 +438,7 @@ class AcceptStripePayments_Admin {
 			array(
 				'field' => 'popup_button_text',
 				'desc'  => __(
-					'%1$s is replaced by formatted payment amount (example: Pay $29.90). If this field is empty, it defaults to "Pay %2$s"',
+					'%s is replaced by formatted payment amount (example: Pay $29.90). If this field is empty, it defaults to "Pay %s"', //phpcs:ignore
 					'stripe-payments'
 				),
 			)
@@ -501,7 +501,7 @@ class AcceptStripePayments_Admin {
 				'desc'  => __(
 					'Specify language to be used in Stripe checkout pop-up or select "Autodetect" to let Stripe handle it.',
 					'stripe-payments'
-				) . '<br>Note this is not currently supported by new API.',
+				) . '<br>Note this currently only affects "Card Number", "MM/YY" and "CVC" placeholders.',
 			)
 		);
 		$country_autodetect_addon_txt = '';
@@ -1024,6 +1024,20 @@ class AcceptStripePayments_Admin {
 			)
 		);
 		add_settings_field(
+			'frontend_prefetch_scripts',
+			__( 'Prefetch Payment Popup Scripts', 'stripe-payments' ) . $new_api_str,
+			array( $this, 'settings_field_callback' ),
+			$this->plugin_slug . '-advanced',
+			'AcceptStripePayments-additional-settings',
+			array(
+				'field' => 'frontend_prefetch_scripts',
+				'desc'  => __(
+					'Enable this to speed up payment popup display after customer clicks payment button.',
+					'stripe-payments'
+				),
+			)
+		);
+		add_settings_field(
 			'disable_buttons_before_js_loads',
 			__( 'Disable Buttons Before Javascript Loads', 'stripe-payments' ),
 			array( &$this, 'settings_field_callback' ),
@@ -1069,8 +1083,16 @@ class AcceptStripePayments_Admin {
 	}
 
 	public function get_checkout_lang_options( $selected_value = '' ) {
-		$data_arr = array(
-			''   => __( 'Autodetect', 'stripe-payments' ),
+		$languages_arr = array(
+			'ar' => __( 'Arabic', 'stripe-payments' ),
+			'he' => __( 'Hebrew', 'stripe-payments' ),
+			'lv' => __( 'Latvian', 'stripe-payments' ),
+			'lt' => __( 'Lithuanian', 'stripe-payments' ),
+			'ms' => __( 'Malay', 'stripe-payments' ),
+			'nb' => __( 'Norwegian Bokmal', 'stripe-payments' ),
+			'pl' => __( 'Polish', 'stripe-payments' ),
+			'pt' => __( 'Portuguese', 'stripe-payments' ),
+			'ru' => __( 'Russian', 'stripe-payments' ),
 			'da' => __( 'Danish', 'stripe-payments' ),
 			'nl' => __( 'Dutch', 'stripe-payments' ),
 			'en' => __( 'English', 'stripe-payments' ),
@@ -1084,8 +1106,12 @@ class AcceptStripePayments_Admin {
 			'es' => __( 'Spanish', 'stripe-payments' ),
 			'sv' => __( 'Swedish', 'stripe-payments' ),
 		);
-		$opt_tpl  = '<option value="%val%"%selected%>%name%</option>';
-		$opts     = $selected_value === false ? '<option value="" selected>' . __( '(Default)', 'stripe-payments' ) . '</option>' : '';
+		asort( $languages_arr );
+		$data_arr = array( '' => __( 'Autodetect', 'stripe-payments' ) );
+		$data_arr = $data_arr + $languages_arr;
+
+		$opt_tpl = '<option value="%val%"%selected%>%name%</option>';
+		$opts    = $selected_value === false ? '<option value="" selected>' . __( '(Default)', 'stripe-payments' ) . '</option>' : '';
 		foreach ( $data_arr as $key => $value ) {
 			$selected = $selected_value == $key ? ' selected' : '';
 			$opts    .= str_replace( array( '%val%', '%name%', '%selected%' ), array( $key, $value, $selected ), $opt_tpl );
@@ -1197,6 +1223,7 @@ class AcceptStripePayments_Admin {
 			case 'enable_zip_validation':
 			case 'dont_create_order':
 			case 'enable_email_schedule':
+			case 'frontend_prefetch_scripts':
 				echo "<input type='checkbox' name='AcceptStripePayments-settings[{$field}]' value='1' " . ( $field_value ? 'checked=checked' : '' ) . " /><p class=\"description\">{$desc}</p>";
 				break;
 			case 'custom_field_enabled':
@@ -1342,6 +1369,8 @@ class AcceptStripePayments_Admin {
 		$output ['tos_store_ip'] = empty( $input['tos_store_ip'] ) ? 0 : 1;
 
 		$output ['enable_email_schedule'] = empty( $input['enable_email_schedule'] ) ? 0 : 1;
+
+		$output ['frontend_prefetch_scripts'] = empty( $input['frontend_prefetch_scripts'] ) ? 0 : 1;
 
 		$output['tos_text'] = ! empty( $input['tos_text'] ) ? $input['tos_text'] : '';
 

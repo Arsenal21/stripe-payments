@@ -103,12 +103,32 @@ jQuery(document).ready(function ($) {
 	$('a.wp-asp-product-menu-nav-item').on('click', function (e) {
 		e.preventDefault();
 		if ($(this).hasClass('nav-tab-active')) {
-			return false;
+			if (!$('#wp-asp-product-settings-menu-icon').is(':visible')) {
+				return false;
+			}
+			$('#wp-asp-product-settings-menu-icon').click();
+			return;
+		}
+		if ($('#wp-asp-product-settings-menu-icon').hasClass('menu-visible')) {
+			$('#wp-asp-product-settings-menu-icon').click();
 		}
 		var itemId = $(this).data('asp-nav-item');
-		$('.wp-asp-product-tab-item').hide();
-		$('#' + itemId).show();
+		$('.wp-asp-product-tab-item').removeClass('wp-asp-product-tab-item-visible');
+		$('#' + itemId).addClass('wp-asp-product-tab-item-visible');
 		$('a.wp-asp-product-menu-nav-item').removeClass('nav-tab-active');
 		$(this).addClass('nav-tab-active');
+
+	});
+
+	$('#wp-asp-product-settings-menu-icon').on('click', function (e) {
+		if ($(this).hasClass('menu-visible')) {
+			$('a.wp-asp-product-menu-nav-item').css('display', 'none');
+			$(this).find('span').removeClass('dashicons-menu-alt').addClass('dashicons-menu');
+			$(this).removeClass('menu-visible');
+		} else {
+			$(this).addClass('menu-visible');
+			$(this).find('span').removeClass('dashicons-menu').addClass('dashicons-menu-alt');
+			$('a.wp-asp-product-menu-nav-item').css('display', 'block');
+		}
 	});
 });

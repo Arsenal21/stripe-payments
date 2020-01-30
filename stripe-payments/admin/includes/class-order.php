@@ -12,6 +12,8 @@ class ASPOrder {
 	protected static $instance = null;
 
 	public function __construct() {
+		self::$instance = $this;
+
 		$this->AcceptStripePayments = AcceptStripePayments::get_instance();
 	}
 

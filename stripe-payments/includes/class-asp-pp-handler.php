@@ -4,9 +4,11 @@ class ASP_PP_Handler {
 	protected $tpl_cf;
 	protected $uniq_id;
 	protected $asp_main;
+
 	public function __construct() {
 		$action = filter_input( INPUT_GET, 'asp_action', FILTER_SANITIZE_STRING );
 		if ( 'show_pp' === $action ) {
+			//          ASP_Utils::set_custom_lang_if_needed();
 			$process_ipn = filter_input( INPUT_POST, 'asp_process_ipn', FILTER_SANITIZE_NUMBER_INT );
 			if ( $process_ipn ) {
 				return;
@@ -15,6 +17,7 @@ class ASP_PP_Handler {
 			add_action( 'plugins_loaded', array( $this, 'showpp' ), 2147483647 );
 		}
 		if ( wp_doing_ajax() ) {
+			//          ASP_Utils::set_custom_lang_if_needed();
 			$this->asp_main = AcceptStripePayments::get_instance();
 			add_action( 'plugins_loaded', array( $this, 'add_ajax_handlers' ), 2147483647 );
 			add_action( 'wp_ajax_asp_pp_check_coupon', array( $this, 'handle_check_coupon' ) );
@@ -29,7 +32,10 @@ class ASP_PP_Handler {
 
 	public function showpp() {
 		$product_id = filter_input( INPUT_GET, 'product_id', FILTER_SANITIZE_NUMBER_INT );
+
 		$this->item = new ASP_Product_Item( $product_id );
+
+		$this->item = apply_filters( 'asp_ng_pp_product_item_override', $this->item );
 
 		if ( $this->item->get_last_error() ) {
 			echo esc_html( $this->item->get_last_error() );
@@ -72,8 +78,22 @@ class ASP_PP_Handler {
 		$this->custom_field = $custom_field;
 		$this->prod_id      = $product_id;
 
+		$cf_validation_regex   = '';
+		$cf_validation_err_msg = '';
+
 		if ( $custom_field ) {
 			$a['custom_fields'] = $this->tpl_get_cf();
+			//check if we have custom field validation enabled
+			$custom_validation = $this->asp_main->get_setting( 'custom_field_validation' );
+			if ( ! empty( $custom_validation ) ) {
+				if ( 'num' === $custom_validation ) {
+					$cf_validation_regex   = '^[0-9]+$';
+					$cf_validation_err_msg = __( 'Only numbers are allowed: 0-9', 'stripe-payments' );
+				} elseif ( 'custom' === $custom_validation ) {
+					$cf_validation_regex   = $this->asp_main->get_setting( 'custom_field_custom_validation_regex' );
+					$cf_validation_err_msg = $this->asp_main->get_setting( 'custom_field_custom_validation_err_msg' );
+				}
+			}
 		}
 
 		$currency = $this->item->get_currency();
@@ -97,6 +117,12 @@ class ASP_PP_Handler {
 		$a['amount_variable'] = false;
 		if ( $this->item->get_price() === 0 ) {
 			$a['amount_variable'] = true;
+			//let's check to see if he have item_price passed via URL parameter
+			$passed_item_price = filter_input( INPUT_GET, 'price', FILTER_SANITIZE_STRING );
+			$passed_item_price = abs( floatval( $passed_item_price ) );
+			if ( ! empty( $passed_item_price ) ) {
+				$this->item->set_price( $passed_item_price );
+			}
 		}
 
 		$a['currency_variable'] = false;
@@ -136,7 +162,7 @@ class ASP_PP_Handler {
 		$item_logo = '';
 
 		if ( ! get_post_meta( $product_id, 'asp_product_no_popup_thumbnail', true ) ) {
-			$item_logo = AcceptStripePayments::get_small_product_thumb( $product_id );
+			$item_logo = ASP_Utils::get_small_product_thumb( $product_id );
 		}
 
 		//stock control
@@ -195,6 +221,10 @@ class ASP_PP_Handler {
 
 		$verify_zip = $this->asp_main->get_setting( 'enable_zip_validation' );
 
+		$checkout_lang = $this->asp_main->get_setting( 'checkout_lang' );
+
+		$checkout_lang = empty( $checkout_lang ) ? 'auto' : $checkout_lang;
+
 		$data               = array();
 		$data['product_id'] = $product_id;
 		$data['item_name']  = $this->item->get_name();
@@ -223,11 +253,20 @@ class ASP_PP_Handler {
 
 		$data['client_secret'] = '';
 		$data['pi_id']         = '';
-		$data['amount']        = $this->item->get_total( true );
-		$data['item_price']    = $this->item->get_price( true );
-		$data['tax']           = $this->item->get_tax();
-		$data['shipping']      = $this->item->get_shipping( true );
-		$data['descr']         = $this->item->get_description();
+
+		$data['amount'] = $this->item->get_total( true );
+
+		$data['item_price'] = $this->item->get_price( true );
+
+		$data['tax']      = $this->item->get_tax();
+		$data['shipping'] = $this->item->get_shipping( true );
+		$data['descr']    = $this->item->get_description();
+
+		$data['custom_field']                    = $custom_field;
+		$data['custom_field_validation_regex']   = $cf_validation_regex;
+		$data['custom_field_validation_err_msg'] = $cf_validation_err_msg;
+
+		$data['stripe_receipt_email'] = $this->asp_main->get_setting( 'stripe_receipt_email' );
 
 		$data['variations'] = $this->variations;
 
@@ -243,6 +282,8 @@ class ASP_PP_Handler {
 		$data['dont_save_card'] = ! $dont_save_card ? false : true;
 
 		$data['verify_zip'] = ! $verify_zip ? false : true;
+
+		$data['checkout_lang'] = $checkout_lang;
 
 		$data['customer_default_country'] = $default_country;
 
@@ -319,6 +360,8 @@ class ASP_PP_Handler {
 
 		if ( empty( $pay_btn_text ) ) {
 			$pay_btn_text = __( 'Pay %s', 'stripe-payments' );
+		} else {
+			$pay_btn_text = __( $pay_btn_text, 'stripe-payments' ); //phpcs:ignore
 		}
 
 		if ( isset( $data['is_trial'] ) && $data['is_trial'] ) {
@@ -358,6 +401,7 @@ class ASP_PP_Handler {
 				'strRemove'                   => apply_filters( 'asp_customize_text_msg', __( 'Remove', 'stripe-payments' ), 'remove' ),
 				'strStartFreeTrial'           => apply_filters( 'asp_customize_text_msg', __( 'Start Free Trial', 'stripe-payments' ), 'start_free_trial' ),
 				'strInvalidCFValidationRegex' => __( 'Invalid validation RegEx: ', 'stripe-payments' ),
+				'strGetForFree'               => __( 'Purchase for Free', 'stripe-payments' ),
 			),
 		);
 
@@ -394,8 +438,8 @@ class ASP_PP_Handler {
 		if ( isset( $a['fatal_error'] ) ) {
 			$a['vars']['vars']['fatal_error'] = $a['fatal_error'];
 		}
-		// translators: %s is payment amount
 		$a['pay_btn_text'] = sprintf( $pay_btn_text, AcceptStripePayments::formatted_price( $this->item->get_total(), $this->item->get_currency() ) );
+
 		ob_start();
 		require_once WP_ASP_PLUGIN_PATH . 'public/views/templates/default/payment-popup.php';
 		$tpl = ob_get_clean();
@@ -627,7 +671,7 @@ class ASP_PP_Handler {
 					$tpl_cf .= '<label class="pure-checkbox asp_product_custom_field_label"><input id="asp-custom-field" class="asp_product_custom_field_input" type="checkbox"' . ( $mandatory ? ' data-asp-custom-mandatory' : '' ) . ' name="stripeCustomField"' . ( $mandatory ? ' required' : '' ) . '> ' . $field_descr . '</label>';
 					break;
 			}
-			$tpl_cf      .= "<span id='custom_field_error_explanation' class='pure-form-message asp_product_custom_field_error'></span>" .
+			$tpl_cf      .= '<div id="custom-field-error" class="form-err" role="alert"></div>' .
 				'</fieldset>' .
 				'</div>';
 			$this->tpl_cf = $tpl_cf;
@@ -655,6 +699,13 @@ class ASP_PP_Handler {
 		}
 
 		$coupon = $item->get_coupon();
+
+		if ( 'perc' === $coupon['discount_type'] && 100 === intval( $coupon['discount'] ) ) {
+			//this is 100% discount coupon. Let's also generate zero-value payment id
+			$zero_value_id           = str_replace( '.', '', uniqid( 'free_', true ) );
+			$coupon['zero_value_id'] = $zero_value_id;
+		}
+
 		wp_send_json( $coupon );
 
 	}

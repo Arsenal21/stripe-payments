@@ -13,15 +13,27 @@ class ASP_Payment_Data {
 	protected $shipping_details_obj = false;
 	protected $customer_obj         = false;
 	protected $last_error_obj;
-	public function __construct( $obj_id = false ) {
+
+	public $is_zero_value = false;
+
+	public function __construct( $obj_id = false, $zero_value = false ) {
 		if ( false !== $obj_id ) {
 			$this->obj_id = $obj_id;
 		}
-		$this->load_from_obj();
+		if ( $zero_value ) {
+			$this->construct_zero_value();
+		} else {
+			$this->load_from_obj();
+		}
 	}
 
 	public function get_last_error() {
 		return $this->last_error;
+	}
+
+	public function get_price() {
+		$price = $this->get_amount();
+		return $price;
 	}
 
 	public function get_amount() {
@@ -143,5 +155,76 @@ class ASP_Payment_Data {
 			return false;
 		}
 		$this->obj = $obj;
+	}
+
+	public function construct_zero_value() {
+		$this->charge_data          = new stdClass();
+		$this->charge_data->id      = $this->obj_id;
+		$this->trans_id             = $this->charge_data->id;
+		$this->charge_data->created = time();
+		$this->charge_created       = $this->charge_data->created;
+
+		$ipn_ng_class = ASP_Process_IPN_NG::get_instance();
+
+		$bd = new stdClass();
+
+		//Billing details
+		$b_name   = $ipn_ng_class->get_post_var( 'asp_billing_name', FILTER_SANITIZE_STRING );
+		$bd->name = empty( $b_name ) ? '' : $b_name;
+
+		$b_email   = $ipn_ng_class->get_post_var( 'asp_email', FILTER_SANITIZE_STRING );
+		$bd->email = empty( $b_email ) ? '' : $b_email;
+
+		$b_addr    = $ipn_ng_class->get_post_var( 'asp_address', FILTER_SANITIZE_STRING );
+		$bd->line1 = empty( $b_addr ) ? '' : $b_addr;
+		$bd->line2 = '';
+
+		$b_postal_code   = $ipn_ng_class->get_post_var( 'asp_postcode', FILTER_SANITIZE_STRING );
+		$bd->postal_code = empty( $b_postal_code ) ? '' : $b_postal_code;
+
+		$b_city   = $ipn_ng_class->get_post_var( 'asp_city', FILTER_SANITIZE_STRING );
+		$bd->city = empty( $b_city ) ? '' : $b_city;
+
+		$b_country   = $ipn_ng_class->get_post_var( 'asp_country', FILTER_SANITIZE_STRING );
+		$bd->country = empty( $b_country ) ? '' : $b_country;
+
+		$bd->state = '';
+
+		$this->billing_details_obj = $bd;
+
+		//Shipping details
+		$same_addr = $ipn_ng_class->get_post_var( 'asp_same-bill-ship-addr', FILTER_SANITIZE_STRING );
+
+		if ( ! empty( $same_addr ) ) {
+			$this->shipping_details_obj = $this->billing_details_obj;
+		} else {
+			$sd = new stdClass();
+
+			$s_addr    = $ipn_ng_class->get_post_var( 'asp_shipping_address', FILTER_SANITIZE_STRING );
+			$sd->line1 = empty( $s_addr ) ? '' : $s_addr;
+			$sd->line2 = '';
+
+			$s_postal_code   = $ipn_ng_class->get_post_var( 'asp_shipping_postcode', FILTER_SANITIZE_STRING );
+			$sd->postal_code = empty( $s_postal_code ) ? '' : $s_postal_code;
+
+			$s_city   = $ipn_ng_class->get_post_var( 'asp_shipping_city', FILTER_SANITIZE_STRING );
+			$sd->city = empty( $s_city ) ? '' : $s_city;
+
+			$s_country   = $ipn_ng_class->get_post_var( 'asp_shipping_country', FILTER_SANITIZE_STRING );
+			$sd->country = empty( $s_country ) ? '' : $s_country;
+
+			$sd->state = '';
+
+			$this->shipping_details_obj = $sd;
+		}
+
+		$this->amount = 0;
+
+		$this->currency = $ipn_ng_class->item->get_currency();
+
+		$ipn_ng_class->item->set_shipping( 0 );
+
+		$this->is_zero_value = true;
+
 	}
 }

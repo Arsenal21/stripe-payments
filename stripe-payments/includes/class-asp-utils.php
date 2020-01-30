@@ -1,6 +1,34 @@
 <?php
 
 class ASP_Utils {
+
+	protected static $textdomain_paths = array(
+		WP_ASP_PLUGIN_PATH . '/languages/',
+		WP_CONTENT_DIR . '/languages/plugins/',
+		WP_CONTENT_DIR . '/languages/loco/plugins/',
+	);
+
+	protected static $lang_code_locale = array(
+		'fr' => 'fr_FR',
+		'de' => 'de_DE',
+		'da' => 'da_DK',
+		'nl' => 'nl_NL',
+		'en' => 'en_US',
+		'he' => 'he_IL',
+		'it' => 'it_IT',
+		'lt' => 'lt_LT',
+		'ms' => 'ms_MY',
+		'nb' => 'nb_NO',
+		'pl' => 'pl_PL',
+		'pt' => 'pt_PT',
+		'ru' => 'ru_RU',
+		'zh' => 'zh_CN',
+		'es' => 'es_ES',
+		'sv' => 'sv_SE',
+	);
+
+	protected static $textdomain_backup;
+
 	public static function get_countries() {
 		$countries = array(
 			''   => '—',
@@ -281,7 +309,7 @@ class ASP_Utils {
 			'EUR' => array( __( 'Euros (EUR)', 'stripe-payments' ), '€' ),
 			'GBP' => array( __( 'Pounds Sterling (GBP)', 'stripe-payments' ), '£' ),
 			'AUD' => array( __( 'Australian Dollars (AUD)', 'stripe-payments' ), 'AU$' ),
-			'BAM' => array( __( 'Bosnia and Herzegovina Convertible Mark', 'stripe-payments' ), 'KM' ),
+			'BAM' => array( __( 'Bosnia and Herzegovina Convertible Mark (BAM)', 'stripe-payments' ), 'KM' ),
 			'BRL' => array( __( 'Brazilian Real (BRL)', 'stripe-payments' ), 'R$' ),
 			'CAD' => array( __( 'Canadian Dollars (CAD)', 'stripe-payments' ), 'CA$' ),
 			'CNY' => array( __( 'Chinese Yuan (CNY)', 'stripe-payments' ), 'CN￥' ),
@@ -335,6 +363,192 @@ class ASP_Utils {
 		$i     = wp_nonce_tick();
 		$nonce = substr( wp_hash( $i . '|' . $name . '|' . 0 . '|', 'nonce' ), -12, 10 );
 		return $nonce;
+	}
+	public static function get_small_product_thumb( $prod_id, $force_regen = false ) {
+		$ret = '';
+		//check if we have a thumbnail
+		$curr_thumb = get_post_meta( $prod_id, 'asp_product_thumbnail', true );
+		if ( empty( $curr_thumb ) ) {
+			return $ret;
+		}
+		$ret = $curr_thumb;
+		//check if we have 100x100 preview generated
+		$thumb_thumb = get_post_meta( $prod_id, 'asp_product_thumbnail_thumb', true );
+		if ( empty( $thumb_thumb ) || $force_regen ) {
+			//looks like we don't have one. Let's generate it
+			$thumb_thumb = '';
+			$image       = wp_get_image_editor( $curr_thumb );
+			if ( ! is_wp_error( $image ) ) {
+				$image->resize( 100, 100, true );
+				$upload_dir = wp_upload_dir();
+				$ext        = pathinfo( $curr_thumb, PATHINFO_EXTENSION );
+				$file_name  = 'asp_product_' . $prod_id . '_thumb_' . md5( $curr_thumb ) . '.' . $ext;
+				$res        = $image->save( $upload_dir['path'] . '/' . $file_name );
+				if ( ! is_wp_error( $res ) ) {
+					$thumb_thumb = $upload_dir['url'] . '/' . $file_name;
+				} else {
+					//error saving thumb image
+					return $ret;
+				}
+			} else {
+				//error occured during image load
+				return $ret;
+			}
+			update_post_meta( $prod_id, 'asp_product_thumbnail_thumb', $thumb_thumb );
+			$ret = $thumb_thumb;
+		} else {
+			// we have one. Let's return it
+			$ret = $thumb_thumb;
+		}
+		return $ret;
+	}
+
+	public static function formatted_price( $price, $curr = '', $price_is_cents = false ) {
+		if ( empty( $price ) ) {
+			$price = 0;
+		}
+
+		$opts = get_option( 'AcceptStripePayments-settings' );
+
+		if ( false === $curr ) {
+			//if curr set to false, we format price without currency symbol or code
+			$curr_sym = '';
+		} else {
+
+			if ( '' === $curr ) {
+				//if currency not specified, let's use default currency set in options
+				$curr = $opts['currency_code'];
+			}
+
+			$curr = strtoupper( $curr );
+
+			$currencies = self::get_currencies();
+			if ( isset( $currencies[ $curr ] ) ) {
+				$curr_sym = $currencies[ $curr ][1];
+			} else {
+				//no currency code found, let's just use currency code instead of symbol
+				$curr_sym = $curr;
+			}
+		}
+
+		//check if price is in cents
+		if ( $price_is_cents && ! AcceptStripePayments::is_zero_cents( $curr ) ) {
+			$price = intval( $price ) / 100;
+		}
+
+		$out = number_format( $price, $opts['price_decimals_num'], $opts['price_decimal_sep'], $opts['price_thousand_sep'] );
+
+		switch ( $opts['price_currency_pos'] ) {
+			case 'left':
+				$out = $curr_sym . '' . $out;
+				break;
+			case 'right':
+				$out .= '' . $curr_sym;
+				break;
+			default:
+				$out .= '' . $curr_sym;
+				break;
+		}
+
+		return $out;
+	}
+
+	public static function get_visitor_preferred_lang() {
+		$langs = array();
+		preg_match_all( '~([\w-]+)(?:[^,\d]+([\d.]+))?~', strtolower( $_SERVER['HTTP_ACCEPT_LANGUAGE'] ), $matches, PREG_SET_ORDER );
+		foreach ( $matches as $match ) {
+
+			list($a, $b) = explode( '-', $match[1] ) + array( '', '' );
+			$value       = isset( $match[2] ) ? (float) $match[2] : 1.0;
+
+				$langs[ $match[1] ] = $value;
+
+				$langs[ $a ] = $value - 0.1;
+		}
+		arsort( $langs );
+
+		if ( empty( $langs ) ) {
+			return '';
+		}
+
+		reset( $langs );
+		$lang = key( $langs );
+
+		if ( strlen( $lang ) < 2 && strlen( $lang ) > 6 ) {
+			return '';
+		}
+
+		if ( strlen( $lang ) >= 5 ) {
+			$lang_parts = explode( '-', $lang );
+			if ( 2 === count( $lang_parts ) ) {
+				$lang = $lang_parts[0] . '_' . strtoupper( $lang_parts[1] );
+			}
+		}
+
+		return $lang;
+	}
+
+	public static function load_custom_lang( $lang ) {
+		global $l10n;
+		$textdomain = 'stripe-payments';
+
+		if ( isset( $l10n[ $textdomain ] ) ) {
+			self::$textdomain_backup = $l10n[ $textdomain ];
+		}
+
+		$mo_file = '';
+
+		foreach ( self::$textdomain_paths as $path ) {
+			if ( file_exists( $path . $textdomain . '-' . $lang . '.mo' ) ) {
+				$mo_file = $path . $textdomain . '-' . $lang . '.mo';
+				break;
+			}
+		}
+
+		if ( empty( $mo_file ) ) {
+			return;
+		}
+
+		load_textdomain( $textdomain, $mo_file );
+	}
+
+	public static function set_custom_lang_if_needed() {
+		$asp_class = AcceptStripePayments::get_instance();
+		$lang      = $asp_class->get_setting( 'checkout_lang' );
+
+		if ( empty( $lang ) ) {
+			$lang = self::get_visitor_preferred_lang();
+		} else {
+			if ( isset( self::$lang_code_locale[ $lang ] ) ) {
+				$lang = self::$lang_code_locale[ $lang ];
+			}
+		}
+
+		self::load_custom_lang( $lang );
+	}
+
+	public static function load_stripe_lib() {
+		if ( ! class_exists( '\Stripe\Stripe' ) ) {
+			require_once WP_ASP_PLUGIN_PATH . 'includes/stripe/init.php';
+			\Stripe\Stripe::setAppInfo( 'Stripe Payments', WP_ASP_PLUGIN_VERSION, 'https://wordpress.org/plugins/stripe-payments/', 'pp_partner_Fvas9OJ0jQ2oNQ' );
+		} else {
+			$declared = new \ReflectionClass( '\Stripe\Stripe' );
+			$path     = $declared->getFileName();
+			$own_path = WP_ASP_PLUGIN_PATH . 'includes/stripe/lib/Stripe.php';
+			if ( strtolower( $path ) !== strtolower( $own_path ) ) {
+				// Stripe library is loaded from other location
+				// Let's only log one warning per 6 hours in order to not flood the log
+				$lib_warning_last_logged_time = get_option( 'asp_lib_warning_last_logged_time' );
+				$time                         = time();
+				if ( $time - ( 60 * 60 * 6 ) > $lib_warning_last_logged_time ) {
+					$opts = get_option( 'AcceptStripePayments-settings' );
+					if ( $opts['debug_log_enable'] ) {
+						ASP_Debug_Logger::log( sprintf( "WARNING: Stripe PHP library conflict! Another Stripe PHP SDK library is being used. Please disable plugin or theme that provides it as it can cause issues during payment process.\r\nLibrary path: %s", $path ) );
+						update_option( 'asp_lib_warning_last_logged_time', $time );
+					}
+				}
+			}
+		}
 	}
 
 }

@@ -20,6 +20,8 @@ class AcceptStripePaymentsShortcode {
 	protected $tplCF                  = '';
 
 	function __construct() {
+		self::$instance = $this;
+
 		$this->AcceptStripePayments = AcceptStripePayments::get_instance();
 
 		$use_old_api = $this->AcceptStripePayments->get_setting( 'use_old_checkout_api1' );
@@ -71,7 +73,7 @@ class AcceptStripePaymentsShortcode {
 	public static function get_instance() {
 
 		// If the single instance hasn't been set, set it now.
-		if ( null == self::$instance ) {
+		if ( null === self::$instance ) {
 			self::$instance = new self();
 		}
 
@@ -354,7 +356,7 @@ class AcceptStripePaymentsShortcode {
 		}
 
 		if ( get_post_meta( $id, 'asp_product_no_popup_thumbnail', true ) != 1 ) {
-			$item_logo = AcceptStripePayments::get_small_product_thumb( $id );
+			$item_logo = ASP_Utils::get_small_product_thumb( $id );
 		} else {
 			$item_logo = '';
 		}
@@ -1165,10 +1167,28 @@ class AcceptStripePaymentsShortcode {
 
 			$price = get_post_meta( $id, 'asp_product_price', true );
 			$curr  = get_post_meta( $id, 'asp_product_currency', true );
+
+			//let's apply filter so addons can change price, currency and shipping if needed
+			$price_arr = array(
+				'price'    => $price,
+				'currency' => $curr,
+				'shipping' => empty( $shipping ) ? false : $shipping,
+			);
+			$price_arr = apply_filters( 'asp_modify_price_currency_shipping', $price_arr );
+			extract( $price_arr, EXTR_OVERWRITE );
+
+			$curr = $currency;
+
 			$price = AcceptStripePayments::formatted_price( $price, $curr );
 			if ( empty( $price ) ) {
 				$price = '&nbsp';
 			}
+
+			$item_tags = array('price'=>$price);
+
+			$item_tags = apply_filters( 'asp_product_tpl_tags_arr', $item_tags, $id );
+
+			$price= $item_tags['price'];
 
 			$item                  = str_replace(
 				array(
@@ -1187,6 +1207,7 @@ class AcceptStripePaymentsShortcode {
 				),
 				$tpl['products_item']
 			);
+
 			$tpl['products_list'] .= $item;
 		}
 

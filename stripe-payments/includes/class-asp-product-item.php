@@ -8,6 +8,7 @@ class ASP_Product_Item {
 	protected $last_error    = '';
 	protected $cust_quantity = false;
 	protected $tax;
+	protected $shipping;
 	protected $zero_cent = false;
 	protected $price;
 	protected $asp_main;
@@ -82,7 +83,9 @@ class ASP_Product_Item {
 	}
 
 	public function get_shipping( $in_cents = false ) {
-		$this->shipping = get_post_meta( $this->post_id, 'asp_product_shipping', true );
+		if ( ! isset( $this->shipping ) ) {
+			$this->shipping = get_post_meta( $this->post_id, 'asp_product_shipping', true );
+		}
 		if ( empty( $this->shipping ) ) {
 			$this->shipping = 0;
 		}
@@ -90,6 +93,10 @@ class ASP_Product_Item {
 			return $this->in_cents( $this->shipping );
 		}
 		return $this->shipping;
+	}
+
+	public function set_shipping ($shipping) {
+		$this->shipping = $shipping;
 	}
 
 	public function get_thumb() {
@@ -109,6 +116,9 @@ class ASP_Product_Item {
 
 	public function get_quantity() {
 		$this->quantity = get_post_meta( $this->post_id, 'asp_product_quantity', true );
+		if ( ! is_numeric( $this->quantity ) ) {
+			$this->quantity = absint( $this->quantity );
+		}
 		if ( empty( $this->quantity ) ) {
 			$this->quantity = 1;
 		}
@@ -124,6 +134,7 @@ class ASP_Product_Item {
 			$this->price = empty( $this->price ) ? 0 : $this->price;
 		}
 		if ( $price_with_discount && $this->coupon ) {
+			$this->get_discount_amount( $this->price, $in_cents );
 			$this->price_with_discount = $this->price - $this->coupon['discountAmount'];
 		}
 		if ( $in_cents ) {
@@ -138,27 +149,43 @@ class ASP_Product_Item {
 		return $this->price;
 	}
 
-	public function get_total( $in_cents = false ) {
-		$total = $this->get_price();
+	private function get_discount_amount( $total, $in_cents = false ) {
+		$discount_amount = 0;
 		if ( $this->coupon ) {
 			if ( 'perc' === $this->coupon['discount_type'] ) {
 				$perc            = AcceptStripePayments::is_zero_cents( $this->get_currency() ) ? 0 : 2;
 				$discount_amount = round( $total * ( $this->coupon['discount'] / 100 ), $perc );
 			} else {
 				$discount_amount = $this->coupon['discount'];
+				if ( $in_cents && ! AcceptStripePayments::is_zero_cents( $this->get_currency() ) ) {
+					$discount_amount = $discount_amount * 100;
+				}
+			}
+			if ( $in_cents ) {
+				$discount_amount = round( $discount_amount, 0 );
 			}
 			$this->coupon['discountAmount'] = $discount_amount;
-			$total                          = $total - $discount_amount;
 		}
+		return $discount_amount;
+	}
+
+	public function get_total( $in_cents = false ) {
+		$total = $this->get_price( $in_cents );
+
+		$discount_amount = $this->get_discount_amount( $total, $in_cents );
+
+		$total = $total - $discount_amount;
+
 		if ( $this->get_tax() ) {
-			$total = $total + $this->get_tax_amount( false, true );
+			$total = $total + $this->get_tax_amount( $in_cents, true );
 		}
+
 		$total = $total * $this->get_quantity();
-		if ( $this->get_shipping() ) {
-			$total = $total + $this->get_shipping();
-		}
-		if ( $in_cents ) {
-			$total = $this->in_cents( $total );
+
+		$shipping = $this->get_shipping( $in_cents );
+
+		if ( ! empty( $shipping ) ) {
+			$total = $total + $this->get_shipping( $in_cents );
 		}
 		return $total;
 	}

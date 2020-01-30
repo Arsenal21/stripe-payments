@@ -1,19 +1,10 @@
 <?php
 
-/**
- * Plugin class. This class should ideally be used to work with the
- * public-facing side of the WordPress site.
- *
- * If you're interested in introducing administrative or dashboard
- * functionality, then refer to `class-plugin-name-admin.php`
- *
- *
- */
 class AcceptStripePayments {
 
-
-	var $zeroCents     = array( 'JPY', 'MGA', 'VND', 'KRW' );
-	var $minAmounts    = array(
+	public $footer_scripts = '';
+	var $zeroCents         = array( 'JPY', 'MGA', 'VND', 'KRW' );
+	var $minAmounts        = array(
 		'USD' => 50,
 		'AUD' => 50,
 		'BRL' => 50,
@@ -30,12 +21,12 @@ class AcceptStripePayments {
 		'SEK' => 300,
 		'SGD' => 50,
 	);
-	var $APISecKey     = '';
-	var $APIPubKey     = '';
-	var $APIPubKeyTest = '';
-	var $APISecKeyLive = '';
-	var $APISecKeyTest = '';
-	var $is_live       = false;
+	var $APISecKey         = '';
+	var $APIPubKey         = '';
+	var $APIPubKeyTest     = '';
+	var $APISecKeyLive     = '';
+	var $APISecKeyTest     = '';
+	var $is_live           = false;
 
 	/**
 	 * Plugin version, used for cache-busting of style and script file references.
@@ -77,6 +68,8 @@ class AcceptStripePayments {
 	 * @since     1.0.0
 	 */
 	private function __construct() {
+
+		self::$instance = $this;
 
 		add_action( 'asp_send_scheduled_email', array( $this, 'send_scheduled_email' ), 10, 4 );
 
@@ -132,11 +125,15 @@ class AcceptStripePayments {
 		//check if we have view_log request with token
 		$action = filter_input( INPUT_GET, 'asp_action', FILTER_SANITIZE_STRING );
 		$token  = filter_input( INPUT_GET, 'token', FILTER_SANITIZE_STRING );
-		if ( isset( $action ) && $action === 'view_log' && isset( $token ) ) {
+		if ( isset( $action ) && 'view_log' === $action && isset( $token ) ) {
 			//let's check token
 			if ( $this->get_setting( 'debug_log_access_token' ) === $token ) {
 				ASP_Debug_Logger::view_log();
 			}
+		}
+
+		if ( ! is_admin() ) {
+			add_action( 'wp_print_footer_scripts', array( $this, 'frontend_print_footer_scripts' ) );
 		}
 	}
 
@@ -176,7 +173,7 @@ class AcceptStripePayments {
 	 */
 	public static function get_instance() {
 		// If the single instance hasn't been set, set it now.
-		if ( null == self::$instance ) {
+		if ( null === self::$instance ) {
 			self::$instance = new self();
 		}
 
@@ -346,31 +343,30 @@ class AcceptStripePayments {
 		//force remove PHP warning dismissal
 		delete_option( 'wp_asp_php_warning_dismissed' );
 		update_option( 'AcceptStripePayments-settings', $opt );
-		if ( empty( $opt ) ) {
-			//	    add_option( 'AcceptStripePayments-settings', $default );
-		} else { //lets add default values for some settings that were added after plugin update
-			//let's separate Test and Live API keys (introduced in version 1.6.6)
-			if ( $opt['is_live'] == 0 && ! isset( $opt['api_keys_separated'] ) ) {
-				//current keys are test keys. Let's set them and clear the old values
-				if ( isset( $opt['api_secret_key'] ) ) {
-					$opt['api_secret_key_test'] = $opt['api_secret_key'];
-					$opt['api_secret_key']      = '';
-				}
-				if ( isset( $opt['api_publishable_key'] ) ) {
-					$opt['api_publishable_key_test'] = $opt['api_publishable_key'];
-					$opt['api_publishable_key']      = '';
-				}
-				//let's also set an indicator value in order for the plugin to not do that anymore
-				$opt['api_keys_separated'] = true;
+
+		//lets add default values for some settings that were added after plugin update
+		//let's separate Test and Live API keys (introduced in version 1.6.6)
+		if ( $opt['is_live'] == 0 && ! isset( $opt['api_keys_separated'] ) ) {
+			//current keys are test keys. Let's set them and clear the old values
+			if ( isset( $opt['api_secret_key'] ) ) {
+				$opt['api_secret_key_test'] = $opt['api_secret_key'];
+				$opt['api_secret_key']      = '';
 			}
-			$opt_diff = array_diff_key( $default, $opt );
-			if ( ! empty( $opt_diff ) ) {
-				foreach ( $opt_diff as $key => $value ) {
-					$opt[ $key ] = $default[ $key ];
-				}
+			if ( isset( $opt['api_publishable_key'] ) ) {
+				$opt['api_publishable_key_test'] = $opt['api_publishable_key'];
+				$opt['api_publishable_key']      = '';
 			}
-			update_option( 'AcceptStripePayments-settings', $opt );
+			//let's also set an indicator value in order for the plugin to not do that anymore
+			$opt['api_keys_separated'] = true;
 		}
+			$opt_diff = array_diff_key( $default, $opt );
+		if ( ! empty( $opt_diff ) ) {
+			foreach ( $opt_diff as $key => $value ) {
+				$opt[ $key ] = $default[ $key ];
+			}
+		}
+			update_option( 'AcceptStripePayments-settings', $opt );
+
 		//create checkout page
 		$args             = array(
 			'post_type' => 'page',
@@ -382,15 +378,15 @@ class AcceptStripePayments {
 				$checkout_page_id = $page->ID;
 			}
 		}
-		if ( $checkout_page_id == '' ) {
-			$checkout_page_id              = self::create_post( 'page', 'Checkout-Result', 'Stripe-Checkout-Result', '[accept_stripe_payment_checkout]' );
-			$checkout_page                 = get_post( $checkout_page_id );
-			$checkout_page_url             = $checkout_page->guid;
-			$AcceptStripePayments_settings = get_option( 'AcceptStripePayments-settings' );
-			if ( ! empty( $AcceptStripePayments_settings ) ) {
-				$AcceptStripePayments_settings['checkout_url']     = $checkout_page_url;
-				$AcceptStripePayments_settings['checkout_page_id'] = $checkout_page_id;
-				update_option( 'AcceptStripePayments-settings', $AcceptStripePayments_settings );
+		if ( '' === $checkout_page_id ) {
+			$checkout_page_id  = self::create_post( 'page', 'Checkout-Result', 'Stripe-Checkout-Result', '[accept_stripe_payment_checkout]' );
+			$checkout_page     = get_post( $checkout_page_id );
+			$checkout_page_url = $checkout_page->guid;
+			$asp_settings      = get_option( 'AcceptStripePayments-settings' );
+			if ( ! empty( $asp_settings ) ) {
+				$asp_settings['checkout_url']     = $checkout_page_url;
+				$asp_settings['checkout_page_id'] = $checkout_page_id;
+				update_option( 'AcceptStripePayments-settings', $asp_settings );
 			}
 		}
 
@@ -405,25 +401,25 @@ class AcceptStripePayments {
 				$products_page_id = $page->ID;
 			}
 		}
-		if ( $products_page_id == '' ) {
+		if ( '' === $products_page_id ) {
 			$products_page_id = self::create_post( 'page', 'Products', 'Products', '[asp_show_all_products]' );
 
 			//Save the newly created products page ID so it can be used later.
-			$AcceptStripePayments_settings = get_option( 'AcceptStripePayments-settings' );
-			if ( ! empty( $AcceptStripePayments_settings ) ) {
-				$AcceptStripePayments_settings['products_page_id'] = $products_page_id;
-				update_option( 'AcceptStripePayments-settings', $AcceptStripePayments_settings );
+			$asp_settings = get_option( 'AcceptStripePayments-settings' );
+			if ( ! empty( $asp_settings ) ) {
+				$asp_settings['products_page_id'] = $products_page_id;
+				update_option( 'AcceptStripePayments-settings', $asp_settings );
 			}
 		}
 		//Flush rewrite rules so new pages and slugs are properly handled
-		$ASPProducts = ASPProducts::get_instance();
-		$ASPProducts->register_post_type();
-		$ASPOrder = ASPOrder::get_instance();
-		$ASPOrder->register_post_type();
+		$asp_products = ASPProducts::get_instance();
+		$asp_products->register_post_type();
+		$asp_order = ASPOrder::get_instance();
+		$asp_order->register_post_type();
 		flush_rewrite_rules();
 	}
 
-	public static function create_post( $postType, $title, $name, $content, $parentId = null ) {
+	public static function create_post( $post_type, $title, $name, $content, $parent_id = null ) {
 		$post = array(
 			'post_title'     => $title,
 			'post_name'      => $name,
@@ -431,14 +427,14 @@ class AcceptStripePayments {
 			'ping_status'    => 'closed',
 			'post_content'   => $content,
 			'post_status'    => 'publish',
-			'post_type'      => $postType,
+			'post_type'      => $post_type,
 		);
 
-		if ( $parentId !== null ) {
-			$post['post_parent'] = $parentId;
+		if ( null !== $parent_id ) {
+			$post['post_parent'] = $parent_id;
 		}
-		$postId = wp_insert_post( $post );
-		return $postId;
+		$post_id = wp_insert_post( $post );
+		return $post_id;
 	}
 
 	/**
@@ -462,64 +458,19 @@ class AcceptStripePayments {
 		flush_rewrite_rules();
 	}
 
-	static function get_currencies() {
+	public static function get_currencies() {
 		$currencies = ASP_Utils::get_currencies();
-
 		return $currencies;
 	}
 
-	static function formatted_price( $price, $curr = '', $price_is_cents = false ) {
-
-		if ( empty( $price ) ) {
-			$price = 0;
-		}
-
-		$opts = get_option( 'AcceptStripePayments-settings' );
-
-		if ( $curr === false ) {
-			//if curr set to false, we format price without currency symbol or code
-			$curr_sym = '';
-		} else {
-
-			if ( $curr === '' ) {
-				//if currency not specified, let's use default currency set in options
-				$curr = $opts['currency_code'];
-			}
-
-			$curr = strtoupper( $curr );
-
-			$currencies = self::get_currencies();
-			if ( isset( $currencies[ $curr ] ) ) {
-				$curr_sym = $currencies[ $curr ][1];
-			} else {
-				//no currency code found, let's just use currency code instead of symbol
-				$curr_sym = $curr;
-			}
-		}
-
-		//check if price is in cents
-		if ( $price_is_cents && ! self::is_zero_cents( $curr ) ) {
-			$price = intval( $price ) / 100;
-		}
-
-		$out = number_format( $price, $opts['price_decimals_num'], $opts['price_decimal_sep'], $opts['price_thousand_sep'] );
-
-		switch ( $opts['price_currency_pos'] ) {
-			case 'left':
-				$out = $curr_sym . '' . $out;
-				break;
-			case 'right':
-				$out .= '' . $curr_sym;
-				break;
-			default:
-				$out .= '' . $curr_sym;
-				break;
-		}
-
-		return $out;
+	/**
+	 * Use ASP_Utils::formatted_price() instead.
+	 */
+	public static function formatted_price( $price, $curr = '', $price_is_cents = false ) {
+		return ASP_Utils::formatted_price( $price, $curr, $price_is_cents );
 	}
 
-	static function apply_tax( $price, $tax, $is_zero_cents = false ) {
+	public static function apply_tax( $price, $tax, $is_zero_cents = false ) {
 		if ( ! empty( $tax ) ) {
 			$prec = 2;
 			if ( $is_zero_cents ) {
@@ -531,7 +482,7 @@ class AcceptStripePayments {
 		return $price;
 	}
 
-	static function apply_shipping( $price, $shipping, $is_zero_cents = false ) {
+	public static function apply_shipping( $price, $shipping, $is_zero_cents = false ) {
 		if ( ! empty( $shipping ) ) {
 			$prec = 2;
 			if ( $is_zero_cents ) {
@@ -543,7 +494,7 @@ class AcceptStripePayments {
 		return $price;
 	}
 
-	static function get_tax_amount( $price, $tax, $is_zero_cents = false ) {
+	public static function get_tax_amount( $price, $tax, $is_zero_cents = false ) {
 		if ( ! empty( $tax ) ) {
 			$prec = 2;
 			if ( $is_zero_cents ) {
@@ -556,12 +507,12 @@ class AcceptStripePayments {
 		}
 	}
 
-	static function is_zero_cents( $curr ) {
-		$zeroCents = array( 'JPY', 'MGA', 'VND', 'KRW' );
-		return in_array( strtoupper( $curr ), $zeroCents );
+	public static function is_zero_cents( $curr ) {
+		$zero_cents = array( 'JPY', 'MGA', 'VND', 'KRW' );
+		return in_array( strtoupper( $curr ), $zero_cents, true );
 	}
 
-	static function from_cents( $amount, $currency ) {
+	public static function from_cents( $amount, $currency ) {
 		$prec = 2;
 		if ( self::is_zero_cents( $currency ) ) {
 			$prec = 0;
@@ -570,7 +521,7 @@ class AcceptStripePayments {
 		return $res;
 	}
 
-	static function gen_additional_items( $data, $sep = "\n" ) {
+	public static function gen_additional_items( $data, $sep = "\n" ) {
 		$out = '';
 		if ( ! empty( $data['additional_items'] ) ) {
 			foreach ( $data['additional_items'] as $item => $price ) {
@@ -585,49 +536,10 @@ class AcceptStripePayments {
 		return $out;
 	}
 
-	static function get_small_product_thumb( $prod_id, $force_regen = false ) {
-		$ret = '';
-		//check if we have a thumbnail
-		$curr_thumb = get_post_meta( $prod_id, 'asp_product_thumbnail', true );
-		if ( empty( $curr_thumb ) ) {
-			return $ret;
-		}
-		$ret = $curr_thumb;
-		//check if we have 100x100 preview generated
-		$thumb_thumb = get_post_meta( $prod_id, 'asp_product_thumbnail_thumb', true );
-		if ( empty( $thumb_thumb ) || $force_regen ) {
-			//looks like we don't have one. Let's generate it
-			$thumb_thumb = '';
-			$image       = wp_get_image_editor( $curr_thumb );
-			if ( ! is_wp_error( $image ) ) {
-				$image->resize( 100, 100, true );
-				$upload_dir = wp_upload_dir();
-				$ext        = pathinfo( $curr_thumb, PATHINFO_EXTENSION );
-				$file_name  = 'asp_product_' . $prod_id . '_thumb_' . md5( $curr_thumb ) . '.' . $ext;
-				$res        = $image->save( $upload_dir['path'] . '/' . $file_name );
-				if ( ! is_wp_error( $res ) ) {
-					$thumb_thumb = $upload_dir['url'] . '/' . $file_name;
-				} else {
-					//error saving thumb image
-					return $ret;
-				}
-			} else {
-				//error occured during image load
-				return $ret;
-			}
-			update_post_meta( $prod_id, 'asp_product_thumbnail_thumb', $thumb_thumb );
-			$ret = $thumb_thumb;
-		} else {
-			// we have one. Let's return it
-			$ret = $thumb_thumb;
-		}
-		return $ret;
-	}
-
 	public static function tofloat( $num ) {
-		$dotPos   = strrpos( $num, '.' );
-		$commaPos = strrpos( $num, ',' );
-		$sep      = ( ( $dotPos > $commaPos ) && $dotPos ) ? $dotPos : ( ( ( $commaPos > $dotPos ) && $commaPos ) ? $commaPos : false );
+		$dot_pos   = strrpos( $num, '.' );
+		$comma_pos = strrpos( $num, ',' );
+		$sep       = ( ( $dot_pos > $comma_pos ) && $dot_pos ) ? $dot_pos : ( ( ( $comma_pos > $dot_pos ) && $comma_pos ) ? $comma_pos : false );
 
 		if ( ! $sep ) {
 			return floatval( preg_replace( '/[^0-9]/', '', $num ) );
@@ -653,6 +565,12 @@ class AcceptStripePayments {
 		wp_enqueue_script( 'stripe-handler-ng' );
 		wp_register_style( 'stripe-handler-ng-style', WP_ASP_PLUGIN_URL . '/public/assets/css/public.css', array(), WP_ASP_PLUGIN_VERSION );
 		wp_enqueue_style( 'stripe-handler-ng-style' );
+	}
+
+	public function frontend_print_footer_scripts() {
+		if ( ! empty( $this->footer_scripts ) ) {
+			echo $this->footer_scripts;
+		}
 	}
 
 }

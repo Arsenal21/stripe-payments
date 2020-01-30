@@ -4,10 +4,16 @@ if (vars.fatal_error) {
 	showPopup();
 	throw new Error(vars.fatal_error);
 }
-
-var stripe = Stripe(vars.stripe_key);
-var elements = stripe.elements();
-
+try {
+	var stripe = Stripe(vars.stripe_key);
+	var elements = stripe.elements({ locale: vars.data.checkout_lang });
+} catch (error) {
+	showPopup();
+	errorCont.innerHTML = error;
+	errorCont.style.display = 'block';
+	jQuery('#payment-form').hide();
+	throw new Error(error);
+}
 vars.data.temp = [];
 
 if (vars.data.amount_variable) {
@@ -40,6 +46,16 @@ if (vars.data.currency_variable) {
 		vars.currencyFormat.s = currencyInput.options[currencyInput.selectedIndex].getAttribute('data-asp-curr-sym');
 		updateAllAmounts();
 	});
+}
+
+if (vars.data.custom_field) {
+	var customFieldInput = document.getElementById('asp-custom-field');
+	var customFieldErr = document.getElementById('custom-field-error');
+	if (customFieldInput) {
+		customFieldInput.addEventListener('change', function () {
+			validate_custom_field();
+		});
+	}
 }
 
 if (vars.data.coupons_enabled) {
@@ -86,6 +102,11 @@ if (vars.data.coupons_enabled) {
 					}
 					couponResCont.style.display = 'block';
 					couponInputCont.style.display = 'none';
+					if (is_full_discount()) {
+						jQuery('[data-pm-id="def"]').click();
+						jQuery('#pm-select-cont').hide();
+						jQuery('#card-cont').hide();
+					}
 				}
 				updateAllAmounts();
 				couponBtn.disabled = false;
@@ -100,6 +121,13 @@ if (vars.data.coupons_enabled) {
 		);
 	});
 	couponRemoveBtn.addEventListener('click', function () {
+		if (is_full_discount()) {
+			jQuery('#pm-select-cont').show();
+			jQuery('#card-cont').show();
+			if (vars.data.shipping_orig) {
+				vars.data.shipping = vars.data.shipping_orig;
+			}
+		}
 		delete (vars.data.coupon);
 		jQuery('#order-coupon-line').remove();
 		couponInput.value = '';
@@ -289,13 +317,19 @@ jQuery('.pm-select-btn').click(function () {
 
 function updateAllAmounts() {
 	calcTotal();
-	submitBtn.innerHTML = vars.payBtnText.replace(/%s/g, formatMoney(vars.data.amount));
+
+	if (is_full_discount()) {
+		submitBtn.innerHTML = vars.str.strGetForFree;
+	} else {
+		submitBtn.innerHTML = vars.payBtnText.replace(/%s/g, formatMoney(vars.data.amount));
+	}
 
 	if (vars.data.show_your_order === 1) {
 		jQuery('#order-total').html(formatMoney(vars.data.amount));
 		jQuery('#order-item-price').html(formatMoney(vars.data.item_price * vars.data.quantity));
 		jQuery('#order-quantity').html(vars.data.quantity);
 		jQuery('#order-tax').html(formatMoney(vars.data.taxAmount * vars.data.quantity));
+		jQuery('#shipping').html(formatMoney(vars.data.shipping));
 		if (vars.data.coupon) {
 			if (jQuery('tr#order-coupon-line').length === 0) {
 				var couponOrderLine = '<tr id="order-coupon-line"><td>Coupon "' + vars.data.coupon.code + '"</td><td>- <span id="order-coupon"></span></td></tr>';
@@ -332,7 +366,7 @@ function calcTotal() {
 	if (vars.data.coupon) {
 		var discountAmount = 0;
 		if (vars.data.coupon.discount_type === 'perc') {
-			discountAmount = Math.round(itemSubt * (vars.data.coupon.discount / 100));
+			discountAmount = PHP_round(itemSubt * (vars.data.coupon.discount / 100), 0);
 		} else {
 			if (is_zero_cents(vars.data.currency)) {
 				discountAmount = vars.data.coupon.discount;
@@ -342,23 +376,32 @@ function calcTotal() {
 		}
 		itemSubt = itemSubt - discountAmount;
 		vars.data.coupon.discount_amount = discountAmount;
+		if (is_full_discount() && vars.data.shipping) {
+			vars.data.shipping_orig = vars.data.shipping;
+			vars.data.shipping = 0;
+		}
 	}
 	if (vars.data.tax) {
-		var tax = Math.round(itemSubt * parseFloat(vars.data.tax) / 100);
+		var tax = PHP_round(itemSubt * vars.data.tax / 100, 0);
 		vars.data.taxAmount = tax;
-		itemSubt = parseInt(itemSubt) + parseInt(tax);
+		itemSubt = itemSubt + tax;
 	}
 
 	tAmount = itemSubt * vars.data.quantity;
 
 	if (vars.data.shipping) {
-		tAmount = tAmount + parseInt(vars.data.shipping);
+		tAmount = tAmount + vars.data.shipping;
 	}
-	vars.data.amount = tAmount;
+	vars.data.amount = PHP_round(tAmount, 0);
+}
+
+function PHP_round(num, dec) {
+	var num_sign = num >= 0 ? 1 : -1;
+	return parseFloat((Math.round((num * Math.pow(10, dec)) + (num_sign * 0.0001)) / Math.pow(10, dec)).toFixed(dec));
 }
 
 function is_zero_cents(curr) {
-	if (vars.zeroCents.indexOf(curr) === -1) {
+	if (vars.zeroCents.indexOf(curr.toUpperCase()) === -1) {
 		return false;
 	}
 	return true;
@@ -372,6 +415,7 @@ function cents_to_amount(amount, curr) {
 }
 
 function amount_to_cents(amount, curr) {
+	amount = parseFloat(amount);
 	if (!is_zero_cents(curr)) {
 		amount = amount * 100;
 	}
@@ -425,6 +469,13 @@ function inIframe() {
 	}
 }
 
+function is_full_discount() {
+	if (vars.data.coupon && vars.data.coupon.discount_type === 'perc' && parseFloat(vars.data.coupon.discount) === 100) {
+		return true;
+	}
+	return false;
+}
+
 function triggerEvent(el, type) {
 	var e;
 	if ('createEvent' in document) {
@@ -436,6 +487,26 @@ function triggerEvent(el, type) {
 		e.eventType = type;
 		el.fireEvent('on' + e.eventType, e);
 	}
+}
+
+function validate_custom_field() {
+	if (!customFieldInput) {
+		return true;
+	}
+	if (vars.custom_field_validation_regex !== '') {
+		try {
+			var re = new RegExp(vars.data.custom_field_validation_regex);
+		} catch (error) {
+			showFormInputErr(vars.str.strInvalidCFValidationRegex + ' ' + vars.data.custom_field_validation_regex + '\n' + error, errorCont, customFieldInput);
+			return false;
+		}
+	}
+	if (customFieldInput.type === 'text' && customFieldInput.value && !re.test(customFieldInput.value)) {
+		showFormInputErr(vars.data.custom_field_validation_err_msg, customFieldErr, customFieldInput);
+		return false;
+	}
+	customFieldErr.style.display = 'none';
+	return true;
 }
 
 function validate_custom_quantity() {
@@ -488,7 +559,7 @@ function validate_custom_amount() {
 		displayAmount = displayAmount.replace('.', vars.amountOpts.decimalSep);
 	}
 	if (!is_zero_cents(vars.data.currency)) {
-		cAmount = Math.round(cAmount * 100);
+		cAmount = PHP_round(cAmount * 100, 0);
 	}
 	if (typeof vars.minAmounts[vars.data.currency] !== 'undefined') {
 		if (vars.minAmounts[vars.data.currency] > cAmount) {
@@ -523,10 +594,23 @@ function canProceed() {
 		vars.data.quantity = quantity;
 	}
 
+	if (vars.data.custom_field) {
+		var custom_field_valid = validate_custom_field();
+		if (custom_field_valid === false) {
+			event.preventDefault();
+			return false;
+		}
+	}
+
 	if (piInput.value !== '') {
-		jQuery('#Aligner-item').fadeOut(function () {
-			jQuery('#global-spinner').show();
-		});
+		jQuery('#btn-spinner').hide();
+		jQuery('#checkmark-cont').css('display', 'flex');
+		setTimeout(function () {
+			jQuery('#Aligner-item').fadeOut(function () {
+				smokeScreen(false);
+				jQuery('#global-spinner').show();
+			});
+		}, 1500);
 		if (!inIframe() || window.doSelfSubmit) {
 			console.log('Self-submitting');
 			for (var i = 0; i < form.elements.length; i++) {
@@ -634,7 +718,8 @@ function handlePayment() {
 		delete (shippingDetails.email);
 	}
 	var opts = {
-		payment_method_data: {
+		payment_method: {
+			card: card,
 			billing_details: billingDetails
 		}
 	};
@@ -651,7 +736,7 @@ function handlePayment() {
 	}
 
 	//regen cs
-	if (!vars.data.create_token && (vars.data.client_secret === '' || vars.data.amount != clientSecAmount || vars.data.currency !== clientSecCurrency)) {
+	if (!is_full_discount() && !vars.data.token_not_required && (vars.data.client_secret === '' || vars.data.amount !== clientSecAmount || vars.data.currency !== clientSecCurrency)) {
 		var reqStr = 'action=asp_pp_req_token&amount=' + vars.data.amount + '&curr=' + vars.data.currency + '&product_id=' + vars.data.product_id;
 		reqStr = reqStr + '&quantity=' + vars.data.quantity;
 		if (vars.data.cust_id) {
@@ -714,7 +799,7 @@ function handlePayment() {
 		return false;
 	}
 
-	if (vars.data.create_token) {
+	if (!is_full_discount() && vars.data.create_token) {
 		console.log('Creating token');
 		opts = {
 			name: billingNameInput.value
@@ -727,7 +812,7 @@ function handlePayment() {
 				opts.address_zip = postal_code;
 			}
 		}
-		stripe.createToken(card).then(function (result) {
+		stripe.createToken(card, opts).then(function (result) {
 			console.log(result);
 			if (result.error) {
 				submitBtn.disabled = false;
@@ -736,11 +821,20 @@ function handlePayment() {
 				smokeScreen(false);
 			} else {
 				var reqStr = 'action=asp_pp_confirm_token&asp_token_id=' + result.token.id + '&product_id=' + vars.data.product_id;
+				if (vars.data.cust_id) {
+					reqStr = reqStr + '&cust_id=' + vars.data.cust_id;
+				}
 				if (vars.data.currency_variable) {
-					reqStr = reqStr + '&currency=' + data.currency;
+					reqStr = reqStr + '&currency=' + vars.data.currency;
 				}
 				if (vars.data.amount_variable) {
 					reqStr = reqStr + '&amount=' + vars.data.item_price;
+				}
+				if (vars.data.quantity > 1) {
+					reqStr = reqStr + '&quantity=' + vars.data.quantity;
+				}
+				if (vars.data.coupon) {
+					reqStr = reqStr + '&coupon=' + vars.data.coupon.code;
 				}
 				reqStr = reqStr + '&billing_details=' + JSON.stringify(billingDetails);
 				if (shippingDetails) {
@@ -761,6 +855,9 @@ function handlePayment() {
 							}
 							var inputSubId = document.getElementById('sub_id');
 							inputSubId.value = resp.sub_id;
+							if (resp.cust_id) {
+								vars.data.cust_id = resp.cust_id;
+							}
 							if (resp.pi_cs) {
 								vars.data.client_secret = resp.pi_cs;
 								vars.data.create_token = false;
@@ -776,7 +873,7 @@ function handlePayment() {
 								if (!vars.data.coupon && couponInput) {
 									couponInput.value = '';
 								}
-								form.dispatchEvent(new Event('submit'));
+								triggerEvent(form, 'submit');
 							}
 						} catch (e) {
 							console.log(e);
@@ -799,10 +896,18 @@ function handlePayment() {
 		return true;
 	}
 
+	if (is_full_discount()) {
+		handleCardPaymentResult({ paymentIntent: { id: vars.data.coupon.zero_value_id } });
+		return false;
+	}
+
 	if (vars.data.do_card_setup) {
-		console.log('Doing handleCardSetup()');
-		stripe.handleCardSetup(
-			vars.data.client_secret, card, opts)
+		if (opts.shipping) {
+			opts.shipping = undefined;
+		}
+		console.log('Doing confirmCardSetup()');
+		stripe.confirmCardSetup(
+			vars.data.client_secret, opts)
 			.then(function (result) {
 				console.log(result);
 				if (result.error) {
@@ -815,7 +920,7 @@ function handlePayment() {
 					if (!vars.data.coupon && couponInput) {
 						couponInput.value = '';
 					}
-					form.dispatchEvent(new Event('submit'));
+					triggerEvent(form, 'submit');
 				}
 			});
 
@@ -824,9 +929,11 @@ function handlePayment() {
 			opts.save_payment_method = true;
 			opts.setup_future_usage = 'off_session';
 		}
-		console.log('Doing handleCardPayment()');
-		stripe.handleCardPayment(
-			vars.data.client_secret, card, opts)
+		if (vars.data.stripe_receipt_email) {
+			opts.receipt_email = emailInput.value;
+		}
+		console.log('Doing confirmCardPayment()');
+		stripe.confirmCardPayment(vars.data.client_secret, opts)
 			.then(function (result) {
 				console.log(result);
 				handleCardPaymentResult(result);
@@ -845,7 +952,7 @@ function handleCardPaymentResult(result) {
 		if (!vars.data.coupon && couponInput) {
 			couponInput.value = '';
 		}
-		form.dispatchEvent(new Event('submit'));
+		triggerEvent(form, 'submit');
 	}
 }
 
