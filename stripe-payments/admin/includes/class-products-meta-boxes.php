@@ -154,7 +154,7 @@ class ASPProductsMetaboxes {
 </p>
 <label><?php esc_html_e( 'Currency', 'stripe-payments' ); ?></label>
 <br />
-<select name="asp_product_currency" id="asp_currency_select"><?php echo esc_attr( AcceptStripePayments_Admin::get_currency_options( $current_curr ) ); ?></select>
+<select name="asp_product_currency" id="asp_currency_select"><?php echo ( AcceptStripePayments_Admin::get_currency_options( $current_curr ) ); ?></select>
 <p class="description"><?php esc_html_e( 'Leave "(Default)" option selected if you want to use currency specified on settings page.', 'stripe-payments' ); ?></p>
 <label>
 	<input type="checkbox" name="asp_product_currency_variable" value="1" <?php echo esc_attr( ! empty( $current_curr_var ) ? ' checked' : '' ); ?>> <?php esc_html_e( 'Allow customers to specify currency', 'stripe-payments' ); ?>
@@ -432,14 +432,14 @@ jQuery(document).ready(function($) {
 <label><input type="checkbox" name="asp_product_collect_billing_addr" value="1" <?php echo ( $collect_billing_addr === '1' ) ? ' checked' : ''; ?>><?php echo __( 'Collect Address on Checkout', 'stripe-payments' ); ?> </label>
 <p class="description"><?php echo __( 'Enable this to collect customer address on checkout.', 'stripe-payments' ); ?></p>
 <div style="margin-left:30px;">
-	<label><input type="radio" name="asp_product_collect_shipping_addr" data-addr-radio="1" value="1" 
+	<label><input type="radio" name="asp_product_collect_shipping_addr" data-addr-radio="1" value="1"
 		<?php
 		echo ( $collect_shipping_addr === '1' || $collect_shipping_addr === '' ) ? ' checked' : '';
 		echo ! $collect_billing_addr ? ' disabled' : '';
 		?>
 		><?php echo __( 'Collect Both Billing And Shipping Addresses', 'stripe-payments' ); ?> </label>
 	<p></p>
-	<label><input type="radio" name="asp_product_collect_shipping_addr" data-addr-radio="1" value="0" 
+	<label><input type="radio" name="asp_product_collect_shipping_addr" data-addr-radio="1" value="0"
 		<?php
 		echo ( $collect_shipping_addr === '0' ) ? ' checked' : '';
 		echo ! $collect_billing_addr ? ' disabled' : '';
