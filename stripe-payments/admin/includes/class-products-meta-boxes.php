@@ -152,6 +152,7 @@ class ASPProductsMetaboxes {
 		'<br>' . esc_html( __( 'Leave it blank if you want your customers to enter the amount themselves (e.g. for donation button).', 'stripe-payments' ) );
 		?>
 </p>
+<hr />
 <label><?php esc_html_e( 'Currency', 'stripe-payments' ); ?></label>
 <br />
 <select name="asp_product_currency" id="asp_currency_select"><?php echo ( AcceptStripePayments_Admin::get_currency_options( $current_curr ) ); ?></select>
@@ -264,6 +265,7 @@ class ASPProductsMetaboxes {
 		esc_html_e( 'Leave it blank if you are not shipping your product or not charging additional shipping costs.', 'stripe-payments' );
 		?>
 	</p>
+<hr />
 </div>
 <label><?php esc_html_e( 'Tax (%)', 'stripe-payments' ); ?></label>
 <br />
@@ -292,11 +294,10 @@ class ASPProductsMetaboxes {
 </label>
 <p class="description"><?php echo esc_html( __( 'When checked, users can enter quantity they want to buy.', 'stripe-payments' ) ); ?></p>
 
-<div style="margin-top: 20px;"><label><?php esc_html_e( 'Set Quantity:', 'stripe-payments' ); ?>
-		<input type="number" min="1" step="1" name="asp_product_quantity" value="<?php echo esc_attr( $current_val ); ?>">
-	</label>
+<label><?php esc_html_e( 'Set Quantity:', 'stripe-payments' ); ?></label>
+	<br />
+	<input type="number" min="1" step="1" name="asp_product_quantity" value="<?php echo esc_attr( $current_val ); ?>">
 	<p class="description"><?php esc_html_e( 'If you want to use a set quanity for this item then enter the value in this field.', 'stripe-payments' ); ?></p>
-</div>
 
 <hr />
 
@@ -306,11 +307,10 @@ class ASPProductsMetaboxes {
 </label>
 <p class="description"><?php esc_html_e( 'When enabled, you can specify the quantity available for this product. It will be decreased each time the item is purchased. When stock reaches zero, an "Out of stock" message will be displayed instead of the buy button.', 'stripe-payments' ); ?></p>
 
-<div style="margin-top: 20px;"><label><?php esc_html_e( 'Quantity Available:', 'stripe-payments' ); ?>
-		<input type="number" min="0" step="1" name="asp_product_stock_items" value="<?php echo esc_attr( ! $stock_items ? 0 : $stock_items ); ?>">
-	</label>
+<label><?php esc_html_e( 'Quantity Available:', 'stripe-payments' ); ?>	</label>
+	<br />
+	<input type="number" min="0" step="1" name="asp_product_stock_items" value="<?php echo esc_attr( ! $stock_items ? 0 : $stock_items ); ?>">
 	<p class="description"><?php esc_html_e( 'Specify the quantity available for this product.', 'stripe-payments' ); ?></p>
-</div>
 
 		<?php
 	}
