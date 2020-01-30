@@ -311,6 +311,10 @@ class ASP_PP_Handler {
 
 		$a['data'] = $data;
 
+		if ( isset( $data['fatal_error'] ) ) {
+			$a['fatal_error'] = $data['fatal_error'];
+		}
+
 		$a['scripts'] = array();
 		$a['styles']  = array();
 		$a['vars']    = array();
