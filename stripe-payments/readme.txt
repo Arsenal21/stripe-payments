@@ -155,8 +155,8 @@ None.
 == Changelog ==
 
 = 2.0.20 =
-- Coupons are working with subscription products now (requires Subscriptions addon 2.0.9+).
 - Added validation for values on product edit page (tax, price, quantity etc).
+- Discount coupons will now work subscription products (requires Subscriptions addon 2.0.9+).
 
 = 2.0.19 =
 - Added 100% discount coupons support.
