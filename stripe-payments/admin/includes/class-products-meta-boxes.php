@@ -8,7 +8,7 @@ class ASPProductsMetaboxes {
 	public function __construct() {
 		$this->asp_main = AcceptStripePayments::get_instance();
 		remove_post_type_support( ASPMain::$products_slug, 'editor' );
-		add_action( 'add_meta_boxes_' . ASPMain::$products_slug, array( $this, 'add_meta_boxes' ) );
+		add_action( 'add_meta_boxes_' . ASPMain::$products_slug, array( $this, 'add_meta_boxes' ), 0 );
 		//products post save action
 		add_action( 'save_post_' . ASPMain::$products_slug, array( $this, 'save_product_handler' ), 10, 3 );
 	}
@@ -45,8 +45,10 @@ class ASPProductsMetaboxes {
 				if ( in_array( $box['id'], $skip_metaboxes, true ) ) {
 					continue;
 				}
-				$this->metaboxes[] = $box;
-				unset( $wp_meta_boxes[ ASPMain::$products_slug ]['normal']['default'][ $box['id'] ] );
+				if ( 'asp_' === substr( $box['id'], 0, 4 ) ) {
+					$this->metaboxes[] = $box;
+					unset( $wp_meta_boxes[ ASPMain::$products_slug ]['normal']['default'][ $box['id'] ] );
+				}
 			}
 			add_meta_box( 'asp_product_metaboxes_meta_box', __( 'Product Options', 'stripe-payments' ), array( $this, 'display_metaboxes_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 		}
