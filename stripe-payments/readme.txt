@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 4.7
 Tested up to: 5.3
 Requires PHP: 5.4
-Stable tag: 2.0.20
+Stable tag: 2.0.21
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -153,6 +153,11 @@ Yes, please visit Stripe Payments > Settings screen for options.
 None.
 
 == Changelog ==
+
+= 2.0.21 =
+- Added option to insert custom CSS to payment popup.
+- Updated the code to remove a conflict with other plugins when "Enable Compact Product Edit Interface" option is enabled.
+- Minor improvements and optimizations.
 
 = 2.0.20 =
 - Added validation for values on product edit page (tax, price, quantity etc).

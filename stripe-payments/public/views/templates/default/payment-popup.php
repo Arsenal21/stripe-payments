@@ -137,7 +137,7 @@
 <![endif]-->
 </head>
 
-<body>
+<body<?php echo isset( $a['prod_id'] ) ? sprintf( ' id="product-%d"', esc_attr( $a['prod_id'] ) ) : ''; ?>>
 	<div id="Aligner" class="Aligner">
 		<?php if ( ! $a['data']['is_live'] ) { ?>
 		<a href="https://stripe.com/docs/testing#cards" target="_blank" id="test-mode"><?php esc_html_e( 'TEST MODE', 'stripe-payments' ); ?></a>
@@ -498,31 +498,33 @@
 			</div>
 		</div>
 	</div>
+	<?php
+
+	foreach ( $a['styles'] as $style ) {
+		if ( ! $style['footer'] ) {
+			printf( '<link rel="stylesheet" href="%s">' . "\r\n", esc_url( $style['src'] ) ); //phpcs:ignore
+		}
+	}
+	foreach ( $a['scripts'] as $script ) {
+		if ( ! $script['footer'] ) {
+			printf( '<script src="%s"></script>' . "\r\n", esc_url( $script['src'] ) ); //phpcs:ignore
+		}
+	}
+
+	foreach ( $a['scripts'] as $script ) {
+		if ( $script['footer'] ) {
+			printf( '<script src="%s"></script>' . "\r\n", esc_url( $script['src'] ) ); //phpcs:ignore
+		}
+	}
+
+	foreach ( $a['styles'] as $style ) {
+		if ( $style['footer'] ) {
+			printf( '<link rel="stylesheet" href="%s">' . "\r\n", esc_url( $style['src'] ) ); //phpcs:ignore
+		}
+	}
+
+	//fire action to output additional data to payment popup before closing <body> tag
+	do_action( 'asp_ng_pp_output_before_closing_body', $a );
+	?>
 </body>
-<?php
-
-foreach ( $a['styles'] as $style ) {
-	if ( ! $style['footer'] ) {
-		printf( '<link rel="stylesheet" href="%s">' . "\r\n", esc_url( $style['src'] ) ); //phpcs:ignore
-	}
-}
-foreach ( $a['scripts'] as $script ) {
-	if ( ! $script['footer'] ) {
-		printf( '<script src="%s"></script>' . "\r\n", esc_url( $script['src'] ) ); //phpcs:ignore
-	}
-}
-
-foreach ( $a['scripts'] as $script ) {
-	if ( $script['footer'] ) {
-		printf( '<script src="%s"></script>' . "\r\n", esc_url( $script['src'] ) ); //phpcs:ignore
-	}
-}
-
-foreach ( $a['styles'] as $style ) {
-	if ( $style['footer'] ) {
-		printf( '<link rel="stylesheet" href="%s">' . "\r\n", esc_url( $style['src'] ) ); //phpcs:ignore
-	}
-}
-?>
-
 </html>

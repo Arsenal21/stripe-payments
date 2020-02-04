@@ -311,6 +311,10 @@ class ASP_PP_Handler {
 
 		$a['data'] = $data;
 
+		if ( isset( $data['fatal_error'] ) ) {
+			$a['fatal_error'] = $data['fatal_error'];
+		}
+
 		$a['scripts'] = array();
 		$a['styles']  = array();
 		$a['vars']    = array();
@@ -440,11 +444,22 @@ class ASP_PP_Handler {
 		}
 		$a['pay_btn_text'] = sprintf( $pay_btn_text, AcceptStripePayments::formatted_price( $this->item->get_total(), $this->item->get_currency() ) );
 
+		//output custom PP CSS if needed
+		add_action( 'asp_ng_pp_output_before_closing_body', array( $this, 'output_custom_css' ), 1000 );
+
 		ob_start();
 		require_once WP_ASP_PLUGIN_PATH . 'public/views/templates/default/payment-popup.php';
 		$tpl = ob_get_clean();
 		echo $tpl; //phpcs:ignore
 		exit;
+	}
+
+	public function output_custom_css( $a ) {
+		$pp_additional_css = $this->asp_main->get_setting( 'pp_additional_css' );
+		if ( empty( $pp_additional_css ) ) {
+			return;
+		}
+		echo sprintf( '<style>%s</style>', wp_kses( $pp_additional_css, array() ) );
 	}
 
 	public function handle_request_token() {

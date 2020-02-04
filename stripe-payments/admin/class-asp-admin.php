@@ -199,7 +199,7 @@ class AcceptStripePayments_Admin {
 		//The following is used by the TinyMCE button.
 		?>
 	<script type="text/javascript">
-		var asp_admin_ajax_url = '<?php echo admin_url( 'admin-ajax.php?action=ajax' ); ?>';
+		var asp_admin_ajax_url = '<?php echo esc_js( admin_url( 'admin-ajax.php?action=ajax' ) ); ?>';
 	</script>
 		<?php
 	}
@@ -1048,6 +1048,17 @@ class AcceptStripePayments_Admin {
 				'desc'  => __( 'If enabled, no transaction info is saved to the orders menu of the plugin. The transaction data will still be available in your Stripe dashboard. Useful if you don\'t want to store purchase and customer data in your site.', 'stripe-payments' ),
 			)
 		);
+		add_settings_field(
+			'dont_create_order',
+			__( 'Payment Popup Additional CSS', 'stripe-payments' ),
+			array( &$this, 'settings_field_callback' ),
+			$this->plugin_slug . '-advanced',
+			'AcceptStripePayments-additional-settings',
+			array(
+				'field' => 'pp_additional_css',
+				'desc'  => __( 'Enter additional CSS code that would be added to payment popup page.', 'stripe-payments' ),
+			)
+		);
 	}
 
 	function tos_description() {
@@ -1275,12 +1286,16 @@ class AcceptStripePayments_Admin {
 				break;
 			case 'price_currency_pos':
 				?>
-		<select name="AcceptStripePayments-settings[<?php echo $field; ?>]">
-			<option value="left"<?php echo ( $field_value === 'left' ) ? ' selected' : ''; ?>><?php _ex( 'Left', 'Currency symbol position', 'stripe-payments' ); ?></option>
-			<option value="right"<?php echo ( $field_value === 'right' ) ? ' selected' : ''; ?>><?php _ex( 'Right', 'Currency symbol position', 'stripe-payments' ); ?></option>
-		</select>
-		<p class="description"><?php echo $desc; ?></p>
+<select name="AcceptStripePayments-settings[<?php echo $field; ?>]">
+	<option value="left" <?php echo ( $field_value === 'left' ) ? ' selected' : ''; ?>><?php _ex( 'Left', 'Currency symbol position', 'stripe-payments' ); ?></option>
+	<option value="right" <?php echo ( $field_value === 'right' ) ? ' selected' : ''; ?>><?php _ex( 'Right', 'Currency symbol position', 'stripe-payments' ); ?></option>
+</select>
+<p class="description"><?php echo $desc; ?></p>
 				<?php
+				break;
+			case 'pp_additional_css':
+				echo sprintf( '<textarea name="AcceptStripePayments-settings[%s]" rows="8" cols="50">%s</textarea>', $field, $field_value );
+				echo '<p class="description">' . $desc . '</p>';
 				break;
 			case 'tos_text':
 				echo '<textarea name="AcceptStripePayments-settings[tos_text]" rows="4" cols="70">' . $field_value . '</textarea>';
@@ -1338,6 +1353,8 @@ class AcceptStripePayments_Admin {
 		$output ['enable_email_schedule'] = empty( $input['enable_email_schedule'] ) ? 0 : 1;
 
 		$output ['frontend_prefetch_scripts'] = empty( $input['frontend_prefetch_scripts'] ) ? 0 : 1;
+
+		$output['pp_additional_css'] = ! empty( $input['pp_additional_css'] ) ? $input['pp_additional_css'] : '';
 
 		$output['tos_text'] = ! empty( $input['tos_text'] ) ? $input['tos_text'] : '';
 
