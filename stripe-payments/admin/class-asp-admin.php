@@ -1294,7 +1294,7 @@ class AcceptStripePayments_Admin {
 				<?php
 				break;
 			case 'pp_additional_css':
-				echo sprintf( '<textarea name="AcceptStripePayments-settings[%s]" rows="8" cols="50">%s</textarea>', $field, $field_value );
+				echo sprintf( '<textarea name="AcceptStripePayments-settings[%s]" rows="8" cols="70">%s</textarea>', $field, $field_value );
 				echo '<p class="description">' . $desc . '</p>';
 				break;
 			case 'tos_text':
