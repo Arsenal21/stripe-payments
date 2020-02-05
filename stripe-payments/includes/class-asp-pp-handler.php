@@ -28,6 +28,8 @@ class ASP_PP_Handler {
 	public function add_ajax_handlers() {
 		add_action( 'wp_ajax_asp_pp_req_token', array( $this, 'handle_request_token' ) );
 		add_action( 'wp_ajax_nopriv_asp_pp_req_token', array( $this, 'handle_request_token' ) );
+		add_action( 'wp_ajax_asp_pp_create_invoice', array( $this, 'handle_invoice_create' ) );
+		add_action( 'wp_ajax_nopriv_asp_pp_create_invoice', array( $this, 'handle_invoice_create' ) );
 	}
 
 	public function showpp() {
@@ -460,6 +462,264 @@ class ASP_PP_Handler {
 			return;
 		}
 		echo sprintf( '<style>%s</style>', wp_kses( $pp_additional_css, array() ) );
+	}
+
+	public function handle_invoice_create() {
+		$out             = array();
+		$out['success']  = false;
+		$product_id      = filter_input( INPUT_POST, 'product_id', FILTER_SANITIZE_NUMBER_INT );
+		$amount          = filter_input( INPUT_POST, 'amount', FILTER_SANITIZE_NUMBER_FLOAT );
+		$curr            = filter_input( INPUT_POST, 'curr', FILTER_SANITIZE_STRING );
+		$pi_id           = filter_input( INPUT_POST, 'pi', FILTER_SANITIZE_STRING );
+		$cust_id         = filter_input( INPUT_POST, 'cust_id', FILTER_SANITIZE_STRING );
+		$quantity        = filter_input( INPUT_POST, 'quantity', FILTER_SANITIZE_NUMBER_INT );
+		$coupon_code     = filter_input( INPUT_POST, 'coupon', FILTER_SANITIZE_STRING );
+		$post_variations = filter_input( INPUT_POST, 'variations', FILTER_DEFAULT );
+
+		$item = new ASP_Product_Item( $product_id );
+
+		if ( $item->get_last_error() ) {
+			$out['err'] = __( 'Error occurred:', 'stripe-payments' ) . ' ' . $item->get_last_error();
+			wp_send_json( $out );
+		}
+
+		if ( $item->stock_control_enabled() ) {
+			$stock_items        = $item->get_stock_items();
+			$out['stock_items'] = $stock_items;
+			if ( $quantity > $stock_items ) {
+				// translators: %d is number of items in stock
+				$msg        = apply_filters( 'asp_customize_text_msg', __( 'You cannot order more items than available: %d', 'stripe-payments' ), 'stock_not_available' );
+				$out['err'] = sprintf( $msg, $stock_items );
+				wp_send_json( $out );
+			}
+		}
+
+		ASP_Debug_Logger::log( 'Starting invoice creation process' );
+
+		try {
+			ASPMain::load_stripe_lib();
+			$key = $this->asp_main->is_live ? $this->asp_main->APISecKey : $this->asp_main->APISecKeyTest;
+			\Stripe\Stripe::setApiKey( $key );
+		} catch ( \Exception $e ) {
+			$out['err'] = __( 'Stripe API error occurred:', 'stripe-payments' ) . ' ' . $e->getMessage();
+			wp_send_json( $out );
+		} catch ( \Throwable $e ) {
+			$out['err'] = __( 'Stripe API error occurred:', 'stripe-payments' ) . ' ' . $e->getMessage();
+			wp_send_json( $out );
+		}
+
+		$metadata = array();
+
+		try {
+
+			$pi_params = array(
+				'amount'   => $amount,
+				'currency' => $curr,
+			);
+
+			$post_billing_details = filter_input( INPUT_POST, 'billing_details', FILTER_SANITIZE_STRING );
+
+			$post_shipping_details = filter_input( INPUT_POST, 'shipping_details', FILTER_SANITIZE_STRING );
+
+			if ( isset( $post_billing_details ) ) {
+				$post_billing_details = html_entity_decode( $post_billing_details );
+
+				$billing_details = json_decode( $post_billing_details );
+			}
+
+			$customer_opts = array();
+
+			if ( isset( $billing_details ) ) {
+
+				if ( ! empty( $billing_details->name ) ) {
+					$customer_opts['name'] = $billing_details->name;
+				}
+
+				if ( ! empty( $billing_details->email ) ) {
+					$customer_opts['email'] = $billing_details->email;
+				}
+
+				if ( isset( $billing_details->address ) && isset( $billing_details->address->line1 ) ) {
+					//we have address
+					$addr = array(
+						'line1'   => $billing_details->address->line1,
+						'city'    => isset( $billing_details->address->city ) ? $billing_details->address->city : null,
+						'country' => isset( $billing_details->address->country ) ? $billing_details->address->country : null,
+					);
+
+					if ( isset( $billing_details->address->postal_code ) ) {
+						$addr['postal_code'] = $billing_details->address->postal_code;
+					}
+
+					$customer_opts['address'] = $addr;
+				}
+			}
+
+			if ( isset( $post_shipping_details ) ) {
+				$post_shipping_details = html_entity_decode( $post_shipping_details );
+
+				$shipping_details = json_decode( $post_shipping_details );
+
+				$shipping = array();
+
+				if ( $shipping_details->name ) {
+					$shipping['name'] = $shipping_details->name;
+				}
+
+				if ( isset( $shipping_details->address ) && isset( $shipping_details->address->line1 ) ) {
+					//we have address
+					$addr = array(
+						'line1'   => $shipping_details->address->line1,
+						'city'    => isset( $shipping_details->address->city ) ? $shipping_details->address->city : null,
+						'country' => isset( $shipping_details->address->country ) ? $shipping_details->address->country : null,
+					);
+
+					if ( isset( $shipping_details->address->postal_code ) ) {
+						$addr['postal_code'] = $shipping_details->address->postal_code;
+					}
+
+					$shipping['address'] = $addr;
+
+					$customer_opts['shipping'] = $shipping;
+				}
+			}
+
+			$curr = $item->get_currency();
+
+			if ( ! empty( $coupon_code ) ) {
+				$coupon_valid = $item->check_coupon( $coupon_code );
+				if ( $coupon_valid ) {
+					$coupon = $item->get_coupon();
+
+					$coupon_opts = array(
+						'duration' => 'once',
+						'currency' => $curr,
+						'name'     => sprintf( 'Coupon "%s"', $coupon['code'] ),
+					);
+					if ( 'perc' === $coupon['discount_type'] ) {
+						$coupon_opts['percent_off'] = $coupon['discount'];
+					} else {
+						$coupon_opts['amount_off'] = $coupon['discount'] * 100;
+					}
+					ASP_Debug_Logger::log( 'Creating coupon' );
+					$stripe_coupon = \Stripe\Coupon::create( $coupon_opts );
+
+					$customer_opts['coupon'] = $stripe_coupon->id;
+				}
+			}
+
+			$customer_opts = apply_filters( 'asp_ng_before_customer_create_update', $customer_opts, empty( $cust_id ) ? false : $cust_id );
+
+			ASP_Debug_Logger::log( 'Creating customer' );
+
+			if ( empty( $cust_id ) ) {
+				$customer = \Stripe\Customer::create( $customer_opts );
+				$cust_id  = $customer->id;
+			} else {
+				$customer = \Stripe\Customer::update( $cust_id, $customer_opts );
+			}
+
+			$tax = $item->get_tax();
+
+			if ( ! empty( $tax ) ) {
+				//create tax rate object
+				ASP_Debug_Logger::log( 'Creating tax rate' );
+
+				$tax_rate = \Stripe\TaxRate::create(
+					array(
+						'display_name' => 'Tax',
+						'percentage'   => $tax,
+						'inclusive'    => false,
+					)
+				);
+			}
+
+			ASP_Debug_Logger::log( 'Creating invoice line item' );
+
+			$price = $item->get_price( true );
+
+			$price = empty( $price ) ? $amount : $price;
+
+			$prod_name = $item->get_name();
+
+			\Stripe\InvoiceItem::create(
+				array(
+					'customer'    => $cust_id,
+					'unit_amount' => $price,
+					'currency'    => $curr,
+					'description' => $prod_name,
+					'quantity'    => empty( $quantity ) ? 1 : $quantity,
+					'tax_rates'   => isset( $tax_rate ) ? array( $tax_rate->id ) : null,
+				)
+			);
+
+			if ( ! empty( $post_variations ) ) {
+				$variations = json_decode( $post_variations, true );
+				$v          = new ASPVariations( $product_id );
+				foreach ( $variations as $grp_id => $var_id ) {
+					$var = $v->get_variation( $grp_id, $var_id[0] );
+					if ( ! empty( $var ) ) {
+						ASP_Debug_Logger::log( sprintf( 'Creating variation "%s" invoice line item', $var['name'], $var['price'] ) );
+						\Stripe\InvoiceItem::create(
+							array(
+								'customer'    => $cust_id,
+								'unit_amount' => $var['price'] * 100,
+								'currency'    => $curr,
+								'description' => $var['group_name'] . ': ' . $var['name'],
+								'tax_rates'   => isset( $tax_rate ) ? array( $tax_rate->id ) : null,
+							)
+						);
+					}
+				}
+			}
+
+			$shipping = $item->get_shipping( true );
+
+			if ( $shipping ) {
+				ASP_Debug_Logger::log( 'Creating shipping invoice line item' );
+
+				\Stripe\InvoiceItem::create(
+					array(
+						'customer'     => $cust_id,
+						'amount'       => $shipping,
+						'currency'     => $curr,
+						'discountable' => false,
+						'description'  => 'Shipping',
+					)
+				);
+			}
+
+			ASP_Debug_Logger::log( 'Creating invoice' );
+
+			$invoice = \Stripe\Invoice::create(
+				array(
+					'customer'     => $cust_id,
+					'auto_advance' => false,
+				)
+			);
+
+			ASP_Debug_Logger::log( 'Finalizing invoice' );
+
+			$invoice->finalizeInvoice( array( 'expand' => array( 'payment_intent' ) ) );
+
+			$intent = $invoice->payment_intent;
+
+		} catch ( \Exception $e ) {
+			$out['err'] = __( 'Error occurred:', 'stripe-payments' ) . ' ' . $e->getMessage();
+			ASP_Debug_Logger::log( $out['err'], false );
+			wp_send_json( $out );
+		} catch ( \Throwable $e ) {
+			$out['err'] = __( 'Error occurred:', 'stripe-payments' ) . ' ' . $e->getMessage();
+			ASP_Debug_Logger::log( $out['err'], false );
+			wp_send_json( $out );
+		}
+
+		$out['success']      = true;
+		$out['clientSecret'] = $intent->client_secret;
+		$out['pi_id']        = $intent->id;
+		$out['cust_id']      = $cust_id;
+		$out                 = apply_filters( 'asp_ng_before_pi_result_send', $out, $intent );
+		wp_send_json( $out );
 	}
 
 	public function handle_request_token() {

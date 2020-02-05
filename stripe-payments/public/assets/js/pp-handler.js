@@ -737,13 +737,19 @@ function handlePayment() {
 
 	//regen cs
 	if (!is_full_discount() && !vars.data.token_not_required && (vars.data.client_secret === '' || vars.data.amount !== clientSecAmount || vars.data.currency !== clientSecCurrency)) {
-		var reqStr = 'action=asp_pp_req_token&amount=' + vars.data.amount + '&curr=' + vars.data.currency + '&product_id=' + vars.data.product_id;
+		var reqStr = 'action=asp_pp_create_invoice&amount=' + vars.data.amount + '&curr=' + vars.data.currency + '&product_id=' + vars.data.product_id;
 		reqStr = reqStr + '&quantity=' + vars.data.quantity;
 		if (vars.data.cust_id) {
 			reqStr = reqStr + '&cust_id=' + vars.data.cust_id;
 		}
 		if (vars.data.client_secret !== '') {
 			reqStr = reqStr + '&pi=' + vars.data.pi_id;
+		}
+		if (vars.data.coupon) {
+			reqStr = reqStr + '&coupon=' + vars.data.coupon.code;
+		}
+		if (!jQuery.isEmptyObject(vars.data.variations.applied)) {
+			reqStr = reqStr + '&variations=' + JSON.stringify(vars.data.variations.applied);
 		}
 		reqStr = reqStr + '&billing_details=' + JSON.stringify(billingDetails);
 		vars.data.csRegenParams = reqStr;
