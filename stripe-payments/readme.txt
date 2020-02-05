@@ -155,7 +155,7 @@ None.
 == Changelog ==
 
 = 2.0.21 =
-- Added option to insert custom CSS to payment popup.
+- Added a new feature to insert custom CSS to payment popup window (it can be found in the advanced settings tab).
 - Updated the code to remove a conflict with other plugins when "Enable Compact Product Edit Interface" option is enabled.
 - Minor improvements and optimizations.
 
