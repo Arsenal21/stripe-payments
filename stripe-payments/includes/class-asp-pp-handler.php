@@ -584,8 +584,6 @@ class ASP_PP_Handler {
 				}
 			}
 
-			$curr = $item->get_currency();
-
 			if ( ! empty( $coupon_code ) ) {
 				$coupon_valid = $item->check_coupon( $coupon_code );
 				if ( $coupon_valid ) {
