@@ -279,7 +279,7 @@ form.addEventListener('submit', function (event) {
 		return false;
 	}
 
-	if (('def' === vars.data.currentPM || !vars.data.currentPM) && !vars.data.cardComplete) {
+	if (!is_full_discount() && ('def' === vars.data.currentPM || !vars.data.currentPM) && !vars.data.cardComplete) {
 		event.preventDefault();
 		card.focus();
 		return false;
