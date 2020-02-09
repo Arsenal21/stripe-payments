@@ -100,6 +100,9 @@ class AcceptStripePayments {
 
 		add_action( 'plugins_loaded', array( $this, 'plugins_loaded' ) );
 
+		//handle self hooks
+		require_once WP_ASP_PLUGIN_PATH . 'includes/class-asp-self-hooks-handler.php';
+
 		//handle IPN stuff if needed
 		require_once WP_ASP_PLUGIN_PATH . 'includes/process_ipn.php';
 		require_once WP_ASP_PLUGIN_PATH . 'includes/class-asp-process-ipn-ng.php';

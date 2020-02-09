@@ -53,6 +53,8 @@ class ASP_PP_Handler {
 
 		$a['prod_id'] = $product_id;
 
+		do_action( 'asp_ng_product_mode_keys', $product_id );
+
 		$a['is_live'] = $this->asp_main->is_live;
 
 		$this->uniq_id = uniqid();
@@ -459,6 +461,8 @@ class ASP_PP_Handler {
 				wp_send_json( $out );
 			}
 		}
+
+		do_action( 'asp_ng_product_mode_keys', $product_id );
 
 		try {
 			ASPMain::load_stripe_lib();
