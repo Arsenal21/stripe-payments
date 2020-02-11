@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 4.7
 Tested up to: 5.3
 Requires PHP: 5.4
-Stable tag: 2.0.22t1
+Stable tag: 2.0.22t2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -155,6 +155,9 @@ None.
 == Changelog ==
 
 = WIP 2.0.22 =
+- WP eMember integration now works with new Stripe API.
+- WP eMember integration now properly passes customer name and address.
+- Added integration with [Simple Membership plugin](https://wordpress.org/plugins/simple-membership/)
 - Added "Force Test Mode" product option (located in Advanced Settings metabox on product edit page).
 - Added check if card details are properly filled in before making any backend requests (prevents excess Stripe API calls).
 - Speed up payment popup display by removing unneeded Stripe library init.
