@@ -100,6 +100,41 @@ class ASP_Self_Hooks_Handler {
 			$addr_country = $charge->source->address_country;
 		}
 
+		//get address from new API payment data
+		$ipn = ASP_Process_IPN_NG::get_instance();
+
+		if ( isset( $ipn->p_data ) ) {
+			$addr = $ipn->p_data->get_billing_details();
+			if ( $addr ) {
+				if ( empty( $addr_street ) && ! empty( $addr->line1 ) ) {
+					$addr_street = $addr->line1;
+				}
+				if ( empty( $addr_zip ) && ! empty( $addr->postal_code ) ) {
+					$addr_zip = $addr->postal_code;
+				}
+
+				if ( empty( $addr_city ) && ! empty( $addr->city ) ) {
+					$addr_city = $addr->city;
+				}
+
+				if ( empty( $addr_state ) && ! empty( $addr->state ) ) {
+					$addr_state = $addr->state;
+				}
+
+				if ( empty( $addr_country ) && ! empty( $addr->country ) ) {
+					$addr_country = $addr->country;
+				}
+			}
+		}
+
+		if ( ! empty( $addr_country ) ) {
+			//convert country code to country name
+			$countries = ASP_Utils::get_countries_untranslated();
+			if ( isset( $countries[ $addr_country ] ) ) {
+				$addr_country = $countries[ $addr_country ];
+			}
+		}
+
 		$ipn_data = array(
 			'payer_email'     => $data['stripeEmail'],
 			'first_name'      => $first_name,
