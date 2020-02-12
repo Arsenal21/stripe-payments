@@ -155,12 +155,13 @@ None.
 == Changelog ==
 
 = WIP 2.0.22 =
-- WP eMember integration now works with new Stripe API.
-- WP eMember integration now properly passes customer name and address.
-- Added integration with [Simple Membership plugin](https://wordpress.org/plugins/simple-membership/)
-- Added "Force Test Mode" product option (located in Advanced Settings metabox on product edit page).
+- New Stripe API is now enabled by default on fresh plugin installation.
 - Added check if card details are properly filled in before making any backend requests (prevents excess Stripe API calls).
+- Added "Force Test Mode" product option (located in Advanced Settings metabox on product edit page).
 - Speed up payment popup display by removing unneeded Stripe library init.
+- Added built-in integration with [Simple Membership plugin](https://wordpress.org/plugins/simple-membership/)
+- WP eMember integration now works with new Stripe API.
+- WP eMember integration now properly handles customer name and address.
 - Some visual payment popup form tweaks.
 
 = 2.0.21 =
