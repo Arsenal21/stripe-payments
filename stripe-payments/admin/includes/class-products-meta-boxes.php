@@ -27,12 +27,19 @@ class ASPProductsMetaboxes {
 		add_meta_box( 'asp_appearance_meta_box', __( 'Appearance', 'stripe-payments' ), array( $this, 'display_appearance_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 		add_meta_box( 'asp_coupons_meta_box', __( 'Coupons Settings', 'stripe-payments' ), array( $this, 'display_coupons_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 		add_meta_box( 'asp_custom_field_meta_box', __( 'Custom Field', 'stripe-payments' ), array( $this, 'display_custom_field_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
+		add_meta_box( 'asp_advanced_settings', __( 'Advanced Settings', 'stripe-payments' ), array( $this, 'display_advanced_settings_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 		add_meta_box( 'asp_embed_meta_box', __( 'Embed Product', 'stripe-payments' ), array( $this, 'display_embed_meta_box' ), ASPMain::$products_slug, 'side', 'default' );
 
-		//check if eStore installed
+		//check if eMember installed
 		if ( function_exists( 'wp_eMember_install' ) ) {
 			//if it is, let's add metabox where admin can select membership level
 			add_meta_box( 'asp_emember_meta_box', __( 'WP eMember Membership Level', 'stripe-payments' ), array( $this, 'display_emember_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
+		}
+
+		//check if Simple Membership installed
+		if ( defined( 'SIMPLE_WP_MEMBERSHIP_VER' ) ) {
+			//if it is, let's add metabox where admin can select membership level
+			add_meta_box( 'asp_swpm_meta_box', __( 'Simple Membership Level', 'stripe-payments' ), array( $this, 'display_swpm_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 		}
 
 		do_action( 'asp_edit_product_metabox' );
@@ -96,6 +103,19 @@ class ASPProductsMetaboxes {
 			$first = false;
 		}
 		echo '</div>';
+	}
+
+	public function display_swpm_meta_box( $post ) {
+		$current_val = get_post_meta( $post->ID, 'asp_product_swpm_level', true );
+		?>
+<p><?php esc_html_e( 'If you want this product to be connected to a membership level then select the membership Level here.', 'stripe-payments' ); ?></p>
+<select name="asp_product_swpm_level">
+<option value=""><?php esc_html_e( 'None', 'stripe-payments' ); ?></option>
+		<?php
+		echo SwpmUtils::membership_level_dropdown( $current_val );
+		?>
+</select>
+		<?php
 	}
 
 	public function display_emember_meta_box( $post ) {
@@ -524,6 +544,14 @@ jQuery(document).ready(function($) {
 		<?php
 	}
 
+	public function display_advanced_settings_meta_box( $post ) {
+		$current_val = get_post_meta( $post->ID, 'asp_product_force_test_mode', true );
+		?>
+		<label><input type="checkbox" name="asp_product_force_test_mode" value="1"<?php echo $current_val ? ' checked' : ''; ?>> <?php echo esc_html_e( 'Force Test Mode', 'stripe-payments' ); ?></label>
+		<p class="description"><?php echo esc_html_e( 'When checked, product stays in test mode regardless of the global "Live Mode" swtich.', 'stripe-payments' ); ?></p>
+		<?php
+	}
+
 	public function display_embed_meta_box( $post ) {
 		$home_url = get_home_url( null, '/' );
 
@@ -591,6 +619,10 @@ jQuery(document).ready(function($) {
 			update_post_meta( $post_id, 'asp_product_enable_stock', isset( $_POST['asp_product_enable_stock'] ) ? '1' : false );
 			update_post_meta( $post_id, 'asp_product_stock_items', sanitize_text_field( absint( $_POST['asp_product_stock_items'] ) ) );
 
+			$force_test_mode = filter_input( INPUT_POST, 'asp_product_force_test_mode', FILTER_SANITIZE_STRING );
+			$force_test_mode = ! empty( $force_test_mode ) ? true : false;
+			update_post_meta( $post_id, 'asp_product_force_test_mode', $force_test_mode );
+
 			update_post_meta( $post_id, 'asp_product_coupons_setting', isset( $_POST['asp_product_coupons_setting'] ) ? sanitize_text_field( $_POST['asp_product_coupons_setting'] ) : '0' );
 			update_post_meta( $post_id, 'asp_product_custom_field', isset( $_POST['asp_product_custom_field'] ) ? sanitize_text_field( $_POST['asp_product_custom_field'] ) : '0' );
 			update_post_meta( $post_id, 'asp_product_button_text', sanitize_text_field( $_POST['asp_product_button_text'] ) );
@@ -626,6 +658,7 @@ jQuery(document).ready(function($) {
 			update_post_meta( $post_id, 'asp_product_collect_shipping_addr', $shipping_addr );
 			update_post_meta( $post_id, 'asp_product_collect_billing_addr', isset( $_POST['asp_product_collect_billing_addr'] ) ? '1' : false );
 			update_post_meta( $post_id, 'asp_product_emember_level', ! empty( $_POST['asp_product_emember_level'] ) ? intval( $_POST['asp_product_emember_level'] ) : '' );
+			update_post_meta( $post_id, 'asp_product_swpm_level', ! empty( $_POST['asp_product_swpm_level'] ) ? intval( $_POST['asp_product_swpm_level'] ) : '' );
 
 			do_action( 'asp_save_product_handler', $post_id, $post, $update );
 

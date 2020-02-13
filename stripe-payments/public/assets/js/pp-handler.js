@@ -263,6 +263,7 @@ card.addEventListener('change', function (event) {
 	} else {
 		cardErrorCont.textContent = '';
 	}
+	vars.data.cardComplete = event.complete;
 });
 
 submitBtn.addEventListener('click', function () {
@@ -275,6 +276,12 @@ form.addEventListener('submit', function (event) {
 	event.preventDefault();
 
 	if (!canProceed()) {
+		return false;
+	}
+
+	if (!is_full_discount() && ('def' === vars.data.currentPM || !vars.data.currentPM) && !vars.data.cardComplete) {
+		event.preventDefault();
+		card.focus();
 		return false;
 	}
 

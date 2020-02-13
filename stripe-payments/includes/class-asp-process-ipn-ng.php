@@ -166,6 +166,8 @@ class ASP_Process_IPN_NG {
 		if ( ! empty( $p_last_err ) ) {
 			$this->ipn_completed( $p_last_err );
 		}
+
+		$this->p_data = $p_data;
 		//End retrieval of payment data
 
 		//Mechanism to lock the txn that is being processed.

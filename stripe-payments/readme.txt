@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 4.7
 Tested up to: 5.3
 Requires PHP: 5.4
-Stable tag: 2.0.21
+Stable tag: 2.0.22
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -154,6 +154,16 @@ None.
 
 == Changelog ==
 
+= 2.0.22 =
+- New Stripe API is now enabled by default on fresh plugin installation.
+- Added check if card details are properly filled in before making any backend requests (prevents excess Stripe API calls).
+- Added "Force Test Mode" product option (located in Advanced Settings metabox on product edit page).
+- Speed up payment popup display by removing unneeded Stripe library init.
+- Added built-in integration with [Simple Membership plugin](https://wordpress.org/plugins/simple-membership/)
+- WP eMember integration now works with new Stripe API.
+- WP eMember integration now properly handles customer name and address.
+- Some visual payment popup form tweaks.
+
 = 2.0.21 =
 - Added a new feature to insert custom CSS to payment popup window (it can be found in the advanced settings tab).
 - Updated the code to remove a conflict with other plugins when "Enable Compact Product Edit Interface" option is enabled.
@@ -161,7 +171,7 @@ None.
 
 = 2.0.20 =
 - Added validation for values on product edit page (tax, price, quantity etc).
-- Discount coupons will now work subscription products (requires Subscriptions addon 2.0.9+).
+- Discount coupons will now work with subscription products (requires Subscriptions addon 2.0.9+).
 
 = 2.0.19 =
 - Added 100% discount coupons support.

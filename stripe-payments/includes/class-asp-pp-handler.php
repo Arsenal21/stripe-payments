@@ -53,6 +53,8 @@ class ASP_PP_Handler {
 
 		$a['prod_id'] = $product_id;
 
+		do_action( 'asp_ng_product_mode_keys', $product_id );
+
 		$a['is_live'] = $this->asp_main->is_live;
 
 		$this->uniq_id = uniqid();
@@ -409,36 +411,6 @@ class ASP_PP_Handler {
 			),
 		);
 
-		try {
-			ASPMain::load_stripe_lib();
-			$key = $this->asp_main->is_live ? $this->asp_main->APISecKey : $this->asp_main->APISecKeyTest;
-			\Stripe\Stripe::setApiKey( $key );
-		} catch ( \Exception $e ) {
-			$a['fatal_error'] = __( 'Stripe API error occurred:', 'stripe-payments' ) . ' ' . $e->getMessage();
-		} catch ( \Throwable $e ) {
-			$a['fatal_error'] = __( 'Stripe API error occurred:', 'stripe-payments' ) . ' ' . $e->getMessage();
-		}
-		/*
-		if ( ! $a['amount_variable'] && ! $a['currency_variable'] ) {
-			try {
-				$intent = \Stripe\PaymentIntent::create(
-					array(
-						'amount'   => $this->item->get_total( true ),
-						'currency' => $this->item->get_currency(),
-					)
-				);
-			} catch ( Exception $e ) {
-				$a['fatal_error'] = __( 'Stripe API error occurred:', 'stripe-payments' ) . ' ' . $e->getMessage();
-			}
-
-			if ( ! isset( $a['fatal_error'] ) ) {
-				$a['client_secret']                         = $intent->client_secret;
-				$a['pi_id']                                 = $intent->id;
-				$a['vars']['vars']['data']['client_secret'] = $intent->client_secret;
-				$a['vars']['vars']['data']['pi_id']         = $intent->id;
-			}
-		}
-		*/
 		if ( isset( $a['fatal_error'] ) ) {
 			$a['vars']['vars']['fatal_error'] = $a['fatal_error'];
 		}
@@ -489,6 +461,8 @@ class ASP_PP_Handler {
 				wp_send_json( $out );
 			}
 		}
+
+		do_action( 'asp_ng_product_mode_keys', $product_id );
 
 		try {
 			ASPMain::load_stripe_lib();

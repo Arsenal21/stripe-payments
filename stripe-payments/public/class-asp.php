@@ -75,11 +75,6 @@ class AcceptStripePayments {
 
 		$this->settings = (array) get_option( 'AcceptStripePayments-settings' );
 
-		if ( ! isset( $this->settings['use_old_checkout_api1'] ) ) {
-			$this->settings['use_old_checkout_api1'] = 1;
-			update_option( 'AcceptStripePayments-settings', $this->settings );
-		}
-
 		if ( $this->get_setting( 'is_live' ) == 0 ) {
 			//use test keys
 			$this->is_live   = false;
@@ -99,6 +94,9 @@ class AcceptStripePayments {
 		add_action( 'init', array( $this, 'load_asp_plugin_textdomain' ) );
 
 		add_action( 'plugins_loaded', array( $this, 'plugins_loaded' ) );
+
+		//handle self hooks
+		require_once WP_ASP_PLUGIN_PATH . 'includes/class-asp-self-hooks-handler.php';
 
 		//handle IPN stuff if needed
 		require_once WP_ASP_PLUGIN_PATH . 'includes/process_ipn.php';

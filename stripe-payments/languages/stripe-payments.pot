@@ -128,7 +128,7 @@ msgid ""
 msgstr ""
 
 #: stripe-payments/admin/class-asp-admin.php:396
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:158
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:178
 msgid "Currency"
 msgstr ""
 
@@ -137,7 +137,7 @@ msgid "Currency Symbol"
 msgstr ""
 
 #: stripe-payments/admin/class-asp-admin.php:420
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:474
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:494
 msgid "Button Text"
 msgstr ""
 
@@ -743,7 +743,7 @@ msgid "Autodetect"
 msgstr ""
 
 #: stripe-payments/admin/class-asp-admin.php:1114
-#: stripe-payments/includes/class-asp-utils.php:307
+#: stripe-payments/includes/class-asp-utils.php:564
 msgid "(Default)"
 msgstr ""
 
@@ -860,8 +860,8 @@ msgid "Button text should not be empty."
 msgstr ""
 
 #: stripe-payments/admin/class-asp-admin.php:1457
-#: stripe-payments/includes/class-asp-pp-handler.php:366
-#: stripe-payments/public/class-asp.php:295
+#: stripe-payments/includes/class-asp-pp-handler.php:368
+#: stripe-payments/public/class-asp.php:293
 #, php-format
 msgid "Pay %s"
 msgstr ""
@@ -1344,25 +1344,25 @@ msgstr ""
 
 #: stripe-payments/admin/includes/class-order.php:116
 #: stripe-payments/admin/includes/class-products.php:133
-#: stripe-payments/includes/process_ipn.php:761
+#: stripe-payments/includes/process_ipn.php:691
 #: stripe-payments/public/includes/class-shortcode-asp.php:996
 msgid "Product Name"
 msgstr ""
 
 #: stripe-payments/admin/includes/class-order.php:117
-#: stripe-payments/includes/process_ipn.php:762
+#: stripe-payments/includes/process_ipn.php:692
 #: stripe-payments/public/includes/class-shortcode-asp.php:997
 msgid "Quantity"
 msgstr ""
 
 #: stripe-payments/admin/includes/class-order.php:118
-#: stripe-payments/includes/process_ipn.php:763
+#: stripe-payments/includes/process_ipn.php:693
 #: stripe-payments/public/includes/class-shortcode-asp.php:998
 msgid "Item Price"
 msgstr ""
 
 #: stripe-payments/admin/includes/class-order.php:122
-#: stripe-payments/includes/process_ipn.php:767
+#: stripe-payments/includes/process_ipn.php:697
 #: stripe-payments/public/includes/class-shortcode-asp.php:1002
 msgid "Total Amount"
 msgstr ""
@@ -1443,71 +1443,82 @@ msgid "Coupons Settings"
 msgstr ""
 
 #: stripe-payments/admin/includes/class-products-meta-boxes.php:29
-#: stripe-payments/includes/class-asp-pp-handler.php:657
+#: stripe-payments/includes/class-asp-pp-handler.php:631
 #: stripe-payments/public/includes/class-shortcode-asp.php:178
 msgid "Custom Field"
 msgstr ""
 
 #: stripe-payments/admin/includes/class-products-meta-boxes.php:30
+#: stripe-payments/admin/views/admin.php:35
+msgid "Advanced Settings"
+msgstr ""
+
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:31
 msgid "Embed Product"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:35
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:36
 msgid "WP eMember Membership Level"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:53
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:42
+msgid "Simple Membership Level"
+msgstr ""
+
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:60
 msgid "Product Options"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:105
-msgid "None"
-msgstr ""
-
 #: stripe-payments/admin/includes/class-products-meta-boxes.php:111
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:131
 msgid ""
 "If you want this product to be connected to a membership level then select "
 "the membership Level here."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:129
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:113
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:125
+msgid "None"
+msgstr ""
+
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:149
 msgid "Add a description for your product."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:138
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:158
 msgid ""
 "You can optionally add a custom short description for the item/product/"
 "service that will get shown in the stripe checkout/payment window of the "
 "item."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:148
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:168
 #: stripe-payments/admin/includes/class-products.php:135
 msgid "Price"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:153
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:173
 msgid ""
 "Item price. Numbers only, no need to put currency symbol. Example: 99.95"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:154
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:174
 msgid ""
 "Leave it blank if you want your customers to enter the amount themselves (e."
 "g. for donation button)."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:161
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:181
 msgid ""
 "Leave \"(Default)\" option selected if you want to use currency specified on "
 "settings page."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:163
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:183
 msgid "Allow customers to specify currency"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:165
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:185
 msgid ""
 "When enabled, it allows the customers to select the currency which is used "
 "to make the payment. It does not dynamically change the price. No dynamic "
@@ -1515,255 +1526,255 @@ msgid ""
 "type product."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:172
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:192
 #, php-format
 msgid "You can find documentation on variations %s"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:175
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:195
 msgid ""
 "Note: variations for subscriptions products are currently not supported."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:184
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:204
 msgid "No variations configured for this product."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:191
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:211
 msgid "Create Group"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:196
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:216
 msgid "Group Name:"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:199
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:219
 msgid "Delete group"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:202
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:222
 msgid "Display As:"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:204
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:224
 msgid "Dropdown"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:205
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:225
 msgid "Radio Buttons"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:211
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:231
 msgctxt "Variation name"
 msgid "Name"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:212
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:232
 msgid "Price Mod"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:213
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:233
 msgid "Product URL"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:217
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:237
 msgid "Add Variation"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:228
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:248
 msgid "Select from Media Library"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:231
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:251
 msgid "Delete variation"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:247
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:267
 msgid "Are you sure you want to delete this group?"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:248
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:268
 msgid "Are you sure you want to delete this variation?"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:260
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:280
 msgid "Shipping Cost"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:265
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:285
 msgid "Numbers only, no need to put currency symbol. Example: 5.90"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:267
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:287
 msgid ""
 "Leave it blank if you are not shipping your product or not charging "
 "additional shipping costs."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:272
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:292
 msgid "Tax (%)"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:277
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:297
 msgid ""
 "Enter tax (in percent) which should be added to product price during "
 "purchase."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:279
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:299
 msgid "Leave it blank if you don't want to apply tax."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:291
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:311
 msgid ""
 "By default, if you leave this field empty, the product quantity will be set "
 "to 1. You can change this behavior by using the following options."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:295
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:315
 msgid "Allow users to specify quantity"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:297
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:317
 msgid "When checked, users can enter quantity they want to buy."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:299
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:319
 msgid "Set Quantity:"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:302
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:322
 msgid ""
 "If you want to use a set quanity for this item then enter the value in this "
 "field."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:308
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:328
 msgid "Enable stock control"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:310
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:330
 msgid ""
 "When enabled, you can specify the quantity available for this product. It "
 "will be decreased each time the item is purchased. When stock reaches zero, "
 "an \"Out of stock\" message will be displayed instead of the buy button."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:312
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:332
 msgid "Quantity Available:"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:315
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:335
 msgid "Specify the quantity available for this product."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:323
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:343
 msgid "URL of your product (if you're selling digital products)."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:329
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:349
 msgid ""
 "Manually enter a valid URL of the file in the text box below, or click "
 "\"Select File\" button to upload (or choose) the downloadable file."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:333
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:351
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:353
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:371
 msgid "Select File"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:337
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:357
 msgid "Steps to upload a file or choose one from your media library:"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:339
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:359
 msgid "Hit the \"Select File\" button."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:340
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:360
 msgid "Upload a new file or choose an existing one from your media library."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:341
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:361
 msgid ""
 "Click the \"Insert\" button, this will populate the uploaded file's URL in "
 "the above text field."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:353
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:404
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:373
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:424
 msgid "Insert"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:378
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:398
 msgid ""
 "Manually enter a valid URL, or click \"Select Image\" to upload (or choose) "
 "the file thumbnail image."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:382
 #: stripe-payments/admin/includes/class-products-meta-boxes.php:402
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:422
 msgid "Select Image"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:383
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:403
 msgid "Remove Image"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:392
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:412
 msgid "Don't use product thumbnail in Stripe pop-up"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:394
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:414
 msgid ""
 "Use this checkbox if you do not want to show the product thumbnail in Stripe "
 "checkout popup."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:434
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:454
 msgid "Collect Address on Checkout"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:435
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:455
 msgid "Enable this to collect customer address on checkout."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:442
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:462
 msgid "Collect Both Billing And Shipping Addresses"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:449
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:469
 msgid "Collect Billing Address Only"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:458
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:478
 msgid ""
 "Enter Thank You page URL. Leave it blank if you want ot use default Thank "
 "You page."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:460
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:480
 msgid ""
 "You can read how to customize messages on Thank You page <a href=\"https://s-"
 "plugins.com/customize-the-thank-page-message-of-stripe-payments-plugin/\" "
 "target=\"_blank\">in the documentation</a>."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:473
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:493
 msgid "Button Options"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:477
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:497
 msgid ""
 "Specify text to be displayed on the button. Leave it blank to use button "
 "text specified on settings page."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:478
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:498
 msgid "Button CSS Class"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:481
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:501
 msgid ""
 "CSS class to be assigned to the button. This is used for styling purposes. "
 "You can get additional information <a href=\"https://s-plugins.com/customize-"
@@ -1771,99 +1782,109 @@ msgid ""
 "tutorial</a>."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:482
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:502
 #: stripe-payments/admin/views/blocks.php:23
 msgid "Show Button Only"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:483
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:503
 #: stripe-payments/admin/views/blocks.php:24
 msgid ""
 "Check this box if you just want to show the button only without any "
 "additional product info."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:486
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:506
 msgid "Payment Popup Options"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:487
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:507
 msgid "Show Order Total On Payment Popup"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:488
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:508
 msgid ""
 "If enabled, an additional \"Your order\" section with itemized product info "
 "(shipping, tax amount, variations etc) will be displayed on payment popup."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:505
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:525
 msgid ""
 "Custom field is disabled. Configure custom field in the settings menu of "
 "this plugin to enable it."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:509
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:529
 msgid "Select how Custom Field display should be handled for this product."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:510
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:521
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:530
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:541
 msgid "Use Global Setting"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:511
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:522
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:531
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:542
 msgid "Enabled"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:512
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:523
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:532
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:543
 msgid "Disabled"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:520
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:540
 msgid "Select how Coupons should be handled for this product."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:540
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:550
+msgid "Force Test Mode"
+msgstr ""
+
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:551
+msgid ""
+"When checked, product stays in test mode regardless of the global \"Live Mode"
+"\" swtich."
+msgstr ""
+
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:568
 #: stripe-payments/admin/includes/class-products.php:137
 msgid "Shortcode"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:542
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:570
 msgid "Use this shortcode to display this product."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:545
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:573
 msgid "CSS Class"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:547
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:575
 msgid "Attach this product to any html element by adding this CSS class to it."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:550
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:578
 msgid "Link URL"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:552
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:580
 msgid ""
 "Use this URL to create a custom payment button using a text or image link."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:571
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:599
 msgid "Please specify product name."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:680
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:713
 #, php-format
 msgid ""
 "<b>Invalid product price</b>: minimum price in %1$s should be %2$s, you "
 "specified %3$s. This price limitation comes from Stripe."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:689
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:722
 #, php-format
 msgid ""
 "<b>Invalid product price</b>: maximum allowed product price is %1$s, you "
@@ -1965,7 +1986,7 @@ msgid "Date"
 msgstr ""
 
 #: stripe-payments/admin/includes/class-products.php:151
-#: stripe-payments/includes/class-asp-pp-handler.php:174
+#: stripe-payments/includes/class-asp-pp-handler.php:176
 #: stripe-payments/public/includes/class-asp-shortcode-ng.php:493
 #: stripe-payments/public/includes/class-shortcode-asp.php:611
 msgid "Out of stock"
@@ -2147,10 +2168,6 @@ msgstr ""
 msgid "General Settings"
 msgstr ""
 
-#: stripe-payments/admin/views/admin.php:35
-msgid "Advanced Settings"
-msgstr ""
-
 #: stripe-payments/admin/views/admin.php:61
 msgid "Plugin Documentation"
 msgstr ""
@@ -2220,10 +2237,10 @@ msgid "Log cleared."
 msgstr ""
 
 #: stripe-payments/admin/views/admin.php:116
-#: stripe-payments/includes/class-asp-pp-handler.php:478
-#: stripe-payments/includes/class-asp-pp-handler.php:623
-#: stripe-payments/includes/class-asp-pp-handler.php:626
-#: stripe-payments/includes/class-asp-pp-handler.php:704
+#: stripe-payments/includes/class-asp-pp-handler.php:450
+#: stripe-payments/includes/class-asp-pp-handler.php:597
+#: stripe-payments/includes/class-asp-pp-handler.php:600
+#: stripe-payments/includes/class-asp-pp-handler.php:678
 msgid "Error occurred:"
 msgstr ""
 
@@ -2246,56 +2263,56 @@ msgid ""
 "version %3$s installed). Please update Stripe Payments plugin."
 msgstr ""
 
-#: stripe-payments/includes/class-asp-pp-handler.php:91
+#: stripe-payments/includes/class-asp-pp-handler.php:93
 #: stripe-payments/public/includes/class-shortcode-asp.php:642
 msgid "Only numbers are allowed: 0-9"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-pp-handler.php:297
+#: stripe-payments/includes/class-asp-pp-handler.php:299
 #: stripe-payments/public/views/templates/default/payment-popup.php:452
 msgid "Credit or debit card"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-pp-handler.php:372
-#: stripe-payments/includes/class-asp-pp-handler.php:406
+#: stripe-payments/includes/class-asp-pp-handler.php:374
+#: stripe-payments/includes/class-asp-pp-handler.php:408
 #: stripe-payments/public/includes/class-shortcode-asp.php:111
 msgid "Start Free Trial"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-pp-handler.php:391
+#: stripe-payments/includes/class-asp-pp-handler.php:393
 #: stripe-payments/public/includes/class-shortcode-asp.php:97
 msgid "Please enter a valid amount"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-pp-handler.php:392
+#: stripe-payments/includes/class-asp-pp-handler.php:394
 #: stripe-payments/public/includes/class-shortcode-asp.php:98
 msgid "Minimum amount is"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-pp-handler.php:393
+#: stripe-payments/includes/class-asp-pp-handler.php:395
 #: stripe-payments/public/includes/class-shortcode-asp.php:99
 msgid "Please enter quantity."
 msgstr ""
 
-#: stripe-payments/includes/class-asp-pp-handler.php:394
+#: stripe-payments/includes/class-asp-pp-handler.php:396
 #: stripe-payments/public/includes/class-shortcode-asp.php:100
 msgid "Quantity can't be zero."
 msgstr ""
 
-#: stripe-payments/includes/class-asp-pp-handler.php:395
+#: stripe-payments/includes/class-asp-pp-handler.php:397
 #: stripe-payments/public/includes/class-shortcode-asp.php:101
 msgid "Quantity should be integer value."
 msgstr ""
 
-#: stripe-payments/includes/class-asp-pp-handler.php:397
-#: stripe-payments/includes/class-asp-pp-handler.php:487
+#: stripe-payments/includes/class-asp-pp-handler.php:399
+#: stripe-payments/includes/class-asp-pp-handler.php:459
 #: stripe-payments/public/includes/class-shortcode-asp.php:102
 #, php-format
 msgid "You cannot order more items than available: %d"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-pp-handler.php:398
-#: stripe-payments/includes/class-asp-process-ipn-ng.php:362
+#: stripe-payments/includes/class-asp-pp-handler.php:400
+#: stripe-payments/includes/class-asp-process-ipn-ng.php:364
 #: stripe-payments/includes/class-asp-product-item.php:256
 #: stripe-payments/includes/process_ipn.php:561
 #: stripe-payments/public/includes/class-asp-shortcode-ng.php:168
@@ -2307,8 +2324,8 @@ msgstr ""
 msgid "Tax"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-pp-handler.php:399
-#: stripe-payments/includes/class-asp-process-ipn-ng.php:370
+#: stripe-payments/includes/class-asp-pp-handler.php:401
+#: stripe-payments/includes/class-asp-process-ipn-ng.php:372
 #: stripe-payments/includes/class-asp-product-item.php:267
 #: stripe-payments/includes/process_ipn.php:568
 #: stripe-payments/public/includes/class-asp-shortcode-ng.php:178
@@ -2320,52 +2337,50 @@ msgstr ""
 msgid "Shipping"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-pp-handler.php:400
+#: stripe-payments/includes/class-asp-pp-handler.php:402
 #: stripe-payments/public/includes/class-asp-shortcode-ng.php:189
 #: stripe-payments/public/includes/class-shortcode-asp.php:105
 #: stripe-payments/public/includes/class-shortcode-asp.php:355
 msgid "Total:"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-pp-handler.php:401
+#: stripe-payments/includes/class-asp-pp-handler.php:403
 #: stripe-payments/public/includes/class-shortcode-asp.php:106
 msgid "Please fill in this field."
 msgstr ""
 
-#: stripe-payments/includes/class-asp-pp-handler.php:402
+#: stripe-payments/includes/class-asp-pp-handler.php:404
 #: stripe-payments/public/includes/class-shortcode-asp.php:107
 msgid "Please check this checkbox."
 msgstr ""
 
-#: stripe-payments/includes/class-asp-pp-handler.php:403
+#: stripe-payments/includes/class-asp-pp-handler.php:405
 #: stripe-payments/public/includes/class-shortcode-asp.php:108
 msgid "You must accept the terms before you can proceed."
 msgstr ""
 
-#: stripe-payments/includes/class-asp-pp-handler.php:404
+#: stripe-payments/includes/class-asp-pp-handler.php:406
 #: stripe-payments/public/includes/class-shortcode-asp.php:109
 msgid "Remove coupon"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-pp-handler.php:405
+#: stripe-payments/includes/class-asp-pp-handler.php:407
 #: stripe-payments/public/includes/class-shortcode-asp.php:110
 #: stripe-payments/public/views/templates/default/payment-popup.php:273
 msgid "Remove"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-pp-handler.php:407
+#: stripe-payments/includes/class-asp-pp-handler.php:409
 #: stripe-payments/public/includes/class-shortcode-asp.php:112
 msgid "Invalid validation RegEx: "
 msgstr ""
 
-#: stripe-payments/includes/class-asp-pp-handler.php:408
+#: stripe-payments/includes/class-asp-pp-handler.php:410
 msgid "Purchase for Free"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-pp-handler.php:417
-#: stripe-payments/includes/class-asp-pp-handler.php:419
-#: stripe-payments/includes/class-asp-pp-handler.php:498
-#: stripe-payments/includes/class-asp-pp-handler.php:501
+#: stripe-payments/includes/class-asp-pp-handler.php:472
+#: stripe-payments/includes/class-asp-pp-handler.php:475
 msgid "Stripe API error occurred:"
 msgstr ""
 
@@ -2383,35 +2398,35 @@ msgstr ""
 msgid "Debug data:"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-process-ipn-ng.php:254
+#: stripe-payments/includes/class-asp-process-ipn-ng.php:256
 #, php-format
 msgid "Invalid payment amount received. Expected %1$s, got %2$s."
 msgstr ""
 
-#: stripe-payments/includes/class-asp-process-ipn-ng.php:353
+#: stripe-payments/includes/class-asp-process-ipn-ng.php:355
 #: stripe-payments/includes/process_ipn.php:556
 #, php-format
 msgid "Coupon \"%s\""
 msgstr ""
 
-#: stripe-payments/includes/class-asp-process-ipn-ng.php:354
+#: stripe-payments/includes/class-asp-process-ipn-ng.php:356
 #: stripe-payments/includes/process_ipn.php:557
 msgid "Subtotal"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-process-ipn-ng.php:433
+#: stripe-payments/includes/class-asp-process-ipn-ng.php:435
 msgid "Product Name: "
 msgstr ""
 
-#: stripe-payments/includes/class-asp-process-ipn-ng.php:434
+#: stripe-payments/includes/class-asp-process-ipn-ng.php:436
 msgid "Quantity: "
 msgstr ""
 
-#: stripe-payments/includes/class-asp-process-ipn-ng.php:435
+#: stripe-payments/includes/class-asp-process-ipn-ng.php:437
 msgid "Item Price: "
 msgstr ""
 
-#: stripe-payments/includes/class-asp-process-ipn-ng.php:440
+#: stripe-payments/includes/class-asp-process-ipn-ng.php:442
 msgid "Total Amount: "
 msgstr ""
 
@@ -2424,1131 +2439,1131 @@ msgstr ""
 msgid "Can't find product with ID %d"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:35
+#: stripe-payments/includes/class-asp-utils.php:292
 msgid "Afghanistan"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:36
+#: stripe-payments/includes/class-asp-utils.php:293
 msgid "Aland Islands"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:37
+#: stripe-payments/includes/class-asp-utils.php:294
 msgid "Albania"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:38
+#: stripe-payments/includes/class-asp-utils.php:295
 msgid "Algeria"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:39
+#: stripe-payments/includes/class-asp-utils.php:296
 msgid "American Samoa"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:40
+#: stripe-payments/includes/class-asp-utils.php:297
 msgid "Andorra"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:41
+#: stripe-payments/includes/class-asp-utils.php:298
 msgid "Angola"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:42
+#: stripe-payments/includes/class-asp-utils.php:299
 msgid "Anguilla"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:43
+#: stripe-payments/includes/class-asp-utils.php:300
 msgid "Antarctica"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:44
+#: stripe-payments/includes/class-asp-utils.php:301
 msgid "Antigua and Barbuda"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:45
+#: stripe-payments/includes/class-asp-utils.php:302
 msgid "Argentina"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:46
+#: stripe-payments/includes/class-asp-utils.php:303
 msgid "Armenia"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:47
+#: stripe-payments/includes/class-asp-utils.php:304
 msgid "Aruba"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:48
+#: stripe-payments/includes/class-asp-utils.php:305
 msgid "Australia"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:49
+#: stripe-payments/includes/class-asp-utils.php:306
 msgid "Austria"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:50
+#: stripe-payments/includes/class-asp-utils.php:307
 msgid "Azerbaijan"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:51
+#: stripe-payments/includes/class-asp-utils.php:308
 msgid "Bahamas"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:52
+#: stripe-payments/includes/class-asp-utils.php:309
 msgid "Bahrain"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:53
+#: stripe-payments/includes/class-asp-utils.php:310
 msgid "Bangladesh"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:54
+#: stripe-payments/includes/class-asp-utils.php:311
 msgid "Barbados"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:55
+#: stripe-payments/includes/class-asp-utils.php:312
 msgid "Belarus"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:56
+#: stripe-payments/includes/class-asp-utils.php:313
 msgid "Belgium"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:57
+#: stripe-payments/includes/class-asp-utils.php:314
 msgid "Belize"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:58
+#: stripe-payments/includes/class-asp-utils.php:315
 msgid "Benin"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:59
+#: stripe-payments/includes/class-asp-utils.php:316
 msgid "Bermuda"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:60
+#: stripe-payments/includes/class-asp-utils.php:317
 msgid "Bhutan"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:61
+#: stripe-payments/includes/class-asp-utils.php:318
 msgid "Bolivia"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:62
+#: stripe-payments/includes/class-asp-utils.php:319
 msgid "Bonaire"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:63
+#: stripe-payments/includes/class-asp-utils.php:320
 msgid "Bosnia and Herzegovina"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:64
+#: stripe-payments/includes/class-asp-utils.php:321
 msgid "Botswana"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:65
+#: stripe-payments/includes/class-asp-utils.php:322
 msgid "Bouvet Island"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:66
+#: stripe-payments/includes/class-asp-utils.php:323
 msgid "Brazil"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:67
+#: stripe-payments/includes/class-asp-utils.php:324
 msgid "British Indian Ocean Territory"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:68
+#: stripe-payments/includes/class-asp-utils.php:325
 msgid "British Virgin Islands"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:69
+#: stripe-payments/includes/class-asp-utils.php:326
 msgid "Brunei"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:70
+#: stripe-payments/includes/class-asp-utils.php:327
 msgid "Bulgaria"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:71
+#: stripe-payments/includes/class-asp-utils.php:328
 msgid "Burkina Faso"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:72
+#: stripe-payments/includes/class-asp-utils.php:329
 msgid "Burundi"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:73
+#: stripe-payments/includes/class-asp-utils.php:330
 msgid "Cambodia"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:74
+#: stripe-payments/includes/class-asp-utils.php:331
 msgid "Cameroon"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:75
+#: stripe-payments/includes/class-asp-utils.php:332
 msgid "Canada"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:76
+#: stripe-payments/includes/class-asp-utils.php:333
 msgid "Cape Verde"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:77
+#: stripe-payments/includes/class-asp-utils.php:334
 msgid "Cayman Islands"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:78
+#: stripe-payments/includes/class-asp-utils.php:335
 msgid "Central African Republic"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:79
+#: stripe-payments/includes/class-asp-utils.php:336
 msgid "Chad"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:80
+#: stripe-payments/includes/class-asp-utils.php:337
 msgid "Chile"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:81
+#: stripe-payments/includes/class-asp-utils.php:338
 msgid "China"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:82
+#: stripe-payments/includes/class-asp-utils.php:339
 msgid "Christmas Island"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:83
+#: stripe-payments/includes/class-asp-utils.php:340
 msgid "Cocos (Keeling) Islands"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:84
+#: stripe-payments/includes/class-asp-utils.php:341
 msgid "Colombia"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:85
+#: stripe-payments/includes/class-asp-utils.php:342
 msgid "Comoros"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:86
+#: stripe-payments/includes/class-asp-utils.php:343
 msgid "Congo, Democratic Republic of"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:87
+#: stripe-payments/includes/class-asp-utils.php:344
 msgid "Congo, Republic of"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:88
+#: stripe-payments/includes/class-asp-utils.php:345
 msgid "Cook Islands"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:89
+#: stripe-payments/includes/class-asp-utils.php:346
 msgid "Costa Rica"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:90
+#: stripe-payments/includes/class-asp-utils.php:347
 msgid "Croatia"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:91
+#: stripe-payments/includes/class-asp-utils.php:348
 msgid "Cuba"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:92
+#: stripe-payments/includes/class-asp-utils.php:349
 msgid "Curacao"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:93
+#: stripe-payments/includes/class-asp-utils.php:350
 msgid "Cyprus"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:94
+#: stripe-payments/includes/class-asp-utils.php:351
 msgid "Czech Republic"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:95
+#: stripe-payments/includes/class-asp-utils.php:352
 msgid "Denmark"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:96
+#: stripe-payments/includes/class-asp-utils.php:353
 msgid "Djibouti"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:97
+#: stripe-payments/includes/class-asp-utils.php:354
 msgid "Dominica"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:98
+#: stripe-payments/includes/class-asp-utils.php:355
 msgid "Dominican Republic"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:99
+#: stripe-payments/includes/class-asp-utils.php:356
 msgid "Ecuador"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:100
+#: stripe-payments/includes/class-asp-utils.php:357
 msgid "Egypt"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:101
+#: stripe-payments/includes/class-asp-utils.php:358
 msgid "El Salvador"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:102
+#: stripe-payments/includes/class-asp-utils.php:359
 msgid "Equatorial Guinea"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:103
+#: stripe-payments/includes/class-asp-utils.php:360
 msgid "Eritrea"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:104
+#: stripe-payments/includes/class-asp-utils.php:361
 msgid "Estonia"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:105
+#: stripe-payments/includes/class-asp-utils.php:362
 msgid "Ethiopia"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:106
+#: stripe-payments/includes/class-asp-utils.php:363
 msgid "Falkland Islands"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:107
+#: stripe-payments/includes/class-asp-utils.php:364
 msgid "Faroe Islands"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:108
+#: stripe-payments/includes/class-asp-utils.php:365
 msgid "Fiji"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:109
+#: stripe-payments/includes/class-asp-utils.php:366
 msgid "Finland"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:110
+#: stripe-payments/includes/class-asp-utils.php:367
 msgid "France"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:111
+#: stripe-payments/includes/class-asp-utils.php:368
 msgid "French Guiana"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:112
+#: stripe-payments/includes/class-asp-utils.php:369
 msgid "French Polynesia"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:113
+#: stripe-payments/includes/class-asp-utils.php:370
 msgid "French Southern and Antarctic Lands"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:114
+#: stripe-payments/includes/class-asp-utils.php:371
 msgid "Gabon"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:115
+#: stripe-payments/includes/class-asp-utils.php:372
 msgid "Gambia"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:116
+#: stripe-payments/includes/class-asp-utils.php:373
 msgid "Georgia"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:117
+#: stripe-payments/includes/class-asp-utils.php:374
 msgid "Germany"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:118
+#: stripe-payments/includes/class-asp-utils.php:375
 msgid "Ghana"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:119
+#: stripe-payments/includes/class-asp-utils.php:376
 msgid "Gibraltar"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:120
+#: stripe-payments/includes/class-asp-utils.php:377
 msgid "Greece"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:121
+#: stripe-payments/includes/class-asp-utils.php:378
 msgid "Greenland"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:122
+#: stripe-payments/includes/class-asp-utils.php:379
 msgid "Grenada"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:123
+#: stripe-payments/includes/class-asp-utils.php:380
 msgid "Guadeloupe"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:124
+#: stripe-payments/includes/class-asp-utils.php:381
 msgid "Guam"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:125
+#: stripe-payments/includes/class-asp-utils.php:382
 msgid "Guatemala"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:126
+#: stripe-payments/includes/class-asp-utils.php:383
 msgid "Guernsey"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:127
+#: stripe-payments/includes/class-asp-utils.php:384
 msgid "Guinea"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:128
+#: stripe-payments/includes/class-asp-utils.php:385
 msgid "Guinea-Bissau"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:129
+#: stripe-payments/includes/class-asp-utils.php:386
 msgid "Guyana"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:130
+#: stripe-payments/includes/class-asp-utils.php:387
 msgid "Haiti"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:131
+#: stripe-payments/includes/class-asp-utils.php:388
 msgid "Heard Island and McDonald Islands"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:132
+#: stripe-payments/includes/class-asp-utils.php:389
 msgid "Honduras"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:133
+#: stripe-payments/includes/class-asp-utils.php:390
 msgid "Hong Kong"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:134
+#: stripe-payments/includes/class-asp-utils.php:391
 msgid "Hungary"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:135
+#: stripe-payments/includes/class-asp-utils.php:392
 msgid "Iceland"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:136
+#: stripe-payments/includes/class-asp-utils.php:393
 msgid "India"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:137
+#: stripe-payments/includes/class-asp-utils.php:394
 msgid "Indonesia"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:138
+#: stripe-payments/includes/class-asp-utils.php:395
 msgid "Iran"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:139
+#: stripe-payments/includes/class-asp-utils.php:396
 msgid "Iraq"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:140
+#: stripe-payments/includes/class-asp-utils.php:397
 msgid "Ireland"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:141
+#: stripe-payments/includes/class-asp-utils.php:398
 msgid "Isle of Man"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:142
+#: stripe-payments/includes/class-asp-utils.php:399
 msgid "Israel"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:143
+#: stripe-payments/includes/class-asp-utils.php:400
 msgid "Italy"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:144
+#: stripe-payments/includes/class-asp-utils.php:401
 msgid "Ivory Coast"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:145
+#: stripe-payments/includes/class-asp-utils.php:402
 msgid "Jamaica"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:146
+#: stripe-payments/includes/class-asp-utils.php:403
 msgid "Japan"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:147
+#: stripe-payments/includes/class-asp-utils.php:404
 msgid "Jersey"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:148
+#: stripe-payments/includes/class-asp-utils.php:405
 msgid "Jordan"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:149
+#: stripe-payments/includes/class-asp-utils.php:406
 msgid "Kazakhstan"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:150
+#: stripe-payments/includes/class-asp-utils.php:407
 msgid "Kenya"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:151
+#: stripe-payments/includes/class-asp-utils.php:408
 msgid "Kiribati"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:152
+#: stripe-payments/includes/class-asp-utils.php:409
 msgid "Korea, Democratic People's Republic of"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:153
+#: stripe-payments/includes/class-asp-utils.php:410
 msgid "Korea, Republic of"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:154
+#: stripe-payments/includes/class-asp-utils.php:411
 msgid "Kosovo"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:155
+#: stripe-payments/includes/class-asp-utils.php:412
 msgid "Kuwait"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:156
+#: stripe-payments/includes/class-asp-utils.php:413
 msgid "Kyrgyzstan"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:157
+#: stripe-payments/includes/class-asp-utils.php:414
 msgid "Laos"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:158
+#: stripe-payments/includes/class-asp-utils.php:415
 msgid "Latvia"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:159
+#: stripe-payments/includes/class-asp-utils.php:416
 msgid "Lebanon"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:160
+#: stripe-payments/includes/class-asp-utils.php:417
 msgid "Lesotho"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:161
+#: stripe-payments/includes/class-asp-utils.php:418
 msgid "Liberia"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:162
+#: stripe-payments/includes/class-asp-utils.php:419
 msgid "Libya"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:163
+#: stripe-payments/includes/class-asp-utils.php:420
 msgid "Liechtenstein"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:164
+#: stripe-payments/includes/class-asp-utils.php:421
 msgid "Lithuania"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:165
+#: stripe-payments/includes/class-asp-utils.php:422
 msgid "Luxembourg"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:166
+#: stripe-payments/includes/class-asp-utils.php:423
 msgid "Macau"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:167
+#: stripe-payments/includes/class-asp-utils.php:424
 msgid "Macedonia"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:168
+#: stripe-payments/includes/class-asp-utils.php:425
 msgid "Madagascar"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:169
+#: stripe-payments/includes/class-asp-utils.php:426
 msgid "Malawi"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:170
+#: stripe-payments/includes/class-asp-utils.php:427
 msgid "Malaysia"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:171
+#: stripe-payments/includes/class-asp-utils.php:428
 msgid "Maldives"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:172
+#: stripe-payments/includes/class-asp-utils.php:429
 msgid "Mali"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:173
+#: stripe-payments/includes/class-asp-utils.php:430
 msgid "Malta"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:174
+#: stripe-payments/includes/class-asp-utils.php:431
 msgid "Marshall Islands"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:175
+#: stripe-payments/includes/class-asp-utils.php:432
 msgid "Martinique"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:176
+#: stripe-payments/includes/class-asp-utils.php:433
 msgid "Mauritania"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:177
+#: stripe-payments/includes/class-asp-utils.php:434
 msgid "Mauritius"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:178
+#: stripe-payments/includes/class-asp-utils.php:435
 msgid "Mayotte"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:179
+#: stripe-payments/includes/class-asp-utils.php:436
 msgid "Mexico"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:180
+#: stripe-payments/includes/class-asp-utils.php:437
 msgid "Micronesia"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:181
+#: stripe-payments/includes/class-asp-utils.php:438
 msgid "Moldova"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:182
+#: stripe-payments/includes/class-asp-utils.php:439
 msgid "Monaco"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:183
+#: stripe-payments/includes/class-asp-utils.php:440
 msgid "Mongolia"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:184
+#: stripe-payments/includes/class-asp-utils.php:441
 msgid "Montenegro"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:185
+#: stripe-payments/includes/class-asp-utils.php:442
 msgid "Montserrat"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:186
+#: stripe-payments/includes/class-asp-utils.php:443
 msgid "Morocco"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:187
+#: stripe-payments/includes/class-asp-utils.php:444
 msgid "Mozambique"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:188
+#: stripe-payments/includes/class-asp-utils.php:445
 msgid "Myanmar"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:189
+#: stripe-payments/includes/class-asp-utils.php:446
 msgid "Namibia"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:190
+#: stripe-payments/includes/class-asp-utils.php:447
 msgid "Nauru"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:191
+#: stripe-payments/includes/class-asp-utils.php:448
 msgid "Nepal"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:192
+#: stripe-payments/includes/class-asp-utils.php:449
 msgid "Netherlands"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:193
+#: stripe-payments/includes/class-asp-utils.php:450
 msgid "New Caledonia"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:194
+#: stripe-payments/includes/class-asp-utils.php:451
 msgid "New Zealand"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:195
+#: stripe-payments/includes/class-asp-utils.php:452
 msgid "Nicaragua"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:196
+#: stripe-payments/includes/class-asp-utils.php:453
 msgid "Niger"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:197
+#: stripe-payments/includes/class-asp-utils.php:454
 msgid "Nigeria"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:198
+#: stripe-payments/includes/class-asp-utils.php:455
 msgid "Niue"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:199
+#: stripe-payments/includes/class-asp-utils.php:456
 msgid "Norfolk Island"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:200
+#: stripe-payments/includes/class-asp-utils.php:457
 msgid "Northern Mariana Islands"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:201
+#: stripe-payments/includes/class-asp-utils.php:458
 msgid "Norway"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:202
+#: stripe-payments/includes/class-asp-utils.php:459
 msgid "Oman"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:203
+#: stripe-payments/includes/class-asp-utils.php:460
 msgid "Pakistan"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:204
+#: stripe-payments/includes/class-asp-utils.php:461
 msgid "Palau"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:205
+#: stripe-payments/includes/class-asp-utils.php:462
 msgid "Palestine"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:206
+#: stripe-payments/includes/class-asp-utils.php:463
 msgid "Panama"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:207
+#: stripe-payments/includes/class-asp-utils.php:464
 msgid "Papua New Guinea"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:208
+#: stripe-payments/includes/class-asp-utils.php:465
 msgid "Paraguay"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:209
+#: stripe-payments/includes/class-asp-utils.php:466
 msgid "Peru"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:210
+#: stripe-payments/includes/class-asp-utils.php:467
 msgid "Philippines"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:211
+#: stripe-payments/includes/class-asp-utils.php:468
 msgid "Pitcairn Islands"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:212
+#: stripe-payments/includes/class-asp-utils.php:469
 msgid "Poland"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:213
+#: stripe-payments/includes/class-asp-utils.php:470
 msgid "Portugal"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:214
+#: stripe-payments/includes/class-asp-utils.php:471
 msgid "Puerto Rico"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:215
+#: stripe-payments/includes/class-asp-utils.php:472
 msgid "Qatar"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:216
+#: stripe-payments/includes/class-asp-utils.php:473
 msgid "Reunion"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:217
+#: stripe-payments/includes/class-asp-utils.php:474
 msgid "Romania"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:218
+#: stripe-payments/includes/class-asp-utils.php:475
 msgid "Russia"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:219
+#: stripe-payments/includes/class-asp-utils.php:476
 msgid "Rwanda"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:220
+#: stripe-payments/includes/class-asp-utils.php:477
 msgid "Saint Barthelemy"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:221
+#: stripe-payments/includes/class-asp-utils.php:478
 msgid "Saint Helena, Ascension, and Tristan da Cunha"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:222
+#: stripe-payments/includes/class-asp-utils.php:479
 msgid "Saint Kitts and Nevis"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:223
+#: stripe-payments/includes/class-asp-utils.php:480
 msgid "Saint Lucia"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:224
+#: stripe-payments/includes/class-asp-utils.php:481
 msgid "Saint Martin"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:225
+#: stripe-payments/includes/class-asp-utils.php:482
 msgid "Saint Pierre and Miquelon"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:226
+#: stripe-payments/includes/class-asp-utils.php:483
 msgid "Saint Vincent and the Grenadines"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:227
+#: stripe-payments/includes/class-asp-utils.php:484
 msgid "Samoa"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:228
+#: stripe-payments/includes/class-asp-utils.php:485
 msgid "San Marino"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:229
+#: stripe-payments/includes/class-asp-utils.php:486
 msgid "Sao Tome and Principe"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:230
+#: stripe-payments/includes/class-asp-utils.php:487
 msgid "Saudi Arabia"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:231
+#: stripe-payments/includes/class-asp-utils.php:488
 msgid "Senegal"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:232
+#: stripe-payments/includes/class-asp-utils.php:489
 msgid "Serbia"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:233
+#: stripe-payments/includes/class-asp-utils.php:490
 msgid "Seychelles"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:234
+#: stripe-payments/includes/class-asp-utils.php:491
 msgid "Sierra Leone"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:235
+#: stripe-payments/includes/class-asp-utils.php:492
 msgid "Singapore"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:236
+#: stripe-payments/includes/class-asp-utils.php:493
 msgid "Sint Maarten"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:237
+#: stripe-payments/includes/class-asp-utils.php:494
 msgid "Slovakia"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:238
+#: stripe-payments/includes/class-asp-utils.php:495
 msgid "Slovenia"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:239
+#: stripe-payments/includes/class-asp-utils.php:496
 msgid "Solomon Islands"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:240
+#: stripe-payments/includes/class-asp-utils.php:497
 msgid "Somalia"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:241
+#: stripe-payments/includes/class-asp-utils.php:498
 msgid "South Africa"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:242
+#: stripe-payments/includes/class-asp-utils.php:499
 msgid "South Georgia"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:243
+#: stripe-payments/includes/class-asp-utils.php:500
 msgid "South Sudan"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:244
+#: stripe-payments/includes/class-asp-utils.php:501
 msgid "Spain"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:245
+#: stripe-payments/includes/class-asp-utils.php:502
 msgid "Sri Lanka"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:246
+#: stripe-payments/includes/class-asp-utils.php:503
 msgid "Sudan"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:247
+#: stripe-payments/includes/class-asp-utils.php:504
 msgid "Suriname"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:248
+#: stripe-payments/includes/class-asp-utils.php:505
 msgid "Svalbard and Jan Mayen"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:249
+#: stripe-payments/includes/class-asp-utils.php:506
 msgid "Swaziland"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:250
+#: stripe-payments/includes/class-asp-utils.php:507
 msgid "Sweden"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:251
+#: stripe-payments/includes/class-asp-utils.php:508
 msgid "Switzerland"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:252
+#: stripe-payments/includes/class-asp-utils.php:509
 msgid "Syria"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:253
+#: stripe-payments/includes/class-asp-utils.php:510
 msgid "Taiwan"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:254
+#: stripe-payments/includes/class-asp-utils.php:511
 msgid "Tajikistan"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:255
+#: stripe-payments/includes/class-asp-utils.php:512
 msgid "Tanzania"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:256
+#: stripe-payments/includes/class-asp-utils.php:513
 msgid "Thailand"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:257
+#: stripe-payments/includes/class-asp-utils.php:514
 msgid "Timor-Leste"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:258
+#: stripe-payments/includes/class-asp-utils.php:515
 msgid "Togo"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:259
+#: stripe-payments/includes/class-asp-utils.php:516
 msgid "Tokelau"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:260
+#: stripe-payments/includes/class-asp-utils.php:517
 msgid "Tonga"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:261
+#: stripe-payments/includes/class-asp-utils.php:518
 msgid "Trinidad and Tobago"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:262
+#: stripe-payments/includes/class-asp-utils.php:519
 msgid "Tunisia"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:263
+#: stripe-payments/includes/class-asp-utils.php:520
 msgid "Turkey"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:264
+#: stripe-payments/includes/class-asp-utils.php:521
 msgid "Turkmenistan"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:265
+#: stripe-payments/includes/class-asp-utils.php:522
 msgid "Turks and Caicos Islands"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:266
+#: stripe-payments/includes/class-asp-utils.php:523
 msgid "Tuvalu"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:267
+#: stripe-payments/includes/class-asp-utils.php:524
 msgid "Uganda"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:268
+#: stripe-payments/includes/class-asp-utils.php:525
 msgid "Ukraine"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:269
+#: stripe-payments/includes/class-asp-utils.php:526
 msgid "United Arab Emirates"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:270
+#: stripe-payments/includes/class-asp-utils.php:527
 msgid "United Kingdom"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:271
+#: stripe-payments/includes/class-asp-utils.php:528
 msgid "United States"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:272
+#: stripe-payments/includes/class-asp-utils.php:529
 msgid "United States Minor Outlying Islands"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:273
+#: stripe-payments/includes/class-asp-utils.php:530
 msgid "United States Virgin Islands"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:274
+#: stripe-payments/includes/class-asp-utils.php:531
 msgid "Uruguay"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:275
+#: stripe-payments/includes/class-asp-utils.php:532
 msgid "Uzbekistan"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:276
+#: stripe-payments/includes/class-asp-utils.php:533
 msgid "Vanuatu"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:277
+#: stripe-payments/includes/class-asp-utils.php:534
 msgid "Vatican City"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:278
+#: stripe-payments/includes/class-asp-utils.php:535
 msgid "Venezuela"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:279
+#: stripe-payments/includes/class-asp-utils.php:536
 msgid "Vietnam"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:280
+#: stripe-payments/includes/class-asp-utils.php:537
 msgid "Wallis and Futuna"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:281
+#: stripe-payments/includes/class-asp-utils.php:538
 msgid "Western Sahara"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:282
+#: stripe-payments/includes/class-asp-utils.php:539
 msgid "Yemen"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:283
+#: stripe-payments/includes/class-asp-utils.php:540
 msgid "Zambia"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:284
+#: stripe-payments/includes/class-asp-utils.php:541
 msgid "Zimbabwe"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:308
+#: stripe-payments/includes/class-asp-utils.php:565
 msgid "US Dollars (USD)"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:309
+#: stripe-payments/includes/class-asp-utils.php:566
 msgid "Euros (EUR)"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:310
+#: stripe-payments/includes/class-asp-utils.php:567
 msgid "Pounds Sterling (GBP)"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:311
+#: stripe-payments/includes/class-asp-utils.php:568
 msgid "Australian Dollars (AUD)"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:312
+#: stripe-payments/includes/class-asp-utils.php:569
 msgid "Bosnia and Herzegovina Convertible Mark (BAM)"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:313
+#: stripe-payments/includes/class-asp-utils.php:570
 msgid "Brazilian Real (BRL)"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:314
+#: stripe-payments/includes/class-asp-utils.php:571
 msgid "Canadian Dollars (CAD)"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:315
+#: stripe-payments/includes/class-asp-utils.php:572
 msgid "Chinese Yuan (CNY)"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:316
+#: stripe-payments/includes/class-asp-utils.php:573
 msgid "Czech Koruna (CZK)"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:317
+#: stripe-payments/includes/class-asp-utils.php:574
 msgid "Danish Krone (DKK)"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:318
+#: stripe-payments/includes/class-asp-utils.php:575
 msgid "Hong Kong Dollar (HKD)"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:319
+#: stripe-payments/includes/class-asp-utils.php:576
 msgid "Hungarian Forint (HUF)"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:320
+#: stripe-payments/includes/class-asp-utils.php:577
 msgid "Indian Rupee (INR)"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:321
+#: stripe-payments/includes/class-asp-utils.php:578
 msgid "Indonesia Rupiah (IDR)"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:322
+#: stripe-payments/includes/class-asp-utils.php:579
 msgid "Israeli Shekel (ILS)"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:323
+#: stripe-payments/includes/class-asp-utils.php:580
 msgid "Japanese Yen (JPY)"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:324
+#: stripe-payments/includes/class-asp-utils.php:581
 msgid "Malaysian Ringgits (MYR)"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:325
+#: stripe-payments/includes/class-asp-utils.php:582
 msgid "Mexican Peso (MXN)"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:326
+#: stripe-payments/includes/class-asp-utils.php:583
 msgid "New Zealand Dollar (NZD)"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:327
+#: stripe-payments/includes/class-asp-utils.php:584
 msgid "Norwegian Krone (NOK)"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:328
+#: stripe-payments/includes/class-asp-utils.php:585
 msgid "Philippine Pesos (PHP)"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:329
+#: stripe-payments/includes/class-asp-utils.php:586
 msgid "Polish Zloty (PLN)"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:330
+#: stripe-payments/includes/class-asp-utils.php:587
 msgid "Russian Ruble (RUB)"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:331
+#: stripe-payments/includes/class-asp-utils.php:588
 msgid "Singapore Dollar (SGD)"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:332
+#: stripe-payments/includes/class-asp-utils.php:589
 msgid "South African Rand (ZAR)"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:333
+#: stripe-payments/includes/class-asp-utils.php:590
 msgid "South Korean Won (KRW)"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:334
+#: stripe-payments/includes/class-asp-utils.php:591
 msgid "Swedish Krona (SEK)"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:335
+#: stripe-payments/includes/class-asp-utils.php:592
 msgid "Swiss Franc (CHF)"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:336
+#: stripe-payments/includes/class-asp-utils.php:593
 msgid "Taiwan New Dollars (TWD)"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:337
+#: stripe-payments/includes/class-asp-utils.php:594
 msgid "Thai Baht (THB)"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:338
+#: stripe-payments/includes/class-asp-utils.php:595
 msgid "Turkish Lira (TRY)"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:339
+#: stripe-payments/includes/class-asp-utils.php:596
 msgid "Vietnamese Dong (VND)"
 msgstr ""
 
@@ -3566,57 +3581,57 @@ msgstr ""
 msgid "Following error occured during payment processing:"
 msgstr ""
 
-#: stripe-payments/includes/process_ipn.php:779
-#: stripe-payments/includes/process_ipn.php:785
+#: stripe-payments/includes/process_ipn.php:709
+#: stripe-payments/includes/process_ipn.php:715
 msgid "Download link"
 msgstr ""
 
-#: stripe-payments/includes/process_ipn.php:787
+#: stripe-payments/includes/process_ipn.php:717
 #: stripe-payments/public/includes/class-shortcode-asp.php:1018
 msgid "Download links"
 msgstr ""
 
-#: stripe-payments/includes/process_ipn.php:798
+#: stripe-payments/includes/process_ipn.php:728
 msgid "Order Info: "
 msgstr ""
 
-#: stripe-payments/public/class-asp.php:294
+#: stripe-payments/public/class-asp.php:292
 msgid "Buy Now"
 msgstr ""
 
-#: stripe-payments/public/class-asp.php:299
+#: stripe-payments/public/class-asp.php:297
 msgid "Thank you for the purchase"
 msgstr ""
 
-#: stripe-payments/public/class-asp.php:300
+#: stripe-payments/public/class-asp.php:298
 msgid "Hello"
 msgstr ""
 
-#: stripe-payments/public/class-asp.php:301
+#: stripe-payments/public/class-asp.php:299
 msgid "Thank you for your purchase! You ordered the following item(s):"
 msgstr ""
 
-#: stripe-payments/public/class-asp.php:304
+#: stripe-payments/public/class-asp.php:302
 msgid "Notification of product sale"
 msgstr ""
 
-#: stripe-payments/public/class-asp.php:305
+#: stripe-payments/public/class-asp.php:303
 msgid "Dear Seller"
 msgstr ""
 
-#: stripe-payments/public/class-asp.php:306
+#: stripe-payments/public/class-asp.php:304
 msgid "This mail is to notify you of a product sale."
 msgstr ""
 
-#: stripe-payments/public/class-asp.php:308
+#: stripe-payments/public/class-asp.php:306
 msgid "The sale was made to"
 msgstr ""
 
-#: stripe-payments/public/class-asp.php:309
+#: stripe-payments/public/class-asp.php:307
 msgid "Thanks"
 msgstr ""
 
-#: stripe-payments/public/class-asp.php:325
+#: stripe-payments/public/class-asp.php:323
 msgid ""
 "I accept the <a href=\"https://example.com/terms-and-conditions/\" target="
 "\"_blank\">Terms and Conditions</a>"
