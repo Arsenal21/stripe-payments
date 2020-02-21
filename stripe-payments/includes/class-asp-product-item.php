@@ -15,6 +15,7 @@ class ASP_Product_Item {
 	protected $coupon = false;
 	protected $price_with_discount;
 	protected $button_key = false;
+	protected $items      = array();
 
 	public function __construct( $post_id = false ) {
 		$this->asp_main = AcceptStripePayments::get_instance();
@@ -95,8 +96,32 @@ class ASP_Product_Item {
 		return $this->shipping;
 	}
 
-	public function set_shipping ($shipping) {
+	public function set_shipping( $shipping ) {
 		$this->shipping = $shipping;
+	}
+
+	public function get_items_total( $in_cents = false, $with_discount = false ) {
+		$items_total = 0;
+		if ( ! empty( $this->items ) ) {
+			foreach ( $this->items as $item ) {
+				$items_total += $item['price'];
+			}
+		}
+		if ( $with_discount && $this->coupon && 'perc' === $this->coupon['discount_type'] ) {
+			$items_total = $this->apply_discount_to_amount( $items_total, false );
+		}
+		return $in_cents ? $this->in_cents( $items_total ) : $items_total;
+	}
+
+	public function get_items() {
+		return $this->items;
+	}
+
+	public function add_item( $name, $price ) {
+		$this->items[] = array(
+			'name'  => $name,
+			'price' => floatval( $price ),
+		);
 	}
 
 	public function get_thumb() {
@@ -149,6 +174,25 @@ class ASP_Product_Item {
 		return $this->price;
 	}
 
+	private function apply_discount_to_amount( $amount, $in_cents = false ) {
+		if ( $this->coupon ) {
+			if ( 'perc' === $this->coupon['discount_type'] ) {
+				$perc            = AcceptStripePayments::is_zero_cents( $this->get_currency() ) ? 0 : 2;
+				$discount_amount = round( $amount * ( $this->coupon['discount'] / 100 ), $perc );
+			} else {
+				$discount_amount = $this->coupon['discount'];
+				if ( $in_cents && ! AcceptStripePayments::is_zero_cents( $this->get_currency() ) ) {
+					$discount_amount = $discount_amount * 100;
+				}
+			}
+			if ( $in_cents ) {
+				$discount_amount = round( $discount_amount, 0 );
+			}
+			$amount = $amount - $discount_amount;
+		}
+		return $amount;
+	}
+
 	private function get_discount_amount( $total, $in_cents = false ) {
 		$discount_amount = 0;
 		if ( $this->coupon ) {
@@ -172,9 +216,11 @@ class ASP_Product_Item {
 	public function get_total( $in_cents = false ) {
 		$total = $this->get_price( $in_cents );
 
-		$discount_amount = $this->get_discount_amount( $total, $in_cents );
+		$items_total = $this->get_items_total( $in_cents );
 
-		$total = $total - $discount_amount;
+		$total += $items_total;
+
+		$total = $this->apply_discount_to_amount( $total, $in_cents );
 
 		if ( $this->get_tax() ) {
 			$total = $total + $this->get_tax_amount( $in_cents, true );
@@ -187,6 +233,7 @@ class ASP_Product_Item {
 		if ( ! empty( $shipping ) ) {
 			$total = $total + $this->get_shipping( $in_cents );
 		}
+
 		return $total;
 	}
 
@@ -202,7 +249,11 @@ class ASP_Product_Item {
 	}
 
 	public function get_tax_amount( $in_cents = false, $price_with_discount = false ) {
-		$this->tax_amount = AcceptStripePayments::get_tax_amount( $this->get_price( false, $price_with_discount ), $this->get_tax(), $this->zero_cent );
+		$total       = $this->get_price( false, $price_with_discount );
+		$items_total = $this->get_items_total( false, $price_with_discount );
+		$total      += $items_total;
+
+		$this->tax_amount = AcceptStripePayments::get_tax_amount( $total, $this->get_tax(), $this->zero_cent );
 		if ( $in_cents ) {
 			return $this->in_cents( $this->tax_amount );
 		}
@@ -297,27 +348,27 @@ class ASP_Product_Item {
 			$this->last_error = __( 'Coupon not found.', 'stripe-payments' );
 			return false;
 		}
-			$coupon = $coupon[0];
-			//check if coupon is active
+		$coupon = $coupon[0];
+		//check if coupon is active
 		if ( ! get_post_meta( $coupon->ID, 'asp_coupon_active', true ) ) {
 			$this->last_error = __( 'Coupon is not active.', 'stripe-payments' );
 			return false;
 		}
-			//check if coupon start date has come
-			$start_date = get_post_meta( $coupon->ID, 'asp_coupon_start_date', true );
+		//check if coupon start date has come
+		$start_date = get_post_meta( $coupon->ID, 'asp_coupon_start_date', true );
 		if ( empty( $start_date ) || strtotime( $start_date ) > time() ) {
 			$this->last_error = __( 'Coupon is not available yet.', 'stripe-payments' );
 			return false;
 		}
-			//check if coupon has expired
-			$exp_date = get_post_meta( $coupon->ID, 'asp_coupon_exp_date', true );
+		//check if coupon has expired
+		$exp_date = get_post_meta( $coupon->ID, 'asp_coupon_exp_date', true );
 		if ( ! empty( $exp_date ) && strtotime( $exp_date ) < time() ) {
 			$this->last_error = __( 'Coupon has expired.', 'stripe-payments' );
 			return false;
 		}
-			//check if redemption limit is reached
-			$red_limit = get_post_meta( $coupon->ID, 'asp_coupon_red_limit', true );
-			$red_count = get_post_meta( $coupon->ID, 'asp_coupon_red_count', true );
+		//check if redemption limit is reached
+		$red_limit = get_post_meta( $coupon->ID, 'asp_coupon_red_limit', true );
+		$red_count = get_post_meta( $coupon->ID, 'asp_coupon_red_count', true );
 		if ( ! empty( $red_limit ) && intval( $red_count ) >= intval( $red_limit ) ) {
 			$this->last_error = __( 'Coupon redemption limit is reached.', 'stripe-payments' );
 			return false;

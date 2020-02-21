@@ -353,7 +353,7 @@ class ASP_Process_IPN_NG {
 		if ( isset( $coupon ) ) {
 			// translators: %s is coupon code
 			$data['additional_items'][ sprintf( __( 'Coupon "%s"', 'stripe-payments' ), $coupon['code'] ) ] = floatval( '-' . $coupon['discountAmount'] );
-			$data['additional_items'][ __( 'Subtotal', 'stripe-payments' ) ]                                = $item->get_price( false, true );
+			$data['additional_items'][ __( 'Subtotal', 'stripe-payments' ) ]                                = $item->get_price( false, true ) + $item->get_items_total( false, true );
 			//increase coupon redeem count
 			$curr_redeem_cnt = get_post_meta( $coupon['id'], 'asp_coupon_red_count', true );
 			$curr_redeem_cnt++;

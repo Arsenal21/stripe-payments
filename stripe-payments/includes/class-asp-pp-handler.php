@@ -311,6 +311,8 @@ class ASP_PP_Handler {
 
 		$this->item->set_price( $data['item_price'], true );
 
+		$data['items'] = $this->item->get_items();
+
 		$a['data'] = $data;
 
 		if ( isset( $data['fatal_error'] ) ) {
