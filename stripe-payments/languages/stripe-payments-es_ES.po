@@ -1775,7 +1775,7 @@ msgid "Allow users to specify quantity"
 msgstr "Permitir a los usuarios especificar la cantidad"
 
 #: stripe-payments/admin/includes/class-products-meta-boxes.php:254
-msgid "When checked, users can enter quantity they want to buy."
+msgid "When checked, users can enter the quantity they want to buy."
 msgstr ""
 "Cuando esta seleccionado, los usuarios pueden introducir la cantidad que "
 "desean comprar."
@@ -1786,7 +1786,7 @@ msgstr "Establece la cantidad:"
 
 #: stripe-payments/admin/includes/class-products-meta-boxes.php:259
 msgid ""
-"If you want to use a set quanity for this item then enter the value in this "
+"If you want to use a set quantity for this item then enter the value in this "
 "field."
 msgstr ""
 "Si deseas usar una cantidad establecida para este artículo, introduce el "

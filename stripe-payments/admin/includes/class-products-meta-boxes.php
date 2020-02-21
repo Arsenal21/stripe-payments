@@ -314,12 +314,12 @@ class ASPProductsMetaboxes {
 	<input type="checkbox" name="asp_product_custom_quantity" value="1" <?php echo esc_attr( '1' === $allow_custom_quantity ? ' checked' : '' ); ?>>
 		<?php echo esc_html( __( 'Allow users to specify quantity', 'stripe-payments' ) ); ?>
 </label>
-<p class="description"><?php echo esc_html( __( 'When checked, users can enter quantity they want to buy.', 'stripe-payments' ) ); ?></p>
+<p class="description"><?php echo esc_html( __( 'When checked, users can enter the quantity they want to buy.', 'stripe-payments' ) ); ?></p>
 
 <label><?php esc_html_e( 'Set Quantity:', 'stripe-payments' ); ?></label>
 	<br />
 	<input type="number" min="1" step="1" name="asp_product_quantity" value="<?php echo esc_attr( $current_val ); ?>">
-	<p class="description"><?php esc_html_e( 'If you want to use a set quanity for this item then enter the value in this field.', 'stripe-payments' ); ?></p>
+	<p class="description"><?php esc_html_e( 'If you want to use a set quantity for this item then enter the value in this field.', 'stripe-payments' ); ?></p>
 
 <hr />
 
