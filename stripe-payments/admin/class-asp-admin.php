@@ -34,6 +34,7 @@ class AcceptStripePayments_Admin {
 		*/
 		$plugin            = AcceptStripePayments::get_instance();
 		$this->plugin_slug = $plugin->get_plugin_slug();
+		$this->asp_main    = $plugin;
 
 		// add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
 		// Add the options page and menu item.
@@ -1212,7 +1213,6 @@ class AcceptStripePayments_Admin {
 			case 'stripe_receipt_email':
 			case 'send_email_on_error':
 			case 'use_new_button_method':
-			case 'prefill_wp_user_details':
 			case 'is_live':
 			case 'disable_remember_me':
 			case 'use_old_checkout_api1':
@@ -1225,6 +1225,12 @@ class AcceptStripePayments_Admin {
 			case 'enable_email_schedule':
 			case 'frontend_prefetch_scripts':
 				echo "<input type='checkbox' name='AcceptStripePayments-settings[{$field}]' value='1' " . ( $field_value ? 'checked=checked' : '' ) . " /><p class=\"description\">{$desc}</p>";
+				break;
+			case 'prefill_wp_user_details':
+				echo "<input type='checkbox' name='AcceptStripePayments-settings[{$field}]' value='1' " . ( $field_value ? 'checked=checked' : '' ) . " /><p class=\"description\">{$desc}</p>";
+				$last_name_first = $this->asp_main->get_setting( 'prefill_wp_user_last_name_first' );
+				echo '<label><input type="checkbox" name="AcceptStripePayments-settings[prefill_wp_user_last_name_first]"' . ( $last_name_first ? ' checked="checked"' : '' ) . '> ' . esc_html__( 'Last Name First', 'stripe-payments' ) . '</label>';
+				echo '<p class="description">' . esc_html__( 'When enabled, last name is placed before first name.', 'stripe-payments' ) . '</p>';
 				break;
 			case 'custom_field_enabled':
 				echo "<input type='checkbox' name='AcceptStripePayments-settings[{$field}]' value='1' " . ( $field_value ? 'checked=checked' : '' ) . " /><p class=\"description\">{$desc}</p>";
@@ -1303,8 +1309,7 @@ class AcceptStripePayments_Admin {
 				break;
 			case 'debug_log_link':
 				//check if we have token generated
-				$asp_class = AcceptStripePayments::get_instance();
-				$token     = $asp_class->get_setting( 'debug_log_access_token' );
+				$token = $this->asp_main->get_setting( 'debug_log_access_token' );
 				if ( ! $token ) {
 					//let's generate debug log access token
 					$token                          = substr( md5( uniqid() ), 16 );
@@ -1335,6 +1340,7 @@ class AcceptStripePayments_Admin {
 	 * @since    1.0.0
 	 */
 	public function settings_sanitize_field_callback( $input ) {
+
 		$output = get_option( 'AcceptStripePayments-settings' );
 
 		// this filter name is a bit invalid, we will slowly replace it with a valid one below
@@ -1402,7 +1408,8 @@ class AcceptStripePayments_Admin {
 
 		$output['use_new_button_method'] = empty( $input['use_new_button_method'] ) ? 0 : 1;
 
-		$output['prefill_wp_user_details'] = empty( $input['prefill_wp_user_details'] ) ? 0 : 1;
+		$output['prefill_wp_user_details']         = empty( $input['prefill_wp_user_details'] ) ? 0 : 1;
+		$output['prefill_wp_user_last_name_first'] = empty( $input['prefill_wp_user_last_name_first'] ) ? 0 : 1;
 
 		$output['send_emails_to_buyer'] = empty( $input['send_emails_to_buyer'] ) ? 0 : 1;
 

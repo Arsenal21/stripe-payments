@@ -212,7 +212,8 @@ class ASP_PP_Handler {
 					$cust_email_hardcoded = $user_info->user_email;
 				}
 				if ( empty( $cust_name_hardcoded ) ) {
-					$cust_name_hardcoded = $user_info->first_name . ' ' . $user_info->last_name;
+					$last_name_first     = $this->asp_main->get_setting( 'prefill_wp_user_last_name_first' );
+					$cust_name_hardcoded = $last_name_first ? $user_info->last_name . ' ' . $user_info->first_name : $user_info->first_name . ' ' . $user_info->last_name;
 				}
 			}
 		}
