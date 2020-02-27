@@ -540,37 +540,38 @@ class ASP_Shortcode_NG {
 		);
 
 		$data = array(
-			'is_live'               => $this->asp_main->is_live,
-			'product_id'            => $product_id,
-			'iframe_url'            => $iframe_url,
-			'button_key'            => $button_key,
-			'item_price'            => isset( $item_price ) ? $item_price : 0,
-			'quantity'              => $quantity,
-			'custom_quantity'       => $custom_quantity,
-			'description'           => $description,
-			'descrGenerated'        => $descr_generated,
-			'shipping'              => $shipping,
-			'tax'                   => $tax,
-			'image'                 => $item_logo,
-			'currency'              => $currency,
-			'currency_variable'     => $currency_variable,
-			'locale'                => ( empty( $checkout_lang ) ? 'auto' : $checkout_lang ),
-			'name'                  => htmlspecialchars_decode( $name ),
-			'url'                   => $url,
-			'amount'                => $price_in_cents,
-			'billingAddress'        => ( empty( $billing_address ) ? false : true ),
-			'shippingAddress'       => ( empty( $shipping_address ) ? false : true ),
-			'customer_email'        => $customer_email,
-			'uniq_id'               => $uniq_id,
-			'variable'              => ( empty( $price ) ? true : false ),
-			'zeroCents'             => $this->asp_main->zeroCents,
-			'addonHooks'            => array(),
-			'button_text'           => esc_attr( $button_text ),
-			'out_of_stock'          => $out_of_stock,
-			'stock_control_enabled' => $stock_control_enabled,
-			'stock_items'           => $stock_items,
-			'currencyFormat'        => $display_settings,
-			'displayStr'            => $display_str,
+			'is_live'                  => $this->asp_main->is_live,
+			'product_id'               => $product_id,
+			'iframe_url'               => $iframe_url,
+			'button_key'               => $button_key,
+			'item_price'               => isset( $item_price ) ? $item_price : 0,
+			'quantity'                 => $quantity,
+			'custom_quantity'          => $custom_quantity,
+			'description'              => $description,
+			'descrGenerated'           => $descr_generated,
+			'shipping'                 => $shipping,
+			'tax'                      => $tax,
+			'image'                    => $item_logo,
+			'currency'                 => $currency,
+			'currency_variable'        => $currency_variable,
+			'locale'                   => ( empty( $checkout_lang ) ? 'auto' : $checkout_lang ),
+			'name'                     => htmlspecialchars_decode( $name ),
+			'url'                      => $url,
+			'amount'                   => $price_in_cents,
+			'billingAddress'           => ( empty( $billing_address ) ? false : true ),
+			'shippingAddress'          => ( empty( $shipping_address ) ? false : true ),
+			'customer_email'           => $customer_email,
+			'uniq_id'                  => $uniq_id,
+			'variable'                 => ( empty( $price ) ? true : false ),
+			'zeroCents'                => $this->asp_main->zeroCents,
+			'addonHooks'               => array(),
+			'button_text'              => esc_attr( $button_text ),
+			'out_of_stock'             => $out_of_stock,
+			'stock_control_enabled'    => $stock_control_enabled,
+			'stock_items'              => $stock_items,
+			'currencyFormat'           => $display_settings,
+			'displayStr'               => $display_str,
+			'show_custom_amount_input' => false,
 		);
 
 		$data = apply_filters( 'asp-button-output-data-ready', $data, $atts ); //phpcs:ignore
@@ -662,6 +663,36 @@ class ASP_Shortcode_NG {
 			if ( 0 !== $data['product_id'] ) {
 				$output .= "<input type='hidden' name='asp_product_id' value='{$data['product_id']}' />";
 			}
+		}
+
+		if ( $data['show_custom_amount_input'] ) {
+
+			if ( $data['amount'] == 0 ) { //price not specified, let's add an input box for user to specify the amount
+				$str_enter_amount = apply_filters( 'asp_customize_text_msg', __( 'Enter amount', 'stripe-payments' ), 'enter_amount' );
+				$output          .= "<div class='asp_product_item_amount_input_container'>"
+				. "<input type='number' min='0.01' step='0.01' size='10' class='asp_product_item_amount_input' id='stripeAmount_{$data[ 'uniq_id' ]}' value='' name='stripeAmount' placeholder='" . $str_enter_amount . "' required/>";
+				if ( ! $data['currency_variable'] ) {
+					$output .= "<span class='asp_product_item_amount_currency_label' style='margin-left: 5px; display: inline-block'> {$data[ 'currency' ]}</span>";
+				}
+				$output .= "<span style='display: block;' id='error_explanation_{$data[ 'uniq_id' ]}'></span>"
+				. '</div>';
+			}
+			// if ( $data['currency_variable'] ) {
+			// 	//let's add a box where user can select currency
+			// 	$output .= '<div class="asp_product_currency_input_container">';
+			// 	$output .= '<select id="stripeCurrency_' . $data['uniq_id'] . '" class="asp_product_currency_input" name="stripeCurrency">';
+			// 	$currArr = AcceptStripePayments::get_currencies();
+			// 	$tpl     = '<option data-asp-curr-sym="%s" value="%s"%s>%s</option>';
+			// 	foreach ( $currArr as $code => $curr ) {
+			// 		if ( $code !== '' ) {
+			// 			$checked = $data['currency'] === $code ? ' selected' : '';
+			// 			$output .= sprintf( $tpl, $curr[1], $code, $checked, $curr[0] );
+			// 		}
+			// 	}
+			// 	$output .= '</select>';
+			// 	$output .= '</div>';
+			// }
+
 		}
 
 		return $output;

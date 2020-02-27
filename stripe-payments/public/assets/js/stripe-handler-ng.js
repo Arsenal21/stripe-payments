@@ -1,6 +1,62 @@
 var stripeHandlerNG = function (data) {
 
+	jQuery('input#stripeAmount_' + data.uniq_id).keydown(function (e) {
+		if (e.keyCode === 13) {
+			e.preventDefault();
+			jQuery('#asp_ng_button_' + data.uniq_id).click();
+			return false;
+		}
+	});
+
+	this.validateAmount = function () {
+		var amount = jQuery('input#stripeAmount_' + data.uniq_id).val();
+		data.amountOpts = { applySepOpts: 0 };
+		data.minAmounts = [];
+		if (data.amountOpts.applySepOpts != 0) {
+			amount = amount.replace(data.amountOpts.thousandSep, '');
+			amount = amount.replace(data.amountOpts.decimalSep, '.');
+		} else {
+			amount = amount.replace(/\$/g, '');
+			amount = amount.replace(/\,/g, '');
+			amount = amount.replace(/\ /g, '');
+		}
+		amount = parseFloat(amount);
+
+		if (isNaN(amount)) {
+			jQuery('#error_explanation_' + data.uniq_id).hide().html('Enter valid amount').fadeIn('slow');
+			return false;
+		}
+
+		var displayAmount = amount.toFixed(2).toString();
+		if (data.amountOpts.applySepOpts != 0) {
+			displayAmount = displayAmount.replace('.', data.amountOpts.decimalSep);
+		}
+		if (data.zeroCents.indexOf(data.currency) <= -1) {
+			//			amount = Math.round(amount);
+		}
+		// if (typeof data.minAmounts[data.currency] !== 'undefined') {
+		// 	if (data.minAmounts[data.currency] > amount) {
+		// 		jQuery('#error_explanation_' + data.uniq_id).hide().html(data.strMinAmount + ' ' + parent.cents_to_amount(stripehandler.minAmounts[data.currency], data.currency)).fadeIn('slow');
+		// 		return false;
+		// 	}
+		// } else if (50 > amount) {
+		// 	jQuery('#error_explanation_' + data.uniq_id).hide().html(data.strMinAmount + ' 0.5').fadeIn('slow');
+		// 	return false;
+		// }
+		jQuery('#error_explanation_' + data.uniq_id).html('');
+		jQuery('input#stripeAmount_' + data.uniq_id).val(displayAmount);
+
+		return amount;
+	}
+
 	this.handleModal = function (show) {
+		if (parent.data.show_custom_amount_input) {
+			var pass_amount = parent.validateAmount();
+			if (!pass_amount) {
+				return false;
+			}
+		}
+
 		if (!parent.modal) {
 			parent.modal = jQuery('div[data-asp-iframe-prod-id="' + parent.data.product_id + '"][id="asp-payment-popup-' + parent.data.uniq_id + '"]');
 			if (parent.modal.length === 0) {
@@ -11,11 +67,18 @@ var stripeHandlerNG = function (data) {
 				parent.modal.css('display', 'flex').hide().fadeIn();
 			}
 			var iframe = parent.modal.find('iframe');
+			parent.iframe = iframe;
 			iframe.on('load', function () {
 				if (parent.redirectToResult) {
 					window.location.href = iframe[0].contentWindow.location.href;
 					return false;
 				}
+
+				if (pass_amount) {
+					iframe.contents().find('#amount').val(pass_amount);
+					iframe[0].contentWindow.triggerEvent(iframe.contents().find('#amount')[0], 'change');
+				}
+
 				iframe[0].contentWindow['doSelfSubmit'] = data.doSelfSubmit;
 				var closebtn = iframe.contents().find('#modal-close-btn');
 				if (show) {
@@ -59,6 +122,10 @@ var stripeHandlerNG = function (data) {
 				});
 			});
 		} else {
+			if (pass_amount) {
+				parent.iframe.contents().find('#amount').val(pass_amount);
+				parent.iframe[0].contentWindow.triggerEvent(parent.iframe.contents().find('#amount')[0], 'change');
+			}
 			parent.modal.css('display', 'flex').hide().fadeIn();
 		}
 
