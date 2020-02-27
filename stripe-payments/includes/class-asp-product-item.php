@@ -96,8 +96,8 @@ class ASP_Product_Item {
 		return $this->shipping;
 	}
 
-	public function set_shipping( $shipping ) {
-		$this->shipping = $shipping;
+	public function set_shipping( $shipping, $in_cents = false ) {
+		$this->shipping = $in_cents ? $this->from_cents( $shipping ) : $shipping;
 	}
 
 	public function get_items_total( $in_cents = false, $with_discount = false ) {
@@ -244,6 +244,10 @@ class ASP_Product_Item {
 		$this->price = $price;
 	}
 
+	public function set_currency( $curr ) {
+		$this->currency = $curr;
+	}
+
 	public function set_quantity( $quantity ) {
 		$this->cust_quantity = $quantity;
 	}
@@ -261,9 +265,9 @@ class ASP_Product_Item {
 	}
 
 	public function get_currency() {
-		$this->currency = get_post_meta( $this->post_id, 'asp_product_currency', true );
-		if ( ! $this->currency ) {
-			$this->currency = $this->asp_main->get_setting( 'currency_code' );
+		if ( empty( $this->currency ) ) {
+			$this->currency = get_post_meta( $this->post_id, 'asp_product_currency', true );
+			$this->currency = empty( $this->currency ) ? $this->asp_main->get_setting( 'currency_code' ) : $this->currency;
 		}
 		return $this->currency;
 	}

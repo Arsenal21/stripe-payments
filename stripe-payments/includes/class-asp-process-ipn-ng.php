@@ -192,7 +192,25 @@ class ASP_Process_IPN_NG {
 		}
 
 		//Item price
-		$price = $item->get_price();
+		$price    = $item->get_price();
+		$curr     = $item->get_currency();
+		$shipping = $item->get_shipping();
+
+		if ( ! method_exists( $item, 'get_plan_id' ) ) {
+			$price_arr = apply_filters(
+				'asp_modify_price_currency_shipping',
+				array(
+					'price'    => $price,
+					'currency' => $curr,
+					'shipping' => empty( $shipping ) ? false : $shipping,
+					'variable' => empty( $price ) ? true : false,
+				)
+			);
+			$item->set_price( $price_arr['price'] );
+			$item->set_currency( $price_arr['currency'] );
+			$item->set_shipping( $price_arr['shipping'] );
+		}
+
 		if ( empty( $price ) ) {
 			$post_price = $this->get_post_var( 'asp_amount', FILTER_SANITIZE_NUMBER_FLOAT );
 			if ( $post_price ) {
