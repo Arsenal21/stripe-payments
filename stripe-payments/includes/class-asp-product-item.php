@@ -153,6 +153,13 @@ class ASP_Product_Item {
 		return $this->quantity;
 	}
 
+	public function get_coupon_discount_amount() {
+		$price           = $this->get_price();
+		$items_total     = $this->get_items_total();
+		$discount_amount = $this->get_discount_amount( $price + $items_total );
+		return $discount_amount;
+	}
+
 	public function get_price( $in_cents = false, $price_with_discount = false ) {
 		if ( is_null( $this->price ) ) {
 			$this->price = get_post_meta( $this->post_id, 'asp_product_price', true );

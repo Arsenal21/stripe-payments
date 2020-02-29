@@ -364,12 +364,11 @@ class ASP_Process_IPN_NG {
 
 		//check if coupon was used
 		if ( $coupon_valid ) {
-			$item->get_total( false );
 			$coupon = $item->get_coupon();
 		}
 		if ( isset( $coupon ) ) {
 			// translators: %s is coupon code
-			$data['additional_items'][ sprintf( __( 'Coupon "%s"', 'stripe-payments' ), $coupon['code'] ) ] = floatval( '-' . $coupon['discountAmount'] );
+			$data['additional_items'][ sprintf( __( 'Coupon "%s"', 'stripe-payments' ), $coupon['code'] ) ] = floatval( '-' . $item->get_coupon_discount_amount() );
 			$data['additional_items'][ __( 'Subtotal', 'stripe-payments' ) ]                                = $item->get_price( false, true ) + $item->get_items_total( false, true );
 			//increase coupon redeem count
 			$curr_redeem_cnt = get_post_meta( $coupon['id'], 'asp_coupon_red_count', true );
