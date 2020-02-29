@@ -238,13 +238,12 @@ class ASP_Process_IPN_NG {
 				foreach ( $posted_variations as $grp_id => $var_id ) {
 					$var = $v->get_variation( $grp_id, $var_id[0] );
 					if ( ! empty( $var ) ) {
-						$item_price    = $item_price + $var['price'];
+						$item->add_item( $var['name'], $var['price'] );
 						$variations[]  = array( $var['group_name'] . ' - ' . $var['name'], $var['price'] );
 						$var_applied[] = $var;
 					}
 				}
 			}
-			$item->set_price( $item_price );
 		}
 
 		//Coupon
