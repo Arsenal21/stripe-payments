@@ -310,19 +310,22 @@ class ASP_PP_Handler {
 
 		$data = apply_filters( 'asp_ng_pp_data_ready', $data, array( 'product_id' => $product_id ) ); //phpcs:ignore
 
-		$this->item->set_price( $data['item_price'], true );
-		$this->item->set_currency( $data['currency'] );
-		$this->item->set_shipping( $data['shipping'], true );
-		$data['shipping'] = $this->item->get_shipping( true );
+		if ( empty( $plan_id ) ) {
+			$this->item->set_currency( $data['currency'] );
+			$this->item->set_price( $data['item_price'], true );
+			$data['item_price'] = $this->item->get_price( true );
+			$this->item->set_shipping( $data['shipping'], true );
+			$data['shipping'] = $this->item->get_shipping( true );
 
-		$tmp_curr = strtoupper( $data['currency'] );
-		if ( isset( $currencies[ $tmp_curr ] ) ) {
-			$curr_sym = $currencies[ $tmp_curr ][1];
-		} else {
-			//no currency code found, let's just use currency code instead of symbol
-			$curr_sym = $tmp_curr;
+			$tmp_curr = strtoupper( $data['currency'] );
+			if ( isset( $currencies[ $tmp_curr ] ) ) {
+				$curr_sym = $currencies[ $tmp_curr ][1];
+			} else {
+				//no currency code found, let's just use currency code instead of symbol
+				$curr_sym = $tmp_curr;
+			}
+			$display_settings['s'] = $curr_sym;
 		}
-		$display_settings['s'] = $curr_sym;
 
 		$data['items'] = $this->item->get_items();
 
@@ -429,6 +432,7 @@ class ASP_PP_Handler {
 		if ( isset( $a['fatal_error'] ) ) {
 			$a['vars']['vars']['fatal_error'] = $a['fatal_error'];
 		}
+
 		$a['pay_btn_text'] = sprintf( $pay_btn_text, AcceptStripePayments::formatted_price( $this->item->get_total(), $this->item->get_currency() ) );
 
 		//output custom PP CSS if needed

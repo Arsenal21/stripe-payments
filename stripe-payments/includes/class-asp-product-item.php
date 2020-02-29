@@ -244,10 +244,6 @@ class ASP_Product_Item {
 		$this->price = $price;
 	}
 
-	public function set_currency( $curr ) {
-		$this->currency = $curr;
-	}
-
 	public function set_quantity( $quantity ) {
 		$this->cust_quantity = $quantity;
 	}
@@ -269,7 +265,13 @@ class ASP_Product_Item {
 			$this->currency = get_post_meta( $this->post_id, 'asp_product_currency', true );
 			$this->currency = empty( $this->currency ) ? $this->asp_main->get_setting( 'currency_code' ) : $this->currency;
 		}
+		$this->zero_cent = AcceptStripePayments::is_zero_cents( $this->currency );
 		return $this->currency;
+	}
+
+	public function set_currency( $curr ) {
+		$this->currency  = $curr;
+		$this->zero_cent = AcceptStripePayments::is_zero_cents( $curr );
 	}
 
 	public function is_currency_variable() {
