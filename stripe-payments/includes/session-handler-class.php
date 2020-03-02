@@ -50,7 +50,9 @@ class ASP_Session {
 		$cookie_transient_id = filter_input( INPUT_COOKIE, 'asp_transient_id', FILTER_SANITIZE_STRING );
 		if ( empty( $cookie_transient_id ) ) {
 			if ( ! headers_sent() ) {
-				setcookie( 'asp_transient_id', $this->get_transient_id(), 0, COOKIEPATH, COOKIE_DOMAIN );
+				$cookiepath    = ! defined( 'COOKIEPATH' ) ? '/' : COOKIEPATH;
+				$cookie_domain = ! defined( 'COOKIE_DOMAIN' ) ? false : COOKIE_DOMAIN;
+				setcookie( 'asp_transient_id', $this->get_transient_id(), 0, $cookiepath, $cookie_domain );
 			}
 		} else {
 			$this->transient_id = $cookie_transient_id;
