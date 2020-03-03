@@ -12,8 +12,6 @@
  * Domain Path: /languages
  */
 
-use stripepayments\convertKit\subscriber;
-
 //Slug - asp
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
