@@ -82,7 +82,7 @@ class AcceptStripePayments_Admin {
 			case 'edit.php':
 			case 'post-new.php':
 				global $post_type;
-				if ( $post_type === ASPMain::$products_slug ) {
+				if ( ASPMain::$products_slug === $post_type ) {
 					wp_register_script( 'asp-admin-edit-product-js', WP_ASP_PLUGIN_URL . '/admin/assets/js/edit-product.js', array( 'jquery' ), WP_ASP_PLUGIN_VERSION, true );
 					wp_enqueue_script( 'asp-admin-general-js' );
 					wp_enqueue_style( 'asp-admin-styles' );
@@ -97,7 +97,7 @@ class AcceptStripePayments_Admin {
 			delete_transient( 'asp_admin_msg_arr' );
 			$tpl = '<div class="notice notice-%1$s%3$s"><p>%2$s</p></div>';
 			foreach ( $msg_arr as $msg ) {
-				echo sprintf( $tpl, $msg['type'], $msg['text'], $msg['dism'] === true ? ' is-dismissible' : '' );
+				echo sprintf( $tpl, $msg['type'], $msg['text'], true === $msg['dism'] ? ' is-dismissible' : '' );
 			}
 		}
 
@@ -140,8 +140,9 @@ class AcceptStripePayments_Admin {
 		if ( current_user_can( 'manage_options' ) ) {
 			add_action( 'wp_ajax_asp_clear_log', array( 'ASP_Debug_Logger', 'clear_log' ) );
 			//view log file
-			if ( isset( $_GET['asp_action'] ) ) {
-				if ( $_GET['asp_action'] === 'view_log' ) {
+			$asp_action = filter_input( INPUT_GET, 'asp_action', FILTER_SANITIZE_STRING );
+			if ( ! empty( $asp_action ) ) {
+				if ( 'view_log' === $asp_action ) {
 					ASP_Debug_Logger::view_log();
 				}
 			}
@@ -186,7 +187,7 @@ class AcceptStripePayments_Admin {
 	public function check_current_screen() {
 		if ( function_exists( 'get_current_screen' ) ) {
 			$screen = get_current_screen();
-			if ( $screen->base == 'post' ) {
+			if ( 'post' === $screen->base ) {
 				//we're on post edit page, let's do some things for shortcode inserter
 				if ( ! wp_doing_ajax() ) {
 					// Load admin style sheet
@@ -298,7 +299,7 @@ class AcceptStripePayments_Admin {
 		}
 
 		$screen = get_current_screen();
-		if ( $this->plugin_screen_hook_suffix == $screen->id ) {
+		if ( $this->plugin_screen_hook_suffix === $screen->id ) {
 			wp_enqueue_script( $this->plugin_slug . '-admin-script', plugins_url( 'assets/js/admin.js', __FILE__ ), array( 'jquery' ), AcceptStripePayments::VERSION );
 		}
 	}
@@ -438,7 +439,7 @@ class AcceptStripePayments_Admin {
 			'AcceptStripePayments-global-section',
 			array(
 				'field' => 'popup_button_text',
-				'desc'  => __(
+				'desc'  => __( //phpcs:ignore
 					'%s is replaced by formatted payment amount (example: Pay $29.90). If this field is empty, it defaults to "Pay %s"', //phpcs:ignore
 					'stripe-payments'
 				),
@@ -1070,13 +1071,13 @@ class AcceptStripePayments_Admin {
 
 		$currencies = AcceptStripePayments::get_currencies();
 
-		if ( $show_default === false ) {
+		if ( false === $show_default ) {
 			unset( $currencies[''] );
 		}
 		$opt_tpl = '<option value="%curr_code%"%selected%>%curr_name%</option>';
 		$opts    = '';
 		foreach ( $currencies as $key => $value ) {
-			$selected = $selected_value == $key ? ' selected' : '';
+			$selected = $selected_value === $key ? ' selected' : '';
 			$opts    .= str_replace( array( '%curr_code%', '%curr_name%', '%selected%' ), array( $key, $value[0], $selected ), $opt_tpl );
 		}
 
@@ -1112,9 +1113,9 @@ class AcceptStripePayments_Admin {
 		$data_arr = $data_arr + $languages_arr;
 
 		$opt_tpl = '<option value="%val%"%selected%>%name%</option>';
-		$opts    = $selected_value === false ? '<option value="" selected>' . __( '(Default)', 'stripe-payments' ) . '</option>' : '';
+		$opts    = false === $selected_value ? '<option value="" selected>' . __( '(Default)', 'stripe-payments' ) . '</option>' : '';
 		foreach ( $data_arr as $key => $value ) {
-			$selected = $selected_value == $key ? ' selected' : '';
+			$selected = $selected_value === $key ? ' selected' : '';
 			$opts    .= str_replace( array( '%val%', '%name%', '%selected%' ), array( $key, $value, $selected ), $opt_tpl );
 		}
 
@@ -1125,15 +1126,16 @@ class AcceptStripePayments_Admin {
 	 * Settings HTML
 	 */
 	public function settings_field_callback( $args ) {
+
 		$settings = (array) get_option( 'AcceptStripePayments-settings' );
 
-		extract( $args );
+		$field = isset( $args['field'] ) ? $args['field'] : '';
 
 		$field_value = esc_attr( isset( $settings[ $field ] ) ? $settings[ $field ] : '' );
 
-		if ( empty( $size ) ) {
-			$size = 40;
-		}
+		$desc = isset( $args['desc'] ) ? $args['desc'] : '';
+
+		$size = isset( $args['size'] ) ? $args['size'] : 40;
 
 		$addon_field = apply_filters( 'asp-admin-settings-addon-field-display', $field, $field_value );
 

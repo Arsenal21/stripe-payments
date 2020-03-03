@@ -103,7 +103,8 @@ class ASP_Addons_Helper {
 	}
 
 	public function display_min_version_error() {
-		$class   = 'notice notice-error';
+		$class = 'notice notice-error';
+		// translators: %1$s - plugin name, %2$s - min core plugin version, %3$s - installed core plugin version
 		$message = sprintf( __( '%1$s requires Stripe Payments plugin minimum version to be %2$s (you have version %3$s installed). Please update Stripe Payments plugin.', 'stripe-payments' ), $this->addon->ADDON_FULL_NAME, $this->addon->MIN_ASP_VER, WP_ASP_PLUGIN_VERSION );
 
 		printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( $class ), esc_html( $message ) );
