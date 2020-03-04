@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 4.7
 Tested up to: 5.3
 Requires PHP: 5.4
-Stable tag: 2.0.23t3
+Stable tag: 2.0.23
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -153,6 +153,12 @@ Yes, please visit Stripe Payments > Settings screen for options.
 None.
 
 == Changelog ==
+
+= 2.0.23 =
+- Added "Last Name First" option for user name prefill. Useful for languages where last name comes first (Japanese).
+- Coupon discount amount was improperly displayed on checkout results page for products with variations.
+- Additional functionality added for addons.
+- Various minor improvements and bugfixes.
 
 = 2.0.22 =
 - New Stripe API is now enabled by default on fresh new plugin installation.
