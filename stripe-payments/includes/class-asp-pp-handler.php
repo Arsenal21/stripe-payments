@@ -110,7 +110,7 @@ class ASP_PP_Handler {
 			$curr_sym = $currencies[ $currency ][1];
 		} else {
 			//no currency code found, let's just use currency code instead of symbol
-			$curr_sym = $currencies;
+			$curr_sym = $currency;
 		}
 		$curr_pos                = $this->asp_main->get_setting( 'price_currency_pos' );
 		$display_settings['s']   = $curr_sym;
@@ -212,7 +212,8 @@ class ASP_PP_Handler {
 					$cust_email_hardcoded = $user_info->user_email;
 				}
 				if ( empty( $cust_name_hardcoded ) ) {
-					$cust_name_hardcoded = $user_info->first_name . ' ' . $user_info->last_name;
+					$last_name_first     = $this->asp_main->get_setting( 'prefill_wp_user_last_name_first' );
+					$cust_name_hardcoded = $last_name_first ? $user_info->last_name . ' ' . $user_info->first_name : $user_info->first_name . ' ' . $user_info->last_name;
 				}
 			}
 		}
@@ -309,7 +310,24 @@ class ASP_PP_Handler {
 
 		$data = apply_filters( 'asp_ng_pp_data_ready', $data, array( 'product_id' => $product_id ) ); //phpcs:ignore
 
-		$this->item->set_price( $data['item_price'], true );
+		if ( empty( $plan_id ) ) {
+			$this->item->set_currency( $data['currency'] );
+			$this->item->set_price( $data['item_price'], true );
+			$data['item_price'] = $this->item->get_price( true );
+			$this->item->set_shipping( $data['shipping'], true );
+			$data['shipping'] = $this->item->get_shipping( true );
+
+			$tmp_curr = strtoupper( $data['currency'] );
+			if ( isset( $currencies[ $tmp_curr ] ) ) {
+				$curr_sym = $currencies[ $tmp_curr ][1];
+			} else {
+				//no currency code found, let's just use currency code instead of symbol
+				$curr_sym = $tmp_curr;
+			}
+			$display_settings['s'] = $curr_sym;
+		}
+
+		$data['items'] = $this->item->get_items();
 
 		$a['data'] = $data;
 
@@ -414,6 +432,7 @@ class ASP_PP_Handler {
 		if ( isset( $a['fatal_error'] ) ) {
 			$a['vars']['vars']['fatal_error'] = $a['fatal_error'];
 		}
+
 		$a['pay_btn_text'] = sprintf( $pay_btn_text, AcceptStripePayments::formatted_price( $this->item->get_total(), $this->item->get_currency() ) );
 
 		//output custom PP CSS if needed

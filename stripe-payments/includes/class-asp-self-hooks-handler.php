@@ -40,7 +40,7 @@ class ASP_Self_Hooks_Handler {
 			if ( class_exists( 'ASPSUB_main' ) ) {
 				$asp_sub = ASPSUB_main::get_instance();
 				$plan    = $asp_sub->get_plan_data( $plan_id );
-				if ( $plan->livemode ) {
+				if ( ! ( $plan ) || $plan->livemode ) {
 					return;
 				}
 			}

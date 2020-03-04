@@ -277,14 +277,18 @@ class AcceptStripePaymentsShortcode {
 		$price    = empty( $price ) ? 0 : $price;
 		$shipping = get_post_meta( $id, 'asp_product_shipping', true );
 
-		//let's apply filter so addons can change price, currency and shipping if needed
-		$price_arr = array(
-			'price'    => $price,
-			'currency' => $currency,
-			'shipping' => empty( $shipping ) ? false : $shipping,
-		);
-		$price_arr = apply_filters( 'asp_modify_price_currency_shipping', $price_arr );
-		extract( $price_arr, EXTR_OVERWRITE );
+		$plan_id = get_post_meta( $id, 'asp_sub_plan_id', true );
+
+		if ( empty( $plan_id ) ) {
+			//let's apply filter so addons can change price, currency and shipping if needed
+			$price_arr = array(
+				'price'    => $price,
+				'currency' => $currency,
+				'shipping' => empty( $shipping ) ? false : $shipping,
+			);
+			$price_arr = apply_filters( 'asp_modify_price_currency_shipping', $price_arr );
+			extract( $price_arr, EXTR_OVERWRITE );
+		}
 
 		$buy_btn = '';
 
@@ -1168,29 +1172,30 @@ class AcceptStripePaymentsShortcode {
 			$price = get_post_meta( $id, 'asp_product_price', true );
 			$curr  = get_post_meta( $id, 'asp_product_currency', true );
 
-			//let's apply filter so addons can change price, currency and shipping if needed
-			$price_arr = array(
-				'price'    => $price,
-				'currency' => $curr,
-				'shipping' => empty( $shipping ) ? false : $shipping,
-			);
-			$price_arr = apply_filters( 'asp_modify_price_currency_shipping', $price_arr );
-			extract( $price_arr, EXTR_OVERWRITE );
-
-			$curr = $currency;
+			if ( empty( $plan_id ) ) {
+				//let's apply filter so addons can change price, currency and shipping if needed
+				$price_arr = array(
+					'price'    => $price,
+					'currency' => $curr,
+					'shipping' => empty( $shipping ) ? false : $shipping,
+				);
+				$price_arr = apply_filters( 'asp_modify_price_currency_shipping', $price_arr );
+				extract( $price_arr, EXTR_OVERWRITE );
+				$curr = $currency;
+			}
 
 			$price = AcceptStripePayments::formatted_price( $price, $curr );
 			if ( empty( $price ) ) {
 				$price = '&nbsp';
 			}
 
-			$item_tags = array('price'=>$price);
+			$item_tags = array( 'price' => $price );
 
 			$item_tags = apply_filters( 'asp_product_tpl_tags_arr', $item_tags, $id );
 
-			$price= $item_tags['price'];
+			$price = $item_tags['price'];
 
-			$item                  = str_replace(
+			$item = str_replace(
 				array(
 					'%[product_id]%',
 					'%[product_name]%',

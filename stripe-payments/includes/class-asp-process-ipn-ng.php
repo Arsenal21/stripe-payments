@@ -192,7 +192,25 @@ class ASP_Process_IPN_NG {
 		}
 
 		//Item price
-		$price = $item->get_price();
+		$price    = $item->get_price();
+		$curr     = $item->get_currency();
+		$shipping = $item->get_shipping();
+
+		if ( ! method_exists( $item, 'get_plan_id' ) ) {
+			$price_arr = apply_filters(
+				'asp_modify_price_currency_shipping',
+				array(
+					'price'    => $price,
+					'currency' => $curr,
+					'shipping' => empty( $shipping ) ? false : $shipping,
+					'variable' => empty( $price ) ? true : false,
+				)
+			);
+			$item->set_price( $price_arr['price'] );
+			$item->set_currency( $price_arr['currency'] );
+			$item->set_shipping( $price_arr['shipping'] );
+		}
+
 		if ( empty( $price ) ) {
 			$post_price = $this->get_post_var( 'asp_amount', FILTER_SANITIZE_NUMBER_FLOAT );
 			if ( $post_price ) {
@@ -220,13 +238,12 @@ class ASP_Process_IPN_NG {
 				foreach ( $posted_variations as $grp_id => $var_id ) {
 					$var = $v->get_variation( $grp_id, $var_id[0] );
 					if ( ! empty( $var ) ) {
-						$item_price    = $item_price + $var['price'];
+						$item->add_item( $var['name'], $var['price'] );
 						$variations[]  = array( $var['group_name'] . ' - ' . $var['name'], $var['price'] );
 						$var_applied[] = $var;
 					}
 				}
 			}
-			$item->set_price( $item_price );
 		}
 
 		//Coupon
@@ -347,13 +364,12 @@ class ASP_Process_IPN_NG {
 
 		//check if coupon was used
 		if ( $coupon_valid ) {
-			$item->get_total( false );
 			$coupon = $item->get_coupon();
 		}
 		if ( isset( $coupon ) ) {
 			// translators: %s is coupon code
-			$data['additional_items'][ sprintf( __( 'Coupon "%s"', 'stripe-payments' ), $coupon['code'] ) ] = floatval( '-' . $coupon['discountAmount'] );
-			$data['additional_items'][ __( 'Subtotal', 'stripe-payments' ) ]                                = $item->get_price( false, true );
+			$data['additional_items'][ sprintf( __( 'Coupon "%s"', 'stripe-payments' ), $coupon['code'] ) ] = floatval( '-' . $item->get_coupon_discount_amount() );
+			$data['additional_items'][ __( 'Subtotal', 'stripe-payments' ) ]                                = $item->get_price( false, true ) + $item->get_items_total( false, true );
 			//increase coupon redeem count
 			$curr_redeem_cnt = get_post_meta( $coupon['id'], 'asp_coupon_red_count', true );
 			$curr_redeem_cnt++;

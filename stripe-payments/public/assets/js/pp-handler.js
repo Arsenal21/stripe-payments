@@ -365,6 +365,12 @@ function calcTotal() {
 	var itemSubt = vars.data.item_price;
 	var tAmount = 0;
 	var grpId;
+	var i;
+	if (vars.data.items) {
+		for (i = 0; i < vars.data.items.length; ++i) {
+			itemSubt = itemSubt + amount_to_cents(vars.data.items[i]['price'], vars.data.currency);
+		}
+	}
 	if (vars.data.variations.applied) {
 		for (grpId = 0; grpId < vars.data.variations.applied.length; ++grpId) {
 			itemSubt = itemSubt + amount_to_cents(vars.data.variations.prices[grpId][vars.data.variations.applied[grpId]], vars.data.currency);
@@ -388,6 +394,7 @@ function calcTotal() {
 			vars.data.shipping = 0;
 		}
 	}
+
 	if (vars.data.tax) {
 		var tax = PHP_round(itemSubt * vars.data.tax / 100, 0);
 		vars.data.taxAmount = tax;

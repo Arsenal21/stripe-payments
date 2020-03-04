@@ -291,6 +291,17 @@
 												<td><span id="order-item-price"><?php echo esc_html( AcceptStripePayments::formatted_price( $this->item->get_price(), $this->item->get_currency() ) ); ?></span></td>
 											</tr>
 											<?php
+											$items = $this->item->get_items();
+											if ( ! empty( $items ) ) {
+												foreach ( $items as $item ) {
+													?>
+													<tr>
+														<td><?php echo esc_html( sprintf( '%s', $item['name'] ) ); ?></td>
+														<td><span id="order-item-price"><?php echo esc_html( AcceptStripePayments::formatted_price( $item['price'], $this->item->get_currency() ) ); ?></span></td>
+													</tr>
+													<?php
+												}
+											}
 											if ( $a['data']['tax'] ) {
 												$tax_str        = apply_filters( 'asp_customize_text_msg', __( 'Tax', 'stripe-payments' ), 'tax_str' );
 												$tax_amount_str = AcceptStripePayments::formatted_price( $a['item']->get_tax_amount(), $this->item->get_currency() );

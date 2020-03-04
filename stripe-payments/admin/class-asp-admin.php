@@ -34,6 +34,7 @@ class AcceptStripePayments_Admin {
 		*/
 		$plugin            = AcceptStripePayments::get_instance();
 		$this->plugin_slug = $plugin->get_plugin_slug();
+		$this->asp_main    = $plugin;
 
 		// add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
 		// Add the options page and menu item.
@@ -81,7 +82,7 @@ class AcceptStripePayments_Admin {
 			case 'edit.php':
 			case 'post-new.php':
 				global $post_type;
-				if ( $post_type === ASPMain::$products_slug ) {
+				if ( ASPMain::$products_slug === $post_type ) {
 					wp_register_script( 'asp-admin-edit-product-js', WP_ASP_PLUGIN_URL . '/admin/assets/js/edit-product.js', array( 'jquery' ), WP_ASP_PLUGIN_VERSION, true );
 					wp_enqueue_script( 'asp-admin-general-js' );
 					wp_enqueue_style( 'asp-admin-styles' );
@@ -96,7 +97,7 @@ class AcceptStripePayments_Admin {
 			delete_transient( 'asp_admin_msg_arr' );
 			$tpl = '<div class="notice notice-%1$s%3$s"><p>%2$s</p></div>';
 			foreach ( $msg_arr as $msg ) {
-				echo sprintf( $tpl, $msg['type'], $msg['text'], $msg['dism'] === true ? ' is-dismissible' : '' );
+				echo sprintf( $tpl, $msg['type'], $msg['text'], true === $msg['dism'] ? ' is-dismissible' : '' );
 			}
 		}
 
@@ -139,8 +140,9 @@ class AcceptStripePayments_Admin {
 		if ( current_user_can( 'manage_options' ) ) {
 			add_action( 'wp_ajax_asp_clear_log', array( 'ASP_Debug_Logger', 'clear_log' ) );
 			//view log file
-			if ( isset( $_GET['asp_action'] ) ) {
-				if ( $_GET['asp_action'] === 'view_log' ) {
+			$asp_action = filter_input( INPUT_GET, 'asp_action', FILTER_SANITIZE_STRING );
+			if ( ! empty( $asp_action ) ) {
+				if ( 'view_log' === $asp_action ) {
 					ASP_Debug_Logger::view_log();
 				}
 			}
@@ -185,7 +187,7 @@ class AcceptStripePayments_Admin {
 	public function check_current_screen() {
 		if ( function_exists( 'get_current_screen' ) ) {
 			$screen = get_current_screen();
-			if ( $screen->base == 'post' ) {
+			if ( 'post' === $screen->base ) {
 				//we're on post edit page, let's do some things for shortcode inserter
 				if ( ! wp_doing_ajax() ) {
 					// Load admin style sheet
@@ -297,7 +299,7 @@ class AcceptStripePayments_Admin {
 		}
 
 		$screen = get_current_screen();
-		if ( $this->plugin_screen_hook_suffix == $screen->id ) {
+		if ( $this->plugin_screen_hook_suffix === $screen->id ) {
 			wp_enqueue_script( $this->plugin_slug . '-admin-script', plugins_url( 'assets/js/admin.js', __FILE__ ), array( 'jquery' ), AcceptStripePayments::VERSION );
 		}
 	}
@@ -437,7 +439,7 @@ class AcceptStripePayments_Admin {
 			'AcceptStripePayments-global-section',
 			array(
 				'field' => 'popup_button_text',
-				'desc'  => __(
+				'desc'  => __( //phpcs:ignore
 					'%s is replaced by formatted payment amount (example: Pay $29.90). If this field is empty, it defaults to "Pay %s"', //phpcs:ignore
 					'stripe-payments'
 				),
@@ -1069,13 +1071,13 @@ class AcceptStripePayments_Admin {
 
 		$currencies = AcceptStripePayments::get_currencies();
 
-		if ( $show_default === false ) {
+		if ( false === $show_default ) {
 			unset( $currencies[''] );
 		}
 		$opt_tpl = '<option value="%curr_code%"%selected%>%curr_name%</option>';
 		$opts    = '';
 		foreach ( $currencies as $key => $value ) {
-			$selected = $selected_value == $key ? ' selected' : '';
+			$selected = $selected_value === $key ? ' selected' : '';
 			$opts    .= str_replace( array( '%curr_code%', '%curr_name%', '%selected%' ), array( $key, $value[0], $selected ), $opt_tpl );
 		}
 
@@ -1111,9 +1113,9 @@ class AcceptStripePayments_Admin {
 		$data_arr = $data_arr + $languages_arr;
 
 		$opt_tpl = '<option value="%val%"%selected%>%name%</option>';
-		$opts    = $selected_value === false ? '<option value="" selected>' . __( '(Default)', 'stripe-payments' ) . '</option>' : '';
+		$opts    = false === $selected_value ? '<option value="" selected>' . __( '(Default)', 'stripe-payments' ) . '</option>' : '';
 		foreach ( $data_arr as $key => $value ) {
-			$selected = $selected_value == $key ? ' selected' : '';
+			$selected = $selected_value === $key ? ' selected' : '';
 			$opts    .= str_replace( array( '%val%', '%name%', '%selected%' ), array( $key, $value, $selected ), $opt_tpl );
 		}
 
@@ -1124,15 +1126,16 @@ class AcceptStripePayments_Admin {
 	 * Settings HTML
 	 */
 	public function settings_field_callback( $args ) {
+
 		$settings = (array) get_option( 'AcceptStripePayments-settings' );
 
-		extract( $args );
+		$field = isset( $args['field'] ) ? $args['field'] : '';
 
 		$field_value = esc_attr( isset( $settings[ $field ] ) ? $settings[ $field ] : '' );
 
-		if ( empty( $size ) ) {
-			$size = 40;
-		}
+		$desc = isset( $args['desc'] ) ? $args['desc'] : '';
+
+		$size = isset( $args['size'] ) ? $args['size'] : 40;
 
 		$addon_field = apply_filters( 'asp-admin-settings-addon-field-display', $field, $field_value );
 
@@ -1212,7 +1215,6 @@ class AcceptStripePayments_Admin {
 			case 'stripe_receipt_email':
 			case 'send_email_on_error':
 			case 'use_new_button_method':
-			case 'prefill_wp_user_details':
 			case 'is_live':
 			case 'disable_remember_me':
 			case 'use_old_checkout_api1':
@@ -1226,6 +1228,12 @@ class AcceptStripePayments_Admin {
 			case 'frontend_prefetch_scripts':
 				echo "<input type='checkbox' name='AcceptStripePayments-settings[{$field}]' value='1' " . ( $field_value ? 'checked=checked' : '' ) . " /><p class=\"description\">{$desc}</p>";
 				break;
+			case 'prefill_wp_user_details':
+				echo "<input type='checkbox' name='AcceptStripePayments-settings[{$field}]' value='1' " . ( $field_value ? 'checked=checked' : '' ) . " /><p class=\"description\">{$desc}</p>";
+				$last_name_first = $this->asp_main->get_setting( 'prefill_wp_user_last_name_first' );
+				echo '<label><input type="checkbox" name="AcceptStripePayments-settings[prefill_wp_user_last_name_first]"' . ( $last_name_first ? ' checked="checked"' : '' ) . '> ' . esc_html__( 'Last Name First', 'stripe-payments' ) . '</label>';
+				echo '<p class="description">' . esc_html__( 'When enabled, last name is placed before first name.', 'stripe-payments' ) . '</p>';
+				break;
 			case 'custom_field_enabled':
 				echo "<input type='checkbox' name='AcceptStripePayments-settings[{$field}]' value='1' " . ( $field_value ? 'checked=checked' : '' ) . " /><p class=\"description\">{$desc}</p>";
 				//do action so ACF addon can display its message if needed
@@ -1233,11 +1241,11 @@ class AcceptStripePayments_Admin {
 				break;
 			case 'buyer_email_type':
 			case 'seller_email_type':
-				$checkedText = empty( $field_value ) || ( $field_value === 'text' ) ? ' selected' : '';
-				$checkedHTML = $field_value === 'html' ? ' selected' : '';
+				$checked_text = empty( $field_value ) || ( 'text' === $field_value ) ? ' selected' : '';
+				$checked_html = 'html' === $field_value ? ' selected' : '';
 				echo '<select name="AcceptStripePayments-settings[' . $field . ']">';
-				echo sprintf( '<option value="text"%s>' . __( 'Plain Text', 'stripe-payments' ) . '</option>', $checkedText );
-				echo sprintf( '<option value="html"%s>' . __( 'HTML', 'stripe-payments' ) . '</option>', $checkedHTML );
+				echo sprintf( '<option value="text"%s>' . __( 'Plain Text', 'stripe-payments' ) . '</option>', $checked_text );
+				echo sprintf( '<option value="html"%s>' . __( 'HTML', 'stripe-payments' ) . '</option>', $checked_html );
 				echo '</select>';
 				echo "<p class=\"description\">{$desc}</p>";
 				break;
@@ -1287,14 +1295,14 @@ class AcceptStripePayments_Admin {
 			case 'price_currency_pos':
 				?>
 <select name="AcceptStripePayments-settings[<?php echo $field; ?>]">
-	<option value="left" <?php echo ( $field_value === 'left' ) ? ' selected' : ''; ?>><?php _ex( 'Left', 'Currency symbol position', 'stripe-payments' ); ?></option>
-	<option value="right" <?php echo ( $field_value === 'right' ) ? ' selected' : ''; ?>><?php _ex( 'Right', 'Currency symbol position', 'stripe-payments' ); ?></option>
+	<option value="left" <?php echo ( 'left' === $field_value ) ? ' selected' : ''; ?>><?php _ex( 'Left', 'Currency symbol position', 'stripe-payments' ); ?></option>
+	<option value="right" <?php echo ( 'right' === $field_value ) ? ' selected' : ''; ?>><?php _ex( 'Right', 'Currency symbol position', 'stripe-payments' ); ?></option>
 </select>
 <p class="description"><?php echo $desc; ?></p>
 				<?php
 				break;
 			case 'pp_additional_css':
-				echo sprintf( '<textarea name="AcceptStripePayments-settings[%s]" rows="8" cols="70">%s</textarea>', $field, $field_value );
+				echo sprintf( '<textarea name="AcceptStripePayments-settings[%s]" rows="8" cols="70" style="resize:both;max-width:100%%;min-height:100px;">%s</textarea>', $field, $field_value );
 				echo '<p class="description">' . $desc . '</p>';
 				break;
 			case 'tos_text':
@@ -1303,8 +1311,7 @@ class AcceptStripePayments_Admin {
 				break;
 			case 'debug_log_link':
 				//check if we have token generated
-				$asp_class = AcceptStripePayments::get_instance();
-				$token     = $asp_class->get_setting( 'debug_log_access_token' );
+				$token = $this->asp_main->get_setting( 'debug_log_access_token' );
 				if ( ! $token ) {
 					//let's generate debug log access token
 					$token                          = substr( md5( uniqid() ), 16 );
@@ -1335,6 +1342,7 @@ class AcceptStripePayments_Admin {
 	 * @since    1.0.0
 	 */
 	public function settings_sanitize_field_callback( $input ) {
+
 		$output = get_option( 'AcceptStripePayments-settings' );
 
 		// this filter name is a bit invalid, we will slowly replace it with a valid one below
@@ -1402,7 +1410,8 @@ class AcceptStripePayments_Admin {
 
 		$output['use_new_button_method'] = empty( $input['use_new_button_method'] ) ? 0 : 1;
 
-		$output['prefill_wp_user_details'] = empty( $input['prefill_wp_user_details'] ) ? 0 : 1;
+		$output['prefill_wp_user_details']         = empty( $input['prefill_wp_user_details'] ) ? 0 : 1;
+		$output['prefill_wp_user_last_name_first'] = empty( $input['prefill_wp_user_last_name_first'] ) ? 0 : 1;
 
 		$output['send_emails_to_buyer'] = empty( $input['send_emails_to_buyer'] ) ? 0 : 1;
 
