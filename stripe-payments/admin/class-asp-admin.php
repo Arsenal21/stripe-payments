@@ -1241,11 +1241,11 @@ class AcceptStripePayments_Admin {
 				break;
 			case 'buyer_email_type':
 			case 'seller_email_type':
-				$checkedText = empty( $field_value ) || ( $field_value === 'text' ) ? ' selected' : '';
-				$checkedHTML = $field_value === 'html' ? ' selected' : '';
+				$checked_text = empty( $field_value ) || ( 'text' === $field_value ) ? ' selected' : '';
+				$checked_html = 'html' === $field_value ? ' selected' : '';
 				echo '<select name="AcceptStripePayments-settings[' . $field . ']">';
-				echo sprintf( '<option value="text"%s>' . __( 'Plain Text', 'stripe-payments' ) . '</option>', $checkedText );
-				echo sprintf( '<option value="html"%s>' . __( 'HTML', 'stripe-payments' ) . '</option>', $checkedHTML );
+				echo sprintf( '<option value="text"%s>' . __( 'Plain Text', 'stripe-payments' ) . '</option>', $checked_text );
+				echo sprintf( '<option value="html"%s>' . __( 'HTML', 'stripe-payments' ) . '</option>', $checked_html );
 				echo '</select>';
 				echo "<p class=\"description\">{$desc}</p>";
 				break;
@@ -1295,8 +1295,8 @@ class AcceptStripePayments_Admin {
 			case 'price_currency_pos':
 				?>
 <select name="AcceptStripePayments-settings[<?php echo $field; ?>]">
-	<option value="left" <?php echo ( $field_value === 'left' ) ? ' selected' : ''; ?>><?php _ex( 'Left', 'Currency symbol position', 'stripe-payments' ); ?></option>
-	<option value="right" <?php echo ( $field_value === 'right' ) ? ' selected' : ''; ?>><?php _ex( 'Right', 'Currency symbol position', 'stripe-payments' ); ?></option>
+	<option value="left" <?php echo ( 'left' === $field_value ) ? ' selected' : ''; ?>><?php _ex( 'Left', 'Currency symbol position', 'stripe-payments' ); ?></option>
+	<option value="right" <?php echo ( 'right' === $field_value ) ? ' selected' : ''; ?>><?php _ex( 'Right', 'Currency symbol position', 'stripe-payments' ); ?></option>
 </select>
 <p class="description"><?php echo $desc; ?></p>
 				<?php
