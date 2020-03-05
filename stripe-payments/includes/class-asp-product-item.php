@@ -245,10 +245,17 @@ class ASP_Product_Item {
 	}
 
 	public function set_price( $price, $in_cents = false ) {
+		//workaround for zero-cents currencies for Sub addon 2.0.10 or less
+		$this->zero_cent = AcceptStripePayments::is_zero_cents( $this->get_currency() );
+		if ( $this->zero_cent && class_exists( 'ASPSUB_main' ) && isset( $this->plan ) && version_compare( ASPSUB_main::ADDON_VER, '2.0.10' ) <= 0 ) {
+			$price = $price * 100;
+		}
+		//end workaround
 		if ( $in_cents ) {
 			$price = $this->from_cents( $price );
 		}
 		$this->price = $price;
+
 	}
 
 	public function set_quantity( $quantity ) {
