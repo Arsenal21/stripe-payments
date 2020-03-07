@@ -402,7 +402,7 @@ class ASP_PP_Handler {
 
 		$a['vars']['vars'] = array(
 			'data'           => $data,
-			'stripe_key'     => $a['stripe_key'],
+			'stripe_key'     => isset( $data['stripe_key'] ) ? $data['stripe_key'] : $a['stripe_key'],
 			'minAmounts'     => $this->asp_main->minAmounts,
 			'zeroCents'      => $this->asp_main->zeroCents,
 			'ajaxURL'        => admin_url( 'admin-ajax.php' ),
