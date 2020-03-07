@@ -21,12 +21,13 @@ class AcceptStripePayments {
 		'SEK' => 300,
 		'SGD' => 50,
 	);
-	var $APISecKey         = '';
-	var $APIPubKey         = '';
-	var $APIPubKeyTest     = '';
-	var $APISecKeyLive     = '';
-	var $APISecKeyTest     = '';
-	var $is_live           = false;
+	public $APISecKey      = '';
+	public $APIPubKey      = '';
+	public $APIPubKeyTest  = '';
+	public $APIPubKeyLive  = '';
+	public $APISecKeyTest  = '';
+	public $APISecKeyLive  = '';
+	public $is_live        = false;
 
 	/**
 	 * Plugin version, used for cache-busting of style and script file references.
@@ -87,8 +88,9 @@ class AcceptStripePayments {
 			$this->APISecKey = $this->get_setting( 'api_secret_key' );
 		}
 		$this->APIPubKeyTest = $this->get_setting( 'api_publishable_key_test' );
-		$this->APISecKeyLive = $this->get_setting( 'api_secret_key' );
+		$this->APIPubKeyLive = $this->get_setting( 'api_publishable_key' );
 		$this->APISecKeyTest = $this->get_setting( 'api_secret_key_test' );
+		$this->APISecKeyLive = $this->get_setting( 'api_secret_key' );
 
 		// Load plugin text domain
 		add_action( 'init', array( $this, 'load_asp_plugin_textdomain' ) );
