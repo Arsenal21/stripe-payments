@@ -44,6 +44,12 @@ class ASP_PP_Handler {
 
 		$plan_id = get_post_meta( $product_id, 'asp_sub_plan_id', true );
 
+		if ( ! empty( $plan_id ) && ! class_exists( 'ASPSUB_main' ) ) {
+			//Subs addon not installed or disabled. Show corresponding error message
+			echo ( 'This product requires Stripe Payments Subscription addon.' );
+			exit;
+		}
+
 		if ( ! empty( $plan_id ) && class_exists( 'ASPSUB_main' ) && version_compare( ASPSUB_main::ADDON_VER, '2.0.0t1' ) < 0 ) {
 			echo ( 'Stripe Subscriptions addon version 2.0.0 or newer is required.' );
 			exit;
