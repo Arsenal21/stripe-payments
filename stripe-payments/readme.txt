@@ -4,7 +4,7 @@ Donate link: https://s-plugins.com
 Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortcode, digital goods, payment gateway, instant payment, commerce, digital downloads, downloads, e-commerce, e-store, ecommerce, eshop, donation
 Requires at least: 4.7
 Tested up to: 5.4
-Requires PHP: 5.4
+Requires PHP: 5.6
 Stable tag: 2.0.24
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -155,7 +155,6 @@ None.
 == Changelog ==
 
 = 2.0.24 =
-- Minimum required PHP version for the plugin is 5.6.
 - Empty lines in billing and shipping address are no longer displayed.
 - Error is displayed when viewing subscription product with Subscriptions add-on disabled.
 
@@ -164,6 +163,7 @@ None.
 - Coupon discount amount was improperly displayed on checkout results page for products with variations.
 - Additional functionality added for addons.
 - Various minor improvements and bugfixes.
+- Minimum PHP version requirement is set to PHP 5.6
 
 = 2.0.22 =
 - New Stripe API is now enabled by default on fresh new plugin installation.
