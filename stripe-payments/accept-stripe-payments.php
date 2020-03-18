@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 define( 'WP_ASP_PLUGIN_VERSION', '2.0.24t1' );
-define( 'WP_ASP_MIN_PHP_VERSION', '5.4' );
+define( 'WP_ASP_MIN_PHP_VERSION', '5.6' );
 define( 'WP_ASP_PLUGIN_URL', plugins_url( '', __FILE__ ) );
 define( 'WP_ASP_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 define( 'WP_ASP_PLUGIN_FILE', __FILE__ );
