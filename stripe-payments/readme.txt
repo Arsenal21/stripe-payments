@@ -154,6 +154,9 @@ None.
 
 == Changelog ==
 
+- WIP 2.0.24 =
+- Added Japanese language translation file.
+
 = 2.0.23 =
 - Added "Last Name First" option for user name prefill. Useful for languages where last name comes first (Japanese).
 - Coupon discount amount was improperly displayed on checkout results page for products with variations.
