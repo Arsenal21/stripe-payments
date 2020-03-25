@@ -157,6 +157,7 @@ None.
 = 2.0.24 =
 - Empty lines in billing and shipping address are no longer displayed.
 - Error is displayed when viewing subscription product with Subscriptions add-on disabled.
+- Added Japanese language translation file.
 
 = 2.0.23 =
 - Added "Last Name First" option for user name prefill. Useful for languages where last name comes first (Japanese).
