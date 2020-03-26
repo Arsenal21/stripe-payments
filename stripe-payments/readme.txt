@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 4.7
 Tested up to: 5.3
 Requires PHP: 5.4
-Stable tag: 2.0.24t1
+Stable tag: 2.0.24
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -153,6 +153,11 @@ Yes, please visit Stripe Payments > Settings screen for options.
 None.
 
 == Changelog ==
+
+= 2.0.24 =
+- Minimum required PHP version for the plugin is 5.6.
+- Empty lines in billing and shipping address are no longer displayed.
+- Error is displayed when viewing subscription product with Subscriptions add-on disabled.
 
 = 2.0.23 =
 - Added "Last Name First" option for user name prefill. Useful for languages where last name comes first (Japanese).
