@@ -2277,7 +2277,7 @@ msgid "Only numbers are allowed: 0-9"
 msgstr ""
 
 #: stripe-payments/includes/class-asp-pp-handler.php:306
-#: stripe-payments/public/views/templates/default/payment-popup.php:463
+#: stripe-payments/public/views/templates/default/payment-popup.php:472
 msgid "Credit or debit card"
 msgstr ""
 
@@ -3797,26 +3797,31 @@ msgid "Billing info"
 msgstr ""
 
 #: stripe-payments/public/views/templates/default/payment-popup.php:393
-#: stripe-payments/public/views/templates/default/payment-popup.php:432
+#: stripe-payments/public/views/templates/default/payment-popup.php:437
 msgid "Address"
 msgstr ""
 
 #: stripe-payments/public/views/templates/default/payment-popup.php:404
-#: stripe-payments/public/views/templates/default/payment-popup.php:442
+#: stripe-payments/public/views/templates/default/payment-popup.php:447
 msgid "City"
 msgstr ""
 
 #: stripe-payments/public/views/templates/default/payment-popup.php:408
-#: stripe-payments/public/views/templates/default/payment-popup.php:446
+#: stripe-payments/public/views/templates/default/payment-popup.php:451
 msgid "Country"
 msgstr ""
 
 #: stripe-payments/public/views/templates/default/payment-popup.php:415
-#: stripe-payments/public/views/templates/default/payment-popup.php:452
+#: stripe-payments/public/views/templates/default/payment-popup.php:457
+msgid "State\\Province"
+msgstr ""
+
+#: stripe-payments/public/views/templates/default/payment-popup.php:420
+#: stripe-payments/public/views/templates/default/payment-popup.php:461
 msgid "Postcode"
 msgstr ""
 
-#: stripe-payments/public/views/templates/default/payment-popup.php:428
+#: stripe-payments/public/views/templates/default/payment-popup.php:433
 msgid "Shipping info"
 msgstr ""
 

@@ -404,14 +404,19 @@
 												<label for="city"><?php esc_html_e( 'City', 'stripe-payments' ); ?></label>
 												<input class="pure-input-1" type="text" id="city" name="city" required>
 											</div>
-											<div class="pure-u-1 pure-u-md-14-24 baddr-toggle" style="position: relative;">
+											<div class="pure-u-1 pure-u-md-10-24 baddr-toggle" style="position: relative;">
 												<label for="country"><?php esc_html_e( 'Country', 'stripe-payments' ); ?></label>
 												<select class="pure-input-1" name="country" id="country" required>
 													<?php echo ASP_Utils::get_countries_opts($a['data']['customer_default_country']); //phpcs:ignore ?>
 												</select>
 											</div>
 											<div class="pure-u-md-1-24 baddr-hide"></div>
-											<div class="pure-u-1 pure-u-md-9-24 baddr-toggle">
+											<div class="pure-u-1 pure-u-md-6-24 baddr-toggle" style="position: relative;">
+												<label for="state"><?php esc_html_e( 'State\Province', 'stripe-payments' ); ?></label>
+												<input class="pure-input-1" type="text" id="state" name="state">
+											</div>
+											<div class="pure-u-md-1-24 baddr-hide"></div>
+											<div class="pure-u-1 pure-u-md-6-24 baddr-toggle">
 												<label for="postcode"><?php esc_html_e( 'Postcode', 'stripe-payments' ); ?></label>
 												<input class="pure-u-1" type="text" name="postcode" id="postcode">
 											</div>
@@ -447,6 +452,10 @@
 												<select class="pure-input-1 saddr-required" name="shipping_country" id="shipping_country">
 													<?php echo ASP_Utils::get_countries_opts($a['data']['customer_default_country']); //phpcs:ignore ?>
 												</select>
+											</div>
+											<div class="pure-u-1">
+												<label for="shipping_state"><?php esc_html_e( 'State\Province', 'stripe-payments' ); ?></label>
+												<input class="pure-u-1" type="text" name="shipping_state" id="shipping_state">
 											</div>
 											<div class="pure-u-1">
 												<label for="shipping_postcode"><?php esc_html_e( 'Postcode', 'stripe-payments' ); ?></label>
