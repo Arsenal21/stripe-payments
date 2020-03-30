@@ -155,7 +155,8 @@ None.
 == Changelog ==
 
 = WIP 2.0.25 =
-Added "State" field for billing and shipping address.
+- Added "State" field for billing and shipping address.
+- Bundled translation files are properly loaded now.
 
 = 2.0.24 =
 - Empty lines in billing and shipping address are no longer displayed.
