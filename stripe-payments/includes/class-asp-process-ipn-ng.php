@@ -157,7 +157,6 @@ class ASP_Process_IPN_NG {
 		$p_data = apply_filters( 'asp_ng_process_ipn_payment_data_item_override', false, $pi );
 
 		if ( false === $p_data ) {
-
 			$p_data = new ASP_Payment_Data( $pi );
 		}
 
