@@ -401,6 +401,9 @@ class ASP_PP_Handler {
 			$pay_btn_text = apply_filters( 'asp_customize_text_msg', __( 'Start Free Trial', 'stripe-payments' ), 'start_free_trial' );
 		}
 
+		//filter to change pay button text
+		$pay_btn_text = apply_filters( 'asp_ng_pp_pay_button_text', $pay_btn_text );
+
 		$a['item'] = $this->item;
 
 		$a['vars']['vars'] = array(
