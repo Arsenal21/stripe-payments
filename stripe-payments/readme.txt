@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 4.7
 Tested up to: 5.4
 Requires PHP: 5.6
-Stable tag: 2.0.25t1
+Stable tag: 2.0.25
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -154,9 +154,11 @@ None.
 
 == Changelog ==
 
-= WIP 2.0.25 =
-- Added "State" field for billing and shipping address.
+= 2.0.25 =
+- Added "State\Region" field for billing and shipping address.
+- Added "Hide State\Region Field" option to the settings. It's enabled by default for existing installations.
 - Bundled translation files are properly loaded now.
+- Minor improvements and optimizations.
 
 = 2.0.24 =
 - Empty lines in billing and shipping address are no longer displayed.
