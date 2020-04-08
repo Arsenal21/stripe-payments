@@ -386,6 +386,8 @@ class ASP_PP_Handler {
 			);
 		}
 
+		$a['hide_state_field'] = $this->asp_main->get_setting( 'hide_state_field' );
+
 		$pay_btn_text = $this->asp_main->get_setting( 'popup_button_text' );
 
 		if ( empty( $pay_btn_text ) ) {

@@ -285,7 +285,6 @@ class AcceptStripePayments {
 		if ( ! $admin_email ) {
 			$admin_email = '';
 		}
-		// Check if its a first install
 		$default = array(
 			'is_live'                         => 0,
 			'debug_log_enable'                => 0,
@@ -325,8 +324,12 @@ class AcceptStripePayments {
 			'tos_text'                        => __( 'I accept the <a href="https://example.com/terms-and-conditions/" target="_blank">Terms and Conditions</a>', 'stripe-payments' ),
 		);
 		$opt     = get_option( 'AcceptStripePayments-settings' );
+		// Check if its a first install
+		$first_install = false;
 		if ( ! is_array( $opt ) ) {
-			$opt = $default;
+			//this is first install
+			$first_install = true;
+			$opt           = $default;
 		}
 		$opt = array_merge( $default, $opt );
 		//force remove PHP warning dismissal
@@ -348,13 +351,19 @@ class AcceptStripePayments {
 			//let's also set an indicator value in order for the plugin to not do that anymore
 			$opt['api_keys_separated'] = true;
 		}
-			$opt_diff = array_diff_key( $default, $opt );
+
+		//Enabled "Hide State Field" for existing installs, but only if wasn't set before
+		if ( ! $first_install && ! isset( $opt['hide_state_field'] ) ) {
+			$opt['hide_state_field'] = 1;
+		}
+
+		$opt_diff = array_diff_key( $default, $opt );
 		if ( ! empty( $opt_diff ) ) {
 			foreach ( $opt_diff as $key => $value ) {
 				$opt[ $key ] = $default[ $key ];
 			}
 		}
-			update_option( 'AcceptStripePayments-settings', $opt );
+		update_option( 'AcceptStripePayments-settings', $opt );
 
 		//create checkout page
 		$args             = array(

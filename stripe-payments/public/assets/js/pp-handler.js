@@ -703,7 +703,7 @@ function handlePayment() {
 		billingDetails.address = {
 			line1: bAddr.value,
 			city: bCity.value,
-			state: bState.value,
+			state: bState === null ? null : bState.value,
 			country: bCountry.value || bCountry.options[bCountry.selectedIndex].value,
 		};
 		var postal_code = bPostcode.value;
@@ -723,7 +723,7 @@ function handlePayment() {
 		shippingDetails.address = {
 			line1: sAddr.value,
 			city: sCity.value,
-			state: sState.value,
+			state: sState === null ? null : sState.value,
 			country: sCountry.value || sCountry.options[sCountry.selectedIndex].value,
 		};
 		var spostal_code = sPostcode.value;
