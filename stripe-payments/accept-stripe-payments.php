@@ -3,7 +3,7 @@
 /**
  * Plugin Name: Stripe Payments
  * Description: Easily accept credit card payments via Stripe payment gateway in WordPress.
- * Version: 2.0.24
+ * Version: 2.0.25
  * Author: Tips and Tricks HQ, wptipsntricks
  * Author URI: https://www.tipsandtricks-hq.com/
  * Plugin URI: https://s-plugins.com
@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; //Exit if accessed directly
 }
 
-define( 'WP_ASP_PLUGIN_VERSION', '2.0.24' );
+define( 'WP_ASP_PLUGIN_VERSION', '2.0.25' );
 define( 'WP_ASP_MIN_PHP_VERSION', '5.6' );
 define( 'WP_ASP_PLUGIN_URL', plugins_url( '', __FILE__ ) );
 define( 'WP_ASP_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
@@ -30,10 +30,12 @@ class ASPMain {
 	public static $products_slug;
 	public static $temp_prod_slug;
 	public static $posts_processed = array();
+	public static $file;
 
 	public function __construct() {
 		self::$products_slug  = 'asp-products';
 		self::$temp_prod_slug = 'asp-products-temp';
+		self::$file           = __FILE__;
 
 		require_once WP_ASP_PLUGIN_PATH . 'includes/class-asp-utils.php';
 		require_once WP_ASP_PLUGIN_PATH . 'includes/class-asp-debug-logger.php';

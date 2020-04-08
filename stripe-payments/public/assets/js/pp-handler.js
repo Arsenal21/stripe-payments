@@ -698,10 +698,12 @@ function handlePayment() {
 		var bAddr = document.getElementById('address');
 		var bCity = document.getElementById('city');
 		var bCountry = document.getElementById('country');
+		var bState = document.getElementById('state');
 		var bPostcode = document.getElementById('postcode');
 		billingDetails.address = {
 			line1: bAddr.value,
 			city: bCity.value,
+			state: bState === null ? null : bState.value,
 			country: bCountry.value || bCountry.options[bCountry.selectedIndex].value,
 		};
 		var postal_code = bPostcode.value;
@@ -716,10 +718,12 @@ function handlePayment() {
 		var sAddr = document.getElementById('shipping_address');
 		var sCity = document.getElementById('shipping_city');
 		var sCountry = document.getElementById('shipping_country');
+		var sState = document.getElementById('shipping_state');
 		var sPostcode = document.getElementById('shipping_postcode');
 		shippingDetails.address = {
 			line1: sAddr.value,
 			city: sCity.value,
+			state: sState === null ? null : sState.value,
 			country: sCountry.value || sCountry.options[sCountry.selectedIndex].value,
 		};
 		var spostal_code = sPostcode.value;
@@ -821,6 +825,7 @@ function handlePayment() {
 		if (vars.data.billing_address) {
 			opts.address_line1 = bAddr.value;
 			opts.address_city = bCity.value;
+			opts.address_state = bState.value;
 			opts.address_country = bCountry.value || bCountry.options[bCountry.selectedIndex].value;
 			if (postal_code) {
 				opts.address_zip = postal_code;

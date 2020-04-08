@@ -541,6 +541,20 @@ class AcceptStripePayments_Admin {
 				),
 			)
 		);
+		add_settings_field(
+			'hide_state_field',
+			__( 'Hide State\Province Field', 'stripe-payments' ) . $new_api_str,
+			array( &$this, 'settings_field_callback' ),
+			$this->plugin_slug,
+			'AcceptStripePayments-global-section',
+			array(
+				'field' => 'hide_state_field',
+				'desc'  => __(
+					'Hide State\Province field on payment popup.',
+					'stripe-payments'
+				),
+			)
+		);
 
 		// Credentials section
 		add_settings_field(
@@ -1226,6 +1240,7 @@ class AcceptStripePayments_Admin {
 			case 'dont_create_order':
 			case 'enable_email_schedule':
 			case 'frontend_prefetch_scripts':
+			case 'hide_state_field':
 				echo "<input type='checkbox' name='AcceptStripePayments-settings[{$field}]' value='1' " . ( $field_value ? 'checked=checked' : '' ) . " /><p class=\"description\">{$desc}</p>";
 				break;
 			case 'prefill_wp_user_details':
@@ -1412,6 +1427,8 @@ class AcceptStripePayments_Admin {
 
 		$output['prefill_wp_user_details']         = empty( $input['prefill_wp_user_details'] ) ? 0 : 1;
 		$output['prefill_wp_user_last_name_first'] = empty( $input['prefill_wp_user_last_name_first'] ) ? 0 : 1;
+
+		$output['hide_state_field'] = empty( $input['hide_state_field'] ) ? 0 : 1;
 
 		$output['send_emails_to_buyer'] = empty( $input['send_emails_to_buyer'] ) ? 0 : 1;
 
