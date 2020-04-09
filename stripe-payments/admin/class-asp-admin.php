@@ -527,6 +527,22 @@ class AcceptStripePayments_Admin {
 				) . $country_autodetect_addon_txt,
 			)
 		);
+
+		add_settings_field(
+			'hide_state_field',
+			__( 'Hide the State Field', 'stripe-payments' ) . $new_api_str,
+			array( &$this, 'settings_field_callback' ),
+			$this->plugin_slug,
+			'AcceptStripePayments-global-section',
+			array(
+				'field' => 'hide_state_field',
+				'desc'  => __(
+					'Hide the State field on the payment popup window. The State field for the address is an optional field.',
+					'stripe-payments'
+				),
+			)
+		);
+
 		add_settings_field(
 			'prefill_wp_user_details',
 			__( 'Prefill Logged In User Name and Email', 'stripe-payments' ) . $new_api_str,
@@ -537,20 +553,6 @@ class AcceptStripePayments_Admin {
 				'field' => 'prefill_wp_user_details',
 				'desc'  => __(
 					'When payment is made by logged in WordPress user, his\her name and email are prefilled to corresponding payment popup fields.',
-					'stripe-payments'
-				),
-			)
-		);
-		add_settings_field(
-			'hide_state_field',
-			__( 'Hide State\Province Field', 'stripe-payments' ) . $new_api_str,
-			array( &$this, 'settings_field_callback' ),
-			$this->plugin_slug,
-			'AcceptStripePayments-global-section',
-			array(
-				'field' => 'hide_state_field',
-				'desc'  => __(
-					'Hide State\Province field on payment popup.',
 					'stripe-payments'
 				),
 			)

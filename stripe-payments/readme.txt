@@ -155,8 +155,8 @@ None.
 == Changelog ==
 
 = 2.0.25 =
-- Added "State\Region" field for billing and shipping address.
-- Added "Hide State\Region Field" option to the settings. It's enabled by default for existing installations.
+- Added "State" field for billing and shipping address.
+- Added "Hide State Field" option to the settings menu. It's enabled by default for existing installations. This new option can be used to hide the field.
 - Bundled translation files are properly loaded now.
 - Minor improvements and optimizations.
 - Added Italian language translation file.

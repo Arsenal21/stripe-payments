@@ -413,7 +413,7 @@
 											<?php if ( ! $a['hide_state_field'] ) { ?>
 											<div class="pure-u-md-1-24 baddr-hide"></div>
 											<div class="pure-u-1 pure-u-md-6-24 baddr-toggle" style="position: relative;">
-												<label for="state"><?php esc_html_e( 'State\Province', 'stripe-payments' ); ?></label>
+												<label for="state"><?php esc_html_e( 'State', 'stripe-payments' ); ?></label>
 												<input class="pure-input-1" type="text" id="state" name="state">
 											</div>
 											<?php } ?>
@@ -457,7 +457,7 @@
 											</div>
 											<?php if ( ! $a['hide_state_field'] ) { ?>
 											<div class="pure-u-1">
-												<label for="shipping_state"><?php esc_html_e( 'State\Province', 'stripe-payments' ); ?></label>
+												<label for="shipping_state"><?php esc_html_e( 'State', 'stripe-payments' ); ?></label>
 												<input class="pure-u-1" type="text" name="shipping_state" id="shipping_state">
 											</div>
 											<?php } ?>
