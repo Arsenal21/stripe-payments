@@ -159,6 +159,7 @@ None.
 - Added "Hide State\Region Field" option to the settings. It's enabled by default for existing installations.
 - Bundled translation files are properly loaded now.
 - Minor improvements and optimizations.
+- Added Italian language translation file.
 
 = 2.0.24 =
 - Empty lines in billing and shipping address are no longer displayed.
