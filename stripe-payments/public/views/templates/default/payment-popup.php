@@ -504,6 +504,7 @@
 							</div>
 						</div>
 						<input type="hidden" id="payment-intent" name="payment_intent" value="">
+						<input type="hidden" id="btn-uniq-id" name="btn_uniq_id" value="<?php echo ! empty( $a['btn_uniq_id'] ) ? esc_attr( $a['btn_uniq_id'] ) : ''; ?>">
 						<input type="hidden" id="product-id" name="product_id" value="<?php echo esc_attr( $a['prod_id'] ); ?>">
 						<input type="hidden" name="process_ipn" value="1">
 						<input type="hidden" name="is_live" value="<?php echo $a['is_live'] ? '1' : '0'; ?>">

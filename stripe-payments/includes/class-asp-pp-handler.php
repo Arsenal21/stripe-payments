@@ -408,6 +408,11 @@ class ASP_PP_Handler {
 
 		$a['item'] = $this->item;
 
+		$btn_uniq_id = filter_input( INPUT_GET, 'btn_uniq_id', FILTER_SANITIZE_STRING );
+		if ( ! empty( $btn_uniq_id ) ) {
+			$a['btn_uniq_id'] = $btn_uniq_id;
+		}
+
 		$a['vars']['vars'] = array(
 			'data'           => $data,
 			'stripe_key'     => ! empty( $data['stripe_key'] ) ? $data['stripe_key'] : $a['stripe_key'],
