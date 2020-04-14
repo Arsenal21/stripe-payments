@@ -98,6 +98,8 @@ class ASPProductsMetaboxes {
 					),
 				)
 			);
+			echo '<span class="wp-asp-product-meta-box-title"><strong>' . esc_html( $box['title'] ) . '</strong></span>';
+			echo '<hr>';
 			call_user_func( array( $box['callback'][0], $box['callback'][1] ), $post );
 			echo '</div>';
 			$first = false;

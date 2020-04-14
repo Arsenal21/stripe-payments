@@ -41,6 +41,10 @@ table.asp-shortcode-options-table th, table.asp-shortcode-options-table td {
 	padding: 0;
 }
 
+.wp-asp-product-meta-box-title {
+	font-size: 1.3em;
+}
+
 fieldset legend {
 	border-bottom: 1px solid #f7f7f7;
 	width: 100%;
