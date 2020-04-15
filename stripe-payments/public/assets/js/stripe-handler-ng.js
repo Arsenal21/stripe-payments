@@ -132,13 +132,14 @@ var stripeHandlerNG = function (data) {
 	};
 
 	var parent = this;
-	parent.preload = false;
 	parent.data = data;
 	parent.form = jQuery('form#asp_ng_form_' + parent.data.uniq_id);
 	parent.documentElementOrigOverflow = jQuery('html').css('overflow');
 	jQuery('#asp_ng_button_' + parent.data.uniq_id).prop('disabled', false);
-	if (parent.preload) {
+	if (parent.data.preload) {
 		parent.handleModal(false);
+	} else if (parent.data.prefetch) {
+		jQuery('body').append('<link rel="prefetch" as="document" href="' + parent.data.iframe_url + '">');
 	}
 	jQuery('#asp_ng_button_' + parent.data.uniq_id).click(function (e) {
 		jQuery('html').css('overflow', 'hidden');
@@ -178,7 +179,7 @@ function WPASPAttach(el, prodId, params) {
 	if (item_price) {
 		params += '&price=' + item_price;
 	}
-	var sg = new stripeHandlerNG({ 'uniq_id': uniqId, 'product_id': prodId, 'doSelfSubmit': true, 'iframe_url': wpASPNG.iframeUrl + '&product_id=' + prodId + params });
+	var sg = new stripeHandlerNG({ 'uniq_id': uniqId, 'product_id': prodId, 'doSelfSubmit': true, 'iframe_url': wpASPNG.iframeUrl + '&product_id=' + prodId + params, 'prefetch': wpASPNG.prefetch === '1' ? true : false });
 	jQuery(el).off('click');
 	jQuery(el).on('click', el, elHandler);
 }
