@@ -204,6 +204,9 @@ class ASPProductsMetaboxes {
 	}
 
 	public function display_variations_meta_box( $post ) {
+		$price_mod_help  = __( 'Enter price modification - amount that will be added to product price if particular variation is selected.', 'stripe-payments' );
+		$price_mod_help .= '<br><br>';
+		$price_mod_help .= __( 'Put negative value if you want to substract the amount instead.', 'stripe-payments' );
 		?>
 <p><?php echo sprintf( __( 'You can find documentation on variations %s', 'stripe-payments' ), '<a href="https://s-plugins.com/creating-variable-products-using-the-stripe-payments-plugin/" target="_blank">here</a>' ); ?></p>
 		<?php
@@ -245,8 +248,8 @@ class ASPProductsMetaboxes {
 		<table class="widefat fixed asp-variations-tbl">
 			<tr>
 				<th width="40%"><?php echo esc_html( _x( 'Name', 'Variation name', 'stripe-payments' ) ); ?></th>
-				<th width="10%"><?php esc_html_e( 'Price Mod', 'stripe-payments' ); ?></th>
-				<th width="40%"><?php esc_html_e( 'Product URL', 'stripe-payments' ); ?></th>
+				<th width="20%"><?php esc_html_e( 'Price Mod', 'stripe-payments' ); ?> <?php echo ASP_Utils::gen_help_popup( $price_mod_help ); ?></th>
+				<th width="30%"><?php esc_html_e( 'Product URL', 'stripe-payments' ); ?></th>
 			</tr>
 		</table>
 		<div class="asp-variations-buttons-cont">

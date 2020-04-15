@@ -805,4 +805,9 @@ class ASP_Utils {
 		}
 	}
 
+	public static function gen_help_popup( $contents ) {
+		return '<div class="wp-asp-help"><i class="dashicons dashicons-editor-help"></i><div class="wp-asp-help-text">' . $contents . '</div></div>';
+
+	}
+
 }
