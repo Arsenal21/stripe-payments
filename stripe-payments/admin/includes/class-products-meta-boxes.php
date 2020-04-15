@@ -42,6 +42,12 @@ class ASPProductsMetaboxes {
 			add_meta_box( 'asp_swpm_meta_box', __( 'Simple Membership Level', 'stripe-payments' ), array( $this, 'display_swpm_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 		}
 
+		//check if WP PDF Stamper is installed
+		if ( defined( 'WP_PDF_STAMP_VERSION' ) ) {
+			//if it is, let's add metabox where admin can select additional options
+			add_meta_box( 'asp_pdf_stamper_meta_box', __( 'PDF Stamper Integration', 'stripe-payments' ), array( $this, 'display_pdf_stamper_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
+		}
+
 		do_action( 'asp_edit_product_metabox' );
 		$new_product_edit_interface = $this->asp_main->get_setting( 'new_product_edit_interface' );
 		if ( $new_product_edit_interface ) {
@@ -144,6 +150,14 @@ class ASPProductsMetaboxes {
 		);
 		?>
 </select>
+		<?php
+	}
+
+	public function display_pdf_stamper_meta_box( $post ) {
+		$current_val = get_post_meta( $post->ID, 'asp_product_pdf_stamper_enabled', true );
+		?>
+		<label><input type="checkbox" name="asp_product_pdf_stamper_enabled" value="1"<?php echo $current_val ? ' checked' : ''; ?>> <?php echo esc_html_e( 'Stamp PDF File', 'stripe-payments' ); ?></label>
+		<p class="description"><?php echo esc_html_e( 'Enable if this product is an eBook and you want to stamp it with customer details upon purchase.', 'stripe-payments' ); ?></p>
 		<?php
 	}
 
@@ -624,6 +638,10 @@ jQuery(document).ready(function($) {
 			$force_test_mode = filter_input( INPUT_POST, 'asp_product_force_test_mode', FILTER_SANITIZE_STRING );
 			$force_test_mode = ! empty( $force_test_mode ) ? true : false;
 			update_post_meta( $post_id, 'asp_product_force_test_mode', $force_test_mode );
+
+			$pdf_stamper_enabled = filter_input( INPUT_POST, 'asp_product_pdf_stamper_enabled', FILTER_SANITIZE_STRING );
+			$pdf_stamper_enabled = ! empty( $pdf_stamper_enabled ) ? true : false;
+			update_post_meta( $post_id, 'asp_product_pdf_stamper_enabled', $pdf_stamper_enabled );
 
 			update_post_meta( $post_id, 'asp_product_coupons_setting', isset( $_POST['asp_product_coupons_setting'] ) ? sanitize_text_field( $_POST['asp_product_coupons_setting'] ) : '0' );
 			update_post_meta( $post_id, 'asp_product_custom_field', isset( $_POST['asp_product_custom_field'] ) ? sanitize_text_field( $_POST['asp_product_custom_field'] ) : '0' );
