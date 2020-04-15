@@ -290,7 +290,12 @@ class ASP_Self_Hooks_Handler {
 
 			$b_addr = $billing_addr->line1 . ', ' . $billing_addr->city . ', ' . ( isset( $billing_addr->state ) ? $billing_addr->state . ', ' : '' ) . $billing_addr->postal_code . ', ' . $billing_addr->country;
 
-			$res = pdf_stamper_stamp_internal_file( $item_url, $data['customer_name'], $data['stripeEmail'], '', $b_addr, '', '', '', '' );
+			$additional_params = array(
+				'product_name'   => $data['item_name'],
+				'transaction_id' => $data['txn_id'],
+			);
+
+			$res = pdf_stamper_stamp_internal_file( $item_url, $data['customer_name'], $data['stripeEmail'], '', $b_addr, '', '', '', '', $additional_params );
 
 			if ( empty( $res ) ) {
 				return $data;
