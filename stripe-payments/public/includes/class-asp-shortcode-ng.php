@@ -237,7 +237,6 @@ class ASP_Shortcode_NG {
 				'custom_quantity'   => get_post_meta( $id, 'asp_product_custom_quantity', true ),
 				'button_text'       => $button_text,
 				'description'       => get_post_meta( $id, 'asp_product_description', true ),
-				'url'               => $url,
 				'thankyou_page_url' => $thankyou_page,
 				'item_logo'         => $item_logo,
 				'billing_address'   => $billing_address,
