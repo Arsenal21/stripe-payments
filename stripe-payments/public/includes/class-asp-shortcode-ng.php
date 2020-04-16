@@ -587,6 +587,7 @@ class ASP_Shortcode_NG {
 			'stock_items'              => $stock_items,
 			'currencyFormat'           => $display_settings,
 			'displayStr'               => $display_str,
+			'thankyou_page_url'        => $thankyou_page_url,
 			'show_custom_amount_input' => false,
 		);
 

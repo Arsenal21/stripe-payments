@@ -79,6 +79,10 @@ var stripeHandlerNG = function (data) {
 					iframe[0].contentWindow.triggerEvent(iframe.contents().find('#amount')[0], 'change');
 				}
 
+				if (parent.data.thankyou_page_url) {
+					iframe.contents().find('#thankyou_page_url').val(parent.data.thankyou_page_url);
+				}
+
 				iframe[0].contentWindow['doSelfSubmit'] = data.doSelfSubmit;
 				var closebtn = iframe.contents().find('#modal-close-btn');
 				if (show) {

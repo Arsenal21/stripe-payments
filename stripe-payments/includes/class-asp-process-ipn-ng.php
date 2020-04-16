@@ -123,7 +123,7 @@ class ASP_Process_IPN_NG {
 
 		$this->item = $item;
 
-		if ( $item->get_redir_url() ) {
+		if ( empty( $this->asp_redirect_url ) && $item->get_redir_url() ) {
 			$this->asp_redirect_url = $item->get_redir_url();
 		}
 

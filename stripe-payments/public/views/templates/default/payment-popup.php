@@ -511,9 +511,7 @@
 						<?php if ( $a['data']['url'] ) { ?>
 						<input type="hidden" name="item_url" value="<?php echo esc_attr( $a['data']['url'] ); ?>">
 						<?php } ?>
-						<?php if ( ! empty( $a['thankyou_page'] ) ) { ?>
-						<input type="hidden" value="<?php echo esc_attr( base64_encode( $a['thankyou_page'] ) ); ?>" name="thankyou_page_url">
-						<?php } ?>
+						<input type="hidden" value="<?php echo ! empty( $a['thankyou_page'] ) ? esc_attr( base64_encode( $a['thankyou_page'] ) ) : ''; ?>" name="thankyou_page_url" id="thankyou_page_url">
 						<?php if ( ! empty( $a['data']['create_token'] ) ) { ?>
 						<input type="hidden" value="1" name="create_token">
 						<input type="hidden" value="" id="sub_id" name="sub_id">
