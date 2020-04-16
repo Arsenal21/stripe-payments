@@ -168,7 +168,7 @@
 						<?php echo isset( $a['fatal_error'] ) ? esc_html( $a['fatal_error'] ) : ''; ?>
 					</div>
 					<form method="post" id="payment-form" class="pure-form pure-form-stacked" <?php echo isset( $a['fatal_error'] ) ? 'style="display: none;"' : ''; ?>>
-						<?php if ( $a['data']['amount_variable'] ) { ?>
+						<?php if ( $a['data']['amount_variable'] && ! $this->item->get_meta( 'asp_product_hide_amount_input' ) ) { ?>
 						<div class="pure-u-1">
 							<label for="amount"><?php esc_html_e( 'Enter amount', 'stripe-payments' ); ?></label>
 							<input class="pure-input-1" id="amount" name="amount" inputmode="decimal" value="<?php echo esc_attr( ! empty( $a['data']['item_price'] ) ? ASP_Utils::formatted_price( $a['data']['item_price'], false, true ) : '' ); ?>" required>

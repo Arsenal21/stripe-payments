@@ -215,7 +215,11 @@ class ASP_Process_IPN_NG {
 			if ( $post_price ) {
 				$price = $post_price;
 			} else {
-				$price = $p_data->get_price();
+				if ( ! $item->get_meta( 'asp_product_hide_amount_input' ) ) {
+					$price = $p_data->get_price();
+				} else {
+					$price = 0;
+				}
 			}
 			if ( ! AcceptStripePayments::is_zero_cents( $item->get_currency() ) ) {
 				$price = AcceptStripePayments::from_cents( $price, $item->get_currency() );

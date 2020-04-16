@@ -296,6 +296,8 @@ class ASP_PP_Handler {
 
 		$data['customer_default_country'] = $default_country;
 
+		$data['hide_amount_input'] = $this->item->get_meta( 'asp_product_hide_amount_input' );
+
 		$data['show_your_order'] = get_post_meta( $product_id, 'asp_product_show_your_order', true );
 		$data['show_your_order'] = $data['show_your_order'] ? 1 : 0;
 

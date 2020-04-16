@@ -16,7 +16,7 @@ try {
 }
 vars.data.temp = [];
 
-if (vars.data.amount_variable) {
+if (vars.data.amount_variable && vars.data.hide_amount_input !== '1') {
 	var amountInput = document.getElementById('amount');
 	var amountErr = document.getElementById('amount-error');
 	amountInput.addEventListener('change', function () {
@@ -591,7 +591,7 @@ function validate_custom_amount() {
 
 function canProceed() {
 
-	if (vars.data.amount_variable) {
+	if (vars.data.amount_variable && vars.data.hide_amount_input !== '1') {
 		amount = validate_custom_amount();
 		if (amount === false) {
 			event.preventDefault();
@@ -637,7 +637,7 @@ function canProceed() {
 		return false;
 	}
 
-	if (vars.data.amount_variable) {
+	if (vars.data.amount_variable && vars.data.hide_amount_input !== '1') {
 		amount = validate_custom_amount();
 		if (amount === false) {
 			return false;
@@ -846,7 +846,7 @@ function handlePayment() {
 				if (vars.data.currency_variable) {
 					reqStr = reqStr + '&currency=' + vars.data.currency;
 				}
-				if (vars.data.amount_variable) {
+				if (vars.data.amount_variable && vars.data.hide_amount_input !== '1') {
 					reqStr = reqStr + '&amount=' + vars.data.item_price;
 				}
 				if (vars.data.quantity > 1) {

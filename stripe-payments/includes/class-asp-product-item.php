@@ -495,4 +495,8 @@ class ASP_Product_Item {
 		$this->zero_cent = AcceptStripePayments::is_zero_cents( $this->get_currency() );
 		return true;
 	}
+
+	public function get_meta( $meta, $single = true ) {
+		return get_post_meta( $this->post_id, $meta, $single );
+	}
 }

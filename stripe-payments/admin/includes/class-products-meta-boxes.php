@@ -213,6 +213,18 @@ class ASPProductsMetaboxes {
 		if ( class_exists( 'ASPSUB_main' ) ) {
 			echo '<p>' . esc_html_e( 'Note: variations for subscriptions products are currently not supported.', 'stripe-payments' ) . '</p>';
 		}
+		$current_hide_amount_input = get_post_meta( $post->ID, 'asp_product_hide_amount_input', true );
+		?>
+<label>
+	<input type="checkbox" name="asp_product_hide_amount_input" value="1" <?php echo esc_attr( ! empty( $current_hide_amount_input ) ? ' checked' : '' ); ?>> <?php esc_html_e( 'Use variations to construct product price', 'stripe-payments' ); ?>
+</label>
+<p class="description">
+		<?php esc_html_e( 'When enabled, it allows your customers to construct product price by using variations.', 'stripe-payments' ); ?>
+	<br />
+		<?php esc_html_e( 'Note this only works when product price is set to 0.', 'stripe-payments' ); ?>
+</p>
+<br />
+		<?php
 			$variations_str    = '';
 			$variations_groups = get_post_meta( $post->ID, 'asp_variations_groups', true );
 			$variations_names  = get_post_meta( $post->ID, 'asp_variations_names', true );
@@ -715,6 +727,10 @@ jQuery(document).ready(function($) {
 				$currency_variable = filter_input( INPUT_POST, 'asp_product_currency_variable', FILTER_SANITIZE_STRING );
 				$currency_variable = ! empty( $currency_variable ) ? true : false;
 				update_post_meta( $post_id, 'asp_product_currency_variable', $currency_variable );
+
+				$hide_amount_input = filter_input( INPUT_POST, 'asp_product_hide_amount_input', FILTER_SANITIZE_STRING );
+				$hide_amount_input = ! empty( $hide_amount_input ) ? true : false;
+				update_post_meta( $post_id, 'asp_product_hide_amount_input', $hide_amount_input );
 
 				//check if price is in min-max range for the currency set by Stripe: https://stripe.com/docs/currencies#minimum-and-maximum-charge-amounts
 				$price    = sanitize_text_field( $_POST['asp_product_price'] );
