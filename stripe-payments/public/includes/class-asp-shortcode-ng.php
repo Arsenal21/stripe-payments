@@ -636,7 +636,8 @@ class ASP_Shortcode_NG {
 			. '</div>';
 
 		$output .= '<script>';
-		$output .= 'if(typeof jQuery!=="undefined") {jQuery(document).ready(function() {new stripeHandlerNG(' . wp_json_encode( $data ) . ');})} else { if (typeof wpaspInitOnDocReady==="undefined") {wpaspInitOnDocReady=[];} wpaspInitOnDocReady.push(' . wp_json_encode( $data ) . ');}';
+		$output .= 'var asp_data_' . $uniq_id . ' = ' . wp_json_encode( $data ) . ';';
+		$output .= 'if(typeof jQuery!=="undefined") {jQuery(document).ready(function() {new stripeHandlerNG(asp_data_' . $uniq_id . ');});} else { if (typeof wpaspInitOnDocReady==="undefined") {var wpaspInitOnDocReady=[];} wpaspInitOnDocReady.push(asp_data_' . $uniq_id . ');}';
 		$output .= '</script>';
 
 		$prefetch = $this->asp_main->get_setting( 'frontend_prefetch_scripts' );
