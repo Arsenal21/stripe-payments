@@ -764,6 +764,9 @@ function handlePayment() {
 			reqStr = reqStr + '&pi=' + vars.data.pi_id;
 		}
 		reqStr = reqStr + '&billing_details=' + JSON.stringify(billingDetails);
+		if (shippingDetails) {
+			reqStr = reqStr + '&shipping_details=' + JSON.stringify(shippingDetails);
+		}
 		vars.data.csRegenParams = reqStr;
 		doAddonAction('csBeforeRegenParams');
 		console.log('Regen CS');
@@ -1010,6 +1013,11 @@ function toggleRequiredElements(els, hide) {
 			jQuery(el).attr('data-required-hidden', 0);
 		});
 	}
+}
+
+function saveFormData(success_cb, error_cb) {
+	var reqStr = 'action=asp_pp_save_form_data&form_data=' + encodeURIComponent(jQuery(form).serialize());
+	new ajaxRequest(vars.ajaxURL, reqStr, success_cb, error_cb);
 }
 
 var ajaxRequest = function (URL, reqStr, doneFunc, failFunc) {

@@ -28,6 +28,9 @@ class ASP_PP_Handler {
 	public function add_ajax_handlers() {
 		add_action( 'wp_ajax_asp_pp_req_token', array( $this, 'handle_request_token' ) );
 		add_action( 'wp_ajax_nopriv_asp_pp_req_token', array( $this, 'handle_request_token' ) );
+
+		add_action( 'wp_ajax_asp_pp_save_form_data', array( $this, 'save_form_data' ) );
+		add_action( 'wp_ajax_nopriv_asp_pp_save_form_data', array( $this, 'save_form_data' ) );
 	}
 
 	public function showpp() {
@@ -554,6 +557,7 @@ class ASP_PP_Handler {
 						//we have address
 						$addr = array(
 							'line1'   => $billing_details->address->line1,
+							'state'   => isset( $billing_details->address->state ) ? $billing_details->address->state : null,
 							'city'    => isset( $billing_details->address->city ) ? $billing_details->address->city : null,
 							'country' => isset( $billing_details->address->country ) ? $billing_details->address->country : null,
 						);
@@ -581,6 +585,7 @@ class ASP_PP_Handler {
 						//we have address
 						$addr = array(
 							'line1'   => $shipping_details->address->line1,
+							'state'   => isset( $shipping_details->address->state ) ? $shipping_details->address->state : null,
 							'city'    => isset( $shipping_details->address->city ) ? $shipping_details->address->city : null,
 							'country' => isset( $shipping_details->address->country ) ? $shipping_details->address->country : null,
 						);
@@ -708,6 +713,14 @@ class ASP_PP_Handler {
 			$output      .= $this->tpl_cf;
 			$this->tpl_cf = '';
 		return $output;
+	}
+
+	public function save_form_data() {
+		$out['success'] = true;
+		$sess           = ASP_Session::get_instance();
+		parse_str( $_POST['form_data'], $form_data );
+		$sess->set_transient_data( 'asp_pp_form_data', $form_data );
+		wp_send_json( $out );
 	}
 
 	public function handle_check_coupon() {
