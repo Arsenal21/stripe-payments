@@ -1632,6 +1632,7 @@ class AcceptStripePayments_Admin {
 				'{currency_code}'     => __( '3-letter currency code. Example: USD', 'stripe-payments' ),
 				'{purchase_date}'     => __( 'The date of the purchase', 'stripe-payments' ),
 				'{custom_field}'      => __( 'Custom field name and value (if enabled)', 'stripe-payments' ),
+				'{coupon_code}'       => __( 'Coupon code (if available)', 'stripe-payments' ),
 			);
 		}
 

@@ -370,6 +370,8 @@ class ASP_Process_IPN_NG {
 			$coupon = $item->get_coupon();
 		}
 		if ( isset( $coupon ) ) {
+			$data['coupon']      = $coupon;
+			$data['coupon_code'] = $coupon['code'];
 			// translators: %s is coupon code
 			$data['additional_items'][ sprintf( __( 'Coupon "%s"', 'stripe-payments' ), $coupon['code'] ) ] = floatval( '-' . $item->get_coupon_discount_amount() );
 			$data['additional_items'][ __( 'Subtotal', 'stripe-payments' ) ]                                = $item->get_price( false, true ) + $item->get_items_total( false, true );
