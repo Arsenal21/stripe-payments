@@ -347,7 +347,10 @@
 									?>
 								</fieldset>
 							</div>
-							<?php } ?>
+								<?php
+							}
+							do_action( 'asp_ng_pp_output_before_address', $a['data'] );
+							?>
 							<div class="pure-g">
 								<fieldset id="name-email-cont" style="width: 100%;">
 									<div class="pure-u-1 pure-u-md-11-24">
