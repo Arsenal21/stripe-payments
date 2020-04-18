@@ -158,7 +158,6 @@ class ASP_Payment_Data {
 			return false;
 		}
 		$this->obj = $obj;
-		ASP_Debug_Logger::log( wp_json_encode( $obj->customer ) );
 	}
 
 	public function construct_zero_value() {
