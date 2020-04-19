@@ -154,7 +154,7 @@ None.
 
 == Changelog ==
 
-= WIP 2.0.26 =
+= 2.0.26 =
 - Added built-in integration with [WP PDF Stamper plugin](https://www.tipsandtricks-hq.com/wp-pdf-stamper-plugin-2332).
 - Added support for Lebanese Pound (LBP) and Saudi Riyal (SAR) currencies.
 - Added `tax` parameter support for `[asp_product]` shortcode.
