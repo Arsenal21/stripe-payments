@@ -130,4 +130,9 @@ jQuery(document).ready(function ($) {
 			$('a.wp-asp-product-menu-nav-item').css('display', 'block');
 		}
 	});
+
+	$('input[name="asp_product_price"]').on('change', function (e) {
+		$('input[name="asp_product_hide_amount_input"]').prop('disabled', !($(this).val() == 0));
+	});
+	$('input[name="asp_product_price"]').trigger('change');
 });
