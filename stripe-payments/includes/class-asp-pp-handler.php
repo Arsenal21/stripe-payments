@@ -450,6 +450,7 @@ class ASP_PP_Handler {
 				'strStartFreeTrial'           => apply_filters( 'asp_customize_text_msg', __( 'Start Free Trial', 'stripe-payments' ), 'start_free_trial' ),
 				'strInvalidCFValidationRegex' => __( 'Invalid validation RegEx: ', 'stripe-payments' ),
 				'strGetForFree'               => __( 'Purchase for Free', 'stripe-payments' ),
+				'strCurrencyNotSupported'     => __( 'Currency not supported for this payment method.', 'stripe-payments' ),
 			),
 		);
 

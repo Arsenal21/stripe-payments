@@ -300,7 +300,35 @@ form.addEventListener('submit', function (event) {
 
 vars.data.initShowPopup = true;
 
+vars.data.currentPM = 'def';
+
 doAddonAction('init');
+
+jQuery('select#currency').on('change', function () {
+	if (!vars.data.addons || !vars.data.currentPM) {
+		return true;
+	}
+	vars.data.addons.forEach(function (addon) {
+		if (addon.supported_curr) {
+			if (!addon.supported_curr.includes(jQuery('select#currency').val())) {
+				jQuery('input[data-pm-id="' + addon.name + '"]').attr('disabled', true).parent().addClass('pm-disabled').css('position', 'relative');
+				if (vars.data.currentPM === addon.name) {
+					submitBtn.disabled = true;
+					errorCont.innerHTML = vars.str.strCurrencyNotSupported;
+					errorCont.style.display = 'block';
+				}
+			} else {
+				jQuery('input[data-pm-id="' + addon.name + '"]').attr('disabled', false).parent().removeClass('pm-disabled');
+				if (vars.data.currentPM === addon.name) {
+					submitBtn.disabled = false;
+					errorCont.style.display = 'none';
+				}
+			}
+		}
+	});
+});
+
+jQuery('select#currency').change();
 
 if (vars.data.initShowPopup) {
 	showPopup();
