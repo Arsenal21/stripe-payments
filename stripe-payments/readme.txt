@@ -156,6 +156,7 @@ None.
 
 = 2.0.26 =
 - Added built-in integration with [WP PDF Stamper plugin](https://www.tipsandtricks-hq.com/wp-pdf-stamper-plugin-2332).
+- Added option to construct product price using variations only.
 - Added support for Lebanese Pound (LBP) and Saudi Riyal (SAR) currencies.
 - Added `tax` parameter support for `[asp_product]` shortcode.
 - Added {coupon_code} email merge tag.
