@@ -42,6 +42,12 @@ class ASPProductsMetaboxes {
 			add_meta_box( 'asp_swpm_meta_box', __( 'Simple Membership Level', 'stripe-payments' ), array( $this, 'display_swpm_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 		}
 
+		//check if WP PDF Stamper is installed
+		if ( defined( 'WP_PDF_STAMP_VERSION' ) ) {
+			//if it is, let's add metabox where admin can select additional options
+			add_meta_box( 'asp_pdf_stamper_meta_box', __( 'PDF Stamper Integration', 'stripe-payments' ), array( $this, 'display_pdf_stamper_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
+		}
+
 		do_action( 'asp_edit_product_metabox' );
 		$new_product_edit_interface = $this->asp_main->get_setting( 'new_product_edit_interface' );
 		if ( $new_product_edit_interface ) {
@@ -98,6 +104,8 @@ class ASPProductsMetaboxes {
 					),
 				)
 			);
+			echo '<span class="wp-asp-product-meta-box-title"><strong>' . esc_html( $box['title'] ) . '</strong></span>';
+			echo '<hr>';
 			call_user_func( array( $box['callback'][0], $box['callback'][1] ), $post );
 			echo '</div>';
 			$first = false;
@@ -145,6 +153,14 @@ class ASPProductsMetaboxes {
 		<?php
 	}
 
+	public function display_pdf_stamper_meta_box( $post ) {
+		$current_val = get_post_meta( $post->ID, 'asp_product_pdf_stamper_enabled', true );
+		?>
+		<label><input type="checkbox" name="asp_product_pdf_stamper_enabled" value="1"<?php echo $current_val ? ' checked' : ''; ?>> <?php echo esc_html_e( 'Stamp PDF File', 'stripe-payments' ); ?></label>
+		<p class="description"><?php echo esc_html_e( 'Enable if this product is an eBook and you want to stamp it with customer details upon purchase.', 'stripe-payments' ); ?></p>
+		<?php
+	}
+
 	public function display_description_meta_box( $post ) {
 		esc_html_e( 'Add a description for your product.', 'stripe-payments' );
 		echo '<br /><br />';
@@ -188,12 +204,27 @@ class ASPProductsMetaboxes {
 	}
 
 	public function display_variations_meta_box( $post ) {
+		$price_mod_help  = __( 'Enter price modification - amount that will be added to product price if particular variation is selected.', 'stripe-payments' );
+		$price_mod_help .= '<br><br>';
+		$price_mod_help .= __( 'Put negative value if you want to substract the amount instead.', 'stripe-payments' );
 		?>
 <p><?php echo sprintf( __( 'You can find documentation on variations %s', 'stripe-payments' ), '<a href="https://s-plugins.com/creating-variable-products-using-the-stripe-payments-plugin/" target="_blank">here</a>' ); ?></p>
 		<?php
 		if ( class_exists( 'ASPSUB_main' ) ) {
 			echo '<p>' . esc_html_e( 'Note: variations for subscriptions products are currently not supported.', 'stripe-payments' ) . '</p>';
 		}
+		$current_hide_amount_input = get_post_meta( $post->ID, 'asp_product_hide_amount_input', true );
+		?>
+<label>
+	<input type="checkbox" name="asp_product_hide_amount_input" value="1" <?php echo esc_attr( ! empty( $current_hide_amount_input ) ? ' checked' : '' ); ?>> <?php esc_html_e( 'Use variations to construct product price', 'stripe-payments' ); ?>
+</label>
+<p class="description">
+		<?php esc_html_e( 'When enabled, it allows your customers to construct product price by using variations.', 'stripe-payments' ); ?>
+	<br />
+		<?php esc_html_e( 'Note this only works when product price is set to 0.', 'stripe-payments' ); ?>
+</p>
+<br />
+		<?php
 			$variations_str    = '';
 			$variations_groups = get_post_meta( $post->ID, 'asp_variations_groups', true );
 			$variations_names  = get_post_meta( $post->ID, 'asp_variations_names', true );
@@ -229,8 +260,8 @@ class ASPProductsMetaboxes {
 		<table class="widefat fixed asp-variations-tbl">
 			<tr>
 				<th width="40%"><?php echo esc_html( _x( 'Name', 'Variation name', 'stripe-payments' ) ); ?></th>
-				<th width="10%"><?php esc_html_e( 'Price Mod', 'stripe-payments' ); ?></th>
-				<th width="40%"><?php esc_html_e( 'Product URL', 'stripe-payments' ); ?></th>
+				<th width="20%"><?php esc_html_e( 'Price Mod', 'stripe-payments' ); ?> <?php echo ASP_Utils::gen_help_popup( $price_mod_help ); ?></th>
+				<th width="30%"><?php esc_html_e( 'Product URL', 'stripe-payments' ); ?></th>
 			</tr>
 		</table>
 		<div class="asp-variations-buttons-cont">
@@ -623,6 +654,10 @@ jQuery(document).ready(function($) {
 			$force_test_mode = ! empty( $force_test_mode ) ? true : false;
 			update_post_meta( $post_id, 'asp_product_force_test_mode', $force_test_mode );
 
+			$pdf_stamper_enabled = filter_input( INPUT_POST, 'asp_product_pdf_stamper_enabled', FILTER_SANITIZE_STRING );
+			$pdf_stamper_enabled = ! empty( $pdf_stamper_enabled ) ? true : false;
+			update_post_meta( $post_id, 'asp_product_pdf_stamper_enabled', $pdf_stamper_enabled );
+
 			update_post_meta( $post_id, 'asp_product_coupons_setting', isset( $_POST['asp_product_coupons_setting'] ) ? sanitize_text_field( $_POST['asp_product_coupons_setting'] ) : '0' );
 			update_post_meta( $post_id, 'asp_product_custom_field', isset( $_POST['asp_product_custom_field'] ) ? sanitize_text_field( $_POST['asp_product_custom_field'] ) : '0' );
 			update_post_meta( $post_id, 'asp_product_button_text', sanitize_text_field( $_POST['asp_product_button_text'] ) );
@@ -692,6 +727,10 @@ jQuery(document).ready(function($) {
 				$currency_variable = filter_input( INPUT_POST, 'asp_product_currency_variable', FILTER_SANITIZE_STRING );
 				$currency_variable = ! empty( $currency_variable ) ? true : false;
 				update_post_meta( $post_id, 'asp_product_currency_variable', $currency_variable );
+
+				$hide_amount_input = filter_input( INPUT_POST, 'asp_product_hide_amount_input', FILTER_SANITIZE_STRING );
+				$hide_amount_input = ! empty( $hide_amount_input ) ? true : false;
+				update_post_meta( $post_id, 'asp_product_hide_amount_input', $hide_amount_input );
 
 				//check if price is in min-max range for the currency set by Stripe: https://stripe.com/docs/currencies#minimum-and-maximum-charge-amounts
 				$price    = sanitize_text_field( $_POST['asp_product_price'] );

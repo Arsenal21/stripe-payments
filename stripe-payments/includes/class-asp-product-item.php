@@ -16,6 +16,8 @@ class ASP_Product_Item {
 	protected $price_with_discount;
 	protected $button_key = false;
 	protected $items      = array();
+	protected $sess;
+	protected $overriden_data = false;
 
 	public function __construct( $post_id = false ) {
 		$this->asp_main = AcceptStripePayments::get_instance();
@@ -23,6 +25,19 @@ class ASP_Product_Item {
 			//let's try to load item from product
 			$this->post_id = $post_id;
 			$this->load_from_product();
+			if ( class_exists( 'ASP_Process_IPN_NG' ) ) {
+				$p_ipn_ng    = ASP_Process_IPN_NG::get_instance();
+				$btn_uniq_id = $p_ipn_ng->get_post_var( 'asp_btn_uniq_id', FILTER_SANITIZE_STRING );
+			} else {
+				$btn_uniq_id = filter_input( INPUT_POST, 'asp_btn_uniq_id', FILTER_SANITIZE_STRING );
+			}
+			if ( empty( $btn_uniq_id ) ) {
+				$btn_uniq_id = filter_input( INPUT_GET, 'btn_uniq_id', FILTER_SANITIZE_STRING );
+			}
+			if ( ! empty( $btn_uniq_id ) ) {
+				$this->sess           = ASP_Session::get_instance();
+				$this->overriden_data = $this->sess->get_transient_data( 'overriden_data_' . $btn_uniq_id );
+			}
 		}
 	}
 
@@ -76,6 +91,9 @@ class ASP_Product_Item {
 	}
 
 	public function get_tax() {
+		if ( false !== $this->overriden_data && isset( $this->overriden_data['tax'] ) ) {
+			return $this->overriden_data['tax'];
+		}
 		$this->tax = get_post_meta( $this->post_id, 'asp_product_tax', true );
 		if ( empty( $this->tax ) ) {
 			$this->tax = 0;
@@ -476,5 +494,9 @@ class ASP_Product_Item {
 		}
 		$this->zero_cent = AcceptStripePayments::is_zero_cents( $this->get_currency() );
 		return true;
+	}
+
+	public function get_meta( $meta, $single = true ) {
+		return get_post_meta( $this->post_id, $meta, $single );
 	}
 }

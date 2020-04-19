@@ -20,6 +20,10 @@ class ASP_Self_Hooks_Handler {
 		if ( defined( 'SIMPLE_WP_MEMBERSHIP_VER' ) ) {
 			add_action( 'asp_stripe_payment_completed', array( $this, 'handle_swpm_signup' ), 10, 2 );
 		}
+		//WP PDF Stamper integration
+		if ( function_exists( 'pdf_stamper_stamp_internal_file' ) ) {
+			add_action( 'asp_ng_payment_completed', array( $this, 'handle_wp_pdf_stamper' ), 1000, 2 );
+		}
 	}
 
 	public function ng_product_mode_keys_handler( $product_id ) {
@@ -273,6 +277,37 @@ class ASP_Self_Hooks_Handler {
 			swpm_handle_subsc_signup_stand_alone( $ipn_data, $level_id, $data['txn_id'], $swpm_id );
 		}
 
+	}
+
+	public function handle_wp_pdf_stamper( $data, $prod_id ) {
+		$pdf_stamper_enabled = get_post_meta( $prod_id, 'asp_product_pdf_stamper_enabled', true );
+		$item_url            = get_post_meta( $prod_id, 'asp_product_upload', true );
+
+		if ( $pdf_stamper_enabled && ! empty( $item_url ) && strpos( strtolower( basename( $item_url ) ), '.pdf' ) !== false ) {
+			$ipn = ASP_Process_IPN_NG::get_instance();
+
+			$billing_addr = $ipn->p_data->get_billing_details();
+
+			$b_addr = $billing_addr->line1 . ', ' . $billing_addr->city . ', ' . ( isset( $billing_addr->state ) ? $billing_addr->state . ', ' : '' ) . $billing_addr->postal_code . ', ' . $billing_addr->country;
+
+			$additional_params = array(
+				'product_name'   => $data['item_name'],
+				'transaction_id' => $data['txn_id'],
+			);
+
+			$res = pdf_stamper_stamp_internal_file( $item_url, $data['customer_name'], $data['stripeEmail'], '', $b_addr, '', '', '', '', $additional_params );
+
+			if ( empty( $res ) ) {
+				return $data;
+			}
+
+			$res_arr = explode( " \n", $res );
+
+			if ( isset( $res_arr[0] ) && 'Success!' === $res_arr[0] ) {
+				$data['item_url'] = $res_arr[1];
+			}
+		}
+		return $data;
 	}
 
 }

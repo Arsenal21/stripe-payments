@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 4.7
 Tested up to: 5.4
 Requires PHP: 5.6
-Stable tag: 2.0.25
+Stable tag: 2.0.26
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -153,6 +153,19 @@ Yes, please visit Stripe Payments > Settings screen for options.
 None.
 
 == Changelog ==
+
+= WIP 2.0.26 =
+- Added built-in integration with [WP PDF Stamper plugin](https://www.tipsandtricks-hq.com/wp-pdf-stamper-plugin-2332).
+- Added support for Lebanese Pound (LBP) and Saudi Riyal (SAR) currencies.
+- Added `tax` parameter support for `[asp_product]` shortcode.
+- Added {coupon_code} email merge tag.
+- `thankyou_page_url` parameter is no longer ignored by `[asp_product]` shortcode.
+- State value is now properly handled.
+- Shipping address is now properly saved if payment is made via payment addons.
+- Made prefetch work for products attached via CSS and link URL.
+- Upgraded Stripe PHP SDK to version 7.28.1.
+- PHP 7.4 support.
+- Minor improvements, bugfixes and optimizations.
 
 = 2.0.25 =
 - Added "State" field for billing and shipping address.

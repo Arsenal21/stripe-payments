@@ -123,7 +123,7 @@ class ASP_Process_IPN_NG {
 
 		$this->item = $item;
 
-		if ( $item->get_redir_url() ) {
+		if ( empty( $this->asp_redirect_url ) && $item->get_redir_url() ) {
 			$this->asp_redirect_url = $item->get_redir_url();
 		}
 
@@ -215,7 +215,11 @@ class ASP_Process_IPN_NG {
 			if ( $post_price ) {
 				$price = $post_price;
 			} else {
-				$price = $p_data->get_price();
+				if ( ! $item->get_meta( 'asp_product_hide_amount_input' ) ) {
+					$price = $p_data->get_price();
+				} else {
+					$price = 0;
+				}
 			}
 			if ( ! AcceptStripePayments::is_zero_cents( $item->get_currency() ) ) {
 				$price = AcceptStripePayments::from_cents( $price, $item->get_currency() );
@@ -366,6 +370,8 @@ class ASP_Process_IPN_NG {
 			$coupon = $item->get_coupon();
 		}
 		if ( isset( $coupon ) ) {
+			$data['coupon']      = $coupon;
+			$data['coupon_code'] = $coupon['code'];
 			// translators: %s is coupon code
 			$data['additional_items'][ sprintf( __( 'Coupon "%s"', 'stripe-payments' ), $coupon['code'] ) ] = floatval( '-' . $item->get_coupon_discount_amount() );
 			$data['additional_items'][ __( 'Subtotal', 'stripe-payments' ) ]                                = $item->get_price( false, true ) + $item->get_items_total( false, true );

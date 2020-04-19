@@ -791,6 +791,7 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post, $seller_email = fal
 		'{shipping_address}',
 		'{billing_address}',
 		'{custom_field}',
+		'{coupon_code}',
 	);
 	$vals = array(
 		$post['item_name'],
@@ -812,6 +813,7 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post, $seller_email = fal
 		isset( $post['shipping_address'] ) ? $post['shipping_address'] : '',
 		isset( $post['billing_address'] ) ? $post['billing_address'] : '',
 		$custom_field,
+		! empty( $post['coupon_code'] ) ? $post['coupon_code'] : '',
 	);
 
 	//let's combine tags and vals into one array so we can apply filters on it

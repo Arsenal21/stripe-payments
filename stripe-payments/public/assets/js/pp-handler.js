@@ -16,7 +16,7 @@ try {
 }
 vars.data.temp = [];
 
-if (vars.data.amount_variable) {
+if (vars.data.amount_variable && vars.data.hide_amount_input !== '1') {
 	var amountInput = document.getElementById('amount');
 	var amountErr = document.getElementById('amount-error');
 	amountInput.addEventListener('change', function () {
@@ -300,7 +300,35 @@ form.addEventListener('submit', function (event) {
 
 vars.data.initShowPopup = true;
 
+vars.data.currentPM = 'def';
+
 doAddonAction('init');
+
+jQuery('select#currency').on('change', function () {
+	if (!vars.data.addons || !vars.data.currentPM) {
+		return true;
+	}
+	vars.data.addons.forEach(function (addon) {
+		if (addon.supported_curr) {
+			if (!addon.supported_curr.includes(jQuery('select#currency').val())) {
+				jQuery('input[data-pm-id="' + addon.name + '"]').attr('disabled', true).parent().addClass('pm-disabled').css('position', 'relative');
+				if (vars.data.currentPM === addon.name) {
+					submitBtn.disabled = true;
+					errorCont.innerHTML = vars.str.strCurrencyNotSupported;
+					errorCont.style.display = 'block';
+				}
+			} else {
+				jQuery('input[data-pm-id="' + addon.name + '"]').attr('disabled', false).parent().removeClass('pm-disabled');
+				if (vars.data.currentPM === addon.name) {
+					submitBtn.disabled = false;
+					errorCont.style.display = 'none';
+				}
+			}
+		}
+	});
+});
+
+jQuery('select#currency').change();
 
 if (vars.data.initShowPopup) {
 	showPopup();
@@ -591,7 +619,7 @@ function validate_custom_amount() {
 
 function canProceed() {
 
-	if (vars.data.amount_variable) {
+	if (vars.data.amount_variable && vars.data.hide_amount_input !== '1') {
 		amount = validate_custom_amount();
 		if (amount === false) {
 			event.preventDefault();
@@ -637,7 +665,7 @@ function canProceed() {
 		return false;
 	}
 
-	if (vars.data.amount_variable) {
+	if (vars.data.amount_variable && vars.data.hide_amount_input !== '1') {
 		amount = validate_custom_amount();
 		if (amount === false) {
 			return false;
@@ -764,6 +792,9 @@ function handlePayment() {
 			reqStr = reqStr + '&pi=' + vars.data.pi_id;
 		}
 		reqStr = reqStr + '&billing_details=' + JSON.stringify(billingDetails);
+		if (shippingDetails) {
+			reqStr = reqStr + '&shipping_details=' + JSON.stringify(shippingDetails);
+		}
 		vars.data.csRegenParams = reqStr;
 		doAddonAction('csBeforeRegenParams');
 		console.log('Regen CS');
@@ -846,7 +877,7 @@ function handlePayment() {
 				if (vars.data.currency_variable) {
 					reqStr = reqStr + '&currency=' + vars.data.currency;
 				}
-				if (vars.data.amount_variable) {
+				if (vars.data.amount_variable && vars.data.hide_amount_input !== '1') {
 					reqStr = reqStr + '&amount=' + vars.data.item_price;
 				}
 				if (vars.data.quantity > 1) {
@@ -1010,6 +1041,11 @@ function toggleRequiredElements(els, hide) {
 			jQuery(el).attr('data-required-hidden', 0);
 		});
 	}
+}
+
+function saveFormData(success_cb, error_cb) {
+	var reqStr = 'action=asp_pp_save_form_data&form_data=' + encodeURIComponent(jQuery(form).serialize());
+	new ajaxRequest(vars.ajaxURL, reqStr, success_cb, error_cb);
 }
 
 var ajaxRequest = function (URL, reqStr, doneFunc, failFunc) {

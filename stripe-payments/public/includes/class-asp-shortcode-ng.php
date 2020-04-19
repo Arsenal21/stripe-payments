@@ -159,10 +159,17 @@ class ASP_Shortcode_NG {
 			$shipping = 0;
 		}
 
-		$tax = $item->get_tax();
+		$tax = isset( $atts['tax'] ) ? $atts['tax'] : $item->get_tax();
 
-		if ( ! $tax ) {
+		if ( ! $tax || $tax < 0 ) {
 			$tax = 0;
+		}
+
+		if ( isset( $atts['tax'] ) ) {
+			//save tax overidden data to session
+			$uniq_id = uniqid( 'asp_button', true );
+			$sess    = ASP_Session::get_instance();
+			$sess->set_transient_data( 'overriden_data_' . $uniq_id, array( 'tax' => $tax ) );
 		}
 
 		$quantity = $item->get_quantity();
@@ -230,7 +237,6 @@ class ASP_Shortcode_NG {
 				'custom_quantity'   => get_post_meta( $id, 'asp_product_custom_quantity', true ),
 				'button_text'       => $button_text,
 				'description'       => get_post_meta( $id, 'asp_product_description', true ),
-				'url'               => $url,
 				'thankyou_page_url' => $thankyou_page,
 				'item_logo'         => $item_logo,
 				'billing_address'   => $billing_address,
@@ -238,6 +244,7 @@ class ASP_Shortcode_NG {
 				'custom_field'      => $custom_field,
 				'compat_mode'       => $compat_mode,
 				'button_only'       => isset( $atts['button_only'] ) ? intval( $atts['button_only'] ) : null,
+				'btn_uniq_id'       => isset( $uniq_id ) ? $uniq_id : '',
 			);
 			//this would pass additional shortcode parameters from asp_product shortcode
 			$sc_params = array_merge( $atts, $sc_params );
@@ -537,13 +544,16 @@ class ASP_Shortcode_NG {
 
 		$home_url = get_home_url( null, '/' );
 
-		$iframe_url = add_query_arg(
-			array(
-				'asp_action' => 'show_pp',
-				'product_id' => $product_id,
-			),
-			$home_url
+		$url_params = array(
+			'asp_action' => 'show_pp',
+			'product_id' => $product_id,
 		);
+
+		if ( ! empty( $atts['btn_uniq_id'] ) ) {
+			$url_params['btn_uniq_id'] = $atts['btn_uniq_id'];
+		}
+
+		$iframe_url = add_query_arg( $url_params, $home_url );
 
 		$data = array(
 			'is_live'                  => $this->asp_main->is_live,
@@ -577,6 +587,7 @@ class ASP_Shortcode_NG {
 			'stock_items'              => $stock_items,
 			'currencyFormat'           => $display_settings,
 			'displayStr'               => $display_str,
+			'thankyou_page_url'        => $thankyou_page_url,
 			'show_custom_amount_input' => false,
 		);
 
@@ -625,7 +636,8 @@ class ASP_Shortcode_NG {
 			. '</div>';
 
 		$output .= '<script>';
-		$output .= 'if(typeof jQuery!=="undefined") {jQuery(document).ready(function() {new stripeHandlerNG(' . wp_json_encode( $data ) . ');})} else { if (typeof wpaspInitOnDocReady==="undefined") {wpaspInitOnDocReady=[];} wpaspInitOnDocReady.push(' . wp_json_encode( $data ) . ');}';
+		$output .= 'var asp_data_' . $uniq_id . ' = ' . wp_json_encode( $data ) . ';';
+		$output .= 'if(typeof jQuery!=="undefined") {jQuery(document).ready(function() {new stripeHandlerNG(asp_data_' . $uniq_id . ');});} else { if (typeof wpaspInitOnDocReady==="undefined") {var wpaspInitOnDocReady=[];} wpaspInitOnDocReady.push(asp_data_' . $uniq_id . ');}';
 		$output .= '</script>';
 
 		$prefetch = $this->asp_main->get_setting( 'frontend_prefetch_scripts' );

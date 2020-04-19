@@ -41,6 +41,10 @@ table.asp-shortcode-options-table th, table.asp-shortcode-options-table td {
 	padding: 0;
 }
 
+.wp-asp-product-meta-box-title {
+	font-size: 1.3em;
+}
+
 fieldset legend {
 	border-bottom: 1px solid #f7f7f7;
 	width: 100%;
@@ -512,8 +516,8 @@ div.postbox.yellowish {
 	position: relative;
 	display: inline-block;
 	cursor: help;
-	vertical-align: middle;
-	color: #cdcdcd;
+	vertical-align: text-bottom;
+	color: #aaa;
 }
 
 .wp-asp-help:hover {
@@ -521,7 +525,6 @@ div.postbox.yellowish {
 }
 
 .wp-asp-help .dashicons {
-	font-size: 180%;
 	height: auto;
 	width: auto;
 }
@@ -530,7 +533,12 @@ div.postbox.yellowish {
 	visibility: visible;
 }
 
+.wp-asp-help .wp-asp-help-text p {
+	font-size: 0.95em;
+}
+
 .wp-asp-help .wp-asp-help-text {
+	font-size: 0.95em;
 	min-width: 200px;
 	top: -10px;
 	left: 50%;
@@ -574,7 +582,7 @@ div.postbox.yellowish {
 		float: right;
 	}
 	.wp-asp-help .wp-asp-help-text {
-		min-width: 200px;
+		min-width: auto;
 		top: 50%;
 		right: 100%;
 		left: auto;

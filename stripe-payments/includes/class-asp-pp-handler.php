@@ -28,6 +28,9 @@ class ASP_PP_Handler {
 	public function add_ajax_handlers() {
 		add_action( 'wp_ajax_asp_pp_req_token', array( $this, 'handle_request_token' ) );
 		add_action( 'wp_ajax_nopriv_asp_pp_req_token', array( $this, 'handle_request_token' ) );
+
+		add_action( 'wp_ajax_asp_pp_save_form_data', array( $this, 'save_form_data' ) );
+		add_action( 'wp_ajax_nopriv_asp_pp_save_form_data', array( $this, 'save_form_data' ) );
 	}
 
 	public function showpp() {
@@ -296,6 +299,8 @@ class ASP_PP_Handler {
 
 		$data['customer_default_country'] = $default_country;
 
+		$data['hide_amount_input'] = $this->item->get_meta( 'asp_product_hide_amount_input' );
+
 		$data['show_your_order'] = get_post_meta( $product_id, 'asp_product_show_your_order', true );
 		$data['show_your_order'] = $data['show_your_order'] ? 1 : 0;
 
@@ -408,6 +413,11 @@ class ASP_PP_Handler {
 
 		$a['item'] = $this->item;
 
+		$btn_uniq_id = filter_input( INPUT_GET, 'btn_uniq_id', FILTER_SANITIZE_STRING );
+		if ( ! empty( $btn_uniq_id ) ) {
+			$a['btn_uniq_id'] = $btn_uniq_id;
+		}
+
 		$a['vars']['vars'] = array(
 			'data'           => $data,
 			'stripe_key'     => ! empty( $data['stripe_key'] ) ? $data['stripe_key'] : $a['stripe_key'],
@@ -440,6 +450,7 @@ class ASP_PP_Handler {
 				'strStartFreeTrial'           => apply_filters( 'asp_customize_text_msg', __( 'Start Free Trial', 'stripe-payments' ), 'start_free_trial' ),
 				'strInvalidCFValidationRegex' => __( 'Invalid validation RegEx: ', 'stripe-payments' ),
 				'strGetForFree'               => __( 'Purchase for Free', 'stripe-payments' ),
+				'strCurrencyNotSupported'     => __( 'Currency not supported for this payment method.', 'stripe-payments' ),
 			),
 		);
 
@@ -547,6 +558,7 @@ class ASP_PP_Handler {
 						//we have address
 						$addr = array(
 							'line1'   => $billing_details->address->line1,
+							'state'   => isset( $billing_details->address->state ) ? $billing_details->address->state : null,
 							'city'    => isset( $billing_details->address->city ) ? $billing_details->address->city : null,
 							'country' => isset( $billing_details->address->country ) ? $billing_details->address->country : null,
 						);
@@ -574,6 +586,7 @@ class ASP_PP_Handler {
 						//we have address
 						$addr = array(
 							'line1'   => $shipping_details->address->line1,
+							'state'   => isset( $shipping_details->address->state ) ? $shipping_details->address->state : null,
 							'city'    => isset( $shipping_details->address->city ) ? $shipping_details->address->city : null,
 							'country' => isset( $shipping_details->address->country ) ? $shipping_details->address->country : null,
 						);
@@ -701,6 +714,14 @@ class ASP_PP_Handler {
 			$output      .= $this->tpl_cf;
 			$this->tpl_cf = '';
 		return $output;
+	}
+
+	public function save_form_data() {
+		$out['success'] = true;
+		$sess           = ASP_Session::get_instance();
+		parse_str( $_POST['form_data'], $form_data );
+		$sess->set_transient_data( 'asp_pp_form_data', $form_data );
+		wp_send_json( $out );
 	}
 
 	public function handle_check_coupon() {

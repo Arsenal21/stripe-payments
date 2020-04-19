@@ -75,16 +75,17 @@ class ASP_Payment_Data {
 		if ( false !== $this->billing_details_obj ) {
 			return $this->billing_details_obj;
 		}
-		$billing_addr              = new stdClass();
-		$bd                        = $this->obj->charges->data[0]->billing_details;
-		$billing_addr->name        = $this->obj->charges->data[0]->billing_details->name;
-		$billing_addr->email       = $this->obj->charges->data[0]->billing_details->email;
-		$billing_addr->line1       = isset( $bd->address->line1 ) ? $bd->address->line1 : '';
-		$billing_addr->line2       = isset( $bd->address->line2 ) ? $bd->address->line2 : '';
-		$billing_addr->postal_code = isset( $bd->address->postal_code ) ? $bd->address->postal_code : '';
-		$billing_addr->city        = isset( $bd->address->city ) ? $bd->address->city : '';
-		$billing_addr->state       = isset( $bd->address->state ) ? $bd->address->state : '';
-		$billing_addr->country     = isset( $bd->address->country ) ? $bd->address->country : '';
+		$billing_addr = new stdClass();
+		$bd           = $this->obj->charges->data[0]->billing_details;
+
+		$billing_addr->name        = ! empty( $bd->name ) ? $bd->name : $this->obj->customer->name;
+		$billing_addr->email       = ! empty( $bd->email ) ? $bd->email : $this->obj->customer->email;
+		$billing_addr->line1       = isset( $bd->address->line1 ) ? $bd->address->line1 : isset( $this->obj->customer->address->line1 ) ? $this->obj->customer->address->line1 : '';
+		$billing_addr->line2       = isset( $bd->address->line2 ) ? $bd->address->line2 : isset( $this->obj->customer->address->line2 ) ? $this->obj->customer->address->line2 : '';
+		$billing_addr->postal_code = isset( $bd->address->postal_code ) ? $bd->address->postal_code : isset( $this->obj->customer->address->postal_code ) ? $this->obj->customer->address->postal_code : '';
+		$billing_addr->city        = isset( $bd->address->city ) ? $bd->address->city : isset( $this->obj->customer->address->city ) ? $this->obj->customer->address->city : '';
+		$billing_addr->state       = isset( $bd->address->state ) ? $bd->address->state : isset( $this->obj->customer->address->state ) ? $this->obj->customer->address->state : '';
+		$billing_addr->country     = isset( $bd->address->country ) ? $bd->address->country : isset( $this->obj->customer->address->country ) ? $this->obj->customer->address->country : '';
 
 		$this->billing_details_obj = $billing_addr;
 		return $this->billing_details_obj;
@@ -95,17 +96,14 @@ class ASP_Payment_Data {
 			return $this->shipping_details_obj;
 		}
 		$shipping_addr = new stdClass();
-		$sd            = $this->obj->charges->data[0]->shipping;
+
+		$sd = $this->obj->charges->data[0]->shipping;
 		if ( empty( $sd ) ) {
-			if ( empty( $this->customer_obj ) && ! empty( $this->obj->customer ) ) {
-				try {
-					$this->customer_obj = \Stripe\Customer::retrieve( $this->obj->customer );
-					$sd                 = $this->customer_obj->shipping;
-				} catch ( Exception $e ) {
-					$this->last_error = $e->getMessage();
-				}
+			if ( ! empty( $this->obj->customer ) ) {
+					$sd = $this->obj->customer->shipping;
 			}
 		}
+
 		$shipping_addr->name        = isset( $sd->name ) ? $sd->name : '';
 		$shipping_addr->line1       = isset( $sd->address->line1 ) ? $sd->address->line1 : '';
 		$shipping_addr->line2       = isset( $sd->address->line2 ) ? $sd->address->line2 : '';
@@ -148,7 +146,12 @@ class ASP_Payment_Data {
 
 	protected function load_from_obj() {
 		try {
-			$obj = \Stripe\PaymentIntent::retrieve( $this->obj_id );
+			$obj = \Stripe\PaymentIntent::retrieve(
+				array(
+					'id'     => $this->obj_id,
+					'expand' => array( 'customer' ),
+				)
+			);
 		} catch ( Exception $e ) {
 			$this->last_error     = $e->getMessage();
 			$this->last_error_obj = $e;

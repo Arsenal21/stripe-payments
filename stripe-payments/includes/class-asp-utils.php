@@ -578,6 +578,7 @@ class ASP_Utils {
 			'IDR' => array( __( 'Indonesia Rupiah (IDR)', 'stripe-payments' ), 'Rp' ),
 			'ILS' => array( __( 'Israeli Shekel (ILS)', 'stripe-payments' ), '₪' ),
 			'JPY' => array( __( 'Japanese Yen (JPY)', 'stripe-payments' ), '¥' ),
+			'LBP' => array( __( 'Lebanese Pound (LBP)', 'stripe-payments' ), 'ل.ل' ),
 			'MYR' => array( __( 'Malaysian Ringgits (MYR)', 'stripe-payments' ), 'RM' ),
 			'MXN' => array( __( 'Mexican Peso (MXN)', 'stripe-payments' ), 'MX$' ),
 			'NZD' => array( __( 'New Zealand Dollar (NZD)', 'stripe-payments' ), 'NZ$' ),
@@ -585,6 +586,7 @@ class ASP_Utils {
 			'PHP' => array( __( 'Philippine Pesos (PHP)', 'stripe-payments' ), '₱' ),
 			'PLN' => array( __( 'Polish Zloty (PLN)', 'stripe-payments' ), 'zł' ),
 			'RUB' => array( __( 'Russian Ruble (RUB)', 'stripe-payments' ), '₽' ),
+			'SAR' => array( __( 'Saudi Riyal (SAR)', 'stripe-payments' ), 'ر.س' ),
 			'SGD' => array( __( 'Singapore Dollar (SGD)', 'stripe-payments' ), 'SG$' ),
 			'ZAR' => array( __( 'South African Rand (ZAR)', 'stripe-payments' ), 'R' ),
 			'KRW' => array( __( 'South Korean Won (KRW)', 'stripe-payments' ), '₩' ),
@@ -801,6 +803,11 @@ class ASP_Utils {
 				}
 			}
 		}
+	}
+
+	public static function gen_help_popup( $contents ) {
+		return '<div class="wp-asp-help"><i class="dashicons dashicons-editor-help"></i><div class="wp-asp-help-text">' . $contents . '</div></div>';
+
 	}
 
 }
