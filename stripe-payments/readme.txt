@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 4.7
 Tested up to: 5.4
 Requires PHP: 5.6
-Stable tag: 2.0.26t5
+Stable tag: 2.0.26
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -164,6 +164,7 @@ None.
 - Shipping address is now properly saved if payment is made via payment addons.
 - Made prefetch work for products attached via CSS and link URL.
 - Upgraded Stripe PHP SDK to version 7.28.1.
+- PHP 7.4 support.
 - Minor improvements, bugfixes and optimizations.
 
 = 2.0.25 =
