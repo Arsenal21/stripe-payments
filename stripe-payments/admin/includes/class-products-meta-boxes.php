@@ -156,8 +156,11 @@ class ASPProductsMetaboxes {
 	public function display_pdf_stamper_meta_box( $post ) {
 		$current_val = get_post_meta( $post->ID, 'asp_product_pdf_stamper_enabled', true );
 		?>
-		<label><input type="checkbox" name="asp_product_pdf_stamper_enabled" value="1"<?php echo $current_val ? ' checked' : ''; ?>> <?php echo esc_html_e( 'Stamp PDF File', 'stripe-payments' ); ?></label>
-		<p class="description"><?php echo esc_html_e( 'Enable if this product is an eBook and you want to stamp it with customer details upon purchase.', 'stripe-payments' ); ?></p>
+		<label><input type="checkbox" name="asp_product_pdf_stamper_enabled" value="1"<?php echo $current_val ? ' checked' : ''; ?>> <?php echo esc_html_e( 'Stamp the PDF File', 'stripe-payments' ); ?></label>
+		<p class="description">
+                    <?php echo esc_html_e( 'If this product is an eBook and you want to stamp this PDF file with customer details upon purchase then use this option. ', 'stripe-payments' ); ?>
+                    <?php echo _e( 'It requires the <a href="https://www.tipsandtricks-hq.com/wp-pdf-stamper-plugin-2332" target="_blank">WP PDF Stamper plugin</a> to be installed on this site.', 'stripe-payments' ); ?>
+                </p>
 		<?php
 	}
 
@@ -211,17 +214,17 @@ class ASPProductsMetaboxes {
 <p><?php echo sprintf( __( 'You can find documentation on variations %s', 'stripe-payments' ), '<a href="https://s-plugins.com/creating-variable-products-using-the-stripe-payments-plugin/" target="_blank">here</a>' ); ?></p>
 		<?php
 		if ( class_exists( 'ASPSUB_main' ) ) {
-			echo '<p>' . esc_html_e( 'Note: variations for subscriptions products are currently not supported.', 'stripe-payments' ) . '</p>';
+			echo '<p>' . esc_html_e( 'Note: variations for subscription products are currently not supported.', 'stripe-payments' ) . '</p>';
 		}
 		$current_hide_amount_input = get_post_meta( $post->ID, 'asp_product_hide_amount_input', true );
 		?>
 <label>
-	<input type="checkbox" name="asp_product_hide_amount_input" value="1" <?php echo esc_attr( ! empty( $current_hide_amount_input ) ? ' checked' : '' ); ?>> <?php esc_html_e( 'Use variations to construct product price', 'stripe-payments' ); ?>
+	<input type="checkbox" name="asp_product_hide_amount_input" value="1" <?php echo esc_attr( ! empty( $current_hide_amount_input ) ? ' checked' : '' ); ?>> <?php esc_html_e( 'Use only variations to construct final product price', 'stripe-payments' ); ?>
 </label>
 <p class="description">
-		<?php esc_html_e( 'When enabled, it allows your customers to construct product price by using variations.', 'stripe-payments' ); ?>
+		<?php esc_html_e( 'When enabled, the total product price will be calculated by using the variation prices only. Useful if you do not want to have a base price for this product.', 'stripe-payments' ); ?>
 	<br />
-		<?php esc_html_e( 'Note this only works when product price is set to 0.', 'stripe-payments' ); ?>
+		<?php esc_html_e( 'Note: To enable this option, you will need to set the product price to 0.', 'stripe-payments' ); ?>
 </p>
 <br />
 		<?php

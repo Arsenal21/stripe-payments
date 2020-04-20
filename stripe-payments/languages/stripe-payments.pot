@@ -1508,13 +1508,11 @@ msgid "None"
 msgstr ""
 
 #: stripe-payments/admin/includes/class-products-meta-boxes.php:159
-msgid "Stamp PDF File"
+msgid "Stamp the PDF File"
 msgstr ""
 
 #: stripe-payments/admin/includes/class-products-meta-boxes.php:160
-msgid ""
-"Enable if this product is an eBook and you want to stamp it with customer "
-"details upon purchase."
+msgid "If this product is an eBook and you want to stamp this PDF file with customer details upon purchase then use this option. "
 msgstr ""
 
 #: stripe-payments/admin/includes/class-products-meta-boxes.php:165
@@ -1579,21 +1577,19 @@ msgstr ""
 
 #: stripe-payments/admin/includes/class-products-meta-boxes.php:214
 msgid ""
-"Note: variations for subscriptions products are currently not supported."
+"Note: variations for subscription products are currently not supported."
 msgstr ""
 
 #: stripe-payments/admin/includes/class-products-meta-boxes.php:219
-msgid "Use variations to construct product price"
+msgid "Use only variations to construct final product price"
 msgstr ""
 
 #: stripe-payments/admin/includes/class-products-meta-boxes.php:222
-msgid ""
-"When enabled, it allows your customers to construct product price by using "
-"variations."
+msgid "When enabled, the total product price will be calculated by using the variation prices only. Useful if you do not want to have a base price for this product."
 msgstr ""
 
 #: stripe-payments/admin/includes/class-products-meta-boxes.php:224
-msgid "Note this only works when product price is set to 0."
+msgid "Note: To enable this option, you will need to set the product price to 0."
 msgstr ""
 
 #: stripe-payments/admin/includes/class-products-meta-boxes.php:235
