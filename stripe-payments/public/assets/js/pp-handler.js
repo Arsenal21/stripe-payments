@@ -856,7 +856,7 @@ function handlePayment() {
 		if (vars.data.billing_address) {
 			opts.address_line1 = bAddr.value;
 			opts.address_city = bCity.value;
-			opts.address_state = bState.value;
+			opts.address_state = bState === null ? '' : bState.value,
 			opts.address_country = bCountry.value || bCountry.options[bCountry.selectedIndex].value;
 			if (postal_code) {
 				opts.address_zip = postal_code;

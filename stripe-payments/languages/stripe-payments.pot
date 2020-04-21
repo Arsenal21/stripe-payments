@@ -128,7 +128,7 @@ msgid ""
 msgstr ""
 
 #: stripe-payments/admin/class-asp-admin.php:398
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:194
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:197
 msgid "Currency"
 msgstr ""
 
@@ -137,7 +137,7 @@ msgid "Currency Symbol"
 msgstr ""
 
 #: stripe-payments/admin/class-asp-admin.php:422
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:525
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:528
 msgid "Button Text"
 msgstr ""
 
@@ -1511,48 +1511,57 @@ msgstr ""
 msgid "Stamp the PDF File"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:160
-msgid "If this product is an eBook and you want to stamp this PDF file with customer details upon purchase then use this option. "
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:161
+msgid ""
+"If this product is an eBook and you want to stamp this PDF file with "
+"customer details upon purchase then use this option. "
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:165
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:162
+msgid ""
+"It requires the <a href=\"https://www.tipsandtricks-hq.com/wp-pdf-stamper-"
+"plugin-2332\" target=\"_blank\">WP PDF Stamper plugin</a> to be installed on "
+"this site."
+msgstr ""
+
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:168
 msgid "Add a description for your product."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:174
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:177
 msgid ""
 "You can optionally add a custom short description for the item/product/"
 "service that will get shown in the stripe checkout/payment window of the "
 "item."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:184
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:187
 #: stripe-payments/admin/includes/class-products.php:135
 msgid "Price"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:189
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:192
 msgid ""
 "Item price. Numbers only, no need to put currency symbol. Example: 99.95"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:190
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:193
 msgid ""
 "Leave it blank if you want your customers to enter the amount themselves (e."
 "g. for donation button)."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:197
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:200
 msgid ""
 "Leave \"(Default)\" option selected if you want to use currency specified on "
 "settings page."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:199
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:202
 msgid "Allow customers to specify currency"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:201
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:204
 msgid ""
 "When enabled, it allows the customers to select the currency which is used "
 "to make the payment. It does not dynamically change the price. No dynamic "
@@ -1560,277 +1569,280 @@ msgid ""
 "type product."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:207
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:210
 msgid ""
 "Enter price modification - amount that will be added to product price if "
 "particular variation is selected."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:209
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:212
 msgid "Put negative value if you want to substract the amount instead."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:211
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:214
 #, php-format
 msgid "You can find documentation on variations %s"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:214
-msgid ""
-"Note: variations for subscription products are currently not supported."
-msgstr ""
-
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:219
-msgid "Use only variations to construct final product price"
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:217
+msgid "Note: variations for subscription products are currently not supported."
 msgstr ""
 
 #: stripe-payments/admin/includes/class-products-meta-boxes.php:222
-msgid "When enabled, the total product price will be calculated by using the variation prices only. Useful if you do not want to have a base price for this product."
+msgid "Use only variations to construct final product price"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:224
-msgid "Note: To enable this option, you will need to set the product price to 0."
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:225
+msgid ""
+"When enabled, the total product price will be calculated by using the "
+"variation prices only. Useful if you do not want to have a base price for "
+"this product."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:235
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:227
+msgid ""
+"Note: To enable this option, you will need to set the product price to 0."
+msgstr ""
+
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:238
 msgid "No variations configured for this product."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:242
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:245
 msgid "Create Group"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:247
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:250
 msgid "Group Name:"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:250
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:253
 msgid "Delete group"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:253
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:256
 msgid "Display As:"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:255
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:258
 msgid "Dropdown"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:256
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:259
 msgid "Radio Buttons"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:262
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:265
 msgctxt "Variation name"
 msgid "Name"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:263
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:266
 msgid "Price Mod"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:264
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:267
 msgid "Product URL"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:268
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:271
 msgid "Add Variation"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:279
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:282
 msgid "Select from Media Library"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:282
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:285
 msgid "Delete variation"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:298
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:301
 msgid "Are you sure you want to delete this group?"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:299
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:302
 msgid "Are you sure you want to delete this variation?"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:311
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:314
 msgid "Shipping Cost"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:316
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:319
 msgid "Numbers only, no need to put currency symbol. Example: 5.90"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:318
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:321
 msgid ""
 "Leave it blank if you are not shipping your product or not charging "
 "additional shipping costs."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:323
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:326
 msgid "Tax (%)"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:328
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:331
 msgid ""
 "Enter tax (in percent) which should be added to product price during "
 "purchase."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:330
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:333
 msgid "Leave it blank if you don't want to apply tax."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:342
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:345
 msgid ""
 "By default, if you leave this field empty, the product quantity will be set "
 "to 1. You can change this behavior by using the following options."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:346
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:349
 msgid "Allow users to specify quantity"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:348
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:351
 msgid "When checked, users can enter the quantity they want to buy."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:350
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:353
 msgid "Set Quantity:"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:353
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:356
 msgid ""
 "If you want to use a set quantity for this item then enter the value in this "
 "field."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:359
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:362
 msgid "Enable stock control"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:361
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:364
 msgid ""
 "When enabled, you can specify the quantity available for this product. It "
 "will be decreased each time the item is purchased. When stock reaches zero, "
 "an \"Out of stock\" message will be displayed instead of the buy button."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:363
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:366
 msgid "Quantity Available:"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:366
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:369
 msgid "Specify the quantity available for this product."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:374
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:377
 msgid "URL of your product (if you're selling digital products)."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:380
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:383
 msgid ""
 "Manually enter a valid URL of the file in the text box below, or click "
 "\"Select File\" button to upload (or choose) the downloadable file."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:384
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:402
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:387
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:405
 msgid "Select File"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:388
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:391
 msgid "Steps to upload a file or choose one from your media library:"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:390
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:393
 msgid "Hit the \"Select File\" button."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:391
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:394
 msgid "Upload a new file or choose an existing one from your media library."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:392
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:395
 msgid ""
 "Click the \"Insert\" button, this will populate the uploaded file's URL in "
 "the above text field."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:404
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:455
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:407
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:458
 msgid "Insert"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:429
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:432
 msgid ""
 "Manually enter a valid URL, or click \"Select Image\" to upload (or choose) "
 "the file thumbnail image."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:433
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:453
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:436
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:456
 msgid "Select Image"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:434
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:437
 msgid "Remove Image"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:443
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:446
 msgid "Don't use product thumbnail in Stripe pop-up"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:445
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:448
 msgid ""
 "Use this checkbox if you do not want to show the product thumbnail in Stripe "
 "checkout popup."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:485
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:488
 msgid "Collect Address on Checkout"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:486
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:489
 msgid "Enable this to collect customer address on checkout."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:493
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:496
 msgid "Collect Both Billing And Shipping Addresses"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:500
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:503
 msgid "Collect Billing Address Only"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:509
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:512
 msgid ""
 "Enter Thank You page URL. Leave it blank if you want ot use default Thank "
 "You page."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:511
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:514
 msgid ""
 "You can read how to customize messages on Thank You page <a href=\"https://s-"
 "plugins.com/customize-the-thank-page-message-of-stripe-payments-plugin/\" "
 "target=\"_blank\">in the documentation</a>."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:524
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:527
 msgid "Button Options"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:528
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:531
 msgid ""
 "Specify text to be displayed on the button. Leave it blank to use button "
 "text specified on settings page."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:529
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:532
 msgid "Button CSS Class"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:532
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:535
 msgid ""
 "CSS class to be assigned to the button. This is used for styling purposes. "
 "You can get additional information <a href=\"https://s-plugins.com/customize-"
@@ -1838,109 +1850,109 @@ msgid ""
 "tutorial</a>."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:533
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:536
 #: stripe-payments/admin/views/blocks.php:23
 msgid "Show Button Only"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:534
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:537
 #: stripe-payments/admin/views/blocks.php:24
 msgid ""
 "Check this box if you just want to show the button only without any "
 "additional product info."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:537
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:540
 msgid "Payment Popup Options"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:538
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:541
 msgid "Show Order Total On Payment Popup"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:539
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:542
 msgid ""
 "If enabled, an additional \"Your order\" section with itemized product info "
 "(shipping, tax amount, variations etc) will be displayed on payment popup."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:556
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:559
 msgid ""
 "Custom field is disabled. Configure custom field in the settings menu of "
 "this plugin to enable it."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:560
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:563
 msgid "Select how Custom Field display should be handled for this product."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:561
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:572
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:564
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:575
 msgid "Use Global Setting"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:562
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:573
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:565
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:576
 msgid "Enabled"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:563
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:574
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:566
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:577
 msgid "Disabled"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:571
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:574
 msgid "Select how Coupons should be handled for this product."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:581
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:584
 msgid "Force Test Mode"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:582
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:585
 msgid ""
 "When checked, product stays in test mode regardless of the global \"Live Mode"
 "\" swtich."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:599
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:602
 #: stripe-payments/admin/includes/class-products.php:137
 msgid "Shortcode"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:601
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:604
 msgid "Use this shortcode to display this product."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:604
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:607
 msgid "CSS Class"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:606
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:609
 msgid "Attach this product to any html element by adding this CSS class to it."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:609
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:612
 msgid "Link URL"
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:611
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:614
 msgid ""
 "Use this URL to create a custom payment button using a text or image link."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:630
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:633
 msgid "Please specify product name."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:752
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:755
 #, php-format
 msgid ""
 "<b>Invalid product price</b>: minimum price in %1$s should be %2$s, you "
 "specified %3$s. This price limitation comes from Stripe."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:761
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:764
 #, php-format
 msgid ""
 "<b>Invalid product price</b>: maximum allowed product price is %1$s, you "
