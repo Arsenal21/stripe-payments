@@ -155,7 +155,7 @@ None.
 == Changelog ==
 
 = 2.0.26.1 =
-- Fixed issue with Subscription addon when `State` field is disabled.
+- Fixed a minor checkout issue with the Subscription addon when the `State` field is disabled.
 
 = 2.0.26 =
 - Added option to construct product price using variations only.
