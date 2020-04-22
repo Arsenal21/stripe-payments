@@ -1912,7 +1912,7 @@ msgstr ""
 #: stripe-payments/admin/includes/class-products-meta-boxes.php:585
 msgid ""
 "When checked, product stays in test mode regardless of the global \"Live Mode"
-"\" swtich."
+"\" switch."
 msgstr ""
 
 #: stripe-payments/admin/includes/class-products-meta-boxes.php:602

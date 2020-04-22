@@ -582,7 +582,7 @@ jQuery(document).ready(function($) {
 		$current_val = get_post_meta( $post->ID, 'asp_product_force_test_mode', true );
 		?>
 		<label><input type="checkbox" name="asp_product_force_test_mode" value="1"<?php echo $current_val ? ' checked' : ''; ?>> <?php echo esc_html_e( 'Force Test Mode', 'stripe-payments' ); ?></label>
-		<p class="description"><?php echo esc_html_e( 'When checked, product stays in test mode regardless of the global "Live Mode" swtich.', 'stripe-payments' ); ?></p>
+		<p class="description"><?php echo esc_html_e( 'When checked, product stays in test mode regardless of the global "Live Mode" switch.', 'stripe-payments' ); ?></p>
 		<?php
 	}
 
