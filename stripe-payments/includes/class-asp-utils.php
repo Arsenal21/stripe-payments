@@ -807,6 +807,20 @@ class ASP_Utils {
 
 	public static function gen_help_popup( $contents ) {
 		return '<div class="wp-asp-help"><i class="dashicons dashicons-editor-help"></i><div class="wp-asp-help-text">' . $contents . '</div></div>';
+	}
+
+	private static function generate_ckey() {
+		return md5( uniqid() );
+	}
+
+	public static function get_ckey( $regen = false ) {
+		$ckey = get_option( 'asp_cache_key' );
+
+		if ( empty( $ckey ) || $regen ) {
+			$ckey = self::generate_ckey();
+			update_option( 'asp_cache_key', $ckey );
+		}
+		return $ckey;
 
 	}
 

@@ -553,6 +553,12 @@ class ASP_Shortcode_NG {
 			$url_params['btn_uniq_id'] = $atts['btn_uniq_id'];
 		}
 
+		$prefetch = $this->asp_main->get_setting( 'frontend_prefetch_scripts' );
+
+		if ( $prefetch ) {
+			$url_params['ckey'] = ASP_Utils::get_ckey();
+		}
+
 		$iframe_url = add_query_arg( $url_params, $home_url );
 
 		$data = array(
