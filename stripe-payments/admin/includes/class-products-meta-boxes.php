@@ -158,9 +158,9 @@ class ASPProductsMetaboxes {
 		?>
 		<label><input type="checkbox" name="asp_product_pdf_stamper_enabled" value="1"<?php echo $current_val ? ' checked' : ''; ?>> <?php echo esc_html_e( 'Stamp the PDF File', 'stripe-payments' ); ?></label>
 		<p class="description">
-                    <?php echo esc_html_e( 'If this product is an eBook and you want to stamp this PDF file with customer details upon purchase then use this option. ', 'stripe-payments' ); ?>
-                    <?php echo _e( 'It requires the <a href="https://www.tipsandtricks-hq.com/wp-pdf-stamper-plugin-2332" target="_blank">WP PDF Stamper plugin</a> to be installed on this site.', 'stripe-payments' ); ?>
-                </p>
+					<?php echo esc_html_e( 'If this product is an eBook and you want to stamp this PDF file with customer details upon purchase then use this option. ', 'stripe-payments' ); ?>
+					<?php echo _e( 'It requires the <a href="https://www.tipsandtricks-hq.com/wp-pdf-stamper-plugin-2332" target="_blank">WP PDF Stamper plugin</a> to be installed on this site.', 'stripe-payments' ); ?>
+				</p>
 		<?php
 	}
 
@@ -627,6 +627,9 @@ jQuery(document).ready(function($) {
 			return;
 		}
 		if ( isset( $post_id ) ) {
+			//regen ckey
+			ASP_Utils::get_ckey( true );
+
 			$title = get_the_title( $post_id );
 			if ( empty( $title ) ) {
 				//Display error message of product name is empty

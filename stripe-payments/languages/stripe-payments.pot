@@ -924,95 +924,95 @@ msgstr ""
 msgid "Price number of decimals can't be empty."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1615
+#: stripe-payments/admin/class-asp-admin.php:1618
 msgid "Name of the purchased item"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1616
+#: stripe-payments/admin/class-asp-admin.php:1619
 msgid "Number of items purchased"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1617
+#: stripe-payments/admin/class-asp-admin.php:1620
 msgid "Item price. Example: 1000,00"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1618
+#: stripe-payments/admin/class-asp-admin.php:1621
 msgid "Item price with currency symbol. Example: $1,000.00"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1619
+#: stripe-payments/admin/class-asp-admin.php:1622
 msgid "The amount paid for the current transaction. Example: 1,000.00"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1620
+#: stripe-payments/admin/class-asp-admin.php:1623
 msgid ""
 "The amount paid for the current transaction with currency symbol. Example: "
 "$1,000.00"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1621
+#: stripe-payments/admin/class-asp-admin.php:1624
 msgid "Tax in percent. Example: 10%"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1622
+#: stripe-payments/admin/class-asp-admin.php:1625
 msgid "Formatted tax amount for single item. Example: $0.25"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1623
+#: stripe-payments/admin/class-asp-admin.php:1626
 msgid "Formatted shipping amount. Example: $2.50"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1624
+#: stripe-payments/admin/class-asp-admin.php:1627
 msgid "Item download URL (if it's set)"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1625
+#: stripe-payments/admin/class-asp-admin.php:1628
 msgid ""
 "The item details of the purchased product (this will include the download "
 "link for digital items)"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1626
+#: stripe-payments/admin/class-asp-admin.php:1629
 msgid "The unique transaction ID of the purchase"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1627
+#: stripe-payments/admin/class-asp-admin.php:1630
 msgid "Shipping address of the buyer"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1628
+#: stripe-payments/admin/class-asp-admin.php:1631
 msgid "Billing address of the buyer"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1629
+#: stripe-payments/admin/class-asp-admin.php:1632
 msgid "Customer name. Available only if collect billing address option enabled"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1630
+#: stripe-payments/admin/class-asp-admin.php:1633
 msgid "Email Address of the buyer"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1631
+#: stripe-payments/admin/class-asp-admin.php:1634
 msgid "Currency symbol. Example: $"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1632
+#: stripe-payments/admin/class-asp-admin.php:1635
 msgid "3-letter currency code. Example: USD"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1633
+#: stripe-payments/admin/class-asp-admin.php:1636
 msgid "The date of the purchase"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1634
+#: stripe-payments/admin/class-asp-admin.php:1637
 msgid "Custom field name and value (if enabled)"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1635
+#: stripe-payments/admin/class-asp-admin.php:1638
 msgid "Coupon code (if available)"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1655
+#: stripe-payments/admin/class-asp-admin.php:1658
 msgid "Click here to toggle tags hint"
 msgstr ""
 
@@ -1941,18 +1941,18 @@ msgid ""
 "Use this URL to create a custom payment button using a text or image link."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:633
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:636
 msgid "Please specify product name."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:755
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:758
 #, php-format
 msgid ""
 "<b>Invalid product price</b>: minimum price in %1$s should be %2$s, you "
 "specified %3$s. This price limitation comes from Stripe."
 msgstr ""
 
-#: stripe-payments/admin/includes/class-products-meta-boxes.php:764
+#: stripe-payments/admin/includes/class-products-meta-boxes.php:767
 #, php-format
 msgid ""
 "<b>Invalid product price</b>: maximum allowed product price is %1$s, you "
@@ -3732,7 +3732,7 @@ msgid ""
 "to operate."
 msgstr ""
 
-#: stripe-payments/public/includes/class-asp-shortcode-ng.php:689
+#: stripe-payments/public/includes/class-asp-shortcode-ng.php:695
 #: stripe-payments/public/includes/class-shortcode-asp.php:860
 #: stripe-payments/public/views/templates/default/payment-popup.php:173
 msgid "Enter amount"

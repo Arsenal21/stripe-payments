@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 4.7
 Tested up to: 5.4
 Requires PHP: 5.6
-Stable tag: 2.0.26.1
+Stable tag: 2.0.27
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -153,6 +153,11 @@ Yes, please visit Stripe Payments > Settings screen for options.
 None.
 
 == Changelog ==
+
+= 2.0.27 =
+- Added workaround for servers with aggressive caching when "Prefetch Payment Popup Scripts" option is enabled.
+- Removed dev debug lines from the code.
+- Fixed typos in text descriptions.
 
 = 2.0.26.1 =
 - Fixed a minor checkout issue with the Subscription addon when the `State` field is disabled.

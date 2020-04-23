@@ -1584,6 +1584,9 @@ class AcceptStripePayments_Admin {
 			set_transient( 'wp-asp-urlHash', $_POST['wp-asp-urlHash'], 300 );
 		}
 
+		//regen ckey
+		ASP_Utils::get_ckey( true );
+
 		return $output;
 	}
 

@@ -568,6 +568,7 @@ class AcceptStripePayments {
 			array(
 				'iframeUrl' => $iframe_url,
 				'prefetch'  => $prefetch,
+				'ckey'      => ASP_Utils::get_ckey(),
 			)
 		);
 
