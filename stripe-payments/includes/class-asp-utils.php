@@ -824,4 +824,8 @@ class ASP_Utils {
 
 	}
 
+	public static function url_to_https( $url ) {
+		return preg_replace( '/^http:\/\//i', 'https://', $url );
+	}
+
 }

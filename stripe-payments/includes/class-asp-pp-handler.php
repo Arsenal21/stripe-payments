@@ -174,6 +174,9 @@ class ASP_PP_Handler {
 
 		if ( ! get_post_meta( $product_id, 'asp_product_no_popup_thumbnail', true ) ) {
 			$item_logo = ASP_Utils::get_small_product_thumb( $product_id );
+			if ( $a['is_live'] ) {
+				$item_logo = ASP_Utils::url_to_https( $item_logo );
+			}
 		}
 
 		//stock control
@@ -356,7 +359,7 @@ class ASP_PP_Handler {
 			'src'    => 'https://js.stripe.com/v3/',
 		);
 
-		$site_url       = get_site_url();
+		$site_url       = $data['is_live'] ? get_site_url( null, '', 'https' ) : get_site_url();
 		$a['scripts'][] = array(
 			'src'    => $site_url . '/wp-includes/js/jquery/jquery.js?ver=1.12.4-wp',
 			'footer' => true,
