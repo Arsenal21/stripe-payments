@@ -261,6 +261,9 @@ class AcceptStripePaymentsShortcode {
 		$thumb_url = get_post_meta( $id, 'asp_product_thumbnail', true );
 
 		if ( $thumb_url ) {
+			if ( is_ssl() ) {
+				$thumb_url = ASP_Utils::url_to_https( $thumb_url );
+			}
 			$thumb_img = '<img src="' . $thumb_url . '">';
 		}
 

@@ -654,6 +654,9 @@ class ASP_Utils {
 			// we have one. Let's return it
 			$ret = $thumb_thumb;
 		}
+		if ( is_ssl() ) {
+			$ret = self::url_to_https( $ret );
+		}
 		return $ret;
 	}
 
