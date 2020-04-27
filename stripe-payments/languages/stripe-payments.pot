@@ -1465,7 +1465,7 @@ msgid "Coupons Settings"
 msgstr ""
 
 #: stripe-payments/admin/includes/class-products-meta-boxes.php:29
-#: stripe-payments/includes/class-asp-pp-handler.php:680
+#: stripe-payments/includes/class-asp-pp-handler.php:686
 #: stripe-payments/public/includes/class-shortcode-asp.php:178
 msgid "Custom Field"
 msgstr ""
@@ -2306,9 +2306,9 @@ msgstr ""
 
 #: stripe-payments/admin/views/admin.php:116
 #: stripe-payments/includes/class-asp-pp-handler.php:497
-#: stripe-payments/includes/class-asp-pp-handler.php:646
-#: stripe-payments/includes/class-asp-pp-handler.php:649
-#: stripe-payments/includes/class-asp-pp-handler.php:735
+#: stripe-payments/includes/class-asp-pp-handler.php:651
+#: stripe-payments/includes/class-asp-pp-handler.php:655
+#: stripe-payments/includes/class-asp-pp-handler.php:741
 msgid "Error occurred:"
 msgstr ""
 
@@ -2486,19 +2486,19 @@ msgstr ""
 msgid "Subtotal"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-process-ipn-ng.php:456
+#: stripe-payments/includes/class-asp-process-ipn-ng.php:461
 msgid "Product Name: "
 msgstr ""
 
-#: stripe-payments/includes/class-asp-process-ipn-ng.php:457
+#: stripe-payments/includes/class-asp-process-ipn-ng.php:462
 msgid "Quantity: "
 msgstr ""
 
-#: stripe-payments/includes/class-asp-process-ipn-ng.php:458
+#: stripe-payments/includes/class-asp-process-ipn-ng.php:463
 msgid "Item Price: "
 msgstr ""
 
-#: stripe-payments/includes/class-asp-process-ipn-ng.php:463
+#: stripe-payments/includes/class-asp-process-ipn-ng.php:468
 msgid "Total Amount: "
 msgstr ""
 

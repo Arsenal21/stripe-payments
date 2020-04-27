@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 4.7
 Tested up to: 5.4
 Requires PHP: 5.6
-Stable tag: 2.0.28t1
+Stable tag: 2.0.28t2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -155,7 +155,10 @@ None.
 == Changelog ==
 
 = WIP 2.0.28 =
-- Attempt to fix `insecure content` browser error on payment popup when product thumbnail is using `http` instead of `https`.
+- Coupon code is now saved in Stripe metadata.
+- Restored `Don't Create Order` settings option (was hidden by mistake few versions back).
+- Attempt to fix `mixed content` browser error on payment popup when product thumbnail is using `http` instead of `https`.
+- Resolved issue with APM addon when shipping address collection is enabled.
 
 = 2.0.27 =
 - Added workaround for servers with aggressive caching when "Prefetch Payment Popup Scripts" option is enabled.
