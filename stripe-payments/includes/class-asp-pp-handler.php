@@ -583,6 +583,8 @@ class ASP_PP_Handler {
 
 					if ( $shipping_details->name ) {
 						$shipping['name'] = $shipping_details->name;
+					} elseif ( ! empty( $customer_opts['name'] ) ) {
+						$shipping['name'] = $customer_opts['name'];
 					}
 
 					if ( isset( $shipping_details->address ) && isset( $shipping_details->address->line1 ) ) {
@@ -600,7 +602,9 @@ class ASP_PP_Handler {
 
 						$shipping['address'] = $addr;
 
-						$customer_opts['shipping'] = $shipping;
+						if ( ! empty( $shipping['name'] ) ) {
+							$customer_opts['shipping'] = $shipping;
+						}
 					}
 				}
 
@@ -643,10 +647,12 @@ class ASP_PP_Handler {
 				$intent = \Stripe\PaymentIntent::create( $pi_params );
 			}
 		} catch ( \Exception $e ) {
-			$out['err'] = __( 'Error occurred:', 'stripe-payments' ) . ' ' . $e->getMessage();
+			$out['shipping'] = wp_json_encode( $shipping );
+			$out['err']      = __( 'Error occurred:', 'stripe-payments' ) . ' ' . $e->getMessage();
 			wp_send_json( $out );
 		} catch ( \Throwable $e ) {
-			$out['err'] = __( 'Error occurred:', 'stripe-payments' ) . ' ' . $e->getMessage();
+			$out['shipping'] = wp_json_encode( $shipping );
+			$out['err']      = __( 'Error occurred:', 'stripe-payments' ) . ' ' . $e->getMessage();
 			wp_send_json( $out );
 		}
 
