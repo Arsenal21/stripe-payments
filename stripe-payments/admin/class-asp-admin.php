@@ -1067,7 +1067,7 @@ class AcceptStripePayments_Admin {
 			)
 		);
 		add_settings_field(
-			'dont_create_order',
+			'pp_additional_css',
 			__( 'Payment Popup Additional CSS', 'stripe-payments' ),
 			array( &$this, 'settings_field_callback' ),
 			$this->plugin_slug . '-advanced',
