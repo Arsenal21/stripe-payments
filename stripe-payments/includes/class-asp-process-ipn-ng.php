@@ -435,7 +435,7 @@ class ASP_Process_IPN_NG {
 		}
 
 		//Save coupon info to metadata if applicable
-		if ( $coupon_valid && isset( $coupon ) ) {
+		if ( $coupon_valid ) {
 			$metadata['Coupon Code'] = strtoupper( $coupon['code'] );
 		}
 
