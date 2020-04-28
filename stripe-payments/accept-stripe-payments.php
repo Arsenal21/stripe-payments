@@ -39,7 +39,7 @@ class ASPMain {
 
 		require_once WP_ASP_PLUGIN_PATH . 'includes/class-asp-utils.php';
 		require_once WP_ASP_PLUGIN_PATH . 'includes/class-asp-debug-logger.php';
-		require_once WP_ASP_PLUGIN_PATH . 'public/class-asp.php';
+		require_once WP_ASP_PLUGIN_PATH . 'includes/class-asp.php';
 		require_once WP_ASP_PLUGIN_PATH . 'admin/includes/class-products.php';
 		require_once WP_ASP_PLUGIN_PATH . 'admin/includes/class-coupons.php';
 		require_once WP_ASP_PLUGIN_PATH . 'admin/includes/class-order.php';
@@ -60,8 +60,8 @@ class ASPMain {
 		}
 
 		require_once WP_ASP_PLUGIN_PATH . 'includes/session-handler-class.php';
-		require_once WP_ASP_PLUGIN_PATH . 'public/includes/class-shortcode-asp.php';
-		require_once WP_ASP_PLUGIN_PATH . 'public/includes/class-asp-shortcode-ng.php';
+		require_once WP_ASP_PLUGIN_PATH . 'includes/shortcodes/class-shortcode-asp.php';
+		require_once WP_ASP_PLUGIN_PATH . 'includes/shortcodes/class-asp-shortcode-ng.php';
 
 		add_action( 'init', array( $this, 'init_handler' ), 0 );
 
