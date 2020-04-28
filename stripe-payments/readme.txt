@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 4.7
 Tested up to: 5.4
 Requires PHP: 5.6
-Stable tag: 2.0.28t2
+Stable tag: 2.0.28
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -154,7 +154,7 @@ None.
 
 == Changelog ==
 
-= WIP 2.0.28 =
+= 2.0.28 =
 - Coupon code is now saved in Stripe metadata.
 - Restored `Don't Create Order` settings option (was hidden by mistake few versions back).
 - Attempt to fix `mixed content` browser error on payment popup when product thumbnail is using `http` instead of `https`.
