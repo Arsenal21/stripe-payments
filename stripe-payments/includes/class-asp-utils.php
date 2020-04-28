@@ -654,6 +654,9 @@ class ASP_Utils {
 			// we have one. Let's return it
 			$ret = $thumb_thumb;
 		}
+		if ( is_ssl() ) {
+			$ret = self::url_to_https( $ret );
+		}
 		return $ret;
 	}
 
@@ -822,6 +825,10 @@ class ASP_Utils {
 		}
 		return $ckey;
 
+	}
+
+	public static function url_to_https( $url ) {
+		return preg_replace( '/^http:\/\//i', 'https://', $url );
 	}
 
 }

@@ -174,6 +174,9 @@ class ASP_PP_Handler {
 
 		if ( ! get_post_meta( $product_id, 'asp_product_no_popup_thumbnail', true ) ) {
 			$item_logo = ASP_Utils::get_small_product_thumb( $product_id );
+			if ( $a['is_live'] ) {
+				$item_logo = ASP_Utils::url_to_https( $item_logo );
+			}
 		}
 
 		//stock control
@@ -356,7 +359,7 @@ class ASP_PP_Handler {
 			'src'    => 'https://js.stripe.com/v3/',
 		);
 
-		$site_url       = get_site_url();
+		$site_url       = $data['is_live'] ? get_site_url( null, '', 'https' ) : get_site_url();
 		$a['scripts'][] = array(
 			'src'    => $site_url . '/wp-includes/js/jquery/jquery.js?ver=1.12.4-wp',
 			'footer' => true,
@@ -580,6 +583,8 @@ class ASP_PP_Handler {
 
 					if ( $shipping_details->name ) {
 						$shipping['name'] = $shipping_details->name;
+					} elseif ( ! empty( $customer_opts['name'] ) ) {
+						$shipping['name'] = $customer_opts['name'];
 					}
 
 					if ( isset( $shipping_details->address ) && isset( $shipping_details->address->line1 ) ) {
@@ -597,7 +602,9 @@ class ASP_PP_Handler {
 
 						$shipping['address'] = $addr;
 
-						$customer_opts['shipping'] = $shipping;
+						if ( ! empty( $shipping['name'] ) ) {
+							$customer_opts['shipping'] = $shipping;
+						}
 					}
 				}
 
@@ -640,10 +647,12 @@ class ASP_PP_Handler {
 				$intent = \Stripe\PaymentIntent::create( $pi_params );
 			}
 		} catch ( \Exception $e ) {
-			$out['err'] = __( 'Error occurred:', 'stripe-payments' ) . ' ' . $e->getMessage();
+			$out['shipping'] = wp_json_encode( $shipping );
+			$out['err']      = __( 'Error occurred:', 'stripe-payments' ) . ' ' . $e->getMessage();
 			wp_send_json( $out );
 		} catch ( \Throwable $e ) {
-			$out['err'] = __( 'Error occurred:', 'stripe-payments' ) . ' ' . $e->getMessage();
+			$out['shipping'] = wp_json_encode( $shipping );
+			$out['err']      = __( 'Error occurred:', 'stripe-payments' ) . ' ' . $e->getMessage();
 			wp_send_json( $out );
 		}
 

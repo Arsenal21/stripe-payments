@@ -434,6 +434,11 @@ class ASP_Process_IPN_NG {
 			$metadata['Shipping Address'] = $shipping_address;
 		}
 
+		//Save coupon info to metadata if applicable
+		if ( $coupon_valid ) {
+			$metadata['Coupon Code'] = strtoupper( $coupon['code'] );
+		}
+
 		$update_opts = array();
 
 		if ( ! empty( $metadata ) ) {
