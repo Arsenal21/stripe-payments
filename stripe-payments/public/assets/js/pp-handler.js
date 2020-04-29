@@ -857,7 +857,7 @@ function handlePayment() {
 			opts.address_line1 = bAddr.value;
 			opts.address_city = bCity.value;
 			opts.address_state = bState === null ? '' : bState.value,
-			opts.address_country = bCountry.value || bCountry.options[bCountry.selectedIndex].value;
+				opts.address_country = bCountry.value || bCountry.options[bCountry.selectedIndex].value;
 			if (postal_code) {
 				opts.address_zip = postal_code;
 			}
@@ -975,7 +975,7 @@ function handlePayment() {
 			});
 
 	} else {
-		if (!vars.data.dont_save_card) {
+		if (!vars.data.dont_save_card && !vars.data.dont_setup_future_usage) {
 			opts.save_payment_method = true;
 			opts.setup_future_usage = 'off_session';
 		}
