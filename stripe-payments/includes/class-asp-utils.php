@@ -788,6 +788,14 @@ class ASP_Utils {
 		if ( ! class_exists( '\Stripe\Stripe' ) ) {
 			require_once WP_ASP_PLUGIN_PATH . 'includes/stripe/init.php';
 			\Stripe\Stripe::setAppInfo( 'Stripe Payments', WP_ASP_PLUGIN_VERSION, 'https://wordpress.org/plugins/stripe-payments/', 'pp_partner_Fvas9OJ0jQ2oNQ' );
+
+			$curl_disable_persistent_connections = AcceptStripePayments::get_instance()->get_setting( 'curl_disable_persistent_connections' );
+
+			if ( $curl_disable_persistent_connections ) {
+				$curl = new \Stripe\HttpClient\CurlClient();
+				$curl->setEnablePersistentConnections( false );
+				\Stripe\ApiRequestor::setHttpClient( $curl );
+			}
 		} else {
 			$declared = new \ReflectionClass( '\Stripe\Stripe' );
 			$path     = $declared->getFileName();
