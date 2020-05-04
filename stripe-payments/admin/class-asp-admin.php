@@ -1071,6 +1071,19 @@ class AcceptStripePayments_Admin {
 
 		//Experimental Settings
 		add_settings_field(
+			'dont_use_stripe_php_sdk',
+			__( 'Do Not Use Stripe PHP SDK Library', 'stripe-payments' ),
+			array( $this, 'settings_field_callback' ),
+			$this->plugin_slug . '-advanced',
+			'AcceptStripePayments-experimental-settings',
+			array(
+				'field' => 'dont_use_stripe_php_sdk',
+				'desc'  => __( 'Enable this if you\'re experiencing conflicts with other plugins that use Stripe PHP SDK Library. Internal Stripe API wrapper wound be used instead.', 'stripe-payments' ) . '<br>' .
+				'Warning: this option is currently not supported by addons. Do not enable it if you\'re using addons like Subscriptions, Additional Payment Methods, AliPay etc.',
+			)
+		);
+
+		add_settings_field(
 			'disable_buttons_before_js_loads',
 			__( 'Disable Buttons Before Javascript Loads', 'stripe-payments' ),
 			array( $this, 'settings_field_callback' ),
@@ -1081,20 +1094,6 @@ class AcceptStripePayments_Admin {
 				'desc'  => __( 'If enabled, payment buttons are not clickable until Javascript libraries are loaded on page view. This prevents "Invalid Stripe Token" errors on some configurations.', 'stripe-payments' ),
 			)
 		);
-
-		add_settings_field(
-			'curl_disable_persistent_connections',
-			__( 'Disable Curl Persistent Connections', 'stripe-payments' ),
-			array( $this, 'settings_field_callback' ),
-			$this->plugin_slug . '-advanced',
-			'AcceptStripePayments-experimental-settings',
-			array(
-				'field' => 'curl_disable_persistent_connections',
-				'desc'  => __( 'Enable this if you get "Network error [errno 2]: easy handle already used in multi handle" error during checkout process.', 'stripe-payments' ),
-			)
-		);
-
-		//Network error [errno 2]: easy handle already used in multi handle
 
 	}
 
@@ -1267,7 +1266,7 @@ class AcceptStripePayments_Admin {
 			case 'enable_email_schedule':
 			case 'frontend_prefetch_scripts':
 			case 'hide_state_field':
-			case 'curl_disable_persistent_connections':
+			case 'dont_use_stripe_php_sdk':
 				echo "<input type='checkbox' name='AcceptStripePayments-settings[{$field}]' value='1' " . ( $field_value ? 'checked=checked' : '' ) . " /><p class=\"description\">{$desc}</p>";
 				break;
 			case 'prefill_wp_user_details':
@@ -1469,7 +1468,7 @@ class AcceptStripePayments_Admin {
 
 		$output['disable_buttons_before_js_loads'] = empty( $input['disable_buttons_before_js_loads'] ) ? 0 : 1;
 
-		$output['curl_disable_persistent_connections'] = empty( $input['curl_disable_persistent_connections'] ) ? 0 : 1;
+		$output['dont_use_stripe_php_sdk'] = empty( $input['dont_use_stripe_php_sdk'] ) ? 0 : 1;
 
 		$output['use_old_checkout_api1'] = empty( $input['use_old_checkout_api1'] ) ? 0 : 1;
 

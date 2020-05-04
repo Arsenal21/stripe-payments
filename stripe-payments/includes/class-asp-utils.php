@@ -788,14 +788,6 @@ class ASP_Utils {
 		if ( ! class_exists( '\Stripe\Stripe' ) ) {
 			require_once WP_ASP_PLUGIN_PATH . 'includes/stripe/init.php';
 			\Stripe\Stripe::setAppInfo( 'Stripe Payments', WP_ASP_PLUGIN_VERSION, 'https://wordpress.org/plugins/stripe-payments/', 'pp_partner_Fvas9OJ0jQ2oNQ' );
-
-			$curl_disable_persistent_connections = AcceptStripePayments::get_instance()->get_setting( 'curl_disable_persistent_connections' );
-
-			if ( $curl_disable_persistent_connections ) {
-				$curl = new \Stripe\HttpClient\CurlClient();
-				$curl->setEnablePersistentConnections( false );
-				\Stripe\ApiRequestor::setHttpClient( $curl );
-			}
 		} else {
 			$declared = new \ReflectionClass( '\Stripe\Stripe' );
 			$path     = $declared->getFileName();
@@ -837,6 +829,16 @@ class ASP_Utils {
 
 	public static function url_to_https( $url ) {
 		return preg_replace( '/^http:\/\//i', 'https://', $url );
+	}
+
+	public static function use_internal_api() {
+		$asp_class               = AcceptStripePayments::get_instance();
+		$dont_use_stripe_php_sdk = $asp_class->get_setting( 'dont_use_stripe_php_sdk' );
+
+		if ( $dont_use_stripe_php_sdk ) {
+			return true;
+		}
+		return false;
 	}
 
 }
