@@ -645,7 +645,7 @@ class ASP_Utils {
 					return $ret;
 				}
 			} else {
-				//error occured during image load
+				//error occurred during image load
 				return $ret;
 			}
 			update_post_meta( $prod_id, 'asp_product_thumbnail_thumb', $thumb_thumb );

@@ -408,7 +408,7 @@ msgstr ""
 
 #: stripe-payments/admin/class-asp-admin.php:787
 msgid ""
-"If checked, plugin will send a notification email when error occured during "
+"If checked, plugin will send a notification email when error occurred during "
 "payment processing. The email will be sent to the email address specified "
 "below."
 msgstr ""
@@ -3667,7 +3667,35 @@ msgstr ""
 msgid "Vietnamese Dong (VND)"
 msgstr ""
 
-#: stripe-payments/includes/class-asp.php:293
+#: stripe-payments/includes/process_ipn.php:36
+msgid ""
+"Error occurred before user interacted with payment popup. This might be "
+"caused by JavaScript errors on page."
+msgstr ""
+
+#: stripe-payments/includes/process_ipn.php:37
+msgid "Error occurred after user interacted with popup."
+msgstr ""
+
+#: stripe-payments/includes/process_ipn.php:56
+msgid "Following error occurred during payment processing:"
+msgstr ""
+
+#: stripe-payments/includes/process_ipn.php:709
+#: stripe-payments/includes/process_ipn.php:715
+msgid "Download link"
+msgstr ""
+
+#: stripe-payments/includes/process_ipn.php:717
+#: stripe-payments/public/includes/class-shortcode-asp.php:1025
+msgid "Download links"
+msgstr ""
+
+#: stripe-payments/includes/process_ipn.php:728
+msgid "Order Info: "
+msgstr ""
+
+#: stripe-payments/public/class-asp.php:293
 msgid "Buy Now"
 msgstr ""
 
