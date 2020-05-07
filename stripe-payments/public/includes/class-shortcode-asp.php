@@ -1076,11 +1076,11 @@ class AcceptStripePaymentsShortcode {
 			return;
 		}
 		if ( isset( $aspData['error_msg'] ) && ! empty( $aspData['error_msg'] ) ) {
-			//some error occured. Let's display error message
+			//some error occurred. Let's display error message
 			$content = $this->apply_content_tags( do_shortcode( $content ), $aspData );
 			return $content;
 		}
-		// no error occured - we don't display anything
+		// no error occurred - we don't display anything
 		return;
 	}
 

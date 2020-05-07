@@ -404,7 +404,7 @@ msgstr ""
 
 #: stripe-payments/admin/class-asp-admin.php:786
 msgid ""
-"If checked, plugin will send a notification email when error occured during "
+"If checked, plugin will send a notification email when error occurred during "
 "payment processing. The email will be sent to the email address specified "
 "below."
 msgstr ""
@@ -3649,16 +3649,16 @@ msgstr ""
 
 #: stripe-payments/includes/process_ipn.php:36
 msgid ""
-"Error occured before user interacted with payment popup. This might be "
+"Error occurred before user interacted with payment popup. This might be "
 "caused by JavaScript errors on page."
 msgstr ""
 
 #: stripe-payments/includes/process_ipn.php:37
-msgid "Error occured after user interacted with popup."
+msgid "Error occurred after user interacted with popup."
 msgstr ""
 
 #: stripe-payments/includes/process_ipn.php:56
-msgid "Following error occured during payment processing:"
+msgid "Following error occurred during payment processing:"
 msgstr ""
 
 #: stripe-payments/includes/process_ipn.php:709

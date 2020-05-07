@@ -33,8 +33,8 @@ class AcceptStripePayments_Process_IPN {
 			$aspData = array( 'error_msg' => $errMsg );
 			ASP_Debug_Logger::log( $errMsg, false ); //Log the error
 
-			$msg_before_process = __( 'Error occured before user interacted with payment popup. This might be caused by JavaScript errors on page.', 'stripe-payments' );
-			$msg_after_process  = __( 'Error occured after user interacted with popup.', 'stripe-payments' );
+			$msg_before_process = __( 'Error occurred before user interacted with payment popup. This might be caused by JavaScript errors on page.', 'stripe-payments' );
+			$msg_after_process  = __( 'Error occurred after user interacted with popup.', 'stripe-payments' );
 
 			if ( isset( $_POST['clickProcessed'] ) ) {
 				$additional_msg = $msg_after_process;
@@ -53,7 +53,7 @@ class AcceptStripePayments_Process_IPN {
 				$from    = get_option( 'admin_email' );
 				$headers = 'From: ' . $from . "\r\n";
 				$subj    = __( 'Stripe Payments Error', 'stripe-payments' );
-				$body    = __( 'Following error occured during payment processing:', 'stripe-payments' ) . "\r\n\r\n";
+				$body    = __( 'Following error occurred during payment processing:', 'stripe-payments' ) . "\r\n\r\n";
 				$body   .= $errMsg . "\r\n\r\n";
 				$body   .= $additional_msg . "\r\n";
 				$body   .= __( 'Debug data:', 'stripe-payments' ) . "\r\n";

@@ -783,7 +783,7 @@ class AcceptStripePayments_Admin {
 			'AcceptStripePayments-error-email-section',
 			array(
 				'field' => 'send_email_on_error',
-				'desc'  => __( 'If checked, plugin will send a notification email when error occured during payment processing. The email will be sent to the email address specified below.', 'stripe-payments' ),
+				'desc'  => __( 'If checked, plugin will send a notification email when error occurred during payment processing. The email will be sent to the email address specified below.', 'stripe-payments' ),
 			)
 		);
 		add_settings_field(
