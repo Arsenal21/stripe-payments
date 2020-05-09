@@ -93,33 +93,37 @@ msgstr ""
 msgid "Additional Settings"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:373
+#: stripe-payments/admin/class-asp-admin.php:369
+msgid "Experemintal Settings"
+msgstr ""
+
+#: stripe-payments/admin/class-asp-admin.php:374
 msgid "Checkout Result Page URL"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:379
+#: stripe-payments/admin/class-asp-admin.php:380
 msgid "Important Notice:"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:379
+#: stripe-payments/admin/class-asp-admin.php:380
 msgid ""
 "This is the thank you page. This page is automatically created for you when "
 "you install the plugin. Do not delete this page as the plugin will send the "
 "customer to this page after the payment."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:379
+#: stripe-payments/admin/class-asp-admin.php:380
 msgid ""
 "if you are using caching plugins on your site (similar to W3 Total Cache, WP "
 "Rocket etc), you must exclude checkout results page from caching. Failing to "
 "do so will result in unpredictable checkout results output."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:385
+#: stripe-payments/admin/class-asp-admin.php:386
 msgid "Products Page URL"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:391
+#: stripe-payments/admin/class-asp-admin.php:392
 msgid ""
 "All your products will be listed here in a grid display. When you create new "
 "products, they will show up in this page. This page is automatically created "
@@ -127,60 +131,60 @@ msgid ""
 "navigation menu if you want the site visitors to find it easily."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:398
+#: stripe-payments/admin/class-asp-admin.php:399
 #: stripe-payments/admin/includes/class-products-meta-boxes.php:197
 msgid "Currency"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:410
+#: stripe-payments/admin/class-asp-admin.php:411
 msgid "Currency Symbol"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:422
+#: stripe-payments/admin/class-asp-admin.php:423
 #: stripe-payments/admin/includes/class-products-meta-boxes.php:528
 msgid "Button Text"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:429
+#: stripe-payments/admin/class-asp-admin.php:430
 msgid "Example: Buy Now, Pay Now etc."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:436
+#: stripe-payments/admin/class-asp-admin.php:437
 msgid "Payment Popup Button Text"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:443
+#: stripe-payments/admin/class-asp-admin.php:444
 #, php-format
 msgid ""
 "%s is replaced by formatted payment amount (example: Pay $29.90). If this "
 "field is empty, it defaults to \"Pay %s\""
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:450
+#: stripe-payments/admin/class-asp-admin.php:451
 msgid "Do Not Save Card Data on Stripe"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:457
+#: stripe-payments/admin/class-asp-admin.php:458
 msgid ""
 "When this checkbox is checked, the transaction won't create the customer (no "
 "card will be saved for that)."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:464
+#: stripe-payments/admin/class-asp-admin.php:465
 msgid "Turn Off \"Remember me\" Option"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:471
+#: stripe-payments/admin/class-asp-admin.php:472
 msgid ""
 "When enabled, \"Remember me\" checkbox will be removed from Stripe's "
 "checkout popup."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:478
+#: stripe-payments/admin/class-asp-admin.php:479
 msgid "Validate ZIP Code"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:486
+#: stripe-payments/admin/class-asp-admin.php:487
 #, php-format
 msgid ""
 "For additional protection, you can opt to have Stripe collect the billing "
@@ -189,102 +193,102 @@ msgid ""
 "Stripe Dashboard."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:497
+#: stripe-payments/admin/class-asp-admin.php:498
 msgid "Stripe Checkout Language"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:504
+#: stripe-payments/admin/class-asp-admin.php:505
 msgid ""
 "Specify language to be used in Stripe checkout pop-up or select \"Autodetect"
 "\" to let Stripe handle it."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:512
+#: stripe-payments/admin/class-asp-admin.php:513
 #, php-format
 msgid ""
 "You can install the free <a href=\"%s\" target=\"_blank\">Country Autodetect "
 "Addon</a> to detect customer's country automatically."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:518
+#: stripe-payments/admin/class-asp-admin.php:519
 msgid "Popup Default Country"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:525
+#: stripe-payments/admin/class-asp-admin.php:526
 msgid ""
 "Select the default country that should be set on the payment popup window "
 "for billing and shipping address."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:533
+#: stripe-payments/admin/class-asp-admin.php:534
 msgid "Hide the State Field"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:540
+#: stripe-payments/admin/class-asp-admin.php:541
 msgid ""
 "Hide the State field on the payment popup window. The State field for the "
 "address is an optional field."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:548
+#: stripe-payments/admin/class-asp-admin.php:549
 msgid "Prefill Logged In User Name and Email"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:555
+#: stripe-payments/admin/class-asp-admin.php:556
 msgid ""
 "When payment is made by logged in WordPress user, his\\her name and email "
 "are prefilled to corresponding payment popup fields."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:564
+#: stripe-payments/admin/class-asp-admin.php:565
 msgid "Live Mode"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:571
+#: stripe-payments/admin/class-asp-admin.php:572
 msgid ""
 "Check this to run the transaction in live mode. When unchecked it will run "
 "in test mode."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:578
+#: stripe-payments/admin/class-asp-admin.php:579
 msgid "Live Stripe Publishable Key"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:589
+#: stripe-payments/admin/class-asp-admin.php:590
 msgid "Live Stripe Secret Key"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:600
+#: stripe-payments/admin/class-asp-admin.php:601
 msgid "Test Stripe Publishable Key"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:611
+#: stripe-payments/admin/class-asp-admin.php:612
 msgid "Test Stripe Secret Key"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:624
+#: stripe-payments/admin/class-asp-admin.php:625
 msgid "Enable Debug Logging"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:630
+#: stripe-payments/admin/class-asp-admin.php:631
 msgid ""
 "Check this option to enable debug logging. This is useful for "
 "troubleshooting post payment failures."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:631
+#: stripe-payments/admin/class-asp-admin.php:632
 msgid "Clear Log"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:631
+#: stripe-payments/admin/class-asp-admin.php:632
 msgid "View Log"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:636
+#: stripe-payments/admin/class-asp-admin.php:637
 msgid "Debug Log Shareable Link"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:643
+#: stripe-payments/admin/class-asp-admin.php:644
 msgid ""
 "Normally, the debug log is only accessible to you if you are logged-in as "
 "admin. However, in some situations it might be required for support "
@@ -292,179 +296,179 @@ msgid ""
 "helpful in that situation."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:652
+#: stripe-payments/admin/class-asp-admin.php:653
 msgid "Send Receipt Email From Stripe"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:658
+#: stripe-payments/admin/class-asp-admin.php:659
 msgid ""
 "If checked, Stripe will send email receipts to your customers whenever they "
 "make successful payment.<br /><b>Note:</b> Receipts are not sent in test "
 "mode."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:664
+#: stripe-payments/admin/class-asp-admin.php:665
 msgid "Send Emails to Buyer After Purchase"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:670
+#: stripe-payments/admin/class-asp-admin.php:671
 msgid ""
 "If checked the plugin will send an email to the buyer with the sale details. "
 "If digital goods are purchased then the email will contain the download "
 "links for the purchased products."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:675
+#: stripe-payments/admin/class-asp-admin.php:676
 msgid "Buyer Email Content Type"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:681
-#: stripe-payments/admin/class-asp-admin.php:751
+#: stripe-payments/admin/class-asp-admin.php:682
+#: stripe-payments/admin/class-asp-admin.php:752
 msgid "Choose which format of email to send."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:686
+#: stripe-payments/admin/class-asp-admin.php:687
 msgid "From Email Address"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:692
+#: stripe-payments/admin/class-asp-admin.php:693
 msgid ""
 "Example: Your Name &lt;sales@your-domain.com&gt; This is the email address "
 "that will be used to send the email to the buyer. This name and email "
 "address will appear in the from field of the email."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:697
+#: stripe-payments/admin/class-asp-admin.php:698
 msgid "Buyer Email Subject"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:703
+#: stripe-payments/admin/class-asp-admin.php:704
 msgid "This is the subject of the email that will be sent to the buyer."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:711
+#: stripe-payments/admin/class-asp-admin.php:712
 msgid "Buyer Email Body"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:717
-#: stripe-payments/admin/class-asp-admin.php:774
+#: stripe-payments/admin/class-asp-admin.php:718
+#: stripe-payments/admin/class-asp-admin.php:775
 msgid ""
 "Do not change the text within the braces {}. You can use the following email "
 "tags in this email body field:"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:717
+#: stripe-payments/admin/class-asp-admin.php:718
 msgid "This is the body of the email that will be sent to the buyer."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:722
+#: stripe-payments/admin/class-asp-admin.php:723
 msgid "Send Emails to Seller After Purchase"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:728
+#: stripe-payments/admin/class-asp-admin.php:729
 msgid ""
 "If checked the plugin will send an email to the seller with the sale details."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:733
+#: stripe-payments/admin/class-asp-admin.php:734
 msgid "Notification Email Address"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:739
+#: stripe-payments/admin/class-asp-admin.php:740
 msgid ""
 "This is the email address where the seller will be notified of product "
 "sales. You can put multiple email addresses separated by comma (,) in the "
 "above field to send the notification to multiple email addresses."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:745
+#: stripe-payments/admin/class-asp-admin.php:746
 msgid "Seller Email Content Type"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:757
+#: stripe-payments/admin/class-asp-admin.php:758
 msgid "Seller Email Subject"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:763
+#: stripe-payments/admin/class-asp-admin.php:764
 msgid ""
 "This is the subject of the email that will be sent to the seller for record."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:768
+#: stripe-payments/admin/class-asp-admin.php:769
 msgid "Seller Email Body"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:774
+#: stripe-payments/admin/class-asp-admin.php:775
 msgid "This is the body of the email that will be sent to the seller."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:780
+#: stripe-payments/admin/class-asp-admin.php:781
 msgid "Send Email On Payment Failure"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:786
+#: stripe-payments/admin/class-asp-admin.php:787
 msgid ""
 "If checked, plugin will send a notification email when error occurred during "
 "payment processing. The email will be sent to the email address specified "
 "below."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:791
+#: stripe-payments/admin/class-asp-admin.php:792
 msgid "Send Error Email To"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:797
+#: stripe-payments/admin/class-asp-admin.php:798
 msgid "Enter recipient address of error email."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:804
+#: stripe-payments/admin/class-asp-admin.php:805
 msgid "Send Emails in Parallel"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:810
+#: stripe-payments/admin/class-asp-admin.php:811
 msgid ""
 "Enabling this option should speed up checkout process for customers. Test "
 "this before enabling on production as it may not work properly on some "
 "setups."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:817
+#: stripe-payments/admin/class-asp-admin.php:818
 msgid "Currency Position"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:823
+#: stripe-payments/admin/class-asp-admin.php:824
 msgid "This controls the position of the currency symbol."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:828
+#: stripe-payments/admin/class-asp-admin.php:829
 msgid "Decimal Separator"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:834
+#: stripe-payments/admin/class-asp-admin.php:835
 msgid "This sets the decimal separator of the displayed price."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:839
+#: stripe-payments/admin/class-asp-admin.php:840
 msgid "Thousand Separator"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:845
+#: stripe-payments/admin/class-asp-admin.php:846
 msgid "This sets the thousand separator of the displayed price."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:850
+#: stripe-payments/admin/class-asp-admin.php:851
 msgid "Number of Decimals"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:856
+#: stripe-payments/admin/class-asp-admin.php:857
 msgid "This sets the number of decimal points shown in the displayed price."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:862
+#: stripe-payments/admin/class-asp-admin.php:863
 msgid "Apply Separators Settings To Customer Input"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:868
+#: stripe-payments/admin/class-asp-admin.php:869
 msgid ""
 "If enabled, separator settings will be applied to customer input as well. "
 "For example, if you have donation button where customers can enter amount "
@@ -472,135 +476,135 @@ msgid ""
 "correspondigly - 12,23 instead of 12.23."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:875
+#: stripe-payments/admin/class-asp-admin.php:876
 msgid "Enable For All Buttons and Products"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:881
+#: stripe-payments/admin/class-asp-admin.php:882
 msgid ""
 "If enabled, makes the following field enabled by default for all buttons and "
 "products."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:882
+#: stripe-payments/admin/class-asp-admin.php:883
 msgid ""
 "You can control per-product or per-button behaviour by editing the product "
 "and selecting enabled or disabled option under the Custom Field section."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:883
+#: stripe-payments/admin/class-asp-admin.php:884
 msgid ""
 "View the custom field <a href=\"https://s-plugins.com/custom-field-settings-"
 "feature-stripe-payments-plugin/\" target=\"_blank\">usage documentation</a>."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:888
+#: stripe-payments/admin/class-asp-admin.php:889
 msgid "Field Name"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:894
+#: stripe-payments/admin/class-asp-admin.php:895
 msgid ""
 "Enter name for the field. It will be displayed in order info and emails."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:899
+#: stripe-payments/admin/class-asp-admin.php:900
 msgid "Field Description"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:905
+#: stripe-payments/admin/class-asp-admin.php:906
 msgid ""
 "Enter field description. It will be displayed for users to let them know "
 "what is required from them. Leave it blank if you don't want to display "
 "description."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:910
+#: stripe-payments/admin/class-asp-admin.php:911
 msgid "Text Field Description Location"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:916
+#: stripe-payments/admin/class-asp-admin.php:917
 msgid ""
 "Select field description location. Placeholder: description is displayed "
 "inside text input (default). Below Input: description is displayed below "
 "text input."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:921
-#: stripe-payments/admin/class-asp-admin.php:1000
+#: stripe-payments/admin/class-asp-admin.php:922
+#: stripe-payments/admin/class-asp-admin.php:1001
 msgid "Position"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:927
+#: stripe-payments/admin/class-asp-admin.php:928
 msgid "Select custom field position."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:927
+#: stripe-payments/admin/class-asp-admin.php:928
 msgid "This option is for legacy API only."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:932
+#: stripe-payments/admin/class-asp-admin.php:933
 msgid "Field Type"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:938
+#: stripe-payments/admin/class-asp-admin.php:939
 msgid "Select custom field type."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:943
+#: stripe-payments/admin/class-asp-admin.php:944
 msgid "Field Validation"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:949
+#: stripe-payments/admin/class-asp-admin.php:950
 msgid "Select custom field validation if needed."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:954
+#: stripe-payments/admin/class-asp-admin.php:955
 msgid "Mandatory"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:960
+#: stripe-payments/admin/class-asp-admin.php:961
 msgid ""
 "If enabled, makes the field mandatory - user can't proceed with the payment "
 "before it's filled."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:967
+#: stripe-payments/admin/class-asp-admin.php:968
 msgid "Enable Terms and Conditions"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:973
+#: stripe-payments/admin/class-asp-admin.php:974
 msgid "Enable Terms and Conditions checkbox."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:978
+#: stripe-payments/admin/class-asp-admin.php:979
 msgid "Checkbox Text"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:984
+#: stripe-payments/admin/class-asp-admin.php:985
 msgid ""
 "Text to be displayed on checkbox. It accepts HTML code so you can put a link "
 "to your terms and conditions page."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:989
+#: stripe-payments/admin/class-asp-admin.php:990
 msgid "Store Customer's IP Address"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:995
+#: stripe-payments/admin/class-asp-admin.php:996
 msgid ""
 "If enabled, customer's IP address from which TOS were accepted will be "
 "stored in order info."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1006
+#: stripe-payments/admin/class-asp-admin.php:1007
 msgid "Select TOS checkbox position."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1013
+#: stripe-payments/admin/class-asp-admin.php:1014
 msgid "Enable Legacy Checkout API"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1019
+#: stripe-payments/admin/class-asp-admin.php:1020
 msgid ""
 "Use the legacy API to process payments. Note that the legacy API is not "
 "compatible with 3-D Secure and EU's Strong Customer Authentication (SCA) "
@@ -609,55 +613,65 @@ msgid ""
 "bug."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1024
+#: stripe-payments/admin/class-asp-admin.php:1025
 msgid "Enable Compact Product Edit Interface"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1030
+#: stripe-payments/admin/class-asp-admin.php:1031
 msgid "Switch to the compact product edit interface."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1035
+#: stripe-payments/admin/class-asp-admin.php:1036
 msgid "Prefetch Payment Popup Scripts"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1042
+#: stripe-payments/admin/class-asp-admin.php:1043
 msgid ""
 "Enable this to speed up payment popup display after customer clicks payment "
 "button."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1049
-msgid "Disable Buttons Before Javascript Loads"
-msgstr ""
-
-#: stripe-payments/admin/class-asp-admin.php:1055
-msgid ""
-"If enabled, payment buttons are not clickable until Javascript libraries are "
-"loaded on page view. This prevents \"Invalid Stripe Token\" errors on some "
-"configurations."
-msgstr ""
-
-#: stripe-payments/admin/class-asp-admin.php:1060
+#: stripe-payments/admin/class-asp-admin.php:1050
 msgid "Don't Create Order"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1066
+#: stripe-payments/admin/class-asp-admin.php:1056
 msgid ""
 "If enabled, no transaction info is saved to the orders menu of the plugin. "
 "The transaction data will still be available in your Stripe dashboard. "
 "Useful if you don't want to store purchase and customer data in your site."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1071
+#: stripe-payments/admin/class-asp-admin.php:1062
 msgid "Payment Popup Additional CSS"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1077
+#: stripe-payments/admin/class-asp-admin.php:1068
 msgid "Enter additional CSS code that would be added to payment popup page."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1083
+#: stripe-payments/admin/class-asp-admin.php:1075
+msgid "Do Not Use Stripe PHP SDK Library"
+msgstr ""
+
+#: stripe-payments/admin/class-asp-admin.php:1081
+msgid ""
+"Enable this if you're experiencing conflicts with other plugins that use "
+"Stripe PHP SDK Library. Internal Stripe API wrapper wound be used instead."
+msgstr ""
+
+#: stripe-payments/admin/class-asp-admin.php:1088
+msgid "Disable Buttons Before Javascript Loads"
+msgstr ""
+
+#: stripe-payments/admin/class-asp-admin.php:1094
+msgid ""
+"If enabled, payment buttons are not clickable until Javascript libraries are "
+"loaded on page view. This prevents \"Invalid Stripe Token\" errors on some "
+"configurations."
+msgstr ""
+
+#: stripe-payments/admin/class-asp-admin.php:1101
 msgid ""
 "This section allows you to configure Terms and Conditions or Privacy Policy "
 "that customer must accept before making payment. This, for example, can be "
@@ -665,360 +679,366 @@ msgid ""
 msgstr ""
 
 #: stripe-payments/admin/class-asp-admin.php:1105
-msgid "Arabic"
-msgstr ""
-
-#: stripe-payments/admin/class-asp-admin.php:1106
-msgid "Hebrew"
-msgstr ""
-
-#: stripe-payments/admin/class-asp-admin.php:1107
-msgid "Latvian"
-msgstr ""
-
-#: stripe-payments/admin/class-asp-admin.php:1108
-msgid "Lithuanian"
-msgstr ""
-
-#: stripe-payments/admin/class-asp-admin.php:1109
-msgid "Malay"
-msgstr ""
-
-#: stripe-payments/admin/class-asp-admin.php:1110
-msgid "Norwegian Bokmal"
-msgstr ""
-
-#: stripe-payments/admin/class-asp-admin.php:1111
-msgid "Polish"
-msgstr ""
-
-#: stripe-payments/admin/class-asp-admin.php:1112
-msgid "Portuguese"
-msgstr ""
-
-#: stripe-payments/admin/class-asp-admin.php:1113
-msgid "Russian"
-msgstr ""
-
-#: stripe-payments/admin/class-asp-admin.php:1114
-msgid "Danish"
-msgstr ""
-
-#: stripe-payments/admin/class-asp-admin.php:1115
-msgid "Dutch"
-msgstr ""
-
-#: stripe-payments/admin/class-asp-admin.php:1116
-msgid "English"
-msgstr ""
-
-#: stripe-payments/admin/class-asp-admin.php:1117
-msgid "Finnish"
-msgstr ""
-
-#: stripe-payments/admin/class-asp-admin.php:1118
-msgid "French"
-msgstr ""
-
-#: stripe-payments/admin/class-asp-admin.php:1119
-msgid "German"
-msgstr ""
-
-#: stripe-payments/admin/class-asp-admin.php:1120
-msgid "Italian"
-msgstr ""
-
-#: stripe-payments/admin/class-asp-admin.php:1121
-msgid "Japanese"
-msgstr ""
-
-#: stripe-payments/admin/class-asp-admin.php:1122
-msgid "Norwegian"
-msgstr ""
-
-#: stripe-payments/admin/class-asp-admin.php:1123
-msgid "Simplified Chinese"
-msgstr ""
-
-#: stripe-payments/admin/class-asp-admin.php:1124
-msgid "Spanish"
-msgstr ""
-
-#: stripe-payments/admin/class-asp-admin.php:1125
-msgid "Swedish"
+msgid ""
+"Warning: don't change options in this section unless you know what you're "
+"doing!"
 msgstr ""
 
 #: stripe-payments/admin/class-asp-admin.php:1128
-msgid "Autodetect"
+msgid "Arabic"
+msgstr ""
+
+#: stripe-payments/admin/class-asp-admin.php:1129
+msgid "Hebrew"
+msgstr ""
+
+#: stripe-payments/admin/class-asp-admin.php:1130
+msgid "Latvian"
+msgstr ""
+
+#: stripe-payments/admin/class-asp-admin.php:1131
+msgid "Lithuanian"
 msgstr ""
 
 #: stripe-payments/admin/class-asp-admin.php:1132
+msgid "Malay"
+msgstr ""
+
+#: stripe-payments/admin/class-asp-admin.php:1133
+msgid "Norwegian Bokmal"
+msgstr ""
+
+#: stripe-payments/admin/class-asp-admin.php:1134
+msgid "Polish"
+msgstr ""
+
+#: stripe-payments/admin/class-asp-admin.php:1135
+msgid "Portuguese"
+msgstr ""
+
+#: stripe-payments/admin/class-asp-admin.php:1136
+msgid "Russian"
+msgstr ""
+
+#: stripe-payments/admin/class-asp-admin.php:1137
+msgid "Danish"
+msgstr ""
+
+#: stripe-payments/admin/class-asp-admin.php:1138
+msgid "Dutch"
+msgstr ""
+
+#: stripe-payments/admin/class-asp-admin.php:1139
+msgid "English"
+msgstr ""
+
+#: stripe-payments/admin/class-asp-admin.php:1140
+msgid "Finnish"
+msgstr ""
+
+#: stripe-payments/admin/class-asp-admin.php:1141
+msgid "French"
+msgstr ""
+
+#: stripe-payments/admin/class-asp-admin.php:1142
+msgid "German"
+msgstr ""
+
+#: stripe-payments/admin/class-asp-admin.php:1143
+msgid "Italian"
+msgstr ""
+
+#: stripe-payments/admin/class-asp-admin.php:1144
+msgid "Japanese"
+msgstr ""
+
+#: stripe-payments/admin/class-asp-admin.php:1145
+msgid "Norwegian"
+msgstr ""
+
+#: stripe-payments/admin/class-asp-admin.php:1146
+msgid "Simplified Chinese"
+msgstr ""
+
+#: stripe-payments/admin/class-asp-admin.php:1147
+msgid "Spanish"
+msgstr ""
+
+#: stripe-payments/admin/class-asp-admin.php:1148
+msgid "Swedish"
+msgstr ""
+
+#: stripe-payments/admin/class-asp-admin.php:1151
+msgid "Autodetect"
+msgstr ""
+
+#: stripe-payments/admin/class-asp-admin.php:1155
 #: stripe-payments/includes/class-asp-utils.php:564
 msgid "(Default)"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1173
+#: stripe-payments/admin/class-asp-admin.php:1196
 msgid "Text"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1174
+#: stripe-payments/admin/class-asp-admin.php:1197
 msgid "Checkbox"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1180
+#: stripe-payments/admin/class-asp-admin.php:1203
 msgid "Placeholder"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1181
+#: stripe-payments/admin/class-asp-admin.php:1204
 msgid "Below Input"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1187
-#: stripe-payments/admin/class-asp-admin.php:1193
+#: stripe-payments/admin/class-asp-admin.php:1210
+#: stripe-payments/admin/class-asp-admin.php:1216
 msgid "No Validation"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1188
-#: stripe-payments/admin/class-asp-admin.php:1194
+#: stripe-payments/admin/class-asp-admin.php:1211
+#: stripe-payments/admin/class-asp-admin.php:1217
 msgid "Numbers Only"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1189
-#: stripe-payments/admin/class-asp-admin.php:1195
+#: stripe-payments/admin/class-asp-admin.php:1212
+#: stripe-payments/admin/class-asp-admin.php:1218
 msgid "Custom Validation"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1193
+#: stripe-payments/admin/class-asp-admin.php:1216
 msgid "no validation performed"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1194
+#: stripe-payments/admin/class-asp-admin.php:1217
 msgid "only accepts numbers 0-9"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1195
+#: stripe-payments/admin/class-asp-admin.php:1218
 #, php-format
 msgid ""
 "you can enter your own validation rules using <a href=\"%s\" target=\"_blank"
 "\">JavaScript RegExp</a> format."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1204
+#: stripe-payments/admin/class-asp-admin.php:1227
 msgid "Please enter valid data"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1210
+#: stripe-payments/admin/class-asp-admin.php:1233
 #, php-format
 msgid ""
 "Enter your custom validation rule using <a href=\"%s\" target=\"_blank"
 "\">JavaScript RegExp</a> format. No need to enclose those using \"/\"."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1211
+#: stripe-payments/admin/class-asp-admin.php:1234
 msgid "Example RegExp to allow numbers only: ^[0-9]+$"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1214
+#: stripe-payments/admin/class-asp-admin.php:1237
 msgid "Error message to display if validation is not passed."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1220
+#: stripe-payments/admin/class-asp-admin.php:1243
 msgid "Above Button"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1221
+#: stripe-payments/admin/class-asp-admin.php:1244
 msgid "Below Button"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1251
+#: stripe-payments/admin/class-asp-admin.php:1275
 msgid "Last Name First"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1252
+#: stripe-payments/admin/class-asp-admin.php:1276
 msgid "When enabled, last name is placed before first name."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1264
+#: stripe-payments/admin/class-asp-admin.php:1288
 msgid "Plain Text"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1265
+#: stripe-payments/admin/class-asp-admin.php:1289
 msgid "HTML"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1315
+#: stripe-payments/admin/class-asp-admin.php:1339
 msgctxt "Currency symbol position"
 msgid "Left"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1316
+#: stripe-payments/admin/class-asp-admin.php:1340
 msgctxt "Currency symbol position"
 msgid "Right"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1412
+#: stripe-payments/admin/class-asp-admin.php:1436
 #, php-format
 msgid "Invalid custom RegExp for Custom Field validation provided: %s"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1462
+#: stripe-payments/admin/class-asp-admin.php:1488
 msgid "You must fill Live API credentials for plugin to work correctly."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1466
+#: stripe-payments/admin/class-asp-admin.php:1492
 msgid "You must fill Test API credentials for plugin to work correctly."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1473
+#: stripe-payments/admin/class-asp-admin.php:1499
 msgid "Please specify a checkout page."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1479
+#: stripe-payments/admin/class-asp-admin.php:1505
 msgid "Button text should not be empty."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1485
+#: stripe-payments/admin/class-asp-admin.php:1511
 #: stripe-payments/includes/class-asp-pp-handler.php:402
-#: stripe-payments/public/class-asp.php:294
+#: stripe-payments/includes/class-asp.php:294
 #, php-format
 msgid "Pay %s"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1506
+#: stripe-payments/admin/class-asp-admin.php:1532
 msgid "You must specify payment currency."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1528
+#: stripe-payments/admin/class-asp-admin.php:1554
 msgid "You must specify from email address."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1534
+#: stripe-payments/admin/class-asp-admin.php:1560
 msgid "You must specify buyer email subject."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1540
+#: stripe-payments/admin/class-asp-admin.php:1566
 msgid "You must fill in buyer email body."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1546
+#: stripe-payments/admin/class-asp-admin.php:1572
 msgid "You must specify seller notification email address."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1552
+#: stripe-payments/admin/class-asp-admin.php:1578
 msgid "You must specify seller email subject."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1558
+#: stripe-payments/admin/class-asp-admin.php:1584
 msgid "You must fill in seller email body."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1568
+#: stripe-payments/admin/class-asp-admin.php:1594
 msgid "Price decimal separator can't be empty."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1574
+#: stripe-payments/admin/class-asp-admin.php:1600
 msgid "Price thousand separator can't be empty."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1580
+#: stripe-payments/admin/class-asp-admin.php:1606
 msgid "Price number of decimals can't be empty."
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1618
+#: stripe-payments/admin/class-asp-admin.php:1644
 msgid "Name of the purchased item"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1619
+#: stripe-payments/admin/class-asp-admin.php:1645
 msgid "Number of items purchased"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1620
+#: stripe-payments/admin/class-asp-admin.php:1646
 msgid "Item price. Example: 1000,00"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1621
+#: stripe-payments/admin/class-asp-admin.php:1647
 msgid "Item price with currency symbol. Example: $1,000.00"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1622
+#: stripe-payments/admin/class-asp-admin.php:1648
 msgid "The amount paid for the current transaction. Example: 1,000.00"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1623
+#: stripe-payments/admin/class-asp-admin.php:1649
 msgid ""
 "The amount paid for the current transaction with currency symbol. Example: "
 "$1,000.00"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1624
+#: stripe-payments/admin/class-asp-admin.php:1650
 msgid "Tax in percent. Example: 10%"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1625
+#: stripe-payments/admin/class-asp-admin.php:1651
 msgid "Formatted tax amount for single item. Example: $0.25"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1626
+#: stripe-payments/admin/class-asp-admin.php:1652
 msgid "Formatted shipping amount. Example: $2.50"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1627
+#: stripe-payments/admin/class-asp-admin.php:1653
 msgid "Item download URL (if it's set)"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1628
+#: stripe-payments/admin/class-asp-admin.php:1654
 msgid ""
 "The item details of the purchased product (this will include the download "
 "link for digital items)"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1629
+#: stripe-payments/admin/class-asp-admin.php:1655
 msgid "The unique transaction ID of the purchase"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1630
+#: stripe-payments/admin/class-asp-admin.php:1656
 msgid "Shipping address of the buyer"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1631
+#: stripe-payments/admin/class-asp-admin.php:1657
 msgid "Billing address of the buyer"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1632
+#: stripe-payments/admin/class-asp-admin.php:1658
 msgid "Customer name. Available only if collect billing address option enabled"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1633
+#: stripe-payments/admin/class-asp-admin.php:1659
 msgid "Email Address of the buyer"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1634
+#: stripe-payments/admin/class-asp-admin.php:1660
 msgid "Currency symbol. Example: $"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1635
+#: stripe-payments/admin/class-asp-admin.php:1661
 msgid "3-letter currency code. Example: USD"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1636
+#: stripe-payments/admin/class-asp-admin.php:1662
 msgid "The date of the purchase"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1637
+#: stripe-payments/admin/class-asp-admin.php:1663
 msgid "Custom field name and value (if enabled)"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1638
+#: stripe-payments/admin/class-asp-admin.php:1664
 msgid "Coupon code (if available)"
 msgstr ""
 
-#: stripe-payments/admin/class-asp-admin.php:1658
+#: stripe-payments/admin/class-asp-admin.php:1684
 msgid "Click here to toggle tags hint"
 msgstr ""
 
 #: stripe-payments/admin/includes/class-coupons-list-table.php:52
 #: stripe-payments/admin/includes/class-coupons.php:351
-#: stripe-payments/public/includes/class-shortcode-asp.php:955
+#: stripe-payments/includes/shortcodes/class-shortcode-asp.php:955
 #: stripe-payments/public/views/templates/default/payment-popup.php:263
 msgid "Coupon Code"
 msgstr ""
@@ -1351,7 +1371,7 @@ msgid "Order Time"
 msgstr ""
 
 #: stripe-payments/admin/includes/class-order.php:112
-#: stripe-payments/public/includes/class-shortcode-asp.php:1011
+#: stripe-payments/includes/shortcodes/class-shortcode-asp.php:1011
 msgid "Transaction ID"
 msgstr ""
 
@@ -1367,25 +1387,25 @@ msgstr ""
 #: stripe-payments/admin/includes/class-order.php:116
 #: stripe-payments/admin/includes/class-products.php:133
 #: stripe-payments/includes/process_ipn.php:691
-#: stripe-payments/public/includes/class-shortcode-asp.php:1003
+#: stripe-payments/includes/shortcodes/class-shortcode-asp.php:1003
 msgid "Product Name"
 msgstr ""
 
 #: stripe-payments/admin/includes/class-order.php:117
 #: stripe-payments/includes/process_ipn.php:692
-#: stripe-payments/public/includes/class-shortcode-asp.php:1004
+#: stripe-payments/includes/shortcodes/class-shortcode-asp.php:1004
 msgid "Quantity"
 msgstr ""
 
 #: stripe-payments/admin/includes/class-order.php:118
 #: stripe-payments/includes/process_ipn.php:693
-#: stripe-payments/public/includes/class-shortcode-asp.php:1005
+#: stripe-payments/includes/shortcodes/class-shortcode-asp.php:1005
 msgid "Item Price"
 msgstr ""
 
 #: stripe-payments/admin/includes/class-order.php:122
 #: stripe-payments/includes/process_ipn.php:697
-#: stripe-payments/public/includes/class-shortcode-asp.php:1009
+#: stripe-payments/includes/shortcodes/class-shortcode-asp.php:1009
 msgid "Total Amount"
 msgstr ""
 
@@ -1465,8 +1485,8 @@ msgid "Coupons Settings"
 msgstr ""
 
 #: stripe-payments/admin/includes/class-products-meta-boxes.php:29
-#: stripe-payments/includes/class-asp-pp-handler.php:686
-#: stripe-payments/public/includes/class-shortcode-asp.php:178
+#: stripe-payments/includes/class-asp-pp-handler.php:719
+#: stripe-payments/includes/shortcodes/class-shortcode-asp.php:178
 msgid "Custom Field"
 msgstr ""
 
@@ -1851,12 +1871,12 @@ msgid ""
 msgstr ""
 
 #: stripe-payments/admin/includes/class-products-meta-boxes.php:536
-#: stripe-payments/admin/views/blocks.php:23
+#: stripe-payments/admin/views/blocks.php:30
 msgid "Show Button Only"
 msgstr ""
 
 #: stripe-payments/admin/includes/class-products-meta-boxes.php:537
-#: stripe-payments/admin/views/blocks.php:24
+#: stripe-payments/admin/views/blocks.php:31
 msgid ""
 "Check this box if you just want to show the button only without any "
 "additional product info."
@@ -2055,8 +2075,8 @@ msgstr ""
 
 #: stripe-payments/admin/includes/class-products.php:151
 #: stripe-payments/includes/class-asp-pp-handler.php:188
-#: stripe-payments/public/includes/class-asp-shortcode-ng.php:509
-#: stripe-payments/public/includes/class-shortcode-asp.php:618
+#: stripe-payments/includes/shortcodes/class-asp-shortcode-ng.php:509
+#: stripe-payments/includes/shortcodes/class-shortcode-asp.php:618
 msgid "Out of stock"
 msgstr ""
 
@@ -2296,31 +2316,31 @@ msgid ""
 "released? Install %s of the plugin."
 msgstr ""
 
-#: stripe-payments/admin/views/admin.php:114
+#: stripe-payments/admin/views/admin.php:117
 msgid "Are you sure you want to clear log?"
 msgstr ""
 
-#: stripe-payments/admin/views/admin.php:115
+#: stripe-payments/admin/views/admin.php:118
 msgid "Log cleared."
 msgstr ""
 
-#: stripe-payments/admin/views/admin.php:116
+#: stripe-payments/admin/views/admin.php:119
 #: stripe-payments/includes/class-asp-pp-handler.php:497
-#: stripe-payments/includes/class-asp-pp-handler.php:651
-#: stripe-payments/includes/class-asp-pp-handler.php:655
-#: stripe-payments/includes/class-asp-pp-handler.php:741
+#: stripe-payments/includes/class-asp-pp-handler.php:684
+#: stripe-payments/includes/class-asp-pp-handler.php:688
+#: stripe-payments/includes/class-asp-pp-handler.php:774
 msgid "Error occurred:"
 msgstr ""
 
-#: stripe-payments/admin/views/blocks.php:22
+#: stripe-payments/admin/views/blocks.php:29
 msgid "Product"
 msgstr ""
 
-#: stripe-payments/admin/views/blocks.php:48
+#: stripe-payments/admin/views/blocks.php:59
 msgid "Select product to view"
 msgstr ""
 
-#: stripe-payments/admin/views/blocks.php:69
+#: stripe-payments/admin/views/blocks.php:84
 msgid "(Select product)"
 msgstr ""
 
@@ -2332,7 +2352,7 @@ msgid ""
 msgstr ""
 
 #: stripe-payments/includes/class-asp-pp-handler.php:102
-#: stripe-payments/public/includes/class-shortcode-asp.php:649
+#: stripe-payments/includes/shortcodes/class-shortcode-asp.php:649
 msgid "Only numbers are allowed: 0-9"
 msgstr ""
 
@@ -2343,103 +2363,103 @@ msgstr ""
 
 #: stripe-payments/includes/class-asp-pp-handler.php:411
 #: stripe-payments/includes/class-asp-pp-handler.php:453
-#: stripe-payments/public/includes/class-shortcode-asp.php:111
+#: stripe-payments/includes/shortcodes/class-shortcode-asp.php:111
 msgid "Start Free Trial"
 msgstr ""
 
 #: stripe-payments/includes/class-asp-pp-handler.php:438
-#: stripe-payments/public/includes/class-shortcode-asp.php:97
+#: stripe-payments/includes/shortcodes/class-shortcode-asp.php:97
 msgid "Please enter a valid amount"
 msgstr ""
 
 #: stripe-payments/includes/class-asp-pp-handler.php:439
-#: stripe-payments/public/includes/class-shortcode-asp.php:98
+#: stripe-payments/includes/shortcodes/class-shortcode-asp.php:98
 msgid "Minimum amount is"
 msgstr ""
 
 #: stripe-payments/includes/class-asp-pp-handler.php:440
-#: stripe-payments/public/includes/class-shortcode-asp.php:99
+#: stripe-payments/includes/shortcodes/class-shortcode-asp.php:99
 msgid "Please enter quantity."
 msgstr ""
 
 #: stripe-payments/includes/class-asp-pp-handler.php:441
-#: stripe-payments/public/includes/class-shortcode-asp.php:100
+#: stripe-payments/includes/shortcodes/class-shortcode-asp.php:100
 msgid "Quantity can't be zero."
 msgstr ""
 
 #: stripe-payments/includes/class-asp-pp-handler.php:442
-#: stripe-payments/public/includes/class-shortcode-asp.php:101
+#: stripe-payments/includes/shortcodes/class-shortcode-asp.php:101
 msgid "Quantity should be integer value."
 msgstr ""
 
 #: stripe-payments/includes/class-asp-pp-handler.php:444
 #: stripe-payments/includes/class-asp-pp-handler.php:506
-#: stripe-payments/public/includes/class-shortcode-asp.php:102
+#: stripe-payments/includes/shortcodes/class-shortcode-asp.php:102
 #, php-format
 msgid "You cannot order more items than available: %d"
 msgstr ""
 
 #: stripe-payments/includes/class-asp-pp-handler.php:445
-#: stripe-payments/includes/class-asp-process-ipn-ng.php:385
+#: stripe-payments/includes/class-asp-process-ipn-ng.php:388
 #: stripe-payments/includes/class-asp-product-item.php:345
 #: stripe-payments/includes/process_ipn.php:561
-#: stripe-payments/public/includes/class-asp-shortcode-ng.php:184
-#: stripe-payments/public/includes/class-asp-shortcode-ng.php:542
-#: stripe-payments/public/includes/class-shortcode-asp.php:103
-#: stripe-payments/public/includes/class-shortcode-asp.php:341
-#: stripe-payments/public/includes/class-shortcode-asp.php:686
+#: stripe-payments/includes/shortcodes/class-asp-shortcode-ng.php:184
+#: stripe-payments/includes/shortcodes/class-asp-shortcode-ng.php:542
+#: stripe-payments/includes/shortcodes/class-shortcode-asp.php:103
+#: stripe-payments/includes/shortcodes/class-shortcode-asp.php:341
+#: stripe-payments/includes/shortcodes/class-shortcode-asp.php:686
 #: stripe-payments/public/views/templates/default/payment-popup.php:306
 msgid "Tax"
 msgstr ""
 
 #: stripe-payments/includes/class-asp-pp-handler.php:446
-#: stripe-payments/includes/class-asp-process-ipn-ng.php:393
+#: stripe-payments/includes/class-asp-process-ipn-ng.php:396
 #: stripe-payments/includes/class-asp-product-item.php:356
 #: stripe-payments/includes/process_ipn.php:568
-#: stripe-payments/public/includes/class-asp-shortcode-ng.php:194
-#: stripe-payments/public/includes/class-asp-shortcode-ng.php:543
-#: stripe-payments/public/includes/class-shortcode-asp.php:104
-#: stripe-payments/public/includes/class-shortcode-asp.php:351
-#: stripe-payments/public/includes/class-shortcode-asp.php:687
+#: stripe-payments/includes/shortcodes/class-asp-shortcode-ng.php:194
+#: stripe-payments/includes/shortcodes/class-asp-shortcode-ng.php:543
+#: stripe-payments/includes/shortcodes/class-shortcode-asp.php:104
+#: stripe-payments/includes/shortcodes/class-shortcode-asp.php:351
+#: stripe-payments/includes/shortcodes/class-shortcode-asp.php:687
 #: stripe-payments/public/views/templates/default/payment-popup.php:312
 msgid "Shipping"
 msgstr ""
 
 #: stripe-payments/includes/class-asp-pp-handler.php:447
-#: stripe-payments/public/includes/class-asp-shortcode-ng.php:205
-#: stripe-payments/public/includes/class-shortcode-asp.php:105
-#: stripe-payments/public/includes/class-shortcode-asp.php:362
+#: stripe-payments/includes/shortcodes/class-asp-shortcode-ng.php:205
+#: stripe-payments/includes/shortcodes/class-shortcode-asp.php:105
+#: stripe-payments/includes/shortcodes/class-shortcode-asp.php:362
 msgid "Total:"
 msgstr ""
 
 #: stripe-payments/includes/class-asp-pp-handler.php:448
-#: stripe-payments/public/includes/class-shortcode-asp.php:106
+#: stripe-payments/includes/shortcodes/class-shortcode-asp.php:106
 msgid "Please fill in this field."
 msgstr ""
 
 #: stripe-payments/includes/class-asp-pp-handler.php:449
-#: stripe-payments/public/includes/class-shortcode-asp.php:107
+#: stripe-payments/includes/shortcodes/class-shortcode-asp.php:107
 msgid "Please check this checkbox."
 msgstr ""
 
 #: stripe-payments/includes/class-asp-pp-handler.php:450
-#: stripe-payments/public/includes/class-shortcode-asp.php:108
+#: stripe-payments/includes/shortcodes/class-shortcode-asp.php:108
 msgid "You must accept the terms before you can proceed."
 msgstr ""
 
 #: stripe-payments/includes/class-asp-pp-handler.php:451
-#: stripe-payments/public/includes/class-shortcode-asp.php:109
+#: stripe-payments/includes/shortcodes/class-shortcode-asp.php:109
 msgid "Remove coupon"
 msgstr ""
 
 #: stripe-payments/includes/class-asp-pp-handler.php:452
-#: stripe-payments/public/includes/class-shortcode-asp.php:110
+#: stripe-payments/includes/shortcodes/class-shortcode-asp.php:110
 #: stripe-payments/public/views/templates/default/payment-popup.php:273
 msgid "Remove"
 msgstr ""
 
 #: stripe-payments/includes/class-asp-pp-handler.php:454
-#: stripe-payments/public/includes/class-shortcode-asp.php:112
+#: stripe-payments/includes/shortcodes/class-shortcode-asp.php:112
 msgid "Invalid validation RegEx: "
 msgstr ""
 
@@ -2451,8 +2471,8 @@ msgstr ""
 msgid "Currency not supported for this payment method."
 msgstr ""
 
-#: stripe-payments/includes/class-asp-pp-handler.php:519
-#: stripe-payments/includes/class-asp-pp-handler.php:522
+#: stripe-payments/includes/class-asp-pp-handler.php:524
+#: stripe-payments/includes/class-asp-pp-handler.php:527
 msgid "Stripe API error occurred:"
 msgstr ""
 
@@ -2470,35 +2490,35 @@ msgstr ""
 msgid "Debug data:"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-process-ipn-ng.php:276
+#: stripe-payments/includes/class-asp-process-ipn-ng.php:279
 #, php-format
 msgid "Invalid payment amount received. Expected %1$s, got %2$s."
 msgstr ""
 
-#: stripe-payments/includes/class-asp-process-ipn-ng.php:376
+#: stripe-payments/includes/class-asp-process-ipn-ng.php:379
 #: stripe-payments/includes/process_ipn.php:556
 #, php-format
 msgid "Coupon \"%s\""
 msgstr ""
 
-#: stripe-payments/includes/class-asp-process-ipn-ng.php:377
+#: stripe-payments/includes/class-asp-process-ipn-ng.php:380
 #: stripe-payments/includes/process_ipn.php:557
 msgid "Subtotal"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-process-ipn-ng.php:461
+#: stripe-payments/includes/class-asp-process-ipn-ng.php:468
 msgid "Product Name: "
 msgstr ""
 
-#: stripe-payments/includes/class-asp-process-ipn-ng.php:462
+#: stripe-payments/includes/class-asp-process-ipn-ng.php:469
 msgid "Quantity: "
 msgstr ""
 
-#: stripe-payments/includes/class-asp-process-ipn-ng.php:463
+#: stripe-payments/includes/class-asp-process-ipn-ng.php:470
 msgid "Item Price: "
 msgstr ""
 
-#: stripe-payments/includes/class-asp-process-ipn-ng.php:468
+#: stripe-payments/includes/class-asp-process-ipn-ng.php:475
 msgid "Total Amount: "
 msgstr ""
 
@@ -3679,134 +3699,162 @@ msgstr ""
 msgid "Buy Now"
 msgstr ""
 
-#: stripe-payments/public/class-asp.php:298
+#: stripe-payments/includes/class-asp.php:298
 msgid "Thank you for the purchase"
 msgstr ""
 
-#: stripe-payments/public/class-asp.php:299
+#: stripe-payments/includes/class-asp.php:299
 msgid "Hello"
 msgstr ""
 
-#: stripe-payments/public/class-asp.php:300
+#: stripe-payments/includes/class-asp.php:300
 msgid "Thank you for your purchase! You ordered the following item(s):"
 msgstr ""
 
-#: stripe-payments/public/class-asp.php:303
+#: stripe-payments/includes/class-asp.php:303
 msgid "Notification of product sale"
 msgstr ""
 
-#: stripe-payments/public/class-asp.php:304
+#: stripe-payments/includes/class-asp.php:304
 msgid "Dear Seller"
 msgstr ""
 
-#: stripe-payments/public/class-asp.php:305
+#: stripe-payments/includes/class-asp.php:305
 msgid "This mail is to notify you of a product sale."
 msgstr ""
 
-#: stripe-payments/public/class-asp.php:307
+#: stripe-payments/includes/class-asp.php:307
 msgid "The sale was made to"
 msgstr ""
 
-#: stripe-payments/public/class-asp.php:308
+#: stripe-payments/includes/class-asp.php:308
 msgid "Thanks"
 msgstr ""
 
-#: stripe-payments/public/class-asp.php:324
+#: stripe-payments/includes/class-asp.php:324
 msgid ""
 "I accept the <a href=\"https://example.com/terms-and-conditions/\" target="
 "\"_blank\">Terms and Conditions</a>"
 msgstr ""
 
-#: stripe-payments/public/includes/class-asp-shortcode-ng.php:70
+#: stripe-payments/includes/process_ipn.php:36
+msgid ""
+"Error occured before user interacted with payment popup. This might be "
+"caused by JavaScript errors on page."
+msgstr ""
+
+#: stripe-payments/includes/process_ipn.php:37
+msgid "Error occured after user interacted with popup."
+msgstr ""
+
+#: stripe-payments/includes/process_ipn.php:56
+msgid "Following error occured during payment processing:"
+msgstr ""
+
+#: stripe-payments/includes/process_ipn.php:709
+#: stripe-payments/includes/process_ipn.php:715
+msgid "Download link"
+msgstr ""
+
+#: stripe-payments/includes/process_ipn.php:717
+#: stripe-payments/includes/shortcodes/class-shortcode-asp.php:1025
+msgid "Download links"
+msgstr ""
+
+#: stripe-payments/includes/process_ipn.php:728
+msgid "Order Info: "
+msgstr ""
+
+#: stripe-payments/includes/shortcodes/class-asp-shortcode-ng.php:70
 msgid "Error: product ID is invalid."
 msgstr ""
 
-#: stripe-payments/public/includes/class-asp-shortcode-ng.php:89
+#: stripe-payments/includes/shortcodes/class-asp-shortcode-ng.php:89
 msgid "This product requires Stripe Payments Subscription addon."
 msgstr ""
 
-#: stripe-payments/public/includes/class-asp-shortcode-ng.php:518
-#: stripe-payments/public/includes/class-shortcode-asp.php:627
+#: stripe-payments/includes/shortcodes/class-asp-shortcode-ng.php:518
+#: stripe-payments/includes/shortcodes/class-shortcode-asp.php:627
 msgid ""
 "Stripe Payments requires Javascript to be supported by the browser in order "
 "to operate."
 msgstr ""
 
-#: stripe-payments/public/includes/class-asp-shortcode-ng.php:698
-#: stripe-payments/public/includes/class-shortcode-asp.php:863
+#: stripe-payments/includes/shortcodes/class-asp-shortcode-ng.php:698
+#: stripe-payments/includes/shortcodes/class-shortcode-asp.php:863
 #: stripe-payments/public/views/templates/default/payment-popup.php:173
 msgid "Enter amount"
 msgstr ""
 
-#: stripe-payments/public/includes/class-shortcode-asp.php:893
+#: stripe-payments/includes/shortcodes/class-shortcode-asp.php:893
 #: stripe-payments/public/views/templates/default/payment-popup.php:200
 msgid "Enter quantity"
 msgstr ""
 
-#: stripe-payments/public/includes/class-shortcode-asp.php:894
+#: stripe-payments/includes/shortcodes/class-shortcode-asp.php:894
 msgid "X item(s)"
 msgstr ""
 
-#: stripe-payments/public/includes/class-shortcode-asp.php:957
+#: stripe-payments/includes/shortcodes/class-shortcode-asp.php:957
 #: stripe-payments/public/views/templates/default/payment-popup.php:267
 msgid "Apply"
 msgstr ""
 
-#: stripe-payments/public/includes/class-shortcode-asp.php:998
-#: stripe-payments/public/includes/class-shortcode-asp.php:1059
+#: stripe-payments/includes/shortcodes/class-shortcode-asp.php:998
+#: stripe-payments/includes/shortcodes/class-shortcode-asp.php:1059
 msgid "System was not able to complete the payment."
 msgstr ""
 
-#: stripe-payments/public/includes/class-shortcode-asp.php:1001
+#: stripe-payments/includes/shortcodes/class-shortcode-asp.php:1001
 msgid "Thank you for your payment."
 msgstr ""
 
-#: stripe-payments/public/includes/class-shortcode-asp.php:1002
+#: stripe-payments/includes/shortcodes/class-shortcode-asp.php:1002
 msgid "Here's what you purchased: "
 msgstr ""
 
-#: stripe-payments/public/includes/class-shortcode-asp.php:1016
+#: stripe-payments/includes/shortcodes/class-shortcode-asp.php:1016
 msgctxt "Is a part of 'Please click here to download'"
 msgid " to download."
 msgstr ""
 
-#: stripe-payments/public/includes/class-shortcode-asp.php:1016
+#: stripe-payments/includes/shortcodes/class-shortcode-asp.php:1016
 msgctxt "Is a part of 'Please click here to download'"
 msgid "Please "
 msgstr ""
 
-#: stripe-payments/public/includes/class-shortcode-asp.php:1016
+#: stripe-payments/includes/shortcodes/class-shortcode-asp.php:1016
 msgctxt "Is a part of 'Please click here to download'"
 msgid "click here"
 msgstr ""
 
-#: stripe-payments/public/includes/class-shortcode-asp.php:1026
-#: stripe-payments/public/includes/shortcodes/show-user-transactions.php:59
+#: stripe-payments/includes/shortcodes/class-shortcode-asp.php:1026
+#: stripe-payments/includes/shortcodes/show-user-transactions.php:59
 msgid "Click here to download"
 msgstr ""
 
-#: stripe-payments/public/includes/class-shortcode-asp.php:1133
+#: stripe-payments/includes/shortcodes/class-shortcode-asp.php:1133
 msgid "No products have been configured yet"
 msgstr ""
 
-#: stripe-payments/public/includes/class-shortcode-asp.php:1142
+#: stripe-payments/includes/shortcodes/class-shortcode-asp.php:1142
 msgid "Nothing found for"
 msgstr ""
 
-#: stripe-payments/public/includes/class-shortcode-asp.php:1142
+#: stripe-payments/includes/shortcodes/class-shortcode-asp.php:1142
 msgid "Search results for"
 msgstr ""
 
-#: stripe-payments/public/includes/shortcodes/show-user-transactions.php:17
+#: stripe-payments/includes/shortcodes/show-user-transactions.php:17
 #, php-format
 msgid "Please <a href=\"%s\">login</a> to see your transactions history."
 msgstr ""
 
-#: stripe-payments/public/includes/shortcodes/show-user-transactions.php:37
+#: stripe-payments/includes/shortcodes/show-user-transactions.php:37
 msgid "No transactions found."
 msgstr ""
 
-#: stripe-payments/public/includes/shortcodes/show-user-transactions.php:59
+#: stripe-payments/includes/shortcodes/show-user-transactions.php:59
 msgid "Download link:"
 msgstr ""
 

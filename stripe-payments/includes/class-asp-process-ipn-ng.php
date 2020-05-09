@@ -151,6 +151,9 @@ class ASP_Process_IPN_NG {
 		$key = $is_live ? $this->asp_class->APISecKey : $this->asp_class->APISecKeyTest;
 		\Stripe\Stripe::setApiKey( $key );
 
+		$api = ASP_Stripe_API::get_instance();
+		$api->set_api_key( $key );
+
 		//Get Payment Data
 		ASP_Debug_Logger::log( 'Firing asp_ng_process_ipn_payment_data_item_override filter.' );
 
@@ -455,7 +458,11 @@ class ASP_Process_IPN_NG {
 
 		if ( ! empty( $update_opts && ! $p_data->is_zero_value ) ) {
 			ASP_Debug_Logger::log( 'Updating payment intent data.' );
-			$res = \Stripe\PaymentIntent::update( $pi, $update_opts );
+			if ( ASP_Utils::use_internal_api() ) {
+				$res = $api->post( 'payment_intents/' . $pi, $update_opts );
+			} else {
+				$res = \Stripe\PaymentIntent::update( $pi, $update_opts );
+			}
 		}
 
 		$product_details  = __( 'Product Name: ', 'stripe-payments' ) . $data['item_name'] . "\n";

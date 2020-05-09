@@ -831,4 +831,14 @@ class ASP_Utils {
 		return preg_replace( '/^http:\/\//i', 'https://', $url );
 	}
 
+	public static function use_internal_api() {
+		$asp_class               = AcceptStripePayments::get_instance();
+		$dont_use_stripe_php_sdk = $asp_class->get_setting( 'dont_use_stripe_php_sdk' );
+
+		if ( $dont_use_stripe_php_sdk ) {
+			return true;
+		}
+		return false;
+	}
+
 }

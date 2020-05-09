@@ -515,6 +515,11 @@ class ASP_PP_Handler {
 			ASPMain::load_stripe_lib();
 			$key = $this->asp_main->is_live ? $this->asp_main->APISecKey : $this->asp_main->APISecKeyTest;
 			\Stripe\Stripe::setApiKey( $key );
+
+			$api = ASP_Stripe_API::get_instance();
+
+			$api->set_api_key( $key );
+
 		} catch ( \Exception $e ) {
 			$out['err'] = __( 'Stripe API error occurred:', 'stripe-payments' ) . ' ' . $e->getMessage();
 			wp_send_json( $out );
@@ -611,10 +616,26 @@ class ASP_PP_Handler {
 				$customer_opts = apply_filters( 'asp_ng_before_customer_create_update', $customer_opts, empty( $cust_id ) ? false : $cust_id );
 
 				if ( empty( $cust_id ) ) {
-					$customer = \Stripe\Customer::create( $customer_opts );
-					$cust_id  = $customer->id;
+					if ( ASP_Utils::use_internal_api() ) {
+						$api = ASP_Stripe_API::get_instance();
+
+						$customer = $api->post( 'customers', $customer_opts );
+
+					} else {
+						$customer = \Stripe\Customer::create( $customer_opts );
+					}
+
+					$cust_id = $customer->id;
 				} else {
-					$customer = \Stripe\Customer::update( $cust_id, $customer_opts );
+
+					if ( ASP_Utils::use_internal_api() ) {
+						$api = ASP_Stripe_API::get_instance();
+
+						$customer = $api->post( 'customers/' . $cust_id, $customer_opts );
+
+					} else {
+						$customer = \Stripe\Customer::update( $cust_id, $customer_opts );
+					}
 				}
 				$pi_params['customer'] = $cust_id;
 			}
@@ -642,9 +663,21 @@ class ASP_PP_Handler {
 
 			$pi_params = apply_filters( 'asp_ng_before_pi_create_update', $pi_params );
 			if ( $pi_id ) {
-				$intent = \Stripe\PaymentIntent::update( $pi_id, $pi_params );
+				if ( ASP_Utils::use_internal_api() ) {
+					$api = ASP_Stripe_API::get_instance();
+
+					$intent = $api->post( 'payment_intents/' . $pi_id, $pi_params );
+				} else {
+					$intent = \Stripe\PaymentIntent::update( $pi_id, $pi_params );
+				}
 			} else {
-				$intent = \Stripe\PaymentIntent::create( $pi_params );
+				if ( ASP_Utils::use_internal_api() ) {
+					$api = ASP_Stripe_API::get_instance();
+
+					$intent = $api->post( 'payment_intents', $pi_params );
+				} else {
+					$intent = \Stripe\PaymentIntent::create( $pi_params );
+				}
 			}
 		} catch ( \Exception $e ) {
 			$out['shipping'] = wp_json_encode( $shipping );

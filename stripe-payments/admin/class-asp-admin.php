@@ -10,7 +10,7 @@ class AcceptStripePayments_Admin {
 	 * @var      object
 	 */
 	protected static $instance     = null;
-	private $requiered_php_modules = array( 'curl', 'zlib' );
+	private $requiered_php_modules = array( 'curl', 'zlib', 'json', 'mbstring' );
 
 	/**
 	 * Slug of the plugin screen.
@@ -366,6 +366,7 @@ class AcceptStripePayments_Admin {
 		add_settings_section( 'AcceptStripePayments-custom-field', __( 'Custom Field Settings', 'stripe-payments' ), null, $this->plugin_slug . '-advanced' );
 		add_settings_section( 'AcceptStripePayments-tos', __( 'Terms and Conditions', 'stripe-payments' ), array( $this, 'tos_description' ), $this->plugin_slug . '-advanced' );
 		add_settings_section( 'AcceptStripePayments-additional-settings', __( 'Additional Settings', 'stripe-payments' ), null, $this->plugin_slug . '-advanced' );
+		add_settings_section( 'AcceptStripePayments-experimental-settings', __( 'Experemintal Settings', 'stripe-payments' ), array( $this, 'experemintal_section_description' ), $this->plugin_slug . '-advanced' );
 
 		// Global section
 		add_settings_field(
@@ -1045,17 +1046,6 @@ class AcceptStripePayments_Admin {
 			)
 		);
 		add_settings_field(
-			'disable_buttons_before_js_loads',
-			__( 'Disable Buttons Before Javascript Loads', 'stripe-payments' ),
-			array( &$this, 'settings_field_callback' ),
-			$this->plugin_slug . '-advanced',
-			'AcceptStripePayments-additional-settings',
-			array(
-				'field' => 'disable_buttons_before_js_loads',
-				'desc'  => __( 'If enabled, payment buttons are not clickable until Javascript libraries are loaded on page view. This prevents "Invalid Stripe Token" errors on some configurations.', 'stripe-payments' ),
-			)
-		);
-		add_settings_field(
 			'dont_create_order',
 			__( 'Don\'t Create Order', 'stripe-payments' ),
 			array( &$this, 'settings_field_callback' ),
@@ -1066,6 +1056,7 @@ class AcceptStripePayments_Admin {
 				'desc'  => __( 'If enabled, no transaction info is saved to the orders menu of the plugin. The transaction data will still be available in your Stripe dashboard. Useful if you don\'t want to store purchase and customer data in your site.', 'stripe-payments' ),
 			)
 		);
+
 		add_settings_field(
 			'pp_additional_css',
 			__( 'Payment Popup Additional CSS', 'stripe-payments' ),
@@ -1077,11 +1068,43 @@ class AcceptStripePayments_Admin {
 				'desc'  => __( 'Enter additional CSS code that would be added to payment popup page.', 'stripe-payments' ),
 			)
 		);
+
+		//Experimental Settings
+		add_settings_field(
+			'dont_use_stripe_php_sdk',
+			__( 'Do Not Use Stripe PHP SDK Library', 'stripe-payments' ),
+			array( $this, 'settings_field_callback' ),
+			$this->plugin_slug . '-advanced',
+			'AcceptStripePayments-experimental-settings',
+			array(
+				'field' => 'dont_use_stripe_php_sdk',
+				'desc'  => __( 'Enable this if you\'re experiencing conflicts with other plugins that use Stripe PHP SDK Library. Internal Stripe API wrapper wound be used instead.', 'stripe-payments' ) . '<br>' .
+				'Warning: this option is currently not supported by Subscriptions and some other addons.',
+			)
+		);
+
+		add_settings_field(
+			'disable_buttons_before_js_loads',
+			__( 'Disable Buttons Before Javascript Loads', 'stripe-payments' ),
+			array( $this, 'settings_field_callback' ),
+			$this->plugin_slug . '-advanced',
+			'AcceptStripePayments-experimental-settings',
+			array(
+				'field' => 'disable_buttons_before_js_loads',
+				'desc'  => __( 'If enabled, payment buttons are not clickable until Javascript libraries are loaded on page view. This prevents "Invalid Stripe Token" errors on some configurations.', 'stripe-payments' ),
+			)
+		);
+
 	}
 
 	function tos_description() {
 		echo '<p>' . __( 'This section allows you to configure Terms and Conditions or Privacy Policy that customer must accept before making payment. This, for example, can be used to comply with EU GDPR.', 'stripe-payments' ) . '</p>';
 	}
+
+	public function experemintal_section_description() {
+		echo '<p>' . esc_html( __( "Warning: don't change options in this section unless you know what you're doing!", 'stripe-payments' ) ) . '</p>';
+	}
+
 
 	static function get_currency_options( $selected_value = '', $show_default = true ) {
 
@@ -1243,6 +1266,7 @@ class AcceptStripePayments_Admin {
 			case 'enable_email_schedule':
 			case 'frontend_prefetch_scripts':
 			case 'hide_state_field':
+			case 'dont_use_stripe_php_sdk':
 				echo "<input type='checkbox' name='AcceptStripePayments-settings[{$field}]' value='1' " . ( $field_value ? 'checked=checked' : '' ) . " /><p class=\"description\">{$desc}</p>";
 				break;
 			case 'prefill_wp_user_details':
@@ -1443,6 +1467,8 @@ class AcceptStripePayments_Admin {
 		$output['send_email_on_error_to'] = sanitize_text_field( $input['send_email_on_error_to'] );
 
 		$output['disable_buttons_before_js_loads'] = empty( $input['disable_buttons_before_js_loads'] ) ? 0 : 1;
+
+		$output['dont_use_stripe_php_sdk'] = empty( $input['dont_use_stripe_php_sdk'] ) ? 0 : 1;
 
 		$output['use_old_checkout_api1'] = empty( $input['use_old_checkout_api1'] ) ? 0 : 1;
 

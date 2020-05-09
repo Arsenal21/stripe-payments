@@ -82,7 +82,8 @@ class ASP_Payment_Data {
 		$billing_addr->email       = ! empty( $bd->email ) ? $bd->email : $this->obj->customer->email;
 		$billing_addr->line1       = isset( $bd->address->line1 ) ? $bd->address->line1 : isset( $this->obj->customer->address->line1 ) ? $this->obj->customer->address->line1 : '';
 		$billing_addr->line2       = isset( $bd->address->line2 ) ? $bd->address->line2 : isset( $this->obj->customer->address->line2 ) ? $this->obj->customer->address->line2 : '';
-		$billing_addr->postal_code = isset( $bd->address->postal_code ) ? $bd->address->postal_code : isset( $this->obj->customer->address->postal_code ) ? $this->obj->customer->address->postal_code : '';
+		$billing_addr->postal_code = isset( $bd->address->postal_code ) ? $bd->address->postal_code : '';
+		$billing_addr->postal_code = empty( $billing_addr->postal_code ) && isset( $this->obj->customer->address, $this->obj->customer->address->postal_code ) ? $this->obj->customer->address->postal_code : '';
 		$billing_addr->city        = isset( $bd->address->city ) ? $bd->address->city : isset( $this->obj->customer->address->city ) ? $this->obj->customer->address->city : '';
 		$billing_addr->state       = isset( $bd->address->state ) ? $bd->address->state : isset( $this->obj->customer->address->state ) ? $this->obj->customer->address->state : '';
 		$billing_addr->country     = isset( $bd->address->country ) ? $bd->address->country : isset( $this->obj->customer->address->country ) ? $this->obj->customer->address->country : '';
@@ -146,12 +147,23 @@ class ASP_Payment_Data {
 
 	protected function load_from_obj() {
 		try {
-			$obj = \Stripe\PaymentIntent::retrieve(
-				array(
-					'id'     => $this->obj_id,
-					'expand' => array( 'customer' ),
-				)
-			);
+			if ( ASP_Utils::use_internal_api() ) {
+				$api = ASP_Stripe_API::get_instance();
+				$obj = $api->get( 'payment_intents/' . $this->obj_id . '?expand[]=customer' );
+
+				if ( false === $obj ) {
+					$error            = $api->get_last_error();
+					$this->last_error = $error['message'];
+					return false;
+				}
+			} else {
+				$obj = \Stripe\PaymentIntent::retrieve(
+					array(
+						'id'     => $this->obj_id,
+						'expand' => array( 'customer' ),
+					)
+				);
+			}
 		} catch ( Exception $e ) {
 			$this->last_error     = $e->getMessage();
 			$this->last_error_obj = $e;
