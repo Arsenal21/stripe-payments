@@ -2482,6 +2482,7 @@ msgid "Stripe Payments Error"
 msgstr ""
 
 #: stripe-payments/includes/class-asp-process-ipn-ng.php:43
+#: stripe-payments/includes/process_ipn.php:56
 msgid "Following error occurred during payment processing:"
 msgstr ""
 
@@ -3667,35 +3668,7 @@ msgstr ""
 msgid "Vietnamese Dong (VND)"
 msgstr ""
 
-#: stripe-payments/includes/process_ipn.php:36
-msgid ""
-"Error occurred before user interacted with payment popup. This might be "
-"caused by JavaScript errors on page."
-msgstr ""
-
-#: stripe-payments/includes/process_ipn.php:37
-msgid "Error occurred after user interacted with popup."
-msgstr ""
-
-#: stripe-payments/includes/process_ipn.php:56
-msgid "Following error occurred during payment processing:"
-msgstr ""
-
-#: stripe-payments/includes/process_ipn.php:709
-#: stripe-payments/includes/process_ipn.php:715
-msgid "Download link"
-msgstr ""
-
-#: stripe-payments/includes/process_ipn.php:717
-#: stripe-payments/public/includes/class-shortcode-asp.php:1025
-msgid "Download links"
-msgstr ""
-
-#: stripe-payments/includes/process_ipn.php:728
-msgid "Order Info: "
-msgstr ""
-
-#: stripe-payments/public/class-asp.php:293
+#: stripe-payments/includes/class-asp.php:293
 msgid "Buy Now"
 msgstr ""
 
@@ -3739,16 +3712,12 @@ msgstr ""
 
 #: stripe-payments/includes/process_ipn.php:36
 msgid ""
-"Error occured before user interacted with payment popup. This might be "
+"Error occurred before user interacted with payment popup. This might be "
 "caused by JavaScript errors on page."
 msgstr ""
 
 #: stripe-payments/includes/process_ipn.php:37
-msgid "Error occured after user interacted with popup."
-msgstr ""
-
-#: stripe-payments/includes/process_ipn.php:56
-msgid "Following error occured during payment processing:"
+msgid "Error occurred after user interacted with popup."
 msgstr ""
 
 #: stripe-payments/includes/process_ipn.php:709
