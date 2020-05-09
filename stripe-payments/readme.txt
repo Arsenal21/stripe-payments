@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 4.7
 Tested up to: 5.4
 Requires PHP: 5.6
-Stable tag: 2.0.29t2
+Stable tag: 2.0.29
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -154,10 +154,12 @@ None.
 
 == Changelog ==
 
-= WIP 2.0.29 =
-- Added `Disable Curl Persistent Connections` settings option. 
-Can be used as workaround for "Network error [errno 2]: easy handle already used in multi handle" error during payment process on some servers.
+= 2.0.29 =
+- Added subscriptions support for Additional Payment Methods addon.
+Requires APM addon 2.0.12+ and Subscriptions addon 2.0.13+.
+- Added `Do Not Use Stripe PHP SDK Library` experemintal option.
 - Plugin now shows warning if required PHP modules are not installed on the server.
+- Minor code optimizations and improvements.
 
 = 2.0.28 =
 - Coupon code is now saved in Stripe metadata.
