@@ -905,8 +905,8 @@ function handlePayment() {
 				errorCont.style.display = 'block';
 				smokeScreen(false);
 			} else {
-				reqStr = 'action=asp_pp_confirm_token&asp_token_id=' + result.token.id + reqStr;
-				confirmToken(reqStr);
+				ct_reqStr = 'action=asp_pp_confirm_token&asp_token_id=' + result.token.id + ct_reqStr;
+				confirmToken(ct_reqStr);
 			}
 		});
 		return false;
