@@ -155,11 +155,10 @@ None.
 == Changelog ==
 
 = 2.0.29 =
-- Added subscriptions support for Additional Payment Methods addon.
-Requires APM addon 2.0.12+ and Subscriptions addon 2.0.13+.
-- Added `Do Not Use Stripe PHP SDK Library` experemintal option.
+- Added `Do Not Use Stripe PHP SDK Library` experimental option.
 - Plugin now shows warning if required PHP modules are not installed on the server.
 - Minor code optimizations and improvements.
+- Added subscriptions support for Additional Payment Methods addon.
 
 = 2.0.28 =
 - Coupon code is now saved in Stripe metadata.

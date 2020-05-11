@@ -657,7 +657,7 @@ msgstr ""
 #: stripe-payments/admin/class-asp-admin.php:1081
 msgid ""
 "Enable this if you're experiencing conflicts with other plugins that use "
-"Stripe PHP SDK Library. Internal Stripe API wrapper wound be used instead."
+"Stripe PHP SDK Library. Internal Stripe API wrapper would be used instead."
 msgstr ""
 
 #: stripe-payments/admin/class-asp-admin.php:1088
