@@ -15,10 +15,13 @@ class AcceptStripePayments {
 		'EUR' => 50,
 		'GBP' => 30,
 		'HKD' => 400,
+		'INR' => 50,
 		'JPY' => 50,
 		'MXN' => 1000,
+		'MYR' => 200,
 		'NOK' => 300,
 		'NZD' => 50,
+		'PLN' => 200,
 		'SEK' => 300,
 		'SGD' => 50,
 	);
