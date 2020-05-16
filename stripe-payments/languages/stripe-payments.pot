@@ -773,7 +773,7 @@ msgid "Autodetect"
 msgstr ""
 
 #: stripe-payments/admin/class-asp-admin.php:1155
-#: stripe-payments/includes/class-asp-utils.php:564
+#: stripe-payments/includes/class-asp-utils.php:565
 msgid "(Default)"
 msgstr ""
 
@@ -899,7 +899,7 @@ msgstr ""
 
 #: stripe-payments/admin/class-asp-admin.php:1511
 #: stripe-payments/includes/class-asp-pp-handler.php:402
-#: stripe-payments/includes/class-asp.php:294
+#: stripe-payments/includes/class-asp.php:298
 #, php-format
 msgid "Pay %s"
 msgstr ""
@@ -3532,179 +3532,183 @@ msgstr ""
 msgid "Zimbabwe"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:565
+#: stripe-payments/includes/class-asp-utils.php:566
 msgid "US Dollars (USD)"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:566
+#: stripe-payments/includes/class-asp-utils.php:567
 msgid "Euros (EUR)"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:567
+#: stripe-payments/includes/class-asp-utils.php:568
 msgid "Pounds Sterling (GBP)"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:568
+#: stripe-payments/includes/class-asp-utils.php:569
 msgid "Australian Dollars (AUD)"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:569
+#: stripe-payments/includes/class-asp-utils.php:570
 msgid "Bosnia and Herzegovina Convertible Mark (BAM)"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:570
+#: stripe-payments/includes/class-asp-utils.php:571
 msgid "Brazilian Real (BRL)"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:571
+#: stripe-payments/includes/class-asp-utils.php:572
 msgid "Canadian Dollars (CAD)"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:572
+#: stripe-payments/includes/class-asp-utils.php:573
 msgid "Chinese Yuan (CNY)"
 msgstr ""
 
-#: stripe-payments/includes/class-asp-utils.php:573
-msgid "Czech Koruna (CZK)"
-msgstr ""
-
 #: stripe-payments/includes/class-asp-utils.php:574
-msgid "Danish Krone (DKK)"
+msgid "Colombian Peso (COP)"
 msgstr ""
 
 #: stripe-payments/includes/class-asp-utils.php:575
-msgid "Hong Kong Dollar (HKD)"
+msgid "Czech Koruna (CZK)"
 msgstr ""
 
 #: stripe-payments/includes/class-asp-utils.php:576
-msgid "Hungarian Forint (HUF)"
+msgid "Danish Krone (DKK)"
 msgstr ""
 
 #: stripe-payments/includes/class-asp-utils.php:577
-msgid "Indian Rupee (INR)"
+msgid "Hong Kong Dollar (HKD)"
 msgstr ""
 
 #: stripe-payments/includes/class-asp-utils.php:578
-msgid "Indonesia Rupiah (IDR)"
+msgid "Hungarian Forint (HUF)"
 msgstr ""
 
 #: stripe-payments/includes/class-asp-utils.php:579
-msgid "Israeli Shekel (ILS)"
+msgid "Indian Rupee (INR)"
 msgstr ""
 
 #: stripe-payments/includes/class-asp-utils.php:580
-msgid "Japanese Yen (JPY)"
+msgid "Indonesia Rupiah (IDR)"
 msgstr ""
 
 #: stripe-payments/includes/class-asp-utils.php:581
-msgid "Lebanese Pound (LBP)"
+msgid "Israeli Shekel (ILS)"
 msgstr ""
 
 #: stripe-payments/includes/class-asp-utils.php:582
-msgid "Malaysian Ringgits (MYR)"
+msgid "Japanese Yen (JPY)"
 msgstr ""
 
 #: stripe-payments/includes/class-asp-utils.php:583
-msgid "Mexican Peso (MXN)"
+msgid "Lebanese Pound (LBP)"
 msgstr ""
 
 #: stripe-payments/includes/class-asp-utils.php:584
-msgid "New Zealand Dollar (NZD)"
+msgid "Malaysian Ringgits (MYR)"
 msgstr ""
 
 #: stripe-payments/includes/class-asp-utils.php:585
-msgid "Norwegian Krone (NOK)"
+msgid "Mexican Peso (MXN)"
 msgstr ""
 
 #: stripe-payments/includes/class-asp-utils.php:586
-msgid "Philippine Pesos (PHP)"
+msgid "New Zealand Dollar (NZD)"
 msgstr ""
 
 #: stripe-payments/includes/class-asp-utils.php:587
-msgid "Polish Zloty (PLN)"
+msgid "Norwegian Krone (NOK)"
 msgstr ""
 
 #: stripe-payments/includes/class-asp-utils.php:588
-msgid "Russian Ruble (RUB)"
+msgid "Philippine Pesos (PHP)"
 msgstr ""
 
 #: stripe-payments/includes/class-asp-utils.php:589
-msgid "Saudi Riyal (SAR)"
+msgid "Polish Zloty (PLN)"
 msgstr ""
 
 #: stripe-payments/includes/class-asp-utils.php:590
-msgid "Singapore Dollar (SGD)"
+msgid "Russian Ruble (RUB)"
 msgstr ""
 
 #: stripe-payments/includes/class-asp-utils.php:591
-msgid "South African Rand (ZAR)"
+msgid "Saudi Riyal (SAR)"
 msgstr ""
 
 #: stripe-payments/includes/class-asp-utils.php:592
-msgid "South Korean Won (KRW)"
+msgid "Singapore Dollar (SGD)"
 msgstr ""
 
 #: stripe-payments/includes/class-asp-utils.php:593
-msgid "Swedish Krona (SEK)"
+msgid "South African Rand (ZAR)"
 msgstr ""
 
 #: stripe-payments/includes/class-asp-utils.php:594
-msgid "Swiss Franc (CHF)"
+msgid "South Korean Won (KRW)"
 msgstr ""
 
 #: stripe-payments/includes/class-asp-utils.php:595
-msgid "Taiwan New Dollars (TWD)"
+msgid "Swedish Krona (SEK)"
 msgstr ""
 
 #: stripe-payments/includes/class-asp-utils.php:596
-msgid "Thai Baht (THB)"
+msgid "Swiss Franc (CHF)"
 msgstr ""
 
 #: stripe-payments/includes/class-asp-utils.php:597
-msgid "Turkish Lira (TRY)"
+msgid "Taiwan New Dollars (TWD)"
 msgstr ""
 
 #: stripe-payments/includes/class-asp-utils.php:598
+msgid "Thai Baht (THB)"
+msgstr ""
+
+#: stripe-payments/includes/class-asp-utils.php:599
+msgid "Turkish Lira (TRY)"
+msgstr ""
+
+#: stripe-payments/includes/class-asp-utils.php:600
 msgid "Vietnamese Dong (VND)"
 msgstr ""
 
-#: stripe-payments/includes/class-asp.php:293
+#: stripe-payments/includes/class-asp.php:297
 msgid "Buy Now"
 msgstr ""
 
-#: stripe-payments/includes/class-asp.php:298
+#: stripe-payments/includes/class-asp.php:302
 msgid "Thank you for the purchase"
 msgstr ""
 
-#: stripe-payments/includes/class-asp.php:299
+#: stripe-payments/includes/class-asp.php:303
 msgid "Hello"
 msgstr ""
 
-#: stripe-payments/includes/class-asp.php:300
+#: stripe-payments/includes/class-asp.php:304
 msgid "Thank you for your purchase! You ordered the following item(s):"
 msgstr ""
 
-#: stripe-payments/includes/class-asp.php:303
+#: stripe-payments/includes/class-asp.php:307
 msgid "Notification of product sale"
 msgstr ""
 
-#: stripe-payments/includes/class-asp.php:304
+#: stripe-payments/includes/class-asp.php:308
 msgid "Dear Seller"
 msgstr ""
 
-#: stripe-payments/includes/class-asp.php:305
+#: stripe-payments/includes/class-asp.php:309
 msgid "This mail is to notify you of a product sale."
 msgstr ""
 
-#: stripe-payments/includes/class-asp.php:307
+#: stripe-payments/includes/class-asp.php:311
 msgid "The sale was made to"
 msgstr ""
 
-#: stripe-payments/includes/class-asp.php:308
+#: stripe-payments/includes/class-asp.php:312
 msgid "Thanks"
 msgstr ""
 
-#: stripe-payments/includes/class-asp.php:324
+#: stripe-payments/includes/class-asp.php:328
 msgid ""
 "I accept the <a href=\"https://example.com/terms-and-conditions/\" target="
 "\"_blank\">Terms and Conditions</a>"
