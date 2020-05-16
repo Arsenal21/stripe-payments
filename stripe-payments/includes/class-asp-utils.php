@@ -571,6 +571,7 @@ class ASP_Utils {
 			'BRL' => array( __( 'Brazilian Real (BRL)', 'stripe-payments' ), 'R$' ),
 			'CAD' => array( __( 'Canadian Dollars (CAD)', 'stripe-payments' ), 'CA$' ),
 			'CNY' => array( __( 'Chinese Yuan (CNY)', 'stripe-payments' ), 'CN￥' ),
+			'COP' => array( __( 'Colombian Peso (COP)', 'stripe-payments' ), 'COL$' ),
 			'CZK' => array( __( 'Czech Koruna (CZK)', 'stripe-payments' ), 'Kč' ),
 			'DKK' => array( __( 'Danish Krone (DKK)', 'stripe-payments' ), 'kr' ),
 			'HKD' => array( __( 'Hong Kong Dollar (HKD)', 'stripe-payments' ), 'HK$' ),

@@ -10,6 +10,7 @@ class AcceptStripePayments {
 		'BRL' => 50,
 		'CAD' => 50,
 		'CHF' => 50,
+		'COP' => 2000,
 		'DKK' => 250,
 		'EUR' => 50,
 		'GBP' => 30,
