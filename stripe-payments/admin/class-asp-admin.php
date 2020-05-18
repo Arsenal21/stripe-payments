@@ -1320,6 +1320,9 @@ class AcceptStripePayments_Admin {
 			case 'currency_symbol':
 				echo '<input type="text" name="AcceptStripePayments-settings[' . $field . ']" value="" id="wp_asp_curr_symb">';
 				break;
+			case 'price_decimals_num':
+				echo '<input type="number" min="0" step="1" max="5" name="AcceptStripePayments-settings[' . $field . ']" value="' . esc_attr( $field_value ) . '"';
+				break;
 			case 'checkout_lang':
 				// list of supported languages can be found here: https://stripe.com/docs/checkout#supported-languages
 				echo '<select name="AcceptStripePayments-settings[' . $field . ']">';
@@ -1601,7 +1604,9 @@ class AcceptStripePayments_Admin {
 		}
 
 		if ( isset( $input['price_decimals_num'] ) ) {
-			$output['price_decimals_num'] = intval( $input['price_decimals_num'] );
+			$price_decimals_num           = intval( $input['price_decimals_num'] );
+			$price_decimals_num           = $price_decimals_num < 0 ? 0 : $price_decimals_num;
+			$output['price_decimals_num'] = $price_decimals_num;
 		} else {
 			add_settings_error( 'AcceptStripePayments-settings', 'invalid-price-decimals-num', __( 'Price number of decimals can\'t be empty.', 'stripe-payments' ) );
 		}
