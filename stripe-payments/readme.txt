@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 4.7
 Tested up to: 5.4
 Requires PHP: 5.6
-Stable tag: 2.0.30t2
+Stable tag: 2.0.30t3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -155,7 +155,10 @@ None.
 == Changelog ==
 
 = WIP 2.0.30 =
+- Added Argentine Peso (ARS), Chilean Peso (CLP), Colombian Peso (COP), Peruvian Nuevo Sol (PEN) and Uruguayan Peso (UYU) currencies.
+- Fixed PHP 7.4 deprecation notices.
 - Added `asp_ng_pp_countries_list` filter to programmatically modify countries list on payment popup.
+- Minor fixes and improvements.
 
 = 2.0.29 =
 - Added `Do Not Use Stripe PHP SDK Library` experimental option.
