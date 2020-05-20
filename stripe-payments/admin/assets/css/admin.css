@@ -370,6 +370,9 @@ th.column-shortcode {
 	th.column-thumbnail {
 		display: none;
 	}
+	td.column-thumbnail {
+		display: none;
+	}
 	td.thumbnail.column-thumbnail::before {
 		content: '' !important;
 	}
