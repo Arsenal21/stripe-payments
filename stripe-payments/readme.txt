@@ -174,28 +174,4 @@ None.
 - Removed dev debug lines from the code.
 - Fixed typos in text descriptions.
 
-= 2.0.26.1 =
-- Fixed a minor checkout issue with the Subscription addon when the `State` field is disabled.
-
-= 2.0.26 =
-- Added option to construct product price using variations only.
-- Added support for Lebanese Pound (LBP) and Saudi Riyal (SAR) currencies.
-- Added 'tax' parameter support for [asp_product] shortcode.
-- Added {coupon_code} email merge tag.
-- 'thankyou_page_url' parameter is no longer ignored by [asp_product] shortcode.
-- State value is now properly handled.
-- Shipping address is now properly saved if payment is made via payment addons.
-- Made prefetch work for products attached via CSS and link URL.
-- Upgraded Stripe PHP SDK to version 7.28.1.
-- PHP 7.4 support.
-- Minor improvements, bugfixes and optimizations.
-- Added built-in integration with [WP PDF Stamper plugin](https://www.tipsandtricks-hq.com/wp-pdf-stamper-plugin-2332)
-
-= 2.0.25 =
-- Added "State" field for billing and shipping address.
-- Added "Hide State Field" option to the settings menu. It's enabled by default for existing installations. This new option can be used to hide the field.
-- Bundled translation files are properly loaded now.
-- Minor improvements and optimizations.
-- Added Italian language translation file.
-
-Older versions changelog available in changelog.txt file.
+Full changelog available [ at changelog.txt](https://plugins.svn.wordpress.org/stripe-payments/trunk/changelog.txt)
