@@ -567,9 +567,11 @@ class ASP_Utils {
 			'EUR' => array( __( 'Euros (EUR)', 'stripe-payments' ), '€' ),
 			'GBP' => array( __( 'Pounds Sterling (GBP)', 'stripe-payments' ), '£' ),
 			'AUD' => array( __( 'Australian Dollars (AUD)', 'stripe-payments' ), 'AU$' ),
+			'ARS' => array( __( 'Argentine Peso (ARS)', 'stripe-payments' ), 'ARS' ),
 			'BAM' => array( __( 'Bosnia and Herzegovina Convertible Mark (BAM)', 'stripe-payments' ), 'KM' ),
 			'BRL' => array( __( 'Brazilian Real (BRL)', 'stripe-payments' ), 'R$' ),
 			'CAD' => array( __( 'Canadian Dollars (CAD)', 'stripe-payments' ), 'CA$' ),
+			'CLP' => array( __( 'Chilean Peso (CLP)', 'stripe-payments' ), 'CLP' ),
 			'CNY' => array( __( 'Chinese Yuan (CNY)', 'stripe-payments' ), 'CN￥' ),
 			'COP' => array( __( 'Colombian Peso (COP)', 'stripe-payments' ), 'COL$' ),
 			'CZK' => array( __( 'Czech Koruna (CZK)', 'stripe-payments' ), 'Kč' ),
@@ -585,6 +587,7 @@ class ASP_Utils {
 			'MXN' => array( __( 'Mexican Peso (MXN)', 'stripe-payments' ), 'MX$' ),
 			'NZD' => array( __( 'New Zealand Dollar (NZD)', 'stripe-payments' ), 'NZ$' ),
 			'NOK' => array( __( 'Norwegian Krone (NOK)', 'stripe-payments' ), 'kr' ),
+			'PEN' => array( __( 'Peruvian Nuevo Sol (PEN)', 'stripe-payments' ), 'S/' ),
 			'PHP' => array( __( 'Philippine Pesos (PHP)', 'stripe-payments' ), '₱' ),
 			'PLN' => array( __( 'Polish Zloty (PLN)', 'stripe-payments' ), 'zł' ),
 			'RUB' => array( __( 'Russian Ruble (RUB)', 'stripe-payments' ), '₽' ),
@@ -597,6 +600,7 @@ class ASP_Utils {
 			'TWD' => array( __( 'Taiwan New Dollars (TWD)', 'stripe-payments' ), 'NT$' ),
 			'THB' => array( __( 'Thai Baht (THB)', 'stripe-payments' ), '฿' ),
 			'TRY' => array( __( 'Turkish Lira (TRY)', 'stripe-payments' ), '₺' ),
+			'UYU' => array( __( 'Uruguayan Peso (UYU)', 'stripe-payments' ), '$U' ),
 			'VND' => array( __( 'Vietnamese Dong (VND)', 'stripe-payments' ), '₫' ),
 		);
 		$opts       = get_option( 'AcceptStripePayments-settings' );
