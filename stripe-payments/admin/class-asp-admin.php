@@ -440,8 +440,8 @@ class AcceptStripePayments_Admin {
 			'AcceptStripePayments-global-section',
 			array(
 				'field' => 'popup_button_text',
-				'desc'  => __( //phpcs:ignore
-					'%s is replaced by formatted payment amount (example: Pay $29.90). If this field is empty, it defaults to "Pay %s"', //phpcs:ignore
+				'desc'  => __(
+				'&percnt;s is replaced by formatted payment amount (example: Pay $29.90). If this field is empty, it defaults to "Pay &percnt;s"', //phpcs:ignore
 					'stripe-payments'
 				),
 			)
@@ -483,6 +483,7 @@ class AcceptStripePayments_Admin {
 			array(
 				'field' => 'enable_zip_validation',
 				'desc'  => sprintf(
+				// translators: %s is link to Stripe Radar rules page
 					__(
 						'For additional protection, you can opt to have Stripe collect the billing ZIP code. Make sure that ZIP code verification is turned on for your account. <a href="%s" target="_blank">Click here</a> to check it in your Stripe Dashboard.',
 						'stripe-payments'
@@ -510,6 +511,7 @@ class AcceptStripePayments_Admin {
 		$country_autodetect_addon_txt = '';
 		if ( ! class_exists( 'ASPCOUNTRYAUTODETECT_main' ) ) {
 			$country_autodetect_addon_txt = sprintf(
+				// translators: %s is link to Country Autodetect add-on page
 				'<br>' . __( 'You can install the free <a href="%s" target="_blank">Country Autodetect Addon</a> to detect customer\'s country automatically.', 'stripe-payments' ),
 				'https://s-plugins.com/stripe-country-autodetect-addon/'
 			);
@@ -1215,6 +1217,7 @@ class AcceptStripePayments_Admin {
 				. '<div class="wp-asp-help-text">'
 				. '<p><strong>' . __( 'No Validation', 'stripe-payments' ) . '</strong>: ' . __( 'no validation performed', 'stripe-payments' ) . '</p>'
 				. '<p><strong>' . __( 'Numbers Only', 'stripe-payments' ) . '</strong>: ' . __( 'only accepts numbers 0-9', 'stripe-payments' ) . '</p>'
+				// translators: %s is a link to JavaScript RegExp page
 				. '<p><strong>' . __( 'Custom Validation', 'stripe-payments' ) . '</strong>: ' . sprintf( __( 'you can enter your own validation rules using <a href="%s" target="_blank">JavaScript RegExp</a> format.', 'stripe-payments' ), 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions' ) . '</p>'
 				. '</div>'
 				. '</div>';
@@ -1230,6 +1233,7 @@ class AcceptStripePayments_Admin {
 				}
 				echo '<div class="wp-asp-custom-field-validation-custom-input-cont" style="display: none;">'
 				. '<input type="text" size="40" name="AcceptStripePayments-settings[custom_field_custom_validation_regex]" value="' . esc_attr( $custom_regex ) . '">'
+				// translators: %s is a link to JavaScript RegExp page
 				. '<p class="description">' . sprintf( __( 'Enter your custom validation rule using <a href="%s" target="_blank">JavaScript RegExp</a> format. No need to enclose those using "/".', 'stripe-payments' ), 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions' )
 				. '<br/>' . __( 'Example RegExp to allow numbers only: ^[0-9]+$', 'stripe-payments' )
 				. '</p>'
@@ -1319,6 +1323,9 @@ class AcceptStripePayments_Admin {
 				break;
 			case 'currency_symbol':
 				echo '<input type="text" name="AcceptStripePayments-settings[' . $field . ']" value="" id="wp_asp_curr_symb">';
+				break;
+			case 'price_decimals_num':
+				echo '<input type="number" min="0" step="1" max="5" name="AcceptStripePayments-settings[' . $field . ']" value="' . esc_attr( $field_value ) . '"';
 				break;
 			case 'checkout_lang':
 				// list of supported languages can be found here: https://stripe.com/docs/checkout#supported-languages
@@ -1433,6 +1440,7 @@ class AcceptStripePayments_Admin {
 			}
 			if ( $regex_error ) {
 				//error occurred during regex test
+				// translators: %s is replaced by invalid RegExp value
 				add_settings_error( 'custom_field_custom_validation_regex', 'custom_field_custom_validation_regex', sprintf( __( 'Invalid custom RegExp for Custom Field validation provided: %s', 'stripe-payments' ), $custom_regex ) );
 			}
 			$output['custom_field_custom_validation_regex']   = $custom_regex;
@@ -1508,6 +1516,7 @@ class AcceptStripePayments_Admin {
 		if ( ! empty( $input['popup_button_text'] ) ) {
 			$output['popup_button_text'] = $input['popup_button_text'];
 		} else {
+			// translators: %s is not a placeholder
 			$output['popup_button_text'] = __( 'Pay %s', 'stripe-payments' );
 		}
 
@@ -1601,7 +1610,9 @@ class AcceptStripePayments_Admin {
 		}
 
 		if ( isset( $input['price_decimals_num'] ) ) {
-			$output['price_decimals_num'] = intval( $input['price_decimals_num'] );
+			$price_decimals_num           = intval( $input['price_decimals_num'] );
+			$price_decimals_num           = $price_decimals_num < 0 ? 0 : $price_decimals_num;
+			$output['price_decimals_num'] = $price_decimals_num;
 		} else {
 			add_settings_error( 'AcceptStripePayments-settings', 'invalid-price-decimals-num', __( 'Price number of decimals can\'t be empty.', 'stripe-payments' ) );
 		}

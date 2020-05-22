@@ -124,7 +124,9 @@ class ASPOrder {
 		$output .= "\n\n";
 
 		$output .= '<h2>' . __( 'Customer Details', 'stripe-payments' ) . "</h2>\n";
+		// translators: %s is email address
 		$output .= sprintf( __( 'E-Mail Address: %s', 'stripe-payments' ), $order_details['stripeEmail'] ) . "\n";
+		// translators: %s is payment source (e.g. 'card' etc)
 		$output .= sprintf( __( 'Payment Source: %s', 'stripe-payments' ), $order_details['stripeTokenType'] ) . "\n";
 
 		//Custom Fields (if set)
@@ -142,7 +144,8 @@ class ASPOrder {
 		$tos_store   = $this->AcceptStripePayments->get_setting( 'tos_store_ip' );
 
 		if ( $tos_enabled && $tos_store ) {
-			$ip      = ! empty( $_SERVER['REMOTE_ADDR'] ) ? $_SERVER['REMOTE_ADDR'] : __( 'Unknown', 'stripe-payments' );
+			$ip = ! empty( $_SERVER['REMOTE_ADDR'] ) ? $_SERVER['REMOTE_ADDR'] : __( 'Unknown', 'stripe-payments' );
+			// translators: %s is IP address
 			$output .= sprintf( __( 'IP Address: %s', 'stripe-payments' ), $ip ) . "\n";
 		}
 

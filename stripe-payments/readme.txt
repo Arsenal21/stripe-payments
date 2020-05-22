@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 4.7
 Tested up to: 5.4
 Requires PHP: 5.6
-Stable tag: 2.0.29
+Stable tag: 2.0.30
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -154,6 +154,12 @@ None.
 
 == Changelog ==
 
+= 2.0.30 =
+- Added Argentine Peso (ARS), Chilean Peso (CLP), Colombian Peso (COP), Peruvian Nuevo Sol (PEN) and Uruguayan Peso (UYU) currencies.
+- Fixed PHP 7.4 deprecation notices.
+- Added `asp_ng_pp_countries_list` filter to programmatically modify countries list on payment popup.
+- Minor fixes and improvements.
+
 = 2.0.29 =
 - Added `Do Not Use Stripe PHP SDK Library` experimental option.
 - Plugin now shows warning if required PHP modules are not installed on the server.
@@ -171,129 +177,4 @@ None.
 - Removed dev debug lines from the code.
 - Fixed typos in text descriptions.
 
-= 2.0.26.1 =
-- Fixed a minor checkout issue with the Subscription addon when the `State` field is disabled.
-
-= 2.0.26 =
-- Added option to construct product price using variations only.
-- Added support for Lebanese Pound (LBP) and Saudi Riyal (SAR) currencies.
-- Added 'tax' parameter support for [asp_product] shortcode.
-- Added {coupon_code} email merge tag.
-- 'thankyou_page_url' parameter is no longer ignored by [asp_product] shortcode.
-- State value is now properly handled.
-- Shipping address is now properly saved if payment is made via payment addons.
-- Made prefetch work for products attached via CSS and link URL.
-- Upgraded Stripe PHP SDK to version 7.28.1.
-- PHP 7.4 support.
-- Minor improvements, bugfixes and optimizations.
-- Added built-in integration with [WP PDF Stamper plugin](https://www.tipsandtricks-hq.com/wp-pdf-stamper-plugin-2332)
-
-= 2.0.25 =
-- Added "State" field for billing and shipping address.
-- Added "Hide State Field" option to the settings menu. It's enabled by default for existing installations. This new option can be used to hide the field.
-- Bundled translation files are properly loaded now.
-- Minor improvements and optimizations.
-- Added Italian language translation file.
-
-= 2.0.24 =
-- Empty lines in billing and shipping address are no longer displayed.
-- Error is displayed when viewing subscription product with Subscriptions add-on disabled.
-- Added Japanese language translation file.
-
-= 2.0.23 =
-- Added "Last Name First" option for user name prefill. Useful for languages where last name comes first (Japanese).
-- Coupon discount amount was improperly displayed on checkout results page for products with variations.
-- Additional functionality added for addons.
-- Various minor improvements and bugfixes.
-- Minimum PHP version requirement is set to PHP 5.6
-
-= 2.0.22 =
-- New Stripe API is now enabled by default on fresh new plugin installation.
-- Added check if card details are properly filled in before making any backend requests (prevents excess Stripe API calls).
-- Added "Force Test Mode" product option (located in Advanced Settings metabox on product edit page).
-- Speed up payment popup display by removing unneeded Stripe library init.
-- Added built-in integration with [Simple Membership plugin](https://wordpress.org/plugins/simple-membership/)
-- WP eMember integration now works with new Stripe API and it handles customer's name and address properly.
-- Some visual payment popup form tweaks.
-
-= 2.0.21 =
-- Added a new feature to insert custom CSS to payment popup window (it can be found in the advanced settings tab).
-- Updated the code to remove a conflict with other plugins when "Enable Compact Product Edit Interface" option is enabled.
-- Minor improvements and optimizations.
-
-= 2.0.20 =
-- Added validation for values on product edit page (tax, price, quantity etc).
-- Discount coupons will now work with subscription products (requires Subscriptions addon 2.0.9+).
-
-= 2.0.19 =
-- Added 100% discount coupons support.
-- Made amount rounding more consistent between frontend and backend.
-- Added payment popup animation to indicate payment is accepted.
-- Added quantity support for subscription products (requires Subscriptions addon 2.0.8+).
-- Improved payment popup appearance on mobile devices.
-- Made payment popup compatible with some older browsers (like IE11).
-- Minor backend improvements and fixes.
-
-= 2.0.18 =
-- The invalid price display for subscription items on the "All products" page is fixed.
-- Updated the code to remove a conflict with other plugins when "Enable Compact Product Edit Interface" option is enabled.
-- Shipping value miscalculation during payment processing is fixed.
-- Fixed an issue where the customer was getting redirected to login page instead of "checkout results" page on some configurations.
-- Improved some text messages on the product edit interface.
-
-= 2.0.17 =
-- Improved prefetch payment scripts functionality.
-- Optimization improvement to speed up the payment popup display by adding the essential CSS code directly into HTML page.
-- Fixed coupon discount was improperly calculated for fixed amount coupons.
-- Fixed Stripe receipt is not sent when "Send Receipt Email From Stripe" option enabled (new API only).
-- On some servers, the update checker was causing an error. This has been fixed.
-- Subscription product: removed the excess "Incomplete" payment entry that was being created in the Stripe Dashboard for the initial subscription charge.
-
-= 2.0.16 =
-- Replaced deprecated stripe.js functions to prevent potential issues with payments.
-- Forced payment token regeneration if payment amount or currency changed.
-- Made more strings available for translation.
-- Fixed "Incomplete" subscription status when 3D Secure card is used for payments.
-- Fixed an issue with email duplication (caused by multiple execution of some code parts).
-
-= 2.0.15 =
-- Payment popup now considers "Stripe Checkout Language" settings option.
-- Made most admin interface pages responsive.
-- Added MailerLite addon to addons listing menu.
-- Fixed potential addon update checking issues on some servers.
-- Some minor bugfixes and optimizations.
-- Fixed issues with zero-cents currency amounts display and payment processing.
-
-= 2.0.14 =
-- Added "Embed Product" metabox to product edit page with available options to embed/attach payment buttons to any page or HTML element.
-- Added a new feature that allows you to use a URL to make the payment button. Tutorial https://s-plugins.com/using-a-text-link-instead-of-the-buy-now-button-shortcode/
-- Fixed payment popup issue when variable currency was set for subscription product.
-- Addons update checker library is now bundled with core plugin.
-
-= 2.0.13 =
-- Fixed malformed download URL when [accept_stripe_payment] shortcode is used with new API.
-- Added custom field validation support on payment popup.
-- Added "Prefetch Payment Popup Scripts" option to speed up payment popup display when customer clicks payment button.
-- Proper error message is now displayed if error occurs during frontend Stripe scripts init on payment popup.
-- Removed excess output when payment button is displayed.
-
-= 2.0.12 =
-- Fixed subscription payment with tax validity check.
-- Fixed subscription payment invalid tax amount displayed on checkout results page.
-- Added support for [iDEAL](https://s-plugins.com/stripe-ideal-payment-addon/) and [Country Autodetect](https://s-plugins.com/stripe-country-autodetect-addon/) addons.
-
-= 2.0.11 =
-- Fixed an issue with duplicate buy emails being sent on some browsers.
-- Fixed "Processing" text was showing in the product insert block.
-- Added the Spanish language translation file.
-- Fixed subscription payment with tax not processing correctly.
-
-= 2.0.10 =
-- [New API]: Fixed selected variations weren't properly passed upon payment form submission.
-- [New API]: Fixed "Invalid email address" error when APM addon is installed and "Send Receipt Email From Stripe" option enabled.
-- [New API]: Added Alipay addon support. Requires Alipay addon version 2.0.0+.
-- Legacy API is disabled by default for fresh plugin installations.
-- Added admin area notice regarding SCA compatibility.
-- Added Bosnia and Herzegovina Convertible Mark (BAM) currency.
-
-Older versions changelog available in changelog.txt file.
+Full changelog available [ at changelog.txt](https://plugins.svn.wordpress.org/stripe-payments/trunk/changelog.txt)

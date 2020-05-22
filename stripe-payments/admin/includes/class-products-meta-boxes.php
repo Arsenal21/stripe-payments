@@ -211,7 +211,12 @@ class ASPProductsMetaboxes {
 		$price_mod_help .= '<br><br>';
 		$price_mod_help .= __( 'Put negative value if you want to substract the amount instead.', 'stripe-payments' );
 		?>
-<p><?php echo sprintf( __( 'You can find documentation on variations %s', 'stripe-payments' ), '<a href="https://s-plugins.com/creating-variable-products-using-the-stripe-payments-plugin/" target="_blank">here</a>' ); ?></p>
+<p>
+		<?php
+		// translators: %s is a link to documentation page
+		echo sprintf( __( 'You can find documentation on variations <a href="%s" target="_blank">here</a>.', 'stripe-payments' ), 'https://s-plugins.com/creating-variable-products-using-the-stripe-payments-plugin' );
+		?>
+</p>
 		<?php
 		if ( class_exists( 'ASPSUB_main' ) ) {
 			echo '<p>' . esc_html_e( 'Note: variations for subscription products are currently not supported.', 'stripe-payments' ) . '</p>';
@@ -755,6 +760,7 @@ jQuery(document).ready(function($) {
 						//check if price < minAmount
 						if ( $price_cents < $this->asp_main->minAmounts[ $currency ] ) {
 							// it is. Let's add error message
+							// translators: %1$s - currency code, %2$s - minimum amount, %3$s - current amount
 							$text = sprintf( __( '<b>Invalid product price</b>: minimum price in %1$s should be %2$s, you specified %3$s. This price limitation comes from Stripe.', 'stripe-payments' ), $currency, AcceptStripePayments::formatted_price( $this->asp_main->minAmounts[ $currency ], $currency, true ), AcceptStripePayments::formatted_price( $price_cents, $currency, true ) );
 							AcceptStripePayments_Admin::add_admin_notice( 'error', $text, false );
 							// we don't save invalid price
@@ -764,6 +770,7 @@ jQuery(document).ready(function($) {
 					//check if value is not above maximum allowed by Stripe (8 digits; e.g. 99999999 in cents)
 					if ( $price_cents > 99999999 ) {
 						// it is. Let's add error message
+						// translators: %1$s - maximum allowed amount, %2$s - current amount
 						$text = sprintf( __( '<b>Invalid product price</b>: maximum allowed product price is %1$s, you specified %2$s', 'stripe-payments' ), $this->asp_main->formatted_price( 99999999, $currency, true ), AcceptStripePayments::formatted_price( $price_cents, $currency, true ) );
 						AcceptStripePayments_Admin::add_admin_notice( 'error', $text, false );
 						// we don't save invalid price
