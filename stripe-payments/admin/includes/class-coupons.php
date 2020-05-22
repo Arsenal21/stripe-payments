@@ -266,7 +266,7 @@ class AcceptStripePayments_CouponsAdmin {
 			</div>
 			</div>
 		</div></div>
-		<h2><?php _e( 'Coupons', 'stripe-payments' ); ?> <a class="page-title-action" href="?post_type=<?php echo esc_attr( ASPMain::$products_slug );?>&page=stripe-payments-coupons&action=asp_add_edit_coupon"><?php _e( 'Add a Coupon', 'stripe-payments' ); ?></a></h2>
+		<h2><?php _e( 'Coupons', 'stripe-payments' ); ?> <a class="page-title-action" href="?post_type=<?php echo esc_attr( ASPMain::$products_slug ); ?>&page=stripe-payments-coupons&action=asp_add_edit_coupon"><?php _e( 'Add a Coupon', 'stripe-payments' ); ?></a></h2>
 		<?php $coupons_tbl->display(); ?>
 	</div>
 		<?php
@@ -441,15 +441,18 @@ class AcceptStripePayments_CouponsAdmin {
 		}
 		$the_post = get_post( $coupon_id );
 		if ( is_null( $the_post ) ) {
+			// translators: %d is coupon ID
 			set_transient( 'asp_coupons_admin_error', sprintf( __( 'Can\'t delete coupon: coupon #%d not found.', 'stripe-payments' ), $coupon_id ), 60 * 60 );
 			return false;
 		}
 		if ( $the_post->post_type !== $this->POST_SLUG ) {
+			// translators: %d is coupon ID
 			set_transient( 'asp_coupons_admin_error', sprintf( __( 'Can\'t delete coupon: post #%d is not a coupon.', 'stripe-payments' ), $coupon_id ), 60 * 60 );
 			return false;
 		}
 		check_admin_referer( 'delete-coupon_' . $coupon_id );
 		wp_delete_post( $coupon_id, true );
+		// translators: %d is coupon ID
 		set_transient( 'asp_coupons_admin_notice', sprintf( __( 'Coupon #%d has been deleted.', 'stripe-payments' ), $coupon_id ), 60 * 60 );
 	}
 
@@ -501,9 +504,10 @@ class AcceptStripePayments_CouponsAdmin {
 			update_post_meta( $coupon_id, 'asp_coupon_' . $key, $value );
 		}
 		do_action( 'asp_admin_save_coupon', $coupon_id, $coupon );
+		// translators: %s is coupon code
 		set_transient( 'asp_coupons_admin_notice', sprintf( $is_edit ? __( 'Coupon "%s" has been updated.', 'stripe-payments' ) : __( 'Coupon "%s" has been created.', 'stripe-payments' ), $coupon['code'] ), 60 * 60 );
 
-		wp_safe_redirect( 'edit.php?post_type='.ASPMain::$products_slug.'&page=stripe-payments-coupons' );
+		wp_safe_redirect( 'edit.php?post_type=' . ASPMain::$products_slug . '&page=stripe-payments-coupons' );
 		exit;
 	}
 

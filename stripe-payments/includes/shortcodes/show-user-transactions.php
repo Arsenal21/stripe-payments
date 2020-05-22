@@ -14,7 +14,8 @@ class AcceptStripePayments_scUserTransactions {
 			//user not logged in
 			$redirect  = get_permalink();
 			$login_url = wp_login_url( $redirect );
-			$out      .= sprintf( __( 'Please <a href="%s">login</a> to see your transactions history.', 'stripe-payments' ), $login_url );
+			// translators: %s is login URL
+			$out .= sprintf( __( 'Please <a href="%s">login</a> to see your transactions history.', 'stripe-payments' ), $login_url );
 			return $out;
 		}
 		//let's find all user transactions

@@ -60,13 +60,19 @@ if ( $_GET['page'] == 'stripe-payments-settings' ) {
 			<div class="postbox" style="min-width: inherit;">
 				<h3 class="hndle"><label for="title"><?php echo __( 'Plugin Documentation', 'stripe-payments' ); ?></label></h3>
 				<div class="inside">
-				<?php echo sprintf( __( 'Please read the %s plugin setup instructions and tutorials to learn how to configure and use it.', 'stripe-payments' ), '<a target="_blank" href="https://s-plugins.com/stripe-payments-plugin-tutorials/">Stripe Payments</a>' ); ?>
+				<?php
+				// translators: %s is link to documentation page
+				echo sprintf( __( 'Please read the <a target="_blank" href="%s">Stripe Payments</a> plugin setup instructions and tutorials to learn how to configure and use it.', 'stripe-payments' ), 'https://s-plugins.com/stripe-payments-plugin-tutorials/' );
+				?>
 				</div>
 			</div>
 			<div class="postbox" style="min-width: inherit;">
 				<h3 class="hndle"><label for="title"><?php echo __( 'Add-ons', 'stripe-payments' ); ?></label></h3>
 				<div class="inside">
-				<?php echo sprintf( __( 'Want additional functionality like subscriptions, Apple Pay support or MailChimp integration? Check out our %s', 'stripe-payments' ), '<a target="_blank" href="edit.php?post_type=' . ASPMain::$products_slug . '&page=stripe-payments-addons">Add-Ons!</a>' ); ?>
+				<?php
+				// translators: %s is link to addons page
+				echo sprintf( __( 'Want additional functionality like subscriptions, Apple Pay support or MailChimp integration? Check out our <a target="_blank" href="%s">Add-Ons!</a>', 'stripe-payments' ), 'edit.php?post_type=' . ASPMain::$products_slug . '&page=stripe-payments-addons' );
+				?>
 				</div>
 			</div>
 			<div class="postbox yellowish" style="min-width: inherit;">
@@ -79,7 +85,10 @@ if ( $_GET['page'] == 'stripe-payments-settings' ) {
 			<div class="postbox" style="min-width: inherit;">
 				<h3 class="hndle"><label for="title"><?php echo __( 'Rate Us', 'stripe-payments' ); ?></label></h3>
 				<div class="inside">
-				<?php echo sprintf( _x( 'Like the plugin? Please give us a good %s', '%s is replaced by "rating" link', 'stripe-payments' ), sprintf( '<a href="https://wordpress.org/support/plugin/stripe-payments/reviews/?filter=5" target="_blank">%s</a>', __( 'rating!', 'stripe-payments' ) ) ); ?>
+				<?php
+				// translators: %s is replaced by "rating" link
+				echo sprintf( _x( 'Like the plugin? Please give us a good %s', '%s is replaced by "rating" link', 'stripe-payments' ), sprintf( '<a href="https://wordpress.org/support/plugin/stripe-payments/reviews/?filter=5" target="_blank">%s</a>', __( 'rating!', 'stripe-payments' ) ) );
+				?>
 				<div class="wp-asp-stars-container">
 					<a href="https://wordpress.org/support/plugin/stripe-payments/reviews/?filter=5" target="_blank">
 					<span class="dashicons dashicons-star-filled"></span>
@@ -94,7 +103,10 @@ if ( $_GET['page'] == 'stripe-payments-settings' ) {
 			<div class="postbox" style="min-width: inherit;">
 				<h3 class="hndle"><label for="title"><?php echo __( 'Testing Version', 'stripe-payments' ); ?></label></h3>
 				<div class="inside">
-				<?php echo sprintf( _x( "Want to see or test upcoming features, bugfixes or changes before they're released? Install %s of the plugin.", '%s is replaced by "Testing Version" link for testing version', 'stripe-payments' ), sprintf( '<a href="https://s-plugins.com/testing-version/" target="_blank">%s</a>', _x( 'Testing Version', 'Link for testing version of the plugin', 'stripe-payments' ) ) ); ?>
+				<?php
+				// translators: %s is replaced by "Testing Version" link for testing version
+				echo sprintf( _x( "Want to see or test upcoming features, bugfixes or changes before they're released? Install %s of the plugin.", '%s is replaced by "Testing Version" link for testing version', 'stripe-payments' ), sprintf( '<a href="https://s-plugins.com/testing-version/" target="_blank">%s</a>', _x( 'Testing Version', 'Link for testing version of the plugin', 'stripe-payments' ) ) );
+				?>
 				</div>
 			</div>
 			</div>
