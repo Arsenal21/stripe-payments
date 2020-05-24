@@ -83,9 +83,30 @@ class AcceptStripePayments_Admin {
 			case 'post-new.php':
 				global $post_type;
 				if ( ASPMain::$products_slug === $post_type ) {
-					wp_register_script( 'asp-admin-edit-product-js', WP_ASP_PLUGIN_URL . '/admin/assets/js/edit-product.js', array( 'jquery' ), WP_ASP_PLUGIN_VERSION, true );
 					wp_enqueue_script( 'asp-admin-general-js' );
 					wp_enqueue_style( 'asp-admin-styles' );
+					wp_register_script( 'asp-admin-edit-product-js', WP_ASP_PLUGIN_URL . '/admin/assets/js/edit-product.js', array( 'jquery' ), WP_ASP_PLUGIN_VERSION, true );
+				}
+
+				if ( 'stripe_order' === $post_type ) {
+					wp_enqueue_script( 'asp-admin-general-js' );
+					wp_enqueue_style( 'asp-admin-styles' );
+					//Confirm capturing authorized funds for order #%s
+					wp_register_script( 'asp-admin-orders-js', WP_ASP_PLUGIN_URL . '/admin/assets/js/orders.js', array( 'jquery' ), WP_ASP_PLUGIN_VERSION, true );
+					wp_localize_script(
+						'asp-admin-orders-js',
+						'aspOrdersVars',
+						array(
+							'str' => array(
+								// translators: %s is order ID
+								'confirmCapture' => __( 'Confirm capturing authorized funds for order #%s', 'stripe-payments' ),
+								// translators: %s is order ID
+								'confirmCancel'  => __( 'Confirm cancel authorized funds for order #%s', 'stripe-payments' ),
+								'errorOccurred'  => __( 'Error occurred during request. Please refresh page and try again.', 'stripe-payments' ),
+							),
+						)
+					);
+					wp_enqueue_script( 'asp-admin-orders-js' );
 				}
 				break;
 		}

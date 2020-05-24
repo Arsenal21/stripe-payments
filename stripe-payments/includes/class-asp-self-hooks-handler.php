@@ -9,6 +9,13 @@ class ASP_Self_Hooks_Handler {
 		add_action( 'asp_ng_product_mode_keys', array( $this, 'ng_product_mode_keys_handler' ) );
 
 		add_action( 'plugins_loaded', array( $this, 'plugins_loaded' ), 0 );
+
+		add_filter( 'asp_ng_before_pi_create_update', array( $this, 'pi_update' ) );
+	}
+
+	public function pi_update( $pi_params ) {
+		$pi_params['capture_method'] = 'manual';
+		return $pi_params;
 	}
 
 	public function plugins_loaded() {

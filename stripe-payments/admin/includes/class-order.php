@@ -55,6 +55,17 @@ class ASPOrder {
 		$args = apply_filters( 'asp_stripe_order_register_post_type_args', $args );
 
 		register_post_type( 'stripe_order', $args );
+
+		add_filter( 'manage_stripe_order_posts_columns', array( $this, 'manage_columns' ) );
+		add_action( 'manage_stripe_order_posts_custom_column', array( $this, 'manage_custom_columns' ), 10, 2 );
+		//set custom columns sortable
+		//      add_filter( 'manage_edit-stripe_order_sortable_columns', array( $this, 'manage_sortable_columns' ) );
+
+		if ( wp_doing_ajax() ) {
+			add_action( 'wp_ajax_asp_order_capture_confirm', array( $this, 'order_capture_confirm' ) );
+			add_action( 'wp_ajax_asp_order_capture_cancel', array( $this, 'order_capture_cancel' ) );
+		}
+
 	}
 
 	/**
@@ -72,6 +83,203 @@ class ASPOrder {
 		}
 
 		return self::$instance;
+	}
+
+	public function manage_columns( $columns ) {
+		$custom_columns = array(
+			'total'  => __( 'Total', 'stripe-payments' ),
+			'status' => __( 'Status', 'stripe-payments' ),
+		);
+		$columns        = array_merge( $columns, $custom_columns );
+		return $columns;
+	}
+
+	public function manage_custom_columns( $column, $post_id ) {
+		switch ( $column ) {
+			case 'status':
+				$data = get_post_meta( $post_id, 'order_data', true );
+				if ( ! isset( $data['charge']->paid ) ||
+				( isset( $data['charge']->paid ) && $data['charge']->paid &&
+				$data['charge']->captured ) ) {
+					echo __( 'Paid', 'stripe-payments' );
+				} else {
+					if ( isset( $data['charge']->captured ) && false === $data['charge']->captured &&
+					empty( $data['charge']->amount_refunded ) ) {
+						echo __( 'Authorized', 'stripe-payments' );
+						$action_nonce = wp_create_nonce( 'asp-order-actions-' . $post_id );
+						echo '<br>';
+						echo sprintf( '<a class="asp-order-action" data-action="confirm" href="#" data-order-id="%d" data-nonce="%s">' . __( 'Capture', 'stripe-payments' ) . '</a> | ', $post_id, $action_nonce );
+						echo sprintf( '<a class= "asp-order-action" data-action="cancel" style="color:#a00;" href="#" data-order-id="%d" data-nonce="%s">' . __( 'Cancel', 'stripe-payments' ) . '</a>', $post_id, $action_nonce );
+					} else {
+						echo 'Canceled';
+					}
+				}
+				break;
+			case 'total':
+				$data = get_post_meta( $post_id, 'order_data', true );
+				if ( $data ) {
+					echo ASP_Utils::formatted_price( $data['paid_amount'], $data['currency_code'] );
+				} else {
+					echo '-';
+				}
+				break;
+		}
+	}
+
+	public function order_capture_confirm() {
+		$post_id = filter_input( INPUT_POST, 'order_id', FILTER_SANITIZE_NUMBER_INT );
+		if ( empty( $post_id ) ) {
+			wp_send_json(
+				array(
+					'success' => false,
+					'err_msg' => __( 'Invalid order ID', 'stripe-payments' ),
+				)
+			);
+		}
+
+		$nonce = filter_input( INPUT_POST, 'nonce', FILTER_SANITIZE_STRING );
+		if ( empty( $nonce ) || false === wp_verify_nonce( $nonce, 'asp-order-actions-' . $post_id ) ) {
+			wp_send_json(
+				array(
+					'success' => false,
+					'err_msg' => __( 'Nonce check failed', 'stripe-payments' ),
+				)
+			);
+		}
+
+		$data = get_post_meta( $post_id, 'order_data', true );
+
+		$asp_main = AcceptStripePayments::get_instance();
+
+		try {
+			ASP_Utils::load_stripe_lib();
+			$key = $data['is_live'] ? $asp_main->APISecKey : $asp_main->APISecKeyTest;
+			\Stripe\Stripe::setApiKey( $key );
+
+			$api = ASP_Stripe_API::get_instance();
+			$api->set_api_key( $key );
+
+			if ( ASP_Utils::use_internal_api() ) {
+				$intent = $api->get( 'payment_intents/' . $data['charge']->payment_intent );
+			} else {
+				$intent = \Stripe\PaymentIntent::retrieve( $data['charge']->payment_intent );
+			}
+
+			if ( empty( $intent->amount_capturable ) ) {
+				//already captured
+				$data['charge'] = $intent->charges->data[0];
+				update_post_meta( $post_id, 'order_data', $data );
+
+				wp_send_json(
+					array(
+						'success'      => false,
+						'err_msg'      => __( 'Funds already captured', 'stripe-payments' ),
+						'order_status' => __( 'Paid', 'stripe-payments' ),
+					)
+				);
+			}
+
+			if ( ASP_Utils::use_internal_api() ) {
+				$intent = $api->post( 'payment_intents/' . $data['charge']->payment_intent . '/capture' );
+			} else {
+				$intent->capture();
+			}
+		} catch ( \Exception $e ) {
+			wp_send_json(
+				array(
+					'success' => false,
+					'err_msg' => $e->getMessage(),
+				)
+			);
+		}
+
+		$data['charge'] = $intent->charges->data[0];
+		update_post_meta( $post_id, 'order_data', $data );
+
+		wp_send_json(
+			array(
+				'success'      => true,
+				'order_status' => __( 'Paid', 'stripe-payments' ),
+			)
+		);
+	}
+
+	public function order_capture_cancel() {
+		$post_id = filter_input( INPUT_POST, 'order_id', FILTER_SANITIZE_NUMBER_INT );
+		if ( empty( $post_id ) ) {
+			wp_send_json(
+				array(
+					'success' => false,
+					'err_msg' => __( 'Invalid order ID', 'stripe-payments' ),
+				)
+			);
+		}
+
+		$nonce = filter_input( INPUT_POST, 'nonce', FILTER_SANITIZE_STRING );
+		if ( empty( $nonce ) || false === wp_verify_nonce( $nonce, 'asp-order-actions-' . $post_id ) ) {
+			wp_send_json(
+				array(
+					'success' => false,
+					'err_msg' => __( 'Nonce check failed', 'stripe-payments' ),
+				)
+			);
+		}
+
+		$data = get_post_meta( $post_id, 'order_data', true );
+
+		$asp_main = AcceptStripePayments::get_instance();
+
+		try {
+			ASP_Utils::load_stripe_lib();
+			$key = $data['is_live'] ? $asp_main->APISecKey : $asp_main->APISecKeyTest;
+			\Stripe\Stripe::setApiKey( $key );
+
+			$api = ASP_Stripe_API::get_instance();
+			$api->set_api_key( $key );
+
+			if ( ASP_Utils::use_internal_api() ) {
+				$intent = $api->get( 'payment_intents/' . $data['charge']->payment_intent );
+			} else {
+				$intent = \Stripe\PaymentIntent::retrieve( $data['charge']->payment_intent );
+			}
+
+			if ( empty( $intent->amount_capturable ) ) {
+				//already captured or canceled
+				$data['charge'] = $intent->charges->data[0];
+				update_post_meta( $post_id, 'order_data', $data );
+
+				wp_send_json(
+					array(
+						'success'      => false,
+						'err_msg'      => __( 'Funds already captured', 'stripe-payments' ),
+						'order_status' => __( 'Paid', 'stripe-payments' ),
+					)
+				);
+			}
+
+			if ( ASP_Utils::use_internal_api() ) {
+				$intent = $api->post( 'payment_intents/' . $data['charge']->payment_intent . '/cancel' );
+			} else {
+				$intent->cancel();
+			}
+		} catch ( \Exception $e ) {
+			wp_send_json(
+				array(
+					'success' => false,
+					'err_msg' => $e->getMessage(),
+				)
+			);
+		}
+
+		$data['charge'] = $intent->charges->data[0];
+		update_post_meta( $post_id, 'order_data', $data );
+
+		wp_send_json(
+			array(
+				'success'      => true,
+				'order_status' => __( 'Canceled', 'stripe-payments' ),
+			)
+		);
 	}
 
 	/**
