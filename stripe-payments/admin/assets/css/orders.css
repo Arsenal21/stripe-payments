@@ -1,0 +1,9 @@
+.column-total {
+    width: 15%;
+}
+.column-status {
+    width: 15%;
+}
+th.column-title {
+    width: auto;
+}

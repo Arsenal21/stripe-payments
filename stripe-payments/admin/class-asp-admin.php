@@ -107,6 +107,10 @@ class AcceptStripePayments_Admin {
 						)
 					);
 					wp_enqueue_script( 'asp-admin-orders-js' );
+
+					wp_register_style( 'asp-admin-orders-styles', WP_ASP_PLUGIN_URL . '/admin/assets/css/orders.css', array(), WP_ASP_PLUGIN_VERSION );
+					wp_enqueue_style( 'asp-admin-orders-styles' );
+
 				}
 				break;
 		}
