@@ -14,7 +14,11 @@ class ASP_Self_Hooks_Handler {
 	}
 
 	public function pi_update( $pi_params ) {
-		$pi_params['capture_method'] = 'manual';
+		$product_id = filter_input( INPUT_POST, 'product_id', FILTER_SANITIZE_NUMBER_INT );
+		$auth_only  = get_post_meta( $product_id, 'asp_product_authorize_only', true );
+		if ( $auth_only ) {
+			$pi_params['capture_method'] = 'manual';
+		}
 		return $pi_params;
 	}
 

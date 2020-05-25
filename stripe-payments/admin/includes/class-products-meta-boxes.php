@@ -585,7 +585,14 @@ jQuery(document).ready(function($) {
 
 	public function display_advanced_settings_meta_box( $post ) {
 		$current_val = get_post_meta( $post->ID, 'asp_product_force_test_mode', true );
+		$auth_only   = get_post_meta( $post->ID, 'asp_product_authorize_only', true );
 		?>
+		<label><input type="checkbox" name="asp_product_authorize_only" value="1"<?php echo $auth_only ? ' checked' : ''; ?>> <?php echo esc_html_e( 'Authorize Only', 'stripe-payments' ); ?></label>
+		<p class="description">
+		<?php echo esc_html_e( 'Place a hold on a card to reserve funds now and capture them manually later.', 'stripe-payments' ); ?>
+		<br>
+		<?php echo esc_html_e( 'Note: this option is not supported by Subscription products and Alipay, SOFORT, iDEAL and FPX payment methods. If enabled, those won\'t be offered as payment option for this product.', 'stripe-payments' ); ?>
+		</p>
 		<label><input type="checkbox" name="asp_product_force_test_mode" value="1"<?php echo $current_val ? ' checked' : ''; ?>> <?php echo esc_html_e( 'Force Test Mode', 'stripe-payments' ); ?></label>
 		<p class="description"><?php echo esc_html_e( 'When checked, product stays in test mode regardless of the global "Live Mode" switch.', 'stripe-payments' ); ?></p>
 		<?php
@@ -664,6 +671,10 @@ jQuery(document).ready(function($) {
 			$force_test_mode = filter_input( INPUT_POST, 'asp_product_force_test_mode', FILTER_SANITIZE_STRING );
 			$force_test_mode = ! empty( $force_test_mode ) ? true : false;
 			update_post_meta( $post_id, 'asp_product_force_test_mode', $force_test_mode );
+
+			$auth_only = filter_input( INPUT_POST, 'asp_product_authorize_only', FILTER_SANITIZE_STRING );
+			$auth_only = ! empty( $auth_only ) ? true : false;
+			update_post_meta( $post_id, 'asp_product_authorize_only', $auth_only );
 
 			$pdf_stamper_enabled = filter_input( INPUT_POST, 'asp_product_pdf_stamper_enabled', FILTER_SANITIZE_STRING );
 			$pdf_stamper_enabled = ! empty( $pdf_stamper_enabled ) ? true : false;
