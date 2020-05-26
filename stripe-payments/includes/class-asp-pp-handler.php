@@ -399,6 +399,7 @@ class ASP_PP_Handler {
 		$pay_btn_text = $this->asp_main->get_setting( 'popup_button_text' );
 
 		if ( empty( $pay_btn_text ) ) {
+			// translators: %s is not a placeholder
 			$pay_btn_text = __( 'Pay %s', 'stripe-payments' );
 		} else {
 			$pay_btn_text = __( $pay_btn_text, 'stripe-payments' ); //phpcs:ignore
