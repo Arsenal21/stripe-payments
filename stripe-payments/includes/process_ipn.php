@@ -379,7 +379,7 @@ class AcceptStripePayments_Process_IPN {
 
 		ASP_Debug_Logger::log( 'Getting API keys and trying to create a charge.' );
 
-		ASPMain::load_stripe_lib();
+		ASP_Utils::load_stripe_lib();
 
 		if ( $data['is_live'] ) {
 			$sec_key = $asp_class->APISecKeyLive;

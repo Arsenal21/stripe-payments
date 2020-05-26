@@ -512,7 +512,7 @@ class ASP_PP_Handler {
 		do_action( 'asp_ng_product_mode_keys', $product_id );
 
 		try {
-			ASPMain::load_stripe_lib();
+			ASP_Utils::load_stripe_lib();
 			$key = $this->asp_main->is_live ? $this->asp_main->APISecKey : $this->asp_main->APISecKeyTest;
 			\Stripe\Stripe::setApiKey( $key );
 

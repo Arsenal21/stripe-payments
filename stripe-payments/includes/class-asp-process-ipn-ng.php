@@ -147,7 +147,7 @@ class ASP_Process_IPN_NG {
 
 		$is_live = $this->get_post_var( 'asp_is_live', FILTER_VALIDATE_BOOLEAN );
 
-		ASPMain::load_stripe_lib();
+		ASP_Utils::load_stripe_lib();
 		$key = $is_live ? $this->asp_class->APISecKey : $this->asp_class->APISecKeyTest;
 		\Stripe\Stripe::setApiKey( $key );
 
