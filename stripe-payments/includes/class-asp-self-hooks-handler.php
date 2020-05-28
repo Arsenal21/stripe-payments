@@ -15,7 +15,14 @@ class ASP_Self_Hooks_Handler {
 
 	public function pi_update( $pi_params ) {
 		$product_id = filter_input( INPUT_POST, 'product_id', FILTER_SANITIZE_NUMBER_INT );
-		$auth_only  = get_post_meta( $product_id, 'asp_product_authorize_only', true );
+
+		$plan_id = get_post_meta( $product_id, 'asp_sub_plan_id', true );
+		if ( ! empty( $plan_id ) ) {
+			//ignoring option for Subscription product
+			return $pi_params;
+		}
+
+		$auth_only = get_post_meta( $product_id, 'asp_product_authorize_only', true );
 		if ( $auth_only ) {
 			$pi_params['capture_method'] = 'manual';
 		}

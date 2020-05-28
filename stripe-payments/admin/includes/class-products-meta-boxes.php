@@ -585,9 +585,15 @@ jQuery(document).ready(function($) {
 
 	public function display_advanced_settings_meta_box( $post ) {
 		$current_val = get_post_meta( $post->ID, 'asp_product_force_test_mode', true );
+		$plan_id     = get_post_meta( $post->ID, 'asp_sub_plan_id', true );
 		$auth_only   = get_post_meta( $post->ID, 'asp_product_authorize_only', true );
 		?>
-		<label><input type="checkbox" name="asp_product_authorize_only" value="1"<?php echo $auth_only ? ' checked' : ''; ?>> <?php echo esc_html_e( 'Authorize Only', 'stripe-payments' ); ?></label>
+		<label><input type="checkbox" name="asp_product_authorize_only" value="1"
+		<?php
+		echo $auth_only ? ' checked' : '';
+		echo ! empty( $plan_id ) ? ' disabled' : '';
+		?>
+		> <?php echo esc_html_e( 'Authorize Only', 'stripe-payments' ); ?></label>
 		<p class="description">
 		<?php echo esc_html_e( 'Place a hold on a card to reserve funds now and capture them manually later.', 'stripe-payments' ); ?>
 		<br>
