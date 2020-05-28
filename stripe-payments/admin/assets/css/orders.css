@@ -2,8 +2,33 @@
     width: 15%;
 }
 .column-status {
-    width: 15%;
+    width: 20%;
 }
 th.column-title {
     width: auto;
+}
+
+.asp-order-status {
+    padding: 7px 15px;
+    width: auto;
+    display: inline-block;
+    text-align: center;
+    min-width: 80px;
+    border-radius: 5px;
+}
+
+.asp-order-status.paid {
+    background-color: #b6e4b6;
+}
+
+.asp-order-status.authorized {
+    background-color: #b6dee4;
+}
+
+.asp-order-status.canceled {
+    background-color: #e4d4b6;
+}
+
+.asp-order-actions-cont {
+    padding-top: 5px;
 }

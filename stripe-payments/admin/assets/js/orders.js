@@ -6,7 +6,7 @@ jQuery(function ($) {
 		var action = $(this).data('action');
 		var confirm_msg = action === 'confirm' ? aspOrdersVars.str.confirmCapture : aspOrdersVars.str.confirmCancel;
 		if (confirm(confirm_msg.replace('%s', order_id))) {
-			var status_td = $(this).parent('td');
+			var status_td = $(this).closest('td');
 			var status_html = status_td.html();
 			status_td.html('<span class="spinner is-active" style="float: left;"></span>');
 			var ajax_action = 'asp_order_capture_' + action;
@@ -23,6 +23,7 @@ jQuery(function ($) {
 				}
 				status_td.html(status_html);
 				if (data.order_status) {
+					console.log(data.order_status);
 					status_td.html(data.order_status);
 				}
 			});

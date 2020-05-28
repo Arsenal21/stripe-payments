@@ -10,6 +10,8 @@ class ASPOrder {
 	 * @var      object
 	 */
 	protected static $instance = null;
+	private $order_status_tpl  = '<span class="asp-order-status%s">%s</span>';
+
 
 	public function __construct() {
 		self::$instance = $this;
@@ -101,17 +103,18 @@ class ASPOrder {
 				if ( ! isset( $data['charge']->paid ) ||
 				( isset( $data['charge']->paid ) && $data['charge']->paid &&
 				$data['charge']->captured ) ) {
-					echo __( 'Paid', 'stripe-payments' );
+					echo sprintf( $this->order_status_tpl, ' paid', __( 'Paid', 'stripe-payments' ) );
 				} else {
 					if ( isset( $data['charge']->captured ) && false === $data['charge']->captured &&
 					empty( $data['charge']->amount_refunded ) ) {
-						echo __( 'Authorized', 'stripe-payments' );
+						echo sprintf( $this->order_status_tpl, ' authorized', __( 'Authorized', 'stripe-payments' ) );
 						$action_nonce = wp_create_nonce( 'asp-order-actions-' . $post_id );
-						echo '<br>';
+						echo '<div class="asp-order-actions-cont">';
 						echo sprintf( '<a class="asp-order-action" data-action="confirm" href="#" data-order-id="%d" data-nonce="%s">' . __( 'Capture', 'stripe-payments' ) . '</a> | ', $post_id, $action_nonce );
 						echo sprintf( '<a class= "asp-order-action" data-action="cancel" style="color:#a00;" href="#" data-order-id="%d" data-nonce="%s">' . __( 'Cancel', 'stripe-payments' ) . '</a>', $post_id, $action_nonce );
+						echo '</div>';
 					} else {
-						echo 'Canceled';
+						echo sprintf( $this->order_status_tpl, ' canceled', __( 'Canceled', 'stripe-payments' ) );
 					}
 				}
 				break;
@@ -174,7 +177,7 @@ class ASPOrder {
 					array(
 						'success'      => false,
 						'err_msg'      => __( 'Funds already captured', 'stripe-payments' ),
-						'order_status' => __( 'Paid', 'stripe-payments' ),
+						'order_status' => sprintf( $this->order_status_tpl, ' paid', __( 'Paid', 'stripe-payments' ) ),
 					)
 				);
 			}
@@ -199,7 +202,7 @@ class ASPOrder {
 		wp_send_json(
 			array(
 				'success'      => true,
-				'order_status' => __( 'Paid', 'stripe-payments' ),
+				'order_status' => sprintf( $this->order_status_tpl, ' paid', __( 'Paid', 'stripe-payments' ) ),
 			)
 		);
 	}
@@ -252,7 +255,7 @@ class ASPOrder {
 					array(
 						'success'      => false,
 						'err_msg'      => __( 'Funds already captured', 'stripe-payments' ),
-						'order_status' => __( 'Paid', 'stripe-payments' ),
+						'order_status' => sprintf( $this->order_status_tpl, ' paid', __( 'Paid', 'stripe-payments' ) ),
 					)
 				);
 			}
@@ -277,7 +280,7 @@ class ASPOrder {
 		wp_send_json(
 			array(
 				'success'      => true,
-				'order_status' => __( 'Canceled', 'stripe-payments' ),
+				'order_status' => sprintf( $this->order_status_tpl, ' canceled', __( 'Canceled', 'stripe-payments' ) ),
 			)
 		);
 	}
