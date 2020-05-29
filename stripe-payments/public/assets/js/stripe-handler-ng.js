@@ -140,7 +140,14 @@ var stripeHandlerNG = function (data) {
 		parent.data.iframe_url = parent.data.iframe_url + '&ckey=' + wpASPNG.ckey;
 		jQuery('body').append('<link rel="prefetch" as="document" href="' + parent.data.iframe_url + '">');
 	}
-	jQuery('#asp_ng_button_' + parent.data.uniq_id).click(function (e) {
+
+	var el = '#asp_ng_button_' + parent.data.uniq_id;
+
+	if (data.attachToElement) {
+		el = data.attachToElement;
+	}
+
+	jQuery(el).click(function (e) {
 		jQuery('html').css('overflow', 'hidden');
 		e.preventDefault();
 		parent.handleModal(true);
@@ -172,21 +179,12 @@ function WPASPAttachToAElement(el) {
 }
 
 function WPASPAttach(el, prodId, params) {
-
-	function elHandler(e) {
-		jQuery('html').css('overflow', 'hidden');
-		e.preventDefault();
-		sg.handleModal(true);
-	}
-
 	var uniqId = Math.random().toString(36).substr(2, 9);
 	var item_price = jQuery(el).data('asp-price');
 	if (item_price) {
 		params += '&price=' + item_price;
 	}
-	var sg = new stripeHandlerNG({ 'uniq_id': uniqId, 'product_id': prodId, 'doSelfSubmit': true, 'iframe_url': wpASPNG.iframeUrl + '&product_id=' + prodId + params, 'prefetch': wpASPNG.prefetch === '1' ? true : false });
-	jQuery(el).off('click');
-	jQuery(el).on('click', el, elHandler);
+	new stripeHandlerNG({ 'attachToElement': el, 'uniq_id': uniqId, 'product_id': prodId, 'doSelfSubmit': true, 'iframe_url': wpASPNG.iframeUrl + '&product_id=' + prodId + params, 'prefetch': wpASPNG.prefetch === '1' ? true : false });
 }
 
 function WPASPDocReady(callbackFunc) {
