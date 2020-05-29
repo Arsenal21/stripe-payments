@@ -174,6 +174,7 @@ function WPASPAttachToAElement(el) {
 function WPASPAttach(el, prodId, params) {
 
 	function elHandler(e) {
+		jQuery('html').css('overflow', 'hidden');
 		e.preventDefault();
 		sg.handleModal(true);
 	}
