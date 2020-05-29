@@ -73,7 +73,7 @@
 }
 
 #modal-close-btn {
-	display: none;
+	display: inline-block;
 	position: absolute;
 	right: 10px;
 	height: 20px;
@@ -82,6 +82,17 @@
 	width: 20px;
 	cursor: pointer;
 }
+
+#modal-close-btn svg {
+	transition: 0.3s;
+	fill: #616161;
+	opacity: 0.5;
+}
+
+#modal-close-btn svg:hover {
+	opacity: 1;
+}
+
 
 #item-name {
 	padding-top: 15px;

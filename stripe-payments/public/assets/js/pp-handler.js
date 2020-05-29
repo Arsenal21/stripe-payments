@@ -16,6 +16,15 @@ try {
 }
 vars.data.temp = [];
 
+var closeBtn = document.getElementById('modal-close-btn');
+closeBtn.addEventListener('click', function () {
+	if (typeof parent.WPASPClosePaymentPopup === "function") {
+		parent.WPASPClosePaymentPopup();
+	} else {
+		window.history.go(-1);
+	}
+});
+
 if (vars.data.amount_variable && vars.data.hide_amount_input !== '1') {
 	var amountInput = document.getElementById('amount');
 	var amountErr = document.getElementById('amount-error');
