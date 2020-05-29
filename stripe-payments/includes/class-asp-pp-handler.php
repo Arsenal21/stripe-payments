@@ -5,6 +5,8 @@ class ASP_PP_Handler {
 	protected $uniq_id;
 	protected $asp_main;
 
+	private $auth_not_supported = array( 'FPX', 'ALIPAY', 'IDEAL', 'SOFORT' );
+
 	public function __construct() {
 		$action = filter_input( INPUT_GET, 'asp_action', FILTER_SANITIZE_STRING );
 		if ( 'show_pp' === $action ) {
@@ -323,6 +325,24 @@ class ASP_PP_Handler {
 		$data = apply_filters( 'asp-button-output-data-ready', $data, array( 'product_id' => $product_id ) ); //phpcs:ignore
 
 		$data = apply_filters( 'asp_ng_pp_data_ready', $data, array( 'product_id' => $product_id ) ); //phpcs:ignore
+
+		// Authorize Only
+		$auth_only = get_post_meta( $product_id, 'asp_product_authorize_only', true );
+
+		if ( $auth_only ) {
+			//disable payment methods that do not support placing a hold on card
+			foreach ( $data['addons'] as $key => $addon ) {
+				if ( in_array( strtoupper( $addon['name'] ), $this->auth_not_supported, true ) ) {
+					unset( $data['addons'][ $key ] );
+				}
+			}
+
+			foreach ( $data['payment_methods'] as $key => $pm ) {
+				if ( in_array( strtoupper( $pm['id'] ), $this->auth_not_supported, true ) ) {
+					unset( $data['payment_methods'][ $key ] );
+				}
+			}
+		}
 
 		if ( empty( $plan_id ) ) {
 			$this->item->set_currency( $data['currency'] );
