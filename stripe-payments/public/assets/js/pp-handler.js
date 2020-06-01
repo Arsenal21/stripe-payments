@@ -16,14 +16,23 @@ try {
 }
 vars.data.temp = [];
 
+window.onpopstateEventDisable = false;
+window.isPopstateEvent = true;
+
 var closeBtn = document.getElementById('modal-close-btn');
 closeBtn.addEventListener('click', function () {
 	if (typeof parent.WPASPClosePaymentPopup === "function") {
 		parent.WPASPClosePaymentPopup();
+		window.onpopstateEventDisable = true;
+		if (!window.isPopstateEvent) {
+			window.history.go(-1);
+		}
 	} else {
 		window.history.go(-1);
 	}
 });
+
+popstateAttachEvent();
 
 if (vars.data.amount_variable && vars.data.hide_amount_input !== '1') {
 	var amountInput = document.getElementById('amount');
@@ -1120,3 +1129,24 @@ var ajaxRequest = function (URL, reqStr, doneFunc, failFunc) {
 	parent.XMLHttpReq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 	parent.XMLHttpReq.send(reqStr);
 };
+
+function popstateAttachEvent() {
+	if (typeof history.pushState === "function" && typeof parent.WPASPClosePaymentPopup === "function") {
+		history.pushState("aspngppstate", null, null);
+		window.onpopstate = function () {
+			window.isPopstateEvent = true;
+			if (!window.onpopstateEventDisable) {
+				this.closeBtn.focus();
+				this.closeBtn.click();
+			} else {
+				window.history.go(-1);
+			}
+		}
+
+	}
+}
+
+function popupDisplayed() {
+	window.onpopstateEventDisable = false;
+	popstateAttachEvent();
+}

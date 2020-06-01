@@ -125,6 +125,7 @@ var stripeHandlerNG = function (data) {
 			}
 			window.aspVisibleModalObj = parent.modal;
 			parent.modal.css('display', 'flex').hide().fadeIn();
+			parent.iframe[0].contentWindow.popupDisplayed();
 		}
 
 	};
