@@ -29,6 +29,10 @@ th.column-title {
     background-color: #e4d4b6;
 }
 
+.asp-order-status.incomplete {
+    background-color: #dedede;
+}
+
 .asp-order-actions-cont {
     padding-top: 5px;
 }

@@ -682,6 +682,22 @@ class ASP_PP_Handler {
 				}
 			}
 
+			$order = new ASP_Order_Item();
+
+			if ( $order->can_create( $product_id ) ) {
+
+				if ( ! $pi_id ) {
+					//create new incomplete order for this payment
+					$order->create( $product_id, $pi_id );
+					ASP_Debug_Logger::log( $order->get_id() );
+				} else {
+					//find order for this PaymentIntent
+					if ( false !== $order->find( 'pi_id', $pi_id ) ) {
+						ASP_Debug_Logger::log( $order->get_id() );
+					}
+				}
+			}
+
 			$pi_params = apply_filters( 'asp_ng_before_pi_create_update', $pi_params );
 			if ( $pi_id ) {
 				if ( ASP_Utils::use_internal_api() ) {
@@ -708,6 +724,10 @@ class ASP_PP_Handler {
 			$out['shipping'] = wp_json_encode( $shipping );
 			$out['err']      = __( 'Error occurred:', 'stripe-payments' ) . ' ' . $e->getMessage();
 			wp_send_json( $out );
+		}
+
+		if ( $order->get_id() ) {
+			update_post_meta( $order->get_id(), 'pi_id', $intent->id );
 		}
 
 		$out['success']      = true;
