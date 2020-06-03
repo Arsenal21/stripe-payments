@@ -510,8 +510,8 @@ function formatMoney(n) {
 	}
 	n = cents_to_amount(n, vars.data.currency);
 	var c = isNaN(c = Math.abs(vars.currencyFormat.c)) ? 2 : vars.currencyFormat.c,
-		d = d == undefined ? '.' : vars.currencyFormat.d,
-		t = t == undefined ? ',' : vars.currencyFormat.t,
+		d = vars.currencyFormat.d,
+		t = vars.currencyFormat.t,
 		s = n < 0 ? '-' : '',
 		i = String(parseInt(n = Math.abs(Number(n) || 0).toFixed(c))),
 		j = (j = i.length) > 3 ? j % 3 : 0;
