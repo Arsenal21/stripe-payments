@@ -2,15 +2,15 @@
 # This file is distributed under the same license as the Stripe Payments plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Stripe Payments 2.0.31t2\n"
+"Project-Id-Version: Stripe Payments 2.0.31t3\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/stripe-payments\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2020-05-29T18:19:31+03:00\n"
-"PO-Revision-Date: 2020-05-29T18:19:31+03:00\n"
+"POT-Creation-Date: 2020-06-03T14:01:56+03:00\n"
+"PO-Revision-Date: 2020-06-03T14:01:56+03:00\n"
 "X-Generator: WP-CLI 2.0.1\n"
 "X-Domain: stripe-payments\n"
 
@@ -876,10 +876,6 @@ msgstr ""
 msgid "Price decimal separator can't be empty."
 msgstr ""
 
-#: admin/class-asp-admin.php:1634
-msgid "Price thousand separator can't be empty."
-msgstr ""
-
 #: admin/class-asp-admin.php:1642
 msgid "Price number of decimals can't be empty."
 msgstr ""
@@ -1063,8 +1059,8 @@ msgid "Thumbnail"
 msgstr ""
 
 #: admin/includes/class-products.php:133
-#: admin/includes/class-order.php:327
 #: includes/shortcodes/class-shortcode-asp.php:1003
+#: includes/class-asp-order-item.php:128
 #: includes/process_ipn.php:691
 msgid "Product Name"
 msgstr ""
@@ -1103,7 +1099,7 @@ msgid "Custom"
 msgstr ""
 
 #: admin/includes/class-products-meta-boxes.php:17
-#: admin/includes/class-order.php:325
+#: includes/class-asp-order-item.php:126
 msgid "Description"
 msgstr ""
 
@@ -1153,7 +1149,7 @@ msgstr ""
 
 #: admin/includes/class-products-meta-boxes.php:29
 #: includes/shortcodes/class-shortcode-asp.php:178
-#: includes/class-asp-pp-handler.php:740
+#: includes/class-asp-pp-handler.php:760
 msgid "Custom Field"
 msgstr ""
 
@@ -1710,109 +1706,50 @@ msgstr ""
 msgid "Status"
 msgstr ""
 
-#: admin/includes/class-order.php:106
-#: admin/includes/class-order.php:180
-#: admin/includes/class-order.php:205
-#: admin/includes/class-order.php:258
+#: admin/includes/class-order.php:110
+#: admin/includes/class-order.php:233
+#: admin/includes/class-order.php:332
 msgid "Paid"
 msgstr ""
 
-#: admin/includes/class-order.php:110
+#: admin/includes/class-order.php:114
+#: admin/includes/class-order.php:333
 msgid "Authorized"
 msgstr ""
 
-#: admin/includes/class-order.php:113
+#: admin/includes/class-order.php:117
+#: admin/includes/class-order.php:130
 msgid "Capture"
 msgstr ""
 
-#: admin/includes/class-order.php:114
+#: admin/includes/class-order.php:118
+#: admin/includes/class-order.php:131
 msgid "Cancel"
 msgstr ""
 
-#: admin/includes/class-order.php:117
-#: admin/includes/class-order.php:283
+#: admin/includes/class-order.php:121
+#: admin/includes/class-order.php:324
+#: admin/includes/class-order.php:334
 msgid "Canceled"
 msgstr ""
 
-#: admin/includes/class-order.php:138
-#: admin/includes/class-order.php:216
+#: admin/includes/class-order.php:153
+#: admin/includes/class-order.php:244
 msgid "Invalid order ID"
 msgstr ""
 
-#: admin/includes/class-order.php:148
-#: admin/includes/class-order.php:226
+#: admin/includes/class-order.php:163
+#: admin/includes/class-order.php:254
 msgid "Nonce check failed"
 msgstr ""
 
-#: admin/includes/class-order.php:179
-#: admin/includes/class-order.php:257
-msgid "Funds already captured"
+#: admin/includes/class-order.php:205
+#: admin/includes/class-order.php:296
+msgid "Funds already captured or refunded"
 msgstr ""
 
-#: admin/includes/class-order.php:321
-msgid "Order Details"
-msgstr ""
-
-#: admin/includes/class-order.php:322
-msgid "Order Time"
-msgstr ""
-
-#: admin/includes/class-order.php:323
-#: includes/shortcodes/class-shortcode-asp.php:1011
-msgid "Transaction ID"
-msgstr ""
-
-#: admin/includes/class-order.php:324
-msgid "Stripe Token"
-msgstr ""
-
-#: admin/includes/class-order.php:328
-#: includes/shortcodes/class-shortcode-asp.php:1004
-#: includes/process_ipn.php:692
-msgid "Quantity"
-msgstr ""
-
-#: admin/includes/class-order.php:329
-#: includes/shortcodes/class-shortcode-asp.php:1005
-#: includes/process_ipn.php:693
-msgid "Item Price"
-msgstr ""
-
-#: admin/includes/class-order.php:333
-#: includes/shortcodes/class-shortcode-asp.php:1009
-#: includes/process_ipn.php:697
-msgid "Total Amount"
-msgstr ""
-
-#: admin/includes/class-order.php:337
-msgid "Customer Details"
-msgstr ""
-
-#. translators: %s is email address
-#: admin/includes/class-order.php:339
-msgid "E-Mail Address: %s"
-msgstr ""
-
-#. translators: %s is payment source (e.g. 'card' etc)
-#: admin/includes/class-order.php:341
-msgid "Payment Source: %s"
-msgstr ""
-
-#: admin/includes/class-order.php:358
-msgid "Unknown"
-msgstr ""
-
-#. translators: %s is IP address
-#: admin/includes/class-order.php:360
-msgid "IP Address: %s"
-msgstr ""
-
-#: admin/includes/class-order.php:365
-msgid "Billing Address"
-msgstr ""
-
-#: admin/includes/class-order.php:371
-msgid "Shipping Address"
+#: admin/includes/class-order.php:331
+msgid "Incomplete"
 msgstr ""
 
 #: admin/includes/class-coupons.php:37
@@ -2220,9 +2157,9 @@ msgstr ""
 
 #: admin/views/admin.php:131
 #: includes/class-asp-pp-handler.php:518
-#: includes/class-asp-pp-handler.php:705
-#: includes/class-asp-pp-handler.php:709
-#: includes/class-asp-pp-handler.php:795
+#: includes/class-asp-pp-handler.php:721
+#: includes/class-asp-pp-handler.php:725
+#: includes/class-asp-pp-handler.php:815
 msgid "Error occurred:"
 msgstr ""
 
@@ -2473,6 +2410,29 @@ msgstr ""
 msgid "Here's what you purchased: "
 msgstr ""
 
+#: includes/shortcodes/class-shortcode-asp.php:1004
+#: includes/class-asp-order-item.php:129
+#: includes/process_ipn.php:692
+msgid "Quantity"
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-asp.php:1005
+#: includes/class-asp-order-item.php:130
+#: includes/process_ipn.php:693
+msgid "Item Price"
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-asp.php:1009
+#: includes/class-asp-order-item.php:134
+#: includes/process_ipn.php:697
+msgid "Total Amount"
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-asp.php:1011
+#: includes/class-asp-order-item.php:124
+msgid "Transaction ID"
+msgstr ""
+
 #: includes/shortcodes/class-shortcode-asp.php:1016
 msgctxt "Is a part of 'Please click here to download'"
 msgid "Please "
@@ -2526,6 +2486,49 @@ msgstr ""
 #. translators: %1$s - plugin name, %2$s - min core plugin version, %3$s - installed core plugin version
 #: includes/class-asp-addons-helper.php:108
 msgid "%1$s requires Stripe Payments plugin minimum version to be %2$s (you have version %3$s installed). Please update Stripe Payments plugin."
+msgstr ""
+
+#: includes/class-asp-order-item.php:122
+msgid "Order Details"
+msgstr ""
+
+#: includes/class-asp-order-item.php:123
+msgid "Order Time"
+msgstr ""
+
+#: includes/class-asp-order-item.php:125
+msgid "Stripe Token"
+msgstr ""
+
+#: includes/class-asp-order-item.php:138
+msgid "Customer Details"
+msgstr ""
+
+#. translators: %s is email address
+#: includes/class-asp-order-item.php:140
+msgid "E-Mail Address: %s"
+msgstr ""
+
+#. translators: %s is payment source (e.g. 'card' etc)
+#: includes/class-asp-order-item.php:142
+msgid "Payment Source: %s"
+msgstr ""
+
+#: includes/class-asp-order-item.php:159
+msgid "Unknown"
+msgstr ""
+
+#. translators: %s is IP address
+#: includes/class-asp-order-item.php:161
+msgid "IP Address: %s"
+msgstr ""
+
+#: includes/class-asp-order-item.php:166
+msgid "Billing Address"
+msgstr ""
+
+#: includes/class-asp-order-item.php:172
+msgid "Shipping Address"
 msgstr ""
 
 #: includes/class-asp-pp-handler.php:316
