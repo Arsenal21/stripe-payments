@@ -1631,7 +1631,7 @@ class AcceptStripePayments_Admin {
 		if ( ! empty( $input['price_thousand_sep'] ) ) {
 			$output['price_thousand_sep'] = esc_attr( $input['price_thousand_sep'] );
 		} else {
-			add_settings_error( 'AcceptStripePayments-settings', 'empty-price-thousand-sep', __( 'Price thousand separator can\'t be empty.', 'stripe-payments' ) );
+			$output['price_thousand_sep'] = '';
 		}
 
 		if ( isset( $input['price_decimals_num'] ) ) {
