@@ -21,15 +21,8 @@ window.isPopstateEvent = true;
 
 var closeBtn = document.getElementById('modal-close-btn');
 closeBtn.addEventListener('click', function () {
-	if (typeof parent.WPASPClosePaymentPopup === "function") {
-		parent.WPASPClosePaymentPopup();
-		window.onpopstateEventDisable = true;
-		if (!window.isPopstateEvent) {
-			window.history.go(-1);
-		}
-	} else {
-		window.history.go(-1);
-	}
+	window.history.go(-1);
+	history.replaceState(null, document.title, window.location.pathname + window.location.search);
 });
 
 popstateAttachEvent();
@@ -1132,21 +1125,24 @@ var ajaxRequest = function (URL, reqStr, doneFunc, failFunc) {
 
 function popstateAttachEvent() {
 	if (typeof history.pushState === "function" && typeof parent.WPASPClosePaymentPopup === "function") {
-		history.pushState("aspngppstate", null, null);
+		window.onpopstateEventDisable = false;
+		history.pushState('forward', null, '#paymentpopup');
 		window.onpopstate = function () {
-			window.isPopstateEvent = true;
 			if (!window.onpopstateEventDisable) {
-				this.closeBtn.focus();
-				this.closeBtn.click();
-			} else {
+				if (typeof parent.WPASPClosePaymentPopup === "function") {
+					window.onpopstateEventDisable = true;
+					this.closeBtn.focus();
+					parent.WPASPClosePaymentPopup();
+				}
+			}
+			else {
 				window.history.go(-1);
 			}
 		}
-
 	}
 }
 
 function popupDisplayed() {
 	window.onpopstateEventDisable = false;
-	popstateAttachEvent();
+	history.pushState('forward', null, '#paymentpopup');
 }
