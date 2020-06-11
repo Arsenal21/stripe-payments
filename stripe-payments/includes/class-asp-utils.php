@@ -569,6 +569,7 @@ class ASP_Utils {
 			'AUD' => array( __( 'Australian Dollars (AUD)', 'stripe-payments' ), 'AU$' ),
 			'ARS' => array( __( 'Argentine Peso (ARS)', 'stripe-payments' ), 'ARS' ),
 			'BAM' => array( __( 'Bosnia and Herzegovina Convertible Mark (BAM)', 'stripe-payments' ), 'KM' ),
+			'BGN' => array( __( 'Bulgarian Lev (BGN)', 'stripe-payments' ), 'Лв.' ),
 			'BRL' => array( __( 'Brazilian Real (BRL)', 'stripe-payments' ), 'R$' ),
 			'CAD' => array( __( 'Canadian Dollars (CAD)', 'stripe-payments' ), 'CA$' ),
 			'CLP' => array( __( 'Chilean Peso (CLP)', 'stripe-payments' ), 'CLP' ),

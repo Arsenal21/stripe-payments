@@ -7,6 +7,7 @@ class AcceptStripePayments {
 	var $minAmounts        = array(
 		'USD' => 50,
 		'AUD' => 50,
+		'BGN' => 100,
 		'BRL' => 50,
 		'CAD' => 50,
 		'CHF' => 50,
