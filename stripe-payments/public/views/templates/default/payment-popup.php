@@ -187,6 +187,7 @@
 								//let's add a box where user can select currency
 								$output   = '';
 								$curr_arr = ASP_Utils::get_currencies();
+								$curr_arr = apply_filters( 'asp_ng_available_currencies', $curr_arr );
 								$tpl      = '<option data-asp-curr-sym="%s" value="%s"%s>%s</option>';
 								foreach ( $curr_arr as $code => $curr ) {
 									if ( '' !== $code ) {
