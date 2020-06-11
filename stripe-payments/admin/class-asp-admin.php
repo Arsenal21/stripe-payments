@@ -444,6 +444,16 @@ class AcceptStripePayments_Admin {
 			)
 		);
 		add_settings_field(
+			'allowed_currencies',
+			__( 'Allowed Currencies', 'stripe-payments' ),
+			array( &$this, 'settings_field_callback' ),
+			$this->plugin_slug,
+			'AcceptStripePayments-global-section',
+			array(
+				'field' => 'allowed_currencies',
+			)
+		);
+		add_settings_field(
 			'button_text',
 			__( 'Button Text', 'stripe-payments' ),
 			array( &$this, 'settings_field_callback' ),
@@ -1349,6 +1359,37 @@ class AcceptStripePayments_Admin {
 			case 'currency_symbol':
 				echo '<input type="text" name="AcceptStripePayments-settings[' . $field . ']" value="" id="wp_asp_curr_symb">';
 				break;
+			case 'allowed_currencies':
+				$all_curr = ASP_Utils::get_currencies();
+				unset( $all_curr[''] );
+				$allowed_curr = empty( $field_value ) ? $all_curr : json_decode( html_entity_decode( $field_value ), true );
+				if ( empty( array_diff_key( $all_curr, $allowed_curr ) ) ) {
+					$allowed = __( 'All', 'stripe-payments' );
+				} else {
+					$allowed = __( 'Selected', 'stripe-payments' );
+				}
+				echo $allowed;
+				echo '<div id="wp-asp-allowed-currencies-cont">';
+				echo '<a href="#" class="wp-asp-toggle toggled-off">' . __( 'Click here to select currencies', 'stripe-payments' ) . '</a>';
+				echo '<div class="wp-asp-allowed-currencies hidden">';
+				echo '<div class="wp-asp-allowed-currencies-buttons-cont">';
+				echo '<button type="button" class="wp-asp-curr-sel-all-btn">' . __( 'Select All', 'stripe-payments' ) . '</button>';
+				echo '<button type="button" class="wp-asp-curr-sel-none-btn">' . __( 'Select None', 'stripe-payments' ) . '</button>';
+				echo '<button type="button" class="wp-asp-curr-sel-invert-btn">' . __( 'Invert Selection', 'stripe-payments' ) . '</button>';
+				echo '</div>';
+				echo '<div class="wp-asp-allowed-currencies-sel">';
+				foreach ( $all_curr as $code => $curr ) {
+					$checked = '';
+					if ( isset( $allowed_curr[ $code ] ) ) {
+						$checked = ' checked';
+					}
+					echo sprintf( '<div><label><input type="checkbox" name="AcceptStripePayments-settings[allowed_currencies][%s]" value="1"%s> %s</label></div>', $code, $checked, $curr[0] );
+				}
+				echo '</div>';
+				echo '</div>';
+				echo '</div>';
+				echo '<p class="description">' . __( 'You can select currencies you want to be available for your customers for variable currencies products.', 'stripe-payments' ) . '</p>';
+				break;
 			case 'price_decimals_num':
 				echo '<input type="number" min="0" step="1" max="5" name="AcceptStripePayments-settings[' . $field . ']" value="' . esc_attr( $field_value ) . '"';
 				break;
@@ -1564,6 +1605,15 @@ class AcceptStripePayments_Admin {
 			$output['custom_currency_symbols'] = $custom_curr_symb;
 		} else {
 			add_settings_error( 'AcceptStripePayments-settings', 'invalid-currency-code', __( 'You must specify payment currency.', 'stripe-payments' ) );
+		}
+
+		$curr_arr = ASP_Utils::get_currencies();
+		if ( ! empty( $input['allowed_currencies'] ) ) {
+			if ( empty( array_diff_key( $curr_arr, $input['allowed_currencies'] ) ) ) {
+				$output['allowed_currencies'] = false;
+			} else {
+				$output['allowed_currencies'] = is_array( $input['allowed_currencies'] ) ? wp_json_encode( $input['allowed_currencies'] ) : false;
+			}
 		}
 
 		$output['checkout_lang'] = $input['checkout_lang'];

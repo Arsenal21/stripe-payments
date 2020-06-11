@@ -11,6 +11,23 @@ class ASP_Self_Hooks_Handler {
 		add_action( 'plugins_loaded', array( $this, 'plugins_loaded' ), 0 );
 
 		add_filter( 'asp_ng_before_pi_create_update', array( $this, 'pi_update' ) );
+
+		add_filter( 'asp_ng_available_currencies', array( $this, 'filter_available_currencies' ) );
+	}
+
+	public function plugins_loaded() {
+		//WP eMember integration
+		if ( function_exists( 'wp_emember_install' ) ) {
+			add_action( 'asp_stripe_payment_completed', array( $this, 'handle_eMember_signup' ), 10, 2 );
+		}
+		//Simple Membership integration
+		if ( defined( 'SIMPLE_WP_MEMBERSHIP_VER' ) ) {
+			add_action( 'asp_stripe_payment_completed', array( $this, 'handle_swpm_signup' ), 10, 2 );
+		}
+		//WP PDF Stamper integration
+		if ( function_exists( 'pdf_stamper_stamp_internal_file' ) ) {
+			add_action( 'asp_ng_payment_completed', array( $this, 'handle_wp_pdf_stamper' ), 1000, 2 );
+		}
 	}
 
 	public function pi_update( $pi_params ) {
@@ -29,19 +46,21 @@ class ASP_Self_Hooks_Handler {
 		return $pi_params;
 	}
 
-	public function plugins_loaded() {
-		//WP eMember integration
-		if ( function_exists( 'wp_emember_install' ) ) {
-			add_action( 'asp_stripe_payment_completed', array( $this, 'handle_eMember_signup' ), 10, 2 );
+	public function filter_available_currencies( $curr_arr ) {
+		$allowed_curr = $this->main->get_setting( 'allowed_currencies' );
+		$allowed_curr = empty( $allowed_curr ) ? array() : json_decode( html_entity_decode( $allowed_curr ), true );
+
+		if ( empty( $allowed_curr ) || empty( array_diff_key( $curr_arr, $allowed_curr ) ) ) {
+			return $curr_arr;
 		}
-		//Simple Membership integration
-		if ( defined( 'SIMPLE_WP_MEMBERSHIP_VER' ) ) {
-			add_action( 'asp_stripe_payment_completed', array( $this, 'handle_swpm_signup' ), 10, 2 );
+
+		foreach ( $curr_arr as $key => $value ) {
+			if ( ! isset( $allowed_curr[ $key ] ) ) {
+				unset( $curr_arr[ $key ] );
+			}
 		}
-		//WP PDF Stamper integration
-		if ( function_exists( 'pdf_stamper_stamp_internal_file' ) ) {
-			add_action( 'asp_ng_payment_completed', array( $this, 'handle_wp_pdf_stamper' ), 1000, 2 );
-		}
+
+		return $curr_arr;
 	}
 
 	public function ng_product_mode_keys_handler( $product_id ) {

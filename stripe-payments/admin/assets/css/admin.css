@@ -647,6 +647,43 @@ table.wp-asp-tags-hint td.wp-asp-tag-descr {
 
 /*----- END Email tags hint ----- */
 
+/*----- Allowed Currencies ----- */
+
+#wp-asp-allowed-currencies-cont .wp-asp-allowed-currencies {
+	margin-top: 10px;
+}
+
+#wp-asp-allowed-currencies-cont .wp-asp-allowed-currencies-sel div {
+	display: inline-block;
+	line-height: 1.75em;
+	width: 50%;
+}
+
+.wp-asp-allowed-currencies-buttons-cont {
+	margin-top: 7px;
+	margin-bottom: 7px;
+	line-height: 2em;
+}
+
+.wp-asp-allowed-currencies-buttons-cont button {
+	margin-right: 5px;
+}
+
+@media screen and (max-width: 782px) {
+	#wp-asp-allowed-currencies-cont .wp-asp-allowed-currencies-sel div {
+		line-height: 2em;
+	}
+}
+
+@media screen and (max-width: 960px) {
+	#wp-asp-allowed-currencies-cont .wp-asp-allowed-currencies-sel div {
+		display: block;
+		width: 100%;
+	}
+}
+
+/*----- END Allowed Currencies ----- */
+
 .asp-new-api-only {
 	color: green;
 }
