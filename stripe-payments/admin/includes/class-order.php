@@ -203,7 +203,7 @@ class ASPOrder {
 					array(
 						'success'      => false,
 						'err_msg'      => __( 'Funds already captured or refunded', 'stripe-payments' ),
-						'order_status' => sprintf( $this->order_status_tpl, $order->get_status(), self::get_status_str( $order->get_status() ) ),
+						'order_status' => sprintf( $this->order_status_tpl, ' ' . $order->get_status(), self::get_status_str( $order->get_status() ) ),
 					)
 				);
 			}
@@ -230,7 +230,7 @@ class ASPOrder {
 		wp_send_json(
 			array(
 				'success'      => true,
-				'order_status' => sprintf( $this->order_status_tpl, ' paid', __( 'Paid', 'stripe-payments' ) ),
+				'order_status' => sprintf( $this->order_status_tpl, ' ' . $order->get_status(), self::get_status_str( $order->get_status() ) ),
 			)
 		);
 	}
@@ -294,7 +294,7 @@ class ASPOrder {
 					array(
 						'success'      => false,
 						'err_msg'      => __( 'Funds already captured or refunded', 'stripe-payments' ),
-						'order_status' => sprintf( $this->order_status_tpl, $order->get_status(), self::get_status_str( $order->get_status() ) ),
+						'order_status' => sprintf( $this->order_status_tpl, ' ' . $order->get_status(), self::get_status_str( $order->get_status() ) ),
 					)
 				);
 			}
@@ -321,7 +321,7 @@ class ASPOrder {
 		wp_send_json(
 			array(
 				'success'      => true,
-				'order_status' => sprintf( $this->order_status_tpl, ' canceled', __( 'Canceled', 'stripe-payments' ) ),
+				'order_status' => sprintf( $this->order_status_tpl, ' ' . $order->get_status(), self::get_status_str( $order->get_status() ) ),
 			)
 		);
 	}
