@@ -1214,6 +1214,8 @@ class AcceptStripePayments_Admin {
 		$size = isset( $args['size'] ) ? $args['size'] : 40;
 
 		$addon_field = apply_filters( 'asp-admin-settings-addon-field-display', $field, $field_value );
+		// this is proper filter name since 2.0.31
+		$addon_field = apply_filters( 'asp_admin_settings_addon_field_display', $field, $field_value );
 
 		if ( is_array( $addon_field ) ) {
 			$field      = $addon_field['field'];
@@ -1461,8 +1463,10 @@ class AcceptStripePayments_Admin {
 
 		// this filter name is a bit invalid, we will slowly replace it with a valid one below
 		$output = apply_filters( 'apm-admin-settings-sanitize-field', $output, $input );
-
+		// ... which is kinda invalid as well :-)
 		$output = apply_filters( 'asp-admin-settings-sanitize-field', $output, $input );
+		// this one is valid
+		$output = apply_filters( 'asp_admin_settings_sanitize_field', $output, $input );
 
 		$output ['price_apply_for_input'] = empty( $input['price_apply_for_input'] ) ? 0 : 1;
 
@@ -1557,7 +1561,7 @@ class AcceptStripePayments_Admin {
 		$input['api_secret_key_test']      = sanitize_text_field( $input['api_secret_key_test'] );
 		$input['api_publishable_key_test'] = sanitize_text_field( $input['api_publishable_key_test'] );
 
-		if ( $output['is_live'] != 0 ) {
+		if ( ! empty( $output['is_live'] ) ) {
 			if ( empty( $input['api_secret_key'] ) || empty( $input['api_publishable_key'] ) ) {
 				add_settings_error( 'AcceptStripePayments-settings', 'invalid-credentials', __( 'You must fill Live API credentials for plugin to work correctly.', 'stripe-payments' ) );
 			}
