@@ -1214,8 +1214,6 @@ class AcceptStripePayments_Admin {
 		$size = isset( $args['size'] ) ? $args['size'] : 40;
 
 		$addon_field = apply_filters( 'asp-admin-settings-addon-field-display', $field, $field_value );
-		// this is proper filter name since 2.0.31
-		$addon_field = apply_filters( 'asp_admin_settings_addon_field_display', $field, $field_value );
 
 		if ( is_array( $addon_field ) ) {
 			$field      = $addon_field['field'];
@@ -1461,12 +1459,7 @@ class AcceptStripePayments_Admin {
 
 		$output = get_option( 'AcceptStripePayments-settings' );
 
-		// this filter name is a bit invalid, we will slowly replace it with a valid one below
 		$output = apply_filters( 'apm-admin-settings-sanitize-field', $output, $input );
-		// ... which is kinda invalid as well :-)
-		$output = apply_filters( 'asp-admin-settings-sanitize-field', $output, $input );
-		// this one is valid
-		$output = apply_filters( 'asp_admin_settings_sanitize_field', $output, $input );
 
 		$output ['price_apply_for_input'] = empty( $input['price_apply_for_input'] ) ? 0 : 1;
 
