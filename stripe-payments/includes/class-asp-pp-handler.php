@@ -16,12 +16,12 @@ class ASP_PP_Handler {
 				return;
 			}
 			$this->asp_main = AcceptStripePayments::get_instance();
-			add_action( 'plugins_loaded', array( $this, 'showpp' ), 2147483647 );
+			add_action( 'init', array( $this, 'showpp' ), 2147483647 );
 		}
 		if ( wp_doing_ajax() ) {
 			//          ASP_Utils::set_custom_lang_if_needed();
 			$this->asp_main = AcceptStripePayments::get_instance();
-			add_action( 'plugins_loaded', array( $this, 'add_ajax_handlers' ), 2147483647 );
+			add_action( 'init', array( $this, 'add_ajax_handlers' ), 2147483647 );
 			add_action( 'wp_ajax_asp_pp_check_coupon', array( $this, 'handle_check_coupon' ) );
 			add_action( 'wp_ajax_nopriv_asp_pp_check_coupon', array( $this, 'handle_check_coupon' ) );
 		}
