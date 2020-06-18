@@ -444,16 +444,6 @@ class AcceptStripePayments_Admin {
 			)
 		);
 		add_settings_field(
-			'allowed_currencies',
-			__( 'Allowed Currencies', 'stripe-payments' ),
-			array( &$this, 'settings_field_callback' ),
-			$this->plugin_slug,
-			'AcceptStripePayments-global-section',
-			array(
-				'field' => 'allowed_currencies',
-			)
-		);
-		add_settings_field(
 			'button_text',
 			__( 'Button Text', 'stripe-payments' ),
 			array( &$this, 'settings_field_callback' ),
@@ -1093,7 +1083,16 @@ class AcceptStripePayments_Admin {
 				'desc'  => __( 'If enabled, no transaction info is saved to the orders menu of the plugin. The transaction data will still be available in your Stripe dashboard. Useful if you don\'t want to store purchase and customer data in your site.', 'stripe-payments' ),
 			)
 		);
-
+		add_settings_field(
+			'allowed_currencies',
+			__( 'Allowed Currencies', 'stripe-payments' ),
+			array( &$this, 'settings_field_callback' ),
+			$this->plugin_slug . '-advanced',
+			'AcceptStripePayments-additional-settings',
+			array(
+				'field' => 'allowed_currencies',
+			)
+		);
 		add_settings_field(
 			'pp_additional_css',
 			__( 'Payment Popup Additional CSS', 'stripe-payments' ),
