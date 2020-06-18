@@ -425,6 +425,11 @@ class ASP_PP_Handler {
 			$pay_btn_text = __( $pay_btn_text, 'stripe-payments' ); //phpcs:ignore
 		}
 
+		if ( $auth_only ) {
+			// translators: %s is not a placeholder
+			$pay_btn_text = __( 'Authorize %s', 'stripe-payments' );
+		}
+
 		if ( isset( $data['is_trial'] ) && $data['is_trial'] ) {
 			if ( $this->item->get_price() === 0 ) {
 				$data['amount_variable'] = false;
