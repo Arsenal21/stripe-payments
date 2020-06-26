@@ -131,6 +131,12 @@ class ASPOrder {
 						echo sprintf( '<a class= "asp-order-action" data-action="cancel" style="color:#a00;" href="#" data-order-id="%d" data-nonce="%s">' . __( 'Cancel', 'stripe-payments' ) . '</a>', $post_id, $action_nonce );
 						echo '</div>';
 					}
+					if ( 'error' === $status ) {
+						$order_events = get_post_meta( $post_id, 'asp_order_events', false );
+						if ( ! empty( $order_events ) && is_array( $order_events ) ) {
+							echo '<br>'.end( $order_events[0] )['comment'];
+						}
+					}
 				}
 				break;
 			case 'total':
@@ -332,6 +338,7 @@ class ASPOrder {
 			'paid'       => __( 'Paid', 'stripe-payments' ),
 			'authorized' => __( 'Authorized', 'stripe-payments' ),
 			'canceled'   => __( 'Canceled', 'stripe-payments' ),
+			'error'      => __( 'Error', 'stripe-payments' ),
 		);
 		if ( isset( $status_str[ $status ] ) ) {
 			return $status_str[ $status ];

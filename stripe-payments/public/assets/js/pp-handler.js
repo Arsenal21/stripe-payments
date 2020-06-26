@@ -980,6 +980,13 @@ function handlePayment() {
 
 function handleCardPaymentResult(result) {
 	if (result.error) {
+		console.log('Sending error info...');
+		if (vars.data.pi_id) {
+			new ajaxRequest(vars.ajaxURL,
+				'action=asp_pp_payment_error&pi_id=' + vars.data.pi_id + '&err_msg=' + result.error.message,
+				null,
+				null);
+		}
 		submitBtn.disabled = false;
 		errorCont.innerHTML = result.error.message;
 		errorCont.style.display = 'block';
@@ -1105,7 +1112,9 @@ var ajaxRequest = function (URL, reqStr, doneFunc, failFunc) {
 	parent.XMLHttpReq.onreadystatechange = function () {
 		if (parent.XMLHttpReq.readyState === XMLHttpRequest.DONE) {
 			if (parent.XMLHttpReq.status === 200) {
-				parent.doneFunc(parent.XMLHttpReq);
+				if (parent.doneFunc) {
+					parent.doneFunc(parent.XMLHttpReq);
+				}
 			} else {
 				console.log('ajaxRequest failed');
 				console.log(parent.XMLHttpReq);

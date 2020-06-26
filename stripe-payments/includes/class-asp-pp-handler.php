@@ -33,6 +33,9 @@ class ASP_PP_Handler {
 
 		add_action( 'wp_ajax_asp_pp_save_form_data', array( $this, 'save_form_data' ) );
 		add_action( 'wp_ajax_nopriv_asp_pp_save_form_data', array( $this, 'save_form_data' ) );
+
+		add_action( 'wp_ajax_asp_pp_payment_error', array( $this, 'pp_payment_error' ) );
+		add_action( 'wp_ajax_nopriv_asp_pp_payment_error', array( $this, 'pp_payment_error' ) );
 	}
 
 	public function showpp() {
@@ -802,6 +805,27 @@ class ASP_PP_Handler {
 			$output      .= $this->tpl_cf;
 			$this->tpl_cf = '';
 		return $output;
+	}
+
+	public function pp_payment_error() {
+		$pi_id   = filter_input( INPUT_POST, 'pi_id', FILTER_SANITIZE_STRING );
+		$err_msg = filter_input( INPUT_POST, 'err_msg', FILTER_SANITIZE_STRING );
+
+		$out = array( 'success' => false );
+
+		if ( empty( $pi_id ) || empty( $err_msg ) ) {
+			wp_send_json( $out );
+		}
+
+		$order = new ASP_Order_Item();
+		if ( false === $order->find( 'pi_id', $pi_id ) ) {
+			wp_send_json( $out );
+		}
+
+		$order->change_status( 'error', $err_msg );
+
+		$out['success'] = true;
+		wp_send_json( $out );
 	}
 
 	public function save_form_data() {
