@@ -137,6 +137,18 @@ a.wp-asp-product-menu-nav-item.nav-tab-active:focus {
 	border-top: none;
 }
 
+.asp_product_type_cont {
+	display: none;
+}
+
+.asp_product_type_active {
+	display: block;
+}
+
+.asp_product_type_select_cont label {
+	margin-right: 10px;
+}
+
 @media screen and (max-width: 960px) {
 	.wp-asp-product-settings-menu {
 		width: 100%;

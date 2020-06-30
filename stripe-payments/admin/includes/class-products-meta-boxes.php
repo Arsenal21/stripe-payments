@@ -16,7 +16,11 @@ class ASPProductsMetaboxes {
 	public function add_meta_boxes() {
 		add_meta_box( 'wsp_content', __( 'Description', 'stripe-payments' ), array( $this, 'display_description_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 		add_meta_box( 'asp_short_description_meta_box', __( 'Short Description', 'stripe-payments' ), array( $this, 'display_short_description_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
-		add_meta_box( 'asp_price_meta_box', esc_html( __( 'Price & Currency', 'stripe-payments' ) ), array( $this, 'display_price_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
+		if ( class_exists( 'ASPSUB_main' ) && version_compare( ASPSUB_main::ADDON_VER, '2.0.16' ) <= 0 ) {
+			add_meta_box( 'asp_price_meta_box', esc_html( __( 'Price & Currency', 'stripe-payments' ) ), array( $this, 'display_price_meta_box_deprecated' ), ASPMain::$products_slug, 'normal', 'default' );
+		} else {
+			add_meta_box( 'asp_price_meta_box', esc_html( __( 'Price & Currency', 'stripe-payments' ) ), array( $this, 'display_price_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
+		}
 		add_meta_box( 'asp_variations_meta_box', esc_html( __( 'Variations', 'stripe-payments' ) ), array( $this, 'display_variations_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 		add_meta_box( 'asp_quantity_meta_box', esc_html( __( 'Quantity & Stock', 'stripe-payments' ) ), array( $this, 'display_quantity_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 		add_meta_box( 'asp_shipping_tax_meta_box', esc_html( __( 'Shipping & Tax', 'stripe-payments' ) ), array( $this, 'display_shipping_tax_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
@@ -179,6 +183,110 @@ class ASPProductsMetaboxes {
 	}
 
 	public function display_price_meta_box( $post ) {
+		$current_price    = get_post_meta( $post->ID, 'asp_product_price', true );
+		$current_curr     = get_post_meta( $post->ID, 'asp_product_currency', true );
+		$current_curr_var = get_post_meta( $post->ID, 'asp_product_currency_variable', true );
+		$min_amount       = get_post_meta( $post->ID, 'asp_product_min_amount', true );
+
+		$min_amount        = empty( $min_amount ) ? 0 : floatval( $min_amount );
+		$post_status       = get_post_status( $post );
+		$hide_amount_input = get_post_meta( $post->ID, 'asp_product_hide_amount_input', true );
+
+		$product_types             = array();
+		$product_types['one_time'] = __( 'One-time payment' );
+		$product_types['donation'] = __( 'Donation' );
+
+		$product_types = apply_filters( 'asp_product_edit_product_types', $product_types, $post );
+
+		$product_type = get_post_meta( $post->ID, 'asp_product_type', true );
+
+		$product_type = apply_filters( 'asp_product_edit_product_type_selected', $product_type, $post );
+
+		if ( ! isset( $product_types[ $product_type ] ) || empty( $product_type ) ) {
+			$product_type = 'one_time';
+			if ( 'auto-draft' !== $post_status && empty( $current_price ) && ! $hide_amount_input ) {
+				$product_type = 'donation';
+			}
+		}
+
+		$cont = '';
+
+		echo '<p class="asp_product_type_select_cont">';
+
+		foreach ( $product_types as $type => $name ) {
+			?>
+		<label>
+		<input type="radio" class="asp_product_type_radio" name="asp_product_type_radio" value="<?php echo $type; ?>"<?php echo $type === $product_type ? ' checked' : ''; ?>><?php echo $name; ?>
+		</label>
+			<?php
+			$cont .= sprintf( '<div class="asp_product_type_cont%s" data-asp-product-type="%s">', $type === $product_type ? ' asp_product_type_active' : '', $type );
+			ob_start();
+			switch ( $type ) {
+				case 'one_time':
+					?>
+		<label><?php esc_html_e( 'Price', 'stripe-payments' ); ?></label>
+		<br />
+		<input type="number" step="any" min="0" name="asp_product_price" value="<?php echo esc_attr( $current_price ); ?>">
+		<p class="description">
+					<?php
+					echo esc_html( __( 'Item price. Numbers only, no need to put currency symbol. Example: 99.95', 'stripe-payments' ) );
+					?>
+		</p>
+		<hr />
+		<div class="asp_product_currency_sel_location">
+			<div class="asp_product_currency_sel">
+		<label><?php esc_html_e( 'Currency', 'stripe-payments' ); ?></label>
+		<br />
+		<select name="asp_product_currency" id="asp_currency_select"><?php echo ( AcceptStripePayments_Admin::get_currency_options( $current_curr ) ); ?></select>
+		<p class="description"><?php esc_html_e( 'Leave "(Default)" option selected if you want to use currency specified on settings page.', 'stripe-payments' ); ?></p>
+				</div>
+				</div>
+					<?php
+					break;
+				case 'donation':
+					?>
+		<label><?php esc_html_e( 'Minimum Donation Amount', 'stripe-payments' ); ?></label>
+		<br />
+		<input type="number" step="0.01" min="0" name="asp_product_min_amount" value="<?php echo esc_attr( $min_amount ); ?>">
+		<p class="description">
+					<?php
+					echo esc_html( __( 'Specify minimum donation amount.', 'stripe-payments' ) ) .
+					// translators: %1$s and %2$s are replaced by <a></a> tags
+					' ' . sprintf( __( 'If set to 0, %1$s Stripe\'s minimum amount limits%2$s would be applied.', 'stripe-payments' ), '<a href="https://stripe.com/docs/currencies#minimum-and-maximum-charge-amounts" target="_blank">', '</a>' );
+					?>
+		</p>
+		<hr />
+		<div class="asp_product_currency_sel_location"></div>
+		<label>
+			<input type="checkbox" name="asp_product_currency_variable" value="1" <?php echo esc_attr( ! empty( $current_curr_var ) ? ' checked' : '' ); ?>> <?php esc_html_e( 'Allow customers to specify currency', 'stripe-payments' ); ?>
+		</label>
+		<p class="description"><?php esc_attr_e( 'When enabled, it allows the customers to select the currency which is used to make the payment. It does not dynamically change the price. No dynamic currency conversion takes place.', 'stripe-payments' ); ?></p>
+					<?php
+					break;
+				default:
+					do_action( 'asp_product_edit_output_product_type_' . $type, $post );
+					break;
+			}
+			$cont .= ob_get_clean();
+			$cont .= '</div>';
+		}
+		echo '</p>';
+		echo $cont;
+		?>
+		<script>
+			jQuery('.asp_product_type_radio').change(function(e) {
+				jQuery('.asp_product_type_cont').removeClass('asp_product_type_active');
+				if (jQuery('.asp_product_type_cont[data-asp-product-type="'+jQuery(this).val()+'"]').find('.asp_product_currency_sel_location').length !== 0) {
+					jQuery('.asp_product_currency_sel').appendTo(jQuery('.asp_product_type_cont[data-asp-product-type="'+jQuery(this).val()+'"]').find('.asp_product_currency_sel_location'));
+				}
+				jQuery('.asp_product_type_cont[data-asp-product-type="'+jQuery(this).val()+'"]').addClass('asp_product_type_active');
+			});
+			jQuery('.asp_product_type_radio:checked').trigger('change');
+			</script>
+		<?php
+	}
+
+	public function display_price_meta_box_deprecated( $post ) {
 		$current_price    = get_post_meta( $post->ID, 'asp_product_price', true );
 		$current_curr     = get_post_meta( $post->ID, 'asp_product_currency', true );
 		$current_curr_var = get_post_meta( $post->ID, 'asp_product_currency_variable', true );
@@ -752,10 +860,6 @@ jQuery(document).ready(function($) {
 					update_post_meta( $post_id, 'asp_variations_opts', false );
 				}
 
-				$currency_variable = filter_input( INPUT_POST, 'asp_product_currency_variable', FILTER_SANITIZE_STRING );
-				$currency_variable = ! empty( $currency_variable ) ? true : false;
-				update_post_meta( $post_id, 'asp_product_currency_variable', $currency_variable );
-
 				$hide_amount_input = filter_input( INPUT_POST, 'asp_product_hide_amount_input', FILTER_SANITIZE_STRING );
 				$hide_amount_input = ! empty( $hide_amount_input ) ? true : false;
 				update_post_meta( $post_id, 'asp_product_hide_amount_input', $hide_amount_input );
@@ -764,6 +868,27 @@ jQuery(document).ready(function($) {
 				$price    = sanitize_text_field( $_POST['asp_product_price'] );
 				$price    = AcceptStripePayments::tofloat( $price );
 				$currency = sanitize_text_field( $_POST['asp_product_currency'] );
+
+				$product_type = filter_input( INPUT_POST, 'asp_product_type_radio', FILTER_SANITIZE_STRING );
+
+				if ( ! empty( $product_type ) ) {
+					update_post_meta( $post_id, 'asp_product_type', $product_type );
+					if ( 'donation' === $product_type ) {
+						$min_amount = filter_input( INPUT_POST, 'asp_product_min_amount', FILTER_SANITIZE_STRING );
+						$min_amount = abs( floatval( $min_amount ) );
+						update_post_meta( $post_id, 'asp_product_min_amount', $min_amount );
+						update_post_meta( $post_id, 'asp_product_price', 0 );
+						$currency_variable = filter_input( INPUT_POST, 'asp_product_currency_variable', FILTER_SANITIZE_STRING );
+						$currency_variable = ! empty( $currency_variable ) ? true : false;
+						update_post_meta( $post_id, 'asp_product_currency_variable', $currency_variable );
+						return true;
+					}
+				} else {
+					$currency_variable = filter_input( INPUT_POST, 'asp_product_currency_variable', FILTER_SANITIZE_STRING );
+					$currency_variable = ! empty( $currency_variable ) ? true : false;
+					update_post_meta( $post_id, 'asp_product_currency_variable', $currency_variable );
+				}
+
 				if ( ! empty( $price ) ) {
 					$price_cents = AcceptStripePayments::is_zero_cents( $currency ) ? round( $price ) : round( $price * 100 );
 					//check if we have currency set
