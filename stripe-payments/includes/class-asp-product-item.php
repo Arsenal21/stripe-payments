@@ -198,6 +198,32 @@ class ASP_Product_Item {
 		}
 		return $this->price;
 	}
+	/**
+	* Returns min amount for donation product
+	*
+	* @param bool $in_cents Return amount in cents if set to `true`
+	*
+	* @return integer|float
+	*
+	* @since 2.0.31
+	*/
+	public function get_min_amount( $in_cents = false ) {
+		$min_amount = get_post_meta( $this->post_id, 'asp_product_min_amount', true );
+		$min_amount = empty( $min_amount ) ? 0 : $min_amount;
+		return $in_cents ? $this->in_cents( $min_amount ) : $min_amount;
+	}
+
+	/**
+	* Returns product type
+	*
+	* @return string
+	*
+	* @since 2.0.31
+	*/
+	public function get_type() {
+		$type = get_post_meta( $this->post_id, 'asp_product_type', true );
+		return $type;
+	}
 
 	private function apply_discount_to_amount( $amount, $in_cents = false ) {
 		if ( $this->coupon ) {

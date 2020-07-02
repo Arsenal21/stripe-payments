@@ -332,7 +332,7 @@ class ASPProductsMetaboxes {
 		$current_hide_amount_input = get_post_meta( $post->ID, 'asp_product_hide_amount_input', true );
 		?>
 <label>
-	<input type="checkbox" name="asp_product_hide_amount_input" value="1" <?php echo esc_attr( ! empty( $current_hide_amount_input ) ? ' checked' : '' ); ?>> <?php esc_html_e( 'Use only variations to construct final product price', 'stripe-payments' ); ?>
+	<input type="checkbox" name="asp_product_hide_amount_input" value="1" <?php echo esc_attr( ! empty( $current_hide_amount_input ) ? ' checked' : '' ); ?>> <?php esc_html_e( 'Use variations only to construct final product price', 'stripe-payments' ); ?>
 </label>
 <p class="description">
 		<?php esc_html_e( 'When enabled, the total product price will be calculated by using the variation prices only. Useful if you do not want to have a base price for this product.', 'stripe-payments' ); ?>
@@ -918,6 +918,11 @@ jQuery(document).ready(function($) {
 						// we don't save invalid price
 						return false;
 					}
+				} elseif ( ! empty( $product_type ) && 'one_time' === $product_type && ! $hide_amount_input ) {
+					//price cannot be 0
+					$text = __( '<b>Invalid product price</b>: one-time payment product price cannot be zero.', 'stripe-payments' );
+					AcceptStripePayments_Admin::add_admin_notice( 'error', $text, false );
+					return false;
 				}
 				//price seems to be valid, let's save it
 				update_post_meta( $post_id, 'asp_product_price', $price );

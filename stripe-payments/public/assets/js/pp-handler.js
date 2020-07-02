@@ -614,13 +614,19 @@ function validate_custom_amount() {
 	if (!is_zero_cents(vars.data.currency)) {
 		cAmount = PHP_round(cAmount * 100, 0);
 	}
+
+	if (vars.data.min_amount !== 0 && vars.data.min_amount > cAmount) {
+		showFormInputErr(vars.str.strMinAmount + ' ' + formatMoney(vars.data.min_amount), amountErr, amountInput);
+		return false;
+	}
+
 	if (typeof vars.minAmounts[vars.data.currency] !== 'undefined') {
 		if (vars.minAmounts[vars.data.currency] > cAmount) {
-			showFormInputErr(vars.str.strMinAmount + ' ' + cents_to_amount(vars.minAmounts[vars.data.currency], vars.data.currency), amountErr, amountInput);
+			showFormInputErr(vars.str.strMinAmount + ' ' + formatMoney(vars.minAmounts[vars.data.currency]), amountErr, amountInput);
 			return false;
 		}
 	} else if (50 > cAmount) {
-		showFormInputErr(vars.str.strMinAmount + ' 0.5', amountErr, amountInput);
+		showFormInputErr(vars.str.strMinAmount + ' ' + formatMoney(50), amountErr, amountInput);
 		return false;
 	}
 	amountErr.style.display = 'none';

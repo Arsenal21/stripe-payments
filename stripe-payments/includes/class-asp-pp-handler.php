@@ -278,6 +278,8 @@ class ASP_PP_Handler {
 
 		$data['item_price'] = $this->item->get_price( true );
 
+		$data['min_amount'] = $this->item->get_min_amount( true );
+
 		$data['tax']      = $this->item->get_tax();
 		$data['shipping'] = $this->item->get_shipping( true );
 		$data['descr']    = $this->item->get_description();
@@ -536,6 +538,15 @@ class ASP_PP_Handler {
 				$out['err'] = sprintf( $msg, $stock_items );
 				wp_send_json( $out );
 			}
+		}
+
+		$min_amount = $item->get_min_amount( true );
+		$prod_type  = $item->get_type();
+
+		if ( 'donation' === $prod_type && 0 !== $min_amount && $min_amount > $amount ) {
+			$msg        = apply_filters( 'asp_customize_text_msg', __( 'Minimum amount is', 'stripe-payments' ), 'min_amount_is' );
+			$out['err'] = $msg . ' ' . ASP_Utils::formatted_price( $min_amount, $curr, true );
+			wp_send_json( $out );
 		}
 
 		do_action( 'asp_ng_product_mode_keys', $product_id );
