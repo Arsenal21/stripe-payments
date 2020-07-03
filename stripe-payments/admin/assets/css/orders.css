@@ -39,3 +39,12 @@ th.column-title {
 .asp-order-actions-cont {
     padding-top: 5px;
 }
+
+.asp-order-event-date {
+    font-size: 90%;
+    float: right;
+}
+
+.asp-order-event-header {
+    margin-bottom: 5px;
+}

@@ -16,6 +16,11 @@ class ASPOrder {
 	public function __construct() {
 		self::$instance = $this;
 
+		if ( is_admin() ) {
+			//products meta boxes handler
+			require_once WP_ASP_PLUGIN_PATH . 'admin/includes/class-asp-admin-order-meta-boxes.php';
+		}
+
 		$this->AcceptStripePayments = AcceptStripePayments::get_instance();
 	}
 
