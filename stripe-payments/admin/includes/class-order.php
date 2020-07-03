@@ -123,19 +123,26 @@ class ASPOrder {
 					}
 				} else {
 					//we have status set
-					echo sprintf( $this->order_status_tpl, ' ' . $status, self::get_status_str( $status ) );
-					if ( 'authorized' === $status ) {
-						$action_nonce = wp_create_nonce( 'asp-order-actions-' . $post_id );
-						echo '<div class="asp-order-actions-cont">';
-						echo sprintf( '<a class="asp-order-action" data-action="confirm" href="#" data-order-id="%d" data-nonce="%s">' . __( 'Capture', 'stripe-payments' ) . '</a> | ', $post_id, $action_nonce );
-						echo sprintf( '<a class= "asp-order-action" data-action="cancel" style="color:#a00;" href="#" data-order-id="%d" data-nonce="%s">' . __( 'Cancel', 'stripe-payments' ) . '</a>', $post_id, $action_nonce );
-						echo '</div>';
-					}
-					if ( 'error' === $status ) {
-						$order_events = get_post_meta( $post_id, 'asp_order_events', false );
-						if ( ! empty( $order_events ) && is_array( $order_events ) ) {
-							echo '<br>'.end( $order_events[0] )['comment'];
-						}
+					switch ( $status ) {
+						case 'authorized':
+							echo sprintf( $this->order_status_tpl, ' ' . $status, self::get_status_str( $status ) );
+							$action_nonce = wp_create_nonce( 'asp-order-actions-' . $post_id );
+							echo '<div class="asp-order-actions-cont">';
+							echo sprintf( '<a class="asp-order-action" data-action="confirm" href="#" data-order-id="%d" data-nonce="%s">' . __( 'Capture', 'stripe-payments' ) . '</a> | ', $post_id, $action_nonce );
+							echo sprintf( '<a class= "asp-order-action" data-action="cancel" style="color:#a00;" href="#" data-order-id="%d" data-nonce="%s">' . __( 'Cancel', 'stripe-payments' ) . '</a>', $post_id, $action_nonce );
+							echo '</div>';
+							break;
+						case 'error':
+							$order_events = get_post_meta( $post_id, 'asp_order_events', false );
+							if ( ! empty( $order_events ) && is_array( $order_events ) ) {
+								echo sprintf( '<span class="asp-order-status%s" data-balloon-length="medium" data-balloon-pos="up" aria-label="%s">%s</span>', ' ' . $status, end( $order_events[0] )['comment'], self::get_status_str( $status ) );
+							} else {
+								echo sprintf( $this->order_status_tpl, ' ' . $status, self::get_status_str( $status ) );
+							}
+							break;
+						default:
+							echo sprintf( $this->order_status_tpl, ' ' . $status, self::get_status_str( $status ) );
+							break;
 					}
 				}
 				break;

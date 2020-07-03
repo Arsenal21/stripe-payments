@@ -111,6 +111,8 @@ class AcceptStripePayments_Admin {
 					wp_register_style( 'asp-admin-orders-styles', WP_ASP_PLUGIN_URL . '/admin/assets/css/orders.css', array(), WP_ASP_PLUGIN_VERSION );
 					wp_enqueue_style( 'asp-admin-orders-styles' );
 
+					wp_register_style( 'asp-admin-balloon-css', WP_ASP_PLUGIN_URL . '/admin/assets/css/balloon.min.css', array(), WP_ASP_PLUGIN_VERSION );
+					wp_enqueue_style( 'asp-admin-balloon-css' );
 				}
 				break;
 		}
