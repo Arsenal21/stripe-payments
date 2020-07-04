@@ -1,4 +1,15 @@
 /* eslint-disable no-undef */
+window.onpopstateEventDisable = false;
+window.isPopstateEvent = true;
+
+var closeBtn = document.getElementById('modal-close-btn');
+closeBtn.addEventListener('click', function () {
+	window.history.go(-1);
+	history.replaceState(null, document.title, window.location.pathname + window.location.search);
+});
+
+popstateAttachEvent();
+
 var errorCont = document.getElementById('global-error');
 if (vars.fatal_error) {
 	showPopup();
@@ -11,21 +22,10 @@ try {
 	showPopup();
 	errorCont.innerHTML = error;
 	errorCont.style.display = 'block';
-	jQuery('#payment-form').hide();
+	document.getElementById('payment-form').style.display = 'none';
 	throw new Error(error);
 }
 vars.data.temp = [];
-
-window.onpopstateEventDisable = false;
-window.isPopstateEvent = true;
-
-var closeBtn = document.getElementById('modal-close-btn');
-closeBtn.addEventListener('click', function () {
-	window.history.go(-1);
-	history.replaceState(null, document.title, window.location.pathname + window.location.search);
-});
-
-popstateAttachEvent();
 
 if (vars.data.amount_variable && vars.data.hide_amount_input !== '1') {
 	var amountInput = document.getElementById('amount');
@@ -482,8 +482,13 @@ function showFormInputErr(msg, el, inp) {
 }
 
 function showPopup() {
-	jQuery('#global-spinner').hide();
-	jQuery('#Aligner-item').addClass('popup-show').hide().fadeIn();
+	if (typeof jQuery !== "undefined") {
+		jQuery('#global-spinner').hide();
+		jQuery('#Aligner-item').addClass('popup-show').hide().fadeIn();
+	} else {
+		document.getElementById('global-spinner').style.display = 'none';
+		document.getElementById('Aligner-item').classList.add('popup-show');
+	}
 }
 
 function smokeScreen(show) {
