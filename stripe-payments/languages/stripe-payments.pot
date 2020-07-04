@@ -2,15 +2,15 @@
 # This file is distributed under the same license as the Stripe Payments plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Stripe Payments 2.0.31t7\n"
+"Project-Id-Version: Stripe Payments 2.0.31t8\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/stripe-payments\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2020-07-04T17:13:10+03:00\n"
-"PO-Revision-Date: 2020-07-04T17:13:10+03:00\n"
+"POT-Creation-Date: 2020-07-04T17:44:51+03:00\n"
+"PO-Revision-Date: 2020-07-04T17:44:51+03:00\n"
 "X-Generator: WP-CLI 2.0.1\n"
 "X-Domain: stripe-payments\n"
 
