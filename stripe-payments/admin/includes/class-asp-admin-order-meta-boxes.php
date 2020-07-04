@@ -29,17 +29,18 @@ class ASP_Admin_Order_Meta_Boxes {
 					$event['comment'] = __( 'Payment completed.', 'stripe-payments' );
 				}
 				echo sprintf(
-					'<div class="asp-order-event-cont">
+					'<div class="asp-order-event-cont%s">
 					<div class="asp-order-event-header">
 					<span class="asp-order-event-status">%s</span>
 					<span class="asp-order-event-date" title="%s">%s</span>
 					</div>
 					<div class="asp-order-event-comment">%s</div>
 					</div>',
+					' os-' . $event['status'],
 					ASPOrder::get_status_str( $event['status'] ),
 					gmdate( 'Y-m-d H:i:s', $event['date'] ),
 					gmdate( 'M d H:i', $event['date'] ),
-					$event['comment'],
+					$event['comment']
 				);
 				if ( count( $order_events ) !== $i ) {
 					echo '<hr>';

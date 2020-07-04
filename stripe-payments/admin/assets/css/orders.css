@@ -17,22 +17,22 @@ th.column-title {
     border-radius: 5px;
 }
 
-.asp-order-status.paid {
+.asp-order-status.paid, .os-paid {
     background-color: #b6e4b6;
 }
 
-.asp-order-status.authorized {
+.asp-order-status.authorized, .os-authorized {
     background-color: #b6dee4;
 }
 
-.asp-order-status.canceled {
+.asp-order-status.canceled, .os-canceled {
     background-color: #e4d4b6;
 }
 
-.asp-order-status.incomplete {
+.asp-order-status.incomplete, .os-incomplete {
     background-color: #dedede;
 }
-.asp-order-status.error {
+.asp-order-status.error, .os-error {
     background-color: #ffa5a5;
 }
 
@@ -47,4 +47,9 @@ th.column-title {
 
 .asp-order-event-header {
     margin-bottom: 5px;
+}
+
+.asp-order-event-cont {
+    border-radius: 5px;
+    padding: 10px;
 }
