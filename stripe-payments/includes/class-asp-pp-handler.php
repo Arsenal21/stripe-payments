@@ -549,6 +549,8 @@ class ASP_PP_Handler {
 			wp_send_json( $out );
 		}
 
+		do_action( 'asp_ng_before_token_request', $item );
+
 		do_action( 'asp_ng_product_mode_keys', $product_id );
 
 		try {
