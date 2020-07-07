@@ -97,6 +97,8 @@ class ASP_Process_IPN_NG {
 			$this->post_data = $post_data;
 		}
 
+		do_action( 'asp_ng_before_payment_processing', $post_data );
+
 		$this->sess = ASP_Session::get_instance();
 
 		$post_thankyou_page_url = $this->get_post_var( 'asp_thankyou_page_url', FILTER_SANITIZE_STRING );
