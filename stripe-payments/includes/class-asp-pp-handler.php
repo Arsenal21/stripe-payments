@@ -331,6 +331,10 @@ class ASP_PP_Handler {
 
 		$data = apply_filters( 'asp_ng_pp_data_ready', $data, array( 'product_id' => $product_id ) ); //phpcs:ignore
 
+		$sess = ASP_Session::get_instance();
+
+		$sess->set_transient_data( 'popup_key_' . $data['button_key'], wp_create_nonce( 'asp_popup_' . $product_id ) );
+
 		// Authorize Only
 		$auth_only = get_post_meta( $product_id, 'asp_product_authorize_only', true );
 
@@ -529,6 +533,15 @@ class ASP_PP_Handler {
 			wp_send_json( $out );
 		}
 
+		$sess = ASP_Session::get_instance();
+
+		$key = $sess->get_transient_data( 'popup_key_' . $item->get_button_key() );
+
+		if ( ! wp_verify_nonce( $key, 'asp_popup_' . $product_id ) ) {
+			$out['err'] = __( 'Invalid security token.', 'stripe-payments' );
+			wp_send_json( $out );
+		}
+
 		if ( $item->stock_control_enabled() ) {
 			$stock_items        = $item->get_stock_items();
 			$out['stock_items'] = $stock_items;
@@ -710,12 +723,9 @@ class ASP_PP_Handler {
 				if ( ! $pi_id ) {
 					//create new incomplete order for this payment
 					$order->create( $product_id, $pi_id );
-					ASP_Debug_Logger::log( $order->get_id() );
 				} else {
 					//find order for this PaymentIntent
-					if ( false !== $order->find( 'pi_id', $pi_id ) ) {
-						ASP_Debug_Logger::log( $order->get_id() );
-					}
+					$order->find( 'pi_id', $pi_id );
 				}
 			}
 
