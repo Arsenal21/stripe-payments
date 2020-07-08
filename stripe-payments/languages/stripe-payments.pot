@@ -2,15 +2,15 @@
 # This file is distributed under the same license as the Stripe Payments plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Stripe Payments 2.0.31t9\n"
+"Project-Id-Version: Stripe Payments 2.0.31t10\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/stripe-payments\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2020-07-07T22:05:26+03:00\n"
-"PO-Revision-Date: 2020-07-07T22:05:26+03:00\n"
+"POT-Creation-Date: 2020-07-08T20:20:14+03:00\n"
+"PO-Revision-Date: 2020-07-08T20:20:14+03:00\n"
 "X-Generator: WP-CLI 2.0.1\n"
 "X-Domain: stripe-payments\n"
 
@@ -1048,13 +1048,13 @@ msgstr ""
 
 #: admin/includes/class-products.php:40
 #: admin/includes/class-products.php:86
-#: admin/includes/class-order.php:39
+#: admin/includes/class-order.php:42
 msgid "Not found"
 msgstr ""
 
 #: admin/includes/class-products.php:41
 #: admin/includes/class-products.php:87
-#: admin/includes/class-order.php:40
+#: admin/includes/class-order.php:43
 msgid "Not found in Trash"
 msgstr ""
 
@@ -1200,7 +1200,7 @@ msgstr ""
 
 #: admin/includes/class-products-meta-boxes.php:33
 #: includes/shortcodes/class-shortcode-asp.php:178
-#: includes/class-asp-pp-handler.php:791
+#: includes/class-asp-pp-handler.php:789
 msgid "Custom Field"
 msgstr ""
 
@@ -1721,111 +1721,111 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
-#: admin/includes/class-order.php:29
+#: admin/includes/class-order.php:32
 msgctxt "Post Type General Name"
 msgid "Orders"
 msgstr ""
 
-#: admin/includes/class-order.php:30
+#: admin/includes/class-order.php:33
 msgctxt "Post Type Singular Name"
 msgid "Order"
 msgstr ""
 
-#: admin/includes/class-order.php:31
+#: admin/includes/class-order.php:34
 msgid "Parent Order:"
 msgstr ""
 
-#: admin/includes/class-order.php:32
+#: admin/includes/class-order.php:35
 msgid "Orders"
 msgstr ""
 
-#: admin/includes/class-order.php:33
+#: admin/includes/class-order.php:36
 msgid "View Order"
 msgstr ""
 
-#: admin/includes/class-order.php:34
+#: admin/includes/class-order.php:37
 msgid "Add New Order"
 msgstr ""
 
-#: admin/includes/class-order.php:35
+#: admin/includes/class-order.php:38
 msgid "Add New"
 msgstr ""
 
-#: admin/includes/class-order.php:36
+#: admin/includes/class-order.php:39
 msgid "Edit Order"
 msgstr ""
 
-#: admin/includes/class-order.php:37
+#: admin/includes/class-order.php:40
 msgid "Update Order"
 msgstr ""
 
-#: admin/includes/class-order.php:38
+#: admin/includes/class-order.php:41
 msgid "Search Order"
 msgstr ""
 
-#: admin/includes/class-order.php:43
+#: admin/includes/class-order.php:46
 msgid "orders"
 msgstr ""
 
-#: admin/includes/class-order.php:44
+#: admin/includes/class-order.php:47
 msgid "Stripe Orders"
 msgstr ""
 
-#: admin/includes/class-order.php:97
+#: admin/includes/class-order.php:137
 #: public/views/templates/default/payment-popup.php:290
 #: public/views/templates/default/payment-popup.php:324
 msgid "Total"
 msgstr ""
 
-#: admin/includes/class-order.php:98
+#: admin/includes/class-order.php:138
 msgid "Status"
 msgstr ""
 
-#: admin/includes/class-order.php:115
-#: admin/includes/class-order.php:350
+#: admin/includes/class-order.php:155
+#: admin/includes/class-order.php:390
 msgid "Paid"
 msgstr ""
 
-#: admin/includes/class-order.php:119
-#: admin/includes/class-order.php:351
+#: admin/includes/class-order.php:159
+#: admin/includes/class-order.php:391
 msgid "Authorized"
 msgstr ""
 
-#: admin/includes/class-order.php:122
-#: admin/includes/class-order.php:136
+#: admin/includes/class-order.php:162
+#: admin/includes/class-order.php:176
 msgid "Capture"
 msgstr ""
 
-#: admin/includes/class-order.php:123
-#: admin/includes/class-order.php:137
+#: admin/includes/class-order.php:163
+#: admin/includes/class-order.php:177
 msgid "Cancel"
 msgstr ""
 
-#: admin/includes/class-order.php:126
-#: admin/includes/class-order.php:352
+#: admin/includes/class-order.php:166
+#: admin/includes/class-order.php:392
 msgid "Canceled"
 msgstr ""
 
-#: admin/includes/class-order.php:171
-#: admin/includes/class-order.php:262
+#: admin/includes/class-order.php:211
+#: admin/includes/class-order.php:302
 msgid "Invalid order ID"
 msgstr ""
 
-#: admin/includes/class-order.php:181
-#: admin/includes/class-order.php:272
+#: admin/includes/class-order.php:221
+#: admin/includes/class-order.php:312
 msgid "Nonce check failed"
 msgstr ""
 
-#: admin/includes/class-order.php:223
-#: admin/includes/class-order.php:314
+#: admin/includes/class-order.php:263
+#: admin/includes/class-order.php:354
 msgid "Funds already captured or refunded"
 msgstr ""
 
-#: admin/includes/class-order.php:349
+#: admin/includes/class-order.php:389
 msgid "Incomplete"
 msgstr ""
 
-#: admin/includes/class-order.php:353
+#: admin/includes/class-order.php:393
 msgid "Error"
 msgstr ""
 
@@ -2234,9 +2234,9 @@ msgstr ""
 
 #: admin/views/admin.php:131
 #: includes/class-asp-pp-handler.php:532
-#: includes/class-asp-pp-handler.php:752
-#: includes/class-asp-pp-handler.php:756
-#: includes/class-asp-pp-handler.php:867
+#: includes/class-asp-pp-handler.php:750
+#: includes/class-asp-pp-handler.php:754
+#: includes/class-asp-pp-handler.php:865
 msgid "Error occurred:"
 msgstr ""
 
@@ -2393,7 +2393,7 @@ msgstr ""
 
 #: includes/shortcodes/class-shortcode-asp.php:98
 #: includes/class-asp-pp-handler.php:474
-#: includes/class-asp-pp-handler.php:560
+#: includes/class-asp-pp-handler.php:558
 msgid "Minimum amount is"
 msgstr ""
 
@@ -2415,7 +2415,7 @@ msgstr ""
 #. translators: %d is number of items in stock
 #: includes/shortcodes/class-shortcode-asp.php:102
 #: includes/class-asp-pp-handler.php:479
-#: includes/class-asp-pp-handler.php:550
+#: includes/class-asp-pp-handler.php:548
 msgid "You cannot order more items than available: %d"
 msgstr ""
 
@@ -2627,12 +2627,12 @@ msgstr ""
 msgid "Currency not supported for this payment method."
 msgstr ""
 
-#: includes/class-asp-pp-handler.php:541
+#: includes/class-asp-pp-handler.php:539
 msgid "Invalid security token."
 msgstr ""
 
-#: includes/class-asp-pp-handler.php:579
-#: includes/class-asp-pp-handler.php:582
+#: includes/class-asp-pp-handler.php:577
+#: includes/class-asp-pp-handler.php:580
 msgid "Stripe API error occurred:"
 msgstr ""
 
