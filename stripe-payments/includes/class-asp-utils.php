@@ -848,4 +848,22 @@ class ASP_Utils {
 		return false;
 	}
 
+	public static function get_visitor_token( $str = '' ) {
+		$ip = '';
+		if ( array_key_exists( 'HTTP_X_FORWARDED_FOR', $_SERVER ) && ! empty( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) {
+			if ( strpos( $_SERVER['HTTP_X_FORWARDED_FOR'], ',' ) > 0 ) {
+				$addr = explode( ',', $_SERVER['HTTP_X_FORWARDED_FOR'] );
+				$ip   = trim( $addr[0] );
+			} else {
+				$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+			}
+		} else {
+			$ip = $_SERVER['REMOTE_ADDR'];
+		}
+
+		$ua = ! empty( $_SERVER['HTTP_USER_AGENT'] ) ? $_SERVER['HTTP_USER_AGENT'] : '';
+
+		return md5( $ip . $ua . $str );
+	}
+
 }

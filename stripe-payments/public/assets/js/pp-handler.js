@@ -817,6 +817,7 @@ function handlePayment() {
 		if (shippingDetails) {
 			reqStr = reqStr + '&shipping_details=' + JSON.stringify(shippingDetails);
 		}
+		reqStr += '&token=' + vars.data.visitor_token;
 		vars.data.csRegenParams = reqStr;
 		doAddonAction('csBeforeRegenParams');
 		console.log('Regen CS');
