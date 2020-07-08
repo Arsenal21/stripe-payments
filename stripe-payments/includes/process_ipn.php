@@ -379,7 +379,7 @@ class AcceptStripePayments_Process_IPN {
 
 		ASP_Debug_Logger::log( 'Getting API keys and trying to create a charge.' );
 
-		ASPMain::load_stripe_lib();
+		ASP_Utils::load_stripe_lib();
 
 		if ( $data['is_live'] ) {
 			$sec_key = $asp_class->APISecKeyLive;
@@ -771,6 +771,34 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post, $seller_email = fal
 		$shipping = AcceptStripePayments::formatted_price( $post['shipping'], $post['currency_code'] );
 	}
 
+	if ( 'charge' !== $post['charge']->object ) {
+		//this is most likely subs product
+		$ipn = ASP_Process_IPN_NG::get_instance();
+		if ( isset( $ipn->p_data ) ) {
+			$obj = $ipn->p_data->get_obj();
+
+			if ( isset( $obj->latest_invoice )
+			&& isset( $obj->latest_invoice->charge )
+			&& is_object( $obj->latest_invoice->charge ) ) {
+				$post['charge'] = $obj->latest_invoice->charge;
+			}
+		}
+	}
+
+	$pm_type    = '';
+	$card_brand = '';
+	$card_last4 = '';
+
+	if ( 'charge' === $post['charge']->object ) {
+
+		$pm_type = $post['charge']->payment_method_details->type;
+
+		if ( isset( $post['charge']->payment_method_details->card ) ) {
+			$card_brand = $post['charge']->payment_method_details->card->brand;
+			$card_last4 = $post['charge']->payment_method_details->card->last4;
+		}
+	}
+
 	$tags = array(
 		'{item_name}',
 		'{item_quantity}',
@@ -792,6 +820,9 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post, $seller_email = fal
 		'{billing_address}',
 		'{custom_field}',
 		'{coupon_code}',
+		'{card_brand}',
+		'{card_last_4}',
+		'{payment_method}',
 	);
 	$vals = array(
 		$post['item_name'],
@@ -814,6 +845,9 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post, $seller_email = fal
 		isset( $post['billing_address'] ) ? $post['billing_address'] : '',
 		$custom_field,
 		! empty( $post['coupon_code'] ) ? $post['coupon_code'] : '',
+		$card_brand,
+		$card_last4,
+		$pm_type,
 	);
 
 	//let's combine tags and vals into one array so we can apply filters on it

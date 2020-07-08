@@ -5,6 +5,8 @@ class ASP_PP_Handler {
 	protected $uniq_id;
 	protected $asp_main;
 
+	private $auth_not_supported = array( 'FPX', 'ALIPAY', 'IDEAL', 'SOFORT' );
+
 	public function __construct() {
 		$action = filter_input( INPUT_GET, 'asp_action', FILTER_SANITIZE_STRING );
 		if ( 'show_pp' === $action ) {
@@ -14,12 +16,12 @@ class ASP_PP_Handler {
 				return;
 			}
 			$this->asp_main = AcceptStripePayments::get_instance();
-			add_action( 'plugins_loaded', array( $this, 'showpp' ), 2147483647 );
+			add_action( 'init', array( $this, 'showpp' ), 2147483647 );
 		}
 		if ( wp_doing_ajax() ) {
 			//          ASP_Utils::set_custom_lang_if_needed();
 			$this->asp_main = AcceptStripePayments::get_instance();
-			add_action( 'plugins_loaded', array( $this, 'add_ajax_handlers' ), 2147483647 );
+			add_action( 'init', array( $this, 'add_ajax_handlers' ), 2147483647 );
 			add_action( 'wp_ajax_asp_pp_check_coupon', array( $this, 'handle_check_coupon' ) );
 			add_action( 'wp_ajax_nopriv_asp_pp_check_coupon', array( $this, 'handle_check_coupon' ) );
 		}
@@ -31,6 +33,9 @@ class ASP_PP_Handler {
 
 		add_action( 'wp_ajax_asp_pp_save_form_data', array( $this, 'save_form_data' ) );
 		add_action( 'wp_ajax_nopriv_asp_pp_save_form_data', array( $this, 'save_form_data' ) );
+
+		add_action( 'wp_ajax_asp_pp_payment_error', array( $this, 'pp_payment_error' ) );
+		add_action( 'wp_ajax_nopriv_asp_pp_payment_error', array( $this, 'pp_payment_error' ) );
 	}
 
 	public function showpp() {
@@ -273,6 +278,8 @@ class ASP_PP_Handler {
 
 		$data['item_price'] = $this->item->get_price( true );
 
+		$data['min_amount'] = $this->item->get_min_amount( true );
+
 		$data['tax']      = $this->item->get_tax();
 		$data['shipping'] = $this->item->get_shipping( true );
 		$data['descr']    = $this->item->get_description();
@@ -323,6 +330,28 @@ class ASP_PP_Handler {
 		$data = apply_filters( 'asp-button-output-data-ready', $data, array( 'product_id' => $product_id ) ); //phpcs:ignore
 
 		$data = apply_filters( 'asp_ng_pp_data_ready', $data, array( 'product_id' => $product_id ) ); //phpcs:ignore
+
+		$token = ASP_Utils::get_visitor_token( $product_id );
+
+		$data['visitor_token'] = $token;
+
+		// Authorize Only
+		$auth_only = get_post_meta( $product_id, 'asp_product_authorize_only', true );
+
+		if ( $auth_only ) {
+			//disable payment methods that do not support placing a hold on card
+			foreach ( $data['addons'] as $key => $addon ) {
+				if ( in_array( strtoupper( $addon['name'] ), $this->auth_not_supported, true ) ) {
+					unset( $data['addons'][ $key ] );
+				}
+			}
+
+			foreach ( $data['payment_methods'] as $key => $pm ) {
+				if ( in_array( strtoupper( $pm['id'] ), $this->auth_not_supported, true ) ) {
+					unset( $data['payment_methods'][ $key ] );
+				}
+			}
+		}
 
 		if ( empty( $plan_id ) ) {
 			$this->item->set_currency( $data['currency'] );
@@ -399,9 +428,15 @@ class ASP_PP_Handler {
 		$pay_btn_text = $this->asp_main->get_setting( 'popup_button_text' );
 
 		if ( empty( $pay_btn_text ) ) {
+			// translators: %s is not a placeholder
 			$pay_btn_text = __( 'Pay %s', 'stripe-payments' );
 		} else {
 			$pay_btn_text = __( $pay_btn_text, 'stripe-payments' ); //phpcs:ignore
+		}
+
+		if ( $auth_only ) {
+			// translators: %s is not a placeholder
+			$pay_btn_text = __( 'Authorize %s', 'stripe-payments' );
 		}
 
 		if ( isset( $data['is_trial'] ) && $data['is_trial'] ) {
@@ -498,6 +533,13 @@ class ASP_PP_Handler {
 			wp_send_json( $out );
 		}
 
+		$token   = filter_input( INPUT_POST, 'token', FILTER_SANITIZE_STRING );
+		$g_token = ASP_Utils::get_visitor_token( $product_id );
+		if ( empty( $token ) || $g_token !== $token ) {
+			$out['err'] = __( 'Invalid security token.', 'stripe-payments' );
+			wp_send_json( $out );
+		}
+
 		if ( $item->stock_control_enabled() ) {
 			$stock_items        = $item->get_stock_items();
 			$out['stock_items'] = $stock_items;
@@ -509,10 +551,21 @@ class ASP_PP_Handler {
 			}
 		}
 
+		$min_amount = $item->get_min_amount( true );
+		$prod_type  = $item->get_type();
+
+		if ( 'donation' === $prod_type && 0 !== $min_amount && $min_amount > $amount ) {
+			$msg        = apply_filters( 'asp_customize_text_msg', __( 'Minimum amount is', 'stripe-payments' ), 'min_amount_is' );
+			$out['err'] = $msg . ' ' . ASP_Utils::formatted_price( $min_amount, $curr, true );
+			wp_send_json( $out );
+		}
+
+		do_action( 'asp_ng_before_token_request', $item );
+
 		do_action( 'asp_ng_product_mode_keys', $product_id );
 
 		try {
-			ASPMain::load_stripe_lib();
+			ASP_Utils::load_stripe_lib();
 			$key = $this->asp_main->is_live ? $this->asp_main->APISecKey : $this->asp_main->APISecKeyTest;
 			\Stripe\Stripe::setApiKey( $key );
 
@@ -661,6 +714,19 @@ class ASP_PP_Handler {
 				}
 			}
 
+			$order = new ASP_Order_Item();
+
+			if ( $order->can_create( $product_id ) ) {
+
+				if ( ! $pi_id ) {
+					//create new incomplete order for this payment
+					$order->create( $product_id, $pi_id );
+				} else {
+					//find order for this PaymentIntent
+					$order->find( 'pi_id', $pi_id );
+				}
+			}
+
 			$pi_params = apply_filters( 'asp_ng_before_pi_create_update', $pi_params );
 			if ( $pi_id ) {
 				if ( ASP_Utils::use_internal_api() ) {
@@ -687,6 +753,10 @@ class ASP_PP_Handler {
 			$out['shipping'] = wp_json_encode( $shipping );
 			$out['err']      = __( 'Error occurred:', 'stripe-payments' ) . ' ' . $e->getMessage();
 			wp_send_json( $out );
+		}
+
+		if ( $order->get_id() ) {
+			update_post_meta( $order->get_id(), 'pi_id', $intent->id );
 		}
 
 		$out['success']      = true;
@@ -756,6 +826,27 @@ class ASP_PP_Handler {
 			$output      .= $this->tpl_cf;
 			$this->tpl_cf = '';
 		return $output;
+	}
+
+	public function pp_payment_error() {
+		$pi_id   = filter_input( INPUT_POST, 'pi_id', FILTER_SANITIZE_STRING );
+		$err_msg = filter_input( INPUT_POST, 'err_msg', FILTER_SANITIZE_STRING );
+
+		$out = array( 'success' => false );
+
+		if ( empty( $pi_id ) || empty( $err_msg ) ) {
+			wp_send_json( $out );
+		}
+
+		$order = new ASP_Order_Item();
+		if ( false === $order->find( 'pi_id', $pi_id ) ) {
+			wp_send_json( $out );
+		}
+
+		$order->change_status( 'error', $err_msg );
+
+		$out['success'] = true;
+		wp_send_json( $out );
 	}
 
 	public function save_form_data() {

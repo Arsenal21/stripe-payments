@@ -569,6 +569,7 @@ class ASP_Utils {
 			'AUD' => array( __( 'Australian Dollars (AUD)', 'stripe-payments' ), 'AU$' ),
 			'ARS' => array( __( 'Argentine Peso (ARS)', 'stripe-payments' ), 'ARS' ),
 			'BAM' => array( __( 'Bosnia and Herzegovina Convertible Mark (BAM)', 'stripe-payments' ), 'KM' ),
+			'BGN' => array( __( 'Bulgarian Lev (BGN)', 'stripe-payments' ), 'Лв.' ),
 			'BRL' => array( __( 'Brazilian Real (BRL)', 'stripe-payments' ), 'R$' ),
 			'CAD' => array( __( 'Canadian Dollars (CAD)', 'stripe-payments' ), 'CA$' ),
 			'CLP' => array( __( 'Chilean Peso (CLP)', 'stripe-payments' ), 'CLP' ),
@@ -845,6 +846,24 @@ class ASP_Utils {
 			return true;
 		}
 		return false;
+	}
+
+	public static function get_visitor_token( $str = '' ) {
+		$ip = '';
+		if ( array_key_exists( 'HTTP_X_FORWARDED_FOR', $_SERVER ) && ! empty( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) {
+			if ( strpos( $_SERVER['HTTP_X_FORWARDED_FOR'], ',' ) > 0 ) {
+				$addr = explode( ',', $_SERVER['HTTP_X_FORWARDED_FOR'] );
+				$ip   = trim( $addr[0] );
+			} else {
+				$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+			}
+		} else {
+			$ip = $_SERVER['REMOTE_ADDR'];
+		}
+
+		$ua = ! empty( $_SERVER['HTTP_USER_AGENT'] ) ? $_SERVER['HTTP_USER_AGENT'] : '';
+
+		return md5( $ip . $ua . $str );
 	}
 
 }

@@ -1,4 +1,15 @@
 /* eslint-disable no-undef */
+window.onpopstateEventDisable = false;
+window.isPopstateEvent = true;
+
+var closeBtn = document.getElementById('modal-close-btn');
+closeBtn.addEventListener('click', function () {
+	window.history.go(-1);
+	history.replaceState(null, document.title, window.location.pathname + window.location.search);
+});
+
+popstateAttachEvent();
+
 var errorCont = document.getElementById('global-error');
 if (vars.fatal_error) {
 	showPopup();
@@ -11,7 +22,7 @@ try {
 	showPopup();
 	errorCont.innerHTML = error;
 	errorCont.style.display = 'block';
-	jQuery('#payment-form').hide();
+	document.getElementById('payment-form').style.display = 'none';
 	throw new Error(error);
 }
 vars.data.temp = [];
@@ -471,8 +482,13 @@ function showFormInputErr(msg, el, inp) {
 }
 
 function showPopup() {
-	jQuery('#global-spinner').hide();
-	jQuery('#Aligner-item').addClass('popup-show').hide().fadeIn();
+	if (typeof jQuery !== "undefined") {
+		jQuery('#global-spinner').hide();
+		jQuery('#Aligner-item').addClass('popup-show').hide().fadeIn();
+	} else {
+		document.getElementById('global-spinner').style.display = 'none';
+		document.getElementById('Aligner-item').classList.add('popup-show');
+	}
 }
 
 function smokeScreen(show) {
@@ -492,8 +508,8 @@ function formatMoney(n) {
 	}
 	n = cents_to_amount(n, vars.data.currency);
 	var c = isNaN(c = Math.abs(vars.currencyFormat.c)) ? 2 : vars.currencyFormat.c,
-		d = d == undefined ? '.' : vars.currencyFormat.d,
-		t = t == undefined ? ',' : vars.currencyFormat.t,
+		d = vars.currencyFormat.d,
+		t = vars.currencyFormat.t,
 		s = n < 0 ? '-' : '',
 		i = String(parseInt(n = Math.abs(Number(n) || 0).toFixed(c))),
 		j = (j = i.length) > 3 ? j % 3 : 0;
@@ -603,13 +619,19 @@ function validate_custom_amount() {
 	if (!is_zero_cents(vars.data.currency)) {
 		cAmount = PHP_round(cAmount * 100, 0);
 	}
+
+	if (vars.data.min_amount !== 0 && vars.data.min_amount > cAmount) {
+		showFormInputErr(vars.str.strMinAmount + ' ' + formatMoney(vars.data.min_amount), amountErr, amountInput);
+		return false;
+	}
+
 	if (typeof vars.minAmounts[vars.data.currency] !== 'undefined') {
 		if (vars.minAmounts[vars.data.currency] > cAmount) {
-			showFormInputErr(vars.str.strMinAmount + ' ' + cents_to_amount(vars.minAmounts[vars.data.currency], vars.data.currency), amountErr, amountInput);
+			showFormInputErr(vars.str.strMinAmount + ' ' + formatMoney(vars.minAmounts[vars.data.currency]), amountErr, amountInput);
 			return false;
 		}
 	} else if (50 > cAmount) {
-		showFormInputErr(vars.str.strMinAmount + ' 0.5', amountErr, amountInput);
+		showFormInputErr(vars.str.strMinAmount + ' ' + formatMoney(50), amountErr, amountInput);
 		return false;
 	}
 	amountErr.style.display = 'none';
@@ -795,6 +817,7 @@ function handlePayment() {
 		if (shippingDetails) {
 			reqStr = reqStr + '&shipping_details=' + JSON.stringify(shippingDetails);
 		}
+		reqStr += '&token=' + vars.data.visitor_token;
 		vars.data.csRegenParams = reqStr;
 		doAddonAction('csBeforeRegenParams');
 		console.log('Regen CS');
@@ -969,6 +992,13 @@ function handlePayment() {
 
 function handleCardPaymentResult(result) {
 	if (result.error) {
+		console.log('Sending error info...');
+		if (vars.data.pi_id) {
+			new ajaxRequest(vars.ajaxURL,
+				'action=asp_pp_payment_error&pi_id=' + vars.data.pi_id + '&err_msg=' + result.error.message,
+				null,
+				null);
+		}
 		submitBtn.disabled = false;
 		errorCont.innerHTML = result.error.message;
 		errorCont.style.display = 'block';
@@ -1094,7 +1124,9 @@ var ajaxRequest = function (URL, reqStr, doneFunc, failFunc) {
 	parent.XMLHttpReq.onreadystatechange = function () {
 		if (parent.XMLHttpReq.readyState === XMLHttpRequest.DONE) {
 			if (parent.XMLHttpReq.status === 200) {
-				parent.doneFunc(parent.XMLHttpReq);
+				if (parent.doneFunc) {
+					parent.doneFunc(parent.XMLHttpReq);
+				}
 			} else {
 				console.log('ajaxRequest failed');
 				console.log(parent.XMLHttpReq);
@@ -1111,3 +1143,27 @@ var ajaxRequest = function (URL, reqStr, doneFunc, failFunc) {
 	parent.XMLHttpReq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 	parent.XMLHttpReq.send(reqStr);
 };
+
+function popstateAttachEvent() {
+	if (typeof history.pushState === "function" && typeof parent.WPASPClosePaymentPopup === "function") {
+		window.onpopstateEventDisable = false;
+		history.pushState('forward', null, '#paymentpopup');
+		window.onpopstate = function () {
+			if (!window.onpopstateEventDisable) {
+				if (typeof parent.WPASPClosePaymentPopup === "function") {
+					window.onpopstateEventDisable = true;
+					this.closeBtn.focus();
+					parent.WPASPClosePaymentPopup();
+				}
+			}
+			else {
+				window.history.go(-1);
+			}
+		}
+	}
+}
+
+function popupDisplayed() {
+	window.onpopstateEventDisable = false;
+	history.pushState('forward', null, '#paymentpopup');
+}

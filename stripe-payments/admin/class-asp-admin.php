@@ -83,9 +83,36 @@ class AcceptStripePayments_Admin {
 			case 'post-new.php':
 				global $post_type;
 				if ( ASPMain::$products_slug === $post_type ) {
-					wp_register_script( 'asp-admin-edit-product-js', WP_ASP_PLUGIN_URL . '/admin/assets/js/edit-product.js', array( 'jquery' ), WP_ASP_PLUGIN_VERSION, true );
 					wp_enqueue_script( 'asp-admin-general-js' );
 					wp_enqueue_style( 'asp-admin-styles' );
+					wp_register_script( 'asp-admin-edit-product-js', WP_ASP_PLUGIN_URL . '/admin/assets/js/edit-product.js', array( 'jquery' ), WP_ASP_PLUGIN_VERSION, true );
+				}
+
+				if ( 'stripe_order' === $post_type ) {
+					wp_enqueue_script( 'asp-admin-general-js' );
+					wp_enqueue_style( 'asp-admin-styles' );
+					//Confirm capturing authorized funds for order #%s
+					wp_register_script( 'asp-admin-orders-js', WP_ASP_PLUGIN_URL . '/admin/assets/js/orders.js', array( 'jquery' ), WP_ASP_PLUGIN_VERSION, true );
+					wp_localize_script(
+						'asp-admin-orders-js',
+						'aspOrdersVars',
+						array(
+							'str' => array(
+								// translators: %s is order ID
+								'confirmCapture' => __( 'Confirm capturing authorized funds for order #%s', 'stripe-payments' ),
+								// translators: %s is order ID
+								'confirmCancel'  => __( 'Confirm cancel authorized funds for order #%s', 'stripe-payments' ),
+								'errorOccurred'  => __( 'Error occurred during request. Please refresh page and try again.', 'stripe-payments' ),
+							),
+						)
+					);
+					wp_enqueue_script( 'asp-admin-orders-js' );
+
+					wp_register_style( 'asp-admin-orders-styles', WP_ASP_PLUGIN_URL . '/admin/assets/css/orders.css', array(), WP_ASP_PLUGIN_VERSION );
+					wp_enqueue_style( 'asp-admin-orders-styles' );
+
+					wp_register_style( 'asp-admin-balloon-css', WP_ASP_PLUGIN_URL . '/admin/assets/css/balloon.min.css', array(), WP_ASP_PLUGIN_VERSION );
+					wp_enqueue_style( 'asp-admin-balloon-css' );
 				}
 				break;
 		}
@@ -1058,7 +1085,16 @@ class AcceptStripePayments_Admin {
 				'desc'  => __( 'If enabled, no transaction info is saved to the orders menu of the plugin. The transaction data will still be available in your Stripe dashboard. Useful if you don\'t want to store purchase and customer data in your site.', 'stripe-payments' ),
 			)
 		);
-
+		add_settings_field(
+			'allowed_currencies',
+			__( 'Allowed Currencies', 'stripe-payments' ),
+			array( &$this, 'settings_field_callback' ),
+			$this->plugin_slug . '-advanced',
+			'AcceptStripePayments-additional-settings',
+			array(
+				'field' => 'allowed_currencies',
+			)
+		);
 		add_settings_field(
 			'pp_additional_css',
 			__( 'Payment Popup Additional CSS', 'stripe-payments' ),
@@ -1324,6 +1360,37 @@ class AcceptStripePayments_Admin {
 			case 'currency_symbol':
 				echo '<input type="text" name="AcceptStripePayments-settings[' . $field . ']" value="" id="wp_asp_curr_symb">';
 				break;
+			case 'allowed_currencies':
+				$all_curr = ASP_Utils::get_currencies();
+				unset( $all_curr[''] );
+				$allowed_curr = empty( $field_value ) ? $all_curr : json_decode( html_entity_decode( $field_value ), true );
+				if ( empty( array_diff_key( $all_curr, $allowed_curr ) ) ) {
+					$allowed = __( 'All', 'stripe-payments' );
+				} else {
+					$allowed = __( 'Selected', 'stripe-payments' );
+				}
+				echo $allowed;
+				echo '<div id="wp-asp-allowed-currencies-cont">';
+				echo '<a href="#" class="wp-asp-toggle toggled-off">' . __( 'Click here to select currencies', 'stripe-payments' ) . '</a>';
+				echo '<div class="wp-asp-allowed-currencies hidden">';
+				echo '<div class="wp-asp-allowed-currencies-buttons-cont">';
+				echo '<button type="button" class="wp-asp-curr-sel-all-btn">' . __( 'Select All', 'stripe-payments' ) . '</button>';
+				echo '<button type="button" class="wp-asp-curr-sel-none-btn">' . __( 'Select None', 'stripe-payments' ) . '</button>';
+				echo '<button type="button" class="wp-asp-curr-sel-invert-btn">' . __( 'Invert Selection', 'stripe-payments' ) . '</button>';
+				echo '</div>';
+				echo '<div class="wp-asp-allowed-currencies-sel">';
+				foreach ( $all_curr as $code => $curr ) {
+					$checked = '';
+					if ( isset( $allowed_curr[ $code ] ) ) {
+						$checked = ' checked';
+					}
+					echo sprintf( '<div><label><input type="checkbox" name="AcceptStripePayments-settings[allowed_currencies][%s]" value="1"%s> %s</label></div>', $code, $checked, $curr[0] );
+				}
+				echo '</div>';
+				echo '</div>';
+				echo '</div>';
+				echo '<p class="description">' . __( 'You can select currencies you want to be available for your customers for variable currencies products.', 'stripe-payments' ) . '</p>';
+				break;
 			case 'price_decimals_num':
 				echo '<input type="number" min="0" step="1" max="5" name="AcceptStripePayments-settings[' . $field . ']" value="' . esc_attr( $field_value ) . '"';
 				break;
@@ -1393,10 +1460,7 @@ class AcceptStripePayments_Admin {
 
 		$output = get_option( 'AcceptStripePayments-settings' );
 
-		// this filter name is a bit invalid, we will slowly replace it with a valid one below
 		$output = apply_filters( 'apm-admin-settings-sanitize-field', $output, $input );
-
-		$output = apply_filters( 'asp-admin-settings-sanitize-field', $output, $input );
 
 		$output ['price_apply_for_input'] = empty( $input['price_apply_for_input'] ) ? 0 : 1;
 
@@ -1491,7 +1555,7 @@ class AcceptStripePayments_Admin {
 		$input['api_secret_key_test']      = sanitize_text_field( $input['api_secret_key_test'] );
 		$input['api_publishable_key_test'] = sanitize_text_field( $input['api_publishable_key_test'] );
 
-		if ( $output['is_live'] != 0 ) {
+		if ( ! empty( $output['is_live'] ) ) {
 			if ( empty( $input['api_secret_key'] ) || empty( $input['api_publishable_key'] ) ) {
 				add_settings_error( 'AcceptStripePayments-settings', 'invalid-credentials', __( 'You must fill Live API credentials for plugin to work correctly.', 'stripe-payments' ) );
 			}
@@ -1539,6 +1603,15 @@ class AcceptStripePayments_Admin {
 			$output['custom_currency_symbols'] = $custom_curr_symb;
 		} else {
 			add_settings_error( 'AcceptStripePayments-settings', 'invalid-currency-code', __( 'You must specify payment currency.', 'stripe-payments' ) );
+		}
+
+		$curr_arr = ASP_Utils::get_currencies();
+		if ( ! empty( $input['allowed_currencies'] ) ) {
+			if ( empty( array_diff_key( $curr_arr, $input['allowed_currencies'] ) ) ) {
+				$output['allowed_currencies'] = false;
+			} else {
+				$output['allowed_currencies'] = is_array( $input['allowed_currencies'] ) ? wp_json_encode( $input['allowed_currencies'] ) : false;
+			}
 		}
 
 		$output['checkout_lang'] = $input['checkout_lang'];
@@ -1606,7 +1679,7 @@ class AcceptStripePayments_Admin {
 		if ( ! empty( $input['price_thousand_sep'] ) ) {
 			$output['price_thousand_sep'] = esc_attr( $input['price_thousand_sep'] );
 		} else {
-			add_settings_error( 'AcceptStripePayments-settings', 'empty-price-thousand-sep', __( 'Price thousand separator can\'t be empty.', 'stripe-payments' ) );
+			$output['price_thousand_sep'] = '';
 		}
 
 		if ( isset( $input['price_decimals_num'] ) ) {
@@ -1673,6 +1746,9 @@ class AcceptStripePayments_Admin {
 				'{purchase_date}'     => __( 'The date of the purchase', 'stripe-payments' ),
 				'{custom_field}'      => __( 'Custom field name and value (if enabled)', 'stripe-payments' ),
 				'{coupon_code}'       => __( 'Coupon code (if available)', 'stripe-payments' ),
+				'{payment_method}'    => __( 'Paymend method used to make the payment. Example: card, alipay' ),
+				'{card_brand}'        => __( 'Brand of the card used to make the payment. Example: visa, mastercard, amex' ),
+				'{card_last_4}'       => __( 'Last 4 digits of the card. Example: 4242' ),
 			);
 		}
 

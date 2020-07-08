@@ -1,0 +1,55 @@
+.column-total {
+    width: 15%;
+}
+.column-status {
+    width: 20%;
+}
+th.column-title {
+    width: auto;
+}
+
+.asp-order-status {
+    padding: 7px 15px;
+    width: auto;
+    display: inline-block;
+    text-align: center;
+    min-width: 80px;
+    border-radius: 5px;
+}
+
+.asp-order-status.paid, .os-paid {
+    background-color: #b6e4b6;
+}
+
+.asp-order-status.authorized, .os-authorized {
+    background-color: #b6dee4;
+}
+
+.asp-order-status.canceled, .os-canceled {
+    background-color: #e4d4b6;
+}
+
+.asp-order-status.incomplete, .os-incomplete {
+    background-color: #dedede;
+}
+.asp-order-status.error, .os-error {
+    background-color: #ffa5a5;
+}
+
+.asp-order-actions-cont {
+    padding-top: 5px;
+}
+
+.asp-order-event-date {
+    font-size: 90%;
+    float: right;
+}
+
+.asp-order-event-header {
+    margin-bottom: 5px;
+}
+
+.asp-order-event-cont {
+    border-radius: 5px;
+    padding: 10px;
+}

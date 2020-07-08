@@ -10,9 +10,19 @@ class ASPOrder {
 	 * @var      object
 	 */
 	protected static $instance = null;
+	private $order_status_tpl  = '<span class="asp-order-status%s">%s</span>';
+
 
 	public function __construct() {
 		self::$instance = $this;
+
+		if ( is_admin() ) {
+			//products meta boxes handler
+			require_once WP_ASP_PLUGIN_PATH . 'admin/includes/class-asp-admin-order-meta-boxes.php';
+
+			add_filter( 'pre_get_posts', array( $this, 'filter_posts' ) );
+			add_filter( 'views_edit-stripe_order', array( $this, 'remove_views' ) );
+		}
 
 		$this->AcceptStripePayments = AcceptStripePayments::get_instance();
 	}
@@ -55,6 +65,17 @@ class ASPOrder {
 		$args = apply_filters( 'asp_stripe_order_register_post_type_args', $args );
 
 		register_post_type( 'stripe_order', $args );
+
+		add_filter( 'manage_stripe_order_posts_columns', array( $this, 'manage_columns' ) );
+		add_action( 'manage_stripe_order_posts_custom_column', array( $this, 'manage_custom_columns' ), 10, 2 );
+		//set custom columns sortable
+		//      add_filter( 'manage_edit-stripe_order_sortable_columns', array( $this, 'manage_sortable_columns' ) );
+
+		if ( wp_doing_ajax() ) {
+			add_action( 'wp_ajax_asp_order_capture_confirm', array( $this, 'order_capture_confirm' ) );
+			add_action( 'wp_ajax_asp_order_capture_cancel', array( $this, 'order_capture_cancel' ) );
+		}
+
 	}
 
 	/**
@@ -74,107 +95,307 @@ class ASPOrder {
 		return self::$instance;
 	}
 
-	/**
-	 * Receive Response of GetExpressCheckout and ConfirmPayment function returned data.
-	 * Returns the order ID.
-	 *
-	 * @since     1.0.0
-	 *
-	 * @return    Numeric    Post or Order ID.
-	 */
-	public function insert( $order_details, $charge_details ) {
-		$post               = array();
-		$post['post_title'] = $order_details['item_quantity'] . ' x ' . $order_details['item_name'] . ' - ' . AcceptStripePayments::formatted_price( $order_details['paid_amount'], $order_details['currency_code'] );
-		if ( $order_details['is_live'] == 0 ) {
-			//Test Mode is on, we should add this to post title
-			$post['post_title'] = '[Test Mode] ' . $post['post_title'];
+	public function filter_posts( $wp_query ) {
+		global $pagenow;
+
+		if ( 'edit.php' !== $pagenow ) {
+			return;
 		}
 
-		$post['post_status'] = 'pending';
-
-		$output = '';
-
-		// Add error info in case of failure
-		if ( ! empty( $charge_details->failure_code ) ) {
-
-			$output .= '<h2>Payment Failure Details</h2>' . "\n";
-			$output .= $charge_details->failure_code . ': ' . $charge_details->failure_message;
-			$output .= "\n\n";
-		} else {
-			$post['post_status'] = 'publish';
+		if ( ! is_admin() ) {
+			return;
 		}
 
-		$order_date = date( 'Y-m-d H:i:s', $charge_details->created );
-		$order_date = get_date_from_gmt( $order_date, get_option( 'date_format' ) . ', ' . get_option( 'time_format' ) );
-
-		$output .= '<h2>' . __( 'Order Details', 'stripe-payments' ) . "</h2>\n";
-		$output .= __( 'Order Time', 'stripe-payments' ) . ': ' . $order_date . "\n";
-		$output .= __( 'Transaction ID', 'stripe-payments' ) . ': ' . $charge_details->id . "\n";
-		$output .= __( 'Stripe Token', 'stripe-payments' ) . ': ' . $order_details['stripeToken'] . "\n";
-		$output .= __( 'Description', 'stripe-payments' ) . ': ' . $order_details['charge_description'] . "\n";
-		$output .= '--------------------------------' . "\n";
-		$output .= __( 'Product Name', 'stripe-payments' ) . ': ' . $order_details['item_name'] . "\n";
-		$output .= __( 'Quantity', 'stripe-payments' ) . ': ' . $order_details['item_quantity'] . "\n";
-		$output .= __( 'Item Price', 'stripe-payments' ) . ': ' . AcceptStripePayments::formatted_price( $order_details['item_price'], $order_details['currency_code'] ) . "\n";
-		//check if there are any additional items available like tax and shipping cost
-		$output .= AcceptStripePayments::gen_additional_items( $order_details );
-		$output .= '--------------------------------' . "\n";
-		$output .= __( 'Total Amount', 'stripe-payments' ) . ': ' . AcceptStripePayments::formatted_price( ( $order_details['paid_amount'] ), $order_details['currency_code'] ) . "\n";
-
-		$output .= "\n\n";
-
-		$output .= '<h2>' . __( 'Customer Details', 'stripe-payments' ) . "</h2>\n";
-		// translators: %s is email address
-		$output .= sprintf( __( 'E-Mail Address: %s', 'stripe-payments' ), $order_details['stripeEmail'] ) . "\n";
-		// translators: %s is payment source (e.g. 'card' etc)
-		$output .= sprintf( __( 'Payment Source: %s', 'stripe-payments' ), $order_details['stripeTokenType'] ) . "\n";
-
-		//Custom Fields (if set)
-		if ( isset( $order_details['custom_fields'] ) ) {
-			$custom_fields = '';
-			foreach ( $order_details['custom_fields'] as $cf ) {
-				$custom_fields .= $cf['name'] . ': ' . $cf['value'] . "\r\n";
+		if ( $wp_query->is_main_query() && 'stripe_order' === $wp_query->query['post_type'] ) {
+			if ( empty( $wp_query->query_vars['post_status'] ) ) {
+				$wp_query->query_vars['post_status'] = array(
+					'publish',
+					'private',
+					'trash',
+				);
 			}
-			$custom_fields = rtrim( $custom_fields, "\r\n" );
-			$output       .= $custom_fields;
+		}
+	}
+
+	public function remove_views( $views ) {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return $views;
 		}
 
-		//Check if we have TOS enabled and need to store customer's IP and timestamp
-		$tos_enabled = $this->AcceptStripePayments->get_setting( 'tos_enabled' );
-		$tos_store   = $this->AcceptStripePayments->get_setting( 'tos_store_ip' );
+		$remove_views = array( 'mine', 'pending', 'draft' );
 
-		if ( $tos_enabled && $tos_store ) {
-			$ip = ! empty( $_SERVER['REMOTE_ADDR'] ) ? $_SERVER['REMOTE_ADDR'] : __( 'Unknown', 'stripe-payments' );
-			// translators: %s is IP address
-			$output .= sprintf( __( 'IP Address: %s', 'stripe-payments' ), $ip ) . "\n";
+		foreach ( (array) $remove_views as $view ) {
+			if ( isset( $views[ $view ] ) ) {
+				unset( $views[ $view ] );
+			}
+		}
+		return $views;
+	}
+
+	public function manage_columns( $columns ) {
+		$custom_columns = array(
+			'total'  => __( 'Total', 'stripe-payments' ),
+			'status' => __( 'Status', 'stripe-payments' ),
+		);
+		$columns        = array_merge( $columns, $custom_columns );
+		return $columns;
+	}
+
+	public function manage_custom_columns( $column, $post_id ) {
+		switch ( $column ) {
+			case 'status':
+				$data   = get_post_meta( $post_id, 'order_data', true );
+				$status = get_post_meta( $post_id, 'asp_order_status', true );
+
+				if ( empty( $status ) ) {
+
+					if ( ! isset( $data['charge']->paid ) ||
+					( isset( $data['charge']->paid ) && $data['charge']->paid &&
+					$data['charge']->captured ) ) {
+						echo sprintf( $this->order_status_tpl, ' paid', __( 'Paid', 'stripe-payments' ) );
+					} else {
+						if ( isset( $data['charge']->captured ) && false === $data['charge']->captured &&
+						empty( $data['charge']->amount_refunded ) ) {
+							echo sprintf( $this->order_status_tpl, ' authorized', __( 'Authorized', 'stripe-payments' ) );
+							$action_nonce = wp_create_nonce( 'asp-order-actions-' . $post_id );
+							echo '<div class="asp-order-actions-cont">';
+							echo sprintf( '<a class="asp-order-action" data-action="confirm" href="#" data-order-id="%d" data-nonce="%s">' . __( 'Capture', 'stripe-payments' ) . '</a> | ', $post_id, $action_nonce );
+							echo sprintf( '<a class= "asp-order-action" data-action="cancel" style="color:#a00;" href="#" data-order-id="%d" data-nonce="%s">' . __( 'Cancel', 'stripe-payments' ) . '</a>', $post_id, $action_nonce );
+							echo '</div>';
+						} else {
+							echo sprintf( $this->order_status_tpl, ' canceled', __( 'Canceled', 'stripe-payments' ) );
+						}
+					}
+				} else {
+					//we have status set
+					switch ( $status ) {
+						case 'authorized':
+							echo sprintf( $this->order_status_tpl, ' ' . $status, self::get_status_str( $status ) );
+							$action_nonce = wp_create_nonce( 'asp-order-actions-' . $post_id );
+							echo '<div class="asp-order-actions-cont">';
+							echo sprintf( '<a class="asp-order-action" data-action="confirm" href="#" data-order-id="%d" data-nonce="%s">' . __( 'Capture', 'stripe-payments' ) . '</a> | ', $post_id, $action_nonce );
+							echo sprintf( '<a class= "asp-order-action" data-action="cancel" style="color:#a00;" href="#" data-order-id="%d" data-nonce="%s">' . __( 'Cancel', 'stripe-payments' ) . '</a>', $post_id, $action_nonce );
+							echo '</div>';
+							break;
+						case 'error':
+							$order_events = get_post_meta( $post_id, 'asp_order_events', false );
+							if ( ! empty( $order_events ) && is_array( $order_events ) ) {
+								echo sprintf( '<span class="asp-order-status%s" data-balloon-length="medium" data-balloon-pos="up" aria-label="%s">%s</span>', ' ' . $status, end( $order_events[0] )['comment'], self::get_status_str( $status ) );
+							} else {
+								echo sprintf( $this->order_status_tpl, ' ' . $status, self::get_status_str( $status ) );
+							}
+							break;
+						default:
+							echo sprintf( $this->order_status_tpl, ' ' . $status, self::get_status_str( $status ) );
+							break;
+					}
+				}
+				break;
+			case 'total':
+				$data = get_post_meta( $post_id, 'order_data', true );
+				if ( $data ) {
+					echo ASP_Utils::formatted_price( $data['paid_amount'], $data['currency_code'] );
+				} else {
+					echo '—';
+				}
+				break;
+		}
+	}
+
+	public function order_capture_confirm() {
+		$post_id = filter_input( INPUT_POST, 'order_id', FILTER_SANITIZE_NUMBER_INT );
+		if ( empty( $post_id ) ) {
+			wp_send_json(
+				array(
+					'success' => false,
+					'err_msg' => __( 'Invalid order ID', 'stripe-payments' ),
+				)
+			);
 		}
 
-		//Billing address data (if any)
-		if ( isset( $order_details['billing_address'] ) && strlen( $order_details['billing_address'] ) > 5 ) {
-			$output .= '<h2>' . __( 'Billing Address', 'stripe-payments' ) . "</h2>\n";
-			$output .= $order_details['billing_address'];
+		$nonce = filter_input( INPUT_POST, 'nonce', FILTER_SANITIZE_STRING );
+		if ( empty( $nonce ) || false === wp_verify_nonce( $nonce, 'asp-order-actions-' . $post_id ) ) {
+			wp_send_json(
+				array(
+					'success' => false,
+					'err_msg' => __( 'Nonce check failed', 'stripe-payments' ),
+				)
+			);
 		}
 
-		//Shipping address data (if any)
-		if ( isset( $order_details['shipping_address'] ) && strlen( $order_details['shipping_address'] ) > 5 ) {
-			$output .= '<h2>' . __( 'Shipping Address', 'stripe-payments' ) . "</h2>\n";
-			$output .= $order_details['shipping_address'];
+		$order = new ASP_Order_Item();
+		$order->set_id( $post_id );
+
+		$data = get_post_meta( $post_id, 'order_data', true );
+
+		$asp_main = AcceptStripePayments::get_instance();
+
+		try {
+			ASP_Utils::load_stripe_lib();
+			$key = $data['is_live'] ? $asp_main->APISecKey : $asp_main->APISecKeyTest;
+			\Stripe\Stripe::setApiKey( $key );
+
+			$api = ASP_Stripe_API::get_instance();
+			$api->set_api_key( $key );
+
+			if ( ASP_Utils::use_internal_api() ) {
+				$intent = $api->get( 'payment_intents/' . $data['charge']->payment_intent );
+			} else {
+				$intent = \Stripe\PaymentIntent::retrieve( $data['charge']->payment_intent );
+			}
+
+			if ( 'requires_capture' !== $intent->status ) {
+				//already captured or canceled
+				$data['charge'] = $intent->charges->data[0];
+				update_post_meta( $post_id, 'order_data', $data );
+
+				if ( 'canceled' === $intent->status ) {
+					$order->change_status( 'canceled' );
+				}
+
+				if ( 'succeeded' === $intent->status ) {
+					$order->change_status( 'paid' );
+				}
+
+				wp_send_json(
+					array(
+						'success'      => false,
+						'err_msg'      => __( 'Funds already captured or refunded', 'stripe-payments' ),
+						'order_status' => sprintf( $this->order_status_tpl, ' ' . $order->get_status(), self::get_status_str( $order->get_status() ) ),
+					)
+				);
+			}
+
+			if ( ASP_Utils::use_internal_api() ) {
+				$intent = $api->post( 'payment_intents/' . $data['charge']->payment_intent . '/capture' );
+			} else {
+				$intent->capture();
+			}
+		} catch ( \Exception $e ) {
+			wp_send_json(
+				array(
+					'success' => false,
+					'err_msg' => $e->getMessage(),
+				)
+			);
 		}
 
-		$post['post_content'] = $output;
-		$post['post_type']    = 'stripe_order';
+		$data['charge'] = $intent->charges->data[0];
+		update_post_meta( $post_id, 'order_data', $data );
 
-		$post = apply_filters( 'asp_order_before_insert', $post, $order_details, $charge_details );
+		$order->change_status( 'paid' );
 
-		$post_id = wp_insert_post( $post );
+		wp_send_json(
+			array(
+				'success'      => true,
+				'order_status' => sprintf( $this->order_status_tpl, ' ' . $order->get_status(), self::get_status_str( $order->get_status() ) ),
+			)
+		);
+	}
 
-		//let's insert WP user ID into order details. Can be used to display user's transaction history.
-		$user_id = get_current_user_id();
-		if ( $user_id ) {
-			update_post_meta( $post_id, 'asp_user_id', $user_id );
+	public function order_capture_cancel() {
+		$post_id = filter_input( INPUT_POST, 'order_id', FILTER_SANITIZE_NUMBER_INT );
+		if ( empty( $post_id ) ) {
+			wp_send_json(
+				array(
+					'success' => false,
+					'err_msg' => __( 'Invalid order ID', 'stripe-payments' ),
+				)
+			);
 		}
 
-		return $post_id;
+		$nonce = filter_input( INPUT_POST, 'nonce', FILTER_SANITIZE_STRING );
+		if ( empty( $nonce ) || false === wp_verify_nonce( $nonce, 'asp-order-actions-' . $post_id ) ) {
+			wp_send_json(
+				array(
+					'success' => false,
+					'err_msg' => __( 'Nonce check failed', 'stripe-payments' ),
+				)
+			);
+		}
+
+		$order = new ASP_Order_Item();
+		$order->set_id( $post_id );
+
+		$data = get_post_meta( $post_id, 'order_data', true );
+
+		$asp_main = AcceptStripePayments::get_instance();
+
+		try {
+			ASP_Utils::load_stripe_lib();
+			$key = $data['is_live'] ? $asp_main->APISecKey : $asp_main->APISecKeyTest;
+			\Stripe\Stripe::setApiKey( $key );
+
+			$api = ASP_Stripe_API::get_instance();
+			$api->set_api_key( $key );
+
+			if ( ASP_Utils::use_internal_api() ) {
+				$intent = $api->get( 'payment_intents/' . $data['charge']->payment_intent );
+			} else {
+				$intent = \Stripe\PaymentIntent::retrieve( $data['charge']->payment_intent );
+			}
+
+			if ( 'requires_capture' !== $intent->status ) {
+				//already captured or canceled
+				$data['charge'] = $intent->charges->data[0];
+				update_post_meta( $post_id, 'order_data', $data );
+
+				if ( 'canceled' === $intent->status ) {
+					$order->change_status( 'canceled' );
+				}
+
+				if ( 'succeeded' === $intent->status ) {
+					$order->change_status( 'paid' );
+				}
+
+				wp_send_json(
+					array(
+						'success'      => false,
+						'err_msg'      => __( 'Funds already captured or refunded', 'stripe-payments' ),
+						'order_status' => sprintf( $this->order_status_tpl, ' ' . $order->get_status(), self::get_status_str( $order->get_status() ) ),
+					)
+				);
+			}
+
+			if ( ASP_Utils::use_internal_api() ) {
+				$intent = $api->post( 'payment_intents/' . $data['charge']->payment_intent . '/cancel' );
+			} else {
+				$intent->cancel();
+			}
+		} catch ( \Exception $e ) {
+			wp_send_json(
+				array(
+					'success' => false,
+					'err_msg' => $e->getMessage(),
+				)
+			);
+		}
+
+		$data['charge'] = $intent->charges->data[0];
+		update_post_meta( $post_id, 'order_data', $data );
+
+		$order->change_status( 'canceled' );
+
+		wp_send_json(
+			array(
+				'success'      => true,
+				'order_status' => sprintf( $this->order_status_tpl, ' ' . $order->get_status(), self::get_status_str( $order->get_status() ) ),
+			)
+		);
+	}
+
+	public static function get_status_str( $status ) {
+		$status_str = array(
+			'incomplete' => __( 'Incomplete', 'stripe-payments' ),
+			'paid'       => __( 'Paid', 'stripe-payments' ),
+			'authorized' => __( 'Authorized', 'stripe-payments' ),
+			'canceled'   => __( 'Canceled', 'stripe-payments' ),
+			'error'      => __( 'Error', 'stripe-payments' ),
+		);
+		if ( isset( $status_str[ $status ] ) ) {
+			return $status_str[ $status ];
+		}
+		return false;
 	}
 
 }

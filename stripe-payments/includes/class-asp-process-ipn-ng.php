@@ -97,6 +97,8 @@ class ASP_Process_IPN_NG {
 			$this->post_data = $post_data;
 		}
 
+		do_action( 'asp_ng_before_payment_processing', $post_data );
+
 		$this->sess = ASP_Session::get_instance();
 
 		$post_thankyou_page_url = $this->get_post_var( 'asp_thankyou_page_url', FILTER_SANITIZE_STRING );
@@ -147,7 +149,7 @@ class ASP_Process_IPN_NG {
 
 		$is_live = $this->get_post_var( 'asp_is_live', FILTER_VALIDATE_BOOLEAN );
 
-		ASPMain::load_stripe_lib();
+		ASP_Utils::load_stripe_lib();
 		$key = $is_live ? $this->asp_class->APISecKey : $this->asp_class->APISecKeyTest;
 		\Stripe\Stripe::setApiKey( $key );
 
@@ -459,9 +461,9 @@ class ASP_Process_IPN_NG {
 		if ( ! empty( $update_opts && ! $p_data->is_zero_value ) ) {
 			ASP_Debug_Logger::log( 'Updating payment intent data.' );
 			if ( ASP_Utils::use_internal_api() ) {
-				$res = $api->post( 'payment_intents/' . $pi, $update_opts );
+				$intent = $api->post( 'payment_intents/' . $pi, $update_opts );
 			} else {
-				$res = \Stripe\PaymentIntent::update( $pi, $update_opts );
+				$intent = \Stripe\PaymentIntent::update( $pi, $update_opts );
 			}
 		}
 
@@ -476,15 +478,28 @@ class ASP_Process_IPN_NG {
 		$data['product_details'] = nl2br( $product_details );
 
 		//Insert the order data to the custom post
-		$dont_create_order = $this->asp_class->get_setting( 'dont_create_order' );
-		if ( ! $dont_create_order ) {
-			$order                 = ASPOrder::get_instance();
-			$order_post_id         = $order->insert( $data, $data['charge'] );
+		$order = new ASP_Order_Item();
+		if ( $order->can_create() ) {
+			$order_post_id = $order->find( 'pi_id', $pi );
+
+			if ( false === $order_post_id ) {
+				//no order was created. Let's create one
+				$order->create( $prod_id, $pi );
+			}
+
+			$order_post_id = $order->update_legacy( $data, $data['charge'] );
+
+			$intent = $p_data->get_obj();
+			if ( isset( $intent ) && isset( $intent->status ) && 'requires_capture' === $intent->status ) {
+				$order->change_status( 'authorized' );
+			} else {
+				$order->change_status( 'paid' );
+			}
+
 			$data['order_post_id'] = $order_post_id;
 			update_post_meta( $order_post_id, 'order_data', $data );
 			update_post_meta( $order_post_id, 'charge_data', $data['charge'] );
 			update_post_meta( $order_post_id, 'trans_id', $p_trans_id );
-			update_post_meta( $order_post_id, 'pi_id', $pi );
 		}
 
 		//stock control
@@ -584,6 +599,14 @@ class ASP_Process_IPN_NG {
 
 			if ( 'perc' !== $coupon['discount_type'] && 100 !== $coupon['discount'] ) {
 				return $p_data;
+			}
+
+			$prod_id = $this->item->get_product_id();
+
+			$order = new ASP_Order_Item();
+
+			if ( $order->can_create( $prod_id ) ) {
+				$order->create( $prod_id, $pi );
 			}
 
 			$p_data = new ASP_Payment_Data( $pi, true );

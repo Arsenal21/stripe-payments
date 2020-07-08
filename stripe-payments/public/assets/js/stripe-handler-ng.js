@@ -64,11 +64,13 @@ var stripeHandlerNG = function (data) {
 				parent.modal = jQuery('#asp-payment-popup-' + parent.data.uniq_id);
 			}
 			if (show) {
+				window.aspVisibleModalObj = parent.modal;
 				parent.modal.css('display', 'flex').hide().fadeIn();
 			}
 			var iframe = parent.modal.find('iframe');
 			parent.iframe = iframe;
 			iframe.on('load', function () {
+
 				if (parent.redirectToResult) {
 					window.location.href = iframe[0].contentWindow.location.href;
 					return false;
@@ -84,16 +86,7 @@ var stripeHandlerNG = function (data) {
 				}
 
 				iframe[0].contentWindow['doSelfSubmit'] = data.doSelfSubmit;
-				var closebtn = iframe.contents().find('#modal-close-btn');
-				if (show) {
-					closebtn.fadeIn();
-				} else {
-					closebtn.css('display', 'inline');
-				}
-				closebtn.on('click', function () {
-					jQuery('html').css('overflow', parent.documentElementOrigOverflow);
-					parent.modal.fadeOut();
-				});
+
 				parent.iForm = iframe.contents().find('form#payment-form');
 				parent.iForm.on('submit', function (e) {
 					e.preventDefault();
@@ -130,7 +123,9 @@ var stripeHandlerNG = function (data) {
 				parent.iframe.contents().find('#amount').val(pass_amount);
 				parent.iframe[0].contentWindow.triggerEvent(parent.iframe.contents().find('#amount')[0], 'change');
 			}
+			window.aspVisibleModalObj = parent.modal;
 			parent.modal.css('display', 'flex').hide().fadeIn();
+			parent.iframe[0].contentWindow.popupDisplayed();
 		}
 
 	};
@@ -138,7 +133,7 @@ var stripeHandlerNG = function (data) {
 	var parent = this;
 	parent.data = data;
 	parent.form = jQuery('form#asp_ng_form_' + parent.data.uniq_id);
-	parent.documentElementOrigOverflow = jQuery('html').css('overflow');
+	window.WPASPDocumentElementOrigOverflow = jQuery('html').css('overflow');
 	jQuery('#asp_ng_button_' + parent.data.uniq_id).prop('disabled', false);
 	if (parent.data.preload) {
 		parent.handleModal(false);
@@ -146,12 +141,24 @@ var stripeHandlerNG = function (data) {
 		parent.data.iframe_url = parent.data.iframe_url + '&ckey=' + wpASPNG.ckey;
 		jQuery('body').append('<link rel="prefetch" as="document" href="' + parent.data.iframe_url + '">');
 	}
-	jQuery('#asp_ng_button_' + parent.data.uniq_id).click(function (e) {
+
+	var el = '#asp_ng_button_' + parent.data.uniq_id;
+
+	if (data.attachToElement) {
+		el = data.attachToElement;
+	}
+
+	jQuery(el).click(function (e) {
 		jQuery('html').css('overflow', 'hidden');
 		e.preventDefault();
 		parent.handleModal(true);
 	});
 };
+
+function WPASPClosePaymentPopup() {
+	window.aspVisibleModalObj.fadeOut();
+	jQuery('html').css('overflow', window.WPASPDocumentElementOrigOverflow);
+}
 
 function WPASPAttachToAElement(el) {
 	var hrefStr = jQuery(el).attr('href');
@@ -173,20 +180,12 @@ function WPASPAttachToAElement(el) {
 }
 
 function WPASPAttach(el, prodId, params) {
-
-	function elHandler(e) {
-		e.preventDefault();
-		sg.handleModal(true);
-	}
-
 	var uniqId = Math.random().toString(36).substr(2, 9);
 	var item_price = jQuery(el).data('asp-price');
 	if (item_price) {
 		params += '&price=' + item_price;
 	}
-	var sg = new stripeHandlerNG({ 'uniq_id': uniqId, 'product_id': prodId, 'doSelfSubmit': true, 'iframe_url': wpASPNG.iframeUrl + '&product_id=' + prodId + params, 'prefetch': wpASPNG.prefetch === '1' ? true : false });
-	jQuery(el).off('click');
-	jQuery(el).on('click', el, elHandler);
+	new stripeHandlerNG({ 'attachToElement': el, 'uniq_id': uniqId, 'product_id': prodId, 'doSelfSubmit': true, 'iframe_url': wpASPNG.iframeUrl + '&product_id=' + prodId + params, 'prefetch': wpASPNG.prefetch === '1' ? true : false });
 }
 
 function WPASPDocReady(callbackFunc) {

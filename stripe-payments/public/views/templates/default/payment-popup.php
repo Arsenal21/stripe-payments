@@ -155,10 +155,14 @@
 			<div id="modal-header">
 				<?php if ( $a['data']['item_logo'] ) { ?>
 				<div id="item-logo-cont">
-					<img id="item-logo" loading="lazy" width="70" height="70" src="<?php echo esc_url( $a['data']['item_logo'] ); ?>">
+					<img id="item-logo" width="70" height="70" src="<?php echo esc_url( $a['data']['item_logo'] ); ?>">
 				</div>
 				<?php } ?>
-				<span id="modal-close-btn" title="<?php esc_html_e( 'Close', 'stripe-payments' ); ?>"><img loading="lazy" width="17" height="18" src="<?php echo esc_url( $a['plugin_url'] ); ?>/public/views/templates/default/close-btn.png"></span>
+				<span id="modal-close-btn" title="<?php esc_html_e( 'Close', 'stripe-payments' ); ?>" tabindex="0">
+					<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+						<path d="M14.59 8L12 10.59 9.41 8 8 9.41 10.59 12 8 14.59 9.41 16 12 13.41 14.59 16 16 14.59 13.41 12 16 9.41 14.59 8zM12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
+					</svg>												
+				</span>
 				<div id="item-name"><?php echo esc_html( $a['item_name'] ); ?></div>
 				<div id="item-descr"><?php echo esc_html( $a['data']['descr'] ); ?></div>
 			</div>
@@ -183,6 +187,7 @@
 								//let's add a box where user can select currency
 								$output   = '';
 								$curr_arr = ASP_Utils::get_currencies();
+								$curr_arr = apply_filters( 'asp_ng_available_currencies', $curr_arr );
 								$tpl      = '<option data-asp-curr-sym="%s" value="%s"%s>%s</option>';
 								foreach ( $curr_arr as $code => $curr ) {
 									if ( '' !== $code ) {
@@ -334,7 +339,7 @@
 										$img = '';
 										if ( isset( $pm['img'] ) ) {
 											$img = sprintf(
-												' <img loading="lazy" title="%1$s" alt="%1$s" height="%2$d" width="%3$d" src="%4$s">',
+												' <img title="%1$s" alt="%1$s" height="%2$d" width="%3$d" src="%4$s">',
 												$pm['title'],
 												isset( $pm['img_height'] ) ? $pm['img_height'] : 32,
 												isset( $pm['img_width'] ) ? $pm['img_width'] : 32,

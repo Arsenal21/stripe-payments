@@ -9,6 +9,10 @@ class ASP_Self_Hooks_Handler {
 		add_action( 'asp_ng_product_mode_keys', array( $this, 'ng_product_mode_keys_handler' ) );
 
 		add_action( 'plugins_loaded', array( $this, 'plugins_loaded' ), 0 );
+
+		add_filter( 'asp_ng_before_pi_create_update', array( $this, 'pi_update' ) );
+
+		add_filter( 'asp_ng_available_currencies', array( $this, 'filter_available_currencies' ) );
 	}
 
 	public function plugins_loaded() {
@@ -24,6 +28,39 @@ class ASP_Self_Hooks_Handler {
 		if ( function_exists( 'pdf_stamper_stamp_internal_file' ) ) {
 			add_action( 'asp_ng_payment_completed', array( $this, 'handle_wp_pdf_stamper' ), 1000, 2 );
 		}
+	}
+
+	public function pi_update( $pi_params ) {
+		$product_id = filter_input( INPUT_POST, 'product_id', FILTER_SANITIZE_NUMBER_INT );
+
+		$plan_id = get_post_meta( $product_id, 'asp_sub_plan_id', true );
+		if ( ! empty( $plan_id ) ) {
+			//ignoring option for Subscription product
+			return $pi_params;
+		}
+
+		$auth_only = get_post_meta( $product_id, 'asp_product_authorize_only', true );
+		if ( $auth_only ) {
+			$pi_params['capture_method'] = 'manual';
+		}
+		return $pi_params;
+	}
+
+	public function filter_available_currencies( $curr_arr ) {
+		$allowed_curr = $this->main->get_setting( 'allowed_currencies' );
+		$allowed_curr = empty( $allowed_curr ) ? array() : json_decode( html_entity_decode( $allowed_curr ), true );
+
+		if ( empty( $allowed_curr ) || empty( array_diff_key( $curr_arr, $allowed_curr ) ) ) {
+			return $curr_arr;
+		}
+
+		foreach ( $curr_arr as $key => $value ) {
+			if ( ! isset( $allowed_curr[ $key ] ) ) {
+				unset( $curr_arr[ $key ] );
+			}
+		}
+
+		return $curr_arr;
 	}
 
 	public function ng_product_mode_keys_handler( $product_id ) {

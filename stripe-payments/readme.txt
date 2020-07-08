@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 4.7
 Tested up to: 5.4
 Requires PHP: 5.6
-Stable tag: 2.0.30
+Stable tag: 2.0.31t10
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -153,6 +153,22 @@ Yes, please visit Stripe Payments > Settings screen for options.
 None.
 
 == Changelog ==
+
+= 2.0.31 =
+- Added `Donation` product type and `Minimum Donation Amount` product option.
+- Added `Authorize Only` per-product option. You can block funds on card and then capture them on Orders page.
+- Restyled Orders page.
+- Added `Order Events` meta-box to order page.
+- Added `Allowed Currencies` global settings option.
+- Added `{payment_method}`, `{card_brand}` and `{card_last_4}` email merge tags.
+- Payment popup `Close` button is now displayed instantly.
+- Browser `Back` button closes popup if it's open.
+- Custom translations are properly loaded on payment popup now.
+- Currency format settings are no longer ignored on payment popup.
+- Empty value is now allowed for "Thousand Separator" option.
+- Popup init errors are properly displayed now.
+- Added Bulgarian Lev (BGN) currency.
+- Minor improvements, bugfixes and optimizations.
 
 = 2.0.30 =
 - Added Argentine Peso (ARS), Chilean Peso (CLP), Colombian Peso (COP), Peruvian Nuevo Sol (PEN) and Uruguayan Peso (UYU) currencies.

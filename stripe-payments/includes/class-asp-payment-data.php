@@ -172,6 +172,10 @@ class ASP_Payment_Data {
 		$this->obj = $obj;
 	}
 
+	public function get_obj() {
+		return $this->obj;
+	}
+
 	public function construct_zero_value() {
 		$this->charge_data          = new stdClass();
 		$this->charge_data->id      = $this->obj_id;
