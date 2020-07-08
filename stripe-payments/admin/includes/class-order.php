@@ -19,6 +19,9 @@ class ASPOrder {
 		if ( is_admin() ) {
 			//products meta boxes handler
 			require_once WP_ASP_PLUGIN_PATH . 'admin/includes/class-asp-admin-order-meta-boxes.php';
+
+			add_filter( 'pre_get_posts', array( $this, 'filter_posts' ) );
+			add_filter( 'views_edit-stripe_order', array( $this, 'remove_views' ) );
 		}
 
 		$this->AcceptStripePayments = AcceptStripePayments::get_instance();
@@ -90,6 +93,43 @@ class ASPOrder {
 		}
 
 		return self::$instance;
+	}
+
+	public function filter_posts( $wp_query ) {
+		global $pagenow;
+
+		if ( 'edit.php' !== $pagenow ) {
+			return;
+		}
+
+		if ( ! is_admin() ) {
+			return;
+		}
+
+		if ( $wp_query->is_main_query() && 'stripe_order' === $wp_query->query['post_type'] ) {
+			if ( empty( $wp_query->query_vars['post_status'] ) ) {
+				$wp_query->query_vars['post_status'] = array(
+					'publish',
+					'private',
+					'trash',
+				);
+			}
+		}
+	}
+
+	public function remove_views( $views ) {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return $views;
+		}
+
+		$remove_views = array( 'mine', 'pending', 'draft' );
+
+		foreach ( (array) $remove_views as $view ) {
+			if ( isset( $views[ $view ] ) ) {
+				unset( $views[ $view ] );
+			}
+		}
+		return $views;
 	}
 
 	public function manage_columns( $columns ) {
