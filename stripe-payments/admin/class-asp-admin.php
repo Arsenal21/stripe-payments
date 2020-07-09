@@ -1117,7 +1117,7 @@ class AcceptStripePayments_Admin {
 			array(
 				'field' => 'dont_use_stripe_php_sdk',
 				'desc'  => __( 'Enable this if you\'re experiencing conflicts with other plugins that use Stripe PHP SDK Library. Internal Stripe API wrapper would be used instead.', 'stripe-payments' ) . '<br>' .
-				'Warning: this option is currently not supported by Subscriptions and some other addons.',
+				__( 'Warning: this option is currently not supported by Subscriptions and some other addons.', 'stripe-payments' ),
 			)
 		);
 
