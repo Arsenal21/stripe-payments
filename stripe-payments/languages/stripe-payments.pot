@@ -9,8 +9,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2020-07-08T20:20:14+03:00\n"
-"PO-Revision-Date: 2020-07-08T20:20:14+03:00\n"
+"POT-Creation-Date: 2020-07-09T18:32:05+03:00\n"
+"PO-Revision-Date: 2020-07-09T18:32:05+03:00\n"
 "X-Generator: WP-CLI 2.0.1\n"
 "X-Domain: stripe-payments\n"
 
@@ -615,389 +615,401 @@ msgstr ""
 msgid "Enable this if you're experiencing conflicts with other plugins that use Stripe PHP SDK Library. Internal Stripe API wrapper would be used instead."
 msgstr ""
 
+#: admin/class-asp-admin.php:1120
+msgid "Warning: this option is currently not supported by Subscriptions and some other addons."
+msgstr ""
+
 #: admin/class-asp-admin.php:1126
-msgid "Disable Buttons Before Javascript Loads"
+msgid "Show Incomplete Orders"
 msgstr ""
 
 #: admin/class-asp-admin.php:1132
+msgid "If enabled, incomplete orders are also displayed on Orders page."
+msgstr ""
+
+#: admin/class-asp-admin.php:1138
+msgid "Disable Buttons Before Javascript Loads"
+msgstr ""
+
+#: admin/class-asp-admin.php:1144
 msgid "If enabled, payment buttons are not clickable until Javascript libraries are loaded on page view. This prevents \"Invalid Stripe Token\" errors on some configurations."
 msgstr ""
 
-#: admin/class-asp-admin.php:1139
+#: admin/class-asp-admin.php:1151
 msgid "This section allows you to configure Terms and Conditions or Privacy Policy that customer must accept before making payment. This, for example, can be used to comply with EU GDPR."
 msgstr ""
 
-#: admin/class-asp-admin.php:1143
+#: admin/class-asp-admin.php:1155
 msgid "Warning: don't change options in this section unless you know what you're doing!"
 msgstr ""
 
-#: admin/class-asp-admin.php:1166
+#: admin/class-asp-admin.php:1178
 msgid "Arabic"
 msgstr ""
 
-#: admin/class-asp-admin.php:1167
+#: admin/class-asp-admin.php:1179
 msgid "Hebrew"
 msgstr ""
 
-#: admin/class-asp-admin.php:1168
+#: admin/class-asp-admin.php:1180
 msgid "Latvian"
 msgstr ""
 
-#: admin/class-asp-admin.php:1169
+#: admin/class-asp-admin.php:1181
 msgid "Lithuanian"
 msgstr ""
 
-#: admin/class-asp-admin.php:1170
+#: admin/class-asp-admin.php:1182
 msgid "Malay"
 msgstr ""
 
-#: admin/class-asp-admin.php:1171
+#: admin/class-asp-admin.php:1183
 msgid "Norwegian Bokmal"
 msgstr ""
 
-#: admin/class-asp-admin.php:1172
+#: admin/class-asp-admin.php:1184
 msgid "Polish"
 msgstr ""
 
-#: admin/class-asp-admin.php:1173
+#: admin/class-asp-admin.php:1185
 msgid "Portuguese"
 msgstr ""
 
-#: admin/class-asp-admin.php:1174
+#: admin/class-asp-admin.php:1186
 msgid "Russian"
 msgstr ""
 
-#: admin/class-asp-admin.php:1175
+#: admin/class-asp-admin.php:1187
 msgid "Danish"
 msgstr ""
 
-#: admin/class-asp-admin.php:1176
+#: admin/class-asp-admin.php:1188
 msgid "Dutch"
 msgstr ""
 
-#: admin/class-asp-admin.php:1177
+#: admin/class-asp-admin.php:1189
 msgid "English"
 msgstr ""
 
-#: admin/class-asp-admin.php:1178
+#: admin/class-asp-admin.php:1190
 msgid "Finnish"
 msgstr ""
 
-#: admin/class-asp-admin.php:1179
+#: admin/class-asp-admin.php:1191
 msgid "French"
 msgstr ""
 
-#: admin/class-asp-admin.php:1180
+#: admin/class-asp-admin.php:1192
 msgid "German"
 msgstr ""
 
-#: admin/class-asp-admin.php:1181
+#: admin/class-asp-admin.php:1193
 msgid "Italian"
 msgstr ""
 
-#: admin/class-asp-admin.php:1182
+#: admin/class-asp-admin.php:1194
 msgid "Japanese"
 msgstr ""
 
-#: admin/class-asp-admin.php:1183
+#: admin/class-asp-admin.php:1195
 msgid "Norwegian"
 msgstr ""
 
-#: admin/class-asp-admin.php:1184
+#: admin/class-asp-admin.php:1196
 msgid "Simplified Chinese"
 msgstr ""
 
-#: admin/class-asp-admin.php:1185
+#: admin/class-asp-admin.php:1197
 msgid "Spanish"
 msgstr ""
 
-#: admin/class-asp-admin.php:1186
+#: admin/class-asp-admin.php:1198
 msgid "Swedish"
 msgstr ""
 
-#: admin/class-asp-admin.php:1189
+#: admin/class-asp-admin.php:1201
 msgid "Autodetect"
 msgstr ""
 
-#: admin/class-asp-admin.php:1193
+#: admin/class-asp-admin.php:1205
 #: includes/class-asp-utils.php:565
 msgid "(Default)"
 msgstr ""
 
-#: admin/class-asp-admin.php:1234
+#: admin/class-asp-admin.php:1246
 msgid "Text"
 msgstr ""
 
-#: admin/class-asp-admin.php:1235
+#: admin/class-asp-admin.php:1247
 msgid "Checkbox"
 msgstr ""
 
-#: admin/class-asp-admin.php:1241
+#: admin/class-asp-admin.php:1253
 msgid "Placeholder"
 msgstr ""
 
-#: admin/class-asp-admin.php:1242
+#: admin/class-asp-admin.php:1254
 msgid "Below Input"
 msgstr ""
 
-#: admin/class-asp-admin.php:1248
-#: admin/class-asp-admin.php:1254
+#: admin/class-asp-admin.php:1260
+#: admin/class-asp-admin.php:1266
 msgid "No Validation"
 msgstr ""
 
-#: admin/class-asp-admin.php:1249
-#: admin/class-asp-admin.php:1255
+#: admin/class-asp-admin.php:1261
+#: admin/class-asp-admin.php:1267
 msgid "Numbers Only"
 msgstr ""
 
 #. translators: %s is a link to JavaScript RegExp page
-#: admin/class-asp-admin.php:1250
-#: admin/class-asp-admin.php:1257
+#: admin/class-asp-admin.php:1262
+#: admin/class-asp-admin.php:1269
 msgid "Custom Validation"
 msgstr ""
 
-#: admin/class-asp-admin.php:1254
+#: admin/class-asp-admin.php:1266
 msgid "no validation performed"
 msgstr ""
 
-#: admin/class-asp-admin.php:1255
+#: admin/class-asp-admin.php:1267
 msgid "only accepts numbers 0-9"
 msgstr ""
 
 #. translators: %s is a link to JavaScript RegExp page
-#: admin/class-asp-admin.php:1257
+#: admin/class-asp-admin.php:1269
 msgid "you can enter your own validation rules using <a href=\"%s\" target=\"_blank\">JavaScript RegExp</a> format."
 msgstr ""
 
-#: admin/class-asp-admin.php:1266
+#: admin/class-asp-admin.php:1278
 msgid "Please enter valid data"
 msgstr ""
 
 #. translators: %s is a link to JavaScript RegExp page
-#: admin/class-asp-admin.php:1273
+#: admin/class-asp-admin.php:1285
 msgid "Enter your custom validation rule using <a href=\"%s\" target=\"_blank\">JavaScript RegExp</a> format. No need to enclose those using \"/\"."
 msgstr ""
 
 #. translators: %s is a link to JavaScript RegExp page
-#: admin/class-asp-admin.php:1274
+#: admin/class-asp-admin.php:1286
 msgid "Example RegExp to allow numbers only: ^[0-9]+$"
 msgstr ""
 
-#: admin/class-asp-admin.php:1277
+#: admin/class-asp-admin.php:1289
 msgid "Error message to display if validation is not passed."
 msgstr ""
 
-#: admin/class-asp-admin.php:1283
+#: admin/class-asp-admin.php:1295
 msgid "Above Button"
 msgstr ""
 
-#: admin/class-asp-admin.php:1284
+#: admin/class-asp-admin.php:1296
 msgid "Below Button"
 msgstr ""
 
-#: admin/class-asp-admin.php:1315
+#: admin/class-asp-admin.php:1328
 msgid "Last Name First"
 msgstr ""
 
-#: admin/class-asp-admin.php:1316
+#: admin/class-asp-admin.php:1329
 msgid "When enabled, last name is placed before first name."
 msgstr ""
 
-#: admin/class-asp-admin.php:1328
+#: admin/class-asp-admin.php:1341
 msgid "Plain Text"
 msgstr ""
 
-#: admin/class-asp-admin.php:1329
+#: admin/class-asp-admin.php:1342
 msgid "HTML"
 msgstr ""
 
-#: admin/class-asp-admin.php:1368
+#: admin/class-asp-admin.php:1381
 msgid "All"
 msgstr ""
 
-#: admin/class-asp-admin.php:1370
+#: admin/class-asp-admin.php:1383
 msgid "Selected"
 msgstr ""
 
-#: admin/class-asp-admin.php:1374
+#: admin/class-asp-admin.php:1387
 msgid "Click here to select currencies"
 msgstr ""
 
-#: admin/class-asp-admin.php:1377
+#: admin/class-asp-admin.php:1390
 msgid "Select All"
 msgstr ""
 
-#: admin/class-asp-admin.php:1378
+#: admin/class-asp-admin.php:1391
 msgid "Select None"
 msgstr ""
 
-#: admin/class-asp-admin.php:1379
+#: admin/class-asp-admin.php:1392
 msgid "Invert Selection"
 msgstr ""
 
-#: admin/class-asp-admin.php:1392
+#: admin/class-asp-admin.php:1405
 msgid "You can select currencies you want to be available for your customers for variable currencies products. Useful for donation type products."
 msgstr ""
 
-#: admin/class-asp-admin.php:1413
+#: admin/class-asp-admin.php:1426
 msgctxt "Currency symbol position"
 msgid "Left"
 msgstr ""
 
-#: admin/class-asp-admin.php:1414
+#: admin/class-asp-admin.php:1427
 msgctxt "Currency symbol position"
 msgid "Right"
 msgstr ""
 
 #. translators: %s is replaced by invalid RegExp value
-#: admin/class-asp-admin.php:1508
+#: admin/class-asp-admin.php:1521
 msgid "Invalid custom RegExp for Custom Field validation provided: %s"
 msgstr ""
 
-#: admin/class-asp-admin.php:1560
+#: admin/class-asp-admin.php:1575
 msgid "You must fill Live API credentials for plugin to work correctly."
 msgstr ""
 
-#: admin/class-asp-admin.php:1564
+#: admin/class-asp-admin.php:1579
 msgid "You must fill Test API credentials for plugin to work correctly."
 msgstr ""
 
-#: admin/class-asp-admin.php:1571
+#: admin/class-asp-admin.php:1586
 msgid "Please specify a checkout page."
 msgstr ""
 
-#: admin/class-asp-admin.php:1577
+#: admin/class-asp-admin.php:1592
 msgid "Button text should not be empty."
 msgstr ""
 
 #. translators: %s is not a placeholder
-#: admin/class-asp-admin.php:1584
+#: admin/class-asp-admin.php:1599
 #: includes/class-asp.php:299
 #: includes/class-asp-pp-handler.php:432
 msgid "Pay %s"
 msgstr ""
 
-#: admin/class-asp-admin.php:1605
+#: admin/class-asp-admin.php:1620
 msgid "You must specify payment currency."
 msgstr ""
 
-#: admin/class-asp-admin.php:1636
+#: admin/class-asp-admin.php:1651
 msgid "You must specify from email address."
 msgstr ""
 
-#: admin/class-asp-admin.php:1642
+#: admin/class-asp-admin.php:1657
 msgid "You must specify buyer email subject."
 msgstr ""
 
-#: admin/class-asp-admin.php:1648
+#: admin/class-asp-admin.php:1663
 msgid "You must fill in buyer email body."
 msgstr ""
 
-#: admin/class-asp-admin.php:1654
+#: admin/class-asp-admin.php:1669
 msgid "You must specify seller notification email address."
 msgstr ""
 
-#: admin/class-asp-admin.php:1660
+#: admin/class-asp-admin.php:1675
 msgid "You must specify seller email subject."
 msgstr ""
 
-#: admin/class-asp-admin.php:1666
+#: admin/class-asp-admin.php:1681
 msgid "You must fill in seller email body."
 msgstr ""
 
-#: admin/class-asp-admin.php:1676
+#: admin/class-asp-admin.php:1691
 msgid "Price decimal separator can't be empty."
 msgstr ""
 
-#: admin/class-asp-admin.php:1690
+#: admin/class-asp-admin.php:1705
 msgid "Price number of decimals can't be empty."
 msgstr ""
 
-#: admin/class-asp-admin.php:1728
+#: admin/class-asp-admin.php:1743
 msgid "Name of the purchased item"
 msgstr ""
 
-#: admin/class-asp-admin.php:1729
+#: admin/class-asp-admin.php:1744
 msgid "Number of items purchased"
 msgstr ""
 
-#: admin/class-asp-admin.php:1730
+#: admin/class-asp-admin.php:1745
 msgid "Item price. Example: 1000,00"
 msgstr ""
 
-#: admin/class-asp-admin.php:1731
+#: admin/class-asp-admin.php:1746
 msgid "Item price with currency symbol. Example: $1,000.00"
 msgstr ""
 
-#: admin/class-asp-admin.php:1732
+#: admin/class-asp-admin.php:1747
 msgid "The amount paid for the current transaction. Example: 1,000.00"
 msgstr ""
 
-#: admin/class-asp-admin.php:1733
+#: admin/class-asp-admin.php:1748
 msgid "The amount paid for the current transaction with currency symbol. Example: $1,000.00"
 msgstr ""
 
-#: admin/class-asp-admin.php:1734
+#: admin/class-asp-admin.php:1749
 msgid "Tax in percent. Example: 10%"
 msgstr ""
 
-#: admin/class-asp-admin.php:1735
+#: admin/class-asp-admin.php:1750
 msgid "Formatted tax amount for single item. Example: $0.25"
 msgstr ""
 
-#: admin/class-asp-admin.php:1736
+#: admin/class-asp-admin.php:1751
 msgid "Formatted shipping amount. Example: $2.50"
 msgstr ""
 
-#: admin/class-asp-admin.php:1737
+#: admin/class-asp-admin.php:1752
 msgid "Item download URL (if it's set)"
 msgstr ""
 
-#: admin/class-asp-admin.php:1738
+#: admin/class-asp-admin.php:1753
 msgid "The item details of the purchased product (this will include the download link for digital items)"
 msgstr ""
 
-#: admin/class-asp-admin.php:1739
+#: admin/class-asp-admin.php:1754
 msgid "The unique transaction ID of the purchase"
 msgstr ""
 
-#: admin/class-asp-admin.php:1740
+#: admin/class-asp-admin.php:1755
 msgid "Shipping address of the buyer"
 msgstr ""
 
-#: admin/class-asp-admin.php:1741
+#: admin/class-asp-admin.php:1756
 msgid "Billing address of the buyer"
 msgstr ""
 
-#: admin/class-asp-admin.php:1742
+#: admin/class-asp-admin.php:1757
 msgid "Customer name. Available only if collect billing address option enabled"
 msgstr ""
 
-#: admin/class-asp-admin.php:1743
+#: admin/class-asp-admin.php:1758
 msgid "Email Address of the buyer"
 msgstr ""
 
-#: admin/class-asp-admin.php:1744
+#: admin/class-asp-admin.php:1759
 msgid "Currency symbol. Example: $"
 msgstr ""
 
-#: admin/class-asp-admin.php:1745
+#: admin/class-asp-admin.php:1760
 msgid "3-letter currency code. Example: USD"
 msgstr ""
 
-#: admin/class-asp-admin.php:1746
+#: admin/class-asp-admin.php:1761
 msgid "The date of the purchase"
 msgstr ""
 
-#: admin/class-asp-admin.php:1747
+#: admin/class-asp-admin.php:1762
 msgid "Custom field name and value (if enabled)"
 msgstr ""
 
-#: admin/class-asp-admin.php:1748
+#: admin/class-asp-admin.php:1763
 msgid "Coupon code (if available)"
 msgstr ""
 
-#: admin/class-asp-admin.php:1771
+#: admin/class-asp-admin.php:1786
 msgid "Click here to toggle tags hint"
 msgstr ""
 
@@ -1048,13 +1060,13 @@ msgstr ""
 
 #: admin/includes/class-products.php:40
 #: admin/includes/class-products.php:86
-#: admin/includes/class-order.php:42
+#: admin/includes/class-order.php:46
 msgid "Not found"
 msgstr ""
 
 #: admin/includes/class-products.php:41
 #: admin/includes/class-products.php:87
-#: admin/includes/class-order.php:43
+#: admin/includes/class-order.php:47
 msgid "Not found in Trash"
 msgstr ""
 
@@ -1721,111 +1733,111 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
-#: admin/includes/class-order.php:32
+#: admin/includes/class-order.php:36
 msgctxt "Post Type General Name"
 msgid "Orders"
 msgstr ""
 
-#: admin/includes/class-order.php:33
+#: admin/includes/class-order.php:37
 msgctxt "Post Type Singular Name"
 msgid "Order"
 msgstr ""
 
-#: admin/includes/class-order.php:34
+#: admin/includes/class-order.php:38
 msgid "Parent Order:"
 msgstr ""
 
-#: admin/includes/class-order.php:35
+#: admin/includes/class-order.php:39
 msgid "Orders"
 msgstr ""
 
-#: admin/includes/class-order.php:36
+#: admin/includes/class-order.php:40
 msgid "View Order"
 msgstr ""
 
-#: admin/includes/class-order.php:37
+#: admin/includes/class-order.php:41
 msgid "Add New Order"
 msgstr ""
 
-#: admin/includes/class-order.php:38
+#: admin/includes/class-order.php:42
 msgid "Add New"
 msgstr ""
 
-#: admin/includes/class-order.php:39
+#: admin/includes/class-order.php:43
 msgid "Edit Order"
 msgstr ""
 
-#: admin/includes/class-order.php:40
+#: admin/includes/class-order.php:44
 msgid "Update Order"
 msgstr ""
 
-#: admin/includes/class-order.php:41
+#: admin/includes/class-order.php:45
 msgid "Search Order"
 msgstr ""
 
-#: admin/includes/class-order.php:46
+#: admin/includes/class-order.php:50
 msgid "orders"
 msgstr ""
 
-#: admin/includes/class-order.php:47
+#: admin/includes/class-order.php:51
 msgid "Stripe Orders"
 msgstr ""
 
-#: admin/includes/class-order.php:137
+#: admin/includes/class-order.php:141
 #: public/views/templates/default/payment-popup.php:290
 #: public/views/templates/default/payment-popup.php:324
 msgid "Total"
 msgstr ""
 
-#: admin/includes/class-order.php:138
+#: admin/includes/class-order.php:142
 msgid "Status"
 msgstr ""
 
-#: admin/includes/class-order.php:155
-#: admin/includes/class-order.php:390
+#: admin/includes/class-order.php:159
+#: admin/includes/class-order.php:394
 msgid "Paid"
 msgstr ""
 
-#: admin/includes/class-order.php:159
-#: admin/includes/class-order.php:391
+#: admin/includes/class-order.php:163
+#: admin/includes/class-order.php:395
 msgid "Authorized"
 msgstr ""
 
-#: admin/includes/class-order.php:162
-#: admin/includes/class-order.php:176
+#: admin/includes/class-order.php:166
+#: admin/includes/class-order.php:180
 msgid "Capture"
 msgstr ""
 
-#: admin/includes/class-order.php:163
-#: admin/includes/class-order.php:177
+#: admin/includes/class-order.php:167
+#: admin/includes/class-order.php:181
 msgid "Cancel"
 msgstr ""
 
-#: admin/includes/class-order.php:166
-#: admin/includes/class-order.php:392
+#: admin/includes/class-order.php:170
+#: admin/includes/class-order.php:396
 msgid "Canceled"
 msgstr ""
 
-#: admin/includes/class-order.php:211
-#: admin/includes/class-order.php:302
+#: admin/includes/class-order.php:215
+#: admin/includes/class-order.php:306
 msgid "Invalid order ID"
 msgstr ""
 
-#: admin/includes/class-order.php:221
-#: admin/includes/class-order.php:312
+#: admin/includes/class-order.php:225
+#: admin/includes/class-order.php:316
 msgid "Nonce check failed"
 msgstr ""
 
-#: admin/includes/class-order.php:263
-#: admin/includes/class-order.php:354
+#: admin/includes/class-order.php:267
+#: admin/includes/class-order.php:358
 msgid "Funds already captured or refunded"
 msgstr ""
 
-#: admin/includes/class-order.php:389
+#: admin/includes/class-order.php:393
 msgid "Incomplete"
 msgstr ""
 
-#: admin/includes/class-order.php:393
+#: admin/includes/class-order.php:397
 msgid "Error"
 msgstr ""
 
