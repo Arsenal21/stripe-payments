@@ -250,9 +250,9 @@ class ASPProductsMetaboxes {
 		<input type="number" step="0.01" min="0" name="asp_product_min_amount" value="<?php echo esc_attr( $min_amount ); ?>">
 		<p class="description">
 					<?php
-					echo esc_html( __( 'Specify minimum donation amount.', 'stripe-payments' ) ) .
+					echo esc_html( __( 'Specify a minimum donation amount.', 'stripe-payments' ) ) .
 					// translators: %1$s and %2$s are replaced by <a></a> tags
-					' ' . sprintf( __( 'If set to 0, %1$s Stripe\'s minimum amount limits%2$s would be applied.', 'stripe-payments' ), '<a href="https://stripe.com/docs/currencies#minimum-and-maximum-charge-amounts" target="_blank">', '</a>' );
+					' ' . sprintf( __( 'If set to 0 then %1$s Stripe\'s minimum amount limit%2$s will be applied.', 'stripe-payments' ), '<a href="https://stripe.com/docs/currencies#minimum-and-maximum-charge-amounts" target="_blank">', '</a>' );
 					?>
 		</p>
 		<hr />
@@ -703,12 +703,12 @@ jQuery(document).ready(function($) {
 		?>
 		> <?php echo esc_html_e( 'Authorize Only', 'stripe-payments' ); ?></label>
 		<p class="description">
-		<?php echo esc_html_e( 'Place a hold on a card to reserve funds now and capture them manually later.', 'stripe-payments' ); ?>
+		<?php echo esc_html_e( 'Place a hold on a card to reserve the funds now and capture it later manually.', 'stripe-payments' ); ?>
 		<br>
-		<?php echo esc_html_e( 'Note: this option is not supported by Subscription products and Alipay, SOFORT, iDEAL and FPX payment methods. If enabled, those won\'t be offered as payment option for this product.', 'stripe-payments' ); ?>
+		<?php echo esc_html_e( 'Note: this option is not supported by Subscription products, Alipay, SOFORT, iDEAL and FPX payment methods. If enabled, those won\'t be offered as payment option for this product.', 'stripe-payments' ); ?>
 		</p>
 		<label><input type="checkbox" name="asp_product_force_test_mode" value="1"<?php echo $current_val ? ' checked' : ''; ?>> <?php echo esc_html_e( 'Force Test Mode', 'stripe-payments' ); ?></label>
-		<p class="description"><?php echo esc_html_e( 'When checked, product stays in test mode regardless of the global "Live Mode" switch.', 'stripe-payments' ); ?></p>
+		<p class="description"><?php echo esc_html_e( 'When enabled, this product will stay in test mode regardless of the value set in the global "Live Mode" settings option. Can be useful to create a test product.', 'stripe-payments' ); ?></p>
 		<?php
 	}
 

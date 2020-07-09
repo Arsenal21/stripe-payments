@@ -1389,7 +1389,7 @@ class AcceptStripePayments_Admin {
 				echo '</div>';
 				echo '</div>';
 				echo '</div>';
-				echo '<p class="description">' . __( 'You can select currencies you want to be available for your customers for variable currencies products.', 'stripe-payments' ) . '</p>';
+				echo '<p class="description">' . __( 'You can select currencies you want to be available for your customers for variable currencies products. Useful for donation type products.', 'stripe-payments' ) . '</p>';
 				break;
 			case 'price_decimals_num':
 				echo '<input type="number" min="0" step="1" max="5" name="AcceptStripePayments-settings[' . $field . ']" value="' . esc_attr( $field_value ) . '"';

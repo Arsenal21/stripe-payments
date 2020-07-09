@@ -836,7 +836,7 @@ msgid "Invert Selection"
 msgstr ""
 
 #: admin/class-asp-admin.php:1392
-msgid "You can select currencies you want to be available for your customers for variable currencies products."
+msgid "You can select currencies you want to be available for your customers for variable currencies products. Useful for donation type products."
 msgstr ""
 
 #: admin/class-asp-admin.php:1413
@@ -1274,12 +1274,12 @@ msgid "Minimum Donation Amount"
 msgstr ""
 
 #: admin/includes/class-products-meta-boxes.php:253
-msgid "Specify minimum donation amount."
+msgid "Specify a minimum donation amount."
 msgstr ""
 
 #. translators: %1$s and %2$s are replaced by <a></a> tags
 #: admin/includes/class-products-meta-boxes.php:255
-msgid "If set to 0, %1$s Stripe's minimum amount limits%2$s would be applied."
+msgid "If set to 0 then %1$s Stripe's minimum amount limit%2$s will be applied."
 msgstr ""
 
 #: admin/includes/class-products-meta-boxes.php:261
@@ -1598,11 +1598,11 @@ msgid "Authorize Only"
 msgstr ""
 
 #: admin/includes/class-products-meta-boxes.php:706
-msgid "Place a hold on a card to reserve funds now and capture them manually later."
+msgid "Place a hold on a card to reserve the funds now and capture it later manually."
 msgstr ""
 
 #: admin/includes/class-products-meta-boxes.php:708
-msgid "Note: this option is not supported by Subscription products and Alipay, SOFORT, iDEAL and FPX payment methods. If enabled, those won't be offered as payment option for this product."
+msgid "Note: this option is not supported by Subscription products, Alipay, SOFORT, iDEAL and FPX payment methods. If enabled, those won't be offered as payment option for this product."
 msgstr ""
 
 #: admin/includes/class-products-meta-boxes.php:710
@@ -1610,7 +1610,7 @@ msgid "Force Test Mode"
 msgstr ""
 
 #: admin/includes/class-products-meta-boxes.php:711
-msgid "When checked, product stays in test mode regardless of the global \"Live Mode\" switch."
+msgid "When enabled, this product will stay in test mode regardless of the value set in the global \"Live Mode\" settings option. Can be useful to create a test product."
 msgstr ""
 
 #: admin/includes/class-products-meta-boxes.php:730
