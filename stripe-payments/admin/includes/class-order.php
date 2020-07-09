@@ -16,15 +16,19 @@ class ASPOrder {
 	public function __construct() {
 		self::$instance = $this;
 
+		$this->AcceptStripePayments = AcceptStripePayments::get_instance();
+
 		if ( is_admin() ) {
 			//products meta boxes handler
 			require_once WP_ASP_PLUGIN_PATH . 'admin/includes/class-asp-admin-order-meta-boxes.php';
 
-			add_filter( 'pre_get_posts', array( $this, 'filter_posts' ) );
-			add_filter( 'views_edit-stripe_order', array( $this, 'remove_views' ) );
-		}
+			$show_incomplete = $this->AcceptStripePayments->get_setting( 'show_incomplete_orders' );
 
-		$this->AcceptStripePayments = AcceptStripePayments::get_instance();
+			if ( ! $show_incomplete ) {
+				add_filter( 'pre_get_posts', array( $this, 'filter_posts' ) );
+				add_filter( 'views_edit-stripe_order', array( $this, 'remove_views' ) );
+			}
+		}
 	}
 
 	public function register_post_type() {

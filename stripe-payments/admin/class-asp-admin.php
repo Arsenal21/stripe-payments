@@ -1122,6 +1122,18 @@ class AcceptStripePayments_Admin {
 		);
 
 		add_settings_field(
+			'show_incomplete_orders',
+			__( 'Show Incomplete Orders', 'stripe-payments' ),
+			array( $this, 'settings_field_callback' ),
+			$this->plugin_slug . '-advanced',
+			'AcceptStripePayments-experimental-settings',
+			array(
+				'field' => 'show_incomplete_orders',
+				'desc'  => __( 'If enabled, incomplete orders are also displayed on Orders page.', 'stripe-payments' ),
+			)
+		);
+
+		add_settings_field(
 			'disable_buttons_before_js_loads',
 			__( 'Disable Buttons Before Javascript Loads', 'stripe-payments' ),
 			array( $this, 'settings_field_callback' ),
@@ -1299,6 +1311,7 @@ class AcceptStripePayments_Admin {
 			case 'use_old_checkout_api1':
 			case 'new_product_edit_interface':
 			case 'disable_buttons_before_js_loads':
+			case 'show_incomplete_orders':
 			case 'dont_save_card':
 			case 'custom_field_mandatory':
 			case 'enable_zip_validation':
@@ -1539,6 +1552,8 @@ class AcceptStripePayments_Admin {
 		$output['send_email_on_error_to'] = sanitize_text_field( $input['send_email_on_error_to'] );
 
 		$output['disable_buttons_before_js_loads'] = empty( $input['disable_buttons_before_js_loads'] ) ? 0 : 1;
+
+		$output['show_incomplete_orders'] = empty( $input['show_incomplete_orders'] ) ? 0 : 1;
 
 		$output['dont_use_stripe_php_sdk'] = empty( $input['dont_use_stripe_php_sdk'] ) ? 0 : 1;
 
