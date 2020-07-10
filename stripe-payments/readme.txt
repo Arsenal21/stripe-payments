@@ -65,6 +65,7 @@ https://www.youtube.com/watch?v=b6owgRBTUwA
 * Option to enable Alipay payments. So your customers can pay using their Alipay accounts.
 * Option to enable Terms and Conditions that your customers have to accept before they can make a purchase.
 * Ability to configure variable products. You can charge different amount for different options of the product.
+* Ability to create "Authorize Only" products. You can hold funds on a card then capture it later.
 * 3D Secure payments compatible.
 * Strong Customer Authentication (SCA) Compliant.
 
