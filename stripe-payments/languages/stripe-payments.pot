@@ -624,7 +624,7 @@ msgid "Show Incomplete Orders"
 msgstr ""
 
 #: admin/class-asp-admin.php:1132
-msgid "If enabled, incomplete orders are also displayed on Orders page."
+msgid "If enabled, incomplete transactions are also displayed in the Orders listing page of the plugin. If Stripe declines a card transaction because the customer entered incorrect card info, it will be considered to be an incomplete transaction."
 msgstr ""
 
 #: admin/class-asp-admin.php:1138

@@ -1129,7 +1129,7 @@ class AcceptStripePayments_Admin {
 			'AcceptStripePayments-experimental-settings',
 			array(
 				'field' => 'show_incomplete_orders',
-				'desc'  => __( 'If enabled, incomplete orders are also displayed on Orders page.', 'stripe-payments' ),
+				'desc'  => __( 'If enabled, incomplete transactions are also displayed in the Orders listing page of the plugin. If Stripe declines a card transaction because the customer entered incorrect card info, it will be considered to be an incomplete transaction.', 'stripe-payments' ),
 			)
 		);
 
