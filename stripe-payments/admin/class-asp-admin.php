@@ -153,14 +153,20 @@ class AcceptStripePayments_Admin {
 
 
 	static function add_admin_notice( $type, $text, $dism = true ) {
-		$msg_arr   = get_transient( 'asp_admin_msg_arr' );
-		$msg_arr   = empty( $msg_arr ) ? array() : $msg_arr;
-		$msg_arr[] = array(
+		$msg_arr  = get_transient( 'asp_admin_msg_arr' );
+		$msg_arr  = empty( $msg_arr ) ? array() : $msg_arr;
+		$arr_item = array(
 			'type' => $type,
 			'text' => $text,
 			'dism' => $dism,
 		);
-		set_transient( 'asp_admin_msg_arr', $msg_arr );
+
+		$item_hash = md5( json_encode( $arr_item ) );
+
+		if ( ! isset( $msg_arr[ $item_hash ] ) ) {
+			$msg_arr[ $item_hash ] = $arr_item;
+			set_transient( 'asp_admin_msg_arr', $msg_arr );
+		}
 	}
 
 	function admin_init() {
