@@ -87,8 +87,9 @@ class AcceptStripePayments {
 				deactivate_plugins( 'stripe-payments-recaptcha/asp-recaptcha-main.php' );
 			}
 		}
-
-		require_once WP_ASP_PLUGIN_PATH . 'includes/recaptcha/asp-recaptcha-main.php';
+		if ( ! class_exists( 'ASPRECAPTCHA_main' ) ) {
+			require_once WP_ASP_PLUGIN_PATH . 'includes/recaptcha/asp-recaptcha-main.php';
+		}
 
 		$this->settings = (array) get_option( 'AcceptStripePayments-settings' );
 
