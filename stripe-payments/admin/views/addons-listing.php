@@ -58,16 +58,6 @@ $output = '';
 		);
 		array_push( $addons_data, $addon_4 );
 
-		$addon_5 = array(
-			'name'         => __( 'reCAPTCHA Addon', 'stripe-payments' ),
-			'thumbnail'    => WP_ASP_PLUGIN_URL . '/admin/assets/images/google-recaptcha.png',
-			'description'  => __( 'When you enable this addon, the reCAPTCHA popup will appear when customers click a Stripe payment button.', 'stripe-payments' ),
-			'page_url'     => 'https://s-plugins.com/stripe-payments-recaptcha-addon/',
-			'settings_url' => 'edit.php?post_type=' . ASPMain::$products_slug . '&page=stripe-payments-settings#recaptcha',
-			'installed'    => class_exists( 'ASPRECAPTCHA_main' ) ? true : false,
-		);
-		array_push( $addons_data, $addon_5 );
-
 		$addon_6 = array(
 			'name'         => __( 'Alipay Addon', 'stripe-payments' ),
 			'thumbnail'    => WP_ASP_PLUGIN_URL . '/admin/assets/images/alipay-stripe-payments-addon.png',

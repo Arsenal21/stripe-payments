@@ -7,7 +7,6 @@ class ASP_Addons_Helper {
 	public $ASPAdmin;
 
 	protected $addons = array(
-		array( 'stripe-payments-recaptcha', 'stripe-payments-recaptcha/asp-recaptcha-main.php', 'stripe-payments-recaptcha', 'google-recaptcha.png' ),
 		array( 'stripe-payments-country-autodetect', 'stripe-payments-country-autodetect/asp-country-autodetect-main.php', 'stripe-payments-country-autodetect', '' ),
 		array( 'stripe-payments-custom-messages', 'stripe-payments-custom-messages/asp-custmsg-main.php', 'stripe-payments-custom-messages', 'stripe-custom-messages-addon.png' ),
 	);
