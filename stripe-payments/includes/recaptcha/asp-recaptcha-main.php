@@ -49,19 +49,19 @@ class ASPRECAPTCHA_main {
 			)
 		);
 		if ( is_wp_error( $res ) ) {
-			$ret['error'] = __( 'reCaptcha: error occurred during API request.', 'asp-recaptcha' ) . ' ' . $res->get_error_message();
+			$ret['error'] = __( 'reCaptcha: error occurred during API request.', 'stripe-payments' ) . ' ' . $res->get_error_message();
 			return $ret;
 		}
 
 		if ( $res['response']['code'] !== 200 ) {
-			$ret['error'] = __( 'reCaptcha: error occurred during API request. HTTP Error code:', 'asp-recaptcha' ) . ' ' . $res['response']['code'];
+			$ret['error'] = __( 'reCaptcha: error occurred during API request. HTTP Error code:', 'stripe-payments' ) . ' ' . $res['response']['code'];
 			return $ret;
 		}
 
 		$response = json_decode( $res['body'], true );
 
 		if ( is_null( $response ) ) {
-			$ret['error'] = __( 'reCaptcha: error occured parsing API response, invalid JSON data.', 'asp-recaptcha' );
+			$ret['error'] = __( 'reCaptcha: error occured parsing API response, invalid JSON data.', 'stripe-payments' );
 			return $ret;
 		}
 
@@ -71,16 +71,16 @@ class ASPRECAPTCHA_main {
 				foreach ( $response['error-codes'] as $error_code ) {
 					switch ( $error_code ) {
 						case 'invalid-input-response':
-							$err_codes_str .= __( 'The response parameter is invalid or malformed.', 'asp-recaptcha' );
+							$err_codes_str .= __( 'The response parameter is invalid or malformed.', 'stripe-payments' );
 							break;
 						case 'missing-input-secret':
-							$err_codes_str .= __( 'Secret key is missing.', 'asp-recaptcha' );
+							$err_codes_str .= __( 'Secret key is missing.', 'stripe-payments' );
 							break;
 						case 'invalid-input-secret':
-							$err_codes_str .= __( 'Secret key is invalid or malformed.', 'asp-recaptcha' );
+							$err_codes_str .= __( 'Secret key is invalid or malformed.', 'stripe-payments' );
 							break;
 						case 'missing-input-response':
-							$err_codes_str .= __( 'The response parameter is missing.', 'asp-recaptcha' );
+							$err_codes_str .= __( 'The response parameter is missing.', 'stripe-payments' );
 							break;
 						default:
 							$err_codes_str .= $error_code;
@@ -88,7 +88,7 @@ class ASPRECAPTCHA_main {
 					}
 				}
 			}
-			$ret['error'] = __( 'reCaptcha: check failed. Following error(s) occurred:', 'asp-recaptcha' ) . ' ' . $err_codes_str;
+			$ret['error'] = __( 'reCaptcha: check failed. Following error(s) occurred:', 'stripe-payments' ) . ' ' . $err_codes_str;
 			return $ret;
 		}
 		return $ret;
@@ -98,7 +98,7 @@ class ASPRECAPTCHA_main {
 		$out     = array();
 		$payload = filter_input( INPUT_POST, 'recaptcha_response', FILTER_SANITIZE_STRING );
 		if ( empty( $payload ) ) {
-			$out['error'] = __( 'Empty reCaptcha response received.', 'asp-recaptcha' );
+			$out['error'] = __( 'Empty reCaptcha response received.', 'stripe-payments' );
 			wp_send_json( $out );
 		}
 
@@ -125,7 +125,7 @@ class ASPRECAPTCHA_main {
 		if ( ! $checked ) {
 			$err = $sess->get_transient_data( 'reCaptcha_error' );
 			if ( empty( $err ) ) {
-				$err = __( 'reCaptcha check failed.', 'asp-recaptcha' );
+				$err = __( 'reCaptcha check failed.', 'stripe-payments' );
 			}
 			wp_send_json(
 				array(
@@ -142,61 +142,6 @@ class ASPRECAPTCHA_main {
 		$sess = ASP_Session::get_instance();
 		$sess->set_transient_data( 'reCaptcha_checked', false );
 		$sess->set_transient_data( 'reCaptcha_error', false );
-	}
-
-	public function before_payment_processing( $ret, $post ) {
-		if ( ! isset( $post['recaptchaKey'] ) || empty( $post['recaptchaKey'] ) ) {
-			$ret['error'] = __( 'reCaptcha: missing user response data.', 'asp-recaptcha' );
-			return $ret;
-		}
-		$payload = sanitize_text_field( $post['recaptchaKey'] );
-
-		$ret = $this->check_recatpcha( $payload );
-
-		return $ret;
-	}
-
-	public function output_styles( $output ) {
-		ob_start();
-		?>
-<style>
-.asp-recaptcha-modal {
-	display: none;
-	max-width: 350px !important;
-	min-width: 314px;
-}
-
-.asp-recaptcha-container {
-	height: 100px;
-	margin: 0 auto;
-	margin-top: 15px;
-	width: auto;
-	padding: 0 5px;
-}
-
-.asp-recaptcha-container div {
-	margin: 0 auto;
-	height: 78px;
-}
-
-div.asp-recaptcha-modal div.iziModal-header {
-	background: #3795cb none repeat scroll 0% 0% !important;
-}
-</style>
-		<?php
-		$output .= ob_get_clean();
-		return $output;
-	}
-
-	public function after_button( $output, $data, $class ) {
-		ob_start();
-		?>
-<div id="asp-recaptcha-modal-<?php echo $data['uniq_id']; ?>" class="asp-recaptcha-modal">
-	<div id="asp-recaptcha-container-<?php echo $data['uniq_id']; ?>" class="asp-recaptcha-container"></div>
-</div>
-		<?php
-		$output .= ob_get_clean();
-		return $output;
 	}
 
 	public function ng_before_buttons( $out, $data ) {
@@ -233,12 +178,17 @@ div.asp-recaptcha-modal div.iziModal-header {
 	opacity: 0.75;
 }
 
-		<?php if ( $invisible ) { ?>
-.grecaptcha-badge {
-	visibility: hidden;
-}
+		<?php
+		if ( $invisible ) {
+			?>
+	.grecaptcha-badge {
+		visibility: hidden;
+	}
 
-		<?php } ?>
+			<?php
+		}
+
+		?>
 </style>
 <div id="asp-recaptcha-container" class="asp-recaptcha-container
 		<?php
@@ -299,6 +249,61 @@ div.asp-recaptcha-modal div.iziModal-header {
 				$this->asp_main->footer_scripts .= '<link rel="prefetch" href="' . WP_ASP_PLUGIN_URL . '/includes/recaptcha/public/js/asp-recaptcha-ng.js?ver=' . WP_ASP_PLUGIN_VERSION . '" />';
 			}
 		}
+		return $output;
+	}
+
+	public function before_payment_processing( $ret, $post ) {
+		if ( ! isset( $post['recaptchaKey'] ) || empty( $post['recaptchaKey'] ) ) {
+			$ret['error'] = __( 'reCaptcha: missing user response data.', 'stripe-payments' );
+			return $ret;
+		}
+		$payload = sanitize_text_field( $post['recaptchaKey'] );
+
+		$ret = $this->check_recatpcha( $payload );
+
+		return $ret;
+	}
+
+	public function output_styles( $output ) {
+		ob_start();
+		?>
+<style>
+.asp-recaptcha-modal {
+	display: none;
+	max-width: 350px !important;
+	min-width: 314px;
+}
+
+.asp-recaptcha-container {
+	height: 100px;
+	margin: 0 auto;
+	margin-top: 15px;
+	width: auto;
+	padding: 0 5px;
+}
+
+.asp-recaptcha-container div {
+	margin: 0 auto;
+	height: 78px;
+}
+
+div.asp-recaptcha-modal div.iziModal-header {
+	background: #3795cb none repeat scroll 0% 0% !important;
+}
+</style>
+		<?php
+		$output .= ob_get_clean();
+		return $output;
+	}
+
+	public function after_button( $output, $data, $class ) {
+		ob_start();
+		?>
+<div id="asp-recaptcha-modal-<?php echo $data['uniq_id']; ?>" class="asp-recaptcha-modal">
+	<div id="asp-recaptcha-container-<?php echo $data['uniq_id']; ?>" class="asp-recaptcha-container"></div>
+</div>
+		<?php
+		$output .= ob_get_clean();
 		return $output;
 	}
 

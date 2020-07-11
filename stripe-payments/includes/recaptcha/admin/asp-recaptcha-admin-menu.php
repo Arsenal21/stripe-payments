@@ -27,10 +27,10 @@ class ASPRECAPTCHA_admin_menu {
 
 		if ( 1 === $output['recaptcha_enabled'] ) {
 			if ( empty( $output['recaptcha_site_key'] ) ) {
-				add_settings_error( 'AcceptStripePayments-settings', 'invalid-credentials', __( 'Please enter reCaptcha Site Key.', 'asp-recaptcha' ) );
+				add_settings_error( 'AcceptStripePayments-settings', 'invalid-credentials', __( 'Please enter reCaptcha Site Key.', 'stripe-payments' ) );
 			}
 			if ( empty( $output['recaptcha_secret_key'] ) ) {
-				add_settings_error( 'AcceptStripePayments-settings', 'invalid-credentials', __( 'Please enter reCaptcha Secret Key.', 'asp-recaptcha' ) );
+				add_settings_error( 'AcceptStripePayments-settings', 'invalid-credentials', __( 'Please enter reCaptcha Secret Key.', 'stripe-payments' ) );
 			}
 		}
 		return $output;
@@ -55,68 +55,68 @@ class ASPRECAPTCHA_admin_menu {
 	}
 
 	public function register_settings() {
-		add_settings_section( 'AcceptStripePayments-recaptcha-section', __( 'reCAPTCHA Settings', 'asp-recaptcha' ), array( $this, 'show_settings_description' ), $this->plugin_slug . '-recaptcha' );
+		add_settings_section( 'AcceptStripePayments-recaptcha-section', __( 'reCAPTCHA Settings', 'stripe-payments' ), array( $this, 'show_settings_description' ), $this->plugin_slug . '-recaptcha' );
 
 		add_settings_field(
 			'recaptcha_enabled',
-			__( 'Enable reCAPTCHA', 'asp-recaptcha' ),
+			__( 'Enable reCAPTCHA', 'stripe-payments' ),
 			array( $this->asp_admin, 'settings_field_callback' ),
 			$this->plugin_slug . '-recaptcha',
 			'AcceptStripePayments-recaptcha-section',
 			array(
 				'field' => 'recaptcha_enabled',
 				'size'  => 10,
-				'desc'  => __( 'Enables the reCAPTCHA feature. Enter reCAPTCHA v2 API Keys below.', 'asp-recaptcha' ),
+				'desc'  => __( 'Enables the reCAPTCHA feature. Enter reCAPTCHA v2 API Keys below.', 'stripe-payments' ),
 			)
 		);
 
 		add_settings_field(
 			'recaptcha_invisible',
-			__( 'Use Invisible reCAPTCHA Badge', 'asp-recaptcha' ),
+			__( 'Use Invisible reCAPTCHA Badge', 'stripe-payments' ),
 			array( $this->asp_admin, 'settings_field_callback' ),
 			$this->plugin_slug . '-recaptcha',
 			'AcceptStripePayments-recaptcha-section',
 			array(
 				'field' => 'recaptcha_invisible',
 				'size'  => 10,
-				'desc'  => __( 'If you enable this option then you must enter reCAPTCHA v2 Invisible badge API Keys below.', 'asp-recaptcha' ),
+				'desc'  => __( 'If you enable this option then you must enter reCAPTCHA v2 Invisible badge API Keys below.', 'stripe-payments' ),
 			)
 		);
 
 		add_settings_field(
 			'recaptcha_site_key',
-			__( 'Site Key', 'asp-recaptcha' ),
+			__( 'Site Key', 'stripe-payments' ),
 			array( $this->asp_admin, 'settings_field_callback' ),
 			$this->plugin_slug . '-recaptcha',
 			'AcceptStripePayments-recaptcha-section',
 			array(
 				'field' => 'recaptcha_site_key',
 				'size'  => 50,
-				'desc'  => __( 'Your reCaptcha Site Key.', 'asp-recaptcha' ),
+				'desc'  => __( 'Your reCaptcha Site Key.', 'stripe-payments' ),
 			)
 		);
 
 		add_settings_field(
 			'recaptcha_secret_key',
-			__( 'Secret Key', 'asp-recaptcha' ),
+			__( 'Secret Key', 'stripe-payments' ),
 			array( $this->asp_admin, 'settings_field_callback' ),
 			$this->plugin_slug . '-recaptcha',
 			'AcceptStripePayments-recaptcha-section',
 			array(
 				'field' => 'recaptcha_secret_key',
 				'size'  => 50,
-				'desc'  => __( 'Your reCaptcha Secret Key.', 'asp-recaptcha' ),
+				'desc'  => __( 'Your reCaptcha Secret Key.', 'stripe-payments' ),
 			)
 		);
 	}
 
 	public function show_settings_description() {
-		echo __( '<a href="https://s-plugins.com/stripe-payments-recaptcha-addon/" target="_blank">Click here</a> to read the documentation to learn how to configure this addon and get API keys for your website.', 'asp-recaptcha' );
+		echo __( '<a href="https://s-plugins.com/stripe-payments-recaptcha-addon/" target="_blank">Click here</a> to read the documentation to learn how to configure this addon and get API keys for your website.', 'stripe-payments' );
 	}
 
 	public function after_tabs_menu() {
 		?>
-	<a href="#recaptcha" data-tab-name="recaptcha" class="nav-tab"><?php echo __( 'reCAPTCHA', 'asp-recaptcha' ); ?></a>
+	<a href="#recaptcha" data-tab-name="recaptcha" class="nav-tab"><?php echo __( 'reCAPTCHA', 'stripe-payments' ); ?></a>
 		<?php
 	}
 
