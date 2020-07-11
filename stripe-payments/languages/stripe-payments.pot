@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2020-07-11T14:51:39+03:00\n"
+"POT-Creation-Date: 2020-07-11T15:09:50+03:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.4.0\n"
 "X-Domain: stripe-payments\n"
@@ -885,7 +885,7 @@ msgstr ""
 #. translators: %s is not a placeholder
 #: admin/class-asp-admin.php:1605
 #: includes/class-asp-pp-handler.php:432
-#: includes/class-asp.php:310
+#: includes/class-asp.php:311
 msgid "Pay %s"
 msgstr ""
 
@@ -3668,43 +3668,43 @@ msgstr ""
 msgid "Vietnamese Dong (VND)"
 msgstr ""
 
-#: includes/class-asp.php:308
+#: includes/class-asp.php:309
 msgid "Buy Now"
 msgstr ""
 
-#: includes/class-asp.php:314
+#: includes/class-asp.php:315
 msgid "Thank you for the purchase"
 msgstr ""
 
-#: includes/class-asp.php:315
+#: includes/class-asp.php:316
 msgid "Hello"
 msgstr ""
 
-#: includes/class-asp.php:316
+#: includes/class-asp.php:317
 msgid "Thank you for your purchase! You ordered the following item(s):"
 msgstr ""
 
-#: includes/class-asp.php:319
+#: includes/class-asp.php:320
 msgid "Notification of product sale"
 msgstr ""
 
-#: includes/class-asp.php:320
+#: includes/class-asp.php:321
 msgid "Dear Seller"
 msgstr ""
 
-#: includes/class-asp.php:321
+#: includes/class-asp.php:322
 msgid "This mail is to notify you of a product sale."
 msgstr ""
 
-#: includes/class-asp.php:323
+#: includes/class-asp.php:324
 msgid "The sale was made to"
 msgstr ""
 
-#: includes/class-asp.php:324
+#: includes/class-asp.php:325
 msgid "Thanks"
 msgstr ""
 
-#: includes/class-asp.php:340
+#: includes/class-asp.php:341
 msgid "I accept the <a href=\"https://example.com/terms-and-conditions/\" target=\"_blank\">Terms and Conditions</a>"
 msgstr ""
 
