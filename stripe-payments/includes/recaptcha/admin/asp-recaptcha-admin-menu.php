@@ -9,6 +9,16 @@ class ASPRECAPTCHA_admin_menu {
 		$this->asp_admin   = AcceptStripePayments_Admin::get_instance();
 		$this->plugin_slug = $this->asp_admin->plugin_slug;
 
+		if ( file_exists( WP_PLUGIN_DIR . '/stripe-payments-recaptcha/asp-recaptcha-main.php' ) ) {
+			AcceptStripePayments_Admin::add_admin_notice(
+				'warning',
+				'<b>Stripe Payments:</b> ' .
+				__( 'reCaptcha add-on is a part of core plugin now. Please delete "Stripe Payments reCapthca Addon" plugin to prevent potential issues.', 'stripe-payments' ) .
+				'<br><br><a href="' . get_admin_url() . 'plugins.php?s=Stripe+Payments+reCAPTCHA+Addon&plugin_status=all' . '">' . esc_html( __( 'Click here to see the plugin on Plugins page.', 'stripe-payments' ) ) . '</a>',
+				false
+			);
+		}
+
 		add_action( 'admin_init', array( $this, 'register_settings' ) );
 		add_action( 'asp-settings-page-after-tabs-menu', array( $this, 'after_tabs_menu' ), 0 );
 		add_action( 'asp-settings-page-after-tabs', array( $this, 'after_tabs' ) );
