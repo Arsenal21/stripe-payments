@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the Stripe Payments plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Stripe Payments 2.0.32t1\n"
+"Project-Id-Version: Stripe Payments 2.0.32t2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/stripe-payments\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2020-07-11T15:09:50+03:00\n"
+"POT-Creation-Date: 2020-07-12T15:18:50+03:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.4.0\n"
 "X-Domain: stripe-payments\n"
@@ -3790,47 +3790,51 @@ msgstr ""
 msgid "reCAPTCHA"
 msgstr ""
 
-#: includes/recaptcha/asp-recaptcha-main.php:52
+#: includes/recaptcha/asp-recaptcha-main.php:61
 msgid "reCaptcha: error occurred during API request."
 msgstr ""
 
-#: includes/recaptcha/asp-recaptcha-main.php:57
+#: includes/recaptcha/asp-recaptcha-main.php:66
 msgid "reCaptcha: error occurred during API request. HTTP Error code:"
 msgstr ""
 
-#: includes/recaptcha/asp-recaptcha-main.php:64
+#: includes/recaptcha/asp-recaptcha-main.php:73
 msgid "reCaptcha: error occured parsing API response, invalid JSON data."
 msgstr ""
 
-#: includes/recaptcha/asp-recaptcha-main.php:74
+#: includes/recaptcha/asp-recaptcha-main.php:83
 msgid "The response parameter is invalid or malformed."
 msgstr ""
 
-#: includes/recaptcha/asp-recaptcha-main.php:77
+#: includes/recaptcha/asp-recaptcha-main.php:86
 msgid "Secret key is missing."
 msgstr ""
 
-#: includes/recaptcha/asp-recaptcha-main.php:80
+#: includes/recaptcha/asp-recaptcha-main.php:89
 msgid "Secret key is invalid or malformed."
 msgstr ""
 
-#: includes/recaptcha/asp-recaptcha-main.php:83
+#: includes/recaptcha/asp-recaptcha-main.php:92
 msgid "The response parameter is missing."
 msgstr ""
 
-#: includes/recaptcha/asp-recaptcha-main.php:91
+#: includes/recaptcha/asp-recaptcha-main.php:100
 msgid "reCaptcha: check failed. Following error(s) occurred:"
 msgstr ""
 
-#: includes/recaptcha/asp-recaptcha-main.php:101
+#: includes/recaptcha/asp-recaptcha-main.php:110
 msgid "Empty reCaptcha response received."
 msgstr ""
 
-#: includes/recaptcha/asp-recaptcha-main.php:128
+#: includes/recaptcha/asp-recaptcha-main.php:137
 msgid "reCaptcha check failed."
 msgstr ""
 
-#: includes/recaptcha/asp-recaptcha-main.php:257
+#: includes/recaptcha/asp-recaptcha-main.php:215
+msgid "Please enter reCaptcha keys."
+msgstr ""
+
+#: includes/recaptcha/asp-recaptcha-main.php:254
 msgid "reCaptcha: missing user response data."
 msgstr ""
 
