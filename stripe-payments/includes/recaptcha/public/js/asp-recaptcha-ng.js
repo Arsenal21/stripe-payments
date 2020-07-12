@@ -1,3 +1,5 @@
+var reCaptchaLoaded = false;
+
 var reCaptchaHandlerNG = function (data) {
 	var parent = this;
 	parent.data = data;
@@ -5,7 +7,7 @@ var reCaptchaHandlerNG = function (data) {
 	parent.errCont = jQuery('#recaptcha-error');
 
 	parent.init = function () {
-		if (typeof reCaptchaLoaded !== 'undefined') {
+		if (reCaptchaLoaded) {
 			parent.reCaptchaRender();
 		}
 	}
@@ -88,7 +90,7 @@ function onloadCallback() {
 			if (addon.obj !== 'undefined') {
 				addon.obj.reCaptchaRender();
 			} else {
-				var reCaptchaLoaded = true;
+				reCaptchaLoaded = true;
 			}
 		}
 	});
