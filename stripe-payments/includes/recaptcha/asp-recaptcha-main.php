@@ -2,13 +2,22 @@
 class ASPRECAPTCHA_main {
 
 	public $asp_main;
+	public $keys_entered = false;
+	public $enabled      = false;
 
 	public function __construct() {
 		add_action( 'plugins_loaded', array( $this, 'plugins_loaded' ) );
 	}
 
 	public function plugins_loaded() {
-			$this->asp_main = AcceptStripePayments::get_instance();
+		$this->asp_main = AcceptStripePayments::get_instance();
+
+		$this->enabled = $this->asp_main->get_setting( 'recaptcha_enabled' ) === 1;
+
+		if ( ! empty( $this->asp_main->get_setting( 'recaptcha_secret_key' ) ) &&
+			! empty( $this->asp_main->get_setting( 'recaptcha_site_key' ) ) ) {
+			$this->keys_entered = true;
+		}
 
 			add_action( 'wp_ajax_asp_recaptcha_check', array( $this, 'ajax_recaptcha_check' ) );
 			add_action( 'wp_ajax_nopriv_asp_recaptcha_check', array( $this, 'ajax_recaptcha_check' ) );
@@ -18,7 +27,7 @@ class ASPRECAPTCHA_main {
 			new ASPRECAPTCHA_admin_menu();
 		}
 
-		if ( $this->asp_main->get_setting( 'recaptcha_enabled' ) === 1 ) {
+		if ( $this->enabled ) {
 				add_action( 'asp_ng_before_token_request', array( $this, 'ng_before_token_request' ) );
 				add_action( 'asp_ng_before_payment_processing', array( $this, 'ng_before_payment_processing' ) );
 			if ( ! is_admin() ) {
@@ -177,31 +186,16 @@ class ASPRECAPTCHA_main {
 	margin: 5px 0;
 	opacity: 0.75;
 }
-
-		<?php
-		if ( $invisible ) {
-			?>
-	.grecaptcha-badge {
-		visibility: hidden;
-	}
-
-			<?php
-		}
-
-		?>
+		<?php echo $invisible ? '.grecaptcha-badge {visibility: hidden;}' : ''; ?>
 </style>
-<div id="asp-recaptcha-container" class="asp-recaptcha-container
-		<?php
-		if ( $invisible ) {
-			echo ' asp-recaptcha-invisible';}
-		?>
-"></div>
+<div id="asp-recaptcha-container" class="asp-recaptcha-container<?php echo $invisible ? ' asp-recaptcha-invisible' : ''; ?>"></div>
 		<?php if ( $invisible ) { ?>
 <div id="asp-recaptcha-google-notice">This site is protected by reCAPTCHA and the Google
 	<a href="https://policies.google.com/privacy" target="_blank">Privacy Policy</a> and
 	<a href="https://policies.google.com/terms" target="_blank">Terms of Service</a> apply.</div>
-		<?php } ?>
-<div id="recaptcha-error" class="form-err" role="alert"></div>
+<?php } ?>
+<div id="recaptcha-error" class="form-err" role="alert">
+</div>
 		<?php
 		$out .= ob_get_clean();
 		return $out;
@@ -217,6 +211,9 @@ class ASPRECAPTCHA_main {
 	}
 
 	public function ng_data_ready( $data, $atts ) {
+		if ( $this->enabled && ! $this->keys_entered ) {
+			$data['fatal_error'] = __( 'Please enter reCaptcha keys.', 'stripe-payments' );
+		}
 		$addon                    = array(
 			'name'    => 'reCaptcha',
 			'handler' => 'reCaptchaHandlerNG',
