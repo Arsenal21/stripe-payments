@@ -13,6 +13,8 @@ class ASP_Self_Hooks_Handler {
 		add_filter( 'asp_ng_before_pi_create_update', array( $this, 'pi_update' ) );
 
 		add_filter( 'asp_ng_available_currencies', array( $this, 'filter_available_currencies' ) );
+
+		add_action( 'asp_ng_before_token_request', array( $this, 'check_token' ) );
 	}
 
 	public function plugins_loaded() {
@@ -345,6 +347,18 @@ class ASP_Self_Hooks_Handler {
 			}
 		}
 		return $data;
+	}
+
+	public function check_token( $item ) {
+		$product_id = $item->get_product_id();
+		$token      = filter_input( INPUT_POST, 'token', FILTER_SANITIZE_STRING );
+		$g_token    = ASP_Utils::get_visitor_token( $product_id );
+		if ( empty( $token ) || $g_token !== $token ) {
+			$out            = array();
+			$out['success'] = false;
+			$out['err']     = __( 'Invalid security token.', 'stripe-payments' );
+			wp_send_json( $out );
+		}
 	}
 
 }
