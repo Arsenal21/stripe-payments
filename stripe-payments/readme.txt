@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 4.7
 Tested up to: 5.4
 Requires PHP: 5.6
-Stable tag: 2.0.32t2
+Stable tag: 2.0.32
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -154,6 +154,10 @@ Yes, please visit Stripe Payments > Settings screen for options.
 None.
 
 == Changelog ==
+
+= 2.0.32 =
+- reCaptcha add-on is now built-in.
+- Added security token check for subscriptions payments.
 
 = 2.0.31 =
 - Added `Authorize Only` option in the product configuration interface. You can use it to hold funds on a card and then capture it later from the Orders page.

@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the Stripe Payments plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Stripe Payments 2.0.32t2\n"
+"Project-Id-Version: Stripe Payments 2.0.32\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/stripe-payments\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2020-07-12T15:18:50+03:00\n"
+"POT-Creation-Date: 2020-07-14T19:23:31+03:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.4.0\n"
 "X-Domain: stripe-payments\n"
@@ -1459,7 +1459,7 @@ msgid "Coupons Settings"
 msgstr ""
 
 #: admin/includes/class-products-meta-boxes.php:33
-#: includes/class-asp-pp-handler.php:789
+#: includes/class-asp-pp-handler.php:782
 #: includes/shortcodes/class-shortcode-asp.php:178
 msgid "Custom Field"
 msgstr ""
@@ -2226,9 +2226,9 @@ msgstr ""
 
 #: admin/views/admin.php:131
 #: includes/class-asp-pp-handler.php:532
-#: includes/class-asp-pp-handler.php:750
-#: includes/class-asp-pp-handler.php:754
-#: includes/class-asp-pp-handler.php:865
+#: includes/class-asp-pp-handler.php:743
+#: includes/class-asp-pp-handler.php:747
+#: includes/class-asp-pp-handler.php:858
 msgid "Error occurred:"
 msgstr ""
 
@@ -2342,7 +2342,7 @@ msgid "Please enter a valid amount"
 msgstr ""
 
 #: includes/class-asp-pp-handler.php:474
-#: includes/class-asp-pp-handler.php:558
+#: includes/class-asp-pp-handler.php:551
 #: includes/shortcodes/class-shortcode-asp.php:98
 msgid "Minimum amount is"
 msgstr ""
@@ -2364,7 +2364,7 @@ msgstr ""
 
 #. translators: %d is number of items in stock
 #: includes/class-asp-pp-handler.php:479
-#: includes/class-asp-pp-handler.php:548
+#: includes/class-asp-pp-handler.php:541
 #: includes/shortcodes/class-shortcode-asp.php:102
 msgid "You cannot order more items than available: %d"
 msgstr ""
@@ -2442,12 +2442,8 @@ msgstr ""
 msgid "Currency not supported for this payment method."
 msgstr ""
 
-#: includes/class-asp-pp-handler.php:539
-msgid "Invalid security token."
-msgstr ""
-
-#: includes/class-asp-pp-handler.php:577
-#: includes/class-asp-pp-handler.php:580
+#: includes/class-asp-pp-handler.php:570
+#: includes/class-asp-pp-handler.php:573
 msgid "Stripe API error occurred:"
 msgstr ""
 
@@ -2506,6 +2502,10 @@ msgstr ""
 #. translators: %d is product id
 #: includes/class-asp-product-item.php:518
 msgid "Can't find product with ID %d"
+msgstr ""
+
+#: includes/class-asp-self-hooks-handler.php:359
+msgid "Invalid security token."
 msgstr ""
 
 #: includes/class-asp-utils.php:292
