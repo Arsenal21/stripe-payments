@@ -533,13 +533,6 @@ class ASP_PP_Handler {
 			wp_send_json( $out );
 		}
 
-		$token   = filter_input( INPUT_POST, 'token', FILTER_SANITIZE_STRING );
-		$g_token = ASP_Utils::get_visitor_token( $product_id );
-		if ( empty( $token ) || $g_token !== $token ) {
-			$out['err'] = __( 'Invalid security token.', 'stripe-payments' );
-			wp_send_json( $out );
-		}
-
 		if ( $item->stock_control_enabled() ) {
 			$stock_items        = $item->get_stock_items();
 			$out['stock_items'] = $stock_items;

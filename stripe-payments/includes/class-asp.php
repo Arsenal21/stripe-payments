@@ -79,6 +79,18 @@ class AcceptStripePayments {
 
 		add_action( 'asp_send_scheduled_email', array( $this, 'send_scheduled_email' ), 10, 4 );
 
+		if ( is_admin() ) {
+			if ( ! function_exists( 'is_plugin_active' ) ) {
+				require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
+			}
+			if ( is_plugin_active( 'stripe-payments-recaptcha/asp-recaptcha-main.php' ) ) {
+				deactivate_plugins( 'stripe-payments-recaptcha/asp-recaptcha-main.php' );
+			}
+		}
+		if ( ! class_exists( 'ASPRECAPTCHA_main' ) ) {
+			require_once WP_ASP_PLUGIN_PATH . 'includes/recaptcha/asp-recaptcha-main.php';
+		}
+
 		$this->settings = (array) get_option( 'AcceptStripePayments-settings' );
 
 		if ( $this->get_setting( 'is_live' ) == 0 ) {
