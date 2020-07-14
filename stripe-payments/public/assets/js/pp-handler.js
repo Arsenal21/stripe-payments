@@ -908,6 +908,8 @@ function handlePayment() {
 			ct_reqStr = ct_reqStr + '&shipping_details=' + JSON.stringify(shippingDetails);
 		}
 
+		ct_reqStr += '&token=' + vars.data.visitor_token;
+
 		vars.confirmToken_reqStr = ct_reqStr;
 
 		doAddonAction('preConfirmToken');
