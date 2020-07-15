@@ -121,7 +121,7 @@ class ASPRECAPTCHA_admin_menu {
 	}
 
 	public function show_settings_description() {
-		echo __( '<a href="https://s-plugins.com/stripe-payments-recaptcha-addon/" target="_blank">Click here</a> to read the documentation to learn how to configure this addon and get API keys for your website.', 'stripe-payments' );
+		echo __( '<a href="https://s-plugins.com/stripe-payments-recaptcha-addon/" target="_blank">Click here</a> to read the documentation to learn how to configure this and get API keys for your website.', 'stripe-payments' );
 	}
 
 	public function after_tabs_menu() {

@@ -3783,7 +3783,7 @@ msgid "Your reCaptcha Secret Key."
 msgstr ""
 
 #: includes/recaptcha/admin/asp-recaptcha-admin-menu.php:124
-msgid "<a href=\"https://s-plugins.com/stripe-payments-recaptcha-addon/\" target=\"_blank\">Click here</a> to read the documentation to learn how to configure this addon and get API keys for your website."
+msgid "<a href=\"https://s-plugins.com/stripe-payments-recaptcha-addon/\" target=\"_blank\">Click here</a> to read the documentation to learn how to configure this and get API keys for your website."
 msgstr ""
 
 #: includes/recaptcha/admin/asp-recaptcha-admin-menu.php:129

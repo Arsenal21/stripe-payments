@@ -156,7 +156,7 @@ None.
 == Changelog ==
 
 = 2.0.32 =
-- reCaptcha add-on is now built-in.
+- reCAPTCHA add-on functionality is now built into the core plugin. You can enable reCAPTCHA from the settings menu of the plugin.
 - Added security token check for subscriptions payments.
 
 = 2.0.31 =
