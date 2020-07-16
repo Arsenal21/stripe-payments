@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 4.7
 Tested up to: 5.4
 Requires PHP: 5.6
-Stable tag: 2.0.33t1
+Stable tag: 2.0.33
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -157,6 +157,7 @@ None.
 
 = 2.0.33 =
 - Fixed payment error when Legacy API is enabled.
+- Changed the way security tokens are generated. Should help prevent `Invalid security token` error on servers with aggressive caching.
 - Added `Disable Security Token Check` settings option.
 
 = 2.0.32 =
