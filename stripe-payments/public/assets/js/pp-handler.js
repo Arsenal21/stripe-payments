@@ -25,6 +25,9 @@ try {
 	document.getElementById('payment-form').style.display = 'none';
 	throw new Error(error);
 }
+
+vars.data.visitor_token = md5(navigator.userAgent + vars.data.button_key);
+
 vars.data.temp = [];
 
 if (vars.data.amount_variable && vars.data.hide_amount_input !== '1') {

@@ -356,9 +356,9 @@ class ASP_Self_Hooks_Handler {
 			return;
 		}
 
-		$product_id = $item->get_product_id();
+		$button_key = $item->get_button_key();
 		$token      = filter_input( INPUT_POST, 'token', FILTER_SANITIZE_STRING );
-		$g_token    = ASP_Utils::get_visitor_token( $product_id );
+		$g_token    = ASP_Utils::get_visitor_token( $button_key );
 		if ( empty( $token ) || $g_token !== $token ) {
 			$out            = array();
 			$out['success'] = false;

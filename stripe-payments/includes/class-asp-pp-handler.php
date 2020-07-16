@@ -331,10 +331,6 @@ class ASP_PP_Handler {
 
 		$data = apply_filters( 'asp_ng_pp_data_ready', $data, array( 'product_id' => $product_id ) ); //phpcs:ignore
 
-		$token = ASP_Utils::get_visitor_token( $product_id );
-
-		$data['visitor_token'] = $token;
-
 		// Authorize Only
 		$auth_only = get_post_meta( $product_id, 'asp_product_authorize_only', true );
 
@@ -416,6 +412,10 @@ class ASP_PP_Handler {
 			$a['styles'][]  = array(
 				'footer' => false,
 				'src'    => WP_ASP_PLUGIN_URL . '/public/views/templates/default/pp-style.css?ver=' . WP_ASP_PLUGIN_VERSION,
+			);
+			$a['scripts'][] = array(
+				'footer' => true,
+				'src'    => WP_ASP_PLUGIN_URL . '/public/assets/js/md5.min.js?ver=' . WP_ASP_PLUGIN_VERSION,
 			);
 			$a['scripts'][] = array(
 				'footer' => true,
