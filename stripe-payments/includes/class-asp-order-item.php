@@ -191,6 +191,9 @@ class ASP_Order_Item {
 			update_post_meta( $this->id, 'asp_user_id', $user_id );
 		}
 
+		//change order status to 'paid'
+		$this->change_status( 'paid' );
+
 		return $this->id;
 	}
 
