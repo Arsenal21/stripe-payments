@@ -342,11 +342,16 @@ class ASP_PP_Handler {
 				}
 			}
 
+			$data['addons'] = array_values( $data['addons'] );
+
 			foreach ( $data['payment_methods'] as $key => $pm ) {
 				if ( in_array( strtoupper( $pm['id'] ), $this->auth_not_supported, true ) ) {
 					unset( $data['payment_methods'][ $key ] );
 				}
 			}
+
+			$data['payment_methods'] = array_values( $data['payment_methods'] );
+
 		}
 
 		if ( empty( $plan_id ) ) {
