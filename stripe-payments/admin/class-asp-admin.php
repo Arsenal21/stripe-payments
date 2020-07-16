@@ -1128,6 +1128,19 @@ class AcceptStripePayments_Admin {
 		);
 
 		add_settings_field(
+			'disable_security_token_check',
+			__( 'Disable Security Token Check', 'stripe-payments' ),
+			array( $this, 'settings_field_callback' ),
+			$this->plugin_slug . '-advanced',
+			'AcceptStripePayments-experimental-settings',
+			array(
+				'field' => 'disable_security_token_check',
+				'desc'  => __( 'Helps when you\'re getting "Invalid Security Token" errors.', 'stripe-payments' ) . '<br>' .
+				__( 'It is not recommended to disable security tokens. Alter your server cache settings to not cache payment popup URLs instead.', 'stripe-payments' ),
+			)
+		);
+
+		add_settings_field(
 			'show_incomplete_orders',
 			__( 'Show Incomplete Orders', 'stripe-payments' ),
 			array( $this, 'settings_field_callback' ),
@@ -1318,6 +1331,7 @@ class AcceptStripePayments_Admin {
 			case 'new_product_edit_interface':
 			case 'disable_buttons_before_js_loads':
 			case 'show_incomplete_orders':
+			case 'disable_security_token_check':
 			case 'dont_save_card':
 			case 'custom_field_mandatory':
 			case 'enable_zip_validation':
@@ -1560,6 +1574,8 @@ class AcceptStripePayments_Admin {
 		$output['disable_buttons_before_js_loads'] = empty( $input['disable_buttons_before_js_loads'] ) ? 0 : 1;
 
 		$output['show_incomplete_orders'] = empty( $input['show_incomplete_orders'] ) ? 0 : 1;
+
+		$output['disable_security_token_check'] = empty( $input['disable_security_token_check'] ) ? 0 : 1;
 
 		$output['dont_use_stripe_php_sdk'] = empty( $input['dont_use_stripe_php_sdk'] ) ? 0 : 1;
 

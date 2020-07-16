@@ -350,6 +350,12 @@ class ASP_Self_Hooks_Handler {
 	}
 
 	public function check_token( $item ) {
+		$disable_token_check = $this->main->get_setting( 'disable_security_token_check' );
+
+		if ( $disable_token_check ) {
+			return;
+		}
+
 		$product_id = $item->get_product_id();
 		$token      = filter_input( INPUT_POST, 'token', FILTER_SANITIZE_STRING );
 		$g_token    = ASP_Utils::get_visitor_token( $product_id );
