@@ -1135,8 +1135,8 @@ class AcceptStripePayments_Admin {
 			'AcceptStripePayments-experimental-settings',
 			array(
 				'field' => 'disable_security_token_check',
-				'desc'  => __( 'Helps when you\'re getting "Invalid Security Token" errors.', 'stripe-payments' ) . '<br>' .
-				__( 'It is not recommended to disable security tokens. Alter your server cache settings to not cache payment popup URLs instead.', 'stripe-payments' ),
+				'desc'  => __( 'Helps when you are getting "Invalid Security Token" errors due to caching being done on your server.', 'stripe-payments' ) . '<br>' .
+				__( 'It is not recommended to disable security tokens. You should change your server cache settings to not cache payment popup URLs.', 'stripe-payments' ),
 			)
 		);
 

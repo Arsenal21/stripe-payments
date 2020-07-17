@@ -156,7 +156,7 @@ None.
 == Changelog ==
 
 = 2.0.33 =
-- Fixed payment error when Legacy API is enabled.
+- Fixed payment error when Legacy API option is still enabled.
 - Changed the way security tokens are generated. Should help prevent `Invalid security token` error on servers with aggressive caching.
 - Added `Disable Security Token Check` settings option (if the above fails).
 - Fixed rare issue affecting `Authorize Only` products and payment methods that do not support it.

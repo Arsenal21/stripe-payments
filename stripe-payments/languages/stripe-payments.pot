@@ -624,11 +624,11 @@ msgid "Disable Security Token Check"
 msgstr ""
 
 #: admin/class-asp-admin.php:1138
-msgid "Helps when you're getting \"Invalid Security Token\" errors."
+msgid "Helps when you are getting "Invalid Security Token" errors due to caching being done on your server."
 msgstr ""
 
 #: admin/class-asp-admin.php:1139
-msgid "It is not recommended to disable security tokens. Alter your server cache settings to not cache payment popup URLs instead."
+msgid "It is not recommended to disable security tokens. You should change your server cache settings to not cache payment popup URLs."
 msgstr ""
 
 #: admin/class-asp-admin.php:1145
