@@ -1,11 +1,12 @@
-# Translation of Plugins - Stripe Payments - Development (trunk) in Spanish (Spain)
-# This file is distributed under the same license as the Plugins - Stripe Payments - Development (trunk) package.
+# Translation of Plugins - Stripe Payments - Stable (latest release) in Spanish (Spain)
+# This file is distributed under the same license as the Plugins - Stripe Payments - Stable (latest release) package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Plugins - Stripe Payments - version 2.0.28\n"
+"Project-Id-Version: Plugins - Stripe Payments - Stable (latest release) "
+"2.0.33\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/stripe-payments\n"
-"POT-Creation-Date: 2020-05-22T15:27:52+03:00\n"
-"PO-Revision-Date: 2020-06-08 11:57+1000\n"
+"POT-Creation-Date: 2020-07-17T00:07:07+03:00\n"
+"PO-Revision-Date: 2020-07-21 11:34+1000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: es\n"
@@ -39,13 +40,30 @@ msgstr "Tips and Tricks HQ, wptipsntricks"
 msgid "https://www.tipsandtricks-hq.com/"
 msgstr "https://www.tipsandtricks-hq.com/"
 
-#: admin/class-asp-admin.php:62 admin/class-asp-admin.php:332
-#: admin/class-asp-admin.php:333 admin/views/addons-listing.php:206
-#: includes/class-asp-addons-helper.php:99
+#: admin/class-asp-admin.php:62 admin/class-asp-admin.php:365
+#: admin/class-asp-admin.php:366 admin/views/addons-listing.php:196
+#: includes/class-asp-addons-helper.php:98
 msgid "Settings"
 msgstr "Ajustes"
 
-#: admin/class-asp-admin.php:169
+#. translators: %s is order ID
+#: admin/class-asp-admin.php:102
+msgid "Confirm capturing authorized funds for order #%s"
+msgstr "Confirma la captura de fondos autorizados para el pedido #%s"
+
+#. translators: %s is order ID
+#: admin/class-asp-admin.php:104
+msgid "Confirm cancel authorized funds for order #%s"
+msgstr "Confirma la cancelación de fondos autorizados para el pedido #%s"
+
+#. translators: %s is order ID
+#: admin/class-asp-admin.php:105
+msgid "Error occurred during request. Please refresh page and try again."
+msgstr ""
+"Ha ocurrido un error durante la solicitud. Por favor, actualiza la página y "
+"vuelve a intentarlo."
+
+#: admin/class-asp-admin.php:202
 msgid ""
 "<b>Stripe Payments:</b> following extentions are required by the plugin to "
 "operate properly but aren't installed on your system:"
@@ -53,7 +71,7 @@ msgstr ""
 "<b>Stripe Payments:</b> las siguientes extensiones son necesarias para que "
 "el plugin funcione correctamente pero no están instaladas en tu sistema:"
 
-#: admin/class-asp-admin.php:171 admin/class-asp-admin.php:180
+#: admin/class-asp-admin.php:204 admin/class-asp-admin.php:213
 msgid ""
 "You need to communicate this information to your system administrator or "
 "hosting provider."
@@ -61,11 +79,11 @@ msgstr ""
 "Debes comunicar esta información al administrador del sistema o al proveedor "
 "de alojamiento."
 
-#: admin/class-asp-admin.php:178
+#: admin/class-asp-admin.php:211
 msgid "Warning: Stripe Payments plugin"
 msgstr "Advertencia: Plugin Stripe Payments"
 
-#: admin/class-asp-admin.php:179
+#: admin/class-asp-admin.php:212
 msgid ""
 "PHP version installed on your server doesn't meet minimum required for "
 "Stripe Payments plugin to operate properly."
@@ -73,77 +91,77 @@ msgstr ""
 "La versión de PHP instalada en tu servidor no cumple con los requisitos "
 "mínimos para que el plugin Stripe Payments funcione correctamente."
 
-#: admin/class-asp-admin.php:181
+#: admin/class-asp-admin.php:214
 msgid "PHP Version Installed:"
 msgstr "Versión de PHP instalada:"
 
-#: admin/class-asp-admin.php:182
+#: admin/class-asp-admin.php:215
 msgid "PHP Version Required:"
 msgstr "Versión de PHP requerida:"
 
-#: admin/class-asp-admin.php:182
+#: admin/class-asp-admin.php:215
 msgctxt "Used in \"PHP Version Required: X.X or higher\""
 msgid "or higher."
 msgstr "o superior."
 
-#: admin/class-asp-admin.php:339 admin/views/addons-listing.php:13
+#: admin/class-asp-admin.php:372 admin/views/addons-listing.php:13
 #: admin/views/admin.php:70
 msgid "Add-ons"
 msgstr "Extensiones"
 
-#: admin/class-asp-admin.php:351
+#: admin/class-asp-admin.php:384
 msgid "New API only"
 msgstr "Solo la nueva API"
 
-#: admin/class-asp-admin.php:357
+#: admin/class-asp-admin.php:390
 msgid "Global Settings"
 msgstr "Ajustes globales"
 
-#: admin/class-asp-admin.php:358
+#: admin/class-asp-admin.php:391
 msgid "Credentials"
 msgstr "Credenciales"
 
-#: admin/class-asp-admin.php:359
+#: admin/class-asp-admin.php:392
 msgid "Debug"
 msgstr "Depuración"
 
-#: admin/class-asp-admin.php:361 admin/views/admin.php:34
+#: admin/class-asp-admin.php:394 admin/views/admin.php:34
 msgid "Email Settings"
 msgstr "Ajustes del correo electrónico"
 
-#: admin/class-asp-admin.php:362
+#: admin/class-asp-admin.php:395
 msgid "Transaction Error Email Settings"
 msgstr "Ajustes de correo electrónico de error de transacción"
 
-#: admin/class-asp-admin.php:363
+#: admin/class-asp-admin.php:396
 msgid "Additional Email Settings"
 msgstr "Ajustes adicionales del correo electrónico"
 
-#: admin/class-asp-admin.php:365
+#: admin/class-asp-admin.php:398
 msgid "Price Display Settings"
 msgstr "Ajustes de visualización de precios"
 
-#: admin/class-asp-admin.php:366
+#: admin/class-asp-admin.php:399
 msgid "Custom Field Settings"
 msgstr "Ajustes del campo personalizado"
 
-#: admin/class-asp-admin.php:367
+#: admin/class-asp-admin.php:400
 msgid "Terms and Conditions"
 msgstr "Términos y condiciones"
 
-#: admin/class-asp-admin.php:368
+#: admin/class-asp-admin.php:401
 msgid "Additional Settings"
 msgstr "Ajustes adicionales"
 
-#: admin/class-asp-admin.php:369
+#: admin/class-asp-admin.php:402
 msgid "Experemintal Settings"
-msgstr "Ajustes experemintal"
+msgstr "Ajustes experimentales"
 
-#: admin/class-asp-admin.php:374
+#: admin/class-asp-admin.php:407
 msgid "Checkout Result Page URL"
 msgstr "URL de la página de resultado de finalizar compra"
 
-#: admin/class-asp-admin.php:380
+#: admin/class-asp-admin.php:413
 msgid ""
 "This is the thank you page. This page is automatically created for you when "
 "you install the plugin. Do not delete this page as the plugin will send the "
@@ -153,11 +171,11 @@ msgstr ""
 "cuando instalas el plugin. No borres esta página porque el plugin enviará al "
 "cliente a esta página después del pago."
 
-#: admin/class-asp-admin.php:380
+#: admin/class-asp-admin.php:413
 msgid "Important Notice:"
 msgstr "Noticia importante:"
 
-#: admin/class-asp-admin.php:380
+#: admin/class-asp-admin.php:413
 msgid ""
 "if you are using caching plugins on your site (similar to W3 Total Cache, WP "
 "Rocket etc), you must exclude checkout results page from caching. Failing to "
@@ -168,11 +186,11 @@ msgstr ""
 "de caché. De lo contrario, se generará una salida impredecible de los "
 "resultados de finalizar compra."
 
-#: admin/class-asp-admin.php:386
+#: admin/class-asp-admin.php:419
 msgid "Products Page URL"
 msgstr "URL de la página de productos"
 
-#: admin/class-asp-admin.php:392
+#: admin/class-asp-admin.php:425
 msgid ""
 "All your products will be listed here in a grid display. When you create new "
 "products, they will show up in this page. This page is automatically created "
@@ -185,41 +203,42 @@ msgstr ""
 "de navegación si deseas que los visitantes del sitio la encuentren "
 "fácilmente."
 
-#: admin/class-asp-admin.php:399
-#: admin/includes/class-products-meta-boxes.php:197
+#: admin/class-asp-admin.php:432
+#: admin/includes/class-products-meta-boxes.php:238
+#: admin/includes/class-products-meta-boxes.php:305
 msgid "Currency"
 msgstr "Moneda"
 
-#: admin/class-asp-admin.php:411
+#: admin/class-asp-admin.php:444
 msgid "Currency Symbol"
 msgstr "Símbolo de la moneda"
 
-#: admin/class-asp-admin.php:423
-#: admin/includes/class-products-meta-boxes.php:533
+#: admin/class-asp-admin.php:456
+#: admin/includes/class-products-meta-boxes.php:641
 msgid "Button Text"
 msgstr "Texto del botón"
 
-#: admin/class-asp-admin.php:429
+#: admin/class-asp-admin.php:462
 msgid "Example: Buy Now, Pay Now etc."
 msgstr "Ejemplo: Compra ahora, Paga ahora, etc."
 
-#: admin/class-asp-admin.php:437
+#: admin/class-asp-admin.php:470
 msgid "Payment Popup Button Text"
 msgstr "Texto del botón emergente de pago"
 
-#: admin/class-asp-admin.php:443
+#: admin/class-asp-admin.php:476
 msgid ""
 "&percnt;s is replaced by formatted payment amount (example: Pay $29.90). If "
 "this field is empty, it defaults to \"Pay &percnt;s\""
 msgstr ""
 "&percnt;s es reemplazado por una cantidad de pago formateado (ejemplo: pagar "
-"$29.90). Si este campo está vacío, el valor por defecto es «Pagar &percnt;s»"
+"29,90€). Si este campo está vacío, el valor por defecto es «Pagar &percnt;s»"
 
-#: admin/class-asp-admin.php:451
+#: admin/class-asp-admin.php:484
 msgid "Do Not Save Card Data on Stripe"
 msgstr "No guardar los datos de la tarjeta en Stripe"
 
-#: admin/class-asp-admin.php:457
+#: admin/class-asp-admin.php:490
 msgid ""
 "When this checkbox is checked, the transaction won't create the customer (no "
 "card will be saved for that)."
@@ -227,24 +246,24 @@ msgstr ""
 "Cuando esta casilla de verificación está seleccionada, la transacción no "
 "creará el cliente (no se guardará ninguna tarjeta para eso)."
 
-#: admin/class-asp-admin.php:465
+#: admin/class-asp-admin.php:498
 msgid "Turn Off \"Remember me\" Option"
-msgstr "Desactiva la opción «Recuérdame»"
+msgstr "Desactiva la opción \"Recuérdame\""
 
-#: admin/class-asp-admin.php:471
+#: admin/class-asp-admin.php:504
 msgid ""
 "When enabled, \"Remember me\" checkbox will be removed from Stripe's "
 "checkout popup."
 msgstr ""
-"Cuando está activado, la casilla «Recuérdame» será eliminado de la ventana "
+"Cuando está activado, la casilla \"Recuérdame\" será eliminado de la ventana "
 "emergente de pago de Stripe."
 
-#: admin/class-asp-admin.php:479
+#: admin/class-asp-admin.php:512
 msgid "Validate ZIP Code"
 msgstr "Validar código postal"
 
 #. translators: %s is link to Stripe Radar rules page
-#: admin/class-asp-admin.php:487
+#: admin/class-asp-admin.php:520
 msgid ""
 "For additional protection, you can opt to have Stripe collect the billing "
 "ZIP code. Make sure that ZIP code verification is turned on for your "
@@ -256,20 +275,20 @@ msgstr ""
 "postal esta activado en tu cuenta. <a href=\"%s\" target=\"_blank\">Haz clic "
 "aquí</a> para verificarlo en tu escritorio de Stripe."
 
-#: admin/class-asp-admin.php:499
+#: admin/class-asp-admin.php:532
 msgid "Stripe Checkout Language"
 msgstr "Idioma del pago de Stripe"
 
-#: admin/class-asp-admin.php:505
+#: admin/class-asp-admin.php:538
 msgid ""
 "Specify language to be used in Stripe checkout pop-up or select \"Autodetect"
 "\" to let Stripe handle it."
 msgstr ""
 "Especifica el idioma que se utilizará en la ventana emergente de pago de "
-"Stripe o selecciona «Autodetectar» para permitir que Stripe lo maneje."
+"Stripe o selecciona \"Autodetectar\" para permitir que Stripe lo maneje."
 
 #. translators: %s is link to Country Autodetect add-on page
-#: admin/class-asp-admin.php:515
+#: admin/class-asp-admin.php:548
 msgid ""
 "You can install the free <a href=\"%s\" target=\"_blank\">Country Autodetect "
 "Addon</a> to detect customer's country automatically."
@@ -278,11 +297,11 @@ msgstr ""
 "\">extensión Country Autodetect</a> para detectar automáticamente el país de "
 "los clientes."
 
-#: admin/class-asp-admin.php:521
+#: admin/class-asp-admin.php:554
 msgid "Popup Default Country"
 msgstr "Mensaje emergente del país por defecto"
 
-#: admin/class-asp-admin.php:527
+#: admin/class-asp-admin.php:560
 msgid ""
 "Select the default country that should be set on the payment popup window "
 "for billing and shipping address."
@@ -290,11 +309,11 @@ msgstr ""
 "Selecciona el país por defecto que debe establecerse en la ventana del "
 "mensaje emergente de pago para la dirección de facturación y envío."
 
-#: admin/class-asp-admin.php:536
+#: admin/class-asp-admin.php:569
 msgid "Hide the State Field"
 msgstr "Ocultar el campo «Estado»"
 
-#: admin/class-asp-admin.php:542
+#: admin/class-asp-admin.php:575
 msgid ""
 "Hide the State field on the payment popup window. The State field for the "
 "address is an optional field."
@@ -302,11 +321,11 @@ msgstr ""
 "Oculta el campo «Estado» en la ventana emergente de pago. El campo «Estado» "
 "de la dirección es un campo opcional."
 
-#: admin/class-asp-admin.php:551
+#: admin/class-asp-admin.php:584
 msgid "Prefill Logged In User Name and Email"
 msgstr "Rellenar previamente el nombre y correo electrónico del usuario"
 
-#: admin/class-asp-admin.php:557
+#: admin/class-asp-admin.php:590
 msgid ""
 "When payment is made by logged in WordPress user, his\\her name and email "
 "are prefilled to corresponding payment popup fields."
@@ -315,11 +334,11 @@ msgstr ""
 "y correo electrónico son rellenados previamente en los correspondientes "
 "campos del mensaje emergente de pago."
 
-#: admin/class-asp-admin.php:567
+#: admin/class-asp-admin.php:600
 msgid "Live Mode"
 msgstr "Modo en vivo"
 
-#: admin/class-asp-admin.php:573
+#: admin/class-asp-admin.php:606
 msgid ""
 "Check this to run the transaction in live mode. When unchecked it will run "
 "in test mode."
@@ -327,27 +346,27 @@ msgstr ""
 "Selecciona esto para ejecutar la transacción en modo directo. Cuando no está "
 "seleccionado, se ejecutará en modo de prueba."
 
-#: admin/class-asp-admin.php:581
+#: admin/class-asp-admin.php:614
 msgid "Live Stripe Publishable Key"
 msgstr "Clave publicable de Stripe en vivo"
 
-#: admin/class-asp-admin.php:592
+#: admin/class-asp-admin.php:625
 msgid "Live Stripe Secret Key"
 msgstr "Clave secreta de Stripe en vivo"
 
-#: admin/class-asp-admin.php:603
+#: admin/class-asp-admin.php:636
 msgid "Test Stripe Publishable Key"
 msgstr "Clave publicable de prueba de Stripe"
 
-#: admin/class-asp-admin.php:614
+#: admin/class-asp-admin.php:647
 msgid "Test Stripe Secret Key"
 msgstr "Clave secreta de prueba de Stripe"
 
-#: admin/class-asp-admin.php:627
+#: admin/class-asp-admin.php:660
 msgid "Enable Debug Logging"
 msgstr "Activa el registro de depuración"
 
-#: admin/class-asp-admin.php:633
+#: admin/class-asp-admin.php:666
 msgid ""
 "Check this option to enable debug logging. This is useful for "
 "troubleshooting post payment failures."
@@ -355,19 +374,19 @@ msgstr ""
 "Selecciona esta opción para activar el registro de depuración. Esto es útil "
 "para solucionar los problemas de fallos posteriores para los pagos."
 
-#: admin/class-asp-admin.php:634
+#: admin/class-asp-admin.php:667
 msgid "View Log"
 msgstr "Ver el registro"
 
-#: admin/class-asp-admin.php:634
+#: admin/class-asp-admin.php:667
 msgid "Clear Log"
 msgstr "Vaciar el registro"
 
-#: admin/class-asp-admin.php:639
+#: admin/class-asp-admin.php:672
 msgid "Debug Log Shareable Link"
 msgstr "Enlace compartible de registro de depuración"
 
-#: admin/class-asp-admin.php:645
+#: admin/class-asp-admin.php:678
 msgid ""
 "Normally, the debug log is only accessible to you if you are logged-in as "
 "admin. However, in some situations it might be required for support "
@@ -379,11 +398,11 @@ msgstr ""
 "posible que el personal de soporte deba verlo sin tener credenciales de "
 "administrador. Este enlace puede ser útil en esa situación."
 
-#: admin/class-asp-admin.php:655
+#: admin/class-asp-admin.php:688
 msgid "Send Receipt Email From Stripe"
 msgstr "Envía el recibo de correo electrónico desde Stripe"
 
-#: admin/class-asp-admin.php:661
+#: admin/class-asp-admin.php:694
 msgid ""
 "If checked, Stripe will send email receipts to your customers whenever they "
 "make successful payment.<br /><b>Note:</b> Receipts are not sent in test "
@@ -393,11 +412,11 @@ msgstr ""
 "a tus clientes siempre que se complete el pago. <br /><b>Aviso:</b> No se "
 "envían recibos en el modo de pruebas."
 
-#: admin/class-asp-admin.php:667
+#: admin/class-asp-admin.php:700
 msgid "Send Emails to Buyer After Purchase"
 msgstr "Envía correos electrónicos al comprador después de la compra"
 
-#: admin/class-asp-admin.php:673
+#: admin/class-asp-admin.php:706
 msgid ""
 "If checked the plugin will send an email to the buyer with the sale details. "
 "If digital goods are purchased then the email will contain the download "
@@ -408,19 +427,19 @@ msgstr ""
 "digitales entonces el correo electrónico contendrá los enlaces de descarga "
 "para los productos comprados."
 
-#: admin/class-asp-admin.php:678
+#: admin/class-asp-admin.php:711
 msgid "Buyer Email Content Type"
 msgstr "Tipo de contenido de correo electrónico del comprador"
 
-#: admin/class-asp-admin.php:684 admin/class-asp-admin.php:754
+#: admin/class-asp-admin.php:717 admin/class-asp-admin.php:787
 msgid "Choose which format of email to send."
 msgstr "Elige el formato de correo electrónico para enviar."
 
-#: admin/class-asp-admin.php:689
+#: admin/class-asp-admin.php:722
 msgid "From Email Address"
 msgstr "De la dirección de correo electrónico"
 
-#: admin/class-asp-admin.php:695
+#: admin/class-asp-admin.php:728
 msgid ""
 "Example: Your Name &lt;sales@your-domain.com&gt; This is the email address "
 "that will be used to send the email to the buyer. This name and email "
@@ -431,24 +450,24 @@ msgstr ""
 "comprador. Este nombre y dirección de correo electrónico aparecerá en el "
 "campo de remitente del correo electrónico."
 
-#: admin/class-asp-admin.php:700
+#: admin/class-asp-admin.php:733
 msgid "Buyer Email Subject"
 msgstr "Asunto del correo electrónico del comprador"
 
-#: admin/class-asp-admin.php:706
+#: admin/class-asp-admin.php:739
 msgid "This is the subject of the email that will be sent to the buyer."
 msgstr "Este es el asunto del correo electrónico que se enviará al comprador."
 
-#: admin/class-asp-admin.php:714
+#: admin/class-asp-admin.php:747
 msgid "Buyer Email Body"
 msgstr "Cuerpo del correo electrónico del comprador"
 
-#: admin/class-asp-admin.php:720
+#: admin/class-asp-admin.php:753
 msgid "This is the body of the email that will be sent to the buyer."
 msgstr ""
 "Este es el cuerpo del correo electrónico que será enviado al comprador."
 
-#: admin/class-asp-admin.php:720 admin/class-asp-admin.php:777
+#: admin/class-asp-admin.php:753 admin/class-asp-admin.php:810
 msgid ""
 "Do not change the text within the braces {}. You can use the following email "
 "tags in this email body field:"
@@ -457,22 +476,22 @@ msgstr ""
 "etiquetas de correo electrónico en este campo de cuerpo del correo "
 "electrónico:"
 
-#: admin/class-asp-admin.php:725
+#: admin/class-asp-admin.php:758
 msgid "Send Emails to Seller After Purchase"
 msgstr "Envía correos electrónicos al vendedor después de la compra"
 
-#: admin/class-asp-admin.php:731
+#: admin/class-asp-admin.php:764
 msgid ""
 "If checked the plugin will send an email to the seller with the sale details."
 msgstr ""
 "Si se selecciona, el plugin enviará un correo electrónico al vendedor con "
 "los detalles de la venta."
 
-#: admin/class-asp-admin.php:736
+#: admin/class-asp-admin.php:769
 msgid "Notification Email Address"
 msgstr "Dirección de correo electrónico de notificación"
 
-#: admin/class-asp-admin.php:742
+#: admin/class-asp-admin.php:775
 msgid ""
 "This is the email address where the seller will be notified of product "
 "sales. You can put multiple email addresses separated by comma (,) in the "
@@ -483,34 +502,34 @@ msgstr ""
 "varias direcciones de correo separadas por una coma (,) en el campo de "
 "arriba."
 
-#: admin/class-asp-admin.php:748
+#: admin/class-asp-admin.php:781
 msgid "Seller Email Content Type"
 msgstr "Tipo de contenido de correo electrónico del vendedor"
 
-#: admin/class-asp-admin.php:760
+#: admin/class-asp-admin.php:793
 msgid "Seller Email Subject"
 msgstr "Asunto del correo electrónico del vendedor"
 
-#: admin/class-asp-admin.php:766
+#: admin/class-asp-admin.php:799
 msgid ""
 "This is the subject of the email that will be sent to the seller for record."
 msgstr ""
 "Este es el asunto del correo electrónico que se enviará al vendedor para su "
 "registro."
 
-#: admin/class-asp-admin.php:771
+#: admin/class-asp-admin.php:804
 msgid "Seller Email Body"
 msgstr "Cuerpo del correo electrónico del vendedor"
 
-#: admin/class-asp-admin.php:777
+#: admin/class-asp-admin.php:810
 msgid "This is the body of the email that will be sent to the seller."
 msgstr "Este es el cuerpo del correo electrónico que será enviado al vendedor."
 
-#: admin/class-asp-admin.php:783
+#: admin/class-asp-admin.php:816
 msgid "Send Email On Payment Failure"
 msgstr "Envía el correo electrónico si falla el pago"
 
-#: admin/class-asp-admin.php:789
+#: admin/class-asp-admin.php:822
 msgid ""
 "If checked, plugin will send a notification email when error occurred during "
 "payment processing. The email will be sent to the email address specified "
@@ -521,20 +540,20 @@ msgstr ""
 "correo electrónico se enviará a la dirección de correo electrónico "
 "especificada a continuación."
 
-#: admin/class-asp-admin.php:794
+#: admin/class-asp-admin.php:827
 msgid "Send Error Email To"
 msgstr "Envía el correo electrónico de error a"
 
-#: admin/class-asp-admin.php:800
+#: admin/class-asp-admin.php:833
 msgid "Enter recipient address of error email."
 msgstr ""
 "Introduce la dirección del destinatario de correo electrónico de error."
 
-#: admin/class-asp-admin.php:807
+#: admin/class-asp-admin.php:840
 msgid "Send Emails in Parallel"
 msgstr "Enviar correos electrónicos en paralelo"
 
-#: admin/class-asp-admin.php:813
+#: admin/class-asp-admin.php:846
 msgid ""
 "Enabling this option should speed up checkout process for customers. Test "
 "this before enabling on production as it may not work properly on some "
@@ -544,45 +563,45 @@ msgstr ""
 "clientes. Pruébalo antes de activarlo en producción, ya que podría no "
 "funcionar correctamente en algunas configuraciones."
 
-#: admin/class-asp-admin.php:820
+#: admin/class-asp-admin.php:853
 msgid "Currency Position"
 msgstr "Posición de la moneda"
 
-#: admin/class-asp-admin.php:826
+#: admin/class-asp-admin.php:859
 msgid "This controls the position of the currency symbol."
 msgstr "Esto controla la posición del símbolo de moneda."
 
-#: admin/class-asp-admin.php:831
+#: admin/class-asp-admin.php:864
 msgid "Decimal Separator"
 msgstr "Separador decimal"
 
-#: admin/class-asp-admin.php:837
+#: admin/class-asp-admin.php:870
 msgid "This sets the decimal separator of the displayed price."
 msgstr "Esto establece el separador decimal del precio mostrado."
 
-#: admin/class-asp-admin.php:842
+#: admin/class-asp-admin.php:875
 msgid "Thousand Separator"
 msgstr "Separador de miles"
 
-#: admin/class-asp-admin.php:848
+#: admin/class-asp-admin.php:881
 msgid "This sets the thousand separator of the displayed price."
 msgstr "Esto establece el separador de mil del precio mostrado."
 
-#: admin/class-asp-admin.php:853
+#: admin/class-asp-admin.php:886
 msgid "Number of Decimals"
 msgstr "Número de decimales"
 
-#: admin/class-asp-admin.php:859
+#: admin/class-asp-admin.php:892
 msgid "This sets the number of decimal points shown in the displayed price."
 msgstr ""
 "Esto establece el número de puntos decimales que se muestran en el precio "
 "mostrado."
 
-#: admin/class-asp-admin.php:865
+#: admin/class-asp-admin.php:898
 msgid "Apply Separators Settings To Customer Input"
 msgstr "Aplicar ajustes de separadores a las entradas del cliente"
 
-#: admin/class-asp-admin.php:871
+#: admin/class-asp-admin.php:904
 msgid ""
 "If enabled, separator settings will be applied to customer input as well. "
 "For example, if you have donation button where customers can enter amount "
@@ -595,11 +614,11 @@ msgstr ""
 "separador decimal, los clientes deberán ingresar los valores "
 "correspondientes - 12,23 en lugar de 12.23."
 
-#: admin/class-asp-admin.php:878
+#: admin/class-asp-admin.php:911
 msgid "Enable For All Buttons and Products"
 msgstr "Activar para todos los botones y productos"
 
-#: admin/class-asp-admin.php:884
+#: admin/class-asp-admin.php:917
 msgid ""
 "If enabled, makes the following field enabled by default for all buttons and "
 "products."
@@ -607,7 +626,7 @@ msgstr ""
 "Si está activado, se activara el siguiente campo por defecto para todos los "
 "botones y productos."
 
-#: admin/class-asp-admin.php:885
+#: admin/class-asp-admin.php:918
 msgid ""
 "You can control per-product or per-button behaviour by editing the product "
 "and selecting enabled or disabled option under the Custom Field section."
@@ -616,7 +635,7 @@ msgstr ""
 "producto y seleccionando la opción activar o desactivar en la sección Campo "
 "personalizado."
 
-#: admin/class-asp-admin.php:886
+#: admin/class-asp-admin.php:919
 msgid ""
 "View the custom field <a href=\"https://s-plugins.com/custom-field-settings-"
 "feature-stripe-payments-plugin/\" target=\"_blank\">usage documentation</a>."
@@ -625,22 +644,22 @@ msgstr ""
 "payments-plugin/\" target=\"_blank\">documentación de uso</a> del campo "
 "personalizado."
 
-#: admin/class-asp-admin.php:891
+#: admin/class-asp-admin.php:924
 msgid "Field Name"
 msgstr "Nombre del campo"
 
-#: admin/class-asp-admin.php:897
+#: admin/class-asp-admin.php:930
 msgid ""
 "Enter name for the field. It will be displayed in order info and emails."
 msgstr ""
 "Introduce el nombre del campo. Se mostrará en la información del pedido y en "
 "los correos electrónicos."
 
-#: admin/class-asp-admin.php:902
+#: admin/class-asp-admin.php:935
 msgid "Field Description"
 msgstr "Descripción del campo"
 
-#: admin/class-asp-admin.php:908
+#: admin/class-asp-admin.php:941
 msgid ""
 "Enter field description. It will be displayed for users to let them know "
 "what is required from them. Leave it blank if you don't want to display "
@@ -650,11 +669,11 @@ msgstr ""
 "saber lo que se requiere de ellos. Déjalo en blanco si no deseas mostrar la "
 "descripción."
 
-#: admin/class-asp-admin.php:913
+#: admin/class-asp-admin.php:946
 msgid "Text Field Description Location"
 msgstr "Ubicación de la descripción de campo de texto"
 
-#: admin/class-asp-admin.php:919
+#: admin/class-asp-admin.php:952
 msgid ""
 "Select field description location. Placeholder: description is displayed "
 "inside text input (default). Below Input: description is displayed below "
@@ -664,39 +683,39 @@ msgstr ""
 "descripción se muestra dentro de la entrada de texto (por defecto). Debajo "
 "de la entrada: la descripción se muestra debajo de la entrada de texto."
 
-#: admin/class-asp-admin.php:924 admin/class-asp-admin.php:1003
+#: admin/class-asp-admin.php:957 admin/class-asp-admin.php:1036
 msgid "Position"
 msgstr "Posición"
 
-#: admin/class-asp-admin.php:930
+#: admin/class-asp-admin.php:963
 msgid "Select custom field position."
 msgstr "Selecciona la posición del campo personalizado."
 
-#: admin/class-asp-admin.php:930
+#: admin/class-asp-admin.php:963
 msgid "This option is for legacy API only."
 msgstr "Esta opción es solo para API heredada."
 
-#: admin/class-asp-admin.php:935
+#: admin/class-asp-admin.php:968
 msgid "Field Type"
 msgstr "Tipo de campo"
 
-#: admin/class-asp-admin.php:941
+#: admin/class-asp-admin.php:974
 msgid "Select custom field type."
 msgstr "Selecciona el tipo de campo personalizado."
 
-#: admin/class-asp-admin.php:946
+#: admin/class-asp-admin.php:979
 msgid "Field Validation"
 msgstr "Validación de campo"
 
-#: admin/class-asp-admin.php:952
+#: admin/class-asp-admin.php:985
 msgid "Select custom field validation if needed."
 msgstr "Selecciona la validación de campo personalizado si es necesario."
 
-#: admin/class-asp-admin.php:957
+#: admin/class-asp-admin.php:990
 msgid "Mandatory"
 msgstr "Obligatorio"
 
-#: admin/class-asp-admin.php:963
+#: admin/class-asp-admin.php:996
 msgid ""
 "If enabled, makes the field mandatory - user can't proceed with the payment "
 "before it's filled."
@@ -704,19 +723,19 @@ msgstr ""
 "Si está activo, hace que el campo sea obligatorio. El usuario no puede "
 "continuar con el pago antes de que se complete este campo."
 
-#: admin/class-asp-admin.php:970
+#: admin/class-asp-admin.php:1003
 msgid "Enable Terms and Conditions"
 msgstr "Activa los términos y condiciones"
 
-#: admin/class-asp-admin.php:976
+#: admin/class-asp-admin.php:1009
 msgid "Enable Terms and Conditions checkbox."
 msgstr "Activa la casilla de verificación de términos y condiciones."
 
-#: admin/class-asp-admin.php:981
+#: admin/class-asp-admin.php:1014
 msgid "Checkbox Text"
 msgstr "Texto de la caja de verificación"
 
-#: admin/class-asp-admin.php:987
+#: admin/class-asp-admin.php:1020
 msgid ""
 "Text to be displayed on checkbox. It accepts HTML code so you can put a link "
 "to your terms and conditions page."
@@ -724,11 +743,11 @@ msgstr ""
 "Texto que se mostrará en la casilla de verificación. Acepta código HTML para "
 "que puedas poner un enlace a tu página de términos y condiciones."
 
-#: admin/class-asp-admin.php:992
+#: admin/class-asp-admin.php:1025
 msgid "Store Customer's IP Address"
 msgstr "Almacenar la dirección IP del cliente"
 
-#: admin/class-asp-admin.php:998
+#: admin/class-asp-admin.php:1031
 msgid ""
 "If enabled, customer's IP address from which TOS were accepted will be "
 "stored in order info."
@@ -736,17 +755,17 @@ msgstr ""
 "Si está activado, la dirección IP del cliente desde el cual se aceptaron los "
 "términos de servicio se almacenarán en la información del pedido."
 
-#: admin/class-asp-admin.php:1009
+#: admin/class-asp-admin.php:1042
 msgid "Select TOS checkbox position."
 msgstr ""
 "Selecciona la posición de la casilla de verificación de los términos y "
 "condiciones."
 
-#: admin/class-asp-admin.php:1016
+#: admin/class-asp-admin.php:1049
 msgid "Enable Legacy Checkout API"
 msgstr "Activar la API heredada de pago"
 
-#: admin/class-asp-admin.php:1022
+#: admin/class-asp-admin.php:1055
 msgid ""
 "Use the legacy API to process payments. Note that the legacy API is not "
 "compatible with 3-D Secure and EU's Strong Customer Authentication (SCA) "
@@ -760,19 +779,19 @@ msgstr ""
 "heredada en el futuro. Si hay un fallo en la nueva API, continúa usando la "
 "API heredada mientras corregimos el fallo."
 
-#: admin/class-asp-admin.php:1027
+#: admin/class-asp-admin.php:1060
 msgid "Enable Compact Product Edit Interface"
 msgstr "Activar la interfaz compacta de edición del producto"
 
-#: admin/class-asp-admin.php:1033
+#: admin/class-asp-admin.php:1066
 msgid "Switch to the compact product edit interface."
 msgstr "Cambia a la interfaz compacta de edición del producto."
 
-#: admin/class-asp-admin.php:1038
+#: admin/class-asp-admin.php:1071
 msgid "Prefetch Payment Popup Scripts"
 msgstr "Buscar previamente los scripts del mensaje emergente de pago"
 
-#: admin/class-asp-admin.php:1044
+#: admin/class-asp-admin.php:1077
 msgid ""
 "Enable this to speed up payment popup display after customer clicks payment "
 "button."
@@ -780,11 +799,11 @@ msgstr ""
 "Activar esto para acelerar la visualización del mensaje emergente de pago "
 "después de que el cliente hace clic en el botón de pago."
 
-#: admin/class-asp-admin.php:1052
+#: admin/class-asp-admin.php:1085
 msgid "Don't Create Order"
 msgstr "No crear pedido"
 
-#: admin/class-asp-admin.php:1058
+#: admin/class-asp-admin.php:1091
 msgid ""
 "If enabled, no transaction info is saved to the orders menu of the plugin. "
 "The transaction data will still be available in your Stripe dashboard. "
@@ -795,21 +814,25 @@ msgstr ""
 "tu escritorio de Stripe. Útil si no deseas almacenar datos de compras y "
 "clientes en su sitio."
 
-#: admin/class-asp-admin.php:1064
+#: admin/class-asp-admin.php:1096
+msgid "Allowed Currencies"
+msgstr "Monedas permitidas"
+
+#: admin/class-asp-admin.php:1106
 msgid "Payment Popup Additional CSS"
 msgstr "CSS adicional del mensaje emergente de pago"
 
-#: admin/class-asp-admin.php:1070
+#: admin/class-asp-admin.php:1112
 msgid "Enter additional CSS code that would be added to payment popup page."
 msgstr ""
 "Introduce el código CSS adicional que se añadirá al mensaje emergente de la "
 "página de pago."
 
-#: admin/class-asp-admin.php:1077
+#: admin/class-asp-admin.php:1119
 msgid "Do Not Use Stripe PHP SDK Library"
 msgstr "No usar la biblioteca Stripe PHP SDK"
 
-#: admin/class-asp-admin.php:1083
+#: admin/class-asp-admin.php:1125
 msgid ""
 "Enable this if you're experiencing conflicts with other plugins that use "
 "Stripe PHP SDK Library. Internal Stripe API wrapper would be used instead."
@@ -818,11 +841,56 @@ msgstr ""
 "Stripe PHP SDK. En su lugar, se usaría el contenedor interno de la API de "
 "Stripe."
 
-#: admin/class-asp-admin.php:1090
+#: admin/class-asp-admin.php:1126
+msgid ""
+"Warning: this option is currently not supported by Subscriptions and some "
+"other addons."
+msgstr ""
+"Advertencia: esta opción actualmente no es compatible con suscripciones y "
+"algunas otras extensiones."
+
+#: admin/class-asp-admin.php:1132
+msgid "Disable Security Token Check"
+msgstr "Desactivar la comprobación del token de seguridad"
+
+#: admin/class-asp-admin.php:1138
+msgid ""
+"Helps when you are getting \"Invalid Security Token\" errors due to caching "
+"being done on your server."
+msgstr ""
+"Ayuda cuando recibes errores de «Token de seguridad no válido» debido al "
+"almacenamiento en la caché que se realiza en tu servidor."
+
+#: admin/class-asp-admin.php:1139
+msgid ""
+"It is not recommended to disable security tokens. You should change your "
+"server cache settings to not cache payment popup URLs."
+msgstr ""
+"No se recomienda desactivar los tokens de seguridad. Debes cambiar los "
+"ajustes de la caché del servidor para que no guarde las URL de los mensajes "
+"emergentes de pago."
+
+#: admin/class-asp-admin.php:1145
+msgid "Show Incomplete Orders"
+msgstr "Mostrar pedidos incompletos"
+
+#: admin/class-asp-admin.php:1151
+msgid ""
+"If enabled, incomplete transactions are also displayed in the Orders listing "
+"page of the plugin. If Stripe declines a card transaction because the "
+"customer entered incorrect card info, it will be considered to be an "
+"incomplete transaction."
+msgstr ""
+"Si está activado, las transacciones incompletas también se muestran en la "
+"página de anuncios de pedidos del plugin. Si Stripe rechaza una transacción "
+"de tarjeta porque el cliente ha introducido la información incorrecta de la "
+"tarjeta, se considerará una transacción incompleta."
+
+#: admin/class-asp-admin.php:1157
 msgid "Disable Buttons Before Javascript Loads"
 msgstr "Desactiva los botones antes que Javascript se cargue"
 
-#: admin/class-asp-admin.php:1096
+#: admin/class-asp-admin.php:1163
 msgid ""
 "If enabled, payment buttons are not clickable until Javascript libraries are "
 "loaded on page view. This prevents \"Invalid Stripe Token\" errors on some "
@@ -830,9 +898,9 @@ msgid ""
 msgstr ""
 "Si está activado, no se puede hacer clic en los botones de pago hasta que se "
 "carguen las bibliotecas de Javascript en la vista de página. Esto evita "
-"errores de «Token de Strike no válido» en algunas configuraciones."
+"errores de \"Token de Strike no válido\" en algunas configuraciones."
 
-#: admin/class-asp-admin.php:1103
+#: admin/class-asp-admin.php:1170
 msgid ""
 "This section allows you to configure Terms and Conditions or Privacy Policy "
 "that customer must accept before making payment. This, for example, can be "
@@ -842,7 +910,7 @@ msgstr ""
 "privacidad que el cliente debe aceptar antes de realizar el pago. Esto, por "
 "ejemplo, se puede usar para cumplir con el RGPD de la UE."
 
-#: admin/class-asp-admin.php:1107
+#: admin/class-asp-admin.php:1174
 msgid ""
 "Warning: don't change options in this section unless you know what you're "
 "doing!"
@@ -850,137 +918,137 @@ msgstr ""
 "Advertencia: ¡no cambies las opciones de esta sección a menos que sepas lo "
 "que estás haciendo!"
 
-#: admin/class-asp-admin.php:1130
+#: admin/class-asp-admin.php:1197
 msgid "Arabic"
 msgstr "Árabe"
 
-#: admin/class-asp-admin.php:1131
+#: admin/class-asp-admin.php:1198
 msgid "Hebrew"
 msgstr "Hebreo"
 
-#: admin/class-asp-admin.php:1132
+#: admin/class-asp-admin.php:1199
 msgid "Latvian"
-msgstr "Latvio"
+msgstr "Letón"
 
-#: admin/class-asp-admin.php:1133
+#: admin/class-asp-admin.php:1200
 msgid "Lithuanian"
 msgstr "Lituano"
 
-#: admin/class-asp-admin.php:1134
+#: admin/class-asp-admin.php:1201
 msgid "Malay"
 msgstr "Malayo"
 
-#: admin/class-asp-admin.php:1135
+#: admin/class-asp-admin.php:1202
 msgid "Norwegian Bokmal"
 msgstr "Bokmål noruego"
 
-#: admin/class-asp-admin.php:1136
+#: admin/class-asp-admin.php:1203
 msgid "Polish"
 msgstr "Polaco"
 
-#: admin/class-asp-admin.php:1137
+#: admin/class-asp-admin.php:1204
 msgid "Portuguese"
 msgstr "Portugués"
 
-#: admin/class-asp-admin.php:1138
+#: admin/class-asp-admin.php:1205
 msgid "Russian"
 msgstr "Ruso"
 
-#: admin/class-asp-admin.php:1139
+#: admin/class-asp-admin.php:1206
 msgid "Danish"
 msgstr "Danés"
 
-#: admin/class-asp-admin.php:1140
+#: admin/class-asp-admin.php:1207
 msgid "Dutch"
 msgstr "Holandés"
 
-#: admin/class-asp-admin.php:1141
+#: admin/class-asp-admin.php:1208
 msgid "English"
 msgstr "Inglés"
 
-#: admin/class-asp-admin.php:1142
+#: admin/class-asp-admin.php:1209
 msgid "Finnish"
 msgstr "Finlandés"
 
-#: admin/class-asp-admin.php:1143
+#: admin/class-asp-admin.php:1210
 msgid "French"
 msgstr "Francés"
 
-#: admin/class-asp-admin.php:1144
+#: admin/class-asp-admin.php:1211
 msgid "German"
 msgstr "Alemán"
 
-#: admin/class-asp-admin.php:1145
+#: admin/class-asp-admin.php:1212
 msgid "Italian"
 msgstr "Italiano"
 
-#: admin/class-asp-admin.php:1146
+#: admin/class-asp-admin.php:1213
 msgid "Japanese"
 msgstr "Japonés"
 
-#: admin/class-asp-admin.php:1147
+#: admin/class-asp-admin.php:1214
 msgid "Norwegian"
 msgstr "Noruego"
 
-#: admin/class-asp-admin.php:1148
+#: admin/class-asp-admin.php:1215
 msgid "Simplified Chinese"
 msgstr "Chino simplificado"
 
-#: admin/class-asp-admin.php:1149
+#: admin/class-asp-admin.php:1216
 msgid "Spanish"
 msgstr "Español"
 
-#: admin/class-asp-admin.php:1150
+#: admin/class-asp-admin.php:1217
 msgid "Swedish"
 msgstr "Sueco"
 
-#: admin/class-asp-admin.php:1153
+#: admin/class-asp-admin.php:1220
 msgid "Autodetect"
 msgstr "Detección automática"
 
-#: admin/class-asp-admin.php:1157 includes/class-asp-utils.php:565
+#: admin/class-asp-admin.php:1224 includes/class-asp-utils.php:565
 msgid "(Default)"
 msgstr "(Por defecto)"
 
-#: admin/class-asp-admin.php:1198
+#: admin/class-asp-admin.php:1265
 msgid "Text"
 msgstr "Texto"
 
-#: admin/class-asp-admin.php:1199
+#: admin/class-asp-admin.php:1266
 msgid "Checkbox"
-msgstr "Caja de verificación"
+msgstr "Casilla de verificación"
 
-#: admin/class-asp-admin.php:1205
+#: admin/class-asp-admin.php:1272
 msgid "Placeholder"
 msgstr "Marcador de posición"
 
-#: admin/class-asp-admin.php:1206
+#: admin/class-asp-admin.php:1273
 msgid "Below Input"
 msgstr "Debajo de la entrada"
 
-#: admin/class-asp-admin.php:1212 admin/class-asp-admin.php:1218
+#: admin/class-asp-admin.php:1279 admin/class-asp-admin.php:1285
 msgid "No Validation"
 msgstr "Sin validación"
 
-#: admin/class-asp-admin.php:1213 admin/class-asp-admin.php:1219
+#: admin/class-asp-admin.php:1280 admin/class-asp-admin.php:1286
 msgid "Numbers Only"
-msgstr "Sólo números"
+msgstr "Solo números"
 
 #. translators: %s is a link to JavaScript RegExp page
-#: admin/class-asp-admin.php:1214 admin/class-asp-admin.php:1221
+#: admin/class-asp-admin.php:1281 admin/class-asp-admin.php:1288
 msgid "Custom Validation"
 msgstr "Validación personalizada"
 
-#: admin/class-asp-admin.php:1218
+#: admin/class-asp-admin.php:1285
 msgid "no validation performed"
 msgstr "no se ha realizado ninguna validación"
 
-#: admin/class-asp-admin.php:1219
+#: admin/class-asp-admin.php:1286
 msgid "only accepts numbers 0-9"
-msgstr "sólo acepta números 0-9"
+msgstr "solo acepta números 0-9"
 
 #. translators: %s is a link to JavaScript RegExp page
-#: admin/class-asp-admin.php:1221
+#: admin/class-asp-admin.php:1288
 msgid ""
 "you can enter your own validation rules using <a href=\"%s\" target=\"_blank"
 "\">JavaScript RegExp</a> format."
@@ -988,12 +1056,12 @@ msgstr ""
 "puedes introducir tus propias reglas de validación utilizando el formato <a "
 "href=\"%s\" target=\"_blank\">JavaScript RegExp</a>."
 
-#: admin/class-asp-admin.php:1230
+#: admin/class-asp-admin.php:1297
 msgid "Please enter valid data"
 msgstr "Por favor, introduce datos válidos"
 
 #. translators: %s is a link to JavaScript RegExp page
-#: admin/class-asp-admin.php:1237
+#: admin/class-asp-admin.php:1304
 msgid ""
 "Enter your custom validation rule using <a href=\"%s\" target=\"_blank"
 "\">JavaScript RegExp</a> format. No need to enclose those using \"/\"."
@@ -1003,144 +1071,173 @@ msgstr ""
 "aquellos que usan \"/\"."
 
 #. translators: %s is a link to JavaScript RegExp page
-#: admin/class-asp-admin.php:1238
+#: admin/class-asp-admin.php:1305
 msgid "Example RegExp to allow numbers only: ^[0-9]+$"
 msgstr "Ejemplo de RegExp para permitir solo números: ^[0-9]+$"
 
-#: admin/class-asp-admin.php:1241
+#: admin/class-asp-admin.php:1308
 msgid "Error message to display if validation is not passed."
 msgstr "Mensaje de error para mostrar si la validación no se pasa."
 
-#: admin/class-asp-admin.php:1247
+#: admin/class-asp-admin.php:1314
 msgid "Above Button"
 msgstr "Por encima del botón"
 
-#: admin/class-asp-admin.php:1248
+#: admin/class-asp-admin.php:1315
 msgid "Below Button"
 msgstr "Por debajo del botón"
 
-#: admin/class-asp-admin.php:1279
+#: admin/class-asp-admin.php:1348
 msgid "Last Name First"
 msgstr "Primero los apellidos"
 
-#: admin/class-asp-admin.php:1280
+#: admin/class-asp-admin.php:1349
 msgid "When enabled, last name is placed before first name."
 msgstr "Cuando se activa, los apellidos se colocan antes del nombre."
 
-#: admin/class-asp-admin.php:1292
+#: admin/class-asp-admin.php:1361
 msgid "Plain Text"
 msgstr "Texto sin formato"
 
-#: admin/class-asp-admin.php:1293
+#: admin/class-asp-admin.php:1362
 msgid "HTML"
 msgstr "HTML"
 
-#: admin/class-asp-admin.php:1346
+#: admin/class-asp-admin.php:1401
+msgid "All"
+msgstr "Todas"
+
+#: admin/class-asp-admin.php:1403
+msgid "Selected"
+msgstr "Seleccionada"
+
+#: admin/class-asp-admin.php:1407
+msgid "Click here to select currencies"
+msgstr "Haz clic aquí para seleccionar las monedas"
+
+#: admin/class-asp-admin.php:1410
+msgid "Select All"
+msgstr "Seleccionar todas"
+
+#: admin/class-asp-admin.php:1411
+msgid "Select None"
+msgstr "No seleccionar ninguna"
+
+#: admin/class-asp-admin.php:1412
+msgid "Invert Selection"
+msgstr "Invertir la selección"
+
+#: admin/class-asp-admin.php:1425
+msgid ""
+"You can select currencies you want to be available for your customers for "
+"variable currencies products. Useful for donation type products."
+msgstr ""
+"Puedes seleccionar las monedas que deseas que estén disponibles para tus "
+"clientes para productos de monedas variables. Útil para productos de tipo de "
+"donación."
+
+#: admin/class-asp-admin.php:1446
 msgctxt "Currency symbol position"
 msgid "Left"
 msgstr "Izquierda"
 
-#: admin/class-asp-admin.php:1347
+#: admin/class-asp-admin.php:1447
 msgctxt "Currency symbol position"
 msgid "Right"
 msgstr "Derecha"
 
 #. translators: %s is replaced by invalid RegExp value
-#: admin/class-asp-admin.php:1444
+#: admin/class-asp-admin.php:1541
 msgid "Invalid custom RegExp for Custom Field validation provided: %s"
 msgstr ""
 "RegExp personalizado no válido para la validación de campos personalizados "
 "proporcionada: %s"
 
-#: admin/class-asp-admin.php:1496
+#: admin/class-asp-admin.php:1597
 msgid "You must fill Live API credentials for plugin to work correctly."
 msgstr ""
 "Debes rellenar las credenciales del API en vivo para que el plugin funcione "
 "correctamente."
 
-#: admin/class-asp-admin.php:1500
+#: admin/class-asp-admin.php:1601
 msgid "You must fill Test API credentials for plugin to work correctly."
 msgstr ""
 "Debes rellenar las credenciales del API de prueba para que el plugin "
 "funcione correctamente."
 
-#: admin/class-asp-admin.php:1507
+#: admin/class-asp-admin.php:1608
 msgid "Please specify a checkout page."
 msgstr "Por favor, especifica una página de pago."
 
-#: admin/class-asp-admin.php:1513
+#: admin/class-asp-admin.php:1614
 msgid "Button text should not be empty."
 msgstr "El texto del botón no debe estar vacío."
 
 #. translators: %s is not a placeholder
-#: admin/class-asp-admin.php:1520 includes/class-asp-pp-handler.php:402
-#: includes/class-asp.php:298
+#: admin/class-asp-admin.php:1621 includes/class-asp-pp-handler.php:437
+#: includes/class-asp.php:311
 msgid "Pay %s"
 msgstr "Pagar %s"
 
-#: admin/class-asp-admin.php:1541
+#: admin/class-asp-admin.php:1642
 msgid "You must specify payment currency."
 msgstr "Debes especificar la moneda de pago."
 
-#: admin/class-asp-admin.php:1563
+#: admin/class-asp-admin.php:1673
 msgid "You must specify from email address."
 msgstr "Debes especificar la dirección de correo electrónico del remitente."
 
-#: admin/class-asp-admin.php:1569
+#: admin/class-asp-admin.php:1679
 msgid "You must specify buyer email subject."
 msgstr "Debes especificar el asunto del correo electrónico del comprador."
 
-#: admin/class-asp-admin.php:1575
+#: admin/class-asp-admin.php:1685
 msgid "You must fill in buyer email body."
 msgstr "Debes rellenar el cuerpo del correo electrónico del comprador."
 
-#: admin/class-asp-admin.php:1581
+#: admin/class-asp-admin.php:1691
 msgid "You must specify seller notification email address."
 msgstr ""
 "Debes especificar la dirección de correo electrónico de notificación del "
 "vendedor."
 
-#: admin/class-asp-admin.php:1587
+#: admin/class-asp-admin.php:1697
 msgid "You must specify seller email subject."
 msgstr "Debes especificar el asunto del correo electrónico del vendedor."
 
-#: admin/class-asp-admin.php:1593
+#: admin/class-asp-admin.php:1703
 msgid "You must fill in seller email body."
 msgstr "Debes rellenar el cuerpo del correo electrónico del vendedor."
 
-#: admin/class-asp-admin.php:1603
+#: admin/class-asp-admin.php:1713
 msgid "Price decimal separator can't be empty."
 msgstr "El separador decimal de precio no puede estar vacío."
 
-#: admin/class-asp-admin.php:1609
-msgid "Price thousand separator can't be empty."
-msgstr "El separador de precios de miles no puede estar vacío."
-
-#: admin/class-asp-admin.php:1617
+#: admin/class-asp-admin.php:1727
 msgid "Price number of decimals can't be empty."
 msgstr "El número de decimales del precio no puede estar vacío."
 
-#: admin/class-asp-admin.php:1655
+#: admin/class-asp-admin.php:1765
 msgid "Name of the purchased item"
 msgstr "Nombre del artículo comprado"
 
-#: admin/class-asp-admin.php:1656
+#: admin/class-asp-admin.php:1766
 msgid "Number of items purchased"
 msgstr "Número de artículos comprados"
 
-#: admin/class-asp-admin.php:1657
+#: admin/class-asp-admin.php:1767
 msgid "Item price. Example: 1000,00"
 msgstr "Precio del artículo. Ejemplo: 1000,00"
 
-#: admin/class-asp-admin.php:1658
+#: admin/class-asp-admin.php:1768
 msgid "Item price with currency symbol. Example: $1,000.00"
 msgstr "Precio del artículo con el símbolo de moneda. Ejemplo: $1,000.00"
 
-#: admin/class-asp-admin.php:1659
+#: admin/class-asp-admin.php:1769
 msgid "The amount paid for the current transaction. Example: 1,000.00"
 msgstr "El importe pagado por la transacción actual. Ejemplo: 1,000.00"
 
-#: admin/class-asp-admin.php:1660
+#: admin/class-asp-admin.php:1770
 msgid ""
 "The amount paid for the current transaction with currency symbol. Example: "
 "$1,000.00"
@@ -1148,23 +1245,23 @@ msgstr ""
 "El importe pagado por la transacción actual con el símbolo de moneda. "
 "Ejemplo: $1,000.00"
 
-#: admin/class-asp-admin.php:1661
+#: admin/class-asp-admin.php:1771
 msgid "Tax in percent. Example: 10%"
 msgstr "Impuesto en porcentaje. Ejemplo: 10%"
 
-#: admin/class-asp-admin.php:1662
+#: admin/class-asp-admin.php:1772
 msgid "Formatted tax amount for single item. Example: $0.25"
 msgstr "Importe de impuestos formateado para un solo artículo. Ejemplo: $0.25"
 
-#: admin/class-asp-admin.php:1663
+#: admin/class-asp-admin.php:1773
 msgid "Formatted shipping amount. Example: $2.50"
 msgstr "Cantidad de envío formateada. Ejemplo: $2.50"
 
-#: admin/class-asp-admin.php:1664
+#: admin/class-asp-admin.php:1774
 msgid "Item download URL (if it's set)"
 msgstr "URL de descarga del elemento (si está configurada)"
 
-#: admin/class-asp-admin.php:1665
+#: admin/class-asp-admin.php:1775
 msgid ""
 "The item details of the purchased product (this will include the download "
 "link for digital items)"
@@ -1172,56 +1269,72 @@ msgstr ""
 "Los detalles del artículo del producto comprado (esto incluirá el enlace de "
 "descarga para productos digitales)."
 
-#: admin/class-asp-admin.php:1666
+#: admin/class-asp-admin.php:1776
 msgid "The unique transaction ID of the purchase"
 msgstr "El ID único de transacción de la compra"
 
-#: admin/class-asp-admin.php:1667
+#: admin/class-asp-admin.php:1777
 msgid "Shipping address of the buyer"
 msgstr "Dirección de envío del comprador"
 
-#: admin/class-asp-admin.php:1668
+#: admin/class-asp-admin.php:1778
 msgid "Billing address of the buyer"
 msgstr "Dirección de facturación del comprador"
 
-#: admin/class-asp-admin.php:1669
+#: admin/class-asp-admin.php:1779
 msgid "Customer name. Available only if collect billing address option enabled"
 msgstr ""
 "Nombre del cliente. Solo está disponible si la opción de coleccionar la "
 "dirección de facturación está activado"
 
-#: admin/class-asp-admin.php:1670
+#: admin/class-asp-admin.php:1780
 msgid "Email Address of the buyer"
 msgstr "La dirección del correo electrónico del comprador"
 
-#: admin/class-asp-admin.php:1671
+#: admin/class-asp-admin.php:1781
 msgid "Currency symbol. Example: $"
 msgstr "Símbolo de la moneda. Ejemplo: $"
 
-#: admin/class-asp-admin.php:1672
+#: admin/class-asp-admin.php:1782
 msgid "3-letter currency code. Example: USD"
 msgstr "Código de moneda de 3 letras. Ejemplo: USD"
 
-#: admin/class-asp-admin.php:1673
+#: admin/class-asp-admin.php:1783
 msgid "The date of the purchase"
 msgstr "La fecha de la compra"
 
-#: admin/class-asp-admin.php:1674
+#: admin/class-asp-admin.php:1784
 msgid "Custom field name and value (if enabled)"
 msgstr "Nombre y valor del campo personalizado (si está activado)"
 
-#: admin/class-asp-admin.php:1675
+#: admin/class-asp-admin.php:1785
 msgid "Coupon code (if available)"
 msgstr "Código del cupón (si está disponible)"
 
-#: admin/class-asp-admin.php:1695
+#: admin/class-asp-admin.php:1808
 msgid "Click here to toggle tags hint"
 msgstr "Haz clic aquí para alternar la sugerencia de etiquetas"
+
+#: admin/includes/class-asp-admin-order-meta-boxes.php:11
+msgid "Order Events"
+msgstr "Eventos del pedido"
+
+#: admin/includes/class-asp-admin-order-meta-boxes.php:26
+msgid "Order created."
+msgstr "Pedido creado."
+
+#: admin/includes/class-asp-admin-order-meta-boxes.php:29
+msgid "Payment completed."
+msgstr "Pago completado."
+
+#: admin/includes/class-asp-admin-order-meta-boxes.php:50
+msgid "No data available."
+msgstr "No hay datos disponibles."
 
 #: admin/includes/class-coupons-list-table.php:52
 #: admin/includes/class-coupons.php:351
 #: includes/shortcodes/class-shortcode-asp.php:955
-#: public/views/templates/default/payment-popup.php:263
+#: public/views/templates/default/payment-popup.php:268
 msgid "Coupon Code"
 msgstr "Código del cupón"
 
@@ -1289,23 +1402,23 @@ msgstr "Eliminar cupón"
 msgid "Delete"
 msgstr "Eliminar"
 
-#: admin/includes/class-coupons.php:37 includes/class-asp-product-item.php:386
+#: admin/includes/class-coupons.php:37 includes/class-asp-product-item.php:412
 msgid "Coupon not found."
 msgstr "El cupón no se ha encontrado."
 
-#: admin/includes/class-coupons.php:44 includes/class-asp-product-item.php:392
+#: admin/includes/class-coupons.php:44 includes/class-asp-product-item.php:418
 msgid "Coupon is not active."
 msgstr "El cupón no está activo."
 
-#: admin/includes/class-coupons.php:51 includes/class-asp-product-item.php:398
+#: admin/includes/class-coupons.php:51 includes/class-asp-product-item.php:424
 msgid "Coupon is not available yet."
 msgstr "El cupón no está disponible todavía."
 
-#: admin/includes/class-coupons.php:58 includes/class-asp-product-item.php:404
+#: admin/includes/class-coupons.php:58 includes/class-asp-product-item.php:430
 msgid "Coupon has expired."
 msgstr "El cupón ha caducado."
 
-#: admin/includes/class-coupons.php:66 includes/class-asp-product-item.php:411
+#: admin/includes/class-coupons.php:66 includes/class-asp-product-item.php:437
 msgid "Coupon redemption limit is reached."
 msgstr "Se alcanzo el límite de amortización del cupón."
 
@@ -1317,7 +1430,7 @@ msgstr "Código de cupón vacío"
 msgid "No product ID specified."
 msgstr "No se ha especificado ningún ID de producto."
 
-#: admin/includes/class-coupons.php:116 includes/class-asp-product-item.php:439
+#: admin/includes/class-coupons.php:116 includes/class-asp-product-item.php:465
 msgid "Coupon is not allowed for this product."
 msgstr "El cupón no está permitido para este producto."
 
@@ -1360,7 +1473,7 @@ msgstr "Añadir cupón"
 
 #: admin/includes/class-coupons.php:330
 msgid "Edit Coupon"
-msgstr "Editar Cupón"
+msgstr "Editar cupón"
 
 #: admin/includes/class-coupons.php:337
 msgid "Use this to enable/disable this coupon."
@@ -1395,7 +1508,7 @@ msgstr "Cantidad fija"
 msgid ""
 "Select discount amount and type. Enter a numeric value only. Example: 25"
 msgstr ""
-"Selecciona la cantidad y el tipo de descuento. Introduce sólo un valor "
+"Selecciona la cantidad y el tipo de descuento. Introduce solo un valor "
 "numérico. Ejemplo: 25"
 
 #: admin/includes/class-coupons.php:372
@@ -1438,7 +1551,7 @@ msgid ""
 "available when \"Specific Products Only\" is selected."
 msgstr ""
 "Elige la disponibilidad del cupón. Puedes especificar qué cupón de productos "
-"está disponible cuando se selecciona «Solo productos específicos»."
+"está disponible cuando se selecciona \"Solo productos específicos\"."
 
 #: admin/includes/class-coupons.php:414
 msgid "Update Coupon"
@@ -1485,216 +1598,198 @@ msgstr "El cupón \"%s\" se ha actualizado."
 msgid "Coupon \"%s\" has been created."
 msgstr "Se ha creado el cupón \"%s\"."
 
-#: admin/includes/class-order.php:22
+#: admin/includes/class-order.php:36
 msgctxt "Post Type General Name"
 msgid "Orders"
 msgstr "Pedidos"
 
-#: admin/includes/class-order.php:23
+#: admin/includes/class-order.php:37
 msgctxt "Post Type Singular Name"
 msgid "Order"
 msgstr "Pedido"
 
-#: admin/includes/class-order.php:24
+#: admin/includes/class-order.php:38
 msgid "Parent Order:"
 msgstr "Pedido principal:"
 
-#: admin/includes/class-order.php:25
+#: admin/includes/class-order.php:39
 msgid "Orders"
 msgstr "Pedido"
 
-#: admin/includes/class-order.php:26
+#: admin/includes/class-order.php:40
 msgid "View Order"
 msgstr "Ver pedido"
 
-#: admin/includes/class-order.php:27
+#: admin/includes/class-order.php:41
 msgid "Add New Order"
 msgstr "Añadir nuevo pedido"
 
-#: admin/includes/class-order.php:28
+#: admin/includes/class-order.php:42
 msgid "Add New"
 msgstr "Añadir nuevo"
 
-#: admin/includes/class-order.php:29
+#: admin/includes/class-order.php:43
 msgid "Edit Order"
 msgstr "Editar el pedido"
 
-#: admin/includes/class-order.php:30
+#: admin/includes/class-order.php:44
 msgid "Update Order"
 msgstr "Actualizar el pedido"
 
-#: admin/includes/class-order.php:31
+#: admin/includes/class-order.php:45
 msgid "Search Order"
 msgstr "Buscar pedido"
 
-#: admin/includes/class-order.php:32 admin/includes/class-products.php:40
+#: admin/includes/class-order.php:46 admin/includes/class-products.php:40
 #: admin/includes/class-products.php:86
 msgid "Not found"
 msgstr "No se encontró"
 
-#: admin/includes/class-order.php:33 admin/includes/class-products.php:41
+#: admin/includes/class-order.php:47 admin/includes/class-products.php:41
 #: admin/includes/class-products.php:87
 msgid "Not found in Trash"
 msgstr "No se encontró en la papelera"
 
-#: admin/includes/class-order.php:36
+#: admin/includes/class-order.php:50
 msgid "orders"
 msgstr "pedidos"
 
-#: admin/includes/class-order.php:37
+#: admin/includes/class-order.php:51
 msgid "Stripe Orders"
 msgstr "Pedidos de Stripe"
 
-#: admin/includes/class-order.php:110
-msgid "Order Details"
-msgstr "Detalles del pedido"
+#: admin/includes/class-order.php:141
+#: public/views/templates/default/payment-popup.php:290
+#: public/views/templates/default/payment-popup.php:324
+msgid "Total"
+msgstr "Total"
 
-#: admin/includes/class-order.php:111
-msgid "Order Time"
-msgstr "Fecha del pedido"
+#: admin/includes/class-order.php:142
+msgid "Status"
+msgstr "Estado"
 
-#: admin/includes/class-order.php:112
-#: includes/shortcodes/class-shortcode-asp.php:1011
-msgid "Transaction ID"
-msgstr "ID de transacción"
+#: admin/includes/class-order.php:159 admin/includes/class-order.php:394
+msgid "Paid"
+msgstr "Pagado"
 
-#: admin/includes/class-order.php:113
-msgid "Stripe Token"
-msgstr "Token de Stripe"
+#: admin/includes/class-order.php:163 admin/includes/class-order.php:395
+msgid "Authorized"
+msgstr "Autorizado"
 
-#: admin/includes/class-order.php:114
+#: admin/includes/class-order.php:166 admin/includes/class-order.php:180
+msgid "Capture"
+msgstr "Capturar"
+
+#: admin/includes/class-order.php:167 admin/includes/class-order.php:181
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: admin/includes/class-order.php:170 admin/includes/class-order.php:396
+msgid "Canceled"
+msgstr "Cancelado"
+
+#: admin/includes/class-order.php:215 admin/includes/class-order.php:306
+msgid "Invalid order ID"
+msgstr "El ID de pedido no es válido"
+
+#: admin/includes/class-order.php:225 admin/includes/class-order.php:316
+msgid "Nonce check failed"
+msgstr "La comprobación de nonce ha fallado"
+
+#: admin/includes/class-order.php:267 admin/includes/class-order.php:358
+msgid "Funds already captured or refunded"
+msgstr "Los fondos ya han sido capturados o reembolsados"
+
+#: admin/includes/class-order.php:393
+msgid "Incomplete"
+msgstr "Incompleto"
+
+#: admin/includes/class-order.php:397
+msgid "Error"
+msgstr "Error"
+
 #: admin/includes/class-products-meta-boxes.php:17
+#: includes/class-asp-order-item.php:126
 msgid "Description"
 msgstr "Descripción"
-
-#: admin/includes/class-order.php:116 admin/includes/class-products.php:133
-#: includes/process_ipn.php:691
-#: includes/shortcodes/class-shortcode-asp.php:1003
-msgid "Product Name"
-msgstr "Nombre del producto"
-
-#: admin/includes/class-order.php:117 includes/process_ipn.php:692
-#: includes/shortcodes/class-shortcode-asp.php:1004
-msgid "Quantity"
-msgstr "Cantidad"
-
-#: admin/includes/class-order.php:118 includes/process_ipn.php:693
-#: includes/shortcodes/class-shortcode-asp.php:1005
-msgid "Item Price"
-msgstr "Precio del artículo"
-
-#: admin/includes/class-order.php:122 includes/process_ipn.php:697
-#: includes/shortcodes/class-shortcode-asp.php:1009
-msgid "Total Amount"
-msgstr "Cantidad total"
-
-#: admin/includes/class-order.php:126
-msgid "Customer Details"
-msgstr "Detalles del cliente"
-
-#. translators: %s is email address
-#: admin/includes/class-order.php:128
-msgid "E-Mail Address: %s"
-msgstr "Dirección de correo electrónico: %s"
-
-#. translators: %s is payment source (e.g. 'card' etc)
-#: admin/includes/class-order.php:130
-msgid "Payment Source: %s"
-msgstr "Origen del pago: %s"
-
-#: admin/includes/class-order.php:147
-msgid "Unknown"
-msgstr "Desconocido"
-
-#. translators: %s is IP address
-#: admin/includes/class-order.php:149
-msgid "IP Address: %s"
-msgstr "Dirección IP: %s"
-
-#: admin/includes/class-order.php:154
-msgid "Billing Address"
-msgstr "Dirección de facturación"
-
-#: admin/includes/class-order.php:160
-msgid "Shipping Address"
-msgstr "Dirección de envío"
 
 #: admin/includes/class-products-meta-boxes.php:18
 msgid "Short Description"
 msgstr "Descripción corta"
 
-#: admin/includes/class-products-meta-boxes.php:19
+#: admin/includes/class-products-meta-boxes.php:20
+#: admin/includes/class-products-meta-boxes.php:22
 msgid "Price & Currency"
 msgstr "Precio y moneda"
 
-#: admin/includes/class-products-meta-boxes.php:20
+#: admin/includes/class-products-meta-boxes.php:24
 msgid "Variations"
 msgstr "Variaciones"
 
-#: admin/includes/class-products-meta-boxes.php:21
+#: admin/includes/class-products-meta-boxes.php:25
 msgid "Quantity & Stock"
 msgstr "Cantidad e inventario"
 
-#: admin/includes/class-products-meta-boxes.php:22
+#: admin/includes/class-products-meta-boxes.php:26
 msgid "Shipping & Tax"
 msgstr "Gastos de envío e impuestos"
 
-#: admin/includes/class-products-meta-boxes.php:23
+#: admin/includes/class-products-meta-boxes.php:27
 msgid "Collect Address"
 msgstr "Recopila la dirección"
 
-#: admin/includes/class-products-meta-boxes.php:24
+#: admin/includes/class-products-meta-boxes.php:28
 msgid "Download URL"
 msgstr "URL de descarga"
 
-#: admin/includes/class-products-meta-boxes.php:25
+#: admin/includes/class-products-meta-boxes.php:29
 msgid "Product Thumbnail"
 msgstr "Miniatura del producto"
 
-#: admin/includes/class-products-meta-boxes.php:26
+#: admin/includes/class-products-meta-boxes.php:30
 msgid "Thank You Page URL"
 msgstr "URL de la página de agradecimiento"
 
-#: admin/includes/class-products-meta-boxes.php:27
+#: admin/includes/class-products-meta-boxes.php:31
 msgid "Appearance"
 msgstr "Apariencia"
 
-#: admin/includes/class-products-meta-boxes.php:28
+#: admin/includes/class-products-meta-boxes.php:32
 msgid "Coupons Settings"
 msgstr "Ajustes de cupones"
 
-#: admin/includes/class-products-meta-boxes.php:29
-#: includes/class-asp-pp-handler.php:719
+#: admin/includes/class-products-meta-boxes.php:33
+#: includes/class-asp-pp-handler.php:787
 #: includes/shortcodes/class-shortcode-asp.php:178
 msgid "Custom Field"
 msgstr "Campo personalizado"
 
-#: admin/includes/class-products-meta-boxes.php:30 admin/views/admin.php:35
+#: admin/includes/class-products-meta-boxes.php:34 admin/views/admin.php:35
 msgid "Advanced Settings"
 msgstr "Ajustes avanzados"
 
-#: admin/includes/class-products-meta-boxes.php:31
+#: admin/includes/class-products-meta-boxes.php:35
 msgid "Embed Product"
 msgstr "Incrustar producto"
 
-#: admin/includes/class-products-meta-boxes.php:36
+#: admin/includes/class-products-meta-boxes.php:40
 msgid "WP eMember Membership Level"
 msgstr "Nivel de membresía de WP eMember"
 
-#: admin/includes/class-products-meta-boxes.php:42
+#: admin/includes/class-products-meta-boxes.php:46
 msgid "Simple Membership Level"
 msgstr "Nivel de Simple Membership"
 
-#: admin/includes/class-products-meta-boxes.php:48
+#: admin/includes/class-products-meta-boxes.php:52
 msgid "PDF Stamper Integration"
 msgstr "Integración de PDF Stamper"
 
-#: admin/includes/class-products-meta-boxes.php:66
+#: admin/includes/class-products-meta-boxes.php:70
 msgid "Product Options"
 msgstr "Opciones del producto"
 
-#: admin/includes/class-products-meta-boxes.php:119
-#: admin/includes/class-products-meta-boxes.php:139
+#: admin/includes/class-products-meta-boxes.php:123
+#: admin/includes/class-products-meta-boxes.php:143
 msgid ""
 "If you want this product to be connected to a membership level then select "
 "the membership Level here."
@@ -1702,16 +1797,16 @@ msgstr ""
 "Si deseas que este producto esté conectado a un nivel de membresía, "
 "selecciona el nivel de membresía aquí."
 
-#: admin/includes/class-products-meta-boxes.php:121
-#: admin/includes/class-products-meta-boxes.php:133
+#: admin/includes/class-products-meta-boxes.php:125
+#: admin/includes/class-products-meta-boxes.php:137
 msgid "None"
 msgstr "Ninguno"
 
-#: admin/includes/class-products-meta-boxes.php:159
+#: admin/includes/class-products-meta-boxes.php:163
 msgid "Stamp the PDF File"
 msgstr "Sella el archivo PDF"
 
-#: admin/includes/class-products-meta-boxes.php:161
+#: admin/includes/class-products-meta-boxes.php:165
 msgid ""
 "If this product is an eBook and you want to stamp this PDF file with "
 "customer details upon purchase then use this option. "
@@ -1719,7 +1814,7 @@ msgstr ""
 "Si este producto es un eBook y quieres sellar este archivo PDF con los "
 "detalles del cliente en el momento de la compra, entonces usa esta opción. "
 
-#: admin/includes/class-products-meta-boxes.php:162
+#: admin/includes/class-products-meta-boxes.php:166
 msgid ""
 "It requires the <a href=\"https://www.tipsandtricks-hq.com/wp-pdf-stamper-"
 "plugin-2332\" target=\"_blank\">WP PDF Stamper plugin</a> to be installed on "
@@ -1729,11 +1824,11 @@ msgstr ""
 "plugin-2332\" target=\"_blank\">plugin WP PDF Stamper</a> sea instalado en "
 "este sitio."
 
-#: admin/includes/class-products-meta-boxes.php:168
+#: admin/includes/class-products-meta-boxes.php:172
 msgid "Add a description for your product."
 msgstr "Añade una descripción a su producto.."
 
-#: admin/includes/class-products-meta-boxes.php:177
+#: admin/includes/class-products-meta-boxes.php:181
 msgid ""
 "You can optionally add a custom short description for the item/product/"
 "service that will get shown in the stripe checkout/payment window of the "
@@ -1743,19 +1838,61 @@ msgstr ""
 "artículo/producto/servicio que se mostrará en la ventana de finalizar compra "
 "de Stripe del artículo."
 
-#: admin/includes/class-products-meta-boxes.php:187
+#: admin/includes/class-products-meta-boxes.php:227
+#: admin/includes/class-products-meta-boxes.php:295
 #: admin/includes/class-products.php:135
 msgid "Price"
 msgstr "Precio"
 
-#: admin/includes/class-products-meta-boxes.php:192
+#: admin/includes/class-products-meta-boxes.php:232
+#: admin/includes/class-products-meta-boxes.php:300
 msgid ""
 "Item price. Numbers only, no need to put currency symbol. Example: 99.95"
 msgstr ""
 "Precio del artículo. Solo números, no es necesario poner el símbolo de la "
 "moneda. Por ejemplo: 99.95"
 
-#: admin/includes/class-products-meta-boxes.php:193
+#: admin/includes/class-products-meta-boxes.php:241
+#: admin/includes/class-products-meta-boxes.php:308
+msgid ""
+"Leave \"(Default)\" option selected if you want to use currency specified on "
+"settings page."
+msgstr ""
+"Deja la opción \"(Por defecto)\" seleccionada si deseas usar la moneda "
+"especificada en la página de ajustes."
+
+#: admin/includes/class-products-meta-boxes.php:248
+msgid "Minimum Donation Amount"
+msgstr "La cantidad mínima de donación"
+
+#: admin/includes/class-products-meta-boxes.php:253
+msgid "Specify a minimum donation amount."
+msgstr "Especifica una cantidad mínima de donación."
+
+#. translators: %1$s and %2$s are replaced by <a></a> tags
+#: admin/includes/class-products-meta-boxes.php:255
+msgid ""
+"If set to 0 then %1$s Stripe's minimum amount limit%2$s will be applied."
+msgstr ""
+"Si se establece en 0, se aplicará el %1$slímite mínimo de la cantidad de "
+"Stripe%2$s."
+
+#: admin/includes/class-products-meta-boxes.php:261
+#: admin/includes/class-products-meta-boxes.php:310
+msgid "Allow customers to specify currency"
+msgstr "Permite a los clientes especificar la moneda"
+
+#: admin/includes/class-products-meta-boxes.php:263
+msgid ""
+"When enabled, it allows the customers to select the currency which is used "
+"to make the payment. It does not dynamically change the price. No dynamic "
+"currency conversion takes place."
+msgstr ""
+"Cuando está activado, permite a los clientes seleccionar la moneda que se "
+"utiliza para realizar el pago. No cambia dinámicamente el precio. No se "
+"produce una conversión dinámica de la moneda."
+
+#: admin/includes/class-products-meta-boxes.php:301
 msgid ""
 "Leave it blank if you want your customers to enter the amount themselves (e."
 "g. for donation button)."
@@ -1763,19 +1900,7 @@ msgstr ""
 "Déjalo en blanco si deseas que tus clientes introduzcan la cantidad ellos "
 "mismos (por ejemplo, para el botón de donación)."
 
-#: admin/includes/class-products-meta-boxes.php:200
-msgid ""
-"Leave \"(Default)\" option selected if you want to use currency specified on "
-"settings page."
-msgstr ""
-"Deja la opción «(Por defecto)» seleccionada si deseas usar la moneda "
-"especificada en la página de ajustes."
-
-#: admin/includes/class-products-meta-boxes.php:202
-msgid "Allow customers to specify currency"
-msgstr "Permite a los clientes especificar la moneda"
-
-#: admin/includes/class-products-meta-boxes.php:204
+#: admin/includes/class-products-meta-boxes.php:312
 msgid ""
 "When enabled, it allows the customers to select the currency which is used "
 "to make the payment. It does not dynamically change the price. No dynamic "
@@ -1787,7 +1912,7 @@ msgstr ""
 "realiza ninguna conversión de moneda dinámica. Así que esto es "
 "principalmente útil para un producto de tipo donación."
 
-#: admin/includes/class-products-meta-boxes.php:210
+#: admin/includes/class-products-meta-boxes.php:318
 msgid ""
 "Enter price modification - amount that will be added to product price if "
 "particular variation is selected."
@@ -1795,12 +1920,12 @@ msgstr ""
 "Introduce la modificación del precio: cantidad que será añadida al precio "
 "del producto si se selecciona una variación particular."
 
-#: admin/includes/class-products-meta-boxes.php:212
+#: admin/includes/class-products-meta-boxes.php:320
 msgid "Put negative value if you want to substract the amount instead."
 msgstr "Pon un valor negativo si en su lugar quieres restar la cantidad."
 
 #. translators: %s is a link to documentation page
-#: admin/includes/class-products-meta-boxes.php:217
+#: admin/includes/class-products-meta-boxes.php:325
 msgid ""
 "You can find documentation on variations <a href=\"%s\" target=\"_blank"
 "\">here</a>."
@@ -1808,17 +1933,17 @@ msgstr ""
 "Puedes conseguir la documentación de las variaciones <a href=\"%s\" target="
 "\"_blank\">aquí</a>."
 
-#: admin/includes/class-products-meta-boxes.php:222
+#: admin/includes/class-products-meta-boxes.php:330
 msgid "Note: variations for subscription products are currently not supported."
 msgstr ""
 "Nota: en este momento, no son compatibles las variaciones para productos de "
 "suscripción."
 
-#: admin/includes/class-products-meta-boxes.php:227
-msgid "Use only variations to construct final product price"
+#: admin/includes/class-products-meta-boxes.php:335
+msgid "Use variations only to construct final product price"
 msgstr "Usa solo variaciones para construir el precio final del producto"
 
-#: admin/includes/class-products-meta-boxes.php:230
+#: admin/includes/class-products-meta-boxes.php:338
 msgid ""
 "When enabled, the total product price will be calculated by using the "
 "variation prices only. Useful if you do not want to have a base price for "
@@ -1828,84 +1953,84 @@ msgstr ""
 "los precios de variación. Es útil si no quieres tener un precio base para "
 "este producto."
 
-#: admin/includes/class-products-meta-boxes.php:232
+#: admin/includes/class-products-meta-boxes.php:340
 msgid ""
 "Note: To enable this option, you will need to set the product price to 0."
 msgstr ""
 "Nota: para activar esta opción, tendrás que establecer el precio del "
 "producto en 0."
 
-#: admin/includes/class-products-meta-boxes.php:243
+#: admin/includes/class-products-meta-boxes.php:351
 msgid "No variations configured for this product."
 msgstr "No hay variaciones configuradas para este producto."
 
-#: admin/includes/class-products-meta-boxes.php:250
+#: admin/includes/class-products-meta-boxes.php:358
 msgid "Create Group"
 msgstr "Crear un grupo"
 
-#: admin/includes/class-products-meta-boxes.php:255
+#: admin/includes/class-products-meta-boxes.php:363
 msgid "Group Name:"
 msgstr "Nombre del grupo:"
 
-#: admin/includes/class-products-meta-boxes.php:258
+#: admin/includes/class-products-meta-boxes.php:366
 msgid "Delete group"
 msgstr "Eliminar grupo"
 
-#: admin/includes/class-products-meta-boxes.php:261
+#: admin/includes/class-products-meta-boxes.php:369
 msgid "Display As:"
 msgstr "Mostrar como:"
 
-#: admin/includes/class-products-meta-boxes.php:263
+#: admin/includes/class-products-meta-boxes.php:371
 msgid "Dropdown"
 msgstr "Desplegable"
 
-#: admin/includes/class-products-meta-boxes.php:264
+#: admin/includes/class-products-meta-boxes.php:372
 msgid "Radio Buttons"
 msgstr "Botones de radio"
 
-#: admin/includes/class-products-meta-boxes.php:270
+#: admin/includes/class-products-meta-boxes.php:378
 msgctxt "Variation name"
 msgid "Name"
 msgstr "Nombre"
 
-#: admin/includes/class-products-meta-boxes.php:271
+#: admin/includes/class-products-meta-boxes.php:379
 msgid "Price Mod"
 msgstr "Modificación de precio"
 
-#: admin/includes/class-products-meta-boxes.php:272
+#: admin/includes/class-products-meta-boxes.php:380
 msgid "Product URL"
 msgstr "URL del producto"
 
-#: admin/includes/class-products-meta-boxes.php:276
+#: admin/includes/class-products-meta-boxes.php:384
 msgid "Add Variation"
 msgstr "Añadir variación"
 
-#: admin/includes/class-products-meta-boxes.php:287
+#: admin/includes/class-products-meta-boxes.php:395
 msgid "Select from Media Library"
 msgstr "Seleccionar de la biblioteca de medios"
 
-#: admin/includes/class-products-meta-boxes.php:290
+#: admin/includes/class-products-meta-boxes.php:398
 msgid "Delete variation"
 msgstr "Eliminar variación"
 
-#: admin/includes/class-products-meta-boxes.php:306
+#: admin/includes/class-products-meta-boxes.php:414
 msgid "Are you sure you want to delete this group?"
 msgstr "¿Estás seguro de que quieres eliminar este grupo?"
 
-#: admin/includes/class-products-meta-boxes.php:307
+#: admin/includes/class-products-meta-boxes.php:415
 msgid "Are you sure you want to delete this variation?"
 msgstr "¿Estás seguro de que quieres eliminar esta variación?"
 
-#: admin/includes/class-products-meta-boxes.php:319
+#: admin/includes/class-products-meta-boxes.php:427
 msgid "Shipping Cost"
 msgstr "Gastos de envío"
 
-#: admin/includes/class-products-meta-boxes.php:324
+#: admin/includes/class-products-meta-boxes.php:432
 msgid "Numbers only, no need to put currency symbol. Example: 5.90"
 msgstr ""
 "Solo números, no es necesario poner el símbolo de moneda. Ejemplo: 5.90"
 
-#: admin/includes/class-products-meta-boxes.php:326
+#: admin/includes/class-products-meta-boxes.php:434
 msgid ""
 "Leave it blank if you are not shipping your product or not charging "
 "additional shipping costs."
@@ -1913,11 +2038,11 @@ msgstr ""
 "Déjalo en blanco si no estás enviando tu producto o no estas cobrando gastos "
 "de envío adicionales."
 
-#: admin/includes/class-products-meta-boxes.php:331
+#: admin/includes/class-products-meta-boxes.php:439
 msgid "Tax (%)"
 msgstr "Impuesto (%)"
 
-#: admin/includes/class-products-meta-boxes.php:336
+#: admin/includes/class-products-meta-boxes.php:444
 msgid ""
 "Enter tax (in percent) which should be added to product price during "
 "purchase."
@@ -1925,11 +2050,11 @@ msgstr ""
 "Introduce el impuesto (en porcentaje) que tiene que añadirse al precio del "
 "producto durante la compra."
 
-#: admin/includes/class-products-meta-boxes.php:338
+#: admin/includes/class-products-meta-boxes.php:446
 msgid "Leave it blank if you don't want to apply tax."
 msgstr "Déjalo en blanco si no deseas aplicar impuestos."
 
-#: admin/includes/class-products-meta-boxes.php:350
+#: admin/includes/class-products-meta-boxes.php:458
 msgid ""
 "By default, if you leave this field empty, the product quantity will be set "
 "to 1. You can change this behavior by using the following options."
@@ -1937,33 +2062,33 @@ msgstr ""
 "Por defecto, si se deja este campo vacío, la cantidad de producto se pone a "
 "1. Puedes cambiar este comportamiento usando las siguientes opciones."
 
-#: admin/includes/class-products-meta-boxes.php:354
+#: admin/includes/class-products-meta-boxes.php:462
 msgid "Allow users to specify quantity"
 msgstr "Permitir a los usuarios especificar la cantidad"
 
-#: admin/includes/class-products-meta-boxes.php:356
+#: admin/includes/class-products-meta-boxes.php:464
 msgid "When checked, users can enter the quantity they want to buy."
 msgstr ""
-"Cuando esta seleccionado, los usuarios pueden introducir la cantidad que "
-"desean comprar."
+"Cuando está marcado, los usuarios pueden introducir la cantidad que desean "
+"comprar."
 
-#: admin/includes/class-products-meta-boxes.php:358
+#: admin/includes/class-products-meta-boxes.php:466
 msgid "Set Quantity:"
 msgstr "Establece la cantidad:"
 
-#: admin/includes/class-products-meta-boxes.php:361
+#: admin/includes/class-products-meta-boxes.php:469
 msgid ""
 "If you want to use a set quantity for this item then enter the value in this "
 "field."
 msgstr ""
-"Si deseas usar una cantidad establecida para este artículo, introduce el "
+"Si quieres usar una cantidad establecida para este artículo, introduce el "
 "valor en este campo."
 
-#: admin/includes/class-products-meta-boxes.php:367
+#: admin/includes/class-products-meta-boxes.php:475
 msgid "Enable stock control"
 msgstr "Activar control de inventario"
 
-#: admin/includes/class-products-meta-boxes.php:369
+#: admin/includes/class-products-meta-boxes.php:477
 msgid ""
 "When enabled, you can specify the quantity available for this product. It "
 "will be decreased each time the item is purchased. When stock reaches zero, "
@@ -1971,83 +2096,83 @@ msgid ""
 msgstr ""
 "Cuando está activado, puedes especificar la cantidad disponible para este "
 "producto. Se disminuirá cada vez que se compre el artículo. Cuando el "
-"inventario llegue a cero, se mostrará un mensaje de «Inventario agotado» en "
-"lugar del botón Comprar."
+"inventario llegue a cero, se mostrará un mensaje de \"Inventario agotado\" "
+"en lugar del botón Comprar."
 
-#: admin/includes/class-products-meta-boxes.php:371
+#: admin/includes/class-products-meta-boxes.php:479
 msgid "Quantity Available:"
 msgstr "Cantidad disponible:"
 
-#: admin/includes/class-products-meta-boxes.php:374
+#: admin/includes/class-products-meta-boxes.php:482
 msgid "Specify the quantity available for this product."
 msgstr "Especifica la cantidad disponible para este producto."
 
-#: admin/includes/class-products-meta-boxes.php:382
+#: admin/includes/class-products-meta-boxes.php:490
 msgid "URL of your product (if you're selling digital products)."
 msgstr "La URL de tu producto (si vendes productos digitales)."
 
-#: admin/includes/class-products-meta-boxes.php:388
+#: admin/includes/class-products-meta-boxes.php:496
 msgid ""
 "Manually enter a valid URL of the file in the text box below, or click "
 "\"Select File\" button to upload (or choose) the downloadable file."
 msgstr ""
 "Introduce manualmente una URL válida del archivo en el cuadro de texto a "
-"continuación, o haz clic en el botón «Seleccionar archivo» para subir (o "
+"continuación, o haz clic en el botón \"Seleccionar archivo\" para subir (o "
 "elegir) el archivo descargable."
 
-#: admin/includes/class-products-meta-boxes.php:392
-#: admin/includes/class-products-meta-boxes.php:410
+#: admin/includes/class-products-meta-boxes.php:500
+#: admin/includes/class-products-meta-boxes.php:518
 msgid "Select File"
 msgstr "Selecciona el archivo"
 
-#: admin/includes/class-products-meta-boxes.php:396
+#: admin/includes/class-products-meta-boxes.php:504
 msgid "Steps to upload a file or choose one from your media library:"
 msgstr "Pasos para subir un archivo o elige uno de su biblioteca de medios:"
 
-#: admin/includes/class-products-meta-boxes.php:398
+#: admin/includes/class-products-meta-boxes.php:506
 msgid "Hit the \"Select File\" button."
 msgstr "Pulsa el botón \"Seleccionar archivo\"."
 
-#: admin/includes/class-products-meta-boxes.php:399
+#: admin/includes/class-products-meta-boxes.php:507
 msgid "Upload a new file or choose an existing one from your media library."
 msgstr "Sube un archivo nuevo o elige un archivo de tu biblioteca de medios."
 
-#: admin/includes/class-products-meta-boxes.php:400
+#: admin/includes/class-products-meta-boxes.php:508
 msgid ""
 "Click the \"Insert\" button, this will populate the uploaded file's URL in "
 "the above text field."
 msgstr ""
-"Haz clic en el botón «Insertar», esto introducirá la URL del archivo subido "
-"en el campo de texto de arriba."
+"Haz clic en el botón \"Insertar\", esto introducirá la URL del archivo "
+"subido en el campo de texto de arriba."
 
-#: admin/includes/class-products-meta-boxes.php:412
-#: admin/includes/class-products-meta-boxes.php:463
+#: admin/includes/class-products-meta-boxes.php:520
+#: admin/includes/class-products-meta-boxes.php:571
 msgid "Insert"
 msgstr "Insertar"
 
-#: admin/includes/class-products-meta-boxes.php:437
+#: admin/includes/class-products-meta-boxes.php:545
 msgid ""
 "Manually enter a valid URL, or click \"Select Image\" to upload (or choose) "
 "the file thumbnail image."
 msgstr ""
-"Introduce manualmente una URL válida o haz clic en «Seleccionar imagen» para "
-"subir (o elige) la imagen en miniatura del archivo."
+"Introduce manualmente una URL válida o haz clic en \"Seleccionar imagen\" "
+"para subir (o elige) la imagen en miniatura del archivo."
 
-#: admin/includes/class-products-meta-boxes.php:441
-#: admin/includes/class-products-meta-boxes.php:461
+#: admin/includes/class-products-meta-boxes.php:549
+#: admin/includes/class-products-meta-boxes.php:569
 msgid "Select Image"
 msgstr "Selecciona la imagen"
 
-#: admin/includes/class-products-meta-boxes.php:442
+#: admin/includes/class-products-meta-boxes.php:550
 msgid "Remove Image"
 msgstr "Quita la imagen"
 
-#: admin/includes/class-products-meta-boxes.php:451
+#: admin/includes/class-products-meta-boxes.php:559
 msgid "Don't use product thumbnail in Stripe pop-up"
 msgstr ""
 "No utilices la miniatura del producto en la ventana emergente de Stripe"
 
-#: admin/includes/class-products-meta-boxes.php:453
+#: admin/includes/class-products-meta-boxes.php:561
 msgid ""
 "Use this checkbox if you do not want to show the product thumbnail in Stripe "
 "checkout popup."
@@ -2055,24 +2180,24 @@ msgstr ""
 "Utiliza esta casilla de verificación si no deseas mostrar la miniatura del "
 "producto en la ventana emergente de finalizar la compra de Stripe."
 
-#: admin/includes/class-products-meta-boxes.php:493
+#: admin/includes/class-products-meta-boxes.php:601
 msgid "Collect Address on Checkout"
 msgstr "Recopila la dirección al finalizar la compra"
 
-#: admin/includes/class-products-meta-boxes.php:494
+#: admin/includes/class-products-meta-boxes.php:602
 msgid "Enable this to collect customer address on checkout."
 msgstr ""
 "Activa esto para coleccionar la dirección del cliente al finalizar la compra."
 
-#: admin/includes/class-products-meta-boxes.php:501
+#: admin/includes/class-products-meta-boxes.php:609
 msgid "Collect Both Billing And Shipping Addresses"
 msgstr "Recopila ambas direcciones de facturación y envío"
 
-#: admin/includes/class-products-meta-boxes.php:508
+#: admin/includes/class-products-meta-boxes.php:616
 msgid "Collect Billing Address Only"
 msgstr "Recopila solo la dirección de facturación"
 
-#: admin/includes/class-products-meta-boxes.php:517
+#: admin/includes/class-products-meta-boxes.php:625
 msgid ""
 "Enter Thank You page URL. Leave it blank if you want ot use default Thank "
 "You page."
@@ -2080,7 +2205,7 @@ msgstr ""
 "Introduce la URL de la página de agradecimiento. Déjalo en blanco si deseas "
 "utilizar la página de agradecimiento por defecto."
 
-#: admin/includes/class-products-meta-boxes.php:519
+#: admin/includes/class-products-meta-boxes.php:627
 msgid ""
 "You can read how to customize messages on Thank You page <a href=\"https://s-"
 "plugins.com/customize-the-thank-page-message-of-stripe-payments-plugin/\" "
@@ -2090,11 +2215,11 @@ msgstr ""
 "\"https://s-plugins.com/customize-the-thank-page-message-of-stripe-payments-"
 "plugin/\" target=\"_blank\">en la documentación</a>."
 
-#: admin/includes/class-products-meta-boxes.php:532
+#: admin/includes/class-products-meta-boxes.php:640
 msgid "Button Options"
 msgstr "Opciones del botón"
 
-#: admin/includes/class-products-meta-boxes.php:536
+#: admin/includes/class-products-meta-boxes.php:644
 msgid ""
 "Specify text to be displayed on the button. Leave it blank to use button "
 "text specified on settings page."
@@ -2102,11 +2227,11 @@ msgstr ""
 "Especifica el texto que se mostrará en el botón. Déjalo en blanco para usar "
 "el texto del botón especificado en la página de ajustes."
 
-#: admin/includes/class-products-meta-boxes.php:537
+#: admin/includes/class-products-meta-boxes.php:645
 msgid "Button CSS Class"
 msgstr "Clase CSS del botón"
 
-#: admin/includes/class-products-meta-boxes.php:540
+#: admin/includes/class-products-meta-boxes.php:648
 msgid ""
 "CSS class to be assigned to the button. This is used for styling purposes. "
 "You can get additional information <a href=\"https://s-plugins.com/customize-"
@@ -2118,11 +2243,11 @@ msgstr ""
 "payment-button-appearance-using-css/\" target=\"_blank\">en este tutorial.</"
 "a>."
 
-#: admin/includes/class-products-meta-boxes.php:541 admin/views/blocks.php:30
+#: admin/includes/class-products-meta-boxes.php:649 admin/views/blocks.php:30
 msgid "Show Button Only"
 msgstr "Muestra solo el botón"
 
-#: admin/includes/class-products-meta-boxes.php:542 admin/views/blocks.php:31
+#: admin/includes/class-products-meta-boxes.php:650 admin/views/blocks.php:31
 msgid ""
 "Check this box if you just want to show the button only without any "
 "additional product info."
@@ -2130,15 +2255,15 @@ msgstr ""
 "Selecciona esta casilla si simplemente deseas mostrar el botón solo, sin "
 "información adicional del producto."
 
-#: admin/includes/class-products-meta-boxes.php:545
+#: admin/includes/class-products-meta-boxes.php:653
 msgid "Payment Popup Options"
 msgstr "Opciones del mensaje emergente de pago"
 
-#: admin/includes/class-products-meta-boxes.php:546
+#: admin/includes/class-products-meta-boxes.php:654
 msgid "Show Order Total On Payment Popup"
 msgstr "Mostrar el total del pedido en el mensaje emergente de pago"
 
-#: admin/includes/class-products-meta-boxes.php:547
+#: admin/includes/class-products-meta-boxes.php:655
 msgid ""
 "If enabled, an additional \"Your order\" section with itemized product info "
 "(shipping, tax amount, variations etc) will be displayed on payment popup."
@@ -2147,7 +2272,7 @@ msgstr ""
 "adicional «Tu pedido» con información detallada del producto (envío, "
 "cantidad de impuestos, variaciones, etc.)."
 
-#: admin/includes/class-products-meta-boxes.php:564
+#: admin/includes/class-products-meta-boxes.php:672
 msgid ""
 "Custom field is disabled. Configure custom field in the settings menu of "
 "this plugin to enable it."
@@ -2155,78 +2280,102 @@ msgstr ""
 "El campo personalizado está desactivado. Configura el campo personalizado en "
 "el menú de ajustes de este plugin para activarlo."
 
-#: admin/includes/class-products-meta-boxes.php:568
+#: admin/includes/class-products-meta-boxes.php:676
 msgid "Select how Custom Field display should be handled for this product."
 msgstr ""
 "Selecciona cómo se debe manejar la visualización del campo personalizado "
 "para este producto."
 
-#: admin/includes/class-products-meta-boxes.php:569
-#: admin/includes/class-products-meta-boxes.php:580
+#: admin/includes/class-products-meta-boxes.php:677
+#: admin/includes/class-products-meta-boxes.php:688
 msgid "Use Global Setting"
 msgstr "Usar el ajuste global"
 
-#: admin/includes/class-products-meta-boxes.php:570
-#: admin/includes/class-products-meta-boxes.php:581
+#: admin/includes/class-products-meta-boxes.php:678
+#: admin/includes/class-products-meta-boxes.php:689
 msgid "Enabled"
 msgstr "Activado"
 
-#: admin/includes/class-products-meta-boxes.php:571
-#: admin/includes/class-products-meta-boxes.php:582
+#: admin/includes/class-products-meta-boxes.php:679
+#: admin/includes/class-products-meta-boxes.php:690
 msgid "Disabled"
 msgstr "Desactivado"
 
-#: admin/includes/class-products-meta-boxes.php:579
+#: admin/includes/class-products-meta-boxes.php:687
 msgid "Select how Coupons should be handled for this product."
 msgstr "Selecciona cómo se deben manejar los cupones para este producto."
 
-#: admin/includes/class-products-meta-boxes.php:589
+#: admin/includes/class-products-meta-boxes.php:704
+msgid "Authorize Only"
+msgstr "Solo autorizar"
+
+#: admin/includes/class-products-meta-boxes.php:706
+msgid ""
+"Place a hold on a card to reserve the funds now and capture it later "
+"manually."
+msgstr ""
+"Coloca una retención en una tarjeta para reservar los fondos ahora y "
+"capturarla más tarde manualmente."
+
+#: admin/includes/class-products-meta-boxes.php:708
+msgid ""
+"Note: this option is not supported by Subscription products, Alipay, SOFORT, "
+"iDEAL and FPX payment methods. If enabled, those won't be offered as payment "
+"option for this product."
+msgstr ""
+"Nota: esta opción no es compatible con los productos de suscripción, los "
+"métodos de pago Alipay, SOFORT, iDEAL y FPX. Si está activado, no se "
+"ofrecerán como opción de pago para este producto."
+
+#: admin/includes/class-products-meta-boxes.php:710
 msgid "Force Test Mode"
 msgstr "Forzar el modo de prueba"
 
-#: admin/includes/class-products-meta-boxes.php:590
+#: admin/includes/class-products-meta-boxes.php:711
 msgid ""
-"When checked, product stays in test mode regardless of the global \"Live Mode"
-"\" switch."
+"When enabled, this product will stay in test mode regardless of the value "
+"set in the global \"Live Mode\" settings option. Can be useful to create a "
+"test product."
 msgstr ""
-"Cuando está marcado, el producto se mantiene en modo de prueba "
-"independientemente del selector global de «Modo en vivo»."
+"Cuando está activado, este producto permanecerá en modo de prueba "
+"independientemente del valor establecido en la opción de ajuste global «Modo "
+"en vivo». Puede ser útil para crear un producto de prueba."
 
-#: admin/includes/class-products-meta-boxes.php:607
+#: admin/includes/class-products-meta-boxes.php:728
 #: admin/includes/class-products.php:137
 msgid "Shortcode"
 msgstr "Shortcode"
 
-#: admin/includes/class-products-meta-boxes.php:609
+#: admin/includes/class-products-meta-boxes.php:730
 msgid "Use this shortcode to display this product."
 msgstr "Usa este shortcode para mostrar este producto."
 
-#: admin/includes/class-products-meta-boxes.php:612
+#: admin/includes/class-products-meta-boxes.php:733
 msgid "CSS Class"
 msgstr "Clase CSS"
 
-#: admin/includes/class-products-meta-boxes.php:614
+#: admin/includes/class-products-meta-boxes.php:735
 msgid "Attach this product to any html element by adding this CSS class to it."
 msgstr ""
 "Adjunta este producto a cualquier elemento HTML añadiéndole esta clase CSS."
 
-#: admin/includes/class-products-meta-boxes.php:617
+#: admin/includes/class-products-meta-boxes.php:738
 msgid "Link URL"
 msgstr "URL del enlace"
 
-#: admin/includes/class-products-meta-boxes.php:619
+#: admin/includes/class-products-meta-boxes.php:740
 msgid ""
 "Use this URL to create a custom payment button using a text or image link."
 msgstr ""
 "Usa esta URL para crear un botón de pago personalizado utilizando un enlace "
 "de texto o imagen."
 
-#: admin/includes/class-products-meta-boxes.php:641
+#: admin/includes/class-products-meta-boxes.php:762
 msgid "Please specify product name."
 msgstr "Por favor, especifica el nombre del producto."
 
 #. translators: %1$s - currency code, %2$s - minimum amount, %3$s - current amount
-#: admin/includes/class-products-meta-boxes.php:764
+#: admin/includes/class-products-meta-boxes.php:906
 msgid ""
 "<b>Invalid product price</b>: minimum price in %1$s should be %2$s, you "
 "specified %3$s. This price limitation comes from Stripe."
@@ -2235,13 +2384,20 @@ msgstr ""
 "y tú has especificado %3$s. Esta limitación de precio proviene de Stripe."
 
 #. translators: %1$s - maximum allowed amount, %2$s - current amount
-#: admin/includes/class-products-meta-boxes.php:774
+#: admin/includes/class-products-meta-boxes.php:916
 msgid ""
 "<b>Invalid product price</b>: maximum allowed product price is %1$s, you "
 "specified %2$s"
 msgstr ""
 "<b>Precio del producto no válido</b>: el precio máximo permitido para el "
 "producto es %1$s y tú has especificado %2$s"
+
+#: admin/includes/class-products-meta-boxes.php:923
+msgid ""
+"<b>Invalid product price</b>: one-time payment product price cannot be zero."
+msgstr ""
+"<b>Precio del producto no válido</b>: el precio del producto de pago único "
+"no puede ser cero."
 
 #: admin/includes/class-products.php:30 admin/includes/class-products.php:77
 msgctxt "Post Type General Name"
@@ -2311,6 +2467,12 @@ msgstr "Borrador de producto actualizado."
 msgid "Thumbnail"
 msgstr "Miniatura"
 
+#: admin/includes/class-products.php:133 includes/class-asp-order-item.php:128
+#: includes/process_ipn.php:692
+#: includes/shortcodes/class-shortcode-asp.php:1003
+msgid "Product Name"
+msgstr "Nombre del producto"
+
 #: admin/includes/class-products.php:134
 msgid "ID"
 msgstr "ID"
@@ -2323,7 +2485,7 @@ msgstr "Inventario"
 msgid "Date"
 msgstr "Fecha"
 
-#: admin/includes/class-products.php:151 includes/class-asp-pp-handler.php:188
+#: admin/includes/class-products.php:151 includes/class-asp-pp-handler.php:193
 #: includes/shortcodes/class-asp-shortcode-ng.php:509
 #: includes/shortcodes/class-shortcode-asp.php:618
 msgid "Out of stock"
@@ -2382,22 +2544,10 @@ msgstr ""
 "que compren un producto."
 
 #: admin/views/addons-listing.php:62
-msgid "reCAPTCHA Addon"
-msgstr "Extensión reCAPTCHA"
-
-#: admin/views/addons-listing.php:64
-msgid ""
-"When you enable this addon, the reCAPTCHA popup will appear when customers "
-"click a Stripe payment button."
-msgstr ""
-"Cuando activas esta extensión, la ventana emergente de reCAPTCHA aparecerá "
-"cuando los clientes hacen clic en el botón Stripe payment."
-
-#: admin/views/addons-listing.php:72
 msgid "Alipay Addon"
 msgstr "Extensión Alipay"
 
-#: admin/views/addons-listing.php:74
+#: admin/views/addons-listing.php:64
 msgid ""
 "When you enable this addon, it gives you the ability to accept payments via "
 "Alipay on your website"
@@ -2405,11 +2555,11 @@ msgstr ""
 "Cuando activas esta extensión, te permite aceptar pagos a través de Alipay "
 "en tu web"
 
-#: admin/views/addons-listing.php:82
+#: admin/views/addons-listing.php:72
 msgid "WP Affiliate Integration"
 msgstr "Integración de WP Affiliate"
 
-#: admin/views/addons-listing.php:84
+#: admin/views/addons-listing.php:74
 msgid ""
 "The affiliate plugin will track customers that purchase items and award the "
 "affiliate that referred the customer."
@@ -2417,11 +2567,11 @@ msgstr ""
 "El plugin de afiliados hará un seguimiento de los clientes que compran "
 "artículos y premiara al afiliado que refirió al cliente."
 
-#: admin/views/addons-listing.php:92
+#: admin/views/addons-listing.php:82
 msgid "Multi-Currency Addon"
 msgstr "Extensión Multi-Currency"
 
-#: admin/views/addons-listing.php:94
+#: admin/views/addons-listing.php:84
 msgid ""
 "The multi-currency addon allows your customers to pick a currency and pay "
 "for the item in that currency."
@@ -2429,11 +2579,11 @@ msgstr ""
 "La extensión multi-currency permite a tus clientes elegir una moneda y pagar "
 "el artículo en esa moneda."
 
-#: admin/views/addons-listing.php:102
+#: admin/views/addons-listing.php:92
 msgid "Custom Messages Addon"
 msgstr "Extensión Custom Messages"
 
-#: admin/views/addons-listing.php:104
+#: admin/views/addons-listing.php:94
 msgid ""
 "This addon allows you to customize a number of common messages displayed by "
 "the Stripe Payments Plugin."
@@ -2441,11 +2591,11 @@ msgstr ""
 "Esta extensión te permite personalizar una serie de mensajes comunes "
 "mostrados por el plugin de Stripe Payments."
 
-#: admin/views/addons-listing.php:112
+#: admin/views/addons-listing.php:102
 msgid "AWeber Integration Addon"
 msgstr "Extensión de integración de AWeber"
 
-#: admin/views/addons-listing.php:114
+#: admin/views/addons-listing.php:104
 msgid ""
 "This addon allows you to add customers to your AWeber list after they "
 "purchase a product."
@@ -2453,11 +2603,11 @@ msgstr ""
 "Esta extensión te permite añadir clientes a tu lista de AWeber después de "
 "comprar un producto."
 
-#: admin/views/addons-listing.php:122
+#: admin/views/addons-listing.php:112
 msgid "ConvertKit Integration Addon"
 msgstr "Extensión de integración de ConvertKit"
 
-#: admin/views/addons-listing.php:124
+#: admin/views/addons-listing.php:114
 msgid ""
 "This addon allows you to add customers to your ConvertKit list after they "
 "purchase a product."
@@ -2465,11 +2615,11 @@ msgstr ""
 "Esta extensión te permite añadir clientes a tu lista de ConvertKit después "
 "de comprar un producto."
 
-#: admin/views/addons-listing.php:132
+#: admin/views/addons-listing.php:122
 msgid "Post Payment Actions Addon"
 msgstr "Extensión Post Payment Actions"
 
-#: admin/views/addons-listing.php:134
+#: admin/views/addons-listing.php:124
 msgid ""
 "Post Payment Actions are triggered after a successful Stripe Payments "
 "transaction has been completed."
@@ -2477,11 +2627,11 @@ msgstr ""
 "Las acciones de pago posteriores se activan después de que se ha completado "
 "una transacción con éxito de pagos de Stripe."
 
-#: admin/views/addons-listing.php:142
+#: admin/views/addons-listing.php:132
 msgid "SOFORT Payments Addon"
 msgstr "Extensión SOFORT Payments"
 
-#: admin/views/addons-listing.php:144
+#: admin/views/addons-listing.php:134
 msgid ""
 "The SOFORT Addon can be used along side the Stripe Payments Plugin to allow "
 "your customers to pay using SOFORT."
@@ -2489,11 +2639,11 @@ msgstr ""
 "La extensión SOFORT se puede usar junto con el plugin Stripe Payments para "
 "que tus clientes puedan pagar utilizando SOFORT."
 
-#: admin/views/addons-listing.php:152
+#: admin/views/addons-listing.php:142
 msgid "iDEAL Payments Addon"
 msgstr "Extensión iDEAL Payments"
 
-#: admin/views/addons-listing.php:154
+#: admin/views/addons-listing.php:144
 msgid ""
 "The iDEAL Addon can be used along side the Stripe Payments Plugin to allow "
 "your customers to pay using iDEAL gateway."
@@ -2501,11 +2651,11 @@ msgstr ""
 "La extensión iDEAL se puede usar junto con el plugin Stripe Payments para "
 "permitir pagar a tus clientes usando la pasarela iDEAL."
 
-#: admin/views/addons-listing.php:162
+#: admin/views/addons-listing.php:152
 msgid "Additional Custom Fields"
 msgstr "Campos personalizados adicionales"
 
-#: admin/views/addons-listing.php:164
+#: admin/views/addons-listing.php:154
 msgid ""
 "The Additional Custom Fields Addon allows you to collect information from "
 "your customers before they proceed to checkout."
@@ -2513,11 +2663,11 @@ msgstr ""
 "La extensión adicional de Custom Fields te permite recopilar información de "
 "tus clientes antes de proceder al pago."
 
-#: admin/views/addons-listing.php:172
+#: admin/views/addons-listing.php:162
 msgid "MailerLite Addon"
 msgstr "Extensión MailerLite"
 
-#: admin/views/addons-listing.php:174
+#: admin/views/addons-listing.php:164
 msgid ""
 "This addon allows you to add customers to your MailerLite group after they "
 "purchase a product."
@@ -2525,11 +2675,11 @@ msgstr ""
 "Esta extensión te permite añadir clientes a tu grupo de MailerLite después "
 "de que hayan comprado un producto."
 
-#: admin/views/addons-listing.php:187
+#: admin/views/addons-listing.php:177
 msgid "Add-on installed"
 msgstr "Extensión instalada"
 
-#: admin/views/addons-listing.php:204
+#: admin/views/addons-listing.php:194
 msgid "View Details"
 msgstr "Ver detalles"
 
@@ -2618,9 +2768,9 @@ msgstr "¿Estás seguro de que quieres vaciar el registro?"
 msgid "Log cleared."
 msgstr "El registro se ha vaciado."
 
-#: admin/views/admin.php:131 includes/class-asp-pp-handler.php:497
-#: includes/class-asp-pp-handler.php:684 includes/class-asp-pp-handler.php:688
-#: includes/class-asp-pp-handler.php:774
+#: admin/views/admin.php:131 includes/class-asp-pp-handler.php:537
+#: includes/class-asp-pp-handler.php:748 includes/class-asp-pp-handler.php:752
+#: includes/class-asp-pp-handler.php:863
 msgid "Error occurred:"
 msgstr "Ocurrió un error:"
 
@@ -2637,7 +2787,7 @@ msgid "(Select product)"
 msgstr "(Selecciona el producto)"
 
 #. translators: %1$s - plugin name, %2$s - min core plugin version, %3$s - installed core plugin version
-#: includes/class-asp-addons-helper.php:108
+#: includes/class-asp-addons-helper.php:107
 msgid ""
 "%1$s requires Stripe Payments plugin minimum version to be %2$s (you have "
 "version %3$s installed). Please update Stripe Payments plugin."
@@ -2646,124 +2796,192 @@ msgstr ""
 "(tienes la versión %3$s instalada). Por favor, actualiza el plugin Stripe "
 "Payments."
 
-#: includes/class-asp-pp-handler.php:102
+#: includes/class-asp-order-item.php:122
+msgid "Order Details"
+msgstr "Detalles del pedido"
+
+#: includes/class-asp-order-item.php:123
+msgid "Order Time"
+msgstr "Hora del pedido"
+
+#: includes/class-asp-order-item.php:124
+#: includes/shortcodes/class-shortcode-asp.php:1011
+msgid "Transaction ID"
+msgstr "ID de transacción"
+
+#: includes/class-asp-order-item.php:125
+msgid "Stripe Token"
+msgstr "Token de Stripe"
+
+#: includes/class-asp-order-item.php:129 includes/process_ipn.php:693
+#: includes/shortcodes/class-shortcode-asp.php:1004
+msgid "Quantity"
+msgstr "Cantidad"
+
+#: includes/class-asp-order-item.php:130 includes/process_ipn.php:694
+#: includes/shortcodes/class-shortcode-asp.php:1005
+msgid "Item Price"
+msgstr "Precio del artículo"
+
+#: includes/class-asp-order-item.php:134 includes/process_ipn.php:698
+#: includes/shortcodes/class-shortcode-asp.php:1009
+msgid "Total Amount"
+msgstr "Cantidad total"
+
+#: includes/class-asp-order-item.php:138
+msgid "Customer Details"
+msgstr "Detalles del cliente"
+
+#. translators: %s is email address
+#: includes/class-asp-order-item.php:140
+msgid "E-Mail Address: %s"
+msgstr "Dirección de correo electrónico: %s"
+
+#. translators: %s is payment source (e.g. 'card' etc)
+#: includes/class-asp-order-item.php:142
+msgid "Payment Source: %s"
+msgstr "Origen del pago: %s"
+
+#: includes/class-asp-order-item.php:159
+msgid "Unknown"
+msgstr "Desconocido"
+
+#. translators: %s is IP address
+#: includes/class-asp-order-item.php:161
+msgid "IP Address: %s"
+msgstr "Dirección IP: %s"
+
+#: includes/class-asp-order-item.php:166
+msgid "Billing Address"
+msgstr "Dirección de facturación"
+
+#: includes/class-asp-order-item.php:172
+msgid "Shipping Address"
+msgstr "Dirección de envío"
+
+#: includes/class-asp-pp-handler.php:107
 #: includes/shortcodes/class-shortcode-asp.php:649
 msgid "Only numbers are allowed: 0-9"
-msgstr "Sólo se permiten números: 0-9"
+msgstr "Solo se permiten números: 0-9"
 
-#: includes/class-asp-pp-handler.php:314
-#: public/views/templates/default/payment-popup.php:479
+#: includes/class-asp-pp-handler.php:321
+#: public/views/templates/default/payment-popup.php:484
 msgid "Credit or debit card"
 msgstr "Tarjeta de crédito o de débito"
 
-#: includes/class-asp-pp-handler.php:411 includes/class-asp-pp-handler.php:453
+#. translators: %s is not a placeholder
+#: includes/class-asp-pp-handler.php:444
+msgid "Authorize %s"
+msgstr "Autorizar %s"
+
+#: includes/class-asp-pp-handler.php:451 includes/class-asp-pp-handler.php:493
 #: includes/shortcodes/class-shortcode-asp.php:111
 msgid "Start Free Trial"
 msgstr "Empieza la prueba gratuita"
 
-#: includes/class-asp-pp-handler.php:438
+#: includes/class-asp-pp-handler.php:478
 #: includes/shortcodes/class-shortcode-asp.php:97
 msgid "Please enter a valid amount"
 msgstr "Por favor, introduce una cantidad válida"
 
-#: includes/class-asp-pp-handler.php:439
+#: includes/class-asp-pp-handler.php:479 includes/class-asp-pp-handler.php:556
 #: includes/shortcodes/class-shortcode-asp.php:98
 msgid "Minimum amount is"
 msgstr "La cantidad mínima es"
 
-#: includes/class-asp-pp-handler.php:440
+#: includes/class-asp-pp-handler.php:480
 #: includes/shortcodes/class-shortcode-asp.php:99
 msgid "Please enter quantity."
 msgstr "Por favor, introduce una cantidad."
 
-#: includes/class-asp-pp-handler.php:441
+#: includes/class-asp-pp-handler.php:481
 #: includes/shortcodes/class-shortcode-asp.php:100
 msgid "Quantity can't be zero."
 msgstr "La cantidad no puede ser cero."
 
-#: includes/class-asp-pp-handler.php:442
+#: includes/class-asp-pp-handler.php:482
 #: includes/shortcodes/class-shortcode-asp.php:101
 msgid "Quantity should be integer value."
 msgstr "La cantidad debe ser un valor entero."
 
 #. translators: %d is number of items in stock
-#: includes/class-asp-pp-handler.php:444 includes/class-asp-pp-handler.php:506
+#: includes/class-asp-pp-handler.php:484 includes/class-asp-pp-handler.php:546
 #: includes/shortcodes/class-shortcode-asp.php:102
 msgid "You cannot order more items than available: %d"
 msgstr "No puedes pedir más artículos que los disponibles: %d"
 
 #. translators: %d is number of items in stock
-#: includes/class-asp-pp-handler.php:445
-#: includes/class-asp-process-ipn-ng.php:388
-#: includes/class-asp-product-item.php:345 includes/process_ipn.php:561
+#: includes/class-asp-pp-handler.php:485
+#: includes/class-asp-process-ipn-ng.php:390
+#: includes/class-asp-product-item.php:371 includes/process_ipn.php:561
 #: includes/shortcodes/class-asp-shortcode-ng.php:184
 #: includes/shortcodes/class-asp-shortcode-ng.php:542
 #: includes/shortcodes/class-shortcode-asp.php:103
 #: includes/shortcodes/class-shortcode-asp.php:341
 #: includes/shortcodes/class-shortcode-asp.php:686
-#: public/views/templates/default/payment-popup.php:306
+#: public/views/templates/default/payment-popup.php:311
 msgid "Tax"
 msgstr "Impuesto"
 
-#: includes/class-asp-pp-handler.php:446
-#: includes/class-asp-process-ipn-ng.php:396
-#: includes/class-asp-product-item.php:356 includes/process_ipn.php:568
+#: includes/class-asp-pp-handler.php:486
+#: includes/class-asp-process-ipn-ng.php:398
+#: includes/class-asp-product-item.php:382 includes/process_ipn.php:568
 #: includes/shortcodes/class-asp-shortcode-ng.php:194
 #: includes/shortcodes/class-asp-shortcode-ng.php:543
 #: includes/shortcodes/class-shortcode-asp.php:104
 #: includes/shortcodes/class-shortcode-asp.php:351
 #: includes/shortcodes/class-shortcode-asp.php:687
-#: public/views/templates/default/payment-popup.php:312
+#: public/views/templates/default/payment-popup.php:317
 msgid "Shipping"
 msgstr "Envío"
 
-#: includes/class-asp-pp-handler.php:447
+#: includes/class-asp-pp-handler.php:487
 #: includes/shortcodes/class-asp-shortcode-ng.php:205
 #: includes/shortcodes/class-shortcode-asp.php:105
 #: includes/shortcodes/class-shortcode-asp.php:362
 msgid "Total:"
 msgstr "Total:"
 
-#: includes/class-asp-pp-handler.php:448
+#: includes/class-asp-pp-handler.php:488
 #: includes/shortcodes/class-shortcode-asp.php:106
 msgid "Please fill in this field."
 msgstr "Por favor, rellena este campo."
 
-#: includes/class-asp-pp-handler.php:449
+#: includes/class-asp-pp-handler.php:489
 #: includes/shortcodes/class-shortcode-asp.php:107
 msgid "Please check this checkbox."
 msgstr "Por favor, marca esta casilla."
 
-#: includes/class-asp-pp-handler.php:450
+#: includes/class-asp-pp-handler.php:490
 #: includes/shortcodes/class-shortcode-asp.php:108
 msgid "You must accept the terms before you can proceed."
 msgstr "Debes aceptar las condiciones para continuar."
 
-#: includes/class-asp-pp-handler.php:451
+#: includes/class-asp-pp-handler.php:491
 #: includes/shortcodes/class-shortcode-asp.php:109
 msgid "Remove coupon"
 msgstr "Quita el cupón"
 
-#: includes/class-asp-pp-handler.php:452
+#: includes/class-asp-pp-handler.php:492
 #: includes/shortcodes/class-shortcode-asp.php:110
-#: public/views/templates/default/payment-popup.php:273
+#: public/views/templates/default/payment-popup.php:278
 msgid "Remove"
 msgstr "Quitar"
 
-#: includes/class-asp-pp-handler.php:454
+#: includes/class-asp-pp-handler.php:494
 #: includes/shortcodes/class-shortcode-asp.php:112
 msgid "Invalid validation RegEx: "
-msgstr "La validación de RegEx no válida: "
+msgstr "La validación de RegEx no es válida: "
 
-#: includes/class-asp-pp-handler.php:455
+#: includes/class-asp-pp-handler.php:495
 msgid "Purchase for Free"
 msgstr "Adquirir gratis"
 
-#: includes/class-asp-pp-handler.php:456
+#: includes/class-asp-pp-handler.php:496
 msgid "Currency not supported for this payment method."
 msgstr "Esta moneda no es compatible para este método de pago."
 
-#: includes/class-asp-pp-handler.php:524 includes/class-asp-pp-handler.php:527
+#: includes/class-asp-pp-handler.php:575 includes/class-asp-pp-handler.php:578
 msgid "Stripe API error occurred:"
 msgstr "Ha ocurrido un error de la API de Stripe:"
 
@@ -2780,46 +2998,50 @@ msgid "Debug data:"
 msgstr "Depurar los datos:"
 
 #. translators: placeholders are expected and received amounts
-#: includes/class-asp-process-ipn-ng.php:279
+#: includes/class-asp-process-ipn-ng.php:281
 msgid "Invalid payment amount received. Expected %1$s, got %2$s."
 msgstr ""
 "Recibido un importe de pago no válido. Se esperaba %1$s y se ha obtenido "
 "%2$s."
 
 #. translators: %s is coupon code
-#: includes/class-asp-process-ipn-ng.php:379 includes/process_ipn.php:556
+#: includes/class-asp-process-ipn-ng.php:381 includes/process_ipn.php:556
 msgid "Coupon \"%s\""
 msgstr "Cupón \"%s\""
 
 #. translators: %s is coupon code
-#: includes/class-asp-process-ipn-ng.php:380 includes/process_ipn.php:557
+#: includes/class-asp-process-ipn-ng.php:382 includes/process_ipn.php:557
 msgid "Subtotal"
 msgstr "Subtotal"
 
-#: includes/class-asp-process-ipn-ng.php:468
+#: includes/class-asp-process-ipn-ng.php:470
 msgid "Product Name: "
 msgstr "Nombre del producto: "
 
-#: includes/class-asp-process-ipn-ng.php:469
+#: includes/class-asp-process-ipn-ng.php:471
 msgid "Quantity: "
 msgstr "Cantidad: "
 
-#: includes/class-asp-process-ipn-ng.php:470
+#: includes/class-asp-process-ipn-ng.php:472
 msgid "Item Price: "
 msgstr "Precio del artículo: "
 
-#: includes/class-asp-process-ipn-ng.php:475
+#: includes/class-asp-process-ipn-ng.php:477
 msgid "Total Amount: "
 msgstr "Cantidad total: "
 
-#: includes/class-asp-product-item.php:484
+#: includes/class-asp-product-item.php:510
 msgid "No product ID provided."
 msgstr "No se ha proporcionado el ID del producto."
 
 #. translators: %d is product id
-#: includes/class-asp-product-item.php:492
+#: includes/class-asp-product-item.php:518
 msgid "Can't find product with ID %d"
 msgstr "No se puede encontrar el producto con el ID %d"
+
+#: includes/class-asp-self-hooks-handler.php:365
+msgid "Invalid security token."
+msgstr "El token de seguridad no es válido."
 
 #: includes/class-asp-utils.php:292
 msgid "Afghanistan"
@@ -3846,174 +4068,178 @@ msgid "Bosnia and Herzegovina Convertible Mark (BAM)"
 msgstr "Marco convertible de Bosnia y Herzegovina (BAM)"
 
 #: includes/class-asp-utils.php:572
+msgid "Bulgarian Lev (BGN)"
+msgstr "Lev búlgaro (BGN)"
+
+#: includes/class-asp-utils.php:573
 msgid "Brazilian Real (BRL)"
 msgstr "Real Brasileño (BRL)"
 
-#: includes/class-asp-utils.php:573
+#: includes/class-asp-utils.php:574
 msgid "Canadian Dollars (CAD)"
 msgstr "Dólares canadienses (CAD)"
 
-#: includes/class-asp-utils.php:574
+#: includes/class-asp-utils.php:575
 msgid "Chilean Peso (CLP)"
 msgstr "Peso chileno (CLP)"
 
-#: includes/class-asp-utils.php:575
+#: includes/class-asp-utils.php:576
 msgid "Chinese Yuan (CNY)"
 msgstr "Yuan Chino (CNY)"
 
-#: includes/class-asp-utils.php:576
+#: includes/class-asp-utils.php:577
 msgid "Colombian Peso (COP)"
 msgstr "Peso colombiano (COP)"
 
-#: includes/class-asp-utils.php:577
+#: includes/class-asp-utils.php:578
 msgid "Czech Koruna (CZK)"
 msgstr "Corona checa (CZK)"
 
-#: includes/class-asp-utils.php:578
+#: includes/class-asp-utils.php:579
 msgid "Danish Krone (DKK)"
 msgstr "Corona danesa (DKK)"
 
-#: includes/class-asp-utils.php:579
+#: includes/class-asp-utils.php:580
 msgid "Hong Kong Dollar (HKD)"
 msgstr "Dólar de Hong Kong (HKD)"
 
-#: includes/class-asp-utils.php:580
+#: includes/class-asp-utils.php:581
 msgid "Hungarian Forint (HUF)"
 msgstr "Florín Húngaro (HUF)"
 
-#: includes/class-asp-utils.php:581
+#: includes/class-asp-utils.php:582
 msgid "Indian Rupee (INR)"
 msgstr "Rupia india (INR)"
 
-#: includes/class-asp-utils.php:582
+#: includes/class-asp-utils.php:583
 msgid "Indonesia Rupiah (IDR)"
 msgstr "Rupia indonesia (IDR)"
 
-#: includes/class-asp-utils.php:583
+#: includes/class-asp-utils.php:584
 msgid "Israeli Shekel (ILS)"
 msgstr "Shekel Israelí (ILS)"
 
-#: includes/class-asp-utils.php:584
+#: includes/class-asp-utils.php:585
 msgid "Japanese Yen (JPY)"
 msgstr "Yen Japonés (JPY)"
 
-#: includes/class-asp-utils.php:585
+#: includes/class-asp-utils.php:586
 msgid "Lebanese Pound (LBP)"
 msgstr "Libra Libanesa (LBP)"
 
-#: includes/class-asp-utils.php:586
+#: includes/class-asp-utils.php:587
 msgid "Malaysian Ringgits (MYR)"
 msgstr "Ringgits de Malasia (MYR)"
 
-#: includes/class-asp-utils.php:587
+#: includes/class-asp-utils.php:588
 msgid "Mexican Peso (MXN)"
 msgstr "Peso Mexicano (MXN)"
 
-#: includes/class-asp-utils.php:588
+#: includes/class-asp-utils.php:589
 msgid "New Zealand Dollar (NZD)"
 msgstr "Dólar de Nueva Zelanda (NZD)"
 
-#: includes/class-asp-utils.php:589
+#: includes/class-asp-utils.php:590
 msgid "Norwegian Krone (NOK)"
 msgstr "Corona noruega (NOK)"
 
-#: includes/class-asp-utils.php:590
+#: includes/class-asp-utils.php:591
 msgid "Peruvian Nuevo Sol (PEN)"
 msgstr "Nuevo sol peruano (PEN)"
 
-#: includes/class-asp-utils.php:591
+#: includes/class-asp-utils.php:592
 msgid "Philippine Pesos (PHP)"
 msgstr "Pesos Filipinos (PHP)"
 
-#: includes/class-asp-utils.php:592
+#: includes/class-asp-utils.php:593
 msgid "Polish Zloty (PLN)"
 msgstr "Zloty polaco (PLN)"
 
-#: includes/class-asp-utils.php:593
+#: includes/class-asp-utils.php:594
 msgid "Russian Ruble (RUB)"
 msgstr "Rublo ruso (RUB)"
 
-#: includes/class-asp-utils.php:594
+#: includes/class-asp-utils.php:595
 msgid "Saudi Riyal (SAR)"
 msgstr "Riyal Saudí (SAR)"
 
-#: includes/class-asp-utils.php:595
+#: includes/class-asp-utils.php:596
 msgid "Singapore Dollar (SGD)"
 msgstr "Dólar de Singapur (SGD)"
 
-#: includes/class-asp-utils.php:596
+#: includes/class-asp-utils.php:597
 msgid "South African Rand (ZAR)"
 msgstr "Rand Sudafricano (ZAR)"
 
-#: includes/class-asp-utils.php:597
+#: includes/class-asp-utils.php:598
 msgid "South Korean Won (KRW)"
 msgstr "Won surcoreano (KRW)"
 
-#: includes/class-asp-utils.php:598
+#: includes/class-asp-utils.php:599
 msgid "Swedish Krona (SEK)"
 msgstr "Corona sueca (SEK)"
 
-#: includes/class-asp-utils.php:599
+#: includes/class-asp-utils.php:600
 msgid "Swiss Franc (CHF)"
 msgstr "Franco suizo (CHF)"
 
-#: includes/class-asp-utils.php:600
+#: includes/class-asp-utils.php:601
 msgid "Taiwan New Dollars (TWD)"
 msgstr "Taiwán nuevos dólares (TWD)"
 
-#: includes/class-asp-utils.php:601
+#: includes/class-asp-utils.php:602
 msgid "Thai Baht (THB)"
 msgstr "Baht tailandés (THB)"
 
-#: includes/class-asp-utils.php:602
+#: includes/class-asp-utils.php:603
 msgid "Turkish Lira (TRY)"
 msgstr "Lira turca\t(TRY)"
 
-#: includes/class-asp-utils.php:603
+#: includes/class-asp-utils.php:604
 msgid "Uruguayan Peso (UYU)"
 msgstr "Peso uruguayo (UYU)"
 
-#: includes/class-asp-utils.php:604
+#: includes/class-asp-utils.php:605
 msgid "Vietnamese Dong (VND)"
 msgstr "Dong vietnamita (VND)"
 
-#: includes/class-asp.php:297
+#: includes/class-asp.php:309
 msgid "Buy Now"
 msgstr "Comprar ahora"
 
-#: includes/class-asp.php:302
+#: includes/class-asp.php:315
 msgid "Thank you for the purchase"
 msgstr "Gracias por comprar"
 
-#: includes/class-asp.php:303
+#: includes/class-asp.php:316
 msgid "Hello"
 msgstr "Hola"
 
-#: includes/class-asp.php:304
+#: includes/class-asp.php:317
 msgid "Thank you for your purchase! You ordered the following item(s):"
 msgstr "¡Gracias por tu compra! Has pedido los siguientes artículos:"
 
-#: includes/class-asp.php:307
+#: includes/class-asp.php:320
 msgid "Notification of product sale"
 msgstr "Notificación de la venta de productos"
 
-#: includes/class-asp.php:308
+#: includes/class-asp.php:321
 msgid "Dear Seller"
 msgstr "Estimado vendedor"
 
-#: includes/class-asp.php:309
+#: includes/class-asp.php:322
 msgid "This mail is to notify you of a product sale."
 msgstr "Este correo electrónico te notificará de una venta de un producto."
 
-#: includes/class-asp.php:311
+#: includes/class-asp.php:324
 msgid "The sale was made to"
 msgstr "La venta se realizó a"
 
-#: includes/class-asp.php:312
+#: includes/class-asp.php:325
 msgid "Thanks"
 msgstr "Gracias"
 
-#: includes/class-asp.php:328
+#: includes/class-asp.php:341
 msgid ""
 "I accept the <a href=\"https://example.com/terms-and-conditions/\" target="
 "\"_blank\">Terms and Conditions</a>"
@@ -4027,7 +4253,7 @@ msgid ""
 "caused by JavaScript errors on page."
 msgstr ""
 "Ocurrió un error antes de que el usuario interactuara con la ventana "
-"emergente de pago. Esto podría ser causado por errores de Javascript en la "
+"emergente de pago. Esto podría ser causado por errores de JavaScript en la "
 "página."
 
 #: includes/process_ipn.php:37
@@ -4036,18 +4262,146 @@ msgstr ""
 "Ocurrió un error después de que el usuario interactuara con la ventana "
 "emergente."
 
-#: includes/process_ipn.php:709 includes/process_ipn.php:715
+#: includes/process_ipn.php:710 includes/process_ipn.php:716
 msgid "Download link"
 msgstr "Enlace de descarga"
 
-#: includes/process_ipn.php:717
+#: includes/process_ipn.php:718
 #: includes/shortcodes/class-shortcode-asp.php:1025
 msgid "Download links"
 msgstr "Enlaces de descarga"
 
-#: includes/process_ipn.php:728
+#: includes/process_ipn.php:729
 msgid "Order Info: "
 msgstr "Información de pedido: "
+
+#: includes/recaptcha/admin/asp-recaptcha-admin-menu.php:16
+msgid ""
+"reCaptcha add-on is a part of core plugin now. Please delete \"Stripe "
+"Payments reCapthca Addon\" plugin to prevent potential issues."
+msgstr ""
+"Ahora, la extensión reCAPTCHA es parte del núcleo. Por favor, borra el "
+"plugin «Stripe Payments reCapthca Addon» para evitar posibles problemas."
+
+#: includes/recaptcha/admin/asp-recaptcha-admin-menu.php:17
+msgid "Click here to see the plugin on Plugins page."
+msgstr "Haz clic aquí para ver el plugin en la página de plugins."
+
+#: includes/recaptcha/admin/asp-recaptcha-admin-menu.php:40
+msgid "Please enter reCaptcha Site Key."
+msgstr "Por favor, introduce la clave del sitio de reCAPTCHA."
+
+#: includes/recaptcha/admin/asp-recaptcha-admin-menu.php:43
+msgid "Please enter reCaptcha Secret Key."
+msgstr "Por favor, introduce la clave secreta de reCAPTCHA."
+
+#: includes/recaptcha/admin/asp-recaptcha-admin-menu.php:68
+msgid "reCAPTCHA Settings"
+msgstr "Ajustes de reCAPTCHA"
+
+#: includes/recaptcha/admin/asp-recaptcha-admin-menu.php:72
+msgid "Enable reCAPTCHA"
+msgstr "Activar reCAPTCHA"
+
+#: includes/recaptcha/admin/asp-recaptcha-admin-menu.php:79
+msgid "Enables the reCAPTCHA feature. Enter reCAPTCHA v2 API Keys below."
+msgstr ""
+"Activa la característica reCAPTCHA. Introduce a continuación las claves de "
+"la API de reCAPTCHA v2."
+
+#: includes/recaptcha/admin/asp-recaptcha-admin-menu.php:85
+msgid "Use Invisible reCAPTCHA Badge"
+msgstr "Usar la acreditación de reCAPTCHA invisible"
+
+#: includes/recaptcha/admin/asp-recaptcha-admin-menu.php:92
+msgid ""
+"If you enable this option then you must enter reCAPTCHA v2 Invisible badge "
+"API Keys below."
+msgstr ""
+"Si activas esta opción, debes introducir a continuación las claves de la API "
+"de la acreditación de reCAPTCHA v2 invisible."
+
+#: includes/recaptcha/admin/asp-recaptcha-admin-menu.php:98
+msgid "Site Key"
+msgstr "Clave del sitio"
+
+#: includes/recaptcha/admin/asp-recaptcha-admin-menu.php:105
+msgid "Your reCaptcha Site Key."
+msgstr "Tu clave del sitio de reCAPTCHA."
+
+#: includes/recaptcha/admin/asp-recaptcha-admin-menu.php:111
+msgid "Secret Key"
+msgstr "Clave secreta"
+
+#: includes/recaptcha/admin/asp-recaptcha-admin-menu.php:118
+msgid "Your reCaptcha Secret Key."
+msgstr "Tu clave secreta de reCAPTCHA."
+
+#: includes/recaptcha/admin/asp-recaptcha-admin-menu.php:124
+msgid ""
+"<a href=\"https://s-plugins.com/stripe-payments-recaptcha-addon/\" target="
+"\"_blank\">Click here</a> to read the documentation to learn how to "
+"configure this and get API keys for your website."
+msgstr ""
+"<a href=\"https://s-plugins.com/stripe-payments-recaptcha-addon/\" target="
+"\"_blank\">Haz clic aquí</a> para leer la documentación para aprender cómo "
+"configurar esto y obtener las claves de la API para tu web."
+
+#: includes/recaptcha/admin/asp-recaptcha-admin-menu.php:129
+msgid "reCAPTCHA"
+msgstr "reCAPTCHA"
+
+#: includes/recaptcha/asp-recaptcha-main.php:61
+msgid "reCaptcha: error occurred during API request."
+msgstr "reCAPTCHA: ha ocurrido un error durante la solicitud de la API."
+
+#: includes/recaptcha/asp-recaptcha-main.php:66
+msgid "reCaptcha: error occurred during API request. HTTP Error code:"
+msgstr ""
+"reCAPTCHA: ha ocurrido un error durante la solicitud de la API. Código de "
+"error HTTP:"
+
+#: includes/recaptcha/asp-recaptcha-main.php:73
+msgid "reCaptcha: error occured parsing API response, invalid JSON data."
+msgstr ""
+"reCAPTCHA: ha ocurrido un error al analizar la respuesta de la API, los "
+"datos JSON no son válidos."
+
+#: includes/recaptcha/asp-recaptcha-main.php:83
+msgid "The response parameter is invalid or malformed."
+msgstr "El parámetro de respuesta no es válido o está mal formado."
+
+#: includes/recaptcha/asp-recaptcha-main.php:86
+msgid "Secret key is missing."
+msgstr "Falta la clave secreta."
+
+#: includes/recaptcha/asp-recaptcha-main.php:89
+msgid "Secret key is invalid or malformed."
+msgstr "La clave secreta no es válida o está mal formada."
+
+#: includes/recaptcha/asp-recaptcha-main.php:92
+msgid "The response parameter is missing."
+msgstr "Falta el parámetro de respuesta."
+
+#: includes/recaptcha/asp-recaptcha-main.php:100
+msgid "reCaptcha: check failed. Following error(s) occurred:"
+msgstr "reCAPTCHA: comprobación fallida. Han ocurrido los siguientes errores:"
+
+#: includes/recaptcha/asp-recaptcha-main.php:110
+msgid "Empty reCaptcha response received."
+msgstr "Se ha recibido una respuesta vacía de reCAPTCHA."
+
+#: includes/recaptcha/asp-recaptcha-main.php:137
+msgid "reCaptcha check failed."
+msgstr "Ha fallado la comprobación de reCAPTCHA."
+
+#: includes/recaptcha/asp-recaptcha-main.php:215
+msgid "Please enter reCaptcha keys."
+msgstr "Por favor, introduce las claves de reCAPTCHA."
+
+#: includes/recaptcha/asp-recaptcha-main.php:254
+msgid "reCaptcha: missing user response data."
+msgstr "reCAPTCHA: faltan datos de respuesta del usuario."
 
 #: includes/shortcodes/class-asp-shortcode-ng.php:70
 msgid "Error: product ID is invalid."
@@ -4064,12 +4418,12 @@ msgstr ""
 
 #: includes/shortcodes/class-asp-shortcode-ng.php:698
 #: includes/shortcodes/class-shortcode-asp.php:863
-#: public/views/templates/default/payment-popup.php:173
+#: public/views/templates/default/payment-popup.php:177
 msgid "Enter amount"
 msgstr "Introduce la cantidad"
 
 #: includes/shortcodes/class-shortcode-asp.php:893
-#: public/views/templates/default/payment-popup.php:200
+#: public/views/templates/default/payment-popup.php:205
 msgid "Enter quantity"
 msgstr "Introduce una cantidad"
 
@@ -4078,7 +4432,7 @@ msgid "X item(s)"
 msgstr "Artículo(s) X"
 
 #: includes/shortcodes/class-shortcode-asp.php:957
-#: public/views/templates/default/payment-popup.php:267
+#: public/views/templates/default/payment-popup.php:272
 msgid "Apply"
 msgstr "Aplicar"
 
@@ -4161,70 +4515,65 @@ msgstr "MODO DE PRUEBA"
 msgid "Close"
 msgstr "Cerrar"
 
-#: public/views/templates/default/payment-popup.php:180
+#: public/views/templates/default/payment-popup.php:184
 msgid "Select currency"
 msgstr "Seleccionar la moneda"
 
-#: public/views/templates/default/payment-popup.php:280
+#: public/views/templates/default/payment-popup.php:285
 msgid "Your order"
 msgstr "Tu pedido"
 
-#: public/views/templates/default/payment-popup.php:284
+#: public/views/templates/default/payment-popup.php:289
 msgid "Item"
 msgstr "Artículo"
 
-#: public/views/templates/default/payment-popup.php:285
-#: public/views/templates/default/payment-popup.php:319
-msgid "Total"
-msgstr "Total"
-
-#: public/views/templates/default/payment-popup.php:330
+#: public/views/templates/default/payment-popup.php:335
 msgid "Select payment method"
 msgstr "Seleccionar el método de pago"
 
-#: public/views/templates/default/payment-popup.php:357
+#: public/views/templates/default/payment-popup.php:362
 msgctxt "Customer name"
 msgid "Name"
 msgstr "Nombre"
 
-#: public/views/templates/default/payment-popup.php:367
+#: public/views/templates/default/payment-popup.php:372
 msgid "Email"
-msgstr "Correo eletrónico"
+msgstr "Correo electrónico"
 
-#: public/views/templates/default/payment-popup.php:384
+#: public/views/templates/default/payment-popup.php:389
 msgid "Same billing and shipping info"
 msgstr "La misma información de facturación y envío"
 
-#: public/views/templates/default/payment-popup.php:393
+#: public/views/templates/default/payment-popup.php:398
 msgid "Billing info"
 msgstr "Información de facturación"
 
-#: public/views/templates/default/payment-popup.php:396
-#: public/views/templates/default/payment-popup.php:442
+#: public/views/templates/default/payment-popup.php:401
+#: public/views/templates/default/payment-popup.php:447
 msgid "Address"
 msgstr "Dirección"
 
-#: public/views/templates/default/payment-popup.php:407
-#: public/views/templates/default/payment-popup.php:452
+#: public/views/templates/default/payment-popup.php:412
+#: public/views/templates/default/payment-popup.php:457
 msgid "City"
 msgstr "Ciudad"
 
-#: public/views/templates/default/payment-popup.php:411
-#: public/views/templates/default/payment-popup.php:456
+#: public/views/templates/default/payment-popup.php:416
+#: public/views/templates/default/payment-popup.php:461
 msgid "Country"
 msgstr "País"
 
-#: public/views/templates/default/payment-popup.php:419
-#: public/views/templates/default/payment-popup.php:463
+#: public/views/templates/default/payment-popup.php:424
+#: public/views/templates/default/payment-popup.php:468
 msgid "State"
 msgstr "Estado"
 
-#: public/views/templates/default/payment-popup.php:425
-#: public/views/templates/default/payment-popup.php:468
+#: public/views/templates/default/payment-popup.php:430
+#: public/views/templates/default/payment-popup.php:473
 msgid "Postcode"
 msgstr "Código postal"
 
-#: public/views/templates/default/payment-popup.php:438
+#: public/views/templates/default/payment-popup.php:443
 msgid "Shipping info"
 msgstr "Información de envío"
 
@@ -4244,6 +4593,53 @@ msgstr "Cantidad:"
 msgid "Date:"
 msgstr "Fecha:"
 
+#~ msgid "Paymend method used to make the payment. Example: card, alipay"
+#~ msgstr "Forma de pago usada para realizar el pago. Ejemplo: tarjeta, Alipay"
+
+#~ msgid ""
+#~ "Brand of the card used to make the payment. Example: visa, mastercard, "
+#~ "amex"
+#~ msgstr ""
+#~ "Marca de la tarjeta usada para realizar el pago. Ejemplo: Visa, "
+#~ "MasterCard, American Express"
+
+#~ msgid "Donation"
+#~ msgstr "Donación"
+
+#~ msgid "Last 4 digits of the card. Example: 4242"
+#~ msgstr "Últimos 4 dígitos de la tarjeta. Ejemplo: 4242"
+
+#~ msgid "One-time payment"
+#~ msgstr "Pago único"
+
 #~ msgid "This product requires Stripe Payments Subscription addon."
 #~ msgstr ""
 #~ "Este producto necesita la extensión para pagos de suscripción de Stripe."
+
+#~ msgid "View details"
+#~ msgstr "Ver los detalles"
+
+#~ msgid "There is no changelog available."
+#~ msgstr "No hay ningún registro de cambios disponible."
+
+#~ msgid "Unknown update checker status \"%s\""
+#~ msgstr "Estado desconocido de la herramienta de actualización: \"%s\""
+
+#~ msgctxt "the plugin title"
+#~ msgid "Could not determine if updates are available for %s."
+#~ msgstr ""
+#~ "No se pudo determinar si las actualizaciones están disponibles para %s."
+
+#~ msgctxt "the plugin title"
+#~ msgid "A new version of the %s plugin is available."
+#~ msgstr "Una nueva versión del plugin %s está disponible."
+
+#~ msgctxt "the plugin title"
+#~ msgid "The %s plugin is up to date."
+#~ msgstr "El plugin %s está actualizado."
+
+#~ msgid "More information about %s"
+#~ msgstr "Más información acerca de %s"
+
+#~ msgid "Check for updates"
+#~ msgstr "Comprobar si hay actualizaciones"
