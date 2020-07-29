@@ -327,6 +327,7 @@ jQuery('select#currency').on('change', function () {
 			if (!addon.supported_curr.includes(jQuery('select#currency').val())) {
 				jQuery('input[data-pm-id="' + addon.name + '"]').attr('disabled', true).parent().addClass('pm-disabled').css('position', 'relative');
 				if (vars.data.currentPM === addon.name) {
+					vars.data.err_currency_not_supported = true;
 					submitBtn.disabled = true;
 					errorCont.innerHTML = vars.str.strCurrencyNotSupported;
 					errorCont.style.display = 'block';
@@ -336,6 +337,7 @@ jQuery('select#currency').on('change', function () {
 				if (vars.data.currentPM === addon.name) {
 					submitBtn.disabled = false;
 					errorCont.style.display = 'none';
+					vars.data.err_currency_not_supported = false;
 				}
 			}
 		}
@@ -361,6 +363,12 @@ jQuery('.pm-select-btn').click(function () {
 	}
 	sel.hide();
 	jQuery('#payment-form').find('[data-pm-name="' + vars.data.currentPM + '"]').show();
+	if (vars.data.err_currency_not_supported) {
+		vars.data.err_currency_not_supported = false;
+		submitBtn.disabled = false;
+		errorCont.style.display = 'none';
+		vars.data.err_currency_not_supported = false;
+	}
 });
 
 

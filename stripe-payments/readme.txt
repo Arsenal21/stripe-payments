@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 4.7
 Tested up to: 5.4
 Requires PHP: 5.6
-Stable tag: 2.0.33
+Stable tag: 2.0.34
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -154,6 +154,13 @@ Yes, please visit Stripe Payments > Settings screen for options.
 None.
 
 == Changelog ==
+
+= 2.0.34 =
+- Billing address postcode is no longer missing after payment process.
+- `Currency not supported for this payment method` error message is now removed when other payment method is selected.
+- Duplicate `paid` order event is no longer added for orders.
+- Payment popup blocks can now be rearranged via CSS.
+- Minor payment popup appearance improvements.
 
 = 2.0.33 =
 - Fixed payment error when Legacy API option is still enabled.
