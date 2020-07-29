@@ -2,15 +2,15 @@
 # This file is distributed under the same license as the Stripe Payments plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Stripe Payments 2.0.34t1\n"
+"Project-Id-Version: Stripe Payments 2.0.34\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/stripe-payments\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2020-07-29T17:29:42+03:00\n"
-"PO-Revision-Date: 2020-07-29T17:29:42+03:00\n"
+"POT-Creation-Date: 2020-07-29T18:44:20+03:00\n"
+"PO-Revision-Date: 2020-07-29T18:44:20+03:00\n"
 "X-Generator: WP-CLI 2.0.1\n"
 "X-Domain: stripe-payments\n"
 
@@ -178,7 +178,7 @@ msgid "Currency Symbol"
 msgstr ""
 
 #: admin/class-asp-admin.php:456
-#: admin/includes/class-products-meta-boxes.php:642
+#: admin/includes/class-products-meta-boxes.php:641
 msgid "Button Text"
 msgstr ""
 
@@ -1118,7 +1118,7 @@ msgstr ""
 #: admin/includes/class-products.php:133
 #: includes/shortcodes/class-shortcode-asp.php:1003
 #: includes/class-asp-order-item.php:128
-#: includes/process_ipn.php:692
+#: includes/process_ipn.php:693
 msgid "Product Name"
 msgstr ""
 
@@ -1137,7 +1137,7 @@ msgid "Stock"
 msgstr ""
 
 #: admin/includes/class-products.php:137
-#: admin/includes/class-products-meta-boxes.php:729
+#: admin/includes/class-products-meta-boxes.php:728
 msgid "Shortcode"
 msgstr ""
 
@@ -1380,309 +1380,305 @@ msgstr ""
 msgid "Radio Buttons"
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:373
-msgid "Checkboxes"
-msgstr ""
-
-#: admin/includes/class-products-meta-boxes.php:379
+#: admin/includes/class-products-meta-boxes.php:378
 msgctxt "Variation name"
 msgid "Name"
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:380
+#: admin/includes/class-products-meta-boxes.php:379
 msgid "Price Mod"
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:381
+#: admin/includes/class-products-meta-boxes.php:380
 msgid "Product URL"
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:385
+#: admin/includes/class-products-meta-boxes.php:384
 msgid "Add Variation"
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:396
+#: admin/includes/class-products-meta-boxes.php:395
 msgid "Select from Media Library"
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:399
+#: admin/includes/class-products-meta-boxes.php:398
 msgid "Delete variation"
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:415
+#: admin/includes/class-products-meta-boxes.php:414
 msgid "Are you sure you want to delete this group?"
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:416
+#: admin/includes/class-products-meta-boxes.php:415
 msgid "Are you sure you want to delete this variation?"
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:428
+#: admin/includes/class-products-meta-boxes.php:427
 msgid "Shipping Cost"
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:433
+#: admin/includes/class-products-meta-boxes.php:432
 msgid "Numbers only, no need to put currency symbol. Example: 5.90"
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:435
+#: admin/includes/class-products-meta-boxes.php:434
 msgid "Leave it blank if you are not shipping your product or not charging additional shipping costs."
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:440
+#: admin/includes/class-products-meta-boxes.php:439
 msgid "Tax (%)"
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:445
+#: admin/includes/class-products-meta-boxes.php:444
 msgid "Enter tax (in percent) which should be added to product price during purchase."
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:447
+#: admin/includes/class-products-meta-boxes.php:446
 msgid "Leave it blank if you don't want to apply tax."
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:459
+#: admin/includes/class-products-meta-boxes.php:458
 msgid "By default, if you leave this field empty, the product quantity will be set to 1. You can change this behavior by using the following options."
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:463
+#: admin/includes/class-products-meta-boxes.php:462
 msgid "Allow users to specify quantity"
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:465
+#: admin/includes/class-products-meta-boxes.php:464
 msgid "When checked, users can enter the quantity they want to buy."
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:467
+#: admin/includes/class-products-meta-boxes.php:466
 msgid "Set Quantity:"
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:470
+#: admin/includes/class-products-meta-boxes.php:469
 msgid "If you want to use a set quantity for this item then enter the value in this field."
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:476
+#: admin/includes/class-products-meta-boxes.php:475
 msgid "Enable stock control"
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:478
+#: admin/includes/class-products-meta-boxes.php:477
 msgid "When enabled, you can specify the quantity available for this product. It will be decreased each time the item is purchased. When stock reaches zero, an \"Out of stock\" message will be displayed instead of the buy button."
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:480
+#: admin/includes/class-products-meta-boxes.php:479
 msgid "Quantity Available:"
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:483
+#: admin/includes/class-products-meta-boxes.php:482
 msgid "Specify the quantity available for this product."
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:491
+#: admin/includes/class-products-meta-boxes.php:490
 msgid "URL of your product (if you're selling digital products)."
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:497
+#: admin/includes/class-products-meta-boxes.php:496
 msgid "Manually enter a valid URL of the file in the text box below, or click \"Select File\" button to upload (or choose) the downloadable file."
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:501
-#: admin/includes/class-products-meta-boxes.php:519
+#: admin/includes/class-products-meta-boxes.php:500
+#: admin/includes/class-products-meta-boxes.php:518
 msgid "Select File"
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:505
+#: admin/includes/class-products-meta-boxes.php:504
 msgid "Steps to upload a file or choose one from your media library:"
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:507
+#: admin/includes/class-products-meta-boxes.php:506
 msgid "Hit the \"Select File\" button."
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:508
+#: admin/includes/class-products-meta-boxes.php:507
 msgid "Upload a new file or choose an existing one from your media library."
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:509
+#: admin/includes/class-products-meta-boxes.php:508
 msgid "Click the \"Insert\" button, this will populate the uploaded file's URL in the above text field."
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:521
-#: admin/includes/class-products-meta-boxes.php:572
+#: admin/includes/class-products-meta-boxes.php:520
+#: admin/includes/class-products-meta-boxes.php:571
 msgid "Insert"
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:546
+#: admin/includes/class-products-meta-boxes.php:545
 msgid "Manually enter a valid URL, or click \"Select Image\" to upload (or choose) the file thumbnail image."
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:550
-#: admin/includes/class-products-meta-boxes.php:570
+#: admin/includes/class-products-meta-boxes.php:549
+#: admin/includes/class-products-meta-boxes.php:569
 msgid "Select Image"
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:551
+#: admin/includes/class-products-meta-boxes.php:550
 msgid "Remove Image"
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:560
+#: admin/includes/class-products-meta-boxes.php:559
 msgid "Don't use product thumbnail in Stripe pop-up"
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:562
+#: admin/includes/class-products-meta-boxes.php:561
 msgid "Use this checkbox if you do not want to show the product thumbnail in Stripe checkout popup."
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:602
+#: admin/includes/class-products-meta-boxes.php:601
 msgid "Collect Address on Checkout"
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:603
+#: admin/includes/class-products-meta-boxes.php:602
 msgid "Enable this to collect customer address on checkout."
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:610
+#: admin/includes/class-products-meta-boxes.php:609
 msgid "Collect Both Billing And Shipping Addresses"
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:617
+#: admin/includes/class-products-meta-boxes.php:616
 msgid "Collect Billing Address Only"
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:626
+#: admin/includes/class-products-meta-boxes.php:625
 msgid "Enter Thank You page URL. Leave it blank if you want ot use default Thank You page."
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:628
+#: admin/includes/class-products-meta-boxes.php:627
 msgid "You can read how to customize messages on Thank You page <a href=\"https://s-plugins.com/customize-the-thank-page-message-of-stripe-payments-plugin/\" target=\"_blank\">in the documentation</a>."
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:641
+#: admin/includes/class-products-meta-boxes.php:640
 msgid "Button Options"
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:645
+#: admin/includes/class-products-meta-boxes.php:644
 msgid "Specify text to be displayed on the button. Leave it blank to use button text specified on settings page."
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:646
+#: admin/includes/class-products-meta-boxes.php:645
 msgid "Button CSS Class"
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:649
+#: admin/includes/class-products-meta-boxes.php:648
 msgid "CSS class to be assigned to the button. This is used for styling purposes. You can get additional information <a href=\"https://s-plugins.com/customize-stripe-payment-button-appearance-using-css/\" target=\"_blank\">in this tutorial</a>."
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:650
+#: admin/includes/class-products-meta-boxes.php:649
 #: admin/views/blocks.php:30
 msgid "Show Button Only"
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:651
+#: admin/includes/class-products-meta-boxes.php:650
 #: admin/views/blocks.php:31
 msgid "Check this box if you just want to show the button only without any additional product info."
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:654
+#: admin/includes/class-products-meta-boxes.php:653
 msgid "Payment Popup Options"
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:655
+#: admin/includes/class-products-meta-boxes.php:654
 msgid "Show Order Total On Payment Popup"
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:656
+#: admin/includes/class-products-meta-boxes.php:655
 msgid "If enabled, an additional \"Your order\" section with itemized product info (shipping, tax amount, variations etc) will be displayed on payment popup."
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:673
+#: admin/includes/class-products-meta-boxes.php:672
 msgid "Custom field is disabled. Configure custom field in the settings menu of this plugin to enable it."
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:677
+#: admin/includes/class-products-meta-boxes.php:676
 msgid "Select how Custom Field display should be handled for this product."
+msgstr ""
+
+#: admin/includes/class-products-meta-boxes.php:677
+#: admin/includes/class-products-meta-boxes.php:688
+msgid "Use Global Setting"
 msgstr ""
 
 #: admin/includes/class-products-meta-boxes.php:678
 #: admin/includes/class-products-meta-boxes.php:689
-msgid "Use Global Setting"
+msgid "Enabled"
 msgstr ""
 
 #: admin/includes/class-products-meta-boxes.php:679
 #: admin/includes/class-products-meta-boxes.php:690
-msgid "Enabled"
-msgstr ""
-
-#: admin/includes/class-products-meta-boxes.php:680
-#: admin/includes/class-products-meta-boxes.php:691
 msgid "Disabled"
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:688
+#: admin/includes/class-products-meta-boxes.php:687
 msgid "Select how Coupons should be handled for this product."
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:705
+#: admin/includes/class-products-meta-boxes.php:704
 msgid "Authorize Only"
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:707
+#: admin/includes/class-products-meta-boxes.php:706
 msgid "Place a hold on a card to reserve the funds now and capture it later manually."
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:709
+#: admin/includes/class-products-meta-boxes.php:708
 msgid "Note: this option is not supported by Subscription products, Alipay, SOFORT, iDEAL and FPX payment methods. If enabled, those won't be offered as payment option for this product."
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:711
+#: admin/includes/class-products-meta-boxes.php:710
 msgid "Force Test Mode"
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:712
+#: admin/includes/class-products-meta-boxes.php:711
 msgid "When enabled, this product will stay in test mode regardless of the value set in the global \"Live Mode\" settings option. Can be useful to create a test product."
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:731
+#: admin/includes/class-products-meta-boxes.php:730
 msgid "Use this shortcode to display this product."
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:734
+#: admin/includes/class-products-meta-boxes.php:733
 msgid "CSS Class"
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:736
+#: admin/includes/class-products-meta-boxes.php:735
 msgid "Attach this product to any html element by adding this CSS class to it."
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:739
+#: admin/includes/class-products-meta-boxes.php:738
 msgid "Link URL"
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:741
+#: admin/includes/class-products-meta-boxes.php:740
 msgid "Use this URL to create a custom payment button using a text or image link."
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:763
+#: admin/includes/class-products-meta-boxes.php:762
 msgid "Please specify product name."
 msgstr ""
 
 #. translators: %1$s - currency code, %2$s - minimum amount, %3$s - current amount
-#: admin/includes/class-products-meta-boxes.php:907
+#: admin/includes/class-products-meta-boxes.php:906
 msgid "<b>Invalid product price</b>: minimum price in %1$s should be %2$s, you specified %3$s. This price limitation comes from Stripe."
 msgstr ""
 
 #. translators: %1$s - maximum allowed amount, %2$s - current amount
-#: admin/includes/class-products-meta-boxes.php:917
+#: admin/includes/class-products-meta-boxes.php:916
 msgid "<b>Invalid product price</b>: maximum allowed product price is %1$s, you specified %2$s"
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:924
+#: admin/includes/class-products-meta-boxes.php:923
 msgid "<b>Invalid product price</b>: one-time payment product price cannot be zero."
 msgstr ""
 
 #: admin/includes/class-coupons-list-table.php:52
 #: admin/includes/class-coupons.php:351
 #: includes/shortcodes/class-shortcode-asp.php:955
-#: public/views/templates/default/payment-popup.php:274
+#: public/views/templates/default/payment-popup.php:269
 msgid "Coupon Code"
 msgstr ""
 
@@ -1800,8 +1796,8 @@ msgid "Stripe Orders"
 msgstr ""
 
 #: admin/includes/class-order.php:141
-#: public/views/templates/default/payment-popup.php:296
-#: public/views/templates/default/payment-popup.php:330
+#: public/views/templates/default/payment-popup.php:291
+#: public/views/templates/default/payment-popup.php:325
 msgid "Total"
 msgstr ""
 
@@ -2262,7 +2258,7 @@ msgstr ""
 
 #. translators: %d is number of items in stock
 #: includes/class-asp-product-item.php:371
-#: includes/class-asp-process-ipn-ng.php:396
+#: includes/class-asp-process-ipn-ng.php:390
 #: includes/shortcodes/class-asp-shortcode-ng.php:184
 #: includes/shortcodes/class-asp-shortcode-ng.php:542
 #: includes/shortcodes/class-shortcode-asp.php:103
@@ -2270,12 +2266,12 @@ msgstr ""
 #: includes/shortcodes/class-shortcode-asp.php:686
 #: includes/class-asp-pp-handler.php:485
 #: includes/process_ipn.php:561
-#: public/views/templates/default/payment-popup.php:317
+#: public/views/templates/default/payment-popup.php:312
 msgid "Tax"
 msgstr ""
 
 #: includes/class-asp-product-item.php:382
-#: includes/class-asp-process-ipn-ng.php:404
+#: includes/class-asp-process-ipn-ng.php:398
 #: includes/shortcodes/class-asp-shortcode-ng.php:194
 #: includes/shortcodes/class-asp-shortcode-ng.php:543
 #: includes/shortcodes/class-shortcode-asp.php:104
@@ -2283,7 +2279,7 @@ msgstr ""
 #: includes/shortcodes/class-shortcode-asp.php:687
 #: includes/class-asp-pp-handler.php:486
 #: includes/process_ipn.php:568
-#: public/views/templates/default/payment-popup.php:323
+#: public/views/templates/default/payment-popup.php:318
 msgid "Shipping"
 msgstr ""
 
@@ -2352,35 +2348,35 @@ msgid "Debug data:"
 msgstr ""
 
 #. translators: placeholders are expected and received amounts
-#: includes/class-asp-process-ipn-ng.php:287
+#: includes/class-asp-process-ipn-ng.php:281
 msgid "Invalid payment amount received. Expected %1$s, got %2$s."
 msgstr ""
 
 #. translators: %s is coupon code
-#: includes/class-asp-process-ipn-ng.php:387
+#: includes/class-asp-process-ipn-ng.php:381
 #: includes/process_ipn.php:556
 msgid "Coupon \"%s\""
 msgstr ""
 
 #. translators: %s is coupon code
-#: includes/class-asp-process-ipn-ng.php:388
+#: includes/class-asp-process-ipn-ng.php:382
 #: includes/process_ipn.php:557
 msgid "Subtotal"
 msgstr ""
 
-#: includes/class-asp-process-ipn-ng.php:476
+#: includes/class-asp-process-ipn-ng.php:470
 msgid "Product Name: "
 msgstr ""
 
-#: includes/class-asp-process-ipn-ng.php:477
+#: includes/class-asp-process-ipn-ng.php:471
 msgid "Quantity: "
 msgstr ""
 
-#: includes/class-asp-process-ipn-ng.php:478
+#: includes/class-asp-process-ipn-ng.php:472
 msgid "Item Price: "
 msgstr ""
 
-#: includes/class-asp-process-ipn-ng.php:483
+#: includes/class-asp-process-ipn-ng.php:477
 msgid "Total Amount: "
 msgstr ""
 
@@ -2461,7 +2457,7 @@ msgstr ""
 
 #: includes/shortcodes/class-shortcode-asp.php:110
 #: includes/class-asp-pp-handler.php:492
-#: public/views/templates/default/payment-popup.php:284
+#: public/views/templates/default/payment-popup.php:279
 msgid "Remove"
 msgstr ""
 
@@ -2491,7 +2487,7 @@ msgid "X item(s)"
 msgstr ""
 
 #: includes/shortcodes/class-shortcode-asp.php:957
-#: public/views/templates/default/payment-popup.php:278
+#: public/views/templates/default/payment-popup.php:273
 msgid "Apply"
 msgstr ""
 
@@ -2510,19 +2506,19 @@ msgstr ""
 
 #: includes/shortcodes/class-shortcode-asp.php:1004
 #: includes/class-asp-order-item.php:129
-#: includes/process_ipn.php:693
+#: includes/process_ipn.php:694
 msgid "Quantity"
 msgstr ""
 
 #: includes/shortcodes/class-shortcode-asp.php:1005
 #: includes/class-asp-order-item.php:130
-#: includes/process_ipn.php:694
+#: includes/process_ipn.php:695
 msgid "Item Price"
 msgstr ""
 
 #: includes/shortcodes/class-shortcode-asp.php:1009
 #: includes/class-asp-order-item.php:134
-#: includes/process_ipn.php:698
+#: includes/process_ipn.php:699
 msgid "Total Amount"
 msgstr ""
 
@@ -2547,7 +2543,7 @@ msgid " to download."
 msgstr ""
 
 #: includes/shortcodes/class-shortcode-asp.php:1025
-#: includes/process_ipn.php:718
+#: includes/process_ipn.php:719
 msgid "Download links"
 msgstr ""
 
@@ -2742,7 +2738,7 @@ msgid "Shipping Address"
 msgstr ""
 
 #: includes/class-asp-pp-handler.php:321
-#: public/views/templates/default/payment-popup.php:492
+#: public/views/templates/default/payment-popup.php:487
 msgid "Credit or debit card"
 msgstr ""
 
@@ -2772,12 +2768,12 @@ msgstr ""
 msgid "Error occurred after user interacted with popup."
 msgstr ""
 
-#: includes/process_ipn.php:710
-#: includes/process_ipn.php:716
+#: includes/process_ipn.php:711
+#: includes/process_ipn.php:717
 msgid "Download link"
 msgstr ""
 
-#: includes/process_ipn.php:729
+#: includes/process_ipn.php:730
 msgid "Order Info: "
 msgstr ""
 
@@ -3953,61 +3949,61 @@ msgstr ""
 msgid "Select currency"
 msgstr ""
 
-#: public/views/templates/default/payment-popup.php:291
+#: public/views/templates/default/payment-popup.php:286
 msgid "Your order"
 msgstr ""
 
-#: public/views/templates/default/payment-popup.php:295
+#: public/views/templates/default/payment-popup.php:290
 msgid "Item"
 msgstr ""
 
-#: public/views/templates/default/payment-popup.php:341
+#: public/views/templates/default/payment-popup.php:336
 msgid "Select payment method"
 msgstr ""
 
-#: public/views/templates/default/payment-popup.php:369
+#: public/views/templates/default/payment-popup.php:364
 msgctxt "Customer name"
 msgid "Name"
 msgstr ""
 
-#: public/views/templates/default/payment-popup.php:379
+#: public/views/templates/default/payment-popup.php:374
 msgid "Email"
 msgstr ""
 
-#: public/views/templates/default/payment-popup.php:397
+#: public/views/templates/default/payment-popup.php:392
 msgid "Same billing and shipping info"
 msgstr ""
 
-#: public/views/templates/default/payment-popup.php:406
+#: public/views/templates/default/payment-popup.php:401
 msgid "Billing info"
 msgstr ""
 
-#: public/views/templates/default/payment-popup.php:409
-#: public/views/templates/default/payment-popup.php:455
+#: public/views/templates/default/payment-popup.php:404
+#: public/views/templates/default/payment-popup.php:450
 msgid "Address"
 msgstr ""
 
-#: public/views/templates/default/payment-popup.php:420
-#: public/views/templates/default/payment-popup.php:465
+#: public/views/templates/default/payment-popup.php:415
+#: public/views/templates/default/payment-popup.php:460
 msgid "City"
 msgstr ""
 
-#: public/views/templates/default/payment-popup.php:424
-#: public/views/templates/default/payment-popup.php:469
+#: public/views/templates/default/payment-popup.php:419
+#: public/views/templates/default/payment-popup.php:464
 msgid "Country"
 msgstr ""
 
-#: public/views/templates/default/payment-popup.php:432
-#: public/views/templates/default/payment-popup.php:476
+#: public/views/templates/default/payment-popup.php:427
+#: public/views/templates/default/payment-popup.php:471
 msgid "State"
 msgstr ""
 
-#: public/views/templates/default/payment-popup.php:438
-#: public/views/templates/default/payment-popup.php:481
+#: public/views/templates/default/payment-popup.php:433
+#: public/views/templates/default/payment-popup.php:476
 msgid "Postcode"
 msgstr ""
 
-#: public/views/templates/default/payment-popup.php:451
+#: public/views/templates/default/payment-popup.php:446
 msgid "Shipping info"
 msgstr ""
 
