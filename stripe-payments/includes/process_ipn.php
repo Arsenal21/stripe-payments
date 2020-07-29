@@ -574,7 +574,7 @@ class AcceptStripePayments_Process_IPN {
 		$dont_create_order = $asp_class->get_setting( 'dont_create_order' );
 		if ( ! $dont_create_order ) {
 			$order = new ASP_Order_Item();
-			$order->create( empty( $data[ $product_id ] ) ? 0 : $data['product_id'] );
+			$order->create( empty( $data['product_id'] ) ? 0 : $data['product_id'] );
 			$order_post_id = $order->update_legacy( $post_data, $data['charge'] );
 			$order->change_status( 'paid' );
 			$post_data['order_post_id'] = $order_post_id;
