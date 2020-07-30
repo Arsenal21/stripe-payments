@@ -156,10 +156,10 @@ None.
 == Changelog ==
 
 = 2.0.34 =
-- Billing address postcode is no longer missing after payment process.
-- `Currency not supported for this payment method` error message is now removed when other payment method is selected.
-- Duplicate `paid` order event is no longer added for orders.
-- Payment popup blocks can now be rearranged via CSS.
+- `Currency not supported for this payment method` error message is now removed when another payment method is selected.
+- Billing address postcode is no longer missing in the orders menu.
+- Fixed an issue with the Order Events interface showing the "Paid" label twice.
+- Payment popup blocks can now be rearranged via CSS tweaks.
 - Minor payment popup appearance improvements.
 
 = 2.0.33 =
