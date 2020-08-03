@@ -539,7 +539,9 @@ function inIframe() {
 }
 
 function is_full_discount() {
-	if (vars.data.coupon && vars.data.coupon.discount_type === 'perc' && parseFloat(vars.data.coupon.discount) === 100) {
+	if (vars.data.coupon
+		&& ((vars.data.coupon.discount_type === 'perc' && parseFloat(vars.data.coupon.discount) === 100)
+			|| (vars.data.coupon.discount_amount >= vars.data.amount))) {
 		return true;
 	}
 	return false;

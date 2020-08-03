@@ -595,9 +595,11 @@ class ASP_Process_IPN_NG {
 				return $p_data;
 			}
 
-			$coupon = $this->item->get_coupon();
+			$coupon_discount_amount = $this->item->get_coupon_discount_amount();
 
-			if ( 'perc' !== $coupon['discount_type'] && 100 !== $coupon['discount'] ) {
+			$price_no_discount = $this->item->get_price();
+
+			if ( $coupon_discount_amount < $price_no_discount ) {
 				return $p_data;
 			}
 
