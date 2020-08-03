@@ -2,15 +2,15 @@
 # This file is distributed under the same license as the Stripe Payments plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Stripe Payments 2.0.34\n"
+"Project-Id-Version: Stripe Payments 2.0.35t1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/stripe-payments\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2020-07-29T18:44:20+03:00\n"
-"PO-Revision-Date: 2020-07-29T18:44:20+03:00\n"
+"POT-Creation-Date: 2020-08-03T15:50:02+03:00\n"
+"PO-Revision-Date: 2020-08-03T15:50:02+03:00\n"
 "X-Generator: WP-CLI 2.0.1\n"
 "X-Domain: stripe-payments\n"
 
@@ -1854,27 +1854,27 @@ msgid "Error"
 msgstr ""
 
 #: admin/includes/class-coupons.php:37
-#: includes/class-asp-product-item.php:412
+#: includes/class-asp-product-item.php:416
 msgid "Coupon not found."
 msgstr ""
 
 #: admin/includes/class-coupons.php:44
-#: includes/class-asp-product-item.php:418
+#: includes/class-asp-product-item.php:422
 msgid "Coupon is not active."
 msgstr ""
 
 #: admin/includes/class-coupons.php:51
-#: includes/class-asp-product-item.php:424
+#: includes/class-asp-product-item.php:428
 msgid "Coupon is not available yet."
 msgstr ""
 
 #: admin/includes/class-coupons.php:58
-#: includes/class-asp-product-item.php:430
+#: includes/class-asp-product-item.php:434
 msgid "Coupon has expired."
 msgstr ""
 
 #: admin/includes/class-coupons.php:66
-#: includes/class-asp-product-item.php:437
+#: includes/class-asp-product-item.php:441
 msgid "Coupon redemption limit is reached."
 msgstr ""
 
@@ -1887,7 +1887,7 @@ msgid "No product ID specified."
 msgstr ""
 
 #: admin/includes/class-coupons.php:116
-#: includes/class-asp-product-item.php:465
+#: includes/class-asp-product-item.php:469
 msgid "Coupon is not allowed for this product."
 msgstr ""
 
@@ -2257,7 +2257,7 @@ msgid "Error occurred:"
 msgstr ""
 
 #. translators: %d is number of items in stock
-#: includes/class-asp-product-item.php:371
+#: includes/class-asp-product-item.php:375
 #: includes/class-asp-process-ipn-ng.php:390
 #: includes/shortcodes/class-asp-shortcode-ng.php:184
 #: includes/shortcodes/class-asp-shortcode-ng.php:542
@@ -2270,7 +2270,7 @@ msgstr ""
 msgid "Tax"
 msgstr ""
 
-#: includes/class-asp-product-item.php:382
+#: includes/class-asp-product-item.php:386
 #: includes/class-asp-process-ipn-ng.php:398
 #: includes/shortcodes/class-asp-shortcode-ng.php:194
 #: includes/shortcodes/class-asp-shortcode-ng.php:543
@@ -2283,12 +2283,12 @@ msgstr ""
 msgid "Shipping"
 msgstr ""
 
-#: includes/class-asp-product-item.php:510
+#: includes/class-asp-product-item.php:514
 msgid "No product ID provided."
 msgstr ""
 
 #. translators: %d is product id
-#: includes/class-asp-product-item.php:518
+#: includes/class-asp-product-item.php:522
 msgid "Can't find product with ID %d"
 msgstr ""
 
