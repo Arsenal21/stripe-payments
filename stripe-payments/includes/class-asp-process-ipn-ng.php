@@ -226,9 +226,7 @@ class ASP_Process_IPN_NG {
 					$price = 0;
 				}
 			}
-			if ( ! AcceptStripePayments::is_zero_cents( $item->get_currency() ) ) {
-				$price = AcceptStripePayments::from_cents( $price, $item->get_currency() );
-			}
+			$price = AcceptStripePayments::from_cents( $price, $item->get_currency() );
 			$item->set_price( $price );
 		}
 
