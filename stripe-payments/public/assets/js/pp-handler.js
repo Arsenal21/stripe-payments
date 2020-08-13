@@ -437,6 +437,7 @@ function calcTotal() {
 				discountAmount = vars.data.coupon.discount * 100;
 			}
 		}
+		vars.data.coupon.amount_before_discount = itemSubt;
 		itemSubt = itemSubt - discountAmount;
 		vars.data.coupon.discount_amount = discountAmount;
 		if (is_full_discount() && vars.data.shipping) {
@@ -541,7 +542,7 @@ function inIframe() {
 function is_full_discount() {
 	if (vars.data.coupon
 		&& ((vars.data.coupon.discount_type === 'perc' && parseFloat(vars.data.coupon.discount) === 100)
-			|| (vars.data.coupon.discount_amount >= vars.data.amount))) {
+			|| (vars.data.coupon.discount_amount >= vars.data.coupon.amount_before_discount))) {
 		return true;
 	}
 	return false;
