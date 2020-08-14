@@ -382,7 +382,8 @@ function updateAllAmounts() {
 	}
 
 	if (vars.data.show_your_order === 1) {
-		jQuery('#order-total').html(formatMoney(vars.data.amount));
+		var totalAmount = vars.data.amount < 0 ? 0 : vars.data.amount;
+		jQuery('#order-total').html(formatMoney(totalAmount));
 		jQuery('#order-item-price').html(formatMoney(vars.data.item_price * vars.data.quantity));
 		jQuery('#order-quantity').html(vars.data.quantity);
 		jQuery('#order-tax').html(formatMoney(vars.data.taxAmount * vars.data.quantity));
@@ -396,7 +397,11 @@ function updateAllAmounts() {
 					jQuery('tr#order-item-line').after(couponOrderLine);
 				}
 			}
-			jQuery('#order-coupon').html(formatMoney(vars.data.coupon.discount_amount * vars.data.quantity));
+			var couponDiscountAmount = vars.data.coupon.discount_amount;
+			if (vars.data.coupon.discount_amount > vars.data.coupon.amount_before_discount) {
+				couponDiscountAmount = vars.data.coupon.amount_before_discount;
+			}
+			jQuery('#order-coupon').html(formatMoney(couponDiscountAmount * vars.data.quantity));
 		}
 		if (vars.data.variations.applied) {
 			for (grpId = 0; grpId < vars.data.variations.applied.length; ++grpId) {
