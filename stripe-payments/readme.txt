@@ -3,9 +3,9 @@ Contributors: Tips and Tricks HQ, wptipsntricks, alexanderfoxc
 Donate link: https://s-plugins.com
 Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortcode, digital goods, payment gateway, instant payment, commerce, digital downloads, downloads, e-commerce, e-store, ecommerce, eshop, donation
 Requires at least: 4.7
-Tested up to: 5.4
+Tested up to: 5.5
 Requires PHP: 5.6
-Stable tag: 2.0.35t4
+Stable tag: 2.0.35
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -155,11 +155,12 @@ None.
 
 == Changelog ==
 
-= WIP 2.0.35 =
+= 2.0.35 =
 - Donation type products using zero-decimal currencies no longer cause payment error. 
 - Products with applied coupons that reduce amount to 0 are properly handled now.
 - Symbols with accents in product thumbnail URLs are no longer removed.
 - Added Romanian Leu (RON) currency support.
+- Fixed minor incompatibility issue with WP 5.5 on Settings page.
 
 = 2.0.34 =
 - `Currency not supported for this payment method` error message is now removed when another payment method is selected.
