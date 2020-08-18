@@ -29,16 +29,16 @@ jQuery(function ($) {
 
 	$('.wp-asp-curr-sel-all-btn').click(function (e) {
 		e.preventDefault();
-		$('.wp-asp-allowed-currencies').find('input[type="checkbox"]').attr('checked', true);
+		$('.wp-asp-allowed-currencies').find('input[type="checkbox"]').prop('checked', true);
 	});
 	$('.wp-asp-curr-sel-none-btn').click(function (e) {
 		e.preventDefault();
-		$('.wp-asp-allowed-currencies').find('input[type="checkbox"]').attr('checked', false);
+		$('.wp-asp-allowed-currencies').find('input[type="checkbox"]').prop('checked', false);
 	});
 	$('.wp-asp-curr-sel-invert-btn').click(function (e) {
 		e.preventDefault();
 		$('.wp-asp-allowed-currencies').find('input[type="checkbox"]').each(function (ind, el) {
-			$(el).attr('checked', !$(el).attr('checked'));
+			$(el).prop('checked', !$(el).prop('checked'));
 		});
 	});
 
