@@ -773,7 +773,7 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post, $seller_email = fal
 		$shipping = AcceptStripePayments::formatted_price( $post['shipping'], $post['currency_code'] );
 	}
 
-	if ( 'charge' !== $post['charge']->object ) {
+	if ( isset( $post['charge']->object ) && 'charge' !== $post['charge']->object ) {
 		//this is most likely subs product
 		$ipn = ASP_Process_IPN_NG::get_instance();
 		if ( isset( $ipn->p_data ) ) {
@@ -791,7 +791,7 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post, $seller_email = fal
 	$card_brand = '';
 	$card_last4 = '';
 
-	if ( 'charge' === $post['charge']->object ) {
+	if ( isset( $post['charge']->object ) && 'charge' === $post['charge']->object ) {
 
 		$pm_type = $post['charge']->payment_method_details->type;
 

@@ -874,11 +874,8 @@ class ASP_PP_Handler {
 
 		$coupon = $item->get_coupon();
 
-		if ( 'perc' === $coupon['discount_type'] && 100 === intval( $coupon['discount'] ) ) {
-			//this is 100% discount coupon. Let's also generate zero-value payment id
-			$zero_value_id           = str_replace( '.', '', uniqid( 'free_', true ) );
-			$coupon['zero_value_id'] = $zero_value_id;
-		}
+		$zero_value_id           = str_replace( '.', '', uniqid( 'free_', true ) );
+		$coupon['zero_value_id'] = $zero_value_id;
 
 		wp_send_json( $coupon );
 

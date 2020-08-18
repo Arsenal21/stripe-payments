@@ -591,6 +591,7 @@ class ASP_Utils {
 			'PEN' => array( __( 'Peruvian Nuevo Sol (PEN)', 'stripe-payments' ), 'S/' ),
 			'PHP' => array( __( 'Philippine Pesos (PHP)', 'stripe-payments' ), '₱' ),
 			'PLN' => array( __( 'Polish Zloty (PLN)', 'stripe-payments' ), 'zł' ),
+			'RON' => array( __( 'Romanian Leu (RON)', 'stripe-payments' ), 'lei' ),
 			'RUB' => array( __( 'Russian Ruble (RUB)', 'stripe-payments' ), '₽' ),
 			'SAR' => array( __( 'Saudi Riyal (SAR)', 'stripe-payments' ), 'ر.س' ),
 			'SGD' => array( __( 'Singapore Dollar (SGD)', 'stripe-payments' ), 'SG$' ),

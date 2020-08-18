@@ -23,6 +23,7 @@ class AcceptStripePayments {
 		'NOK' => 300,
 		'NZD' => 50,
 		'PLN' => 200,
+		'RON' => 200,
 		'SEK' => 300,
 		'SGD' => 50,
 	);

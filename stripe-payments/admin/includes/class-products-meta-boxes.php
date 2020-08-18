@@ -803,7 +803,7 @@ jQuery(document).ready(function($) {
 			update_post_meta( $post_id, 'asp_product_description', sanitize_text_field( $_POST['asp_product_description'] ) );
 			update_post_meta( $post_id, 'asp_product_upload', esc_url( $_POST['asp_product_upload'], array( 'http', 'https', 'dropbox' ) ) );
 
-			$thumb_url_raw = filter_input( INPUT_POST, 'asp_product_thumbnail', FILTER_SANITIZE_URL );
+			$thumb_url_raw = filter_input( INPUT_POST, 'asp_product_thumbnail', FILTER_DEFAULT );
 			$thumb_url     = esc_url( $thumb_url_raw, array( 'http', 'https' ) );
 
 			if ( ! empty( $thumb_url ) ) {

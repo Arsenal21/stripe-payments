@@ -226,9 +226,7 @@ class ASP_Process_IPN_NG {
 					$price = 0;
 				}
 			}
-			if ( ! AcceptStripePayments::is_zero_cents( $item->get_currency() ) ) {
-				$price = AcceptStripePayments::from_cents( $price, $item->get_currency() );
-			}
+			$price = AcceptStripePayments::from_cents( $price, $item->get_currency() );
 			$item->set_price( $price );
 		}
 
@@ -379,7 +377,10 @@ class ASP_Process_IPN_NG {
 			$data['coupon_code'] = $coupon['code'];
 			// translators: %s is coupon code
 			$data['additional_items'][ sprintf( __( 'Coupon "%s"', 'stripe-payments' ), $coupon['code'] ) ] = floatval( '-' . $item->get_coupon_discount_amount() );
-			$data['additional_items'][ __( 'Subtotal', 'stripe-payments' ) ]                                = $item->get_price( false, true ) + $item->get_items_total( false, true );
+
+			$subtotal = $item->get_price( false, true ) + $item->get_items_total( false, true );
+			$subtotal = $subtotal < 0 ? 0 : $subtotal;
+			$data['additional_items'][ __( 'Subtotal', 'stripe-payments' ) ] = $subtotal;
 			//increase coupon redeem count
 			$curr_redeem_cnt = get_post_meta( $coupon['id'], 'asp_coupon_red_count', true );
 			$curr_redeem_cnt++;
@@ -595,9 +596,11 @@ class ASP_Process_IPN_NG {
 				return $p_data;
 			}
 
-			$coupon = $this->item->get_coupon();
+			$coupon_discount_amount = $this->item->get_coupon_discount_amount();
 
-			if ( 'perc' !== $coupon['discount_type'] && 100 !== $coupon['discount'] ) {
+			$price_no_discount = $this->item->get_price();
+
+			if ( $coupon_discount_amount < $price_no_discount ) {
 				return $p_data;
 			}
 

@@ -285,6 +285,10 @@ class ASP_Product_Item {
 			$total = $total + $this->get_shipping( $in_cents );
 		}
 
+		if ( $total < 0 ) {
+			$total = 0;
+		}
+
 		return $total;
 	}
 
