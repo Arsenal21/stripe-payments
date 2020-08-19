@@ -836,29 +836,29 @@ jQuery(document).ready(function($) {
 			//check if this is not subscription product
 			$asp_plan_id = get_post_meta( $post_id, 'asp_sub_plan_id', true );
 
-			if ( empty( $asp_plan_id ) ) {
+			//handle variations
+			$variations_groups = filter_input( INPUT_POST, 'asp-variations-group-names', FILTER_UNSAFE_RAW, FILTER_REQUIRE_ARRAY );
+			if ( ! empty( $variations_groups ) && is_array( $variations_groups ) ) {
+				//we got variations groups. Let's process them
+				update_post_meta( $post_id, 'asp_variations_groups', $variations_groups );
+				$variations_names = filter_input( INPUT_POST, 'asp-variation-names', FILTER_UNSAFE_RAW, FILTER_REQUIRE_ARRAY );
+				update_post_meta( $post_id, 'asp_variations_names', $variations_names );
+				$variations_prices = filter_input( INPUT_POST, 'asp-variation-prices', FILTER_UNSAFE_RAW, FILTER_REQUIRE_ARRAY );
+				update_post_meta( $post_id, 'asp_variations_prices', $variations_prices );
+				$variations_urls = filter_input( INPUT_POST, 'asp-variation-urls', FILTER_UNSAFE_RAW, FILTER_REQUIRE_ARRAY );
+				update_post_meta( $post_id, 'asp_variations_urls', $variations_urls );
+				$variations_opts = filter_input( INPUT_POST, 'asp-variations-opts', FILTER_UNSAFE_RAW, FILTER_REQUIRE_ARRAY );
+				update_post_meta( $post_id, 'asp_variations_opts', $variations_opts );
+			} else {
+				//we got no variations groups. Let's clear meta values
+				update_post_meta( $post_id, 'asp_variations_groups', false );
+				update_post_meta( $post_id, 'asp_variations_names', false );
+				update_post_meta( $post_id, 'asp_variations_prices', false );
+				update_post_meta( $post_id, 'asp_variations_urls', false );
+				update_post_meta( $post_id, 'asp_variations_opts', false );
+			}
 
-				//handle variations
-				$variations_groups = filter_input( INPUT_POST, 'asp-variations-group-names', FILTER_UNSAFE_RAW, FILTER_REQUIRE_ARRAY );
-				if ( ! empty( $variations_groups ) && is_array( $variations_groups ) ) {
-					//we got variations groups. Let's process them
-					update_post_meta( $post_id, 'asp_variations_groups', $variations_groups );
-					$variations_names = filter_input( INPUT_POST, 'asp-variation-names', FILTER_UNSAFE_RAW, FILTER_REQUIRE_ARRAY );
-					update_post_meta( $post_id, 'asp_variations_names', $variations_names );
-					$variations_prices = filter_input( INPUT_POST, 'asp-variation-prices', FILTER_UNSAFE_RAW, FILTER_REQUIRE_ARRAY );
-					update_post_meta( $post_id, 'asp_variations_prices', $variations_prices );
-					$variations_urls = filter_input( INPUT_POST, 'asp-variation-urls', FILTER_UNSAFE_RAW, FILTER_REQUIRE_ARRAY );
-					update_post_meta( $post_id, 'asp_variations_urls', $variations_urls );
-					$variations_opts = filter_input( INPUT_POST, 'asp-variations-opts', FILTER_UNSAFE_RAW, FILTER_REQUIRE_ARRAY );
-					update_post_meta( $post_id, 'asp_variations_opts', $variations_opts );
-				} else {
-					//we got no variations groups. Let's clear meta values
-					update_post_meta( $post_id, 'asp_variations_groups', false );
-					update_post_meta( $post_id, 'asp_variations_names', false );
-					update_post_meta( $post_id, 'asp_variations_prices', false );
-					update_post_meta( $post_id, 'asp_variations_urls', false );
-					update_post_meta( $post_id, 'asp_variations_opts', false );
-				}
+			if ( empty( $asp_plan_id ) ) {
 
 				$hide_amount_input = filter_input( INPUT_POST, 'asp_product_hide_amount_input', FILTER_SANITIZE_STRING );
 				$hide_amount_input = ! empty( $hide_amount_input ) ? true : false;

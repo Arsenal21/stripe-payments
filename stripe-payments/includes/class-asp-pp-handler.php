@@ -200,7 +200,7 @@ class ASP_PP_Handler {
 		//variations
 		$this->variations = array();
 		$v                = new ASPVariations( $product_id );
-		if ( ! empty( $v->groups ) && empty( $plan_id ) ) {
+		if ( ! empty( $v->groups ) ) {
 			$this->variations['groups'] = $v->groups;
 			$variations_names           = get_post_meta( $product_id, 'asp_variations_names', true );
 			$variations_prices_orig     = get_post_meta( $product_id, 'asp_variations_prices', true );

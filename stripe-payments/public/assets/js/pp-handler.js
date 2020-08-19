@@ -929,6 +929,10 @@ function handlePayment() {
 
 		ct_reqStr += '&token=' + vars.data.visitor_token;
 
+		if (vars.data.variations && vars.data.variations.applied) {
+			ct_reqStr += '&variations=' + JSON.stringify(vars.data.variations.applied);
+		}
+
 		vars.confirmToken_reqStr = ct_reqStr;
 
 		doAddonAction('preConfirmToken');
