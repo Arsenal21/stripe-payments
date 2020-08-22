@@ -386,7 +386,7 @@ function updateAllAmounts() {
 		jQuery('#order-total').html(formatMoney(totalAmount));
 		jQuery('#order-item-price').html(formatMoney(vars.data.item_price * vars.data.quantity));
 		jQuery('#order-quantity').html(vars.data.quantity);
-		jQuery('#order-tax').html(formatMoney(vars.data.taxAmount * vars.data.quantity));
+		jQuery('#order-tax').html(formatMoney(vars.data.taxAmount));
 		jQuery('#shipping').html(formatMoney(vars.data.shipping));
 		if (vars.data.coupon) {
 			if (jQuery('tr#order-coupon-line').length === 0) {
@@ -401,7 +401,7 @@ function updateAllAmounts() {
 			if (vars.data.coupon.discount_amount > vars.data.coupon.amount_before_discount) {
 				couponDiscountAmount = vars.data.coupon.amount_before_discount;
 			}
-			jQuery('#order-coupon').html(formatMoney(couponDiscountAmount * vars.data.quantity));
+			jQuery('#order-coupon').html(formatMoney(couponDiscountAmount));
 		}
 		if (vars.data.variations.applied) {
 			for (grpId = 0; grpId < vars.data.variations.applied.length; ++grpId) {
@@ -431,15 +431,21 @@ function calcTotal() {
 			itemSubt = itemSubt + amount_to_cents(vars.data.variations.prices[grpId][vars.data.variations.applied[grpId]], vars.data.currency);
 		}
 	}
+
+	itemSubt = itemSubt * vars.data.quantity;
+
 	if (vars.data.coupon) {
 		var discountAmount = 0;
 		if (vars.data.coupon.discount_type === 'perc') {
 			discountAmount = PHP_round(itemSubt * (vars.data.coupon.discount / 100), 0);
 		} else {
-			if (is_zero_cents(vars.data.currency)) {
+			if (vars.data.coupon.per_order===1) {
 				discountAmount = vars.data.coupon.discount;
 			} else {
-				discountAmount = vars.data.coupon.discount * 100;
+				discountAmount = vars.data.coupon.discount * vars.data.quantity;
+			}
+			if (!is_zero_cents(vars.data.currency)) {
+				discountAmount = discountAmount * 100;
 			}
 		}
 		vars.data.coupon.amount_before_discount = itemSubt;
@@ -457,7 +463,7 @@ function calcTotal() {
 		itemSubt = itemSubt + tax;
 	}
 
-	tAmount = itemSubt * vars.data.quantity;
+	tAmount = itemSubt;
 
 	if (vars.data.shipping) {
 		tAmount = tAmount + vars.data.shipping;

@@ -232,6 +232,9 @@ class ASP_Product_Item {
 				$discount_amount = round( $amount * ( $this->coupon['discount'] / 100 ), $perc );
 			} else {
 				$discount_amount = $this->coupon['discount'];
+				if ( ! $this->coupon['per_order'] ) {
+					$discount_amount = $discount_amount * $this->get_quantity();
+				}
 				if ( $in_cents && ! AcceptStripePayments::is_zero_cents( $this->get_currency() ) ) {
 					$discount_amount = $discount_amount * 100;
 				}
@@ -252,6 +255,9 @@ class ASP_Product_Item {
 				$discount_amount = round( $total * ( $this->coupon['discount'] / 100 ), $perc );
 			} else {
 				$discount_amount = $this->coupon['discount'];
+				if ( ! $this->coupon['per_order'] ) {
+					$discount_amount = $discount_amount * $this->get_quantity();
+				}
 				if ( $in_cents && ! AcceptStripePayments::is_zero_cents( $this->get_currency() ) ) {
 					$discount_amount = $discount_amount * 100;
 				}
@@ -271,13 +277,13 @@ class ASP_Product_Item {
 
 		$total += $items_total;
 
+		$total = $total * $this->get_quantity();
+
 		$total = $this->apply_discount_to_amount( $total, $in_cents );
 
 		if ( $this->get_tax() ) {
 			$total = $total + $this->get_tax_amount( $in_cents, true );
 		}
-
-		$total = $total * $this->get_quantity();
 
 		$shipping = $this->get_shipping( $in_cents );
 
@@ -442,11 +448,14 @@ class ASP_Product_Item {
 			return false;
 		}
 
+		$per_order = get_post_meta( $coupon->ID, 'asp_coupon_per_order', true );
+
 		$this->coupon = array(
 			'code'          => $coupon_code,
 			'id'            => $coupon->ID,
 			'discount'      => get_post_meta( $coupon->ID, 'asp_coupon_discount', true ),
 			'discount_type' => get_post_meta( $coupon->ID, 'asp_coupon_discount_type', true ),
+			'per_order'     => empty( $per_order ) ? 0 : 1,
 		);
 		return true;
 	}
