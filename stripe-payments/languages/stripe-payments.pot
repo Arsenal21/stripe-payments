@@ -2,15 +2,15 @@
 # This file is distributed under the same license as the Stripe Payments plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Stripe Payments 2.0.35\n"
+"Project-Id-Version: Stripe Payments 2.0.36t1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/stripe-payments\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2020-08-18T15:04:58+03:00\n"
-"PO-Revision-Date: 2020-08-18T15:04:58+03:00\n"
+"POT-Creation-Date: 2020-08-22T21:23:47+03:00\n"
+"PO-Revision-Date: 2020-08-22T21:23:47+03:00\n"
 "X-Generator: WP-CLI 2.0.1\n"
 "X-Domain: stripe-payments\n"
 
@@ -1676,14 +1676,14 @@ msgid "<b>Invalid product price</b>: one-time payment product price cannot be ze
 msgstr ""
 
 #: admin/includes/class-coupons-list-table.php:52
-#: admin/includes/class-coupons.php:351
+#: admin/includes/class-coupons.php:354
 #: includes/shortcodes/class-shortcode-asp.php:955
 #: public/views/templates/default/payment-popup.php:269
 msgid "Coupon Code"
 msgstr ""
 
 #: admin/includes/class-coupons-list-table.php:54
-#: admin/includes/class-coupons.php:334
+#: admin/includes/class-coupons.php:337
 msgid "Active"
 msgstr ""
 
@@ -1692,22 +1692,22 @@ msgid "Discount Value"
 msgstr ""
 
 #: admin/includes/class-coupons-list-table.php:56
-#: admin/includes/class-coupons.php:376
+#: admin/includes/class-coupons.php:388
 msgid "Redemption Count"
 msgstr ""
 
 #: admin/includes/class-coupons-list-table.php:57
-#: admin/includes/class-coupons.php:369
+#: admin/includes/class-coupons.php:381
 msgid "Redemption Limit"
 msgstr ""
 
 #: admin/includes/class-coupons-list-table.php:58
-#: admin/includes/class-coupons.php:383
+#: admin/includes/class-coupons.php:395
 msgid "Start Date"
 msgstr ""
 
 #: admin/includes/class-coupons-list-table.php:59
-#: admin/includes/class-coupons.php:390
+#: admin/includes/class-coupons.php:402
 msgid "Expiry Date"
 msgstr ""
 
@@ -1854,27 +1854,27 @@ msgid "Error"
 msgstr ""
 
 #: admin/includes/class-coupons.php:37
-#: includes/class-asp-product-item.php:416
+#: includes/class-asp-product-item.php:422
 msgid "Coupon not found."
 msgstr ""
 
 #: admin/includes/class-coupons.php:44
-#: includes/class-asp-product-item.php:422
+#: includes/class-asp-product-item.php:428
 msgid "Coupon is not active."
 msgstr ""
 
 #: admin/includes/class-coupons.php:51
-#: includes/class-asp-product-item.php:428
+#: includes/class-asp-product-item.php:434
 msgid "Coupon is not available yet."
 msgstr ""
 
 #: admin/includes/class-coupons.php:58
-#: includes/class-asp-product-item.php:434
+#: includes/class-asp-product-item.php:440
 msgid "Coupon has expired."
 msgstr ""
 
 #: admin/includes/class-coupons.php:66
-#: includes/class-asp-product-item.php:441
+#: includes/class-asp-product-item.php:447
 msgid "Coupon redemption limit is reached."
 msgstr ""
 
@@ -1887,13 +1887,13 @@ msgid "No product ID specified."
 msgstr ""
 
 #: admin/includes/class-coupons.php:116
-#: includes/class-asp-product-item.php:469
+#: includes/class-asp-product-item.php:478
 msgid "Coupon is not allowed for this product."
 msgstr ""
 
 #: admin/includes/class-coupons.php:173
 #: admin/includes/class-coupons.php:245
-#: admin/includes/class-coupons.php:269
+#: admin/includes/class-coupons.php:271
 msgid "Coupons"
 msgstr ""
 
@@ -1901,144 +1901,156 @@ msgstr ""
 msgid "Settings updated."
 msgstr ""
 
-#: admin/includes/class-coupons.php:248
+#: admin/includes/class-coupons.php:249
 msgid "Coupon Settings"
 msgstr ""
 
-#: admin/includes/class-coupons.php:254
+#: admin/includes/class-coupons.php:255
 msgid "Enable Coupons"
 msgstr ""
 
-#: admin/includes/class-coupons.php:257
+#: admin/includes/class-coupons.php:258
 msgid "Enables the discount coupon functionality."
 msgstr ""
 
-#: admin/includes/class-coupons.php:263
+#: admin/includes/class-coupons.php:264
 msgid "Save Settings"
 msgstr ""
 
-#: admin/includes/class-coupons.php:269
+#: admin/includes/class-coupons.php:271
 msgid "Add a Coupon"
 msgstr ""
 
-#: admin/includes/class-coupons.php:325
+#: admin/includes/class-coupons.php:328
 msgid "No products created yet."
 msgstr ""
 
-#: admin/includes/class-coupons.php:330
+#: admin/includes/class-coupons.php:333
 msgid "Add Coupon"
 msgstr ""
 
-#: admin/includes/class-coupons.php:330
+#: admin/includes/class-coupons.php:333
 msgid "Edit Coupon"
 msgstr ""
 
-#: admin/includes/class-coupons.php:337
+#: admin/includes/class-coupons.php:340
 msgid "Use this to enable/disable this coupon."
 msgstr ""
 
-#: admin/includes/class-coupons.php:342
+#: admin/includes/class-coupons.php:345
 msgid "Coupon ID"
 msgstr ""
 
-#: admin/includes/class-coupons.php:346
+#: admin/includes/class-coupons.php:349
 msgid "Coupon ID. This value cannot be changed."
 msgstr ""
 
-#: admin/includes/class-coupons.php:354
+#: admin/includes/class-coupons.php:357
 msgid "Coupon code that you can share with your customers. Example: GET10OFF"
 msgstr ""
 
-#: admin/includes/class-coupons.php:358
+#: admin/includes/class-coupons.php:361
 msgid "Discount"
 msgstr ""
 
-#: admin/includes/class-coupons.php:362
+#: admin/includes/class-coupons.php:365
 msgid "Percent (%)"
 msgstr ""
 
-#: admin/includes/class-coupons.php:363
+#: admin/includes/class-coupons.php:366
 msgid "Fixed amount"
 msgstr ""
 
-#: admin/includes/class-coupons.php:365
+#: admin/includes/class-coupons.php:368
 msgid "Select discount amount and type. Enter a numeric value only. Example: 25"
 msgstr ""
 
-#: admin/includes/class-coupons.php:372
+#: admin/includes/class-coupons.php:371
+msgid "Apply Per-Order"
+msgstr ""
+
+#: admin/includes/class-coupons.php:373
+msgid "If enabled, discount is applied on per-order basis rather than per-item."
+msgstr ""
+
+#: admin/includes/class-coupons.php:375
+msgid "This option is only available for \"fixed amount\" type coupons."
+msgstr ""
+
+#: admin/includes/class-coupons.php:384
 msgid "Set max number of coupons available for redemption. Put 0 to make it unlimited."
 msgstr ""
 
-#: admin/includes/class-coupons.php:379
+#: admin/includes/class-coupons.php:391
 msgid "Number of already redeemed coupons."
 msgstr ""
 
-#: admin/includes/class-coupons.php:386
+#: admin/includes/class-coupons.php:398
 msgid "Start date when this coupon can be used."
 msgstr ""
 
-#: admin/includes/class-coupons.php:393
+#: admin/includes/class-coupons.php:405
 msgid "Date when this coupon will expire. Put 0 to disable expiry check."
 msgstr ""
 
-#: admin/includes/class-coupons.php:397
+#: admin/includes/class-coupons.php:409
 msgid "Coupon Availabe For:"
 msgstr ""
 
-#: admin/includes/class-coupons.php:399
+#: admin/includes/class-coupons.php:411
 msgid "All products"
 msgstr ""
 
-#: admin/includes/class-coupons.php:401
+#: admin/includes/class-coupons.php:413
 msgid "Specific Products Only"
 msgstr ""
 
-#: admin/includes/class-coupons.php:405
+#: admin/includes/class-coupons.php:417
 msgid "Choose availability of the coupon. You can specify which products coupon is available when \"Specific Products Only\" is selected."
 msgstr ""
 
-#: admin/includes/class-coupons.php:414
+#: admin/includes/class-coupons.php:426
 msgid "Update Coupon"
 msgstr ""
 
-#: admin/includes/class-coupons.php:414
+#: admin/includes/class-coupons.php:426
 msgid "Create Coupon"
 msgstr ""
 
-#: admin/includes/class-coupons.php:439
+#: admin/includes/class-coupons.php:458
 msgid "Can't delete coupon: coupon ID is not provided."
 msgstr ""
 
 #. translators: %d is coupon ID
-#: admin/includes/class-coupons.php:445
+#: admin/includes/class-coupons.php:464
 msgid "Can't delete coupon: coupon #%d not found."
 msgstr ""
 
 #. translators: %d is coupon ID
-#: admin/includes/class-coupons.php:450
+#: admin/includes/class-coupons.php:469
 msgid "Can't delete coupon: post #%d is not a coupon."
 msgstr ""
 
 #. translators: %d is coupon ID
-#: admin/includes/class-coupons.php:456
+#: admin/includes/class-coupons.php:475
 msgid "Coupon #%d has been deleted."
 msgstr ""
 
-#: admin/includes/class-coupons.php:473
+#: admin/includes/class-coupons.php:494
 msgid "Please enter coupon code."
 msgstr ""
 
-#: admin/includes/class-coupons.php:477
+#: admin/includes/class-coupons.php:498
 msgid "Please enter discount."
 msgstr ""
 
 #. translators: %s is coupon code
-#: admin/includes/class-coupons.php:508
+#: admin/includes/class-coupons.php:529
 msgid "Coupon \"%s\" has been updated."
 msgstr ""
 
 #. translators: %s is coupon code
-#: admin/includes/class-coupons.php:508
+#: admin/includes/class-coupons.php:529
 msgid "Coupon \"%s\" has been created."
 msgstr ""
 
@@ -2257,7 +2269,7 @@ msgid "Error occurred:"
 msgstr ""
 
 #. translators: %d is number of items in stock
-#: includes/class-asp-product-item.php:375
+#: includes/class-asp-product-item.php:381
 #: includes/class-asp-process-ipn-ng.php:391
 #: includes/shortcodes/class-asp-shortcode-ng.php:184
 #: includes/shortcodes/class-asp-shortcode-ng.php:542
@@ -2270,7 +2282,7 @@ msgstr ""
 msgid "Tax"
 msgstr ""
 
-#: includes/class-asp-product-item.php:386
+#: includes/class-asp-product-item.php:392
 #: includes/class-asp-process-ipn-ng.php:399
 #: includes/shortcodes/class-asp-shortcode-ng.php:194
 #: includes/shortcodes/class-asp-shortcode-ng.php:543
@@ -2283,12 +2295,12 @@ msgstr ""
 msgid "Shipping"
 msgstr ""
 
-#: includes/class-asp-product-item.php:514
+#: includes/class-asp-product-item.php:523
 msgid "No product ID provided."
 msgstr ""
 
 #. translators: %d is product id
-#: includes/class-asp-product-item.php:522
+#: includes/class-asp-product-item.php:531
 msgid "Can't find product with ID %d"
 msgstr ""
 
