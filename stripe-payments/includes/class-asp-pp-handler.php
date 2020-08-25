@@ -506,6 +506,14 @@ class ASP_PP_Handler {
 		//output custom PP CSS if needed
 		add_action( 'asp_ng_pp_output_before_closing_body', array( $this, 'output_custom_css' ), 1000 );
 
+		// set no cache headers for payment popup
+		// commented out for now as it needs more testing
+		// if ( ! headers_sent() ) {
+		// 	header( 'Cache-Control: no-store, no-cache, must-revalidate, max-age=0' );
+		// 	header( 'Cache-Control: post-check=0, pre-check=0', false );
+		// 	header( 'Pragma: no-cache' );
+		// }
+
 		ob_start();
 		require_once WP_ASP_PLUGIN_PATH . 'public/views/templates/default/payment-popup.php';
 		$tpl = ob_get_clean();
