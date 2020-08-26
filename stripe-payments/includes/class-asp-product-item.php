@@ -185,7 +185,7 @@ class ASP_Product_Item {
 		}
 		if ( $price_with_discount && $this->coupon ) {
 			$this->get_discount_amount( $this->price, $in_cents );
-			$this->price_with_discount = $this->price - $this->coupon['discountAmount'];
+			$this->price_with_discount = $this->price * $this->get_quantity() - $this->coupon['discountAmount'];
 		}
 		if ( $in_cents ) {
 			if ( $price_with_discount && $this->coupon ) {
