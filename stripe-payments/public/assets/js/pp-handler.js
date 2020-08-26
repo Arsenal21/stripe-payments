@@ -1,11 +1,8 @@
 /* eslint-disable no-undef */
-window.onpopstateEventDisable = false;
-window.isPopstateEvent = true;
-
 var closeBtn = document.getElementById('modal-close-btn');
 closeBtn.addEventListener('click', function () {
+	window.history.replaceState(null, '', null);
 	window.history.go(-1);
-	history.replaceState(null, document.title, window.location.pathname + window.location.search);
 });
 
 popstateAttachEvent();
@@ -439,7 +436,7 @@ function calcTotal() {
 		if (vars.data.coupon.discount_type === 'perc') {
 			discountAmount = PHP_round(itemSubt * (vars.data.coupon.discount / 100), 0);
 		} else {
-			if (vars.data.coupon.per_order===1) {
+			if (vars.data.coupon.per_order === 1) {
 				discountAmount = vars.data.coupon.discount;
 			} else {
 				discountAmount = vars.data.coupon.discount * vars.data.quantity;
@@ -1171,26 +1168,25 @@ var ajaxRequest = function (URL, reqStr, doneFunc, failFunc) {
 	parent.XMLHttpReq.send(reqStr);
 };
 
+function popStateListener() {
+	if (typeof parent.WPASPClosePaymentPopup === "function") {
+		window.removeEventListener('popstate', popStateListener);
+		window.history.replaceState(null, '', null);
+		this.closeBtn.focus();
+		parent.WPASPClosePaymentPopup();
+	}
+	else {
+		window.history.go(-1);
+	}
+}
+
 function popstateAttachEvent() {
 	if (typeof history.pushState === "function" && typeof parent.WPASPClosePaymentPopup === "function") {
-		window.onpopstateEventDisable = false;
-		history.pushState('forward', null, '#paymentpopup');
-		window.onpopstate = function () {
-			if (!window.onpopstateEventDisable) {
-				if (typeof parent.WPASPClosePaymentPopup === "function") {
-					window.onpopstateEventDisable = true;
-					this.closeBtn.focus();
-					parent.WPASPClosePaymentPopup();
-				}
-			}
-			else {
-				window.history.go(-1);
-			}
-		}
+		window.addEventListener('popstate', popStateListener);
+		window.history.pushState({ aspPopup: 1 }, '', null);
 	}
 }
 
 function popupDisplayed() {
-	window.onpopstateEventDisable = false;
-	history.pushState('forward', null, '#paymentpopup');
+	popstateAttachEvent();
 }
