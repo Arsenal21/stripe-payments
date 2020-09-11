@@ -181,7 +181,7 @@ class ASP_Product_Item {
 	public function get_price( $in_cents = false, $price_with_discount = false ) {
 		if ( is_null( $this->price ) ) {
 			$this->price = get_post_meta( $this->post_id, 'asp_product_price', true );
-			$this->price = empty( $this->price ) ? 0 : $this->price;
+			$this->price = empty( $this->price ) ? 0 : round( $this->price * 100 ) / 100;
 		}
 		if ( $price_with_discount && $this->coupon ) {
 			$this->get_discount_amount( $this->price, $in_cents );
