@@ -796,6 +796,7 @@ class ASP_Utils {
 		if ( ! class_exists( '\Stripe\Stripe' ) ) {
 			require_once WP_ASP_PLUGIN_PATH . 'includes/stripe/init.php';
 			\Stripe\Stripe::setAppInfo( 'Stripe Payments', WP_ASP_PLUGIN_VERSION, 'https://wordpress.org/plugins/stripe-payments/', 'pp_partner_Fvas9OJ0jQ2oNQ' );
+			\Stripe\Stripe::setApiVersion( '2020-03-02' );
 		} else {
 			$declared = new \ReflectionClass( '\Stripe\Stripe' );
 			$path     = $declared->getFileName();
