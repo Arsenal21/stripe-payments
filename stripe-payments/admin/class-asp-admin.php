@@ -1734,6 +1734,12 @@ class AcceptStripePayments_Admin {
 		//regen ckey
 		ASP_Utils::get_ckey( true );
 
+		//clear caching plugins cache if this is settings save action
+		$submit = filter_input( INPUT_POST, 'submit', FILTER_SANITIZE_STRING );
+		if ( ! empty( $submit ) ) {
+			ASP_Utils::clear_external_caches();
+		}
+
 		return $output;
 	}
 

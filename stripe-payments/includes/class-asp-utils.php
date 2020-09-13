@@ -856,4 +856,34 @@ class ASP_Utils {
 		return md5( $ua . $str );
 	}
 
+	public static function clear_external_caches() {
+		//WP Rocket
+		if ( function_exists( 'rocket_clean_domain' ) ) {
+			rocket_clean_domain();
+		}
+
+		// wp-super-cache
+		if ( function_exists( 'wp_cache_clear_cache' ) ) {
+			wp_cache_clear_cache();
+		}
+
+		// WPEngine
+		if ( class_exists( 'WpeCommon' ) ) {
+			WpeCommon::purge_memcached();
+			WpeCommon::clear_maxcdn_cache();
+			WpeCommon::purge_varnish_cache();
+		}
+
+		// W3 Total Cache
+		if ( function_exists( 'w3tc_pgcache_flush' ) ) {
+			w3tc_pgcache_flush();
+		}
+
+		// SG Optimizer
+		if ( function_exists( 'sg_cachepress_purge_cache' ) ) {
+			sg_cachepress_purge_cache();
+		}
+
+		do_action( 'asp_clear_external_caches' );
+	}
 }
