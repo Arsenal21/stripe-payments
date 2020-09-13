@@ -2,113 +2,16 @@
 <html>
 
 <head>
+<?php
+//include inline css file
+$css = file_get_contents( WP_ASP_PLUGIN_PATH . 'public/views/templates/default/pp-inline-head.css' );
+$css = str_replace( array( "\t", "\r\n" ), array( '', '' ), $css );
+echo '<style>' . $css . '</style>' . "\r\n";
+?>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta charset="utf-8">
 	<title><?php echo esc_html( $a['page_title'] ); ?></title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<style>
-	html,
-	body {
-		width: 100%;
-		height: 100%;
-		margin: 0;
-		padding: 0;
-		overflow: auto;
-	}
-
-	html {
-		-webkit-overflow-scrolling: touch;
-	}
-
-	body {
-		overflow-y: scroll;
-	}
-
-	#checkmark-cont {
-		display: none;
-		position: relative;
-	}
-
-	#smoke-screen {
-		display: none;
-		position: absolute;
-		width: 100%;
-		height: 100%;
-		top: 0;
-		align-items: center;
-		justify-content: center;
-		text-align: center;
-		left: 0;
-		z-index: 100;
-		cursor: wait;
-		background: rgba(255, 255, 255, .3);
-	}
-
-	.small-spinner {
-		box-sizing: border-box;
-		position: relative;
-		width: 40px;
-		height: 40px;
-		border-radius: 50%;
-		border: 7px solid #ccc;
-		border-top-color: #0078e7;
-		animation: small-spinner .6s linear infinite;
-	}
-
-	@keyframes small-spinner {
-		to {
-			transform: rotate(360deg);
-		}
-	}
-
-	@media only screen and (max-width: 480px) {
-		.small-spinner {
-			top: 50%;
-			position: fixed;
-		}
-
-		#checkmark-cont {
-			top: 50%;
-			position: fixed;
-			margin-top: -15px;
-		}
-
-		.coupon-spinner {
-			top: .5em;
-		}
-
-		#tax-shipping-cont {
-			padding-top: 20px;
-		}
-	}
-
-	.Aligner {
-		background: rgba(0, 0, 0, .3);
-		z-index: -1;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		height: auto;
-		min-height: 100%;
-	}
-
-	#Aligner-item {
-		height: 0;
-		min-height: 0;
-		overflow: hidden;
-		position: relative;
-		border-radius: 6px;
-		background-color: #f5f5f7;
-		box-shadow: 0 12px 30px 0 rgba(0, 0, 0, .5), inset 0 1px 0 0 hsla(0, 0%, 100%, .65);
-		max-width: 700px;
-		margin: 45px 10px 50px 10px;
-		width: 0;
-	}
-
-	#test-mode {
-		display: none;
-	}
-	</style>
 	<?php
 
 	foreach ( $a['vars'] as $var => $data ) {
