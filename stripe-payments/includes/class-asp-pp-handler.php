@@ -245,7 +245,9 @@ class ASP_PP_Handler {
 
 		$checkout_lang = empty( $checkout_lang ) ? 'auto' : $checkout_lang;
 
-		$data               = array();
+		$data             = array();
+		$data['initTime'] = time();
+
 		$data['product_id'] = $product_id;
 		$data['item_name']  = $this->item->get_name();
 
