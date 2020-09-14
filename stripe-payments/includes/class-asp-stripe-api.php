@@ -51,6 +51,7 @@ class ASP_Stripe_API {
 			'X-Stripe-Client-User-Agent' => json_encode( $ua ),
 			'User-Agent'                 => $ua_string,
 			'Authorization'              => 'Basic ' . base64_encode( $this->api_key . ':' ),
+			'Stripe-Version'             => '2020-03-02',
 		);
 		return $headers;
 	}
