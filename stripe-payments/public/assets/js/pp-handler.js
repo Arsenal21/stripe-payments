@@ -22,7 +22,7 @@ if (vars.fatal_error) {
 	throw new Error(vars.fatal_error);
 }
 try {
-	var stripe = Stripe(vars.stripe_key);
+	var stripe = Stripe(vars.stripe_key, { 'apiVersion': vars.stripe_api_ver });
 	var elements = stripe.elements({ locale: vars.data.checkout_lang });
 } catch (error) {
 	showPopup();

@@ -466,6 +466,7 @@ class ASP_PP_Handler {
 		$a['vars']['vars'] = array(
 			'data'           => $data,
 			'stripe_key'     => ! empty( $data['stripe_key'] ) ? $data['stripe_key'] : $a['stripe_key'],
+			'stripe_api_ver' => ASPMain::$stripe_api_ver,
 			'minAmounts'     => $this->asp_main->minAmounts,
 			'zeroCents'      => $this->asp_main->zeroCents,
 			'ajaxURL'        => admin_url( 'admin-ajax.php' ),
