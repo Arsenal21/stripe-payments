@@ -2,15 +2,15 @@
 # This file is distributed under the same license as the Stripe Payments plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Stripe Payments 2.0.36t2\n"
+"Project-Id-Version: Stripe Payments 2.0.36t4\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/stripe-payments\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2020-09-12T14:56:26+03:00\n"
-"PO-Revision-Date: 2020-09-12T14:56:26+03:00\n"
+"POT-Creation-Date: 2020-09-14T23:13:30+03:00\n"
+"PO-Revision-Date: 2020-09-14T23:13:30+03:00\n"
 "X-Generator: WP-CLI 2.0.1\n"
 "X-Domain: stripe-payments\n"
 
@@ -897,7 +897,7 @@ msgstr ""
 #. translators: %s is not a placeholder
 #: admin/class-asp-admin.php:1621
 #: includes/class-asp.php:312
-#: includes/class-asp-pp-handler.php:437
+#: includes/class-asp-pp-handler.php:439
 msgid "Pay %s"
 msgstr ""
 
@@ -937,91 +937,91 @@ msgstr ""
 msgid "Price number of decimals can't be empty."
 msgstr ""
 
-#: admin/class-asp-admin.php:1765
+#: admin/class-asp-admin.php:1771
 msgid "Name of the purchased item"
 msgstr ""
 
-#: admin/class-asp-admin.php:1766
+#: admin/class-asp-admin.php:1772
 msgid "Number of items purchased"
 msgstr ""
 
-#: admin/class-asp-admin.php:1767
+#: admin/class-asp-admin.php:1773
 msgid "Item price. Example: 1000,00"
 msgstr ""
 
-#: admin/class-asp-admin.php:1768
+#: admin/class-asp-admin.php:1774
 msgid "Item price with currency symbol. Example: $1,000.00"
 msgstr ""
 
-#: admin/class-asp-admin.php:1769
+#: admin/class-asp-admin.php:1775
 msgid "The amount paid for the current transaction. Example: 1,000.00"
 msgstr ""
 
-#: admin/class-asp-admin.php:1770
+#: admin/class-asp-admin.php:1776
 msgid "The amount paid for the current transaction with currency symbol. Example: $1,000.00"
 msgstr ""
 
-#: admin/class-asp-admin.php:1771
+#: admin/class-asp-admin.php:1777
 msgid "Tax in percent. Example: 10%"
 msgstr ""
 
-#: admin/class-asp-admin.php:1772
+#: admin/class-asp-admin.php:1778
 msgid "Formatted tax amount for single item. Example: $0.25"
 msgstr ""
 
-#: admin/class-asp-admin.php:1773
+#: admin/class-asp-admin.php:1779
 msgid "Formatted shipping amount. Example: $2.50"
 msgstr ""
 
-#: admin/class-asp-admin.php:1774
+#: admin/class-asp-admin.php:1780
 msgid "Item download URL (if it's set)"
 msgstr ""
 
-#: admin/class-asp-admin.php:1775
+#: admin/class-asp-admin.php:1781
 msgid "The item details of the purchased product (this will include the download link for digital items)"
 msgstr ""
 
-#: admin/class-asp-admin.php:1776
+#: admin/class-asp-admin.php:1782
 msgid "The unique transaction ID of the purchase"
 msgstr ""
 
-#: admin/class-asp-admin.php:1777
+#: admin/class-asp-admin.php:1783
 msgid "Shipping address of the buyer"
 msgstr ""
 
-#: admin/class-asp-admin.php:1778
+#: admin/class-asp-admin.php:1784
 msgid "Billing address of the buyer"
 msgstr ""
 
-#: admin/class-asp-admin.php:1779
+#: admin/class-asp-admin.php:1785
 msgid "Customer name. Available only if collect billing address option enabled"
 msgstr ""
 
-#: admin/class-asp-admin.php:1780
+#: admin/class-asp-admin.php:1786
 msgid "Email Address of the buyer"
 msgstr ""
 
-#: admin/class-asp-admin.php:1781
+#: admin/class-asp-admin.php:1787
 msgid "Currency symbol. Example: $"
 msgstr ""
 
-#: admin/class-asp-admin.php:1782
+#: admin/class-asp-admin.php:1788
 msgid "3-letter currency code. Example: USD"
 msgstr ""
 
-#: admin/class-asp-admin.php:1783
+#: admin/class-asp-admin.php:1789
 msgid "The date of the purchase"
 msgstr ""
 
-#: admin/class-asp-admin.php:1784
+#: admin/class-asp-admin.php:1790
 msgid "Custom field name and value (if enabled)"
 msgstr ""
 
-#: admin/class-asp-admin.php:1785
+#: admin/class-asp-admin.php:1791
 msgid "Coupon code (if available)"
 msgstr ""
 
-#: admin/class-asp-admin.php:1808
+#: admin/class-asp-admin.php:1814
 msgid "Click here to toggle tags hint"
 msgstr ""
 
@@ -1224,7 +1224,7 @@ msgstr ""
 
 #: admin/includes/class-products-meta-boxes.php:33
 #: includes/shortcodes/class-shortcode-asp.php:178
-#: includes/class-asp-pp-handler.php:795
+#: includes/class-asp-pp-handler.php:798
 msgid "Custom Field"
 msgstr ""
 
@@ -1678,7 +1678,7 @@ msgstr ""
 #: admin/includes/class-coupons-list-table.php:52
 #: admin/includes/class-coupons.php:354
 #: includes/shortcodes/class-shortcode-asp.php:955
-#: public/views/templates/default/payment-popup.php:269
+#: public/views/templates/default/payment-popup.php:172
 msgid "Coupon Code"
 msgstr ""
 
@@ -1796,8 +1796,8 @@ msgid "Stripe Orders"
 msgstr ""
 
 #: admin/includes/class-order.php:141
-#: public/views/templates/default/payment-popup.php:291
-#: public/views/templates/default/payment-popup.php:325
+#: public/views/templates/default/payment-popup.php:194
+#: public/views/templates/default/payment-popup.php:228
 msgid "Total"
 msgstr ""
 
@@ -2261,10 +2261,10 @@ msgid "Log cleared."
 msgstr ""
 
 #: admin/views/admin.php:131
-#: includes/class-asp-pp-handler.php:545
-#: includes/class-asp-pp-handler.php:756
-#: includes/class-asp-pp-handler.php:760
-#: includes/class-asp-pp-handler.php:871
+#: includes/class-asp-pp-handler.php:548
+#: includes/class-asp-pp-handler.php:759
+#: includes/class-asp-pp-handler.php:763
+#: includes/class-asp-pp-handler.php:874
 msgid "Error occurred:"
 msgstr ""
 
@@ -2276,9 +2276,9 @@ msgstr ""
 #: includes/shortcodes/class-shortcode-asp.php:103
 #: includes/shortcodes/class-shortcode-asp.php:341
 #: includes/shortcodes/class-shortcode-asp.php:686
-#: includes/class-asp-pp-handler.php:485
+#: includes/class-asp-pp-handler.php:488
 #: includes/process_ipn.php:561
-#: public/views/templates/default/payment-popup.php:312
+#: public/views/templates/default/payment-popup.php:215
 msgid "Tax"
 msgstr ""
 
@@ -2289,9 +2289,9 @@ msgstr ""
 #: includes/shortcodes/class-shortcode-asp.php:104
 #: includes/shortcodes/class-shortcode-asp.php:351
 #: includes/shortcodes/class-shortcode-asp.php:687
-#: includes/class-asp-pp-handler.php:486
+#: includes/class-asp-pp-handler.php:489
 #: includes/process_ipn.php:568
-#: public/views/templates/default/payment-popup.php:318
+#: public/views/templates/default/payment-popup.php:221
 msgid "Shipping"
 msgstr ""
 
@@ -2398,7 +2398,7 @@ msgstr ""
 #: includes/shortcodes/class-asp-shortcode-ng.php:205
 #: includes/shortcodes/class-shortcode-asp.php:105
 #: includes/shortcodes/class-shortcode-asp.php:362
-#: includes/class-asp-pp-handler.php:487
+#: includes/class-asp-pp-handler.php:490
 msgid "Total:"
 msgstr ""
 
@@ -2409,77 +2409,77 @@ msgstr ""
 
 #: includes/shortcodes/class-asp-shortcode-ng.php:698
 #: includes/shortcodes/class-shortcode-asp.php:863
-#: public/views/templates/default/payment-popup.php:177
+#: public/views/templates/default/payment-popup.php:80
 msgid "Enter amount"
 msgstr ""
 
 #: includes/shortcodes/class-shortcode-asp.php:97
-#: includes/class-asp-pp-handler.php:478
+#: includes/class-asp-pp-handler.php:481
 msgid "Please enter a valid amount"
 msgstr ""
 
 #: includes/shortcodes/class-shortcode-asp.php:98
-#: includes/class-asp-pp-handler.php:479
-#: includes/class-asp-pp-handler.php:564
+#: includes/class-asp-pp-handler.php:482
+#: includes/class-asp-pp-handler.php:567
 msgid "Minimum amount is"
 msgstr ""
 
 #: includes/shortcodes/class-shortcode-asp.php:99
-#: includes/class-asp-pp-handler.php:480
+#: includes/class-asp-pp-handler.php:483
 msgid "Please enter quantity."
 msgstr ""
 
 #: includes/shortcodes/class-shortcode-asp.php:100
-#: includes/class-asp-pp-handler.php:481
+#: includes/class-asp-pp-handler.php:484
 msgid "Quantity can't be zero."
 msgstr ""
 
 #: includes/shortcodes/class-shortcode-asp.php:101
-#: includes/class-asp-pp-handler.php:482
+#: includes/class-asp-pp-handler.php:485
 msgid "Quantity should be integer value."
 msgstr ""
 
 #. translators: %d is number of items in stock
 #: includes/shortcodes/class-shortcode-asp.php:102
-#: includes/class-asp-pp-handler.php:484
-#: includes/class-asp-pp-handler.php:554
+#: includes/class-asp-pp-handler.php:487
+#: includes/class-asp-pp-handler.php:557
 msgid "You cannot order more items than available: %d"
 msgstr ""
 
 #: includes/shortcodes/class-shortcode-asp.php:106
-#: includes/class-asp-pp-handler.php:488
+#: includes/class-asp-pp-handler.php:491
 msgid "Please fill in this field."
 msgstr ""
 
 #: includes/shortcodes/class-shortcode-asp.php:107
-#: includes/class-asp-pp-handler.php:489
+#: includes/class-asp-pp-handler.php:492
 msgid "Please check this checkbox."
 msgstr ""
 
 #: includes/shortcodes/class-shortcode-asp.php:108
-#: includes/class-asp-pp-handler.php:490
+#: includes/class-asp-pp-handler.php:493
 msgid "You must accept the terms before you can proceed."
 msgstr ""
 
 #: includes/shortcodes/class-shortcode-asp.php:109
-#: includes/class-asp-pp-handler.php:491
+#: includes/class-asp-pp-handler.php:494
 msgid "Remove coupon"
 msgstr ""
 
 #: includes/shortcodes/class-shortcode-asp.php:110
-#: includes/class-asp-pp-handler.php:492
-#: public/views/templates/default/payment-popup.php:279
+#: includes/class-asp-pp-handler.php:495
+#: public/views/templates/default/payment-popup.php:182
 msgid "Remove"
 msgstr ""
 
 #: includes/shortcodes/class-shortcode-asp.php:111
-#: includes/class-asp-pp-handler.php:451
-#: includes/class-asp-pp-handler.php:493
+#: includes/class-asp-pp-handler.php:453
+#: includes/class-asp-pp-handler.php:496
 msgid "Start Free Trial"
 msgstr ""
 
 #: includes/shortcodes/class-shortcode-asp.php:112
-#: includes/class-asp-pp-handler.php:494
+#: includes/class-asp-pp-handler.php:497
 msgid "Invalid validation RegEx: "
 msgstr ""
 
@@ -2489,7 +2489,7 @@ msgid "Only numbers are allowed: 0-9"
 msgstr ""
 
 #: includes/shortcodes/class-shortcode-asp.php:893
-#: public/views/templates/default/payment-popup.php:205
+#: public/views/templates/default/payment-popup.php:108
 msgid "Enter quantity"
 msgstr ""
 
@@ -2498,7 +2498,7 @@ msgid "X item(s)"
 msgstr ""
 
 #: includes/shortcodes/class-shortcode-asp.php:957
-#: public/views/templates/default/payment-popup.php:273
+#: public/views/templates/default/payment-popup.php:176
 msgid "Apply"
 msgstr ""
 
@@ -2748,26 +2748,26 @@ msgstr ""
 msgid "Shipping Address"
 msgstr ""
 
-#: includes/class-asp-pp-handler.php:321
-#: public/views/templates/default/payment-popup.php:487
+#: includes/class-asp-pp-handler.php:323
+#: public/views/templates/default/payment-popup.php:390
 msgid "Credit or debit card"
 msgstr ""
 
 #. translators: %s is not a placeholder
-#: includes/class-asp-pp-handler.php:444
+#: includes/class-asp-pp-handler.php:446
 msgid "Authorize %s"
 msgstr ""
 
-#: includes/class-asp-pp-handler.php:495
+#: includes/class-asp-pp-handler.php:498
 msgid "Purchase for Free"
 msgstr ""
 
-#: includes/class-asp-pp-handler.php:496
+#: includes/class-asp-pp-handler.php:499
 msgid "Currency not supported for this payment method."
 msgstr ""
 
-#: includes/class-asp-pp-handler.php:583
 #: includes/class-asp-pp-handler.php:586
+#: includes/class-asp-pp-handler.php:589
 msgid "Stripe API error occurred:"
 msgstr ""
 
@@ -3952,73 +3952,73 @@ msgstr ""
 msgid "Vietnamese Dong (VND)"
 msgstr ""
 
-#: public/views/templates/default/payment-popup.php:143
+#: public/views/templates/default/payment-popup.php:46
 msgid "TEST MODE"
 msgstr ""
 
-#: public/views/templates/default/payment-popup.php:161
+#: public/views/templates/default/payment-popup.php:64
 msgid "Close"
 msgstr ""
 
-#: public/views/templates/default/payment-popup.php:184
+#: public/views/templates/default/payment-popup.php:87
 msgid "Select currency"
 msgstr ""
 
-#: public/views/templates/default/payment-popup.php:286
+#: public/views/templates/default/payment-popup.php:189
 msgid "Your order"
 msgstr ""
 
-#: public/views/templates/default/payment-popup.php:290
+#: public/views/templates/default/payment-popup.php:193
 msgid "Item"
 msgstr ""
 
-#: public/views/templates/default/payment-popup.php:336
+#: public/views/templates/default/payment-popup.php:239
 msgid "Select payment method"
 msgstr ""
 
-#: public/views/templates/default/payment-popup.php:364
+#: public/views/templates/default/payment-popup.php:267
 msgctxt "Customer name"
 msgid "Name"
 msgstr ""
 
-#: public/views/templates/default/payment-popup.php:374
+#: public/views/templates/default/payment-popup.php:277
 msgid "Email"
 msgstr ""
 
-#: public/views/templates/default/payment-popup.php:392
+#: public/views/templates/default/payment-popup.php:295
 msgid "Same billing and shipping info"
 msgstr ""
 
-#: public/views/templates/default/payment-popup.php:401
+#: public/views/templates/default/payment-popup.php:304
 msgid "Billing info"
 msgstr ""
 
-#: public/views/templates/default/payment-popup.php:404
-#: public/views/templates/default/payment-popup.php:450
+#: public/views/templates/default/payment-popup.php:307
+#: public/views/templates/default/payment-popup.php:353
 msgid "Address"
 msgstr ""
 
-#: public/views/templates/default/payment-popup.php:415
-#: public/views/templates/default/payment-popup.php:460
+#: public/views/templates/default/payment-popup.php:318
+#: public/views/templates/default/payment-popup.php:363
 msgid "City"
 msgstr ""
 
-#: public/views/templates/default/payment-popup.php:419
-#: public/views/templates/default/payment-popup.php:464
+#: public/views/templates/default/payment-popup.php:322
+#: public/views/templates/default/payment-popup.php:367
 msgid "Country"
 msgstr ""
 
-#: public/views/templates/default/payment-popup.php:427
-#: public/views/templates/default/payment-popup.php:471
+#: public/views/templates/default/payment-popup.php:330
+#: public/views/templates/default/payment-popup.php:374
 msgid "State"
 msgstr ""
 
-#: public/views/templates/default/payment-popup.php:433
-#: public/views/templates/default/payment-popup.php:476
+#: public/views/templates/default/payment-popup.php:336
+#: public/views/templates/default/payment-popup.php:379
 msgid "Postcode"
 msgstr ""
 
-#: public/views/templates/default/payment-popup.php:446
+#: public/views/templates/default/payment-popup.php:349
 msgid "Shipping info"
 msgstr ""
 

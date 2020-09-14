@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 4.7
 Tested up to: 5.5
 Requires PHP: 5.6
-Stable tag: 2.0.36t3
+Stable tag: 2.0.36t4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -157,8 +157,9 @@ None.
 
 = WIP 2.0.36 =
 - Added "Apply Per-Order" option for fixed amount coupons.
-- Fixed rare payment popup closing issue on Safari browser.
 - `2020-08-27` Stripe API version compatibility.
+- Improved compatibility with caching plugins (SG Optimizer, WP Rocket etc).
+- Fixed rare payment popup closing issue in Safari browser.
 
 = 2.0.35 =
 - Donation type products using zero-decimal currencies no longer cause payment error. 
