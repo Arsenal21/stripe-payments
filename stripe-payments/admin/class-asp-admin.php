@@ -1392,6 +1392,7 @@ class AcceptStripePayments_Admin {
 				break;
 			case 'currency_symbol':
 				echo '<input type="text" name="AcceptStripePayments-settings[' . $field . ']" value="" id="wp_asp_curr_symb">';
+				echo "<p class=\"description\">{$desc}</p>";
 				break;
 			case 'allowed_currencies':
 				$all_curr = ASP_Utils::get_currencies();
