@@ -447,7 +447,7 @@ class AcceptStripePayments_Admin {
 			'AcceptStripePayments-global-section',
 			array(
 				'field' => 'currency_symbol',
-				'desc'  => '',
+				'desc'  => __( 'Example: $, €, £ etc.', 'stripe-payments' ),
 				'size'  => 10,
 			)
 		);
