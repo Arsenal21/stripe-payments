@@ -160,7 +160,7 @@ None.
 - `2020-08-27` Stripe API version compatibility.
 - Improved compatibility with caching plugins (W3 Total Cache, SG Optimizer, WP Rocket etc).
 - Fixed rare payment popup closing issue in Safari browser.
-- Payment popup refreshes itself if its left inactive for too long. Should resole related "Inalid security token" issues.
+- Payment popup refreshes itself if its left inactive for too long. Should resole related "Invalid security token" issues.
 - Added Egyptian Pound (EGP) currency.
 
 = 2.0.35 =
