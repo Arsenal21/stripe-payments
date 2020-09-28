@@ -245,7 +245,9 @@ class ASP_PP_Handler {
 
 		$checkout_lang = empty( $checkout_lang ) ? 'auto' : $checkout_lang;
 
-		$data               = array();
+		$data             = array();
+		$data['initTime'] = time();
+
 		$data['product_id'] = $product_id;
 		$data['item_name']  = $this->item->get_name();
 
@@ -464,6 +466,7 @@ class ASP_PP_Handler {
 		$a['vars']['vars'] = array(
 			'data'           => $data,
 			'stripe_key'     => ! empty( $data['stripe_key'] ) ? $data['stripe_key'] : $a['stripe_key'],
+			'stripe_api_ver' => ASPMain::$stripe_api_ver,
 			'minAmounts'     => $this->asp_main->minAmounts,
 			'zeroCents'      => $this->asp_main->zeroCents,
 			'ajaxURL'        => admin_url( 'admin-ajax.php' ),
@@ -505,6 +508,14 @@ class ASP_PP_Handler {
 
 		//output custom PP CSS if needed
 		add_action( 'asp_ng_pp_output_before_closing_body', array( $this, 'output_custom_css' ), 1000 );
+
+		// set no cache headers for payment popup
+		// commented out for now as it needs more testing
+		// if ( ! headers_sent() ) {
+		// 	header( 'Cache-Control: no-store, no-cache, must-revalidate, max-age=0' );
+		// 	header( 'Cache-Control: post-check=0, pre-check=0', false );
+		// 	header( 'Pragma: no-cache' );
+		// }
 
 		ob_start();
 		require_once WP_ASP_PLUGIN_PATH . 'public/views/templates/default/payment-popup.php';

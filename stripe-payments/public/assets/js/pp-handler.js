@@ -1,12 +1,18 @@
 /* eslint-disable no-undef */
-window.onpopstateEventDisable = false;
-window.isPopstateEvent = true;
-
 var closeBtn = document.getElementById('modal-close-btn');
 closeBtn.addEventListener('click', function () {
+	if (typeof checkAgeInterval !== "undefined") {
+		clearInterval(checkAgeInterval);
+		checkAgeInterval = undefined;
+	}
+	window.history.replaceState(null, '', null);
 	window.history.go(-1);
-	history.replaceState(null, document.title, window.location.pathname + window.location.search);
 });
+
+const initTime = Date.now();
+var checkAgeInterval;
+
+checkAge();
 
 popstateAttachEvent();
 
@@ -16,7 +22,7 @@ if (vars.fatal_error) {
 	throw new Error(vars.fatal_error);
 }
 try {
-	var stripe = Stripe(vars.stripe_key);
+	var stripe = Stripe(vars.stripe_key, { 'apiVersion': vars.stripe_api_ver });
 	var elements = stripe.elements({ locale: vars.data.checkout_lang });
 } catch (error) {
 	showPopup();
@@ -386,7 +392,7 @@ function updateAllAmounts() {
 		jQuery('#order-total').html(formatMoney(totalAmount));
 		jQuery('#order-item-price').html(formatMoney(vars.data.item_price * vars.data.quantity));
 		jQuery('#order-quantity').html(vars.data.quantity);
-		jQuery('#order-tax').html(formatMoney(vars.data.taxAmount * vars.data.quantity));
+		jQuery('#order-tax').html(formatMoney(vars.data.taxAmount));
 		jQuery('#shipping').html(formatMoney(vars.data.shipping));
 		if (vars.data.coupon) {
 			if (jQuery('tr#order-coupon-line').length === 0) {
@@ -401,7 +407,7 @@ function updateAllAmounts() {
 			if (vars.data.coupon.discount_amount > vars.data.coupon.amount_before_discount) {
 				couponDiscountAmount = vars.data.coupon.amount_before_discount;
 			}
-			jQuery('#order-coupon').html(formatMoney(couponDiscountAmount * vars.data.quantity));
+			jQuery('#order-coupon').html(formatMoney(couponDiscountAmount));
 		}
 		if (vars.data.variations.applied) {
 			for (grpId = 0; grpId < vars.data.variations.applied.length; ++grpId) {
@@ -431,15 +437,21 @@ function calcTotal() {
 			itemSubt = itemSubt + amount_to_cents(vars.data.variations.prices[grpId][vars.data.variations.applied[grpId]], vars.data.currency);
 		}
 	}
+
+	itemSubt = itemSubt * vars.data.quantity;
+
 	if (vars.data.coupon) {
 		var discountAmount = 0;
 		if (vars.data.coupon.discount_type === 'perc') {
 			discountAmount = PHP_round(itemSubt * (vars.data.coupon.discount / 100), 0);
 		} else {
-			if (is_zero_cents(vars.data.currency)) {
+			if (vars.data.coupon.per_order === 1) {
 				discountAmount = vars.data.coupon.discount;
 			} else {
-				discountAmount = vars.data.coupon.discount * 100;
+				discountAmount = vars.data.coupon.discount * vars.data.quantity;
+			}
+			if (!is_zero_cents(vars.data.currency)) {
+				discountAmount = discountAmount * 100;
 			}
 		}
 		vars.data.coupon.amount_before_discount = itemSubt;
@@ -457,7 +469,7 @@ function calcTotal() {
 		itemSubt = itemSubt + tax;
 	}
 
-	tAmount = itemSubt * vars.data.quantity;
+	tAmount = itemSubt;
 
 	if (vars.data.shipping) {
 		tAmount = tAmount + vars.data.shipping;
@@ -1165,26 +1177,50 @@ var ajaxRequest = function (URL, reqStr, doneFunc, failFunc) {
 	parent.XMLHttpReq.send(reqStr);
 };
 
+function popStateListener() {
+	if (typeof parent.WPASPClosePaymentPopup === "function") {
+		window.removeEventListener('popstate', popStateListener);
+		window.history.replaceState(null, '', null);
+		this.closeBtn.focus();
+		parent.WPASPClosePaymentPopup();
+	}
+	else {
+		window.history.go(-1);
+	}
+}
+
 function popstateAttachEvent() {
 	if (typeof history.pushState === "function" && typeof parent.WPASPClosePaymentPopup === "function") {
-		window.onpopstateEventDisable = false;
-		history.pushState('forward', null, '#paymentpopup');
-		window.onpopstate = function () {
-			if (!window.onpopstateEventDisable) {
-				if (typeof parent.WPASPClosePaymentPopup === "function") {
-					window.onpopstateEventDisable = true;
-					this.closeBtn.focus();
-					parent.WPASPClosePaymentPopup();
-				}
-			}
-			else {
-				window.history.go(-1);
-			}
-		}
+		window.addEventListener('popstate', popStateListener);
+		window.history.pushState({ aspPopup: 1 }, '', null);
 	}
 }
 
 function popupDisplayed() {
-	window.onpopstateEventDisable = false;
-	history.pushState('forward', null, '#paymentpopup');
+	checkAge();
+	popstateAttachEvent();
+}
+
+function checkAge() {
+	console.log('check age');
+	if (typeof checkAgeInterval === "undefined") {
+		checkAgeInterval = setInterval(checkAge, 60000);
+	}
+	if (vars.data.initTime + 3600 < Math.floor(initTime / 1000) || initTime + 3600000 < Date.now()) {
+		smokeScreen(true);
+		window.location.href = replaceUrlParam(window.location.href, 'refresh', initTime);
+		throw new Error('Page expired');
+	}
+}
+
+function replaceUrlParam(url, paramName, paramValue) {
+	if (paramValue == null) {
+		paramValue = '';
+	}
+	var pattern = new RegExp('\\b(' + paramName + '=).*?(&|#|$)');
+	if (url.search(pattern) >= 0) {
+		return url.replace(pattern, '$1' + paramValue + '$2');
+	}
+	url = url.replace(/[?#]$/, '');
+	return url + (url.indexOf('?') > 0 ? '&' : '?') + paramName + '=' + paramValue;
 }

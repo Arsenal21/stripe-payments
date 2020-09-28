@@ -577,6 +577,7 @@ class ASP_Utils {
 			'COP' => array( __( 'Colombian Peso (COP)', 'stripe-payments' ), 'COL$' ),
 			'CZK' => array( __( 'Czech Koruna (CZK)', 'stripe-payments' ), 'Kč' ),
 			'DKK' => array( __( 'Danish Krone (DKK)', 'stripe-payments' ), 'kr' ),
+			'EGP' => array( __( 'Egyptian Pound (EGP)', 'stripe-payments' ), 'E£' ),
 			'HKD' => array( __( 'Hong Kong Dollar (HKD)', 'stripe-payments' ), 'HK$' ),
 			'HUF' => array( __( 'Hungarian Forint (HUF)', 'stripe-payments' ), 'Ft' ),
 			'INR' => array( __( 'Indian Rupee (INR)', 'stripe-payments' ), '₹' ),
@@ -796,6 +797,7 @@ class ASP_Utils {
 		if ( ! class_exists( '\Stripe\Stripe' ) ) {
 			require_once WP_ASP_PLUGIN_PATH . 'includes/stripe/init.php';
 			\Stripe\Stripe::setAppInfo( 'Stripe Payments', WP_ASP_PLUGIN_VERSION, 'https://wordpress.org/plugins/stripe-payments/', 'pp_partner_Fvas9OJ0jQ2oNQ' );
+			\Stripe\Stripe::setApiVersion( ASPMain::$stripe_api_ver );
 		} else {
 			$declared = new \ReflectionClass( '\Stripe\Stripe' );
 			$path     = $declared->getFileName();
@@ -855,4 +857,34 @@ class ASP_Utils {
 		return md5( $ua . $str );
 	}
 
+	public static function clear_external_caches() {
+		//WP Rocket
+		if ( function_exists( 'rocket_clean_domain' ) ) {
+			rocket_clean_domain();
+		}
+
+		// wp-super-cache
+		if ( function_exists( 'wp_cache_clear_cache' ) ) {
+			wp_cache_clear_cache();
+		}
+
+		// WPEngine
+		if ( class_exists( 'WpeCommon' ) ) {
+			WpeCommon::purge_memcached();
+			WpeCommon::clear_maxcdn_cache();
+			WpeCommon::purge_varnish_cache();
+		}
+
+		// W3 Total Cache
+		if ( function_exists( 'w3tc_pgcache_flush' ) ) {
+			w3tc_pgcache_flush();
+		}
+
+		// SG Optimizer
+		if ( function_exists( 'sg_cachepress_purge_cache' ) ) {
+			sg_cachepress_purge_cache();
+		}
+
+		do_action( 'asp_clear_external_caches' );
+	}
 }

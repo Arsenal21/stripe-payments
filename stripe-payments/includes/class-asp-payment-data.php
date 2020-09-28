@@ -3,15 +3,15 @@
 class ASP_Payment_Data {
 	protected $obj_id;
 	protected $obj;
-	protected $trans_id             = false;
-	protected $amount               = false;
-	protected $currency             = false;
-	protected $charge_created       = false;
-	protected $charge_data          = false;
-	protected $last_error           = '';
-	protected $billing_details_obj  = false;
-	protected $shipping_details_obj = false;
-	protected $customer_obj         = false;
+	protected $trans_id       = false;
+	protected $amount         = false;
+	protected $currency       = false;
+	protected $charge_created = false;
+	protected $charge_data    = false;
+	protected $last_error     = '';
+	protected $billing_details_obj;
+	protected $shipping_details_obj;
+	protected $customer_obj = false;
 	protected $last_error_obj;
 
 	public $is_zero_value = false;
@@ -72,7 +72,7 @@ class ASP_Payment_Data {
 	}
 
 	public function get_billing_details() {
-		if ( false !== $this->billing_details_obj ) {
+		if ( ! empty( $this->billing_details_obj ) ) {
 			return $this->billing_details_obj;
 		}
 		$billing_addr = new stdClass();
@@ -92,7 +92,7 @@ class ASP_Payment_Data {
 	}
 
 	public function get_shipping_details() {
-		if ( false !== $this->shipping_details_obj ) {
+		if ( ! empty( $this->shipping_details_obj ) ) {
 			return $this->shipping_details_obj;
 		}
 		$shipping_addr = new stdClass();

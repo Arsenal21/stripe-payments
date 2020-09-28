@@ -181,11 +181,11 @@ class ASP_Product_Item {
 	public function get_price( $in_cents = false, $price_with_discount = false ) {
 		if ( is_null( $this->price ) ) {
 			$this->price = get_post_meta( $this->post_id, 'asp_product_price', true );
-			$this->price = empty( $this->price ) ? 0 : $this->price;
+			$this->price = empty( $this->price ) ? 0 : round( $this->price * 100 ) / 100;
 		}
 		if ( $price_with_discount && $this->coupon ) {
 			$this->get_discount_amount( $this->price, $in_cents );
-			$this->price_with_discount = $this->price - $this->coupon['discountAmount'];
+			$this->price_with_discount = $this->price * $this->get_quantity() - $this->coupon['discountAmount'];
 		}
 		if ( $in_cents ) {
 			if ( $price_with_discount && $this->coupon ) {
@@ -232,6 +232,9 @@ class ASP_Product_Item {
 				$discount_amount = round( $amount * ( $this->coupon['discount'] / 100 ), $perc );
 			} else {
 				$discount_amount = $this->coupon['discount'];
+				if ( ! $this->coupon['per_order'] ) {
+					$discount_amount = $discount_amount * $this->get_quantity();
+				}
 				if ( $in_cents && ! AcceptStripePayments::is_zero_cents( $this->get_currency() ) ) {
 					$discount_amount = $discount_amount * 100;
 				}
@@ -252,6 +255,9 @@ class ASP_Product_Item {
 				$discount_amount = round( $total * ( $this->coupon['discount'] / 100 ), $perc );
 			} else {
 				$discount_amount = $this->coupon['discount'];
+				if ( ! $this->coupon['per_order'] ) {
+					$discount_amount = $discount_amount * $this->get_quantity();
+				}
 				if ( $in_cents && ! AcceptStripePayments::is_zero_cents( $this->get_currency() ) ) {
 					$discount_amount = $discount_amount * 100;
 				}
@@ -271,13 +277,13 @@ class ASP_Product_Item {
 
 		$total += $items_total;
 
+		$total = $total * $this->get_quantity();
+
 		$total = $this->apply_discount_to_amount( $total, $in_cents );
 
 		if ( $this->get_tax() ) {
 			$total = $total + $this->get_tax_amount( $in_cents, true );
 		}
-
-		$total = $total * $this->get_quantity();
 
 		$shipping = $this->get_shipping( $in_cents );
 
@@ -442,11 +448,14 @@ class ASP_Product_Item {
 			return false;
 		}
 
+		$per_order = get_post_meta( $coupon->ID, 'asp_coupon_per_order', true );
+
 		$this->coupon = array(
 			'code'          => $coupon_code,
 			'id'            => $coupon->ID,
 			'discount'      => get_post_meta( $coupon->ID, 'asp_coupon_discount', true ),
 			'discount_type' => get_post_meta( $coupon->ID, 'asp_coupon_discount_type', true ),
+			'per_order'     => empty( $per_order ) ? 0 : 1,
 		);
 		return true;
 	}

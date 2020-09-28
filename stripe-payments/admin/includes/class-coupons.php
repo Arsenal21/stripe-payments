@@ -207,9 +207,9 @@ class AcceptStripePayments_CouponsAdmin {
 		if ( $msg !== false ) {
 			delete_transient( 'asp_coupons_admin_notice' );
 			?>
-		<div class="notice notice-success">
-			<p><?php echo $msg; ?></p>
-		</div>
+<div class="notice notice-success">
+	<p><?php echo $msg; ?></p>
+</div>
 			<?php
 		}
 
@@ -218,9 +218,9 @@ class AcceptStripePayments_CouponsAdmin {
 		if ( $msg !== false ) {
 			delete_transient( 'asp_coupons_admin_error' );
 			?>
-		<div class="notice notice-error">
-			<p><?php echo $msg; ?></p>
-		</div>
+<div class="notice notice-error">
+	<p><?php echo $msg; ?></p>
+</div>
 			<?php
 		}
 
@@ -236,39 +236,41 @@ class AcceptStripePayments_CouponsAdmin {
 		$coupons_tbl = new ASP_Coupons_Table();
 		$coupons_tbl->prepare_items();
 		?>
-	<style>
-		th#id {
-		width: 10%;
-		}
-	</style>
-	<div class="wrap">
-		<h2><?php _e( 'Coupons', 'stripe-payments' ); ?></h2>
-				<div id="poststuff"><div id="post-body">
+<style>
+th#id {
+	width: 10%;
+}
+</style>
+<div class="wrap">
+	<h2><?php _e( 'Coupons', 'stripe-payments' ); ?></h2>
+	<div id="poststuff">
+		<div id="post-body">
 			<div class="postbox">
-			<h3 class="hndle"><label for="title"><?php _e( 'Coupon Settings', 'stripe-payments' ); ?></label></h3>
-			<div class="inside">
-				<form method="post">
-				<input type="hidden" name="asp_coupons_opts[_save-settings]" value="1">
-				<table class="form-table">
-					<tr>
-					<th scope="row"><?php _e( 'Enable Coupons', 'stripe-payments' ); ?></th>
-					<td>
-						<input type="checkbox" name="asp_coupons_opts[coupons_enabled]"<?php echo $coupons_enabled ? ' checked' : ''; ?>>
-						<p class="description"><?php _e( 'Enables the discount coupon functionality.', 'stripe-payments' ); ?></p>
-					</td>
-					</tr>
-				</table>
-				<?php
-				wp_nonce_field( 'asp-coupons-settings' );
-				submit_button( __( 'Save Settings', 'stripe-payments' ) );
-				?>
-				</form>
+				<h3 class="hndle"><label for="title"><?php _e( 'Coupon Settings', 'stripe-payments' ); ?></label></h3>
+				<div class="inside">
+					<form method="post">
+						<input type="hidden" name="asp_coupons_opts[_save-settings]" value="1">
+						<table class="form-table">
+							<tr>
+								<th scope="row"><?php _e( 'Enable Coupons', 'stripe-payments' ); ?></th>
+								<td>
+									<input type="checkbox" name="asp_coupons_opts[coupons_enabled]" <?php echo $coupons_enabled ? ' checked' : ''; ?>>
+									<p class="description"><?php _e( 'Enables the discount coupon functionality.', 'stripe-payments' ); ?></p>
+								</td>
+							</tr>
+						</table>
+						<?php
+						wp_nonce_field( 'asp-coupons-settings' );
+						submit_button( __( 'Save Settings', 'stripe-payments' ) );
+						?>
+					</form>
+				</div>
 			</div>
-			</div>
-		</div></div>
-		<h2><?php _e( 'Coupons', 'stripe-payments' ); ?> <a class="page-title-action" href="?post_type=<?php echo esc_attr( ASPMain::$products_slug ); ?>&page=stripe-payments-coupons&action=asp_add_edit_coupon"><?php _e( 'Add a Coupon', 'stripe-payments' ); ?></a></h2>
-		<?php $coupons_tbl->display(); ?>
+		</div>
 	</div>
+	<h2><?php _e( 'Coupons', 'stripe-payments' ); ?> <a class="page-title-action" href="?post_type=<?php echo esc_attr( ASPMain::$products_slug ); ?>&page=stripe-payments-coupons&action=asp_add_edit_coupon"><?php _e( 'Add a Coupon', 'stripe-payments' ); ?></a></h2>
+		<?php $coupons_tbl->display(); ?>
+</div>
 		<?php
 	}
 
@@ -297,6 +299,7 @@ class AcceptStripePayments_CouponsAdmin {
 				'exp_date'                  => get_post_meta( $coupon_id, 'asp_coupon_exp_date', true ),
 				'only_for_allowed_products' => get_post_meta( $coupon_id, 'asp_coupon_only_for_allowed_products', true ),
 				'allowed_products'          => get_post_meta( $coupon_id, 'asp_coupon_allowed_products', true ),
+				'per_order'                 => get_post_meta( $coupon_id, 'asp_coupon_per_order', true ),
 			);
 		}
 		//generate array with all products
@@ -326,84 +329,93 @@ class AcceptStripePayments_CouponsAdmin {
 		}
 		wp_reset_postdata();
 		?>
-	<div class="wrap">
-		<h2><?php empty( $coupon_id ) ? _e( 'Add Coupon', 'stripe-payments' ) : _e( 'Edit Coupon', 'stripe-payments' ); ?></h2>
-		<form method="post">
+<div class="wrap">
+	<h2><?php empty( $coupon_id ) ? _e( 'Add Coupon', 'stripe-payments' ) : _e( 'Edit Coupon', 'stripe-payments' ); ?></h2>
+	<form method="post">
 		<table class="form-table">
 			<tr>
-			<th scope="row"><?php _e( 'Active', 'stripe-payments' ); ?></th>
-			<td>
-				<input type="checkbox" name="asp_coupon[active]"<?php echo ( ! $is_edit ) || ( $is_edit && $coupon['active'] ) ? 'checked' : ''; ?>>
-				<p class="description"><?php _e( 'Use this to enable/disable this coupon.', 'stripe-payments' ); ?></p>
-			</td>
+				<th scope="row"><?php _e( 'Active', 'stripe-payments' ); ?></th>
+				<td>
+					<input type="checkbox" name="asp_coupon[active]" <?php echo ( ! $is_edit ) || ( $is_edit && $coupon['active'] ) ? 'checked' : ''; ?>>
+					<p class="description"><?php _e( 'Use this to enable/disable this coupon.', 'stripe-payments' ); ?></p>
+				</td>
 			</tr>
 			<?php if ( $is_edit ) { ?>
-				<tr>
+			<tr>
 				<th scope="row"><?php _e( 'Coupon ID', 'stripe-payments' ); ?></th>
 				<td>
 					<input type="hidden" name="asp_coupon_id" value="<?php echo $coupon_id; ?>">
-				<?php echo $coupon_id; ?>
+					<?php echo $coupon_id; ?>
 					<p class="description"><?php _e( 'Coupon ID. This value cannot be changed.', 'stripe-payments' ); ?></p>
 				</td>
-				</tr>
+			</tr>
 			<?php } ?>
 			<tr>
-			<th scope="row"><?php _e( 'Coupon Code', 'stripe-payments' ); ?></th>
-			<td>
-				<input type="text" name="asp_coupon[code]" value="<?php echo $is_edit ? $coupon['code'] : ''; ?>">
-				<p class="description"><?php _e( 'Coupon code that you can share with your customers. Example: GET10OFF', 'stripe-payments' ); ?></p>
-			</td>
+				<th scope="row"><?php _e( 'Coupon Code', 'stripe-payments' ); ?></th>
+				<td>
+					<input type="text" name="asp_coupon[code]" value="<?php echo $is_edit ? $coupon['code'] : ''; ?>">
+					<p class="description"><?php _e( 'Coupon code that you can share with your customers. Example: GET10OFF', 'stripe-payments' ); ?></p>
+				</td>
 			</tr>
 			<tr>
-			<th scope="row"><?php _e( 'Discount', 'stripe-payments' ); ?></th>
-			<td>
-				<input style="vertical-align: middle;" type="text" name="asp_coupon[discount]" value="<?php echo $is_edit ? $coupon['discount'] : ''; ?>">
-				<select name="asp_coupon[discount_type]">
-				<option value="perc"<?php echo $is_edit && $coupon['discount_type'] === 'perc' ? ' selected' : ''; ?>><?php _e( 'Percent (%)', 'stripe-payments' ); ?></option>
-				<option value="fixed"<?php echo $is_edit && $coupon['discount_type'] === 'fixed' ? ' selected' : ''; ?>><?php _e( 'Fixed amount', 'stripe-payments' ); ?></option>
-				</select>
-				<p class="description"><?php _e( 'Select discount amount and type. Enter a numeric value only. Example: 25', 'stripe-payments' ); ?></p>
-			</td>
+				<th scope="row"><?php _e( 'Discount', 'stripe-payments' ); ?></th>
+				<td>
+					<input style="vertical-align: middle;" type="text" name="asp_coupon[discount]" value="<?php echo $is_edit ? $coupon['discount'] : ''; ?>">
+					<select name="asp_coupon[discount_type]">
+						<option value="perc" <?php echo $is_edit && $coupon['discount_type'] === 'perc' ? ' selected' : ''; ?>><?php _e( 'Percent (%)', 'stripe-payments' ); ?></option>
+						<option value="fixed" <?php echo $is_edit && $coupon['discount_type'] === 'fixed' ? ' selected' : ''; ?>><?php _e( 'Fixed amount', 'stripe-payments' ); ?></option>
+					</select>
+					<p class="description"><?php _e( 'Select discount amount and type. Enter a numeric value only. Example: 25', 'stripe-payments' ); ?></p>
+					<div id="asp-coupon-per-order-cont" <?php echo $is_edit && $coupon['discount_type'] === 'fixed' ? '' : ' style="display:none;"'; ?>>
+						<br>
+						<label><input type="checkbox" name="asp_coupon[per_order]" value="1"<?php echo $is_edit && ! empty( $coupon['per_order'] ) ? ' checked' : ''; ?>> <?php _e( 'Apply Per-Order', 'stripe-payments' ); ?></label>
+						<p class="description">
+							<?php _e( 'If enabled, discount is applied on per-order basis rather than per-item.', 'stripe-payments' ); ?>
+							<br />
+							<em><?php _e( 'This option is only available for "fixed amount" type coupons.', 'stripe-payments' ); ?></em>
+						</p>
+					</div>
+				</td>
 			</tr>
 			<tr>
-			<th scope="row"><?php _e( 'Redemption Limit', 'stripe-payments' ); ?></th>
-			<td>
-				<input type="number" name="asp_coupon[red_limit]"value="<?php echo $is_edit ? $coupon['red_limit'] : 0; ?>">
-				<p class="description"><?php _e( 'Set max number of coupons available for redemption. Put 0 to make it unlimited.', 'stripe-payments' ); ?></p>
-			</td>
+				<th scope="row"><?php _e( 'Redemption Limit', 'stripe-payments' ); ?></th>
+				<td>
+					<input type="number" name="asp_coupon[red_limit]" value="<?php echo $is_edit ? $coupon['red_limit'] : 0; ?>">
+					<p class="description"><?php _e( 'Set max number of coupons available for redemption. Put 0 to make it unlimited.', 'stripe-payments' ); ?></p>
+				</td>
 			</tr>
 			<tr>
-			<th scope="row"><?php _e( 'Redemption Count', 'stripe-payments' ); ?></th>
-			<td>
-				<input type="number" name="asp_coupon[red_count]"value="<?php echo $is_edit ? $coupon['red_count'] : 0; ?>">
-				<p class="description"><?php _e( 'Number of already redeemed coupons.', 'stripe-payments' ); ?></p>
-			</td>
+				<th scope="row"><?php _e( 'Redemption Count', 'stripe-payments' ); ?></th>
+				<td>
+					<input type="number" name="asp_coupon[red_count]" value="<?php echo $is_edit ? $coupon['red_count'] : 0; ?>">
+					<p class="description"><?php _e( 'Number of already redeemed coupons.', 'stripe-payments' ); ?></p>
+				</td>
 			</tr>
 			<tr>
-			<th scope="row"><?php _e( 'Start Date', 'stripe-payments' ); ?></th>
-			<td>
-				<input class="datepicker-input" type="text" name="asp_coupon[start_date]"value="<?php echo $is_edit ? $coupon['start_date'] : date( 'Y-m-d' ); ?>">
-				<p class="description"><?php _e( 'Start date when this coupon can be used.', 'stripe-payments' ); ?></p>
-			</td>
+				<th scope="row"><?php _e( 'Start Date', 'stripe-payments' ); ?></th>
+				<td>
+					<input class="datepicker-input" type="text" name="asp_coupon[start_date]" value="<?php echo $is_edit ? $coupon['start_date'] : date( 'Y-m-d' ); ?>">
+					<p class="description"><?php _e( 'Start date when this coupon can be used.', 'stripe-payments' ); ?></p>
+				</td>
 			</tr>
 			<tr>
-			<th scope="row"><?php _e( 'Expiry Date', 'stripe-payments' ); ?></th>
-			<td>
-				<input class="datepicker-input" type="text" name="asp_coupon[exp_date]"value="<?php echo $is_edit ? $coupon['exp_date'] : 0; ?>">
-				<p class="description"><?php _e( 'Date when this coupon will expire. Put 0 to disable expiry check.', 'stripe-payments' ); ?></p>
-			</td>
+				<th scope="row"><?php _e( 'Expiry Date', 'stripe-payments' ); ?></th>
+				<td>
+					<input class="datepicker-input" type="text" name="asp_coupon[exp_date]" value="<?php echo $is_edit ? $coupon['exp_date'] : 0; ?>">
+					<p class="description"><?php _e( 'Date when this coupon will expire. Put 0 to disable expiry check.', 'stripe-payments' ); ?></p>
+				</td>
 			</tr>
 			<tr>
-			<th scope="row"><?php _e( 'Coupon Availabe For:', 'stripe-payments' ); ?></th>
-			<td>
-				<label><input type="radio" name="asp_coupon[only_for_allowed_products]" value="0"<?php echo ! $is_edit || ( $is_edit && ! $coupon['only_for_allowed_products'] ) ? ' checked' : ''; ?>> <?php _e( 'All products', 'stripe-payments' ); ?></label>
-				<br>
-				<label><input type="radio" name="asp_coupon[only_for_allowed_products]" value="1"<?php echo $is_edit && $coupon['only_for_allowed_products'] ? ' checked' : ''; ?>> <?php _e( 'Specific Products Only', 'stripe-payments' ); ?></label>
-				<p class="asp-coupons-available-products"<?php echo ( $is_edit && ! $coupon['only_for_allowed_products'] ) || ( ! $is_edit ) ? ' style="display: none;"' : ''; ?>>
-				<?php echo $prod_inputs; ?>
-				</p>
-				<p class="description"><?php _e( 'Choose availability of the coupon. You can specify which products coupon is available when "Specific Products Only" is selected.', 'stripe-payments' ); ?></p>
-			</td>
+				<th scope="row"><?php _e( 'Coupon Availabe For:', 'stripe-payments' ); ?></th>
+				<td>
+					<label><input type="radio" name="asp_coupon[only_for_allowed_products]" value="0" <?php echo ! $is_edit || ( $is_edit && ! $coupon['only_for_allowed_products'] ) ? ' checked' : ''; ?>> <?php _e( 'All products', 'stripe-payments' ); ?></label>
+					<br>
+					<label><input type="radio" name="asp_coupon[only_for_allowed_products]" value="1" <?php echo $is_edit && $coupon['only_for_allowed_products'] ? ' checked' : ''; ?>> <?php _e( 'Specific Products Only', 'stripe-payments' ); ?></label>
+					<p class="asp-coupons-available-products" <?php echo ( $is_edit && ! $coupon['only_for_allowed_products'] ) || ( ! $is_edit ) ? ' style="display: none;"' : ''; ?>>
+						<?php echo $prod_inputs; ?>
+					</p>
+					<p class="description"><?php _e( 'Choose availability of the coupon. You can specify which products coupon is available when "Specific Products Only" is selected.', 'stripe-payments' ); ?></p>
+				</td>
 			</tr>
 			<?php
 			do_action( 'asp_admin_add_edit_coupon', $coupon_id );
@@ -413,22 +425,29 @@ class AcceptStripePayments_CouponsAdmin {
 		wp_nonce_field( 'asp-add-edit-coupon' );
 		submit_button( $is_edit ? __( 'Update Coupon', 'stripe-payments' ) : __( 'Create Coupon', 'stripe-payments' ) );
 		?>
-		</form>
-	</div>
-	<script>
-		jQuery(document).ready(function ($) {
-		$('.datepicker-input').datepicker({
-			dateFormat: 'yy-mm-dd'
-		});
-		$('input[name="asp_coupon[only_for_allowed_products]"]').change(function () {
-			if ($(this).val() === "1") {
+	</form>
+</div>
+<script>
+jQuery(document).ready(function($) {
+	$('.datepicker-input').datepicker({
+		dateFormat: 'yy-mm-dd'
+	});
+	$('input[name="asp_coupon[only_for_allowed_products]"]').change(function() {
+		if ($(this).val() === "1") {
 			$('.asp-coupons-available-products').show();
-			} else {
+		} else {
 			$('.asp-coupons-available-products').hide();
-			}
-		});
-		});
-	</script>
+		}
+	});
+	$('select[name="asp_coupon[discount_type]"]').change(function() {
+		if (this.value === 'fixed') {
+			$('#asp-coupon-per-order-cont').slideDown('fast');
+		} else {
+			$('#asp-coupon-per-order-cont').slideUp('fast');
+		}
+	});
+});
+</script>
 		<?php
 	}
 
@@ -469,6 +488,8 @@ class AcceptStripePayments_CouponsAdmin {
 
 		$coupon['active'] = isset( $coupon['active'] ) ? 1 : 0;
 
+		$coupon['per_order'] = isset( $coupon['per_order'] ) ? 1 : 0;
+
 		if ( empty( $coupon['code'] ) ) {
 			$err_msg[] = __( 'Please enter coupon code.', 'stripe-payments' );
 		}
@@ -480,9 +501,9 @@ class AcceptStripePayments_CouponsAdmin {
 		if ( ! empty( $err_msg ) ) {
 			foreach ( $err_msg as $msg ) {
 				?>
-		<div class="notice notice-error">
-			<p><?php echo $msg; ?></p>
-		</div>
+<div class="notice notice-error">
+	<p><?php echo $msg; ?></p>
+</div>
 				<?php
 			}
 			return false;
