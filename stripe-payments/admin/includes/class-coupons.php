@@ -73,7 +73,7 @@ class AcceptStripePayments_CouponsAdmin {
 	}
 
 	static function is_coupon_allowed_for_product( $coupon_id, $prod_id ) {
-		//check if coupon is only availabe for specific products
+		//check if coupon is only available for specific products
 		$only_for_allowed_products = get_post_meta( $coupon_id, 'asp_coupon_only_for_allowed_products', true );
 		if ( $only_for_allowed_products ) {
 			$allowed_products = get_post_meta( $coupon_id, 'asp_coupon_allowed_products', true );
@@ -406,7 +406,7 @@ th#id {
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><?php _e( 'Coupon Availabe For:', 'stripe-payments' ); ?></th>
+				<th scope="row"><?php _e( 'Coupon Available For:', 'stripe-payments' ); ?></th>
 				<td>
 					<label><input type="radio" name="asp_coupon[only_for_allowed_products]" value="0" <?php echo ! $is_edit || ( $is_edit && ! $coupon['only_for_allowed_products'] ) ? ' checked' : ''; ?>> <?php _e( 'All products', 'stripe-payments' ); ?></label>
 					<br>

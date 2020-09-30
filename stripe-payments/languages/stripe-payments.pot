@@ -1252,7 +1252,7 @@ msgid "Date when this coupon will expire. Put 0 to disable expiry check."
 msgstr ""
 
 #: admin/includes/class-coupons.php:409
-msgid "Coupon Availabe For:"
+msgid "Coupon Available For:"
 msgstr ""
 
 #: admin/includes/class-coupons.php:411
