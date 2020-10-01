@@ -675,7 +675,6 @@ function canProceed() {
 	if (vars.data.amount_variable && vars.data.hide_amount_input !== '1') {
 		amount = validate_custom_amount();
 		if (amount === false) {
-			event.preventDefault();
 			return false;
 		}
 		vars.data.item_price = amount;
@@ -683,7 +682,6 @@ function canProceed() {
 	if (vars.data.custom_quantity) {
 		quantity = validate_custom_quantity();
 		if (quantity === false) {
-			event.preventDefault();
 			return false;
 		}
 		vars.data.quantity = quantity;
@@ -692,7 +690,6 @@ function canProceed() {
 	if (vars.data.custom_field) {
 		var custom_field_valid = validate_custom_field();
 		if (custom_field_valid === false) {
-			event.preventDefault();
 			return false;
 		}
 	}
