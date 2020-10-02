@@ -159,8 +159,9 @@ None.
 - Added "Apply Per-Order" option for fixed amount coupons.
 - `2020-08-27` Stripe API version compatibility.
 - Improved compatibility with caching plugins (W3 Total Cache, SG Optimizer, WP Rocket etc).
-- Fixed rare payment popup closing issue in Safari browser.
 - Payment popup refreshes itself if its left inactive for too long. Should resolve issues related to "Invalid security token".
+- Fixed rare payment popup closing issue in Safari browser.
+- Success payment animation is now properly displayed in Safari browser.
 - Added Egyptian Pound (EGP) currency.
 
 = 2.0.35 =

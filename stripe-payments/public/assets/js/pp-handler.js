@@ -697,10 +697,14 @@ function canProceed() {
 	if (piInput.value !== '') {
 		jQuery('#btn-spinner').hide();
 		jQuery('#checkmark-cont').css('display', 'flex');
+		var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 		setTimeout(function () {
 			jQuery('#Aligner-item').fadeOut(function () {
 				smokeScreen(false);
 				jQuery('#global-spinner').show();
+				if (isSafari) {
+					form.submit();
+				}
 			});
 		}, 1500);
 		if (!inIframe() || window.doSelfSubmit) {
@@ -710,7 +714,9 @@ function canProceed() {
 					form.elements[i].setAttribute('name', 'asp_' + form.elements[i].name);
 				}
 			}
-			form.submit();
+			if (!isSafari) {
+				form.submit();
+			}
 		}
 		return false;
 	}
