@@ -1206,7 +1206,6 @@ function popupDisplayed() {
 }
 
 function checkAge() {
-	console.log('check age');
 	if (typeof checkAgeInterval === "undefined") {
 		checkAgeInterval = setInterval(checkAge, 60000);
 	}
