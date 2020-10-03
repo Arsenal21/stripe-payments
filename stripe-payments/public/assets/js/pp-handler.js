@@ -351,6 +351,7 @@ jQuery('select#currency').on('change', function () {
 });
 
 jQuery('select#currency').change();
+updateAllAmounts();
 
 if (vars.data.initShowPopup) {
 	showPopup();
