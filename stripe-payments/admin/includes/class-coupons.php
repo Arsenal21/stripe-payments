@@ -2,7 +2,7 @@
 
 class AcceptStripePayments_CouponsAdmin {
 
-	var $POST_SLUG = 'asp_coupons';
+	public static $post_slug = 'asp_coupons';
 
 	function __construct() {
 		add_action( 'init', array( $this, 'init_handler' ) );
@@ -27,7 +27,7 @@ class AcceptStripePayments_CouponsAdmin {
 				'meta_value'     => $coupon_code,
 				'posts_per_page' => 1,
 				'offset'         => 0,
-				'post_type'      => 'asp_coupons',
+				'post_type'      => self::$post_slug,
 			)
 		);
 		wp_reset_postdata();
@@ -162,7 +162,7 @@ class AcceptStripePayments_CouponsAdmin {
 			'publicly_queryable'  => false,
 			'capability_type'     => 'post',
 		);
-		register_post_type( $this->POST_SLUG, $args );
+		register_post_type( self::$post_slug, $args );
 
 		if ( isset( $_POST['asp_coupon'] ) ) {
 			$this->save_coupon();
@@ -464,7 +464,7 @@ jQuery(document).ready(function($) {
 			set_transient( 'asp_coupons_admin_error', sprintf( __( 'Can\'t delete coupon: coupon #%d not found.', 'stripe-payments' ), $coupon_id ), 60 * 60 );
 			return false;
 		}
-		if ( $the_post->post_type !== $this->POST_SLUG ) {
+		if ( $the_post->post_type !== self::$post_slug ) {
 			// translators: %d is coupon ID
 			set_transient( 'asp_coupons_admin_error', sprintf( __( 'Can\'t delete coupon: post #%d is not a coupon.', 'stripe-payments' ), $coupon_id ), 60 * 60 );
 			return false;
@@ -513,7 +513,7 @@ jQuery(document).ready(function($) {
 			$post['post_title']  = '';
 			$post['post_status'] = 'publish';
 			$post['content']     = '';
-			$post['post_type']   = $this->POST_SLUG;
+			$post['post_type']   = self::$post_slug;
 			$coupon_id           = wp_insert_post( $post );
 		}
 
