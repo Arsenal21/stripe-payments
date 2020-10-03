@@ -3,15 +3,15 @@
 class ASP_Payment_Data {
 	protected $obj_id;
 	protected $obj;
-	protected $trans_id       = false;
-	protected $amount         = false;
-	protected $currency       = false;
-	protected $charge_created = false;
-	protected $charge_data    = false;
-	protected $last_error     = '';
-	protected $billing_details_obj;
-	protected $shipping_details_obj;
-	protected $customer_obj = false;
+	protected $trans_id             = false;
+	protected $amount               = false;
+	protected $currency             = false;
+	protected $charge_created       = false;
+	protected $charge_data          = false;
+	protected $last_error           = '';
+	protected $billing_details_obj  = false;
+	protected $shipping_details_obj = false;
+	protected $customer_obj         = false;
 	protected $last_error_obj;
 
 	public $is_zero_value = false;
@@ -120,7 +120,7 @@ class ASP_Payment_Data {
 		$this->get_billing_details();
 		$billing_address  = '';
 		$bd               = $this->billing_details_obj;
-		$billing_address .= $bd->name ? $bd->name . "\n" : '';
+		$billing_address .= ! empty( $bd->name ) ? $bd->name . "\n" : '';
 		$billing_address .= ! empty( $bd->line1 ) ? $bd->line1 . "\n" : '';
 		$billing_address .= ! empty( $bd->line2 ) ? $bd->line2 . "\n" : '';
 		$billing_address .= ! empty( $bd->postal_code ) ? $bd->postal_code . "\n" : '';
