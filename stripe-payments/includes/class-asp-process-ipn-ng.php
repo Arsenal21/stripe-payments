@@ -58,6 +58,11 @@ class ASP_Process_IPN_NG {
 		} else {
 			ASP_Debug_Logger::log( 'Payment has been processed successfully.' );
 		}
+
+		if ( is_ssl() ) {
+			$this->asp_redirect_url = ASP_Utils::url_to_https( $this->asp_redirect_url );
+		}
+
 		ASP_Debug_Logger::log( sprintf( 'Redirecting to results page "%s"', $this->asp_redirect_url ) . "\r\n" );
 		wp_redirect( $this->asp_redirect_url ); //phpcs:ignore
 		exit;
