@@ -8,6 +8,16 @@ var stripeHandlerNG = function (data) {
 		}
 	});
 
+	this.isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+
+	this.checkPPVisible = function () {
+		if (parent.iframe.find('#Aligner-item').is(':hidden')) {
+			parent.form.submit();
+			return true;
+		}
+		setTimeout(this.checkPPVisible, 100);
+	}
+
 	this.validateAmount = function () {
 		var amount = jQuery('input#stripeAmount_' + data.uniq_id).val();
 		data.amountOpts = { applySepOpts: 0 };
@@ -113,7 +123,11 @@ var stripeHandlerNG = function (data) {
 						});
 						console.log('Parent form submit');
 						parent.form_submitted = true;
-						parent.form.submit();
+						if (parent.isSafari) {
+							parent.checkPPVisible();
+						} else {
+							parent.form.submit();
+						}
 					}
 					return false;
 				});
