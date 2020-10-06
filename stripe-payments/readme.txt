@@ -155,6 +155,9 @@ None.
 
 == Changelog ==
 
+= WIP 2.0.37 =
+- Countries displayed in alphabetical order now.
+
 = 2.0.36 =
 - Added "Apply Per-Order" option for fixed amount coupons.
 - `2020-08-27` Stripe API version compatibility.

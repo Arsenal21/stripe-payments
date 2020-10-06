@@ -545,6 +545,8 @@ class ASP_Utils {
 
 	public static function get_countries_opts( $selected = false ) {
 		$countries = self::get_countries();
+		asort( $countries );
+
 		$countries = apply_filters( 'asp_ng_pp_countries_list', $countries );
 		$out       = '';
 		$tpl       = '<option value="%s"%s>%s</option>';
