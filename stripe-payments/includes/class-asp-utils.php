@@ -546,6 +546,9 @@ class ASP_Utils {
 	public static function get_countries_opts( $selected = false ) {
 		$countries = self::get_countries();
 		asort( $countries );
+		if ( isset( $countries[''] ) ) {
+			array_unshift( $countries, array_pop( $countries ) );
+		}
 
 		$countries = apply_filters( 'asp_ng_pp_countries_list', $countries );
 		$out       = '';
