@@ -838,12 +838,13 @@ class ASP_PP_Handler {
 	}
 
 	public function pp_payment_error() {
-		$pi_id   = filter_input( INPUT_POST, 'pi_id', FILTER_SANITIZE_STRING );
-		$err_msg = filter_input( INPUT_POST, 'err_msg', FILTER_SANITIZE_STRING );
+		$pi_id    = filter_input( INPUT_POST, 'pi_id', FILTER_SANITIZE_STRING );
+		$err_msg  = filter_input( INPUT_POST, 'err_msg', FILTER_SANITIZE_STRING );
+		$err_data = filter_input( INPUT_POST, 'err_data', FILTER_SANITIZE_STRING );
 
 		$out = array( 'success' => false );
 
-		if ( empty( $pi_id ) || empty( $err_msg ) ) {
+		if ( empty( $pi_id ) || empty( $err_msg || empty( $err_data ) ) ) {
 			wp_send_json( $out );
 		}
 
@@ -853,6 +854,16 @@ class ASP_PP_Handler {
 		}
 
 		$order->change_status( 'error', $err_msg );
+
+		if ( ! empty( $err_data ) ) {
+			$err_data = html_entity_decode( $err_data );
+			$body     = __( 'Following error occurred during payment processing:', 'stripe-payments' ) . "\r\n\r\n";
+			$body    .= $err_msg . "\r\n\r\n";
+			$body    .= __( 'Debug data:', 'stripe-payments' ) . "\r\n";
+			$body    .= $err_data;
+			ASP_Debug_Logger::log( __( 'Following error occurred during payment processing:', 'stripe-payments' ) . ' ' . $err_msg, false );
+			ASP_Utils::send_error_email( $body );
+		}
 
 		$out['success'] = true;
 		wp_send_json( $out );

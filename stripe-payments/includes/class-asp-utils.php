@@ -619,10 +619,10 @@ class ASP_Utils {
 		return $currencies;
 	}
 
-	public static function mail( $to, $subj, $body, $headers ) {
+	public static function mail( $to, $subj, $body, $headers, $do_not_schedule = false ) {
 		$opts            = get_option( 'AcceptStripePayments-settings' );
 		$schedule_result = false;
-		if ( isset( $opts['enable_email_schedule'] ) && $opts['enable_email_schedule'] ) {
+		if ( ! $do_not_schedule && isset( $opts['enable_email_schedule'] ) && $opts['enable_email_schedule'] ) {
 			$schedule_result = wp_schedule_single_event( time() - 10, 'asp_send_scheduled_email', array( $to, $subj, $body, $headers ) );
 		}
 		if ( ! $schedule_result ) {
@@ -630,6 +630,17 @@ class ASP_Utils {
 			wp_mail( $to, $subj, $body, $headers );
 		}
 		return $schedule_result;
+	}
+
+	public static function send_error_email( $body ) {
+		$opt     = get_option( 'AcceptStripePayments-settings' );
+		$to      = $opt['send_email_on_error_to'];
+		$from    = get_option( 'admin_email' );
+		$headers = 'From: ' . $from . "\r\n";
+		$subj    = __( 'Stripe Payments Error', 'stripe-payments' );
+
+		$schedule_result = ASP_Utils::mail( $to, $subj, $body, $headers, true );
+		ASP_Debug_Logger::log( 'Error email sent to ' . $to . ', from email address used: ' . $from );
 	}
 
 	public static function get_small_product_thumb( $prod_id, $force_regen = false ) {

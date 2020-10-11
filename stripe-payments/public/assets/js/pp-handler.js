@@ -1032,7 +1032,7 @@ function handleCardPaymentResult(result) {
 		console.log('Sending error info...');
 		if (vars.data.pi_id) {
 			new ajaxRequest(vars.ajaxURL,
-				'action=asp_pp_payment_error&pi_id=' + vars.data.pi_id + '&err_msg=' + result.error.message,
+				'action=asp_pp_payment_error&pi_id=' + vars.data.pi_id + '&err_msg=' + result.error.message + '&err_data=' + JSON.stringify(result),
 				null,
 				null);
 		}
