@@ -157,6 +157,7 @@ None.
 
 = WIP 2.0.37 =
 - Countries displayed in alphabetical order now.
+- Front-end card errors are now also sent via error email.
 
 = 2.0.36 =
 - Added "Apply Per-Order" option for fixed amount coupons.
