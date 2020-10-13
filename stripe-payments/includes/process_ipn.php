@@ -52,14 +52,8 @@ class AcceptStripePayments_Process_IPN {
 				$to      = $opt['send_email_on_error_to'];
 				$from    = get_option( 'admin_email' );
 				$headers = 'From: ' . $from . "\r\n";
-
-				$subj    = __( 'Stripe Payments Error Details', 'stripe-payments' );
-
-                                $body   = "";
-                                $body   .= __( 'Note: It is normal for transaction errors like this to happen. For example: if a customer enters an incorrect card number or an expired card details, it will trigger an error.', 'stripe-payments' ) . "\r\n";
-                                $body   .= __( 'The customer will be requested to enter valid details for the transaction to proceed.', 'stripe-payments' ) . "\r\n";
-                                $body   .= __( 'This email contains some raw transaction data just for the site admin to be aware of the incident.', 'stripe-payments' ) . "\r\n";
-                                $body   .= '------' . "\r\n\r\n";
+				$subj    = __( 'Stripe Payments Error', 'stripe-payments' );
+				$body    = __( 'Following error occurred during payment processing:', 'stripe-payments' ) . "\r\n\r\n";
 				$body   .= $errMsg . "\r\n\r\n";
 				$body   .= $additional_msg . "\r\n";
 				$body   .= __( 'Debug data:', 'stripe-payments' ) . "\r\n";
@@ -67,7 +61,6 @@ class AcceptStripePayments_Process_IPN {
 					$value = is_array( $value ) ? json_encode( $value ) : $value;
 					$body .= $key . ': ' . $value . "\r\n";
 				}
-
 				wp_mail( $to, $subj, $body, $headers );
 			}
 		} else {
