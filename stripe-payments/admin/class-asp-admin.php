@@ -1122,8 +1122,7 @@ class AcceptStripePayments_Admin {
 			'AcceptStripePayments-experimental-settings',
 			array(
 				'field' => 'dont_use_stripe_php_sdk',
-				'desc'  => __( 'Enable this if you\'re experiencing conflicts with other plugins that use Stripe PHP SDK Library. Internal Stripe API wrapper would be used instead.', 'stripe-payments' ) . '<br>' .
-				__( 'Warning: this option is currently not supported by Subscriptions and some other addons.', 'stripe-payments' ),
+				'desc'  => __( 'Enable this if you\'re experiencing conflicts with other plugins that use Stripe PHP SDK Library. Internal Stripe API wrapper would be used instead.', 'stripe-payments' ),
 			)
 		);
 
@@ -1339,7 +1338,10 @@ class AcceptStripePayments_Admin {
 			case 'enable_email_schedule':
 			case 'frontend_prefetch_scripts':
 			case 'hide_state_field':
+				echo "<input type='checkbox' name='AcceptStripePayments-settings[{$field}]' value='1' " . ( $field_value ? 'checked=checked' : '' ) . " /><p class=\"description\">{$desc}</p>";
+				break;
 			case 'dont_use_stripe_php_sdk':
+				$desc = apply_filters( 'asp_int_dont_use_stripe_php_sdk_option_desc', $desc );
 				echo "<input type='checkbox' name='AcceptStripePayments-settings[{$field}]' value='1' " . ( $field_value ? 'checked=checked' : '' ) . " /><p class=\"description\">{$desc}</p>";
 				break;
 			case 'prefill_wp_user_details':
