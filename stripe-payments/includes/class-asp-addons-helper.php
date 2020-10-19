@@ -4,7 +4,7 @@ class ASP_Addons_Helper {
 
 	public $addon = null;
 	public $section;
-	public $ASPAdmin;
+	public $asp_admin;
 
 	protected $addons = array(
 		array( 'stripe-payments-country-autodetect', 'stripe-payments-country-autodetect/asp-country-autodetect-main.php', 'stripe-payments-country-autodetect', '' ),
@@ -18,6 +18,8 @@ class ASP_Addons_Helper {
 		$this->addon = $addon;
 
 		if ( is_admin() ) {
+			$this->asp_admin = AcceptStripePayments_Admin::get_instance();
+
 			foreach ( $this->addons as $addon ) {
 				if ( ! empty( $addon[3] ) ) {
 					$this->icons[ $addon[2] ] = $this->icons_path . $addon[3];
@@ -94,7 +96,7 @@ class ASP_Addons_Helper {
 	}
 
 	public function settings_link( $links, $file ) {
-		if ( $file === plugin_basename( $this->addon->file ) ) {
+		if ( plugin_basename( $this->addon->file ) === $file ) {
 			$settings_link = sprintf( '<a href="edit.php?post_type=' . ASPMain::$products_slug . '&page=stripe-payments-settings#%s">%s</a>', $this->addon->SETTINGS_TAB_NAME, __( 'Settings', 'stripe-payments' ) );
 			array_unshift( $links, $settings_link );
 		}
@@ -111,18 +113,17 @@ class ASP_Addons_Helper {
 
 	public function add_settings_section( $title, $descr_callback = null ) {
 		//$descr_callback added since 1.9.8
-		$this->ASPAdmin = AcceptStripePayments_Admin::get_instance();
-		add_settings_section( 'AcceptStripePayments-' . $this->addon->SETTINGS_TAB_NAME . '-section', $title, $descr_callback, $this->ASPAdmin->plugin_slug . '-' . $this->addon->SETTINGS_TAB_NAME );
+		add_settings_section( 'AcceptStripePayments-' . $this->addon->SETTINGS_TAB_NAME . '-section', $title, $descr_callback, $this->asp_admin->plugin_slug . '-' . $this->addon->SETTINGS_TAB_NAME );
 		$this->section = 'AcceptStripePayments-' . $this->addon->SETTINGS_TAB_NAME . '-section';
 	}
 
 	public function add_settings_field( $name, $title, $desc, $size = 10 ) {
-		$this->ASPAdmin = AcceptStripePayments_Admin::get_instance();
+		$this->asp_admin = AcceptStripePayments_Admin::get_instance();
 		add_settings_field(
 			$name,
 			$title,
-			array( $this->ASPAdmin, 'settings_field_callback' ),
-			$this->ASPAdmin->plugin_slug . '-' . $this->addon->SETTINGS_TAB_NAME,
+			array( $this->asp_admin, 'settings_field_callback' ),
+			$this->asp_admin->plugin_slug . '-' . $this->addon->SETTINGS_TAB_NAME,
 			$this->section,
 			array(
 				'field' => $name,
