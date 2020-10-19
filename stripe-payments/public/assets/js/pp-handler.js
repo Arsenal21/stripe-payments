@@ -118,7 +118,10 @@ if (vars.data.coupons_enabled) {
 					if (vars.data.coupon.discount_type === 'perc') {
 						couponInfo.innerHTML = couponInfo.innerHTML + vars.data.coupon.discount + '%';
 					} else {
-						couponInfo.innerHTML = couponInfo.innerHTML + formatMoney(vars.data.coupon.discount_amount);
+						couponInfo.innerHTML = couponInfo.innerHTML + formatMoney(amount_to_cents(vars.data.coupon.discount, vars.data.currency));
+					}
+					if (vars.data.is_trial) {
+						couponInfo.innerHTML = couponInfo.innerHTML + vars.str.strforRecurringPayments;
 					}
 					couponResCont.style.display = 'block';
 					couponInputCont.style.display = 'none';
@@ -395,7 +398,7 @@ function updateAllAmounts() {
 		jQuery('#order-quantity').html(vars.data.quantity);
 		jQuery('#order-tax').html(formatMoney(vars.data.taxAmount));
 		jQuery('#shipping').html(formatMoney(vars.data.shipping));
-		if (vars.data.coupon) {
+		if (vars.data.coupon && !vars.data.is_trial) {
 			if (jQuery('tr#order-coupon-line').length === 0) {
 				var couponOrderLine = '<tr id="order-coupon-line"><td>Coupon "' + vars.data.coupon.code + '"</td><td>- <span id="order-coupon"></span></td></tr>';
 				if (jQuery('tr.variation-line').last().length !== 0) {
@@ -441,7 +444,7 @@ function calcTotal() {
 
 	itemSubt = itemSubt * vars.data.quantity;
 
-	if (vars.data.coupon) {
+	if (vars.data.coupon && !vars.data.is_trial) {
 		var discountAmount = 0;
 		if (vars.data.coupon.discount_type === 'perc') {
 			discountAmount = PHP_round(itemSubt * (vars.data.coupon.discount / 100), 0);

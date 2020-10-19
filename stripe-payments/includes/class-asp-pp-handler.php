@@ -131,8 +131,11 @@ class ASP_PP_Handler {
 		$display_settings['pos'] = $curr_pos;
 
 		$a['amount_variable'] = false;
-		if ( $this->item->get_price() === 0 ) {
+		if ( $this->item->is_variable() ) {
 			$a['amount_variable'] = true;
+		}
+
+		if ( $this->item->get_price() === 0 ) {
 			//let's check to see if he have item_price passed via URL parameter
 			$passed_item_price = filter_input( INPUT_GET, 'price', FILTER_SANITIZE_STRING );
 			$passed_item_price = abs( floatval( $passed_item_price ) );
@@ -169,6 +172,7 @@ class ASP_PP_Handler {
 		if ( ( '' === $coupons_enabled ) || '2' === $coupons_enabled ) {
 			$coupons_enabled = $this->asp_main->get_setting( 'coupons_enabled' );
 		}
+
 		if ( $a['amount_variable'] ) {
 			$coupons_enabled = false;
 		}
@@ -447,6 +451,7 @@ class ASP_PP_Handler {
 		}
 
 		if ( isset( $data['is_trial'] ) && $data['is_trial'] ) {
+			$data['amount_variable'] = false;
 			if ( $this->item->get_price() === 0 ) {
 				$data['amount_variable'] = false;
 			}
@@ -497,6 +502,7 @@ class ASP_PP_Handler {
 				'strInvalidCFValidationRegex' => __( 'Invalid validation RegEx: ', 'stripe-payments' ),
 				'strGetForFree'               => __( 'Purchase for Free', 'stripe-payments' ),
 				'strCurrencyNotSupported'     => __( 'Currency not supported for this payment method.', 'stripe-payments' ),
+				'strforRecurringPayments'     => __( ' for upcoming recurring payments', 'stripe-payments' ),
 			),
 		);
 

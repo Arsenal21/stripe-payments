@@ -371,8 +371,10 @@ class ASP_Process_IPN_NG {
 		if ( isset( $coupon ) ) {
 			$data['coupon']      = $coupon;
 			$data['coupon_code'] = $coupon['code'];
+
+			$coupon_discount_str = apply_filters( 'asp_ng_coupon_discount_str', floatval( '-' . $item->get_coupon_discount_amount() ), $coupon );
 			// translators: %s is coupon code
-			$data['additional_items'][ sprintf( __( 'Coupon "%s"', 'stripe-payments' ), $coupon['code'] ) ] = floatval( '-' . $item->get_coupon_discount_amount() );
+			$data['additional_items'][ sprintf( __( 'Coupon "%s"', 'stripe-payments' ), $coupon['code'] ) ] = $coupon_discount_str;
 
 			$subtotal = $item->get_price( false, true ) + $item->get_items_total( false, true );
 			$subtotal = $subtotal < 0 ? 0 : $subtotal;
