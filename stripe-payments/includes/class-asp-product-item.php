@@ -321,7 +321,7 @@ class ASP_Product_Item {
 		$items_total = $this->get_items_total( false, $price_with_discount );
 		$total      += $items_total;
 
-		$this->tax_amount = AcceptStripePayments::get_tax_amount( $total, $this->get_tax(), $this->zero_cent ) * $this->get_quantity();
+		$this->tax_amount = AcceptStripePayments::get_tax_amount( $total, $this->get_tax() * $this->get_quantity(), $this->zero_cent );
 		if ( $in_cents ) {
 			return $this->in_cents( $this->tax_amount );
 		}
