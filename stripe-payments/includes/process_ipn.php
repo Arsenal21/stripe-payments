@@ -21,9 +21,17 @@ class AcceptStripePayments_Process_IPN {
 
 	function init() {
 		if ( isset( $_POST['asp_action'] ) ) {
-			if ( $_POST['asp_action'] == 'process_ipn' ) {
-				$this->sess = ASP_Session::get_instance();
-				$this->process_ipn();
+			if ( 'process_ipn' === $_POST['asp_action'] ) {
+				//check if Legacy API is enabled
+				$opt = get_option( 'AcceptStripePayments-settings' );
+				if ( isset( $opt['use_old_checkout_api1'] ) && $opt['use_old_checkout_api1'] ) {
+					$this->sess = ASP_Session::get_instance();
+					$this->process_ipn();
+				} else {
+					//Legacy API is disabled, but request was made to it
+					ASP_Debug_Logger::log( 'Legacy API backend accessed while it is disabled.', false );
+					wp_die( 'Access denied.' );
+				}
 			}
 		}
 	}
