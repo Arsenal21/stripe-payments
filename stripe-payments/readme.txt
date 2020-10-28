@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 4.7
 Tested up to: 5.5
 Requires PHP: 5.6
-Stable tag: 2.0.37t3
+Stable tag: 2.0.37t4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -156,8 +156,9 @@ None.
 == Changelog ==
 
 = WIP 2.0.37 =
-- Countries displayed in alphabetical order now.
 - Front-end card errors are now also sent via error email.
+- Countries displayed in alphabetical order now.
+- Proper tax amount rounding when quantity is >1.
 
 = 2.0.36 =
 - Added "Apply Per-Order" option for fixed amount coupons.
