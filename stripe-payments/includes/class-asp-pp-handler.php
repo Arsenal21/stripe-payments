@@ -753,6 +753,9 @@ class ASP_PP_Handler {
 			}
 
 			$pi_params = apply_filters( 'asp_ng_before_pi_create_update', $pi_params );
+
+			ASP_Debug_Logger::log( wp_json_encode( $_POST ) );
+
 			if ( $pi_id ) {
 				if ( ASP_Utils::use_internal_api() ) {
 					$api = ASP_Stripe_API::get_instance();
@@ -771,12 +774,10 @@ class ASP_PP_Handler {
 				}
 			}
 		} catch ( \Exception $e ) {
-			$out['shipping'] = wp_json_encode( $shipping );
-			$out['err']      = __( 'Error occurred:', 'stripe-payments' ) . ' ' . $e->getMessage();
+			$out['err'] = __( 'Error occurred:', 'stripe-payments' ) . ' ' . $e->getMessage();
 			wp_send_json( $out );
 		} catch ( \Throwable $e ) {
-			$out['shipping'] = wp_json_encode( $shipping );
-			$out['err']      = __( 'Error occurred:', 'stripe-payments' ) . ' ' . $e->getMessage();
+			$out['err'] = __( 'Error occurred:', 'stripe-payments' ) . ' ' . $e->getMessage();
 			wp_send_json( $out );
 		}
 

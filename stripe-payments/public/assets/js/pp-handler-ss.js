@@ -841,118 +841,176 @@ function handlePayment() {
 		return false;
 	}
 
-	//create token
+	if ('def' === vars.data.currentPM && !vars.data.source_id) {
+		//create token
 
-	console.log('Creating token');
-	opts = {
-		name: billingNameInput.value
-	};
-	if (vars.data.billing_address) {
-		opts.address_line1 = bAddr.value;
-		opts.address_city = bCity.value;
-		opts.address_state = bState === null ? '' : bState.value;
-		opts.address_country = bCountry.value || bCountry.options[bCountry.selectedIndex].value;
-		if (postal_code) {
-			opts.address_zip = postal_code;
+		console.log('Creating token');
+		opts = {
+			name: billingNameInput.value
+		};
+		if (vars.data.billing_address) {
+			opts.address_line1 = bAddr.value;
+			opts.address_city = bCity.value;
+			opts.address_state = bState === null ? '' : bState.value;
+			opts.address_country = bCountry.value || bCountry.options[bCountry.selectedIndex].value;
+			if (postal_code) {
+				opts.address_zip = postal_code;
+			}
 		}
+
+		stripe.createToken(card, opts).then(function (result) {
+			console.log(result);
+			if (result.error) {
+				return false;
+			}
+			vars.data.source_id = result.token.id;
+			handlePayment();
+		});
+		return;
 	}
 
-
-	stripe.createToken(card, opts).then(function (result) {
-		console.log(result);
-		if (result.error) {
-			return false;
+	if (!is_full_discount() && !vars.data.token_not_required && (vars.data.client_secret === '' || vars.data.amount !== clientSecAmount || vars.data.currency !== clientSecCurrency)) {
+		var reqStr = 'action=asp_pp_confirm_pi&amount=' + vars.data.amount + '&curr=' + vars.data.currency + '&product_id=' + vars.data.product_id;
+		reqStr = reqStr + '&quantity=' + vars.data.quantity;
+		if (vars.data.cust_id) {
+			reqStr = reqStr + '&cust_id=' + vars.data.cust_id;
 		}
-		vars.data.source_id = result.token.id;
-
-		if (!is_full_discount() && !vars.data.token_not_required && (vars.data.client_secret === '' || vars.data.amount !== clientSecAmount || vars.data.currency !== clientSecCurrency)) {
-			var reqStr = 'action=asp_pp_confirm_pi&amount=' + vars.data.amount + '&curr=' + vars.data.currency + '&product_id=' + vars.data.product_id;
-			reqStr = reqStr + '&quantity=' + vars.data.quantity;
-			if (vars.data.cust_id) {
-				reqStr = reqStr + '&cust_id=' + vars.data.cust_id;
-			}
-			reqStr = reqStr + '&source_id=' + vars.data.source_id;
-			reqStr = reqStr + '&billing_details=' + JSON.stringify(billingDetails);
-			if (shippingDetails) {
-				reqStr = reqStr + '&shipping_details=' + JSON.stringify(shippingDetails);
-			}
-			reqStr += '&token=' + vars.data.visitor_token;
-			vars.data.csRegenParams = reqStr;
-			doAddonAction('csBeforeRegenParams');
-			console.log('Regen CS');
-			new ajaxRequest(vars.ajaxURL, vars.data.csRegenParams,
-				function (res) {
-					try {
-						var resp = JSON.parse(res.responseText);
-						console.log(resp);
-						if (typeof resp.stock_items !== 'undefined') {
-							if (vars.data.stock_items !== resp.stock_items) {
-								vars.data.stock_items = resp.stock_items;
-								validate_custom_quantity();
-							}
+		reqStr = reqStr + '&source_id=' + vars.data.source_id;
+		reqStr = reqStr + '&billing_details=' + JSON.stringify(billingDetails);
+		if (shippingDetails) {
+			reqStr = reqStr + '&shipping_details=' + JSON.stringify(shippingDetails);
+		}
+		reqStr += '&pm=' + vars.data.currentPM;
+		reqStr += '&token=' + vars.data.visitor_token;
+		vars.data.csRegenParams = reqStr;
+		doAddonAction('csBeforeRegenParams');
+		console.log('Regen CS');
+		new ajaxRequest(vars.ajaxURL, vars.data.csRegenParams,
+			function (res) {
+				try {
+					var resp = JSON.parse(res.responseText);
+					console.log(resp);
+					if (typeof resp.stock_items !== 'undefined') {
+						if (vars.data.stock_items !== resp.stock_items) {
+							vars.data.stock_items = resp.stock_items;
+							validate_custom_quantity();
 						}
-						if (!resp.success) {
-							submitBtn.disabled = false;
-							errorCont.innerHTML = resp.err;
-							errorCont.style.display = 'block';
-							smokeScreen(false);
-							return false;
-						}
-						vars.data.pi_id = resp.pi_id;
-						vars.data.cust_id = resp.cust_id;
-						clientSecAmount = vars.data.amount;
-						clientSecCurrency = vars.data.currency;
-						doAddonAction('csRegenCompleted');
-						if (vars.data.doNotProceed) {
-							return false;
-						}
-
-						if (resp.clientSecret) {
-							opts = {};
-							if (!vars.data.dont_save_card && !vars.data.dont_setup_future_usage) {
-								opts.save_payment_method = true;
-								opts.setup_future_usage = 'off_session';
-							}
-							if (vars.data.stripe_receipt_email) {
-								opts.receipt_email = emailInput.value;
-							}
-
-							vars.confirmCardPayment = {};
-							vars.confirmCardPayment.opts = opts;
-
-							doAddonAction('confirmCardPaymentOpts');
-
-							console.log('Doing confirmCardPayment()');
-							stripe.confirmCardPayment(resp.clientSecret, vars.confirmCardPayment.opts)
-								.then(function (result) {
-									console.log(result);
-									handleCardPaymentResult(result);
-								});
-						} else {
-							piInput.value = resp.pi_id;
-							if (!vars.data.coupon && couponInput) {
-								couponInput.value = '';
-							}
-							triggerEvent(form, 'submit');
-						}
-
-						return true;
-					} catch (e) {
-						console.log(e);
-						alert('Caught Exception: ' + e);
 					}
-				},
-				function (res, errMsg) {
-					submitBtn.disabled = false;
-					errorCont.innerHTML = errMsg;
-					errorCont.style.display = 'block';
-					smokeScreen(false);
+					if (!resp.success) {
+						submitBtn.disabled = false;
+						errorCont.innerHTML = resp.err;
+						errorCont.style.display = 'block';
+						smokeScreen(false);
+						return false;
+					}
+					vars.data.pi_id = resp.pi_id;
+					vars.data.cust_id = resp.cust_id;
+					clientSecAmount = vars.data.amount;
+					clientSecCurrency = vars.data.currency;
+					doAddonAction('csRegenCompleted');
+					if (vars.data.doNotProceed) {
+						return false;
+					}
+
+					if (resp.clientSecret) {
+						opts = {};
+						if (!vars.data.dont_save_card && !vars.data.dont_setup_future_usage) {
+							opts.save_payment_method = true;
+							opts.setup_future_usage = 'off_session';
+						}
+						if (vars.data.stripe_receipt_email) {
+							opts.receipt_email = emailInput.value;
+						}
+
+						vars.confirmCardPayment = {};
+						vars.confirmCardPayment.opts = opts;
+
+						doAddonAction('confirmCardPaymentOpts');
+
+						console.log('Doing confirmCardPayment()');
+						stripe.confirmCardPayment(resp.clientSecret, vars.confirmCardPayment.opts)
+							.then(function (result) {
+								console.log(result);
+								handleCardPaymentResult(result);
+							});
+					} else {
+						piInput.value = resp.pi_id;
+						if (!vars.data.coupon && couponInput) {
+							couponInput.value = '';
+						}
+						triggerEvent(form, 'submit');
+					}
+
+					return true;
+				} catch (e) {
+					console.log(e);
+					alert('Caught Exception: ' + e);
 				}
-			);
-			return false;
+			},
+			function (res, errMsg) {
+				submitBtn.disabled = false;
+				errorCont.innerHTML = errMsg;
+				errorCont.style.display = 'block';
+				smokeScreen(false);
+			}
+		);
+		return false;
+	}
+
+	if (!is_full_discount() && vars.data.source_id && vars.data.create_token) {
+		opts = {
+			name: billingNameInput.value
+		};
+		if (vars.data.billing_address) {
+			opts.address_line1 = bAddr.value;
+			opts.address_city = bCity.value;
+			opts.address_state = bState === null ? '' : bState.value;
+			opts.address_country = bCountry.value || bCountry.options[bCountry.selectedIndex].value;
+			if (postal_code) {
+				opts.address_zip = postal_code;
+			}
 		}
 
-	});
+		var ct_reqStr = '&product_id=' + vars.data.product_id;
+
+		if (vars.data.cust_id) {
+			ct_reqStr = ct_reqStr + '&cust_id=' + vars.data.cust_id;
+		}
+		if (vars.data.currency_variable) {
+			ct_reqStr = ct_reqStr + '&currency=' + vars.data.currency;
+		}
+		if (vars.data.amount_variable && vars.data.hide_amount_input !== '1') {
+			ct_reqStr = ct_reqStr + '&amount=' + vars.data.item_price;
+		}
+		if (vars.data.quantity > 1) {
+			ct_reqStr = ct_reqStr + '&quantity=' + vars.data.quantity;
+		}
+		if (vars.data.coupon) {
+			ct_reqStr = ct_reqStr + '&coupon=' + vars.data.coupon.code;
+		}
+		ct_reqStr = ct_reqStr + '&billing_details=' + JSON.stringify(billingDetails);
+		if (shippingDetails) {
+			ct_reqStr = ct_reqStr + '&shipping_details=' + JSON.stringify(shippingDetails);
+		}
+
+		ct_reqStr += '&token=' + vars.data.visitor_token;
+
+		vars.confirmToken_reqStr = ct_reqStr;
+
+		doAddonAction('preConfirmToken');
+
+		ct_reqStr = vars.confirmToken_reqStr;
+
+		if (vars.data.pm_id) {
+			ct_reqStr = 'action=asp_pp_confirm_token&asp_pm_id=' + vars.data.pm_id + ct_reqStr;
+			confirmToken(ct_reqStr);
+			return true;
+		}
+
+		ct_reqStr = 'action=asp_pp_confirm_token&asp_token_id=' + vars.data.source_id + ct_reqStr;
+		confirmToken(ct_reqStr);
+		return false;
+	}
 
 	return;
 
