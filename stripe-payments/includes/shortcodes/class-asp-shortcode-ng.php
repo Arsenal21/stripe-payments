@@ -662,7 +662,7 @@ class ASP_Shortcode_NG {
 				} else {
 					$this->asp_main->footer_scripts .= '<link rel="prefetch" as="style" href="' . WP_ASP_PLUGIN_URL . '/public/views/templates/default/pure.css?ver=' . WP_ASP_PLUGIN_VERSION . '" />';
 					$this->asp_main->footer_scripts .= '<link rel="prefetch" as="style" href="' . WP_ASP_PLUGIN_URL . '/public/views/templates/default/pp-style.css?ver=' . WP_ASP_PLUGIN_VERSION . '" />';
-					$this->asp_main->footer_scripts .= '<link rel="prefetch" as="script" href="' . WP_ASP_PLUGIN_URL . '/public/assets/js/pp-handler.js?ver=' . WP_ASP_PLUGIN_VERSION . '" />';
+					$this->asp_main->footer_scripts .= '<link rel="prefetch" as="script" href="' . WP_ASP_PLUGIN_URL . '/public/assets/js/pp-handler-checkout.js?ver=' . WP_ASP_PLUGIN_VERSION . '" />';
 				}
 			}
 		}

@@ -17,6 +17,9 @@ class ASP_PP_Handler {
 			}
 			$this->asp_main = AcceptStripePayments::get_instance();
 			add_action( 'init', array( $this, 'showpp' ), 2147483647 );
+		} elseif ( 'payment_success' === $action ) {
+			var_dump( $_POST );
+			wp_die();
 		}
 		if ( wp_doing_ajax() ) {
 			//          ASP_Utils::set_custom_lang_if_needed();
@@ -30,6 +33,9 @@ class ASP_PP_Handler {
 	public function add_ajax_handlers() {
 		add_action( 'wp_ajax_asp_pp_req_token', array( $this, 'handle_request_token' ) );
 		add_action( 'wp_ajax_nopriv_asp_pp_req_token', array( $this, 'handle_request_token' ) );
+
+		add_action( 'wp_ajax_asp_pp_create_session', array( $this, 'handle_create_session' ) );
+		add_action( 'wp_ajax_nopriv_asp_pp_create_session', array( $this, 'handle_create_session' ) );
 
 		add_action( 'wp_ajax_asp_pp_save_form_data', array( $this, 'save_form_data' ) );
 		add_action( 'wp_ajax_nopriv_asp_pp_save_form_data', array( $this, 'save_form_data' ) );
@@ -430,7 +436,7 @@ class ASP_PP_Handler {
 			);
 			$a['scripts'][] = array(
 				'footer' => true,
-				'src'    => WP_ASP_PLUGIN_URL . '/public/assets/js/pp-handler.js?ver=' . WP_ASP_PLUGIN_VERSION,
+				'src'    => WP_ASP_PLUGIN_URL . '/public/assets/js/pp-handler-checkout.js?ver=' . WP_ASP_PLUGIN_VERSION,
 			);
 		}
 
@@ -536,6 +542,187 @@ class ASP_PP_Handler {
 			return;
 		}
 		echo sprintf( '<style>%s</style>', wp_kses( $pp_additional_css, array() ) );
+	}
+
+	public function handle_create_session() {
+		$out            = array();
+		$out['success'] = false;
+		$product_id     = filter_input( INPUT_POST, 'product_id', FILTER_SANITIZE_NUMBER_INT );
+		$amount         = filter_input( INPUT_POST, 'amount', FILTER_SANITIZE_NUMBER_FLOAT );
+		$curr           = filter_input( INPUT_POST, 'curr', FILTER_SANITIZE_STRING );
+		$pi_id          = filter_input( INPUT_POST, 'pi', FILTER_SANITIZE_STRING );
+		$cust_id        = filter_input( INPUT_POST, 'cust_id', FILTER_SANITIZE_STRING );
+		$quantity       = filter_input( INPUT_POST, 'quantity', FILTER_SANITIZE_NUMBER_INT );
+
+		$item = new ASP_Product_Item( $product_id );
+
+		if ( $item->get_last_error() ) {
+			$out['err'] = __( 'Error occurred:', 'stripe-payments' ) . ' ' . $item->get_last_error();
+			wp_send_json( $out );
+		}
+
+		if ( $item->stock_control_enabled() ) {
+			$stock_items        = $item->get_stock_items();
+			$out['stock_items'] = $stock_items;
+			if ( $quantity > $stock_items ) {
+				// translators: %d is number of items in stock
+				$msg        = apply_filters( 'asp_customize_text_msg', __( 'You cannot order more items than available: %d', 'stripe-payments' ), 'stock_not_available' );
+				$out['err'] = sprintf( $msg, $stock_items );
+				wp_send_json( $out );
+			}
+		}
+
+		$min_amount = $item->get_min_amount( true );
+		$prod_type  = $item->get_type();
+
+		if ( 'donation' === $prod_type && 0 !== $min_amount && $min_amount > $amount ) {
+			$msg        = apply_filters( 'asp_customize_text_msg', __( 'Minimum amount is', 'stripe-payments' ), 'min_amount_is' );
+			$out['err'] = $msg . ' ' . ASP_Utils::formatted_price( $min_amount, $curr, true );
+			wp_send_json( $out );
+		}
+
+		do_action( 'asp_ng_before_token_request', $item );
+
+		do_action( 'asp_ng_product_mode_keys', $product_id );
+
+		try {
+			ASP_Utils::load_stripe_lib();
+			$key = $this->asp_main->is_live ? $this->asp_main->APISecKey : $this->asp_main->APISecKeyTest;
+			\Stripe\Stripe::setApiKey( $key );
+
+			$api = ASP_Stripe_API::get_instance();
+
+			$api->set_api_key( $key );
+
+		} catch ( \Exception $e ) {
+			$out['err'] = __( 'Stripe API error occurred:', 'stripe-payments' ) . ' ' . $e->getMessage();
+			wp_send_json( $out );
+		} catch ( \Throwable $e ) {
+			$out['err'] = __( 'Stripe API error occurred:', 'stripe-payments' ) . ' ' . $e->getMessage();
+			wp_send_json( $out );
+		}
+
+		$metadata = array();
+
+		try {
+
+			$tax = $item->get_tax();
+
+			if ( ! empty( $tax ) ) {
+				$tax_params = array(
+					'display_name' => 'Tax',
+					'inclusive'    => false,
+					'percentage'   => $tax,
+				);
+
+				$tax_rate = \Stripe\TaxRate::create( $tax_params );
+
+				$tax_id = $tax_rate->id;
+			}
+
+			$sess_params = array(
+				'success_url'          => 'https://desertfox.top/miniserv/cleanwp/?asp_action=payment_success',
+				'cancel_url'           => 'https://desertfox.top/miniserv/cleanwp/',
+				'payment_method_types' => array( 'card' ),
+				'mode'                 => 'payment',
+				'client_reference_id'  => uniqid( 'checkout_id_' ),
+				'line_items'           => array(
+					array(
+						'name'      => $item->get_name(),
+						'currency'  => $curr,
+						'amount'    => $item->get_price( true ),
+						'quantity'  => $item->get_quantity(),
+						'tax_rates' => empty( $tax_id ) ? null : array( $tax_id ),
+					),
+				),
+			);
+
+			$sess = \Stripe\Checkout\Session::create( $sess_params );
+
+			$out = array(
+				'success' => true,
+				'sess_id' => $sess->id,
+			);
+
+			wp_send_json( $out );
+
+			$pi_params = array(
+				'amount'   => $amount,
+				'currency' => $curr,
+			);
+
+			$metadata['Product Name'] = $item->get_name();
+			$metadata['Product ID']   = $product_id;
+
+			if ( isset( $metadata ) && ! empty( $metadata ) ) {
+				$pi_params['metadata'] = $metadata;
+			}
+			$description = $item->get_description();
+			if ( ! empty( $description ) ) {
+				$pi_params['description'] = $description;
+			} else {
+				$pi_params['description'] = $item->get_name();
+			}
+
+			$stripe_receipt_email = $this->asp_main->get_setting( 'stripe_receipt_email' );
+
+			if ( $stripe_receipt_email ) {
+				if ( isset( $billing_details ) && isset( $billing_details->email ) && ! empty( $billing_details->email ) ) {
+					$pi_params['receipt_email'] = $billing_details->email;
+				}
+			}
+
+			$order = new ASP_Order_Item();
+
+			if ( $order->can_create( $product_id ) ) {
+
+				if ( ! $pi_id ) {
+					//create new incomplete order for this payment
+					$order->create( $product_id, $pi_id );
+				} else {
+					//find order for this PaymentIntent
+					$order->find( 'pi_id', $pi_id );
+				}
+			}
+
+			$pi_params = apply_filters( 'asp_ng_before_pi_create_update', $pi_params );
+			if ( $pi_id ) {
+				if ( ASP_Utils::use_internal_api() ) {
+					$api = ASP_Stripe_API::get_instance();
+
+					$intent = $api->post( 'payment_intents/' . $pi_id, $pi_params );
+				} else {
+					$intent = \Stripe\PaymentIntent::update( $pi_id, $pi_params );
+				}
+			} else {
+				if ( ASP_Utils::use_internal_api() ) {
+					$api = ASP_Stripe_API::get_instance();
+
+					$intent = $api->post( 'payment_intents', $pi_params );
+				} else {
+					$intent = \Stripe\PaymentIntent::create( $pi_params );
+				}
+			}
+		} catch ( \Exception $e ) {
+			$out['shipping'] = wp_json_encode( $shipping );
+			$out['err']      = __( 'Error occurred:', 'stripe-payments' ) . ' ' . $e->getMessage();
+			wp_send_json( $out );
+		} catch ( \Throwable $e ) {
+			$out['shipping'] = wp_json_encode( $shipping );
+			$out['err']      = __( 'Error occurred:', 'stripe-payments' ) . ' ' . $e->getMessage();
+			wp_send_json( $out );
+		}
+
+		if ( $order->get_id() ) {
+			update_post_meta( $order->get_id(), 'pi_id', $intent->id );
+		}
+
+		$out['success']      = true;
+		$out['clientSecret'] = $intent->client_secret;
+		$out['pi_id']        = $intent->id;
+		$out['cust_id']      = $cust_id;
+		$out                 = apply_filters( 'asp_ng_before_pi_result_send', $out, $intent );
+		wp_send_json( $out );
 	}
 
 	public function handle_request_token() {
