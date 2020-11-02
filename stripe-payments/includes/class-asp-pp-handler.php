@@ -774,9 +774,21 @@ class ASP_PP_Handler {
 				}
 			}
 		} catch ( \Exception $e ) {
+			if ( isset( $intent ) ) {
+				$out['pi_id'] = $intent->id;
+			}
+			if ( isset( $cust_id ) ) {
+				$out['cust_id'] = $cust_id;
+			}
 			$out['err'] = __( 'Error occurred:', 'stripe-payments' ) . ' ' . $e->getMessage();
 			wp_send_json( $out );
 		} catch ( \Throwable $e ) {
+			if ( isset( $intent ) ) {
+				$out['pi_id'] = $intent->id;
+			}
+			if ( isset( $cust_id ) ) {
+				$out['cust_id'] = $cust_id;
+			}
 			$out['err'] = __( 'Error occurred:', 'stripe-payments' ) . ' ' . $e->getMessage();
 			wp_send_json( $out );
 		}
