@@ -2,15 +2,15 @@
 # This file is distributed under the same license as the Stripe Payments plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Stripe Payments 2.0.37t3\n"
+"Project-Id-Version: Stripe Payments 2.0.37\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/stripe-payments\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2020-10-19T23:42:34+03:00\n"
-"PO-Revision-Date: 2020-10-19T23:42:34+03:00\n"
+"POT-Creation-Date: 2020-11-04T15:37:32+02:00\n"
+"PO-Revision-Date: 2020-11-04T15:37:32+02:00\n"
 "X-Generator: WP-CLI 2.0.1\n"
 "X-Domain: stripe-payments\n"
 
@@ -896,8 +896,8 @@ msgstr ""
 
 #. translators: %s is not a placeholder
 #: admin/class-asp-admin.php:1624
-#: includes/class-asp.php:312
-#: includes/class-asp-pp-handler.php:443
+#: includes/class-asp.php:315
+#: includes/class-asp-pp-display.php:425
 msgid "Pay %s"
 msgstr ""
 
@@ -1118,7 +1118,7 @@ msgstr ""
 #: admin/includes/class-products.php:133
 #: includes/shortcodes/class-shortcode-asp.php:1003
 #: includes/class-asp-order-item.php:128
-#: includes/process_ipn.php:693
+#: includes/process_ipn.php:701
 msgid "Product Name"
 msgstr ""
 
@@ -1146,9 +1146,9 @@ msgid "Date"
 msgstr ""
 
 #: admin/includes/class-products.php:151
+#: includes/class-asp-pp-display.php:179
 #: includes/shortcodes/class-asp-shortcode-ng.php:509
 #: includes/shortcodes/class-shortcode-asp.php:618
-#: includes/class-asp-pp-handler.php:197
 msgid "Out of stock"
 msgstr ""
 
@@ -1223,8 +1223,8 @@ msgid "Coupons Settings"
 msgstr ""
 
 #: admin/includes/class-products-meta-boxes.php:33
+#: includes/class-asp-pp-display.php:542
 #: includes/shortcodes/class-shortcode-asp.php:178
-#: includes/class-asp-pp-handler.php:804
 msgid "Custom Field"
 msgstr ""
 
@@ -2261,36 +2261,36 @@ msgid "Log cleared."
 msgstr ""
 
 #: admin/views/admin.php:131
-#: includes/class-asp-pp-handler.php:554
-#: includes/class-asp-pp-handler.php:765
-#: includes/class-asp-pp-handler.php:769
-#: includes/class-asp-pp-handler.php:891
+#: includes/class-asp-pp-ajax.php:42
+#: includes/class-asp-pp-ajax.php:253
+#: includes/class-asp-pp-ajax.php:257
+#: includes/class-asp-pp-ajax.php:318
 msgid "Error occurred:"
 msgstr ""
 
 #. translators: %d is number of items in stock
 #: includes/class-asp-product-item.php:385
 #: includes/class-asp-process-ipn-ng.php:389
+#: includes/class-asp-pp-display.php:475
 #: includes/shortcodes/class-asp-shortcode-ng.php:184
 #: includes/shortcodes/class-asp-shortcode-ng.php:542
 #: includes/shortcodes/class-shortcode-asp.php:103
 #: includes/shortcodes/class-shortcode-asp.php:341
 #: includes/shortcodes/class-shortcode-asp.php:686
-#: includes/class-asp-pp-handler.php:493
-#: includes/process_ipn.php:561
+#: includes/process_ipn.php:569
 #: public/views/templates/default/payment-popup.php:215
 msgid "Tax"
 msgstr ""
 
 #: includes/class-asp-product-item.php:396
 #: includes/class-asp-process-ipn-ng.php:397
+#: includes/class-asp-pp-display.php:476
 #: includes/shortcodes/class-asp-shortcode-ng.php:194
 #: includes/shortcodes/class-asp-shortcode-ng.php:543
 #: includes/shortcodes/class-shortcode-asp.php:104
 #: includes/shortcodes/class-shortcode-asp.php:351
 #: includes/shortcodes/class-shortcode-asp.php:687
-#: includes/class-asp-pp-handler.php:494
-#: includes/process_ipn.php:568
+#: includes/process_ipn.php:576
 #: public/views/templates/default/payment-popup.php:221
 msgid "Shipping"
 msgstr ""
@@ -2304,56 +2304,56 @@ msgstr ""
 msgid "Can't find product with ID %d"
 msgstr ""
 
-#: includes/class-asp.php:310
+#: includes/class-asp.php:313
 msgid "Buy Now"
 msgstr ""
 
-#: includes/class-asp.php:316
+#: includes/class-asp.php:319
 msgid "Thank you for the purchase"
 msgstr ""
 
-#: includes/class-asp.php:317
+#: includes/class-asp.php:320
 msgid "Hello"
 msgstr ""
 
-#: includes/class-asp.php:318
+#: includes/class-asp.php:321
 msgid "Thank you for your purchase! You ordered the following item(s):"
 msgstr ""
 
-#: includes/class-asp.php:321
+#: includes/class-asp.php:324
 msgid "Notification of product sale"
 msgstr ""
 
-#: includes/class-asp.php:322
+#: includes/class-asp.php:325
 msgid "Dear Seller"
 msgstr ""
 
-#: includes/class-asp.php:323
+#: includes/class-asp.php:326
 msgid "This mail is to notify you of a product sale."
 msgstr ""
 
-#: includes/class-asp.php:325
+#: includes/class-asp.php:328
 msgid "The sale was made to"
 msgstr ""
 
-#: includes/class-asp.php:326
+#: includes/class-asp.php:329
 msgid "Thanks"
 msgstr ""
 
-#: includes/class-asp.php:342
+#: includes/class-asp.php:345
 msgid "I accept the <a href=\"https://example.com/terms-and-conditions/\" target=\"_blank\">Terms and Conditions</a>"
 msgstr ""
 
 #: includes/class-asp-process-ipn-ng.php:39
-#: includes/class-asp-pp-handler.php:866
-#: includes/class-asp-pp-handler.php:870
-#: includes/process_ipn.php:56
+#: includes/process_ipn.php:64
+#: includes/class-asp-pp-ajax.php:293
+#: includes/class-asp-pp-ajax.php:297
 msgid "Following error occurred during payment processing:"
 msgstr ""
 
 #: includes/class-asp-process-ipn-ng.php:41
-#: includes/class-asp-pp-handler.php:868
-#: includes/process_ipn.php:59
+#: includes/process_ipn.php:67
+#: includes/class-asp-pp-ajax.php:295
 msgid "Debug data:"
 msgstr ""
 
@@ -2364,12 +2364,12 @@ msgstr ""
 
 #. translators: %s is coupon code
 #: includes/class-asp-process-ipn-ng.php:377
-#: includes/process_ipn.php:556
+#: includes/process_ipn.php:564
 msgid "Coupon \"%s\""
 msgstr ""
 
 #: includes/class-asp-process-ipn-ng.php:381
-#: includes/process_ipn.php:557
+#: includes/process_ipn.php:565
 msgid "Subtotal"
 msgstr ""
 
@@ -2389,15 +2389,112 @@ msgstr ""
 msgid "Total Amount: "
 msgstr ""
 
-#: includes/shortcodes/class-asp-shortcode-ng.php:70
-msgid "Error: product ID is invalid."
+#: includes/class-asp-pp-display.php:89
+#: includes/shortcodes/class-shortcode-asp.php:649
+msgid "Only numbers are allowed: 0-9"
 msgstr ""
 
+#: includes/class-asp-pp-display.php:309
+#: public/views/templates/default/payment-popup.php:390
+msgid "Credit or debit card"
+msgstr ""
+
+#. translators: %s is not a placeholder
+#: includes/class-asp-pp-display.php:432
+msgid "Authorize %s"
+msgstr ""
+
+#: includes/class-asp-pp-display.php:440
+#: includes/class-asp-pp-display.php:483
+#: includes/shortcodes/class-shortcode-asp.php:111
+msgid "Start Free Trial"
+msgstr ""
+
+#: includes/class-asp-pp-display.php:468
+#: includes/shortcodes/class-shortcode-asp.php:97
+msgid "Please enter a valid amount"
+msgstr ""
+
+#: includes/class-asp-pp-display.php:469
+#: includes/shortcodes/class-shortcode-asp.php:98
+#: includes/class-asp-pp-ajax.php:61
+msgid "Minimum amount is"
+msgstr ""
+
+#: includes/class-asp-pp-display.php:470
+#: includes/shortcodes/class-shortcode-asp.php:99
+msgid "Please enter quantity."
+msgstr ""
+
+#: includes/class-asp-pp-display.php:471
+#: includes/shortcodes/class-shortcode-asp.php:100
+msgid "Quantity can't be zero."
+msgstr ""
+
+#: includes/class-asp-pp-display.php:472
+#: includes/shortcodes/class-shortcode-asp.php:101
+msgid "Quantity should be integer value."
+msgstr ""
+
+#. translators: %d is number of items in stock
+#: includes/class-asp-pp-display.php:474
+#: includes/shortcodes/class-shortcode-asp.php:102
+#: includes/class-asp-pp-ajax.php:51
+msgid "You cannot order more items than available: %d"
+msgstr ""
+
+#: includes/class-asp-pp-display.php:477
 #: includes/shortcodes/class-asp-shortcode-ng.php:205
 #: includes/shortcodes/class-shortcode-asp.php:105
 #: includes/shortcodes/class-shortcode-asp.php:362
-#: includes/class-asp-pp-handler.php:495
 msgid "Total:"
+msgstr ""
+
+#: includes/class-asp-pp-display.php:478
+#: includes/shortcodes/class-shortcode-asp.php:106
+msgid "Please fill in this field."
+msgstr ""
+
+#: includes/class-asp-pp-display.php:479
+#: includes/shortcodes/class-shortcode-asp.php:107
+msgid "Please check this checkbox."
+msgstr ""
+
+#: includes/class-asp-pp-display.php:480
+#: includes/shortcodes/class-shortcode-asp.php:108
+msgid "You must accept the terms before you can proceed."
+msgstr ""
+
+#: includes/class-asp-pp-display.php:481
+#: includes/shortcodes/class-shortcode-asp.php:109
+msgid "Remove coupon"
+msgstr ""
+
+#: includes/class-asp-pp-display.php:482
+#: includes/shortcodes/class-shortcode-asp.php:110
+#: public/views/templates/default/payment-popup.php:182
+msgid "Remove"
+msgstr ""
+
+#: includes/class-asp-pp-display.php:484
+#: includes/shortcodes/class-shortcode-asp.php:112
+msgid "Invalid validation RegEx: "
+msgstr ""
+
+#: includes/class-asp-pp-display.php:485
+msgid "Purchase for Free"
+msgstr ""
+
+#: includes/class-asp-pp-display.php:486
+msgid "Currency not supported for this payment method."
+msgstr ""
+
+#: includes/class-asp-pp-display.php:487
+msgid " for upcoming recurring payments"
+msgstr ""
+
+#: includes/shortcodes/class-asp-shortcode-ng.php:70
+msgid "Error: product ID is invalid."
 msgstr ""
 
 #: includes/shortcodes/class-asp-shortcode-ng.php:518
@@ -2409,81 +2506,6 @@ msgstr ""
 #: includes/shortcodes/class-shortcode-asp.php:863
 #: public/views/templates/default/payment-popup.php:80
 msgid "Enter amount"
-msgstr ""
-
-#: includes/shortcodes/class-shortcode-asp.php:97
-#: includes/class-asp-pp-handler.php:486
-msgid "Please enter a valid amount"
-msgstr ""
-
-#: includes/shortcodes/class-shortcode-asp.php:98
-#: includes/class-asp-pp-handler.php:487
-#: includes/class-asp-pp-handler.php:573
-msgid "Minimum amount is"
-msgstr ""
-
-#: includes/shortcodes/class-shortcode-asp.php:99
-#: includes/class-asp-pp-handler.php:488
-msgid "Please enter quantity."
-msgstr ""
-
-#: includes/shortcodes/class-shortcode-asp.php:100
-#: includes/class-asp-pp-handler.php:489
-msgid "Quantity can't be zero."
-msgstr ""
-
-#: includes/shortcodes/class-shortcode-asp.php:101
-#: includes/class-asp-pp-handler.php:490
-msgid "Quantity should be integer value."
-msgstr ""
-
-#. translators: %d is number of items in stock
-#: includes/shortcodes/class-shortcode-asp.php:102
-#: includes/class-asp-pp-handler.php:492
-#: includes/class-asp-pp-handler.php:563
-msgid "You cannot order more items than available: %d"
-msgstr ""
-
-#: includes/shortcodes/class-shortcode-asp.php:106
-#: includes/class-asp-pp-handler.php:496
-msgid "Please fill in this field."
-msgstr ""
-
-#: includes/shortcodes/class-shortcode-asp.php:107
-#: includes/class-asp-pp-handler.php:497
-msgid "Please check this checkbox."
-msgstr ""
-
-#: includes/shortcodes/class-shortcode-asp.php:108
-#: includes/class-asp-pp-handler.php:498
-msgid "You must accept the terms before you can proceed."
-msgstr ""
-
-#: includes/shortcodes/class-shortcode-asp.php:109
-#: includes/class-asp-pp-handler.php:499
-msgid "Remove coupon"
-msgstr ""
-
-#: includes/shortcodes/class-shortcode-asp.php:110
-#: includes/class-asp-pp-handler.php:500
-#: public/views/templates/default/payment-popup.php:182
-msgid "Remove"
-msgstr ""
-
-#: includes/shortcodes/class-shortcode-asp.php:111
-#: includes/class-asp-pp-handler.php:458
-#: includes/class-asp-pp-handler.php:501
-msgid "Start Free Trial"
-msgstr ""
-
-#: includes/shortcodes/class-shortcode-asp.php:112
-#: includes/class-asp-pp-handler.php:502
-msgid "Invalid validation RegEx: "
-msgstr ""
-
-#: includes/shortcodes/class-shortcode-asp.php:649
-#: includes/class-asp-pp-handler.php:107
-msgid "Only numbers are allowed: 0-9"
 msgstr ""
 
 #: includes/shortcodes/class-shortcode-asp.php:893
@@ -2515,19 +2537,19 @@ msgstr ""
 
 #: includes/shortcodes/class-shortcode-asp.php:1004
 #: includes/class-asp-order-item.php:129
-#: includes/process_ipn.php:694
+#: includes/process_ipn.php:702
 msgid "Quantity"
 msgstr ""
 
 #: includes/shortcodes/class-shortcode-asp.php:1005
 #: includes/class-asp-order-item.php:130
-#: includes/process_ipn.php:695
+#: includes/process_ipn.php:703
 msgid "Item Price"
 msgstr ""
 
 #: includes/shortcodes/class-shortcode-asp.php:1009
 #: includes/class-asp-order-item.php:134
-#: includes/process_ipn.php:699
+#: includes/process_ipn.php:707
 msgid "Total Amount"
 msgstr ""
 
@@ -2552,7 +2574,7 @@ msgid " to download."
 msgstr ""
 
 #: includes/shortcodes/class-shortcode-asp.php:1025
-#: includes/process_ipn.php:719
+#: includes/process_ipn.php:727
 msgid "Download links"
 msgstr ""
 
@@ -2586,8 +2608,12 @@ msgstr ""
 msgid "Download link:"
 msgstr ""
 
-#: includes/class-asp-self-hooks-handler.php:365
+#: includes/class-asp-self-hooks-handler.php:366
 msgid "Invalid security token."
+msgstr ""
+
+#: includes/class-asp-self-hooks-handler.php:393
+msgid "Rate limit exceeded. Please try again later."
 msgstr ""
 
 #. translators: %1$s - plugin name, %2$s - min core plugin version, %3$s - installed core plugin version
@@ -2746,53 +2772,31 @@ msgstr ""
 msgid "Shipping Address"
 msgstr ""
 
-#: includes/class-asp-pp-handler.php:327
-#: public/views/templates/default/payment-popup.php:390
-msgid "Credit or debit card"
-msgstr ""
-
-#. translators: %s is not a placeholder
-#: includes/class-asp-pp-handler.php:450
-msgid "Authorize %s"
-msgstr ""
-
-#: includes/class-asp-pp-handler.php:503
-msgid "Purchase for Free"
-msgstr ""
-
-#: includes/class-asp-pp-handler.php:504
-msgid "Currency not supported for this payment method."
-msgstr ""
-
-#: includes/class-asp-pp-handler.php:505
-msgid " for upcoming recurring payments"
-msgstr ""
-
-#: includes/class-asp-pp-handler.php:592
-#: includes/class-asp-pp-handler.php:595
-msgid "Stripe API error occurred:"
-msgstr ""
-
-#: includes/process_ipn.php:36
+#: includes/process_ipn.php:44
 msgid "Error occurred before user interacted with payment popup. This might be caused by JavaScript errors on page."
 msgstr ""
 
-#: includes/process_ipn.php:37
+#: includes/process_ipn.php:45
 msgid "Error occurred after user interacted with popup."
 msgstr ""
 
-#: includes/process_ipn.php:55
+#: includes/process_ipn.php:63
 #: includes/class-asp-utils.php:640
 msgid "Stripe Payments Error"
 msgstr ""
 
-#: includes/process_ipn.php:711
-#: includes/process_ipn.php:717
+#: includes/process_ipn.php:719
+#: includes/process_ipn.php:725
 msgid "Download link"
 msgstr ""
 
-#: includes/process_ipn.php:730
+#: includes/process_ipn.php:738
 msgid "Order Info: "
+msgstr ""
+
+#: includes/class-asp-pp-ajax.php:80
+#: includes/class-asp-pp-ajax.php:83
+msgid "Stripe API error occurred:"
 msgstr ""
 
 #: includes/class-asp-utils.php:292
