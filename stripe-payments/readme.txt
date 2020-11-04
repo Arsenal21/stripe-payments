@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 4.7
 Tested up to: 5.5
 Requires PHP: 5.6
-Stable tag: 2.0.36
+Stable tag: 2.0.37
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -155,6 +155,13 @@ None.
 
 == Changelog ==
 
+= 2.0.37 =
+- Proper tax amount rounding when quantity is >1.
+- Coupons are supported for trial subscriptions now.
+- Front-end card errors are now also sent via error email.
+- Countries displayed in alphabetical order now.
+- Prevented backend access to Legacy API functions if it's disabled.
+
 = 2.0.36 =
 - Added "Apply Per-Order" option for fixed amount coupons.
 - `2020-08-27` Stripe API version compatibility.
@@ -187,44 +194,5 @@ None.
 = 2.0.32 =
 - reCAPTCHA add-on functionality is now built into the core plugin. You can enable reCAPTCHA from the settings menu of the plugin.
 - Added security token check for subscriptions payments.
-
-= 2.0.31 =
-- Added `Authorize Only` option in the product configuration interface. You can use it to hold funds on a card and then capture it later from the Orders page.
-- Added `Donation` product type and `Minimum Donation Amount` product option.
-- Re-styled the Orders menu a little.
-- Added `Order Events` meta-box to the Order menu.
-- Added `Allowed Currencies` global settings option.
-- Added `{payment_method}`, `{card_brand}` and `{card_last_4}` email merge tags.
-- Payment popup `Close` button is now displayed instantly.
-- Browser's `Back` button closes popup if it's open.
-- Custom translations are properly loaded on payment popup window now.
-- Currency format settings are no longer ignored on the payment popup.
-- Empty value is now allowed for "Thousand Separator" option.
-- Popup init errors are properly displayed now.
-- Added Bulgarian Lev (BGN) currency.
-- Minor improvements, bugfixes and optimizations.
-
-= 2.0.30 =
-- Added Argentine Peso (ARS), Chilean Peso (CLP), Colombian Peso (COP), Peruvian Nuevo Sol (PEN) and Uruguayan Peso (UYU) currencies.
-- Fixed PHP 7.4 deprecation notices.
-- Added `asp_ng_pp_countries_list` filter to programmatically modify countries list on payment popup.
-- Minor fixes and improvements.
-
-= 2.0.29 =
-- Added `Do Not Use Stripe PHP SDK Library` experimental option.
-- Plugin now shows warning if required PHP modules are not installed on the server.
-- Minor code optimizations and improvements.
-- Added subscriptions support for Additional Payment Methods addon.
-
-= 2.0.28 =
-- Coupon code is now saved in Stripe metadata.
-- Restored `Don't Create Order` settings option (was hidden by mistake few versions back).
-- Attempt to fix `mixed content` browser error on payment popup when product thumbnail is using `http` instead of `https`.
-- Resolved issue with APM addon when shipping address collection is enabled.
-
-= 2.0.27 =
-- Added workaround for servers with aggressive caching when "Prefetch Payment Popup Scripts" option is enabled.
-- Removed dev debug lines from the code.
-- Fixed typos in text descriptions.
 
 Full changelog available [ at changelog.txt](https://plugins.svn.wordpress.org/stripe-payments/trunk/changelog.txt)

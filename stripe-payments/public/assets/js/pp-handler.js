@@ -118,7 +118,10 @@ if (vars.data.coupons_enabled) {
 					if (vars.data.coupon.discount_type === 'perc') {
 						couponInfo.innerHTML = couponInfo.innerHTML + vars.data.coupon.discount + '%';
 					} else {
-						couponInfo.innerHTML = couponInfo.innerHTML + formatMoney(vars.data.coupon.discount_amount);
+						couponInfo.innerHTML = couponInfo.innerHTML + formatMoney(amount_to_cents(vars.data.coupon.discount, vars.data.currency));
+					}
+					if (vars.data.is_trial) {
+						couponInfo.innerHTML = couponInfo.innerHTML + vars.str.strforRecurringPayments;
 					}
 					couponResCont.style.display = 'block';
 					couponInputCont.style.display = 'none';
@@ -395,7 +398,7 @@ function updateAllAmounts() {
 		jQuery('#order-quantity').html(vars.data.quantity);
 		jQuery('#order-tax').html(formatMoney(vars.data.taxAmount));
 		jQuery('#shipping').html(formatMoney(vars.data.shipping));
-		if (vars.data.coupon) {
+		if (vars.data.coupon && !vars.data.is_trial) {
 			if (jQuery('tr#order-coupon-line').length === 0) {
 				var couponOrderLine = '<tr id="order-coupon-line"><td>Coupon "' + vars.data.coupon.code + '"</td><td>- <span id="order-coupon"></span></td></tr>';
 				if (jQuery('tr.variation-line').last().length !== 0) {
@@ -441,7 +444,7 @@ function calcTotal() {
 
 	itemSubt = itemSubt * vars.data.quantity;
 
-	if (vars.data.coupon) {
+	if (vars.data.coupon && !vars.data.is_trial) {
 		var discountAmount = 0;
 		if (vars.data.coupon.discount_type === 'perc') {
 			discountAmount = PHP_round(itemSubt * (vars.data.coupon.discount / 100), 0);
@@ -1032,9 +1035,19 @@ function handleCardPaymentResult(result) {
 		console.log('Sending error info...');
 		if (vars.data.pi_id) {
 			new ajaxRequest(vars.ajaxURL,
-				'action=asp_pp_payment_error&pi_id=' + vars.data.pi_id + '&err_msg=' + result.error.message,
-				null,
-				null);
+				'action=asp_pp_payment_error&pi_id=' + vars.data.pi_id + '&err_msg=' + result.error.message + '&err_data=' + JSON.stringify(result),
+				function (response) {
+					var res = JSON.parse(response.response);
+					if (res.success) {
+						console.log('Error info sent');
+					} else {
+						console.log('Error info sending failed');
+					}
+				},
+				function (response, errMsg) {
+					console.log('AJAX request failed: ' + errMsg);
+				}
+			);
 		}
 		submitBtn.disabled = false;
 		errorCont.innerHTML = result.error.message;
@@ -1146,41 +1159,6 @@ function saveFormData(success_cb, error_cb) {
 	new ajaxRequest(vars.ajaxURL, reqStr, success_cb, error_cb);
 }
 
-var ajaxRequest = function (URL, reqStr, doneFunc, failFunc) {
-	var parent = this;
-	this.URL = URL;
-	this.reqStr = reqStr;
-	this.doneFunc = doneFunc;
-	this.failFunc = failFunc;
-	this.XMLHttpReq = new XMLHttpRequest();
-	if (!this.XMLHttpReq) {
-		alert('Cannot create an XMLHTTP instance');
-		return false;
-	}
-
-	parent.XMLHttpReq.onreadystatechange = function () {
-		if (parent.XMLHttpReq.readyState === XMLHttpRequest.DONE) {
-			if (parent.XMLHttpReq.status === 200) {
-				if (parent.doneFunc) {
-					parent.doneFunc(parent.XMLHttpReq);
-				}
-			} else {
-				console.log('ajaxRequest failed');
-				console.log(parent.XMLHttpReq);
-				var errMsg = 'Error occurred:' + ' ' + parent.XMLHttpReq.statusText + '\n';
-				errMsg += 'URL: ' + parent.XMLHttpReq.responseURL + '\n';
-				errMsg += 'Code: ' + parent.XMLHttpReq.status;
-				if (parent.failFunc) {
-					parent.failFunc(parent.XMLHttpReq, errMsg);
-				}
-			}
-		}
-	};
-	parent.XMLHttpReq.open('POST', parent.URL);
-	parent.XMLHttpReq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-	parent.XMLHttpReq.send(reqStr);
-};
-
 function popStateListener() {
 	if (typeof parent.WPASPClosePaymentPopup === "function") {
 		window.removeEventListener('popstate', popStateListener);
@@ -1227,3 +1205,38 @@ function replaceUrlParam(url, paramName, paramValue) {
 	url = url.replace(/[?#]$/, '');
 	return url + (url.indexOf('?') > 0 ? '&' : '?') + paramName + '=' + paramValue;
 }
+
+var ajaxRequest = function (URL, reqStr, doneFunc, failFunc) {
+	var parent = this;
+	this.URL = URL;
+	this.reqStr = reqStr;
+	this.doneFunc = doneFunc;
+	this.failFunc = failFunc;
+	this.XMLHttpReq = new XMLHttpRequest();
+	if (!this.XMLHttpReq) {
+		alert('Cannot create an XMLHTTP instance');
+		return false;
+	}
+
+	parent.XMLHttpReq.onreadystatechange = function () {
+		if (parent.XMLHttpReq.readyState === XMLHttpRequest.DONE) {
+			if (parent.XMLHttpReq.status === 200) {
+				if (parent.doneFunc) {
+					parent.doneFunc(parent.XMLHttpReq);
+				}
+			} else {
+				console.log('ajaxRequest failed');
+				console.log(parent.XMLHttpReq);
+				var errMsg = 'Error occurred:' + ' ' + parent.XMLHttpReq.statusText + '\n';
+				errMsg += 'URL: ' + parent.XMLHttpReq.responseURL + '\n';
+				errMsg += 'Code: ' + parent.XMLHttpReq.status;
+				if (parent.failFunc) {
+					parent.failFunc(parent.XMLHttpReq, errMsg);
+				}
+			}
+		}
+	};
+	parent.XMLHttpReq.open('POST', parent.URL);
+	parent.XMLHttpReq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+	parent.XMLHttpReq.send(reqStr);
+};

@@ -225,7 +225,7 @@ class ASP_Product_Item {
 		return $type;
 	}
 
-	private function apply_discount_to_amount( $amount, $in_cents = false ) {
+	public function apply_discount_to_amount( $amount, $in_cents = false ) {
 		if ( $this->coupon ) {
 			if ( 'perc' === $this->coupon['discount_type'] ) {
 				$perc            = AcceptStripePayments::is_zero_cents( $this->get_currency() ) ? 0 : 2;
@@ -247,7 +247,7 @@ class ASP_Product_Item {
 		return $amount;
 	}
 
-	private function get_discount_amount( $total, $in_cents = false ) {
+	public function get_discount_amount( $total, $in_cents = false ) {
 		$discount_amount = 0;
 		if ( $this->coupon ) {
 			if ( 'perc' === $this->coupon['discount_type'] ) {
@@ -321,7 +321,7 @@ class ASP_Product_Item {
 		$items_total = $this->get_items_total( false, $price_with_discount );
 		$total      += $items_total;
 
-		$this->tax_amount = AcceptStripePayments::get_tax_amount( $total, $this->get_tax(), $this->zero_cent ) * $this->get_quantity();
+		$this->tax_amount = AcceptStripePayments::get_tax_amount( $total, $this->get_tax() * $this->get_quantity(), $this->zero_cent );
 		if ( $in_cents ) {
 			return $this->in_cents( $this->tax_amount );
 		}
@@ -340,6 +340,10 @@ class ASP_Product_Item {
 	public function set_currency( $curr ) {
 		$this->currency  = $curr;
 		$this->zero_cent = AcceptStripePayments::is_zero_cents( $curr );
+	}
+
+	public function is_variable() {
+		return $this->get_price() === 0;
 	}
 
 	public function is_currency_variable() {

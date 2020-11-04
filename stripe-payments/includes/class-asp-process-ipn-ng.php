@@ -36,24 +36,15 @@ class ASP_Process_IPN_NG {
 			//send email to notify site admin (if option enabled)
 			$opt = get_option( 'AcceptStripePayments-settings' );
 			if ( isset( $opt['send_email_on_error'] ) && $opt['send_email_on_error'] ) {
-				$to      = $opt['send_email_on_error_to'];
-				$from    = get_option( 'admin_email' );
-				$headers = 'From: ' . $from . "\r\n";
-				$subj    = __( 'Stripe Payments Error', 'stripe-payments' );
-				$body    = __( 'Following error occurred during payment processing:', 'stripe-payments' ) . "\r\n\r\n";
-				$body   .= $err_msg . "\r\n\r\n";
-				$body   .= __( 'Debug data:', 'stripe-payments' ) . "\r\n";
+				$body  = __( 'Following error occurred during payment processing:', 'stripe-payments' ) . "\r\n\r\n";
+				$body .= $err_msg . "\r\n\r\n";
+				$body .= __( 'Debug data:', 'stripe-payments' ) . "\r\n";
 				$post    = filter_var( $_POST, FILTER_DEFAULT, FILTER_REQUIRE_ARRAY ); //phpcs:ignore
 				foreach ( $post as $key => $value ) {
 					$value = is_array( $value ) ? wp_json_encode( $value ) : $value;
 					$body .= $key . ': ' . $value . "\r\n";
 				}
-				$schedule_result = ASP_Utils::mail( $to, $subj, $body, $headers );
-				if ( ! $schedule_result ) {
-					ASP_Debug_Logger::log( 'Error email sent to ' . $to . ', from email address used: ' . $from );
-				} else {
-					ASP_Debug_Logger::log( 'Error email scheduled to ' . $to . ', from email address used: ' . $from );
-				}
+				ASP_Utils::send_error_email( $body );
 			}
 		} else {
 			ASP_Debug_Logger::log( 'Payment has been processed successfully.' );
@@ -380,8 +371,10 @@ class ASP_Process_IPN_NG {
 		if ( isset( $coupon ) ) {
 			$data['coupon']      = $coupon;
 			$data['coupon_code'] = $coupon['code'];
+
+			$coupon_discount_str = apply_filters( 'asp_ng_coupon_discount_str', floatval( '-' . $item->get_coupon_discount_amount() ), $coupon );
 			// translators: %s is coupon code
-			$data['additional_items'][ sprintf( __( 'Coupon "%s"', 'stripe-payments' ), $coupon['code'] ) ] = floatval( '-' . $item->get_coupon_discount_amount() );
+			$data['additional_items'][ sprintf( __( 'Coupon "%s"', 'stripe-payments' ), $coupon['code'] ) ] = $coupon_discount_str;
 
 			$subtotal = $item->get_price( false, true ) + $item->get_items_total( false, true );
 			$subtotal = $subtotal < 0 ? 0 : $subtotal;

@@ -14,7 +14,8 @@ class ASP_Self_Hooks_Handler {
 
 		add_filter( 'asp_ng_available_currencies', array( $this, 'filter_available_currencies' ) );
 
-		add_action( 'asp_ng_before_token_request', array( $this, 'check_token' ) );
+		add_action( 'asp_ng_before_token_request', array( $this, 'check_token' ), 100 );
+		add_action( 'asp_ng_before_token_request', array( $this, 'check_rate_limit' ), 101 );
 	}
 
 	public function plugins_loaded() {
@@ -365,6 +366,34 @@ class ASP_Self_Hooks_Handler {
 			$out['err']     = __( 'Invalid security token.', 'stripe-payments' );
 			wp_send_json( $out );
 		}
+	}
+
+	public function check_rate_limit() {
+		//disabled for now
+		return;
+
+		$limit = 5;
+
+		$tdata = get_transient( 'asp_ng_throttle_data' );
+		$tdata = empty( $tdata ) ? array() : $tdata;
+
+		array_push( $tdata, time() );
+
+		foreach ( $tdata as $key => $req ) {
+			if ( $req < ( time() + 60 ) ) {
+				unset( $tdata[ $key ] );
+			}
+		}
+
+		set_transient( 'asp_ng_throttle_data', $tdata );
+
+		if ( count( $tdata ) > $limit ) {
+			$out            = array();
+			$out['success'] = false;
+			$out['err']     = __( 'Rate limit exceeded. Please try again later.', 'stripe-payments' );
+			wp_send_json( $out );
+		}
+
 	}
 
 }
