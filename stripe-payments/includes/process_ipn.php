@@ -60,7 +60,7 @@ class AcceptStripePayments_Process_IPN {
 				$to      = $opt['send_email_on_error_to'];
 				$from    = get_option( 'admin_email' );
 				$headers = 'From: ' . $from . "\r\n";
-				$subj    = __( 'Stripe Payments Error', 'stripe-payments' );
+				$subj    = __( 'Stripe Payments Error Details', 'stripe-payments' );
 				$body    = __( 'Following error occurred during payment processing:', 'stripe-payments' ) . "\r\n\r\n";
 				$body   .= $errMsg . "\r\n\r\n";
 				$body   .= $additional_msg . "\r\n";

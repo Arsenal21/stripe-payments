@@ -161,6 +161,7 @@ None.
 - Front-end card errors are now also sent via error email.
 - Countries displayed in alphabetical order now.
 - Prevented backend access to Legacy API functions if it's disabled.
+- Added extra note to the "error email" body explaining what an "error email" means.
 
 = 2.0.36 =
 - Added "Apply Per-Order" option for fixed amount coupons.

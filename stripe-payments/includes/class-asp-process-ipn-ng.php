@@ -36,9 +36,10 @@ class ASP_Process_IPN_NG {
 			//send email to notify site admin (if option enabled)
 			$opt = get_option( 'AcceptStripePayments-settings' );
 			if ( isset( $opt['send_email_on_error'] ) && $opt['send_email_on_error'] ) {
-				$body  = __( 'Following error occurred during payment processing:', 'stripe-payments' ) . "\r\n\r\n";
-				$body .= $err_msg . "\r\n\r\n";
-				$body .= __( 'Debug data:', 'stripe-payments' ) . "\r\n";
+                                $body   = "";
+				$body   .= __( 'Following error occurred during payment processing:', 'stripe-payments' ) . "\r\n\r\n";
+				$body   .= $err_msg . "\r\n\r\n";
+				$body   .= __( 'Debug data:', 'stripe-payments' ) . "\r\n";
 				$post    = filter_var( $_POST, FILTER_DEFAULT, FILTER_REQUIRE_ARRAY ); //phpcs:ignore
 				foreach ( $post as $key => $value ) {
 					$value = is_array( $value ) ? wp_json_encode( $value ) : $value;
