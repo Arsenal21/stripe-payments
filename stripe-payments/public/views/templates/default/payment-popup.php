@@ -54,6 +54,10 @@ echo '<style>' . $css . '</style>' . "\r\n";
 						<circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" />
 						<path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" /></svg>
 				</div>
+				<div id="redirect-spinner" style="display:none;">
+					<span class="rs-arrow rs-arrow-first bounceAlpha"></span>
+					<span class="rs-arrow rs-arrow-second bounceAlpha"></span>
+				</div>
 			</div>
 			<div id="modal-header">
 				<?php if ( $a['data']['item_logo'] ) { ?>
