@@ -55,30 +55,6 @@ class ASP_PP_Ajax {
 			$opts = array();
 		}
 
-		try {
-			ASP_Utils::load_stripe_lib();
-			$key = $this->asp_main->is_live ? $this->asp_main->APISecKey : $this->asp_main->APISecKeyTest;
-			\Stripe\Stripe::setApiKey( $key );
-
-			$api = ASP_Stripe_API::get_instance();
-
-			$api->set_api_key( $key );
-
-		} catch ( \Throwable $e ) {
-			$out['err'] = __( 'Stripe API error occurred:', 'stripe-payments' ) . ' ' . $e->getMessage();
-			$order      = new ASP_Order_Item();
-			if ( false !== $order->find( 'pi_id', $pi_id ) ) {
-				$order->change_status( 'error', $out['err'] );
-			}
-			$body  = __( 'Following error occurred during payment processing:', 'stripe-payments' ) . "\r\n\r\n";
-			$body .= $out['err'] . "\r\n\r\n";
-			$body .= __( 'Debug data:', 'stripe-payments' ) . "\r\n";
-			$body .= wp_json_encode( $_POST );
-			ASP_Debug_Logger::log( __( 'Following error occurred during payment processing:', 'stripe-payments' ) . ' ' . $out['err'], false );
-			ASP_Utils::send_error_email( $body );
-			wp_send_json( $out );
-		}
-
 		$opts['use_stripe_sdk'] = false;
 
 		$home_url = admin_url( 'admin-ajax.php' );
@@ -94,8 +70,31 @@ class ASP_PP_Ajax {
 		$opts['return_url'] = $return_url;
 
 		try {
-			$pi = \Stripe\PaymentIntent::retrieve( $pi_id );
+
+			ASP_Utils::load_stripe_lib();
+			$key = $this->asp_main->is_live ? $this->asp_main->APISecKey : $this->asp_main->APISecKeyTest;
+			\Stripe\Stripe::setApiKey( $key );
+
+			$api = ASP_Stripe_API::get_instance();
+			$api->set_api_key( $key );
+			if ( ASP_Utils::use_internal_api() ) {
+				$pi = $api->get( 'payment_intents/' . $pi_id );
+				if ( false === $pi ) {
+					$err = $api->get_last_error();
+					throw new \Exception( $err['message'], isset( $err['error_code'] ) ? $err['error_code'] : null );
+				}
+				$pi = $api->post(
+					'payment_intents/' . $pi_id . '/confirm',
+					$opts,
+				);
+				if ( false === $pi ) {
+					$err = $api->get_last_error();
+					throw new \Exception( $err['message'], isset( $err['error_code'] ) ? $err['error_code'] : null );
+				}
+			} else {
+				$pi = \Stripe\PaymentIntent::retrieve( $pi_id );
 				$pi->confirm( $opts );
+			}
 		} catch ( \Throwable $e ) {
 			$out['err'] = __( 'Stripe API error occurred:', 'stripe-payments' ) . ' ' . $e->getMessage();
 			$order      = new ASP_Order_Item();

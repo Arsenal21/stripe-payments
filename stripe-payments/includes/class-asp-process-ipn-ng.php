@@ -65,7 +65,7 @@ class ASP_Process_IPN_NG {
 			$key = $is_live ? $this->asp_class->APISecKey : $this->asp_class->APISecKeyTest;
 			\Stripe\Stripe::setApiKey( $key );
 
-			if ( method_exists( 'ASP_Utils', 'use_internal_api' ) && ASP_Utils::use_internal_api() ) {
+			if ( ASP_Utils::use_internal_api() ) {
 
 				$api = ASP_Stripe_API::get_instance();
 				$api->set_api_key( $key );
@@ -79,7 +79,7 @@ class ASP_Process_IPN_NG {
 					);
 					if ( false === $res ) {
 						$err       = $api->get_last_error();
-						$this->err = $err;
+						$this->err = $err['message'];
 					}
 				}
 			} else {
