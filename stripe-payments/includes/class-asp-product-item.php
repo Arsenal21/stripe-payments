@@ -184,8 +184,11 @@ class ASP_Product_Item {
 			$this->price = empty( $this->price ) ? 0 : round( $this->price * 100 ) / 100;
 		}
 		if ( $price_with_discount && $this->coupon ) {
-			$this->get_discount_amount( $this->price, $in_cents );
-			$this->price_with_discount = $this->price * $this->get_quantity() - $this->coupon['discountAmount'];
+			$discount_amount = $this->get_discount_amount( $this->price, $in_cents );
+			if ( ! $this->coupon['per_order'] ) {
+				$discount_amount = $this->coupon['discountAmount'] * $this->get_quantity();
+			}
+			$this->price_with_discount = $this->price * $this->get_quantity() - $discount_amount;
 		}
 		if ( $in_cents ) {
 			if ( $price_with_discount && $this->coupon ) {
