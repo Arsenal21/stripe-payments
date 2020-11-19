@@ -25,6 +25,24 @@ class ASP_Stripe_API {
 		$this->api_key = $key;
 	}
 
+	private function encode_params( $d ) {
+		if ( true === $d ) {
+			return 'true';
+		}
+		if ( false === $d ) {
+			return 'false';
+		}
+		if ( is_array( $d ) ) {
+			$res = array();
+			foreach ( $d as $k => $v ) {
+				$res[ $k ] = $this->encode_params( $v );
+			}
+			return $res;
+		}
+
+		return $d;
+	}
+
 	private function before_request() {
 		$this->last_error = array();
 	}
@@ -107,7 +125,7 @@ class ASP_Stripe_API {
 			array(
 				'method'  => 'POST',
 				'headers' => $headers,
-				'body'    => $params,
+				'body'    => $this->encode_params( $params ),
 			)
 		);
 
