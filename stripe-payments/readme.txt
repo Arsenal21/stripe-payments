@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 4.7
 Tested up to: 5.5
 Requires PHP: 5.6
-Stable tag: 2.0.37
+Stable tag: 2.0.38
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -154,6 +154,12 @@ Yes, please visit Stripe Payments > Settings screen for options.
 None.
 
 == Changelog ==
+
+= 2.0.38 =
+- Payment confirmation is now done on backend.
+- Limit reCaptcha token reusage.
+- Fixed full discount coupons were improperly handled in some situations.
+- Fixed rare internal Stripe API wrapper issue.
 
 = 2.0.37 =
 - Proper tax amount rounding when quantity is >1.

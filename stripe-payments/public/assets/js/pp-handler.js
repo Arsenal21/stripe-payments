@@ -843,7 +843,7 @@ function handlePayment() {
 
 	//regen cs
 	if (!is_full_discount() && !vars.data.token_not_required && (vars.data.client_secret === '' || vars.data.amount !== clientSecAmount || vars.data.currency !== clientSecCurrency)) {
-		var reqStr = 'action=asp_pp_req_token&amount=' + vars.data.amount + '&curr=' + vars.data.currency + '&product_id=' + vars.data.product_id;
+		var reqStr = 'action=asp_pp_create_pi&amount=' + vars.data.amount + '&curr=' + vars.data.currency + '&product_id=' + vars.data.product_id;
 		reqStr = reqStr + '&quantity=' + vars.data.quantity;
 		if (vars.data.cust_id) {
 			reqStr = reqStr + '&cust_id=' + vars.data.cust_id;
@@ -858,7 +858,7 @@ function handlePayment() {
 		reqStr += '&token=' + vars.data.visitor_token;
 		vars.data.csRegenParams = reqStr;
 		doAddonAction('csBeforeRegenParams');
-		console.log('Regen CS');
+		console.log('Doing asp_pp_create_pi');
 		new ajaxRequest(vars.ajaxURL, vars.data.csRegenParams,
 			function (res) {
 				try {
@@ -969,6 +969,7 @@ function handlePayment() {
 				smokeScreen(false);
 			} else {
 				ct_reqStr = 'action=asp_pp_confirm_token&asp_token_id=' + result.token.id + ct_reqStr;
+				vars.data.token_id = result.token.id;
 				confirmToken(ct_reqStr);
 			}
 		});
@@ -1006,49 +1007,112 @@ function handlePayment() {
 					triggerEvent(form, 'submit');
 				}
 			});
+		return;
+	}
 
-	} else {
-		if (!vars.data.dont_save_card && !vars.data.dont_setup_future_usage) {
-			opts.save_payment_method = true;
-			opts.setup_future_usage = 'off_session';
+	if (!vars.data.dont_save_card && !vars.data.dont_setup_future_usage) {
+		opts.save_payment_method = true;
+		opts.setup_future_usage = 'off_session';
+	}
+	if (vars.data.stripe_receipt_email) {
+		opts.receipt_email = emailInput.value;
+	}
+
+	if (vars.data.pm_id || vars.data.token_id) {
+		confirmPI();
+		return;
+	}
+
+	var c_opts = {
+		name: billingNameInput.value
+	};
+	if (vars.data.billing_address) {
+		c_opts.address_line1 = bAddr.value;
+		c_opts.address_city = bCity.value;
+		c_opts.address_state = bState === null ? '' : bState.value;
+		c_opts.address_country = bCountry.value || bCountry.options[bCountry.selectedIndex].value;
+		if (postal_code) {
+			c_opts.address_zip = postal_code;
 		}
-		if (vars.data.stripe_receipt_email) {
-			opts.receipt_email = emailInput.value;
+	}
+
+	console.log('Doing createToken()');
+
+	stripe.createToken(card, c_opts).then(function (result) {
+		console.log(result);
+		if (result.error) {
+			submitBtn.disabled = false;
+			errorCont.innerHTML = result.error.message;
+			errorCont.style.display = 'block';
+			smokeScreen(false);
+		} else {
+			vars.data.token_id = result.token.id;
+			confirmPI();
+			return;
+		}
+	});
+
+	function confirmPI() {
+		delete (opts.payment_method);
+
+		if (!vars.data.pm_confirmed) {
+			opts.payment_method_data = { type: 'card' };
+			opts.payment_method_data.card = { token: vars.data.token_id };
 		}
 
 		vars.confirmCardPayment = {};
 		vars.confirmCardPayment.opts = opts;
 
 		doAddonAction('confirmCardPaymentOpts');
+		console.log('Doing asp_pp_confirm_pi');
 
-		console.log('Doing confirmCardPayment()');
-		stripe.confirmCardPayment(vars.data.client_secret, vars.confirmCardPayment.opts)
-			.then(function (result) {
-				console.log(result);
-				handleCardPaymentResult(result);
-			});
+		opts = vars.confirmCardPayment.opts;
+
+		new ajaxRequest(vars.ajaxURL, 'action=asp_pp_confirm_pi&product_id=' + vars.data.product_id + '&pi_id=' + vars.data.pi_id + '&token=' + vars.data.visitor_token + '&opts=' + JSON.stringify(opts),
+			function (response) {
+				console.log(response);
+				var resp = JSON.parse(response.response);
+				if (resp.err) {
+					vars.data.token_id = null;
+					vars.data.pm_id = null;
+					submitBtn.disabled = false;
+					errorCont.innerHTML = resp.err;
+					errorCont.style.display = 'block';
+					smokeScreen(false);
+					return false;
+				}
+				piInput.value = vars.data.pi_id;
+				if (!vars.data.coupon && couponInput) {
+					couponInput.value = '';
+				}
+
+				if (resp.redirect_to) {
+					saveFormData(function () {
+						jQuery('#btn-spinner').hide();
+						jQuery('#redirect-spinner').fadeIn();
+						if (!inIframe || window.doSelfSubmit) {
+							window.location.href = resp.redirect_to;
+						} else {
+							window.top.location.href = resp.redirect_to;
+						}
+					}, null);
+					return;
+				}
+				triggerEvent(form, 'submit');
+			},
+			function (response, errMsg) {
+				submitBtn.disabled = false;
+				errorCont.innerHTML = errMsg;
+				errorCont.style.display = 'block';
+				smokeScreen(false);
+			}
+		);
 	}
+
 }
 
 function handleCardPaymentResult(result) {
 	if (result.error) {
-		console.log('Sending error info...');
-		if (vars.data.pi_id) {
-			new ajaxRequest(vars.ajaxURL,
-				'action=asp_pp_payment_error&pi_id=' + vars.data.pi_id + '&err_msg=' + result.error.message + '&err_data=' + JSON.stringify(result),
-				function (response) {
-					var res = JSON.parse(response.response);
-					if (res.success) {
-						console.log('Error info sent');
-					} else {
-						console.log('Error info sending failed');
-					}
-				},
-				function (response, errMsg) {
-					console.log('AJAX request failed: ' + errMsg);
-				}
-			);
-		}
 		submitBtn.disabled = false;
 		errorCont.innerHTML = result.error.message;
 		errorCont.style.display = 'block';
@@ -1087,6 +1151,8 @@ function confirmToken(reqStr) {
 					if (resp.do_card_setup) {
 						vars.data.do_card_setup = true;
 					}
+					vars.data.pi_id = resp.pi_id;
+					vars.data.pm_confirmed = true;
 					handlePayment();
 				} else {
 					piInput.value = resp.pi_id;

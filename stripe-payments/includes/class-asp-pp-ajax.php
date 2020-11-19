@@ -13,8 +13,11 @@ class ASP_PP_Ajax {
 	}
 
 	public function add_ajax_handlers() {
-		add_action( 'wp_ajax_asp_pp_req_token', array( $this, 'handle_request_token' ) );
-		add_action( 'wp_ajax_nopriv_asp_pp_req_token', array( $this, 'handle_request_token' ) );
+		add_action( 'wp_ajax_asp_pp_create_pi', array( $this, 'handle_create_pi' ) );
+		add_action( 'wp_ajax_nopriv_asp_pp_create_pi', array( $this, 'handle_create_pi' ) );
+
+		add_action( 'wp_ajax_asp_pp_confirm_pi', array( $this, 'handle_confirm_pi' ) );
+		add_action( 'wp_ajax_nopriv_asp_pp_confirm_pi', array( $this, 'handle_confirm_pi' ) );
 
 		add_action( 'wp_ajax_asp_pp_save_form_data', array( $this, 'save_form_data' ) );
 		add_action( 'wp_ajax_nopriv_asp_pp_save_form_data', array( $this, 'save_form_data' ) );
@@ -26,7 +29,98 @@ class ASP_PP_Ajax {
 		add_action( 'wp_ajax_nopriv_asp_pp_check_coupon', array( $this, 'handle_check_coupon' ) );
 	}
 
-	public function handle_request_token() {
+	public function handle_confirm_pi() {
+		$product_id = filter_input( INPUT_POST, 'product_id', FILTER_SANITIZE_NUMBER_INT );
+
+		$item = new ASP_Product_Item( $product_id );
+
+		if ( $item->get_last_error() ) {
+			$out['err'] = __( 'Error occurred:', 'stripe-payments' ) . ' ' . $item->get_last_error();
+			wp_send_json( $out );
+		}
+
+		$item = apply_filters( 'asp_ng_pp_product_item_override', $item );
+
+		do_action( 'asp_ng_before_token_request', $item );
+
+		do_action( 'asp_ng_product_mode_keys', $product_id );
+
+		$pi_id = filter_input( INPUT_POST, 'pi_id', FILTER_SANITIZE_STRING );
+		$opts  = filter_input( INPUT_POST, 'opts', FILTER_SANITIZE_STRING );
+
+		if ( ! empty( $opts ) ) {
+			$opts = html_entity_decode( $opts );
+			$opts = json_decode( $opts, true );
+		} else {
+			$opts = array();
+		}
+
+		$opts['use_stripe_sdk'] = false;
+
+		$home_url = admin_url( 'admin-ajax.php' );
+
+		$return_url = add_query_arg(
+			array(
+				'action'  => 'asp_next_action_results',
+				'is_live' => $this->asp_main->is_live,
+			),
+			$home_url
+		);
+
+		$opts['return_url'] = $return_url;
+
+		try {
+
+			ASP_Utils::load_stripe_lib();
+			$key = $this->asp_main->is_live ? $this->asp_main->APISecKey : $this->asp_main->APISecKeyTest;
+			\Stripe\Stripe::setApiKey( $key );
+
+			$api = ASP_Stripe_API::get_instance();
+			$api->set_api_key( $key );
+			if ( ASP_Utils::use_internal_api() ) {
+				$pi = $api->get( 'payment_intents/' . $pi_id );
+				if ( false === $pi ) {
+					$err = $api->get_last_error();
+					throw new \Exception( $err['message'], isset( $err['error_code'] ) ? $err['error_code'] : null );
+				}
+				$pi = $api->post(
+					'payment_intents/' . $pi_id . '/confirm',
+					$opts,
+				);
+				if ( false === $pi ) {
+					$err = $api->get_last_error();
+					throw new \Exception( $err['message'], isset( $err['error_code'] ) ? $err['error_code'] : null );
+				}
+			} else {
+				$pi = \Stripe\PaymentIntent::retrieve( $pi_id );
+				$pi->confirm( $opts );
+			}
+		} catch ( \Throwable $e ) {
+			$out['err'] = __( 'Stripe API error occurred:', 'stripe-payments' ) . ' ' . $e->getMessage();
+			$order      = new ASP_Order_Item();
+			if ( false !== $order->find( 'pi_id', $pi_id ) ) {
+				$order->change_status( 'error', $out['err'] );
+			}
+			$body  = __( 'Following error occurred during payment processing:', 'stripe-payments' ) . "\r\n\r\n";
+			$body .= $out['err'] . "\r\n\r\n";
+			$body .= __( 'Debug data:', 'stripe-payments' ) . "\r\n";
+			$body .= wp_json_encode( $_POST );
+			ASP_Debug_Logger::log( __( 'Following error occurred during payment processing:', 'stripe-payments' ) . ' ' . $out['err'], false );
+			ASP_Utils::send_error_email( $body );
+			wp_send_json( $out );
+		}
+
+		$out['pi_id'] = $pi->id;
+
+		if ( isset( $pi->next_action ) ) {
+			$out['redirect_to'] = $pi->next_action->redirect_to_url->url;
+		}
+
+		wp_send_json( $out );
+
+	}
+
+	public function handle_create_pi() {
 		$out            = array();
 		$out['success'] = false;
 		$product_id     = filter_input( INPUT_POST, 'product_id', FILTER_SANITIZE_NUMBER_INT );
@@ -89,8 +183,9 @@ class ASP_PP_Ajax {
 		try {
 
 			$pi_params = array(
-				'amount'   => $amount,
-				'currency' => $curr,
+				'amount'              => $amount,
+				'currency'            => $curr,
+				'confirmation_method' => 'manual',
 			);
 
 			$post_billing_details = filter_input( INPUT_POST, 'billing_details', FILTER_SANITIZE_STRING );
@@ -267,38 +362,6 @@ class ASP_PP_Ajax {
 		$out['pi_id']        = $intent->id;
 		$out['cust_id']      = $cust_id;
 		$out                 = apply_filters( 'asp_ng_before_pi_result_send', $out, $intent );
-		wp_send_json( $out );
-	}
-
-	public function pp_payment_error() {
-		$pi_id    = filter_input( INPUT_POST, 'pi_id', FILTER_SANITIZE_STRING );
-		$err_msg  = filter_input( INPUT_POST, 'err_msg', FILTER_SANITIZE_STRING );
-		$err_data = filter_input( INPUT_POST, 'err_data', FILTER_SANITIZE_STRING );
-
-		$out = array( 'success' => false );
-
-		if ( empty( $pi_id ) || empty( $err_msg || empty( $err_data ) ) ) {
-			wp_send_json( $out );
-		}
-
-		$order = new ASP_Order_Item();
-		if ( false === $order->find( 'pi_id', $pi_id ) ) {
-			wp_send_json( $out );
-		}
-
-		$order->change_status( 'error', $err_msg );
-
-		if ( ! empty( $err_data ) ) {
-			$err_data = html_entity_decode( $err_data );
-			$body     = __( 'Following error occurred during payment processing:', 'stripe-payments' ) . "\r\n\r\n";
-			$body    .= $err_msg . "\r\n\r\n";
-			$body    .= __( 'Debug data:', 'stripe-payments' ) . "\r\n";
-			$body    .= $err_data;
-			ASP_Debug_Logger::log( __( 'Following error occurred during payment processing:', 'stripe-payments' ) . ' ' . $err_msg, false );
-			ASP_Utils::send_error_email( $body );
-		}
-
-		$out['success'] = true;
 		wp_send_json( $out );
 	}
 

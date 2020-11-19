@@ -3,20 +3,28 @@ class ASP_Process_IPN_NG {
 
 	public $asp_redirect_url = '';
 	public $item;
+	public $err = '';
 
 	protected static $instance = null;
 
 	public function __construct() {
 		self::$instance = $this;
 
-		$process_ipn            = filter_input( INPUT_POST, 'asp_process_ipn', FILTER_SANITIZE_NUMBER_INT );
 		$this->asp_class        = AcceptStripePayments::get_instance();
 		$this->sess             = ASP_Session::get_instance();
 		$this->asp_redirect_url = $this->asp_class->get_setting( 'checkout_url' );
+
+		$process_ipn = filter_input( INPUT_POST, 'asp_process_ipn', FILTER_SANITIZE_NUMBER_INT );
 		if ( $process_ipn ) {
 			add_action( 'asp_ng_process_ipn_payment_data_item_override', array( $this, 'payment_data_override' ), 10, 2 );
 			add_action( 'wp_loaded', array( $this, 'process_ipn' ), 2147483647 );
 		}
+
+		if ( wp_doing_ajax() ) {
+			add_action( 'wp_ajax_asp_next_action_results', array( $this, 'handle_next_action_results' ) );
+			add_action( 'wp_ajax_nopriv_asp_next_action_results', array( $this, 'handle_next_action_results' ) );
+		}
+
 	}
 
 	public static function get_instance() {
@@ -24,6 +32,67 @@ class ASP_Process_IPN_NG {
 			self::$instance = new self();
 		}
 		return self::$instance;
+	}
+
+	public function handle_next_action_results() {
+		$pi_id = filter_input( INPUT_GET, 'payment_intent', FILTER_SANITIZE_STRING );
+
+		$is_live = filter_input( INPUT_GET, 'is_live', FILTER_SANITIZE_STRING );
+		$is_live = 'false' === $is_live ? 0 : 1;
+
+		$sess      = ASP_Session::get_instance();
+		$form_data = $sess->get_transient_data( 'asp_pp_form_data' );
+
+		foreach ( $form_data as $name => $value ) {
+			$post_data[ 'asp_' . $name ] = $value;
+		}
+
+		unset( $post_data['asp_process_ipn'] );
+
+		$post_data['asp_payment_intent'] = $pi_id;
+
+		$_POST = $post_data;
+
+		$this->post_data = $post_data;
+
+		$product_id = $this->get_post_var( 'asp_product_id', FILTER_SANITIZE_NUMBER_INT );
+
+		do_action( 'asp_ng_product_mode_keys', $product_id );
+
+		try {
+
+			ASPMain::load_stripe_lib();
+			$key = $is_live ? $this->asp_class->APISecKey : $this->asp_class->APISecKeyTest;
+			\Stripe\Stripe::setApiKey( $key );
+
+			if ( ASP_Utils::use_internal_api() ) {
+
+				$api = ASP_Stripe_API::get_instance();
+				$api->set_api_key( $key );
+
+				$intent = $api->get( 'payment_intents/' . $pi_id );
+
+				if ( 'succeeded' !== $intent->status ) {
+					$res = $api->post(
+						'payment_intents/' . $pi_id . '/confirm',
+						array(),
+					);
+					if ( false === $res ) {
+						$err       = $api->get_last_error();
+						$this->err = $err['message'];
+					}
+				}
+			} else {
+				$intent = \Stripe\PaymentIntent::retrieve( $pi_id );
+				if ( 'succeeded' !== $intent->status ) {
+					$intent->confirm();
+				}
+			}
+		} catch ( \Throwable $e ) {
+			$this->err = $e->getMessage();
+		}
+
+		$this->process_ipn( $post_data );
 	}
 
 	public function ipn_completed( $err_msg = '' ) {
@@ -36,10 +105,10 @@ class ASP_Process_IPN_NG {
 			//send email to notify site admin (if option enabled)
 			$opt = get_option( 'AcceptStripePayments-settings' );
 			if ( isset( $opt['send_email_on_error'] ) && $opt['send_email_on_error'] ) {
-                                $body   = "";
-				$body   .= __( 'Following error occurred during payment processing:', 'stripe-payments' ) . "\r\n\r\n";
-				$body   .= $err_msg . "\r\n\r\n";
-				$body   .= __( 'Debug data:', 'stripe-payments' ) . "\r\n";
+				$body  = '';
+				$body .= __( 'Following error occurred during payment processing:', 'stripe-payments' ) . "\r\n\r\n";
+				$body .= $err_msg . "\r\n\r\n";
+				$body .= __( 'Debug data:', 'stripe-payments' ) . "\r\n";
 				$post    = filter_var( $_POST, FILTER_DEFAULT, FILTER_REQUIRE_ARRAY ); //phpcs:ignore
 				foreach ( $post as $key => $value ) {
 					$value = is_array( $value ) ? wp_json_encode( $value ) : $value;
@@ -124,6 +193,10 @@ class ASP_Process_IPN_NG {
 
 		if ( empty( $this->asp_redirect_url ) && $item->get_redir_url() ) {
 			$this->asp_redirect_url = $item->get_redir_url();
+		}
+
+		if ( $this->err ) {
+			$this->ipn_completed( $this->err );
 		}
 
 		$pi = $this->get_post_var( 'asp_payment_intent', FILTER_SANITIZE_STRING );

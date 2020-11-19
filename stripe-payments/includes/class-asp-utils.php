@@ -639,13 +639,13 @@ class ASP_Utils {
 		$headers = 'From: ' . $from . "\r\n";
 		$subj    = __( 'Stripe Payments Error Details', 'stripe-payments' );
 
-                //Add a general note to the error email adding more explanation to the site admin as to what this error email means.
-                $general_note_for_error_email  = __( 'Note: It is normal for transaction errors like this to happen. For example - if a customer enters an incorrect card number or an expired card details, it will trigger an error.', 'stripe-payments' ) . "\r\n";
-                $general_note_for_error_email .= __( 'The customer will be requested to enter valid details for the transaction to proceed.', 'stripe-payments' ) . "\r\n";
-                $general_note_for_error_email .= __( 'This email contains some raw transaction data just for the site admin to be aware of the incident.', 'stripe-payments' ) . "\r\n";
-                $general_note_for_error_email .= '-----' . "\r\n\r\n";
+		//Add a general note to the error email adding more explanation to the site admin as to what this error email means.
+		$general_note_for_error_email  = __( 'Note: It is normal for transaction errors like this to happen. For example - if a customer enters an incorrect card number or an expired card details, it will trigger an error.', 'stripe-payments' ) . "\r\n";
+		$general_note_for_error_email .= __( 'The customer will be requested to enter valid details for the transaction to proceed.', 'stripe-payments' ) . "\r\n";
+		$general_note_for_error_email .= __( 'This email contains some raw transaction data just for the site admin to be aware of the incident.', 'stripe-payments' ) . "\r\n";
+		$general_note_for_error_email .= '-----' . "\r\n\r\n";
 
-                $body = $general_note_for_error_email . $body;
+		$body = $general_note_for_error_email . $body;
 
 		$schedule_result = ASP_Utils::mail( $to, $subj, $body, $headers, true );
 		ASP_Debug_Logger::log( 'Error email sent to ' . $to . ', from email address used: ' . $from );

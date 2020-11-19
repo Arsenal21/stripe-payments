@@ -4,6 +4,7 @@ class ASPRECAPTCHA_main {
 	public $asp_main;
 	public $keys_entered = false;
 	public $enabled      = false;
+	private $max_tokens  = 4;
 
 	public function __construct() {
 		add_action( 'plugins_loaded', array( $this, 'plugins_loaded' ) );
@@ -120,6 +121,7 @@ class ASPRECAPTCHA_main {
 			$sess->set_transient_data( 'reCaptcha_error', $out['error'] );
 		} else {
 			$sess->set_transient_data( 'reCaptcha_checked', true );
+			$sess->set_transient_data( 'reCaptcha_tokens', $this->max_tokens );
 		}
 
 		wp_send_json( $out );
@@ -143,6 +145,20 @@ class ASPRECAPTCHA_main {
 				)
 			);
 		}
+
+		$tokens = $sess->get_transient_data( 'reCaptcha_tokens', 0 );
+
+		if ( $tokens <= 0 ) {
+			wp_send_json(
+				array(
+					'success' => false,
+					'err'     => __( 'reCaptcha tokens expired. Please refresh the page and try again.', 'stripe-payments' ),
+				)
+			);
+		}
+
+		$tokens--;
+		$sess->set_transient_data( 'reCaptcha_tokens', $tokens );
 
 		return true;
 	}
