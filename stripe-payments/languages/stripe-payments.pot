@@ -2,15 +2,15 @@
 # This file is distributed under the same license as the Stripe Payments plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Stripe Payments 2.0.38t1\n"
+"Project-Id-Version: Stripe Payments 2.0.38\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/stripe-payments\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2020-11-18T01:07:56+02:00\n"
-"PO-Revision-Date: 2020-11-18T01:07:56+02:00\n"
+"POT-Creation-Date: 2020-11-19T19:01:09+02:00\n"
+"PO-Revision-Date: 2020-11-19T19:01:09+02:00\n"
 "X-Generator: WP-CLI 2.0.1\n"
 "X-Domain: stripe-payments\n"
 
@@ -1854,27 +1854,27 @@ msgid "Error"
 msgstr ""
 
 #: admin/includes/class-coupons.php:37
-#: includes/class-asp-product-item.php:426
+#: includes/class-asp-product-item.php:429
 msgid "Coupon not found."
 msgstr ""
 
 #: admin/includes/class-coupons.php:44
-#: includes/class-asp-product-item.php:432
+#: includes/class-asp-product-item.php:435
 msgid "Coupon is not active."
 msgstr ""
 
 #: admin/includes/class-coupons.php:51
-#: includes/class-asp-product-item.php:438
+#: includes/class-asp-product-item.php:441
 msgid "Coupon is not available yet."
 msgstr ""
 
 #: admin/includes/class-coupons.php:58
-#: includes/class-asp-product-item.php:444
+#: includes/class-asp-product-item.php:447
 msgid "Coupon has expired."
 msgstr ""
 
 #: admin/includes/class-coupons.php:66
-#: includes/class-asp-product-item.php:451
+#: includes/class-asp-product-item.php:454
 msgid "Coupon redemption limit is reached."
 msgstr ""
 
@@ -1887,7 +1887,7 @@ msgid "No product ID specified."
 msgstr ""
 
 #: admin/includes/class-coupons.php:116
-#: includes/class-asp-product-item.php:482
+#: includes/class-asp-product-item.php:485
 msgid "Coupon is not allowed for this product."
 msgstr ""
 
@@ -2262,15 +2262,15 @@ msgstr ""
 
 #: admin/views/admin.php:131
 #: includes/class-asp-pp-ajax.php:38
-#: includes/class-asp-pp-ajax.php:137
-#: includes/class-asp-pp-ajax.php:349
-#: includes/class-asp-pp-ajax.php:353
-#: includes/class-asp-pp-ajax.php:382
+#: includes/class-asp-pp-ajax.php:136
+#: includes/class-asp-pp-ajax.php:348
+#: includes/class-asp-pp-ajax.php:352
+#: includes/class-asp-pp-ajax.php:381
 msgid "Error occurred:"
 msgstr ""
 
 #. translators: %d is number of items in stock
-#: includes/class-asp-product-item.php:385
+#: includes/class-asp-product-item.php:388
 #: includes/class-asp-process-ipn-ng.php:463
 #: includes/class-asp-pp-display.php:475
 #: includes/shortcodes/class-asp-shortcode-ng.php:184
@@ -2283,7 +2283,7 @@ msgstr ""
 msgid "Tax"
 msgstr ""
 
-#: includes/class-asp-product-item.php:396
+#: includes/class-asp-product-item.php:399
 #: includes/class-asp-process-ipn-ng.php:471
 #: includes/class-asp-pp-display.php:476
 #: includes/shortcodes/class-asp-shortcode-ng.php:194
@@ -2296,12 +2296,12 @@ msgstr ""
 msgid "Shipping"
 msgstr ""
 
-#: includes/class-asp-product-item.php:527
+#: includes/class-asp-product-item.php:530
 msgid "No product ID provided."
 msgstr ""
 
 #. translators: %d is product id
-#: includes/class-asp-product-item.php:535
+#: includes/class-asp-product-item.php:538
 msgid "Can't find product with ID %d"
 msgstr ""
 
@@ -2347,17 +2347,14 @@ msgstr ""
 
 #: includes/class-asp-process-ipn-ng.php:109
 #: includes/process_ipn.php:64
-#: includes/class-asp-pp-ajax.php:73
-#: includes/class-asp-pp-ajax.php:77
-#: includes/class-asp-pp-ajax.php:105
-#: includes/class-asp-pp-ajax.php:109
+#: includes/class-asp-pp-ajax.php:104
+#: includes/class-asp-pp-ajax.php:108
 msgid "Following error occurred during payment processing:"
 msgstr ""
 
 #: includes/class-asp-process-ipn-ng.php:111
 #: includes/process_ipn.php:67
-#: includes/class-asp-pp-ajax.php:75
-#: includes/class-asp-pp-ajax.php:107
+#: includes/class-asp-pp-ajax.php:106
 msgid "Debug data:"
 msgstr ""
 
@@ -2421,7 +2418,7 @@ msgstr ""
 
 #: includes/class-asp-pp-display.php:469
 #: includes/shortcodes/class-shortcode-asp.php:98
-#: includes/class-asp-pp-ajax.php:156
+#: includes/class-asp-pp-ajax.php:155
 msgid "Minimum amount is"
 msgstr ""
 
@@ -2443,7 +2440,7 @@ msgstr ""
 #. translators: %d is number of items in stock
 #: includes/class-asp-pp-display.php:474
 #: includes/shortcodes/class-shortcode-asp.php:102
-#: includes/class-asp-pp-ajax.php:146
+#: includes/class-asp-pp-ajax.php:145
 msgid "You cannot order more items than available: %d"
 msgstr ""
 
@@ -2802,10 +2799,9 @@ msgstr ""
 msgid "Order Info: "
 msgstr ""
 
-#: includes/class-asp-pp-ajax.php:68
-#: includes/class-asp-pp-ajax.php:100
-#: includes/class-asp-pp-ajax.php:175
-#: includes/class-asp-pp-ajax.php:178
+#: includes/class-asp-pp-ajax.php:99
+#: includes/class-asp-pp-ajax.php:174
+#: includes/class-asp-pp-ajax.php:177
 msgid "Stripe API error occurred:"
 msgstr ""
 
