@@ -124,10 +124,16 @@ class ASP_Product_Item {
 			foreach ( $this->items as $item ) {
 				$items_total += $item['price'];
 			}
+		} else {
+			return 0;
 		}
+
 		if ( $with_discount && $this->coupon && 'perc' === $this->coupon['discount_type'] ) {
 			$items_total = $this->apply_discount_to_amount( $items_total, false );
 		}
+
+		$items_total = $items_total < 0 ? 0 : $items_total;
+
 		return $in_cents ? $this->in_cents( $items_total ) : $items_total;
 	}
 
@@ -184,11 +190,8 @@ class ASP_Product_Item {
 			$this->price = empty( $this->price ) ? 0 : round( $this->price * 100 ) / 100;
 		}
 		if ( $price_with_discount && $this->coupon ) {
-			$discount_amount = $this->get_discount_amount( $this->price, $in_cents );
-			if ( ! $this->coupon['per_order'] ) {
-				$discount_amount = $this->coupon['discountAmount'] * $this->get_quantity();
-			}
-			$this->price_with_discount = $this->price * $this->get_quantity() - $discount_amount;
+			$discount_amount           = $this->get_discount_amount( $this->price, $in_cents );
+			$this->price_with_discount = $this->price - $discount_amount;
 		}
 		if ( $in_cents ) {
 			if ( $price_with_discount && $this->coupon ) {
@@ -235,9 +238,6 @@ class ASP_Product_Item {
 				$discount_amount = round( $amount * ( $this->coupon['discount'] / 100 ), $perc );
 			} else {
 				$discount_amount = $this->coupon['discount'];
-				if ( ! $this->coupon['per_order'] ) {
-					$discount_amount = $discount_amount * $this->get_quantity();
-				}
 				if ( $in_cents && ! AcceptStripePayments::is_zero_cents( $this->get_currency() ) ) {
 					$discount_amount = $discount_amount * 100;
 				}
@@ -282,7 +282,7 @@ class ASP_Product_Item {
 
 		$total = $total * $this->get_quantity();
 
-		$total = $this->apply_discount_to_amount( $total, $in_cents );
+		$total = $total - $this->get_discount_amount( $total, $in_cents );
 
 		if ( $this->get_tax() ) {
 			$total = $total + $this->get_tax_amount( $in_cents, true );
@@ -320,11 +320,17 @@ class ASP_Product_Item {
 	}
 
 	public function get_tax_amount( $in_cents = false, $price_with_discount = false ) {
-		$total       = $this->get_price( false, $price_with_discount );
-		$items_total = $this->get_items_total( false, $price_with_discount );
-		$total      += $items_total;
+		$total = $this->get_price( false );
 
-		$this->tax_amount = AcceptStripePayments::get_tax_amount( $total, $this->get_tax() * $this->get_quantity(), $this->zero_cent );
+		$items_total = $this->get_items_total( false );
+
+		$total += $items_total;
+
+		$total = $total * $this->get_quantity();
+
+		$total = $total - $this->get_discount_amount( $total, false );
+
+		$this->tax_amount = AcceptStripePayments::get_tax_amount( $total, $this->get_tax(), $this->zero_cent );
 		if ( $in_cents ) {
 			return $this->in_cents( $this->tax_amount );
 		}
