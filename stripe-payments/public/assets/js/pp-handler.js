@@ -843,7 +843,7 @@ function handlePayment() {
 
 	//regen cs
 	if (!is_full_discount() && !vars.data.token_not_required && (vars.data.client_secret === '' || vars.data.amount !== clientSecAmount || vars.data.currency !== clientSecCurrency)) {
-		var reqStr = 'action=asp_pp_req_token&amount=' + vars.data.amount + '&curr=' + vars.data.currency + '&product_id=' + vars.data.product_id;
+		var reqStr = 'action=asp_pp_create_pi&amount=' + vars.data.amount + '&curr=' + vars.data.currency + '&product_id=' + vars.data.product_id;
 		reqStr = reqStr + '&quantity=' + vars.data.quantity;
 		if (vars.data.cust_id) {
 			reqStr = reqStr + '&cust_id=' + vars.data.cust_id;
@@ -858,7 +858,7 @@ function handlePayment() {
 		reqStr += '&token=' + vars.data.visitor_token;
 		vars.data.csRegenParams = reqStr;
 		doAddonAction('csBeforeRegenParams');
-		console.log('Regen CS');
+		console.log('Doing asp_pp_create_pi');
 		new ajaxRequest(vars.ajaxURL, vars.data.csRegenParams,
 			function (res) {
 				try {

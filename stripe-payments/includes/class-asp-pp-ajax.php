@@ -13,8 +13,8 @@ class ASP_PP_Ajax {
 	}
 
 	public function add_ajax_handlers() {
-		add_action( 'wp_ajax_asp_pp_req_token', array( $this, 'handle_request_token' ) );
-		add_action( 'wp_ajax_nopriv_asp_pp_req_token', array( $this, 'handle_request_token' ) );
+		add_action( 'wp_ajax_asp_pp_create_pi', array( $this, 'handle_create_pi' ) );
+		add_action( 'wp_ajax_nopriv_asp_pp_create_pi', array( $this, 'handle_create_pi' ) );
 
 		add_action( 'wp_ajax_asp_pp_confirm_pi', array( $this, 'handle_confirm_pi' ) );
 		add_action( 'wp_ajax_nopriv_asp_pp_confirm_pi', array( $this, 'handle_confirm_pi' ) );
@@ -121,7 +121,7 @@ class ASP_PP_Ajax {
 
 	}
 
-	public function handle_request_token() {
+	public function handle_create_pi() {
 		$out            = array();
 		$out['success'] = false;
 		$product_id     = filter_input( INPUT_POST, 'product_id', FILTER_SANITIZE_NUMBER_INT );
