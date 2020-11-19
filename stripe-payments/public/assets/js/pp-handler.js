@@ -1113,23 +1113,6 @@ function handlePayment() {
 
 function handleCardPaymentResult(result) {
 	if (result.error) {
-		console.log('Sending error info...');
-		if (vars.data.pi_id) {
-			new ajaxRequest(vars.ajaxURL,
-				'action=asp_pp_payment_error&pi_id=' + vars.data.pi_id + '&err_msg=' + result.error.message + '&err_data=' + JSON.stringify(result),
-				function (response) {
-					var res = JSON.parse(response.response);
-					if (res.success) {
-						console.log('Error info sent');
-					} else {
-						console.log('Error info sending failed');
-					}
-				},
-				function (response, errMsg) {
-					console.log('AJAX request failed: ' + errMsg);
-				}
-			);
-		}
 		submitBtn.disabled = false;
 		errorCont.innerHTML = result.error.message;
 		errorCont.style.display = 'block';
