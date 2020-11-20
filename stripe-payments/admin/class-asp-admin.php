@@ -50,44 +50,12 @@ class AcceptStripePayments_Admin {
 
 		add_action( 'admin_notices', array( $this, 'show_admin_notices' ), 1 );
 
-		add_action( 'plugins_loaded', array( $this, 'plugins_loaded' ), 5000 );
-
 		//TinyMCE button related
 		add_action( 'init', array( $this, 'tinymce_shortcode_button' ) );
 		add_action( 'current_screen', array( $this, 'check_current_screen' ) );
 		add_action( 'wp_ajax_asp_tinymce_get_settings', array( $this, 'tinymce_ajax_handler' ) ); // Add ajax action handler for tinymce
 		//Settings link
 		add_filter( 'plugin_action_links_' . plugin_basename( WP_ASP_PLUGIN_FILE ), array( $this, 'add_settings_link' ) );
-	}
-
-	public function plugins_loaded() {
-		//check minimum add-ons versions
-		// translators: %s is add-on name
-		$addon_update_str = __( 'Please update <b>%s</b> to latest version.', 'stripe-payments' );
-		//check minimum Subscriptions add-on version
-		$addon_name = 'Stripe Payments Subscriptions Addon';
-		if ( class_exists( 'ASPSUB_Main' ) && version_compare( ASPSUB_main::ADDON_VER, '2.0.26' ) > 0 ) {
-			self::add_admin_notice(
-				'warning',
-				sprintf(
-					$addon_update_str,
-					'<a href="' . add_query_arg( 's', $addon_name, admin_url( 'plugins.php' ) ) . '">' . $addon_name . '</a>'
-				),
-				false
-			);
-		}
-		//check minimum APM add-on version
-		$addon_name = 'Stripe Additional Payment Methods Addon';
-		if ( class_exists( 'ASPAPM_main' ) && version_compare( ASPAPM_main::ADDON_VER, '2.0.15' ) > 0 ) {
-			self::add_admin_notice(
-				'warning',
-				sprintf(
-					$addon_update_str,
-					'<a href="' . add_query_arg( 's', $addon_name, admin_url( 'plugins.php' ) ) . '">' . $addon_name . '</a>'
-				),
-				false
-			);
-		}
 	}
 
 	public function add_settings_link( $links ) {
@@ -151,6 +119,34 @@ class AcceptStripePayments_Admin {
 	}
 
 	function show_admin_notices() {
+		//check minimum add-ons versions
+		// translators: %s is add-on name
+		$addon_update_str = __( 'Please update <b>%s</b> to latest version.', 'stripe-payments' );
+		//check minimum Subscriptions add-on version
+		$addon_name = 'Stripe Payments Subscriptions Addon';
+		if ( class_exists( 'ASPSUB_Main' ) && version_compare( ASPSUB_main::ADDON_VER, '2.0.26' ) > 0 ) {
+			self::add_admin_notice(
+				'warning',
+				sprintf(
+					$addon_update_str,
+					'<a href="' . add_query_arg( 's', $addon_name, admin_url( 'plugins.php' ) ) . '">' . $addon_name . '</a>'
+				),
+				false
+			);
+		}
+		//check minimum APM add-on version
+		$addon_name = 'Stripe Additional Payment Methods Addon';
+		if ( class_exists( 'ASPAPM_main' ) && version_compare( ASPAPM_main::ADDON_VER, '2.0.15' ) > 0 ) {
+			self::add_admin_notice(
+				'warning',
+				sprintf(
+					$addon_update_str,
+					'<a href="' . add_query_arg( 's', $addon_name, admin_url( 'plugins.php' ) ) . '">' . $addon_name . '</a>'
+				),
+				false
+			);
+		}
+
 		$msg_arr = get_transient( 'asp_admin_msg_arr' );
 		if ( ! empty( $msg_arr ) ) {
 			delete_transient( 'asp_admin_msg_arr' );
@@ -548,7 +544,7 @@ class AcceptStripePayments_Admin {
 			array(
 				'field' => 'enable_zip_validation',
 				'desc'  => sprintf(
-				// translators: %s is link to Stripe Radar rules page
+					// translators: %s is link to Stripe Radar rules page
 					__(
 						'For additional protection, you can opt to have Stripe collect the billing ZIP code. Make sure that ZIP code verification is turned on for your account. <a href="%s" target="_blank">Click here</a> to check it in your Stripe Dashboard.',
 						'stripe-payments'
