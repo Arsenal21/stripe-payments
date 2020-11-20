@@ -9,8 +9,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2020-11-19T19:01:09+02:00\n"
-"PO-Revision-Date: 2020-11-19T19:01:09+02:00\n"
+"POT-Creation-Date: 2020-11-20T02:35:26+02:00\n"
+"PO-Revision-Date: 2020-11-20T02:35:26+02:00\n"
 "X-Generator: WP-CLI 2.0.1\n"
 "X-Domain: stripe-payments\n"
 
@@ -35,993 +35,998 @@ msgstr ""
 msgid "https://www.tipsandtricks-hq.com/"
 msgstr ""
 
-#: admin/class-asp-admin.php:62
-#: admin/class-asp-admin.php:365
-#: admin/class-asp-admin.php:366
+#. translators: %s is add-on name
+#: admin/class-asp-admin.php:66
+msgid "Please update <b>%s</b> to latest version."
+msgstr ""
+
+#: admin/class-asp-admin.php:94
+#: admin/class-asp-admin.php:397
+#: admin/class-asp-admin.php:398
 #: admin/views/addons-listing.php:196
 #: includes/class-asp-addons-helper.php:100
 msgid "Settings"
 msgstr ""
 
 #. translators: %s is order ID
-#: admin/class-asp-admin.php:102
+#: admin/class-asp-admin.php:134
 msgid "Confirm capturing authorized funds for order #%s"
 msgstr ""
 
 #. translators: %s is order ID
-#: admin/class-asp-admin.php:104
+#: admin/class-asp-admin.php:136
 msgid "Confirm cancel authorized funds for order #%s"
 msgstr ""
 
 #. translators: %s is order ID
-#: admin/class-asp-admin.php:105
+#: admin/class-asp-admin.php:137
 msgid "Error occurred during request. Please refresh page and try again."
 msgstr ""
 
-#: admin/class-asp-admin.php:202
+#: admin/class-asp-admin.php:234
 msgid "<b>Stripe Payments:</b> following extentions are required by the plugin to operate properly but aren't installed on your system:"
 msgstr ""
 
-#: admin/class-asp-admin.php:204
-#: admin/class-asp-admin.php:213
+#: admin/class-asp-admin.php:236
+#: admin/class-asp-admin.php:245
 msgid "You need to communicate this information to your system administrator or hosting provider."
 msgstr ""
 
-#: admin/class-asp-admin.php:211
+#: admin/class-asp-admin.php:243
 msgid "Warning: Stripe Payments plugin"
 msgstr ""
 
-#: admin/class-asp-admin.php:212
+#: admin/class-asp-admin.php:244
 msgid "PHP version installed on your server doesn't meet minimum required for Stripe Payments plugin to operate properly."
 msgstr ""
 
-#: admin/class-asp-admin.php:214
+#: admin/class-asp-admin.php:246
 msgid "PHP Version Installed:"
 msgstr ""
 
-#: admin/class-asp-admin.php:215
+#: admin/class-asp-admin.php:247
 msgid "PHP Version Required:"
 msgstr ""
 
-#: admin/class-asp-admin.php:215
+#: admin/class-asp-admin.php:247
 msgctxt "Used in \"PHP Version Required: X.X or higher\""
 msgid "or higher."
 msgstr ""
 
-#: admin/class-asp-admin.php:372
+#: admin/class-asp-admin.php:404
 #: admin/views/addons-listing.php:13
 #: admin/views/admin.php:70
 msgid "Add-ons"
 msgstr ""
 
-#: admin/class-asp-admin.php:384
+#: admin/class-asp-admin.php:416
 msgid "New API only"
 msgstr ""
 
-#: admin/class-asp-admin.php:390
+#: admin/class-asp-admin.php:422
 msgid "Global Settings"
 msgstr ""
 
-#: admin/class-asp-admin.php:391
+#: admin/class-asp-admin.php:423
 msgid "Credentials"
 msgstr ""
 
-#: admin/class-asp-admin.php:392
+#: admin/class-asp-admin.php:424
 msgid "Debug"
 msgstr ""
 
-#: admin/class-asp-admin.php:394
+#: admin/class-asp-admin.php:426
 #: admin/views/admin.php:34
 msgid "Email Settings"
 msgstr ""
 
-#: admin/class-asp-admin.php:395
+#: admin/class-asp-admin.php:427
 msgid "Transaction Error Email Settings"
 msgstr ""
 
-#: admin/class-asp-admin.php:396
+#: admin/class-asp-admin.php:428
 msgid "Additional Email Settings"
 msgstr ""
 
-#: admin/class-asp-admin.php:398
+#: admin/class-asp-admin.php:430
 msgid "Price Display Settings"
 msgstr ""
 
-#: admin/class-asp-admin.php:399
+#: admin/class-asp-admin.php:431
 msgid "Custom Field Settings"
 msgstr ""
 
-#: admin/class-asp-admin.php:400
+#: admin/class-asp-admin.php:432
 msgid "Terms and Conditions"
 msgstr ""
 
-#: admin/class-asp-admin.php:401
+#: admin/class-asp-admin.php:433
 msgid "Additional Settings"
 msgstr ""
 
-#: admin/class-asp-admin.php:402
+#: admin/class-asp-admin.php:434
 msgid "Experemintal Settings"
 msgstr ""
 
-#: admin/class-asp-admin.php:407
+#: admin/class-asp-admin.php:439
 msgid "Checkout Result Page URL"
 msgstr ""
 
-#: admin/class-asp-admin.php:413
+#: admin/class-asp-admin.php:445
 msgid "This is the thank you page. This page is automatically created for you when you install the plugin. Do not delete this page as the plugin will send the customer to this page after the payment."
 msgstr ""
 
-#: admin/class-asp-admin.php:413
+#: admin/class-asp-admin.php:445
 msgid "Important Notice:"
 msgstr ""
 
-#: admin/class-asp-admin.php:413
+#: admin/class-asp-admin.php:445
 msgid "if you are using caching plugins on your site (similar to W3 Total Cache, WP Rocket etc), you must exclude checkout results page from caching. Failing to do so will result in unpredictable checkout results output."
 msgstr ""
 
-#: admin/class-asp-admin.php:419
+#: admin/class-asp-admin.php:451
 msgid "Products Page URL"
 msgstr ""
 
-#: admin/class-asp-admin.php:425
+#: admin/class-asp-admin.php:457
 msgid "All your products will be listed here in a grid display. When you create new products, they will show up in this page. This page is automatically created for you when you install the plugin. You can add this page to your navigation menu if you want the site visitors to find it easily."
 msgstr ""
 
-#: admin/class-asp-admin.php:432
+#: admin/class-asp-admin.php:464
 #: admin/includes/class-products-meta-boxes.php:238
 #: admin/includes/class-products-meta-boxes.php:305
 msgid "Currency"
 msgstr ""
 
-#: admin/class-asp-admin.php:444
+#: admin/class-asp-admin.php:476
 msgid "Currency Symbol"
 msgstr ""
 
-#: admin/class-asp-admin.php:450
+#: admin/class-asp-admin.php:482
 msgid "Example: $, €, £ etc."
 msgstr ""
 
-#: admin/class-asp-admin.php:456
+#: admin/class-asp-admin.php:488
 #: admin/includes/class-products-meta-boxes.php:641
 msgid "Button Text"
 msgstr ""
 
-#: admin/class-asp-admin.php:462
+#: admin/class-asp-admin.php:494
 msgid "Example: Buy Now, Pay Now etc."
 msgstr ""
 
-#: admin/class-asp-admin.php:470
+#: admin/class-asp-admin.php:502
 msgid "Payment Popup Button Text"
 msgstr ""
 
-#: admin/class-asp-admin.php:476
+#: admin/class-asp-admin.php:508
 msgid "&percnt;s is replaced by formatted payment amount (example: Pay $29.90). If this field is empty, it defaults to \"Pay &percnt;s\""
 msgstr ""
 
-#: admin/class-asp-admin.php:484
+#: admin/class-asp-admin.php:516
 msgid "Do Not Save Card Data on Stripe"
 msgstr ""
 
-#: admin/class-asp-admin.php:490
+#: admin/class-asp-admin.php:522
 msgid "When this checkbox is checked, the transaction won't create the customer (no card will be saved for that)."
 msgstr ""
 
-#: admin/class-asp-admin.php:498
+#: admin/class-asp-admin.php:530
 msgid "Turn Off \"Remember me\" Option"
 msgstr ""
 
-#: admin/class-asp-admin.php:504
+#: admin/class-asp-admin.php:536
 msgid "When enabled, \"Remember me\" checkbox will be removed from Stripe's checkout popup."
 msgstr ""
 
-#: admin/class-asp-admin.php:512
+#: admin/class-asp-admin.php:544
 msgid "Validate ZIP Code"
 msgstr ""
 
 #. translators: %s is link to Stripe Radar rules page
-#: admin/class-asp-admin.php:520
+#: admin/class-asp-admin.php:552
 msgid "For additional protection, you can opt to have Stripe collect the billing ZIP code. Make sure that ZIP code verification is turned on for your account. <a href=\"%s\" target=\"_blank\">Click here</a> to check it in your Stripe Dashboard."
 msgstr ""
 
-#: admin/class-asp-admin.php:532
+#: admin/class-asp-admin.php:564
 msgid "Stripe Checkout Language"
 msgstr ""
 
-#: admin/class-asp-admin.php:538
+#: admin/class-asp-admin.php:570
 msgid "Specify language to be used in Stripe checkout pop-up or select \"Autodetect\" to let Stripe handle it."
 msgstr ""
 
 #. translators: %s is link to Country Autodetect add-on page
-#: admin/class-asp-admin.php:548
+#: admin/class-asp-admin.php:580
 msgid "You can install the free <a href=\"%s\" target=\"_blank\">Country Autodetect Addon</a> to detect customer's country automatically."
 msgstr ""
 
-#: admin/class-asp-admin.php:554
+#: admin/class-asp-admin.php:586
 msgid "Popup Default Country"
 msgstr ""
 
-#: admin/class-asp-admin.php:560
+#: admin/class-asp-admin.php:592
 msgid "Select the default country that should be set on the payment popup window for billing and shipping address."
 msgstr ""
 
-#: admin/class-asp-admin.php:569
+#: admin/class-asp-admin.php:601
 msgid "Hide the State Field"
 msgstr ""
 
-#: admin/class-asp-admin.php:575
+#: admin/class-asp-admin.php:607
 msgid "Hide the State field on the payment popup window. The State field for the address is an optional field."
 msgstr ""
 
-#: admin/class-asp-admin.php:584
+#: admin/class-asp-admin.php:616
 msgid "Prefill Logged In User Name and Email"
 msgstr ""
 
-#: admin/class-asp-admin.php:590
+#: admin/class-asp-admin.php:622
 msgid "When payment is made by logged in WordPress user, his\\her name and email are prefilled to corresponding payment popup fields."
 msgstr ""
 
-#: admin/class-asp-admin.php:600
+#: admin/class-asp-admin.php:632
 msgid "Live Mode"
 msgstr ""
 
-#: admin/class-asp-admin.php:606
+#: admin/class-asp-admin.php:638
 msgid "Check this to run the transaction in live mode. When unchecked it will run in test mode."
 msgstr ""
 
-#: admin/class-asp-admin.php:614
+#: admin/class-asp-admin.php:646
 msgid "Live Stripe Publishable Key"
 msgstr ""
 
-#: admin/class-asp-admin.php:625
+#: admin/class-asp-admin.php:657
 msgid "Live Stripe Secret Key"
 msgstr ""
 
-#: admin/class-asp-admin.php:636
+#: admin/class-asp-admin.php:668
 msgid "Test Stripe Publishable Key"
 msgstr ""
 
-#: admin/class-asp-admin.php:647
+#: admin/class-asp-admin.php:679
 msgid "Test Stripe Secret Key"
 msgstr ""
 
-#: admin/class-asp-admin.php:660
+#: admin/class-asp-admin.php:692
 msgid "Enable Debug Logging"
 msgstr ""
 
-#: admin/class-asp-admin.php:666
+#: admin/class-asp-admin.php:698
 msgid "Check this option to enable debug logging. This is useful for troubleshooting post payment failures."
 msgstr ""
 
-#: admin/class-asp-admin.php:667
+#: admin/class-asp-admin.php:699
 msgid "View Log"
 msgstr ""
 
-#: admin/class-asp-admin.php:667
+#: admin/class-asp-admin.php:699
 msgid "Clear Log"
 msgstr ""
 
-#: admin/class-asp-admin.php:672
+#: admin/class-asp-admin.php:704
 msgid "Debug Log Shareable Link"
 msgstr ""
 
-#: admin/class-asp-admin.php:678
+#: admin/class-asp-admin.php:710
 msgid "Normally, the debug log is only accessible to you if you are logged-in as admin. However, in some situations it might be required for support personnel to view it without having admin credentials. This link can be helpful in that situation."
 msgstr ""
 
-#: admin/class-asp-admin.php:688
+#: admin/class-asp-admin.php:720
 msgid "Send Receipt Email From Stripe"
 msgstr ""
 
-#: admin/class-asp-admin.php:694
+#: admin/class-asp-admin.php:726
 msgid "If checked, Stripe will send email receipts to your customers whenever they make successful payment.<br /><b>Note:</b> Receipts are not sent in test mode."
 msgstr ""
 
-#: admin/class-asp-admin.php:700
+#: admin/class-asp-admin.php:732
 msgid "Send Emails to Buyer After Purchase"
 msgstr ""
 
-#: admin/class-asp-admin.php:706
+#: admin/class-asp-admin.php:738
 msgid "If checked the plugin will send an email to the buyer with the sale details. If digital goods are purchased then the email will contain the download links for the purchased products."
 msgstr ""
 
-#: admin/class-asp-admin.php:711
+#: admin/class-asp-admin.php:743
 msgid "Buyer Email Content Type"
 msgstr ""
 
-#: admin/class-asp-admin.php:717
-#: admin/class-asp-admin.php:787
+#: admin/class-asp-admin.php:749
+#: admin/class-asp-admin.php:819
 msgid "Choose which format of email to send."
 msgstr ""
 
-#: admin/class-asp-admin.php:722
+#: admin/class-asp-admin.php:754
 msgid "From Email Address"
 msgstr ""
 
-#: admin/class-asp-admin.php:728
+#: admin/class-asp-admin.php:760
 msgid "Example: Your Name &lt;sales@your-domain.com&gt; This is the email address that will be used to send the email to the buyer. This name and email address will appear in the from field of the email."
 msgstr ""
 
-#: admin/class-asp-admin.php:733
+#: admin/class-asp-admin.php:765
 msgid "Buyer Email Subject"
 msgstr ""
 
-#: admin/class-asp-admin.php:739
+#: admin/class-asp-admin.php:771
 msgid "This is the subject of the email that will be sent to the buyer."
 msgstr ""
 
-#: admin/class-asp-admin.php:747
+#: admin/class-asp-admin.php:779
 msgid "Buyer Email Body"
 msgstr ""
 
-#: admin/class-asp-admin.php:753
+#: admin/class-asp-admin.php:785
 msgid "This is the body of the email that will be sent to the buyer."
 msgstr ""
 
-#: admin/class-asp-admin.php:753
-#: admin/class-asp-admin.php:810
+#: admin/class-asp-admin.php:785
+#: admin/class-asp-admin.php:842
 msgid "Do not change the text within the braces {}. You can use the following email tags in this email body field:"
 msgstr ""
 
-#: admin/class-asp-admin.php:758
+#: admin/class-asp-admin.php:790
 msgid "Send Emails to Seller After Purchase"
 msgstr ""
 
-#: admin/class-asp-admin.php:764
+#: admin/class-asp-admin.php:796
 msgid "If checked the plugin will send an email to the seller with the sale details."
 msgstr ""
 
-#: admin/class-asp-admin.php:769
+#: admin/class-asp-admin.php:801
 msgid "Notification Email Address"
 msgstr ""
 
-#: admin/class-asp-admin.php:775
+#: admin/class-asp-admin.php:807
 msgid "This is the email address where the seller will be notified of product sales. You can put multiple email addresses separated by comma (,) in the above field to send the notification to multiple email addresses."
 msgstr ""
 
-#: admin/class-asp-admin.php:781
+#: admin/class-asp-admin.php:813
 msgid "Seller Email Content Type"
 msgstr ""
 
-#: admin/class-asp-admin.php:793
+#: admin/class-asp-admin.php:825
 msgid "Seller Email Subject"
 msgstr ""
 
-#: admin/class-asp-admin.php:799
+#: admin/class-asp-admin.php:831
 msgid "This is the subject of the email that will be sent to the seller for record."
 msgstr ""
 
-#: admin/class-asp-admin.php:804
+#: admin/class-asp-admin.php:836
 msgid "Seller Email Body"
 msgstr ""
 
-#: admin/class-asp-admin.php:810
+#: admin/class-asp-admin.php:842
 msgid "This is the body of the email that will be sent to the seller."
 msgstr ""
 
-#: admin/class-asp-admin.php:816
+#: admin/class-asp-admin.php:848
 msgid "Send Email On Payment Failure"
 msgstr ""
 
-#: admin/class-asp-admin.php:822
+#: admin/class-asp-admin.php:854
 msgid "If checked, plugin will send a notification email when error occurred during payment processing. The email will be sent to the email address specified below."
 msgstr ""
 
-#: admin/class-asp-admin.php:827
+#: admin/class-asp-admin.php:859
 msgid "Send Error Email To"
 msgstr ""
 
-#: admin/class-asp-admin.php:833
+#: admin/class-asp-admin.php:865
 msgid "Enter recipient address of error email."
 msgstr ""
 
-#: admin/class-asp-admin.php:840
+#: admin/class-asp-admin.php:872
 msgid "Send Emails in Parallel"
 msgstr ""
 
-#: admin/class-asp-admin.php:846
+#: admin/class-asp-admin.php:878
 msgid "Enabling this option should speed up checkout process for customers. Test this before enabling on production as it may not work properly on some setups."
 msgstr ""
 
-#: admin/class-asp-admin.php:853
+#: admin/class-asp-admin.php:885
 msgid "Currency Position"
 msgstr ""
 
-#: admin/class-asp-admin.php:859
+#: admin/class-asp-admin.php:891
 msgid "This controls the position of the currency symbol."
 msgstr ""
 
-#: admin/class-asp-admin.php:864
+#: admin/class-asp-admin.php:896
 msgid "Decimal Separator"
 msgstr ""
 
-#: admin/class-asp-admin.php:870
+#: admin/class-asp-admin.php:902
 msgid "This sets the decimal separator of the displayed price."
 msgstr ""
 
-#: admin/class-asp-admin.php:875
+#: admin/class-asp-admin.php:907
 msgid "Thousand Separator"
 msgstr ""
 
-#: admin/class-asp-admin.php:881
+#: admin/class-asp-admin.php:913
 msgid "This sets the thousand separator of the displayed price."
 msgstr ""
 
-#: admin/class-asp-admin.php:886
+#: admin/class-asp-admin.php:918
 msgid "Number of Decimals"
 msgstr ""
 
-#: admin/class-asp-admin.php:892
+#: admin/class-asp-admin.php:924
 msgid "This sets the number of decimal points shown in the displayed price."
 msgstr ""
 
-#: admin/class-asp-admin.php:898
+#: admin/class-asp-admin.php:930
 msgid "Apply Separators Settings To Customer Input"
 msgstr ""
 
-#: admin/class-asp-admin.php:904
+#: admin/class-asp-admin.php:936
 msgid "If enabled, separator settings will be applied to customer input as well. For example, if you have donation button where customers can enter amount and you set \",\" as decimal separator, customers will need to enter values correspondigly - 12,23 instead of 12.23."
 msgstr ""
 
-#: admin/class-asp-admin.php:911
+#: admin/class-asp-admin.php:943
 msgid "Enable For All Buttons and Products"
 msgstr ""
 
-#: admin/class-asp-admin.php:917
+#: admin/class-asp-admin.php:949
 msgid "If enabled, makes the following field enabled by default for all buttons and products."
 msgstr ""
 
-#: admin/class-asp-admin.php:918
+#: admin/class-asp-admin.php:950
 msgid "You can control per-product or per-button behaviour by editing the product and selecting enabled or disabled option under the Custom Field section."
 msgstr ""
 
-#: admin/class-asp-admin.php:919
+#: admin/class-asp-admin.php:951
 msgid "View the custom field <a href=\"https://s-plugins.com/custom-field-settings-feature-stripe-payments-plugin/\" target=\"_blank\">usage documentation</a>."
 msgstr ""
 
-#: admin/class-asp-admin.php:924
+#: admin/class-asp-admin.php:956
 msgid "Field Name"
 msgstr ""
 
-#: admin/class-asp-admin.php:930
+#: admin/class-asp-admin.php:962
 msgid "Enter name for the field. It will be displayed in order info and emails."
 msgstr ""
 
-#: admin/class-asp-admin.php:935
+#: admin/class-asp-admin.php:967
 msgid "Field Description"
 msgstr ""
 
-#: admin/class-asp-admin.php:941
+#: admin/class-asp-admin.php:973
 msgid "Enter field description. It will be displayed for users to let them know what is required from them. Leave it blank if you don't want to display description."
 msgstr ""
 
-#: admin/class-asp-admin.php:946
+#: admin/class-asp-admin.php:978
 msgid "Text Field Description Location"
 msgstr ""
 
-#: admin/class-asp-admin.php:952
+#: admin/class-asp-admin.php:984
 msgid "Select field description location. Placeholder: description is displayed inside text input (default). Below Input: description is displayed below text input."
 msgstr ""
 
-#: admin/class-asp-admin.php:957
-#: admin/class-asp-admin.php:1036
+#: admin/class-asp-admin.php:989
+#: admin/class-asp-admin.php:1068
 msgid "Position"
 msgstr ""
 
-#: admin/class-asp-admin.php:963
+#: admin/class-asp-admin.php:995
 msgid "Select custom field position."
 msgstr ""
 
-#: admin/class-asp-admin.php:963
+#: admin/class-asp-admin.php:995
 msgid "This option is for legacy API only."
 msgstr ""
 
-#: admin/class-asp-admin.php:968
+#: admin/class-asp-admin.php:1000
 msgid "Field Type"
 msgstr ""
 
-#: admin/class-asp-admin.php:974
+#: admin/class-asp-admin.php:1006
 msgid "Select custom field type."
 msgstr ""
 
-#: admin/class-asp-admin.php:979
+#: admin/class-asp-admin.php:1011
 msgid "Field Validation"
 msgstr ""
 
-#: admin/class-asp-admin.php:985
+#: admin/class-asp-admin.php:1017
 msgid "Select custom field validation if needed."
 msgstr ""
 
-#: admin/class-asp-admin.php:990
+#: admin/class-asp-admin.php:1022
 msgid "Mandatory"
 msgstr ""
 
-#: admin/class-asp-admin.php:996
+#: admin/class-asp-admin.php:1028
 msgid "If enabled, makes the field mandatory - user can't proceed with the payment before it's filled."
 msgstr ""
 
-#: admin/class-asp-admin.php:1003
+#: admin/class-asp-admin.php:1035
 msgid "Enable Terms and Conditions"
 msgstr ""
 
-#: admin/class-asp-admin.php:1009
+#: admin/class-asp-admin.php:1041
 msgid "Enable Terms and Conditions checkbox."
 msgstr ""
 
-#: admin/class-asp-admin.php:1014
+#: admin/class-asp-admin.php:1046
 msgid "Checkbox Text"
 msgstr ""
 
-#: admin/class-asp-admin.php:1020
+#: admin/class-asp-admin.php:1052
 msgid "Text to be displayed on checkbox. It accepts HTML code so you can put a link to your terms and conditions page."
 msgstr ""
 
-#: admin/class-asp-admin.php:1025
+#: admin/class-asp-admin.php:1057
 msgid "Store Customer's IP Address"
 msgstr ""
 
-#: admin/class-asp-admin.php:1031
+#: admin/class-asp-admin.php:1063
 msgid "If enabled, customer's IP address from which TOS were accepted will be stored in order info."
 msgstr ""
 
-#: admin/class-asp-admin.php:1042
+#: admin/class-asp-admin.php:1074
 msgid "Select TOS checkbox position."
 msgstr ""
 
-#: admin/class-asp-admin.php:1049
+#: admin/class-asp-admin.php:1081
 msgid "Enable Legacy Checkout API"
 msgstr ""
 
-#: admin/class-asp-admin.php:1055
+#: admin/class-asp-admin.php:1087
 msgid "Use the legacy API to process payments. Note that the legacy API is not compatible with 3-D Secure and EU's Strong Customer Authentication (SCA) requirements. Stripe may disable this legacy API in the future. If there is a bug in the new API, then continue to use the legacy API while we fix the bug."
 msgstr ""
 
-#: admin/class-asp-admin.php:1060
+#: admin/class-asp-admin.php:1092
 msgid "Enable Compact Product Edit Interface"
 msgstr ""
 
-#: admin/class-asp-admin.php:1066
+#: admin/class-asp-admin.php:1098
 msgid "Switch to the compact product edit interface."
 msgstr ""
 
-#: admin/class-asp-admin.php:1071
+#: admin/class-asp-admin.php:1103
 msgid "Prefetch Payment Popup Scripts"
 msgstr ""
 
-#: admin/class-asp-admin.php:1077
+#: admin/class-asp-admin.php:1109
 msgid "Enable this to speed up payment popup display after customer clicks payment button."
 msgstr ""
 
-#: admin/class-asp-admin.php:1085
+#: admin/class-asp-admin.php:1117
 msgid "Don't Create Order"
 msgstr ""
 
-#: admin/class-asp-admin.php:1091
+#: admin/class-asp-admin.php:1123
 msgid "If enabled, no transaction info is saved to the orders menu of the plugin. The transaction data will still be available in your Stripe dashboard. Useful if you don't want to store purchase and customer data in your site."
 msgstr ""
 
-#: admin/class-asp-admin.php:1096
+#: admin/class-asp-admin.php:1128
 msgid "Allowed Currencies"
 msgstr ""
 
-#: admin/class-asp-admin.php:1106
+#: admin/class-asp-admin.php:1138
 msgid "Payment Popup Additional CSS"
 msgstr ""
 
-#: admin/class-asp-admin.php:1112
+#: admin/class-asp-admin.php:1144
 msgid "Enter additional CSS code that would be added to payment popup page."
 msgstr ""
 
-#: admin/class-asp-admin.php:1119
+#: admin/class-asp-admin.php:1151
 msgid "Do Not Use Stripe PHP SDK Library"
 msgstr ""
 
-#: admin/class-asp-admin.php:1125
+#: admin/class-asp-admin.php:1157
 msgid "Enable this if you're experiencing conflicts with other plugins that use Stripe PHP SDK Library. Internal Stripe API wrapper would be used instead."
 msgstr ""
 
-#: admin/class-asp-admin.php:1131
+#: admin/class-asp-admin.php:1163
 msgid "Disable Security Token Check"
 msgstr ""
 
-#: admin/class-asp-admin.php:1137
+#: admin/class-asp-admin.php:1169
 msgid "Helps when you are getting \"Invalid Security Token\" errors due to caching being done on your server."
 msgstr ""
 
-#: admin/class-asp-admin.php:1138
+#: admin/class-asp-admin.php:1170
 msgid "It is not recommended to disable security tokens. You should change your server cache settings to not cache payment popup URLs."
 msgstr ""
 
-#: admin/class-asp-admin.php:1144
+#: admin/class-asp-admin.php:1176
 msgid "Show Incomplete Orders"
 msgstr ""
 
-#: admin/class-asp-admin.php:1150
+#: admin/class-asp-admin.php:1182
 msgid "If enabled, incomplete transactions are also displayed in the Orders listing page of the plugin. If Stripe declines a card transaction because the customer entered incorrect card info, it will be considered to be an incomplete transaction."
 msgstr ""
 
-#: admin/class-asp-admin.php:1156
+#: admin/class-asp-admin.php:1188
 msgid "Disable Buttons Before Javascript Loads"
 msgstr ""
 
-#: admin/class-asp-admin.php:1162
+#: admin/class-asp-admin.php:1194
 msgid "If enabled, payment buttons are not clickable until Javascript libraries are loaded on page view. This prevents \"Invalid Stripe Token\" errors on some configurations."
 msgstr ""
 
-#: admin/class-asp-admin.php:1169
+#: admin/class-asp-admin.php:1201
 msgid "This section allows you to configure Terms and Conditions or Privacy Policy that customer must accept before making payment. This, for example, can be used to comply with EU GDPR."
 msgstr ""
 
-#: admin/class-asp-admin.php:1173
+#: admin/class-asp-admin.php:1205
 msgid "Warning: don't change options in this section unless you know what you're doing!"
 msgstr ""
 
-#: admin/class-asp-admin.php:1196
+#: admin/class-asp-admin.php:1228
 msgid "Arabic"
 msgstr ""
 
-#: admin/class-asp-admin.php:1197
+#: admin/class-asp-admin.php:1229
 msgid "Hebrew"
 msgstr ""
 
-#: admin/class-asp-admin.php:1198
+#: admin/class-asp-admin.php:1230
 msgid "Latvian"
 msgstr ""
 
-#: admin/class-asp-admin.php:1199
+#: admin/class-asp-admin.php:1231
 msgid "Lithuanian"
 msgstr ""
 
-#: admin/class-asp-admin.php:1200
+#: admin/class-asp-admin.php:1232
 msgid "Malay"
 msgstr ""
 
-#: admin/class-asp-admin.php:1201
+#: admin/class-asp-admin.php:1233
 msgid "Norwegian Bokmal"
 msgstr ""
 
-#: admin/class-asp-admin.php:1202
+#: admin/class-asp-admin.php:1234
 msgid "Polish"
 msgstr ""
 
-#: admin/class-asp-admin.php:1203
+#: admin/class-asp-admin.php:1235
 msgid "Portuguese"
 msgstr ""
 
-#: admin/class-asp-admin.php:1204
+#: admin/class-asp-admin.php:1236
 msgid "Russian"
 msgstr ""
 
-#: admin/class-asp-admin.php:1205
+#: admin/class-asp-admin.php:1237
 msgid "Danish"
 msgstr ""
 
-#: admin/class-asp-admin.php:1206
+#: admin/class-asp-admin.php:1238
 msgid "Dutch"
 msgstr ""
 
-#: admin/class-asp-admin.php:1207
+#: admin/class-asp-admin.php:1239
 msgid "English"
 msgstr ""
 
-#: admin/class-asp-admin.php:1208
+#: admin/class-asp-admin.php:1240
 msgid "Finnish"
 msgstr ""
 
-#: admin/class-asp-admin.php:1209
+#: admin/class-asp-admin.php:1241
 msgid "French"
 msgstr ""
 
-#: admin/class-asp-admin.php:1210
+#: admin/class-asp-admin.php:1242
 msgid "German"
 msgstr ""
 
-#: admin/class-asp-admin.php:1211
+#: admin/class-asp-admin.php:1243
 msgid "Italian"
 msgstr ""
 
-#: admin/class-asp-admin.php:1212
+#: admin/class-asp-admin.php:1244
 msgid "Japanese"
 msgstr ""
 
-#: admin/class-asp-admin.php:1213
+#: admin/class-asp-admin.php:1245
 msgid "Norwegian"
 msgstr ""
 
-#: admin/class-asp-admin.php:1214
+#: admin/class-asp-admin.php:1246
 msgid "Simplified Chinese"
 msgstr ""
 
-#: admin/class-asp-admin.php:1215
+#: admin/class-asp-admin.php:1247
 msgid "Spanish"
 msgstr ""
 
-#: admin/class-asp-admin.php:1216
+#: admin/class-asp-admin.php:1248
 msgid "Swedish"
 msgstr ""
 
-#: admin/class-asp-admin.php:1219
+#: admin/class-asp-admin.php:1251
 msgid "Autodetect"
 msgstr ""
 
-#: admin/class-asp-admin.php:1223
+#: admin/class-asp-admin.php:1255
 #: includes/class-asp-utils.php:570
 msgid "(Default)"
 msgstr ""
 
-#: admin/class-asp-admin.php:1264
+#: admin/class-asp-admin.php:1296
 msgid "Text"
 msgstr ""
 
-#: admin/class-asp-admin.php:1265
+#: admin/class-asp-admin.php:1297
 msgid "Checkbox"
 msgstr ""
 
-#: admin/class-asp-admin.php:1271
+#: admin/class-asp-admin.php:1303
 msgid "Placeholder"
 msgstr ""
 
-#: admin/class-asp-admin.php:1272
+#: admin/class-asp-admin.php:1304
 msgid "Below Input"
 msgstr ""
 
-#: admin/class-asp-admin.php:1278
-#: admin/class-asp-admin.php:1284
+#: admin/class-asp-admin.php:1310
+#: admin/class-asp-admin.php:1316
 msgid "No Validation"
 msgstr ""
 
-#: admin/class-asp-admin.php:1279
-#: admin/class-asp-admin.php:1285
+#: admin/class-asp-admin.php:1311
+#: admin/class-asp-admin.php:1317
 msgid "Numbers Only"
 msgstr ""
 
 #. translators: %s is a link to JavaScript RegExp page
-#: admin/class-asp-admin.php:1280
-#: admin/class-asp-admin.php:1287
+#: admin/class-asp-admin.php:1312
+#: admin/class-asp-admin.php:1319
 msgid "Custom Validation"
 msgstr ""
 
-#: admin/class-asp-admin.php:1284
+#: admin/class-asp-admin.php:1316
 msgid "no validation performed"
 msgstr ""
 
-#: admin/class-asp-admin.php:1285
+#: admin/class-asp-admin.php:1317
 msgid "only accepts numbers 0-9"
 msgstr ""
 
 #. translators: %s is a link to JavaScript RegExp page
-#: admin/class-asp-admin.php:1287
+#: admin/class-asp-admin.php:1319
 msgid "you can enter your own validation rules using <a href=\"%s\" target=\"_blank\">JavaScript RegExp</a> format."
 msgstr ""
 
-#: admin/class-asp-admin.php:1296
+#: admin/class-asp-admin.php:1328
 msgid "Please enter valid data"
 msgstr ""
 
 #. translators: %s is a link to JavaScript RegExp page
-#: admin/class-asp-admin.php:1303
+#: admin/class-asp-admin.php:1335
 msgid "Enter your custom validation rule using <a href=\"%s\" target=\"_blank\">JavaScript RegExp</a> format. No need to enclose those using \"/\"."
 msgstr ""
 
 #. translators: %s is a link to JavaScript RegExp page
-#: admin/class-asp-admin.php:1304
+#: admin/class-asp-admin.php:1336
 msgid "Example RegExp to allow numbers only: ^[0-9]+$"
 msgstr ""
 
-#: admin/class-asp-admin.php:1307
+#: admin/class-asp-admin.php:1339
 msgid "Error message to display if validation is not passed."
 msgstr ""
 
-#: admin/class-asp-admin.php:1313
+#: admin/class-asp-admin.php:1345
 msgid "Above Button"
 msgstr ""
 
-#: admin/class-asp-admin.php:1314
+#: admin/class-asp-admin.php:1346
 msgid "Below Button"
 msgstr ""
 
-#: admin/class-asp-admin.php:1350
+#: admin/class-asp-admin.php:1382
 msgid "Last Name First"
 msgstr ""
 
-#: admin/class-asp-admin.php:1351
+#: admin/class-asp-admin.php:1383
 msgid "When enabled, last name is placed before first name."
 msgstr ""
 
-#: admin/class-asp-admin.php:1363
+#: admin/class-asp-admin.php:1395
 msgid "Plain Text"
 msgstr ""
 
-#: admin/class-asp-admin.php:1364
+#: admin/class-asp-admin.php:1396
 msgid "HTML"
 msgstr ""
 
-#: admin/class-asp-admin.php:1404
+#: admin/class-asp-admin.php:1436
 msgid "All"
 msgstr ""
 
-#: admin/class-asp-admin.php:1406
+#: admin/class-asp-admin.php:1438
 msgid "Selected"
 msgstr ""
 
-#: admin/class-asp-admin.php:1410
+#: admin/class-asp-admin.php:1442
 msgid "Click here to select currencies"
 msgstr ""
 
-#: admin/class-asp-admin.php:1413
+#: admin/class-asp-admin.php:1445
 msgid "Select All"
 msgstr ""
 
-#: admin/class-asp-admin.php:1414
+#: admin/class-asp-admin.php:1446
 msgid "Select None"
 msgstr ""
 
-#: admin/class-asp-admin.php:1415
+#: admin/class-asp-admin.php:1447
 msgid "Invert Selection"
 msgstr ""
 
-#: admin/class-asp-admin.php:1428
+#: admin/class-asp-admin.php:1460
 msgid "You can select currencies you want to be available for your customers for variable currencies products. Useful for donation type products."
 msgstr ""
 
-#: admin/class-asp-admin.php:1449
+#: admin/class-asp-admin.php:1481
 msgctxt "Currency symbol position"
 msgid "Left"
 msgstr ""
 
-#: admin/class-asp-admin.php:1450
+#: admin/class-asp-admin.php:1482
 msgctxt "Currency symbol position"
 msgid "Right"
 msgstr ""
 
 #. translators: %s is replaced by invalid RegExp value
-#: admin/class-asp-admin.php:1544
+#: admin/class-asp-admin.php:1576
 msgid "Invalid custom RegExp for Custom Field validation provided: %s"
 msgstr ""
 
-#: admin/class-asp-admin.php:1600
+#: admin/class-asp-admin.php:1632
 msgid "You must fill Live API credentials for plugin to work correctly."
 msgstr ""
 
-#: admin/class-asp-admin.php:1604
+#: admin/class-asp-admin.php:1636
 msgid "You must fill Test API credentials for plugin to work correctly."
 msgstr ""
 
-#: admin/class-asp-admin.php:1611
+#: admin/class-asp-admin.php:1643
 msgid "Please specify a checkout page."
 msgstr ""
 
-#: admin/class-asp-admin.php:1617
+#: admin/class-asp-admin.php:1649
 msgid "Button text should not be empty."
 msgstr ""
 
 #. translators: %s is not a placeholder
-#: admin/class-asp-admin.php:1624
+#: admin/class-asp-admin.php:1656
 #: includes/class-asp.php:315
 #: includes/class-asp-pp-display.php:425
 msgid "Pay %s"
 msgstr ""
 
-#: admin/class-asp-admin.php:1645
+#: admin/class-asp-admin.php:1677
 msgid "You must specify payment currency."
 msgstr ""
 
-#: admin/class-asp-admin.php:1676
+#: admin/class-asp-admin.php:1708
 msgid "You must specify from email address."
 msgstr ""
 
-#: admin/class-asp-admin.php:1682
+#: admin/class-asp-admin.php:1714
 msgid "You must specify buyer email subject."
 msgstr ""
 
-#: admin/class-asp-admin.php:1688
+#: admin/class-asp-admin.php:1720
 msgid "You must fill in buyer email body."
 msgstr ""
 
-#: admin/class-asp-admin.php:1694
+#: admin/class-asp-admin.php:1726
 msgid "You must specify seller notification email address."
 msgstr ""
 
-#: admin/class-asp-admin.php:1700
+#: admin/class-asp-admin.php:1732
 msgid "You must specify seller email subject."
 msgstr ""
 
-#: admin/class-asp-admin.php:1706
+#: admin/class-asp-admin.php:1738
 msgid "You must fill in seller email body."
 msgstr ""
 
-#: admin/class-asp-admin.php:1716
+#: admin/class-asp-admin.php:1748
 msgid "Price decimal separator can't be empty."
 msgstr ""
 
-#: admin/class-asp-admin.php:1730
+#: admin/class-asp-admin.php:1762
 msgid "Price number of decimals can't be empty."
 msgstr ""
 
-#: admin/class-asp-admin.php:1774
+#: admin/class-asp-admin.php:1806
 msgid "Name of the purchased item"
 msgstr ""
 
-#: admin/class-asp-admin.php:1775
+#: admin/class-asp-admin.php:1807
 msgid "Number of items purchased"
 msgstr ""
 
-#: admin/class-asp-admin.php:1776
+#: admin/class-asp-admin.php:1808
 msgid "Item price. Example: 1000,00"
 msgstr ""
 
-#: admin/class-asp-admin.php:1777
+#: admin/class-asp-admin.php:1809
 msgid "Item price with currency symbol. Example: $1,000.00"
 msgstr ""
 
-#: admin/class-asp-admin.php:1778
+#: admin/class-asp-admin.php:1810
 msgid "The amount paid for the current transaction. Example: 1,000.00"
 msgstr ""
 
-#: admin/class-asp-admin.php:1779
+#: admin/class-asp-admin.php:1811
 msgid "The amount paid for the current transaction with currency symbol. Example: $1,000.00"
 msgstr ""
 
-#: admin/class-asp-admin.php:1780
+#: admin/class-asp-admin.php:1812
 msgid "Tax in percent. Example: 10%"
 msgstr ""
 
-#: admin/class-asp-admin.php:1781
+#: admin/class-asp-admin.php:1813
 msgid "Formatted tax amount for single item. Example: $0.25"
 msgstr ""
 
-#: admin/class-asp-admin.php:1782
+#: admin/class-asp-admin.php:1814
 msgid "Formatted shipping amount. Example: $2.50"
 msgstr ""
 
-#: admin/class-asp-admin.php:1783
+#: admin/class-asp-admin.php:1815
 msgid "Item download URL (if it's set)"
 msgstr ""
 
-#: admin/class-asp-admin.php:1784
+#: admin/class-asp-admin.php:1816
 msgid "The item details of the purchased product (this will include the download link for digital items)"
 msgstr ""
 
-#: admin/class-asp-admin.php:1785
+#: admin/class-asp-admin.php:1817
 msgid "The unique transaction ID of the purchase"
 msgstr ""
 
-#: admin/class-asp-admin.php:1786
+#: admin/class-asp-admin.php:1818
 msgid "Shipping address of the buyer"
 msgstr ""
 
-#: admin/class-asp-admin.php:1787
+#: admin/class-asp-admin.php:1819
 msgid "Billing address of the buyer"
 msgstr ""
 
-#: admin/class-asp-admin.php:1788
+#: admin/class-asp-admin.php:1820
 msgid "Customer name. Available only if collect billing address option enabled"
 msgstr ""
 
-#: admin/class-asp-admin.php:1789
+#: admin/class-asp-admin.php:1821
 msgid "Email Address of the buyer"
 msgstr ""
 
-#: admin/class-asp-admin.php:1790
+#: admin/class-asp-admin.php:1822
 msgid "Currency symbol. Example: $"
 msgstr ""
 
-#: admin/class-asp-admin.php:1791
+#: admin/class-asp-admin.php:1823
 msgid "3-letter currency code. Example: USD"
 msgstr ""
 
-#: admin/class-asp-admin.php:1792
+#: admin/class-asp-admin.php:1824
 msgid "The date of the purchase"
 msgstr ""
 
-#: admin/class-asp-admin.php:1793
+#: admin/class-asp-admin.php:1825
 msgid "Custom field name and value (if enabled)"
 msgstr ""
 
-#: admin/class-asp-admin.php:1794
+#: admin/class-asp-admin.php:1826
 msgid "Coupon code (if available)"
 msgstr ""
 
-#: admin/class-asp-admin.php:1817
+#: admin/class-asp-admin.php:1849
 msgid "Click here to toggle tags hint"
 msgstr ""
 
@@ -1854,27 +1859,27 @@ msgid "Error"
 msgstr ""
 
 #: admin/includes/class-coupons.php:37
-#: includes/class-asp-product-item.php:429
+#: includes/class-asp-product-item.php:435
 msgid "Coupon not found."
 msgstr ""
 
 #: admin/includes/class-coupons.php:44
-#: includes/class-asp-product-item.php:435
+#: includes/class-asp-product-item.php:441
 msgid "Coupon is not active."
 msgstr ""
 
 #: admin/includes/class-coupons.php:51
-#: includes/class-asp-product-item.php:441
+#: includes/class-asp-product-item.php:447
 msgid "Coupon is not available yet."
 msgstr ""
 
 #: admin/includes/class-coupons.php:58
-#: includes/class-asp-product-item.php:447
+#: includes/class-asp-product-item.php:453
 msgid "Coupon has expired."
 msgstr ""
 
 #: admin/includes/class-coupons.php:66
-#: includes/class-asp-product-item.php:454
+#: includes/class-asp-product-item.php:460
 msgid "Coupon redemption limit is reached."
 msgstr ""
 
@@ -1887,7 +1892,7 @@ msgid "No product ID specified."
 msgstr ""
 
 #: admin/includes/class-coupons.php:116
-#: includes/class-asp-product-item.php:485
+#: includes/class-asp-product-item.php:491
 msgid "Coupon is not allowed for this product."
 msgstr ""
 
@@ -2270,7 +2275,7 @@ msgid "Error occurred:"
 msgstr ""
 
 #. translators: %d is number of items in stock
-#: includes/class-asp-product-item.php:388
+#: includes/class-asp-product-item.php:394
 #: includes/class-asp-process-ipn-ng.php:463
 #: includes/class-asp-pp-display.php:475
 #: includes/shortcodes/class-asp-shortcode-ng.php:184
@@ -2283,7 +2288,7 @@ msgstr ""
 msgid "Tax"
 msgstr ""
 
-#: includes/class-asp-product-item.php:399
+#: includes/class-asp-product-item.php:405
 #: includes/class-asp-process-ipn-ng.php:471
 #: includes/class-asp-pp-display.php:476
 #: includes/shortcodes/class-asp-shortcode-ng.php:194
@@ -2296,12 +2301,12 @@ msgstr ""
 msgid "Shipping"
 msgstr ""
 
-#: includes/class-asp-product-item.php:530
+#: includes/class-asp-product-item.php:536
 msgid "No product ID provided."
 msgstr ""
 
 #. translators: %d is product id
-#: includes/class-asp-product-item.php:538
+#: includes/class-asp-product-item.php:544
 msgid "Can't find product with ID %d"
 msgstr ""
 
