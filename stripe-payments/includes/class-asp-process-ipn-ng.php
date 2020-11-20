@@ -75,7 +75,7 @@ class ASP_Process_IPN_NG {
 				if ( 'succeeded' !== $intent->status ) {
 					$res = $api->post(
 						'payment_intents/' . $pi_id . '/confirm',
-						array(),
+						array()
 					);
 					if ( false === $res ) {
 						$err       = $api->get_last_error();

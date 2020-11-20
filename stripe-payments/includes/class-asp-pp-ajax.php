@@ -85,7 +85,7 @@ class ASP_PP_Ajax {
 				}
 				$pi = $api->post(
 					'payment_intents/' . $pi_id . '/confirm',
-					$opts,
+					$opts
 				);
 				if ( false === $pi ) {
 					$err = $api->get_last_error();
