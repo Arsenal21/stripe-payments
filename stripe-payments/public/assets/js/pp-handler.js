@@ -1058,6 +1058,12 @@ function handlePayment() {
 		if (!vars.data.pm_confirmed) {
 			opts.payment_method_data = { type: 'card' };
 			opts.payment_method_data.card = { token: vars.data.token_id };
+			if (vars.data.dont_save_card) {
+				opts.payment_method_data.billing_details = {
+					name: billingNameInput.value,
+					email: emailInput.value
+				};
+			}
 		}
 
 		vars.confirmCardPayment = {};
