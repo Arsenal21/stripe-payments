@@ -1228,7 +1228,7 @@ msgid "Coupons Settings"
 msgstr ""
 
 #: admin/includes/class-products-meta-boxes.php:33
-#: includes/class-asp-pp-display.php:542
+#: includes/class-asp-pp-display.php:543
 #: includes/shortcodes/class-shortcode-asp.php:178
 msgid "Custom Field"
 msgstr ""
@@ -2266,11 +2266,11 @@ msgid "Log cleared."
 msgstr ""
 
 #: admin/views/admin.php:131
-#: includes/class-asp-pp-ajax.php:38
-#: includes/class-asp-pp-ajax.php:136
-#: includes/class-asp-pp-ajax.php:348
-#: includes/class-asp-pp-ajax.php:352
+#: includes/class-asp-pp-ajax.php:66
+#: includes/class-asp-pp-ajax.php:165
+#: includes/class-asp-pp-ajax.php:377
 #: includes/class-asp-pp-ajax.php:381
+#: includes/class-asp-pp-ajax.php:410
 msgid "Error occurred:"
 msgstr ""
 
@@ -2352,14 +2352,14 @@ msgstr ""
 
 #: includes/class-asp-process-ipn-ng.php:109
 #: includes/process_ipn.php:64
-#: includes/class-asp-pp-ajax.php:104
-#: includes/class-asp-pp-ajax.php:108
+#: includes/class-asp-pp-ajax.php:133
+#: includes/class-asp-pp-ajax.php:137
 msgid "Following error occurred during payment processing:"
 msgstr ""
 
 #: includes/class-asp-process-ipn-ng.php:111
 #: includes/process_ipn.php:67
-#: includes/class-asp-pp-ajax.php:106
+#: includes/class-asp-pp-ajax.php:135
 msgid "Debug data:"
 msgstr ""
 
@@ -2423,7 +2423,7 @@ msgstr ""
 
 #: includes/class-asp-pp-display.php:469
 #: includes/shortcodes/class-shortcode-asp.php:98
-#: includes/class-asp-pp-ajax.php:155
+#: includes/class-asp-pp-ajax.php:184
 msgid "Minimum amount is"
 msgstr ""
 
@@ -2445,7 +2445,7 @@ msgstr ""
 #. translators: %d is number of items in stock
 #: includes/class-asp-pp-display.php:474
 #: includes/shortcodes/class-shortcode-asp.php:102
-#: includes/class-asp-pp-ajax.php:145
+#: includes/class-asp-pp-ajax.php:174
 msgid "You cannot order more items than available: %d"
 msgstr ""
 
@@ -2497,6 +2497,10 @@ msgstr ""
 
 #: includes/class-asp-pp-display.php:487
 msgid " for upcoming recurring payments"
+msgstr ""
+
+#: includes/class-asp-pp-display.php:488
+msgid "3D Secure failed."
 msgstr ""
 
 #: includes/shortcodes/class-asp-shortcode-ng.php:70
@@ -2804,9 +2808,9 @@ msgstr ""
 msgid "Order Info: "
 msgstr ""
 
-#: includes/class-asp-pp-ajax.php:99
-#: includes/class-asp-pp-ajax.php:174
-#: includes/class-asp-pp-ajax.php:177
+#: includes/class-asp-pp-ajax.php:128
+#: includes/class-asp-pp-ajax.php:203
+#: includes/class-asp-pp-ajax.php:206
 msgid "Stripe API error occurred:"
 msgstr ""
 

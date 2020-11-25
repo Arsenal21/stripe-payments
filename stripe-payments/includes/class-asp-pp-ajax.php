@@ -19,6 +19,9 @@ class ASP_PP_Ajax {
 		add_action( 'wp_ajax_asp_pp_confirm_pi', array( $this, 'handle_confirm_pi' ) );
 		add_action( 'wp_ajax_nopriv_asp_pp_confirm_pi', array( $this, 'handle_confirm_pi' ) );
 
+		add_action( 'wp_ajax_asp_3ds_result', array( $this, 'handle_3ds_result' ) );
+		add_action( 'wp_ajax_nopriv_asp_3ds_result', array( $this, 'handle_3ds_result' ) );
+
 		add_action( 'wp_ajax_asp_pp_save_form_data', array( $this, 'save_form_data' ) );
 		add_action( 'wp_ajax_nopriv_asp_pp_save_form_data', array( $this, 'save_form_data' ) );
 
@@ -27,6 +30,31 @@ class ASP_PP_Ajax {
 
 		add_action( 'wp_ajax_asp_pp_check_coupon', array( $this, 'handle_check_coupon' ) );
 		add_action( 'wp_ajax_nopriv_asp_pp_check_coupon', array( $this, 'handle_check_coupon' ) );
+	}
+
+	public function handle_3ds_result() {
+		$pi_cs = filter_input( INPUT_GET, 'payment_intent_client_secret', FILTER_SANITIZE_STRING );
+		$pi_cs = empty( $pi_cs ) ? '' : $pi_cs;
+		?>
+<!DOCTYPE html>
+<html>
+<head>
+	<style>
+	body,html {
+		background-color: transparent !important;
+		width: 100%;
+		height: 100%;
+	}
+	</style>
+</head>
+<body>
+	<script>
+	parent.ThreeDSCompleted('<?php echo esc_js( $pi_cs ); ?>');
+	</script>
+</body>
+</html>
+		<?php
+		exit;
 	}
 
 	public function handle_confirm_pi() {
@@ -61,8 +89,9 @@ class ASP_PP_Ajax {
 
 		$return_url = add_query_arg(
 			array(
-				'action'  => 'asp_next_action_results',
-				'is_live' => $this->asp_main->is_live,
+				'action' => 'asp_3ds_result',
+			//              'action'  => 'asp_next_action_results',
+			//              'is_live' => $this->asp_main->is_live,
 			),
 			$home_url
 		);

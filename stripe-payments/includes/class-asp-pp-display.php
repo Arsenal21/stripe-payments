@@ -485,6 +485,7 @@ class ASP_PP_Display {
 				'strGetForFree'               => __( 'Purchase for Free', 'stripe-payments' ),
 				'strCurrencyNotSupported'     => __( 'Currency not supported for this payment method.', 'stripe-payments' ),
 				'strforRecurringPayments'     => __( ' for upcoming recurring payments', 'stripe-payments' ),
+				'str3DSecureFailed'           => __( '3D Secure failed.', 'stripe-payments' ),
 			),
 		);
 

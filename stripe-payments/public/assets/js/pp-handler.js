@@ -1081,19 +1081,27 @@ function handlePayment() {
 				if (resp.err) {
 					vars.data.token_id = null;
 					vars.data.pm_id = null;
+					vars.data.pm_confirmed = false;
 					submitBtn.disabled = false;
 					errorCont.innerHTML = resp.err;
 					errorCont.style.display = 'block';
 					smokeScreen(false);
 					return false;
 				}
-				piInput.value = vars.data.pi_id;
-				if (!vars.data.coupon && couponInput) {
-					couponInput.value = '';
-				}
 
 				if (resp.redirect_to) {
-					saveFormData(function () {
+
+					console.log('3D Secure init');
+
+					jQuery('#btn-spinner').hide();
+					jQuery('#redirect-spinner').fadeIn();
+					jQuery('#asp-3ds-popup').remove();
+					jQuery('#Aligner').append('<iframe id="asp-3ds-popup" frameborder="0" src="' + resp.redirect_to + '"></iframe>');
+					jQuery('#asp-3ds-popup').on('load', function () {
+						jQuery(this).fadeIn();
+						jQuery(this).off('load');
+					});
+					/* 					saveFormData(function () {
 						jQuery('#btn-spinner').hide();
 						jQuery('#redirect-spinner').fadeIn();
 						if (!inIframe || window.doSelfSubmit) {
@@ -1101,8 +1109,13 @@ function handlePayment() {
 						} else {
 							window.top.location.href = resp.redirect_to;
 						}
-					}, null);
+					}, null); */
 					return;
+				}
+
+				piInput.value = vars.data.pi_id;
+				if (!vars.data.coupon && couponInput) {
+					couponInput.value = '';
 				}
 				triggerEvent(form, 'submit');
 			},
@@ -1115,6 +1128,30 @@ function handlePayment() {
 		);
 	}
 
+}
+
+function ThreeDSCompleted(pi_cs) {
+	console.log('3D Secure completed');
+	jQuery('#asp-3ds-popup').fadeOut();
+	jQuery('#redirect-spinner').hide();
+	jQuery('#btn-spinner').fadeIn();
+
+	stripe.retrievePaymentIntent(pi_cs)
+		.then(function (result) {
+			if (result.error || result.paymentIntent.status !== 'requires_confirmation') {
+				vars.data.token_id = null;
+				vars.data.pm_id = null;
+				vars.data.pm_confirmed = false;
+
+				submitBtn.disabled = false;
+				errorCont.innerHTML = vars.str.str3DSecureFailed;
+				errorCont.style.display = 'block';
+				smokeScreen(false);
+			} else {
+				vars.data.pm_confirmed = true;
+				handlePayment();
+			}
+		});
 }
 
 function handleCardPaymentResult(result) {
