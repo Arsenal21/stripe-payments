@@ -124,7 +124,7 @@ class AcceptStripePayments_Admin {
 		$addon_update_str = __( 'Please update <b>%s</b> to latest version.', 'stripe-payments' );
 		//check minimum Subscriptions add-on version
 		$addon_name = 'Stripe Payments Subscriptions Addon';
-		if ( class_exists( 'ASPSUB_Main' ) && version_compare( ASPSUB_main::ADDON_VER, '2.0.26' ) > 0 ) {
+		if ( class_exists( 'ASPSUB_Main' ) && version_compare( ASPSUB_main::ADDON_VER, '2.0.26' ) < 0 ) {
 			self::add_admin_notice(
 				'warning',
 				sprintf(
@@ -136,7 +136,7 @@ class AcceptStripePayments_Admin {
 		}
 		//check minimum APM add-on version
 		$addon_name = 'Stripe Additional Payment Methods Addon';
-		if ( class_exists( 'ASPAPM_main' ) && version_compare( ASPAPM_main::ADDON_VER, '2.0.15' ) > 0 ) {
+		if ( class_exists( 'ASPAPM_main' ) && version_compare( ASPAPM_main::ADDON_VER, '2.0.15' ) < 0 ) {
 			self::add_admin_notice(
 				'warning',
 				sprintf(
