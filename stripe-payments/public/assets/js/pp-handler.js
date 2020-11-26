@@ -387,6 +387,8 @@ function updateAllAmounts() {
 
 	if (is_full_discount()) {
 		submitBtn.innerHTML = vars.str.strGetForFree;
+	} else if (vars.data.is_trial && vars.data.amount_variable) {
+		//currently doing nothing
 	} else {
 		submitBtn.innerHTML = vars.payBtnText.replace(/%s/g, formatMoney(vars.data.amount));
 	}
