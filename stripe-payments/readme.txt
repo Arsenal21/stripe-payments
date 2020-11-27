@@ -3,7 +3,7 @@ Contributors: Tips and Tricks HQ, wptipsntricks, alexanderfoxc
 Donate link: https://s-plugins.com
 Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortcode, digital goods, payment gateway, instant payment, commerce, digital downloads, downloads, e-commerce, e-store, ecommerce, eshop, donation
 Requires at least: 4.7
-Tested up to: 5.5
+Tested up to: 5.6
 Requires PHP: 5.6
 Stable tag: 2.0.39
 License: GPLv2 or later
@@ -158,6 +158,7 @@ None.
 = 2.0.39 =
 - Buyer email address no longer missing when `Don't save card` option enabled.
 - Added add-ons upgrade notice.
+- WP 5.6 compatibility.
 
 = 2.0.38 =
 - Payment confirmation is now done on backend.
