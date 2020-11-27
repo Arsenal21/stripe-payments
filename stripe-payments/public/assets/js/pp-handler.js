@@ -1101,7 +1101,26 @@ function handlePayment() {
 					jQuery('#Aligner').append('<iframe id="asp-3ds-popup" frameborder="0" src="' + resp.redirect_to + '"></iframe>');
 					jQuery('#asp-3ds-popup').on('load', function () {
 						jQuery(this).fadeIn();
+						jQuery('#threeds-iframe-close-btn').show();
 						jQuery(this).off('load');
+						jQuery('#threeds-iframe-close-btn').on('click', function () {
+							if (confirm(vars.str.strAbort3DSecure)) {
+								console.log('3d Secure check aborted');
+								jQuery('#asp-3ds-popup').fadeOut();
+								jQuery('#threeds-iframe-close-btn').hide();
+								jQuery('#redirect-spinner').hide();
+								jQuery('#btn-spinner').fadeIn();
+
+								vars.data.token_id = null;
+								vars.data.pm_id = null;
+								vars.data.pm_confirmed = false;
+
+								submitBtn.disabled = false;
+								errorCont.innerHTML = vars.str.str3DSecureFailed;
+								errorCont.style.display = 'block';
+								smokeScreen(false);
+							}
+						});
 					});
 					/* 					saveFormData(function () {
 						jQuery('#btn-spinner').hide();
@@ -1135,6 +1154,7 @@ function handlePayment() {
 function ThreeDSCompleted(pi_cs) {
 	console.log('3D Secure completed');
 	jQuery('#asp-3ds-popup').fadeOut();
+	jQuery('#threeds-iframe-close-btn').hide();
 	jQuery('#redirect-spinner').hide();
 	jQuery('#btn-spinner').fadeIn();
 
