@@ -87,14 +87,18 @@ class ASP_PP_Ajax {
 
 		$home_url = admin_url( 'admin-ajax.php' );
 
-		$return_url = add_query_arg(
-			array(
-				'action' => 'asp_3ds_result',
-			//              'action'  => 'asp_next_action_results',
-			//              'is_live' => $this->asp_main->is_live,
-			),
-			$home_url
-		);
+		$disable_3ds_iframe = $this->asp_main->get_setting( 'disable_3ds_iframe' );
+
+		if ( ! $disable_3ds_iframe ) {
+			$url_opts = array( 'action' => 'asp_3ds_result' );
+		} else {
+			$url_opts = array(
+				'action'  => 'asp_next_action_results',
+				'is_live' => $this->asp_main->is_live,
+			);
+		}
+
+		$return_url = add_query_arg( $url_opts, $home_url );
 
 		$opts['return_url'] = $return_url;
 
@@ -143,6 +147,7 @@ class ASP_PP_Ajax {
 
 		if ( isset( $pi->next_action ) ) {
 			$out['redirect_to'] = $pi->next_action->redirect_to_url->url;
+			$out['use_iframe']  = ! $disable_3ds_iframe;
 		}
 
 		wp_send_json( $out );

@@ -1092,45 +1092,47 @@ function handlePayment() {
 				}
 
 				if (resp.redirect_to) {
-
-					console.log('3D Secure init');
-
-					jQuery('#btn-spinner').hide();
-					jQuery('#redirect-spinner').fadeIn();
-					jQuery('#asp-3ds-popup').remove();
-					jQuery('#Aligner').append('<iframe id="asp-3ds-popup" frameborder="0" src="' + resp.redirect_to + '"></iframe>');
-					jQuery('#asp-3ds-popup').on('load', function () {
-						jQuery(this).fadeIn();
-						jQuery('#threeds-iframe-close-btn').show();
-						jQuery(this).off('load');
-						jQuery('#threeds-iframe-close-btn').on('click', function () {
-							if (confirm(vars.str.strAbort3DSecure)) {
-								console.log('3d Secure check aborted');
-								jQuery('#asp-3ds-popup').fadeOut();
-								jQuery('#threeds-iframe-close-btn').hide();
-								jQuery('#redirect-spinner').hide();
-								jQuery('#btn-spinner').fadeIn();
-
-								vars.data.token_id = null;
-								vars.data.pm_id = null;
-								vars.data.pm_confirmed = false;
-
-								submitBtn.disabled = false;
-								errorCont.innerHTML = vars.str.str3DSecureFailed;
-								errorCont.style.display = 'block';
-								smokeScreen(false);
-							}
-						});
-					});
-					/* 					saveFormData(function () {
+					if (resp.use_iframe) {
+						console.log('3D Secure init');
 						jQuery('#btn-spinner').hide();
 						jQuery('#redirect-spinner').fadeIn();
-						if (!inIframe || window.doSelfSubmit) {
-							window.location.href = resp.redirect_to;
-						} else {
-							window.top.location.href = resp.redirect_to;
-						}
-					}, null); */
+						jQuery('#asp-3ds-popup').remove();
+						jQuery('#Aligner').append('<iframe id="asp-3ds-popup" frameborder="0" src="' + resp.redirect_to + '"></iframe>');
+						jQuery('#asp-3ds-popup').on('load', function () {
+							jQuery(this).fadeIn();
+							jQuery('#threeds-iframe-close-btn').show();
+							jQuery(this).off('load');
+							jQuery('#threeds-iframe-close-btn').on('click', function () {
+								if (confirm(vars.str.strAbort3DSecure)) {
+									console.log('3d Secure check aborted');
+									jQuery('#asp-3ds-popup').fadeOut();
+									jQuery('#threeds-iframe-close-btn').hide();
+									jQuery('#redirect-spinner').hide();
+									jQuery('#btn-spinner').fadeIn();
+
+									vars.data.token_id = null;
+									vars.data.pm_id = null;
+									vars.data.pm_confirmed = false;
+
+									submitBtn.disabled = false;
+									errorCont.innerHTML = vars.str.str3DSecureFailed;
+									errorCont.style.display = 'block';
+									smokeScreen(false);
+								}
+							});
+						});
+					} else {
+						console.log('3D Secure redirect');
+						saveFormData(function () {
+							jQuery('#btn-spinner').hide();
+							jQuery('#redirect-spinner').fadeIn();
+							if (!inIframe || window.doSelfSubmit) {
+								window.location.href = resp.redirect_to;
+							} else {
+								window.top.location.href = resp.redirect_to;
+							}
+						}, null);
+					}
 					return;
 				}
 

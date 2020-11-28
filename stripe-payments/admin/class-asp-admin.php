@@ -1180,6 +1180,18 @@ class AcceptStripePayments_Admin {
 		);
 
 		add_settings_field(
+			'disable_3ds_iframe',
+			__( 'Disable 3D Secure Iframe', 'stripe-payments' ),
+			array( $this, 'settings_field_callback' ),
+			$this->plugin_slug . '-advanced',
+			'AcceptStripePayments-experimental-settings',
+			array(
+				'field' => 'disable_3ds_iframe',
+				'desc'  => __( 'If enabled, payment popup redirects browser to 3D Secure check page instead of showing it in an iframe. This might help if your server configuration prevents displaying iframes from other websites.', 'stripe-payments' ),
+			)
+		);
+
+		add_settings_field(
 			'disable_buttons_before_js_loads',
 			__( 'Disable Buttons Before Javascript Loads', 'stripe-payments' ),
 			array( $this, 'settings_field_callback' ),
@@ -1356,6 +1368,7 @@ class AcceptStripePayments_Admin {
 			case 'disable_remember_me':
 			case 'use_old_checkout_api1':
 			case 'new_product_edit_interface':
+			case 'disable_3ds_iframe':
 			case 'disable_buttons_before_js_loads':
 			case 'show_incomplete_orders':
 			case 'disable_security_token_check':
@@ -1601,6 +1614,8 @@ class AcceptStripePayments_Admin {
 		$output['send_emails_to_seller'] = empty( $input['send_emails_to_seller'] ) ? 0 : 1;
 
 		$output['send_email_on_error_to'] = sanitize_text_field( $input['send_email_on_error_to'] );
+
+		$output['disable_3ds_iframe'] = empty( $input['disable_3ds_iframe'] ) ? 0 : 1;
 
 		$output['disable_buttons_before_js_loads'] = empty( $input['disable_buttons_before_js_loads'] ) ? 0 : 1;
 
