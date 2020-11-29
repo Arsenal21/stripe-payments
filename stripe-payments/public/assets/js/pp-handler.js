@@ -1162,7 +1162,8 @@ function ThreeDSCompleted(pi_cs) {
 
 	stripe.retrievePaymentIntent(pi_cs)
 		.then(function (result) {
-			if (result.error || result.paymentIntent.status !== 'requires_confirmation') {
+			console.log(result);
+			if (result.error || (result.paymentIntent.status !== 'requires_confirmation' && result.paymentIntent.status !== 'succeeded')) {
 				vars.data.token_id = null;
 				vars.data.pm_id = null;
 				vars.data.pm_confirmed = false;
