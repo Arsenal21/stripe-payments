@@ -103,19 +103,29 @@ class ASP_PP_Ajax {
 		$opts['return_url'] = $return_url;
 
 		try {
-
 			ASP_Utils::load_stripe_lib();
 			$key = $this->asp_main->is_live ? $this->asp_main->APISecKey : $this->asp_main->APISecKeyTest;
 			\Stripe\Stripe::setApiKey( $key );
 
 			$api = ASP_Stripe_API::get_instance();
 			$api->set_api_key( $key );
-			if ( ASP_Utils::use_internal_api() ) {
+
+			if ( ! ASP_Utils::use_internal_api() ) {
+				$pi = \Stripe\PaymentIntent::retrieve( $pi_id );
+			} else {
 				$pi = $api->get( 'payment_intents/' . $pi_id );
 				if ( false === $pi ) {
 					$err = $api->get_last_error();
 					throw new \Exception( $err['message'], isset( $err['error_code'] ) ? $err['error_code'] : null );
 				}
+			}
+			if ( 'succeeded' === $pi->status ) {
+				$out['pi_id'] = $pi->id;
+				wp_send_json( $out );
+			}
+			if ( ! ASP_Utils::use_internal_api() ) {
+				$pi->confirm( $opts );
+			} else {
 				$pi = $api->post(
 					'payment_intents/' . $pi_id . '/confirm',
 					$opts
@@ -124,9 +134,6 @@ class ASP_PP_Ajax {
 					$err = $api->get_last_error();
 					throw new \Exception( $err['message'], isset( $err['error_code'] ) ? $err['error_code'] : null );
 				}
-			} else {
-				$pi = \Stripe\PaymentIntent::retrieve( $pi_id );
-				$pi->confirm( $opts );
 			}
 		} catch ( \Throwable $e ) {
 			$out['err'] = __( 'Stripe API error occurred:', 'stripe-payments' ) . ' ' . $e->getMessage();
