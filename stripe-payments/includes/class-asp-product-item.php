@@ -132,8 +132,6 @@ class ASP_Product_Item {
 			$items_total = $this->apply_discount_to_amount( $items_total, false );
 		}
 
-		$items_total = $items_total < 0 ? 0 : $items_total;
-
 		return $in_cents ? $this->in_cents( $items_total ) : $items_total;
 	}
 
