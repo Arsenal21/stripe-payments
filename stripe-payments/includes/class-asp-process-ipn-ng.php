@@ -366,6 +366,20 @@ class ASP_Process_IPN_NG {
 		$p_trans_id        = $p_data->get_trans_id();
 		$p_billing_details = $p_data->get_billing_details();
 
+		if ( empty( $p_billing_details->email ) ) {
+			$email = $this->get_post_var( 'asp_email', FILTER_SANITIZE_EMAIL );
+			if ( ! empty( $email ) ) {
+				$p_billing_details->email = $email;
+			}
+		}
+
+		if ( empty( $p_billing_details->name ) ) {
+			$name = $this->get_post_var( 'asp_billing_name', FILTER_SANITIZE_STRING );
+			if ( ! empty( $name ) ) {
+				$p_billing_details->name = $name;
+			}
+		}
+
 		$data                       = array();
 		$data['product_id']         = $prod_id ? $prod_id : null;
 		$data['paid_amount']        = AcceptStripePayments::is_zero_cents( $p_curr ) ? $p_amount : AcceptStripePayments::from_cents( $p_amount, $p_curr );
