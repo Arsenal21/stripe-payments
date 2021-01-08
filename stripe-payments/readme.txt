@@ -2,10 +2,10 @@
 Contributors: Tips and Tricks HQ, wptipsntricks, alexanderfoxc
 Donate link: https://s-plugins.com
 Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortcode, digital goods, payment gateway, instant payment, commerce, digital downloads, downloads, e-commerce, e-store, ecommerce, eshop, donation
-Requires at least: 4.7
+Requires at least: 5.0
 Tested up to: 5.6
 Requires PHP: 5.6
-Stable tag: 2.0.39
+Stable tag: 2.0.40
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -154,6 +154,9 @@ Yes, please visit Stripe Payments > Settings screen for options.
 None.
 
 == Changelog ==
+
+= 2.0.40 =
+- Fixed and XSS issue with the "currency_code" settings field. Thanks to Park Won Seok.
 
 = 2.0.39 =
 - Buyer email address no longer missing when `Don't save card` option enabled.
