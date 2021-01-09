@@ -155,6 +155,13 @@ None.
 
 == Changelog ==
 
+= WIP 2.0.41 =
+- Replaced 3D Secure redirect with full screen iframe.
+- Added per-product option to use different Stripe account.
+- Payment process no longer fails if a variation with negative price mod is selected.
+- Buyer name and email no longer missing when using add-ons with `Do Not Save Card Data on Stripe` option enabled.
+- Trial period support for variable subscriptions.
+
 = 2.0.40 =
 - Fixed and XSS issue with the "currency_code" settings field. Thanks to Park Won Seok.
 
@@ -176,38 +183,5 @@ None.
 - Countries displayed in alphabetical order now.
 - Prevented backend access to Legacy API functions if it's disabled.
 - Added extra note to the "error email" body explaining what an "error email" means.
-
-= 2.0.36 =
-- Added "Apply Per-Order" option for fixed amount coupons.
-- `2020-08-27` Stripe API version compatibility.
-- Improved compatibility with caching plugins (W3 Total Cache, SG Optimizer, WP Rocket etc).
-- Payment popup refreshes itself if its left inactive for too long. Should resolve issues related to "Invalid security token".
-- Fixed rare payment popup closing issue in Safari browser.
-- Success payment animation is now properly displayed in Safari browser.
-- Added Egyptian Pound (EGP) currency.
-
-= 2.0.35 =
-- Donation type products using zero-decimal currencies no longer cause payment error. 
-- Products with applied coupons that reduce amount to 0 are properly handled now.
-- Symbols with accents in product thumbnail URLs are no longer removed.
-- Added Romanian Leu (RON) currency support.
-- Fixed minor incompatibility issue with WP 5.5 on Settings page.
-
-= 2.0.34 =
-- `Currency not supported for this payment method` error message is now removed when another payment method is selected.
-- Billing address postcode is no longer missing in the orders menu.
-- Fixed an issue with the Order Events interface showing the "Paid" label twice.
-- Payment popup blocks can now be rearranged via CSS tweaks.
-- Minor payment popup appearance improvements.
-
-= 2.0.33 =
-- Fixed payment error when Legacy API option is still enabled.
-- Changed the way security tokens are generated. Should help prevent `Invalid security token` error on servers with aggressive caching.
-- Added `Disable Security Token Check` settings option (if the above fails).
-- Fixed rare issue affecting `Authorize Only` products and payment methods that do not support it.
-
-= 2.0.32 =
-- reCAPTCHA add-on functionality is now built into the core plugin. You can enable reCAPTCHA from the settings menu of the plugin.
-- Added security token check for subscriptions payments.
 
 Full changelog available [ at changelog.txt](https://plugins.svn.wordpress.org/stripe-payments/trunk/changelog.txt)

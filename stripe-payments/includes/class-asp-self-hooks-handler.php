@@ -77,6 +77,22 @@ class ASP_Self_Hooks_Handler {
 			return;
 		}
 
+		$prod = new ASP_Product_Item( $product_id );
+
+		$type = $prod->get_type();
+
+		if ( 'subscription' !== $type ) {
+			$use_other_acc = get_post_meta( $product_id, 'asp_use_other_stripe_acc', true );
+			if ( ! empty( $use_other_acc ) ) {
+				$this->main->APIPubKeyTest = get_post_meta( $product_id, 'asp_stripe_test_pub_key', true );
+				$this->main->APIPubKeyLive = get_post_meta( $product_id, 'asp_stripe_live_pub_key', true );
+				$this->main->APISecKeyTest = get_post_meta( $product_id, 'asp_stripe_test_sec_key', true );
+				$this->main->APISecKeyLive = get_post_meta( $product_id, 'asp_stripe_live_sec_key', true );
+				$this->main->APIPubKey     = $this->main->APIPubKeyLive;
+				$this->main->APISecKey     = $this->main->APISecKeyLive;
+			}
+		}
+
 		$plan_id = get_post_meta( $product_id, 'asp_sub_plan_id', true );
 
 		if ( ! empty( $plan_id ) ) {
@@ -96,9 +112,9 @@ class ASP_Self_Hooks_Handler {
 			}
 		}
 
-		$this->main->is_live = false;
-		$this->APIPubKey     = $this->main->get_setting( 'api_publishable_key_test' );
-		$this->APISecKey     = $this->main->get_setting( 'api_secret_key_test' );
+		$this->main->is_live   = false;
+		$this->main->APIPubKey = $this->main->APIPubKeyTest;
+		$this->main->APISecKey = $this->main->APISecKeyTest;
 	}
 
 	public function handle_emember_signup( $data, $charge ) {

@@ -19,6 +19,9 @@ class ASP_PP_Ajax {
 		add_action( 'wp_ajax_asp_pp_confirm_pi', array( $this, 'handle_confirm_pi' ) );
 		add_action( 'wp_ajax_nopriv_asp_pp_confirm_pi', array( $this, 'handle_confirm_pi' ) );
 
+		add_action( 'wp_ajax_asp_3ds_result', array( $this, 'handle_3ds_result' ) );
+		add_action( 'wp_ajax_nopriv_asp_3ds_result', array( $this, 'handle_3ds_result' ) );
+
 		add_action( 'wp_ajax_asp_pp_save_form_data', array( $this, 'save_form_data' ) );
 		add_action( 'wp_ajax_nopriv_asp_pp_save_form_data', array( $this, 'save_form_data' ) );
 
@@ -27,6 +30,31 @@ class ASP_PP_Ajax {
 
 		add_action( 'wp_ajax_asp_pp_check_coupon', array( $this, 'handle_check_coupon' ) );
 		add_action( 'wp_ajax_nopriv_asp_pp_check_coupon', array( $this, 'handle_check_coupon' ) );
+	}
+
+	public function handle_3ds_result() {
+		$pi_cs = filter_input( INPUT_GET, 'payment_intent_client_secret', FILTER_SANITIZE_STRING );
+		$pi_cs = empty( $pi_cs ) ? '' : $pi_cs;
+		?>
+<!DOCTYPE html>
+<html>
+<head>
+	<style>
+	body,html {
+		background-color: transparent !important;
+		width: 100%;
+		height: 100%;
+	}
+	</style>
+</head>
+<body>
+	<script>
+	parent.ThreeDSCompleted('<?php echo esc_js( $pi_cs ); ?>');
+	</script>
+</body>
+</html>
+		<?php
+		exit;
 	}
 
 	public function handle_confirm_pi() {
@@ -59,30 +87,45 @@ class ASP_PP_Ajax {
 
 		$home_url = admin_url( 'admin-ajax.php' );
 
-		$return_url = add_query_arg(
-			array(
+		$disable_3ds_iframe = $this->asp_main->get_setting( 'disable_3ds_iframe' );
+
+		if ( ! $disable_3ds_iframe ) {
+			$url_opts = array( 'action' => 'asp_3ds_result' );
+		} else {
+			$url_opts = array(
 				'action'  => 'asp_next_action_results',
 				'is_live' => $this->asp_main->is_live,
-			),
-			$home_url
-		);
+			);
+		}
+
+		$return_url = add_query_arg( $url_opts, $home_url );
 
 		$opts['return_url'] = $return_url;
 
 		try {
-
 			ASP_Utils::load_stripe_lib();
 			$key = $this->asp_main->is_live ? $this->asp_main->APISecKey : $this->asp_main->APISecKeyTest;
 			\Stripe\Stripe::setApiKey( $key );
 
 			$api = ASP_Stripe_API::get_instance();
 			$api->set_api_key( $key );
-			if ( ASP_Utils::use_internal_api() ) {
+
+			if ( ! ASP_Utils::use_internal_api() ) {
+				$pi = \Stripe\PaymentIntent::retrieve( $pi_id );
+			} else {
 				$pi = $api->get( 'payment_intents/' . $pi_id );
 				if ( false === $pi ) {
 					$err = $api->get_last_error();
 					throw new \Exception( $err['message'], isset( $err['error_code'] ) ? $err['error_code'] : null );
 				}
+			}
+			if ( 'succeeded' === $pi->status ) {
+				$out['pi_id'] = $pi->id;
+				wp_send_json( $out );
+			}
+			if ( ! ASP_Utils::use_internal_api() ) {
+				$pi->confirm( $opts );
+			} else {
 				$pi = $api->post(
 					'payment_intents/' . $pi_id . '/confirm',
 					$opts
@@ -91,9 +134,6 @@ class ASP_PP_Ajax {
 					$err = $api->get_last_error();
 					throw new \Exception( $err['message'], isset( $err['error_code'] ) ? $err['error_code'] : null );
 				}
-			} else {
-				$pi = \Stripe\PaymentIntent::retrieve( $pi_id );
-				$pi->confirm( $opts );
 			}
 		} catch ( \Throwable $e ) {
 			$out['err'] = __( 'Stripe API error occurred:', 'stripe-payments' ) . ' ' . $e->getMessage();
@@ -114,6 +154,7 @@ class ASP_PP_Ajax {
 
 		if ( isset( $pi->next_action ) ) {
 			$out['redirect_to'] = $pi->next_action->redirect_to_url->url;
+			$out['use_iframe']  = ! $disable_3ds_iframe;
 		}
 
 		wp_send_json( $out );

@@ -83,13 +83,25 @@
 	cursor: pointer;
 }
 
-#modal-close-btn svg {
+#threeds-iframe-close-btn {
+	z-index: 10001;
+	position: fixed;
+	right: 20px;
+	height: 20px;
+	text-align: center;
+	top: 20px;
+	width: 20px;
+	display: none;
+	cursor: pointer;
+}
+
+#modal-close-btn svg, #threeds-iframe-close-btn svg {
 	transition: 0.3s;
 	fill: #616161;
 	opacity: 0.5;
 }
 
-#modal-close-btn svg:hover {
+#modal-close-btn svg:hover, #threeds-iframe-close-btn svg:hover {
 	opacity: 1;
 }
 
@@ -349,6 +361,24 @@ input.pure-input-1.has-icon, select.pure-input-1.has-icon {
 	animation-timing-function: linear;
 }
 
+/* 3DS Iframe */
+
+#asp-3ds-popup {
+	display: none;
+	z-index: 10001;
+	border: 0px none transparent;
+	background: silver;
+	overflow: auto;
+	-webkit-overflow-scrolling: touch !important;
+	margin: 0px;
+	padding: 0px;
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+}
+
 @media screen and (max-width: 48em) {
 	#variations-cont .variation:nth-child(odd) fieldset {
 		margin-right: 0;
@@ -405,5 +435,9 @@ input.pure-input-1.has-icon, select.pure-input-1.has-icon {
 	}
 	#modal-body {
 		padding: 20px;
+	}
+	#redirect-spinner {
+		top: 50%;
+		position: fixed;
 	}
 }
