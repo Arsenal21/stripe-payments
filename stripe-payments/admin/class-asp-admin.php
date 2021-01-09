@@ -1668,7 +1668,8 @@ class AcceptStripePayments_Admin {
 		}
 
 		if ( ! empty( $input['currency_code'] ) ) {
-			$output['currency_code'] = $input['currency_code'];
+                        $input['currency_code'] = sanitize_text_field( $input['currency_code'] );
+			$output['currency_code'] = sanitize_text_field( $input['currency_code'] );
 			$currencies              = AcceptStripePayments::get_currencies();
 			$opts                    = get_option( 'AcceptStripePayments-settings' );
 			if ( isset( $opts['custom_currency_symbols'] ) && is_array( $opts['custom_currency_symbols'] ) ) {

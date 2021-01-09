@@ -2,10 +2,10 @@
 Contributors: Tips and Tricks HQ, wptipsntricks, alexanderfoxc
 Donate link: https://s-plugins.com
 Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortcode, digital goods, payment gateway, instant payment, commerce, digital downloads, downloads, e-commerce, e-store, ecommerce, eshop, donation
-Requires at least: 4.7
+Requires at least: 5.0
 Tested up to: 5.6
 Requires PHP: 5.6
-Stable tag: 2.0.40t3
+Stable tag: 2.0.40
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -155,12 +155,15 @@ None.
 
 == Changelog ==
 
-= WIP 2.0.40 =
+= WIP 2.0.41 =
 - Replaced 3D Secure redirect with full screen iframe.
 - Added per-product option to use different Stripe account.
 - Payment process no longer fails if a variation with negative price mod is selected.
 - Buyer name and email no longer missing when using add-ons with `Do Not Save Card Data on Stripe` option enabled.
 - Trial period support for variable subscriptions.
+
+= 2.0.40 =
+- Fixed and XSS issue with the "currency_code" settings field. Thanks to Park Won Seok.
 
 = 2.0.39 =
 - Buyer email address no longer missing when `Don't save card` option enabled.
