@@ -34,10 +34,6 @@ echo '<style>' . $css . '</style>' . "\r\n";
 	$a['data']['customer_default_country'] = apply_filters( 'asp_ng_pp_default_country_override', $a['data']['customer_default_country'] );
 
 	?>
-	<!--[if lt IE 9]>
-<script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
-<![endif]-->
 </head>
 
 <body<?php echo isset( $a['prod_id'] ) ? sprintf( ' id="product-%d"', esc_attr( $a['prod_id'] ) ) : ''; ?>>
