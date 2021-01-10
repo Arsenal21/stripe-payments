@@ -161,6 +161,11 @@ class AcceptStripePayments_Admin {
 			update_option( 'asp_new_api_notice_dismissed1', true );
 		}
 
+		$notice_dismissed_get = filter_input( INPUT_GET, 'asp_dismiss_auc_msg', FILTER_SANITIZE_NUMBER_INT );
+		if ( ! empty( $notice_dismissed_get ) && check_admin_referer( 'asp_dismiss_auc_msg' ) ) {
+			update_option( 'asp_dismiss_auc_msg', true );
+		}
+
 		//show new API notice
 		$opt = get_option( 'AcceptStripePayments-settings' );
 		if ( isset( $opt['use_old_checkout_api1'] ) && $opt['use_old_checkout_api1'] ) {
@@ -1668,10 +1673,10 @@ class AcceptStripePayments_Admin {
 		}
 
 		if ( ! empty( $input['currency_code'] ) ) {
-                        $input['currency_code'] = sanitize_text_field( $input['currency_code'] );
-			$output['currency_code'] = sanitize_text_field( $input['currency_code'] );
-			$currencies              = AcceptStripePayments::get_currencies();
-			$opts                    = get_option( 'AcceptStripePayments-settings' );
+						$input['currency_code'] = sanitize_text_field( $input['currency_code'] );
+			$output['currency_code']            = sanitize_text_field( $input['currency_code'] );
+			$currencies                         = AcceptStripePayments::get_currencies();
+			$opts                               = get_option( 'AcceptStripePayments-settings' );
 			if ( isset( $opts['custom_currency_symbols'] ) && is_array( $opts['custom_currency_symbols'] ) ) {
 				$custom_curr_symb = $opts['custom_currency_symbols'];
 			} else {
