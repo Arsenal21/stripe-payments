@@ -162,7 +162,7 @@ None.
 - Buyer name and email no longer missing when using add-ons with `Do Not Save Card Data on Stripe` option enabled.
 - Trial period support for variable subscriptions.
 - Removed bundled Update Checker for add-ons.
-You can install [Addons Update Checker plugin](https://s-plugins.com/update-checker-plugin-for-the-addons/) to keep your Stripe Payemnts add-ons up to date.
+You can install [Addons Update Checker plugin](https://s-plugins.com/update-checker-plugin-for-the-addons/) to keep your Stripe Payments add-ons up to date.
 
 = 2.0.40 =
 - Fixed and XSS issue with the "currency_code" settings field. Thanks to Park Won Seok.
