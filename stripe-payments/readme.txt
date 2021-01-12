@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 5.0
 Tested up to: 5.6
 Requires PHP: 5.6
-Stable tag: 2.0.40
+Stable tag: 2.0.41
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -155,12 +155,14 @@ None.
 
 == Changelog ==
 
-= WIP 2.0.41 =
+= 2.0.41 =
 - Replaced 3D Secure redirect with full screen iframe.
 - Added per-product option to use different Stripe account.
 - Payment process no longer fails if a variation with negative price mod is selected.
 - Buyer name and email no longer missing when using add-ons with `Do Not Save Card Data on Stripe` option enabled.
 - Trial period support for variable subscriptions.
+- Removed bundled Update Checker for add-ons.
+You can install [Addons Update Checker plugin](https://s-plugins.com/update-checker-plugin-for-the-addons/) to keep your Stripe Payemnts add-ons up to date.
 
 = 2.0.40 =
 - Fixed and XSS issue with the "currency_code" settings field. Thanks to Park Won Seok.
@@ -184,4 +186,4 @@ None.
 - Prevented backend access to Legacy API functions if it's disabled.
 - Added extra note to the "error email" body explaining what an "error email" means.
 
-Full changelog available [ at changelog.txt](https://plugins.svn.wordpress.org/stripe-payments/trunk/changelog.txt)
+Full changelog available [at changelog.txt](https://plugins.svn.wordpress.org/stripe-payments/trunk/changelog.txt)
