@@ -72,7 +72,7 @@ class ASP_Addons_Helper {
 			AcceptStripePayments_Admin::add_admin_notice(
 				'warning',
 				// translators: %s is replaced by a link to plugin page
-				sprintf( __( 'Please install <a target="_blank" href="%s">Stripe Payments Addons Update Checker</a> plugin to keep your add-ons up-to-date.', 'stripe-payments' ), 'https://s-plugins.com' ) .
+				sprintf( __( 'Please install <a target="_blank" href="%s">Stripe Payments Addons Update Checker</a> plugin to keep your add-ons up-to-date.', 'stripe-payments' ), 'https://s-plugins.com/update-checker-plugin-for-the-addons/' ) .
 				$dismiss_msg,
 				false
 			);
