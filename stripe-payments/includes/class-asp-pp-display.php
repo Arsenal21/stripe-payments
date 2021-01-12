@@ -433,9 +433,11 @@ class ASP_PP_Display {
 		}
 
 		if ( isset( $data['is_trial'] ) && $data['is_trial'] ) {
-			$data['amount_variable'] = false;
-			if ( $this->item->get_price() === 0 ) {
+			if ( empty( $plan_id ) ) {
 				$data['amount_variable'] = false;
+				if ( $this->item->get_price() === 0 ) {
+					$data['amount_variable'] = false;
+				}
 			}
 			$pay_btn_text = apply_filters( 'asp_customize_text_msg', __( 'Start Free Trial', 'stripe-payments' ), 'start_free_trial' );
 		}
@@ -485,6 +487,8 @@ class ASP_PP_Display {
 				'strGetForFree'               => __( 'Purchase for Free', 'stripe-payments' ),
 				'strCurrencyNotSupported'     => __( 'Currency not supported for this payment method.', 'stripe-payments' ),
 				'strforRecurringPayments'     => __( ' for upcoming recurring payments', 'stripe-payments' ),
+				'str3DSecureFailed'           => __( '3D Secure failed.', 'stripe-payments' ),
+				'strAbort3DSecure'            => __( 'Abort 3D Secure check?', 'stripe-payments' ),
 			),
 		);
 

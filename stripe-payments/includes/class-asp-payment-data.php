@@ -78,8 +78,8 @@ class ASP_Payment_Data {
 		$billing_addr = new stdClass();
 		$bd           = $this->obj->charges->data[0]->billing_details;
 
-		$billing_addr->name        = ! empty( $bd->name ) ? $bd->name : $this->obj->customer->name;
-		$billing_addr->email       = ! empty( $bd->email ) ? $bd->email : $this->obj->customer->email;
+		$billing_addr->name        = ! empty( $bd->name ) ? $bd->name : ( isset( $this->obj->customer->name ) ? $this->obj->customer->name : '' );
+		$billing_addr->email       = ! empty( $bd->email ) ? $bd->email : ( isset( $this->obj->customer->email ) ? $this->obj->customer->email : '' );
 		$billing_addr->line1       = isset( $bd->address->line1 ) ? $bd->address->line1 : ( isset( $this->obj->customer->address->line1 ) ? $this->obj->customer->address->line1 : '' );
 		$billing_addr->line2       = isset( $bd->address->line2 ) ? $bd->address->line2 : ( isset( $this->obj->customer->address->line2 ) ? $this->obj->customer->address->line2 : '' );
 		$billing_addr->postal_code = isset( $bd->address->postal_code ) ? $bd->address->postal_code : '';

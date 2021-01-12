@@ -277,7 +277,7 @@ th#id {
 	function display_coupon_add_edit_page() {
 
 		wp_enqueue_script( 'jquery-ui-datepicker' );
-		wp_register_style( 'jquery-ui', '//ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css' );
+		wp_register_style( 'jquery-ui', WP_ASP_PLUGIN_URL . '/admin/assets/css/jquery-ui-theme/jquery-ui.min.css' );
 		wp_enqueue_style( 'jquery-ui' );
 
 		$coupon_id = isset( $_GET['asp_coupon_id'] ) ? absint( $_GET['asp_coupon_id'] ) : false;

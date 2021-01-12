@@ -695,7 +695,15 @@ jQuery(document).ready(function($) {
 		$current_val = get_post_meta( $post->ID, 'asp_product_force_test_mode', true );
 		$plan_id     = get_post_meta( $post->ID, 'asp_sub_plan_id', true );
 		$auth_only   = get_post_meta( $post->ID, 'asp_product_authorize_only', true );
+
+		$use_other_stripe_acc = get_post_meta( $post->ID, 'asp_use_other_stripe_acc', true );
+
+		$live_pub_key = get_post_meta( $post->ID, 'asp_stripe_live_pub_key', true );
+		$live_sec_key = get_post_meta( $post->ID, 'asp_stripe_live_sec_key', true );
+		$test_pub_key = get_post_meta( $post->ID, 'asp_stripe_test_pub_key', true );
+		$test_sec_key = get_post_meta( $post->ID, 'asp_stripe_test_sec_key', true );
 		?>
+		<fieldset>
 		<label><input type="checkbox" name="asp_product_authorize_only" value="1"
 		<?php
 		echo $auth_only ? ' checked' : '';
@@ -709,6 +717,28 @@ jQuery(document).ready(function($) {
 		</p>
 		<label><input type="checkbox" name="asp_product_force_test_mode" value="1"<?php echo $current_val ? ' checked' : ''; ?>> <?php echo esc_html_e( 'Force Test Mode', 'stripe-payments' ); ?></label>
 		<p class="description"><?php echo esc_html_e( 'When enabled, this product will stay in test mode regardless of the value set in the global "Live Mode" settings option. Can be useful to create a test product.', 'stripe-payments' ); ?></p>
+		</fieldset>
+		<fieldset class="asp-other-stripe-acc">
+			<legend><?php esc_html_e( 'Other Stripe Account', 'stripe-payments' ); ?></legend>
+			<p class="description"><i><?php echo __( 'Note: this functionality is currently being tested and is not supported by Subscription products, APM, Alipay, SOFORT and iDEAL add-ons. Please do not enable it if you\'re using one of these add-ons.', 'stripe-payments' ); ?></i></p>
+			<label><input type="checkbox" name="asp_use_other_stripe_acc" value="1"<?php echo $use_other_stripe_acc ? ' checked' : ''; ?>> <?php echo esc_html_e( 'Use Other Stripe Account', 'stripe-payments' ); ?></label>
+			<p class="description"><?php _e( 'Enable this if you want to use other Stripe account for this product. Enter corresponding API keys of the account below.' ); ?></p>
+			<label>Live Stripe Publishable Key</label>
+			<br>
+			<input type="text" size="45" data-asp-other-acc name="asp_stripe_live_pub_key" value="<?php echo esc_attr( $live_pub_key ); ?>">
+			<br>
+			<label>Live Stripe Secret Key</label>
+			<br>
+			<input type="text" size="45" data-asp-other-acc name="asp_stripe_live_sec_key" value="<?php echo esc_attr( $live_sec_key ); ?>">
+			<br>
+			<label>Test Stripe Publishable Key</label>
+			<br>
+			<input type="text" size="45" data-asp-other-acc name="asp_stripe_test_pub_key" value="<?php echo esc_attr( $test_pub_key ); ?>">
+			<br>
+			<label>Test Stripe Secret Key</label>
+			<br>
+			<input type="text" size="45" data-asp-other-acc name="asp_stripe_test_sec_key" value="<?php echo esc_attr( $test_sec_key ); ?>">
+		</fieldset>
 		<?php
 	}
 
@@ -789,6 +819,24 @@ jQuery(document).ready(function($) {
 			$auth_only = filter_input( INPUT_POST, 'asp_product_authorize_only', FILTER_SANITIZE_STRING );
 			$auth_only = ! empty( $auth_only ) ? true : false;
 			update_post_meta( $post_id, 'asp_product_authorize_only', $auth_only );
+
+			$use_other_stripe_acc = filter_input( INPUT_POST, 'asp_use_other_stripe_acc', FILTER_SANITIZE_STRING );
+			$use_other_stripe_acc = ! empty( $use_other_stripe_acc ) ? true : false;
+			update_post_meta( $post_id, 'asp_use_other_stripe_acc', $use_other_stripe_acc );
+
+			$live_pub_key = filter_input( INPUT_POST, 'asp_stripe_live_pub_key', FILTER_SANITIZE_STRING );
+			update_post_meta( $post_id, 'asp_stripe_live_pub_key', $live_pub_key );
+			$live_sec_key = filter_input( INPUT_POST, 'asp_stripe_live_sec_key', FILTER_SANITIZE_STRING );
+			update_post_meta( $post_id, 'asp_stripe_live_sec_key', $live_sec_key );
+			$test_pub_key = filter_input( INPUT_POST, 'asp_stripe_test_pub_key', FILTER_SANITIZE_STRING );
+			update_post_meta( $post_id, 'asp_stripe_test_pub_key', $test_pub_key );
+			$test_sec_key = filter_input( INPUT_POST, 'asp_stripe_test_sec_key', FILTER_SANITIZE_STRING );
+			update_post_meta( $post_id, 'asp_stripe_test_sec_key', $test_sec_key );
+
+			if ( $use_other_stripe_acc && ( empty( $live_pub_key ) || empty( $live_sec_key ) || empty( $test_pub_key ) || empty( $test_sec_key ) ) ) {
+				$text = __( 'Please enter all API keys for other Stripe account.', 'stripe-payments' );
+				AcceptStripePayments_Admin::add_admin_notice( 'error', $text, false );
+			}
 
 			$pdf_stamper_enabled = filter_input( INPUT_POST, 'asp_product_pdf_stamper_enabled', FILTER_SANITIZE_STRING );
 			$pdf_stamper_enabled = ! empty( $pdf_stamper_enabled ) ? true : false;

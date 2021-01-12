@@ -161,6 +161,11 @@ class AcceptStripePayments_Admin {
 			update_option( 'asp_new_api_notice_dismissed1', true );
 		}
 
+		$notice_dismissed_get = filter_input( INPUT_GET, 'asp_dismiss_auc_msg', FILTER_SANITIZE_NUMBER_INT );
+		if ( ! empty( $notice_dismissed_get ) && check_admin_referer( 'asp_dismiss_auc_msg' ) ) {
+			update_option( 'asp_dismiss_auc_msg', true );
+		}
+
 		//show new API notice
 		$opt = get_option( 'AcceptStripePayments-settings' );
 		if ( isset( $opt['use_old_checkout_api1'] ) && $opt['use_old_checkout_api1'] ) {
@@ -1180,6 +1185,18 @@ class AcceptStripePayments_Admin {
 		);
 
 		add_settings_field(
+			'disable_3ds_iframe',
+			__( 'Disable 3D Secure Iframe', 'stripe-payments' ),
+			array( $this, 'settings_field_callback' ),
+			$this->plugin_slug . '-advanced',
+			'AcceptStripePayments-experimental-settings',
+			array(
+				'field' => 'disable_3ds_iframe',
+				'desc'  => __( 'If enabled, payment popup redirects browser to 3D Secure check page instead of showing it in an iframe. This might help if your server configuration prevents displaying iframes from other websites.', 'stripe-payments' ),
+			)
+		);
+
+		add_settings_field(
 			'disable_buttons_before_js_loads',
 			__( 'Disable Buttons Before Javascript Loads', 'stripe-payments' ),
 			array( $this, 'settings_field_callback' ),
@@ -1356,6 +1373,7 @@ class AcceptStripePayments_Admin {
 			case 'disable_remember_me':
 			case 'use_old_checkout_api1':
 			case 'new_product_edit_interface':
+			case 'disable_3ds_iframe':
 			case 'disable_buttons_before_js_loads':
 			case 'show_incomplete_orders':
 			case 'disable_security_token_check':
@@ -1602,6 +1620,8 @@ class AcceptStripePayments_Admin {
 
 		$output['send_email_on_error_to'] = sanitize_text_field( $input['send_email_on_error_to'] );
 
+		$output['disable_3ds_iframe'] = empty( $input['disable_3ds_iframe'] ) ? 0 : 1;
+
 		$output['disable_buttons_before_js_loads'] = empty( $input['disable_buttons_before_js_loads'] ) ? 0 : 1;
 
 		$output['show_incomplete_orders'] = empty( $input['show_incomplete_orders'] ) ? 0 : 1;
@@ -1653,10 +1673,10 @@ class AcceptStripePayments_Admin {
 		}
 
 		if ( ! empty( $input['currency_code'] ) ) {
-                        $input['currency_code'] = sanitize_text_field( $input['currency_code'] );
-			$output['currency_code'] = sanitize_text_field( $input['currency_code'] );
-			$currencies              = AcceptStripePayments::get_currencies();
-			$opts                    = get_option( 'AcceptStripePayments-settings' );
+						$input['currency_code'] = sanitize_text_field( $input['currency_code'] );
+			$output['currency_code']            = sanitize_text_field( $input['currency_code'] );
+			$currencies                         = AcceptStripePayments::get_currencies();
+			$opts                               = get_option( 'AcceptStripePayments-settings' );
 			if ( isset( $opts['custom_currency_symbols'] ) && is_array( $opts['custom_currency_symbols'] ) ) {
 				$custom_curr_symb = $opts['custom_currency_symbols'];
 			} else {

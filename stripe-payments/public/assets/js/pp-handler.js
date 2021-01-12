@@ -387,6 +387,8 @@ function updateAllAmounts() {
 
 	if (is_full_discount()) {
 		submitBtn.innerHTML = vars.str.strGetForFree;
+	} else if (vars.data.is_trial && vars.data.amount_variable) {
+		//currently doing nothing
 	} else {
 		submitBtn.innerHTML = vars.payBtnText.replace(/%s/g, formatMoney(vars.data.amount));
 	}
@@ -1081,28 +1083,62 @@ function handlePayment() {
 				if (resp.err) {
 					vars.data.token_id = null;
 					vars.data.pm_id = null;
+					vars.data.pm_confirmed = false;
 					submitBtn.disabled = false;
 					errorCont.innerHTML = resp.err;
 					errorCont.style.display = 'block';
 					smokeScreen(false);
 					return false;
 				}
+
+				if (resp.redirect_to) {
+					if (resp.use_iframe) {
+						console.log('3D Secure init');
+						jQuery('#btn-spinner').hide();
+						jQuery('#redirect-spinner').fadeIn();
+						jQuery('#asp-3ds-popup').remove();
+						jQuery('#Aligner').append('<iframe id="asp-3ds-popup" frameborder="0" src="' + resp.redirect_to + '"></iframe>');
+						jQuery('#asp-3ds-popup').on('load', function () {
+							jQuery(this).fadeIn();
+							jQuery('#threeds-iframe-close-btn').show();
+							jQuery(this).off('load');
+							jQuery('#threeds-iframe-close-btn').on('click', function () {
+								if (confirm(vars.str.strAbort3DSecure)) {
+									console.log('3d Secure check aborted');
+									jQuery('#asp-3ds-popup').fadeOut();
+									jQuery('#threeds-iframe-close-btn').hide();
+									jQuery('#redirect-spinner').hide();
+									jQuery('#btn-spinner').fadeIn();
+
+									vars.data.token_id = null;
+									vars.data.pm_id = null;
+									vars.data.pm_confirmed = false;
+
+									submitBtn.disabled = false;
+									errorCont.innerHTML = vars.str.str3DSecureFailed;
+									errorCont.style.display = 'block';
+									smokeScreen(false);
+								}
+							});
+						});
+					} else {
+						console.log('3D Secure redirect');
+						saveFormData(function () {
+							jQuery('#btn-spinner').hide();
+							jQuery('#redirect-spinner').fadeIn();
+							if (!inIframe || window.doSelfSubmit) {
+								window.location.href = resp.redirect_to;
+							} else {
+								window.top.location.href = resp.redirect_to;
+							}
+						}, null);
+					}
+					return;
+				}
+
 				piInput.value = vars.data.pi_id;
 				if (!vars.data.coupon && couponInput) {
 					couponInput.value = '';
-				}
-
-				if (resp.redirect_to) {
-					saveFormData(function () {
-						jQuery('#btn-spinner').hide();
-						jQuery('#redirect-spinner').fadeIn();
-						if (!inIframe || window.doSelfSubmit) {
-							window.location.href = resp.redirect_to;
-						} else {
-							window.top.location.href = resp.redirect_to;
-						}
-					}, null);
-					return;
 				}
 				triggerEvent(form, 'submit');
 			},
@@ -1115,6 +1151,32 @@ function handlePayment() {
 		);
 	}
 
+}
+
+function ThreeDSCompleted(pi_cs) {
+	console.log('3D Secure completed');
+	jQuery('#asp-3ds-popup').fadeOut();
+	jQuery('#threeds-iframe-close-btn').hide();
+	jQuery('#redirect-spinner').hide();
+	jQuery('#btn-spinner').fadeIn();
+
+	stripe.retrievePaymentIntent(pi_cs)
+		.then(function (result) {
+			console.log(result);
+			if (result.error || (result.paymentIntent.status !== 'requires_confirmation' && result.paymentIntent.status !== 'succeeded')) {
+				vars.data.token_id = null;
+				vars.data.pm_id = null;
+				vars.data.pm_confirmed = false;
+
+				submitBtn.disabled = false;
+				errorCont.innerHTML = vars.str.str3DSecureFailed;
+				errorCont.style.display = 'block';
+				smokeScreen(false);
+			} else {
+				vars.data.pm_confirmed = true;
+				handlePayment();
+			}
+		});
 }
 
 function handleCardPaymentResult(result) {

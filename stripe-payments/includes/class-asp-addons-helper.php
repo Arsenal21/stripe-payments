@@ -50,29 +50,31 @@ class ASP_Addons_Helper {
 		return $data;
 	}
 
-	public function set_request_options( $options ) {
-		$options['timeout'] = 5;
-		return $options;
-	}
-
 	public function check_updates() {
 		if ( ! is_admin() ) {
 			return;
 		}
-		$lib_path = WP_ASP_PLUGIN_PATH . 'includes/plugin-update-checker/plugin-update-checker.php';
-		if ( file_exists( $lib_path ) ) {
-			if ( ! class_exists( 'Puc_v4_Factory' ) ) {
-				require_once $lib_path;
-			}
+		if ( class_exists( 'ASP_Addons_Update_Checker' ) ) {
 			if ( empty( $this->addon->SLUG ) || empty( $this->addon->file ) ) {
 				return;
 			}
-			// change timeout from default 10 seconds to 5
-			add_filter( 'puc_request_info_options-' . $this->addon->SLUG, array( $this, 'set_request_options' ) );
-			Puc_v4_Factory::buildUpdateChecker(
-				'https://s-plugins.com/updates/?action=get_metadata&slug=' . $this->addon->SLUG,
-				$this->addon->file,
-				$this->addon->SLUG
+			ASP_Addons_Update_Checker::check_updates( $this->addon->SLUG, $this->addon->file );
+		} else {
+			// let's display admin notice to install Addons Update Checker (if the message is not yet dismissed)
+			$notice_dismissed = get_option( 'asp_dismiss_auc_msg' );
+			if ( ! empty( $notice_dismissed ) ) {
+				return;
+			}
+			$admin_url   = get_admin_url();
+			$dismiss_url = add_query_arg( 'asp_dismiss_auc_msg', '1', $admin_url );
+			$dismiss_url = wp_nonce_url( $dismiss_url, 'asp_dismiss_auc_msg' );
+			$dismiss_msg = '<span style="display:block;text-align:right;"><a style="text-decoration: none; border-bottom: 1px dashed;font-size:0.9em;" href="' . $dismiss_url . '">' . __( 'Don\'t show this message again', 'stripe-payments' ) . '</a></span>';
+			AcceptStripePayments_Admin::add_admin_notice(
+				'warning',
+				// translators: %s is replaced by a link to plugin page
+				sprintf( __( 'Please install <a target="_blank" href="%s">Stripe Payments Addons Update Checker</a> plugin to keep your add-ons up-to-date.', 'stripe-payments' ), 'https://s-plugins.com/update-checker-plugin-for-the-addons/' ) .
+				$dismiss_msg,
+				false
 			);
 		}
 	}
