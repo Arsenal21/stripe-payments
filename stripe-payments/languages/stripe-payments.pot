@@ -2660,7 +2660,7 @@ msgstr ""
 
 #. translators: %s is replaced by a link to plugin page
 #: includes/class-asp-addons-helper.php:75
-msgid "Please install <a target=\"_blank\" href=\"%s\">Stripe Payments Addons Update Checker</a> plugin to keep your add-ons up-to-date."
+msgid "Please install the <a target=\"_blank\" href=\"%s\">Stripe Payments Addons Update Checker</a> plugin to keep your addons upto date."
 msgstr ""
 
 #. translators: %1$s - plugin name, %2$s - min core plugin version, %3$s - installed core plugin version
