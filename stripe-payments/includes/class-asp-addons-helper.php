@@ -68,11 +68,11 @@ class ASP_Addons_Helper {
 			$admin_url   = get_admin_url();
 			$dismiss_url = add_query_arg( 'asp_dismiss_auc_msg', '1', $admin_url );
 			$dismiss_url = wp_nonce_url( $dismiss_url, 'asp_dismiss_auc_msg' );
-			$dismiss_msg = '<span style="display:block;text-align:right;"><a style="text-decoration: none; border-bottom: 1px dashed;font-size:0.9em;" href="' . $dismiss_url . '">' . __( 'Don\'t show this message again', 'stripe-payments' ) . '</a></span>';
+			$dismiss_msg = '<div class="asp_dismiss_notice_update_checker"><a style="text-decoration: none; border-bottom: 1px dashed;font-size:0.9em;" href="' . $dismiss_url . '">' . __( 'Don\'t show this message again', 'stripe-payments' ) . '</a></div>';
 			AcceptStripePayments_Admin::add_admin_notice(
 				'warning',
 				// translators: %s is replaced by a link to plugin page
-				sprintf( __( 'Please install <a target="_blank" href="%s">Stripe Payments Addons Update Checker</a> plugin to keep your add-ons up-to-date.', 'stripe-payments' ), 'https://s-plugins.com/update-checker-plugin-for-the-addons/' ) .
+				sprintf( __( 'Please install the <a target="_blank" href="%s">Stripe Payments Addons Update Checker</a> plugin to keep your addons upto date.', 'stripe-payments' ), 'https://s-plugins.com/update-checker-plugin-for-the-addons/' ) .
 				$dismiss_msg,
 				false
 			);
