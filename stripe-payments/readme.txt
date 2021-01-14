@@ -157,15 +157,16 @@ None.
 
 = 2.0.41 =
 - Replaced 3D Secure redirect with full screen iframe.
-- Added per-product option to use different Stripe account.
+- Added per-product option to use different Stripe account for some of the products.
 - Payment process no longer fails if a variation with negative price mod is selected.
 - Buyer name and email no longer missing when using add-ons with `Do Not Save Card Data on Stripe` option enabled.
 - Trial period support for variable subscriptions.
-- Removed bundled Update Checker for add-ons.
-You can install [Addons Update Checker plugin](https://s-plugins.com/update-checker-plugin-for-the-addons/) to keep your Stripe Payments add-ons up to date.
+- The jQuery UI CSS is included in the plugin (instead of including from an external URL).
+- Removed the update checker library for add-ons to adhere to WordPress's guidelines. 
+  You can install [Addons Update Checker plugin](https://s-plugins.com/update-checker-plugin-for-the-addons/) to keep your Stripe Payments add-ons upto date.
 
 = 2.0.40 =
-- Fixed and XSS issue with the "currency_code" settings field. Thanks to Park Won Seok.
+- Fixed an XSS issue with the "currency_code" settings field. Thanks to Park Won Seok.
 
 = 2.0.39 =
 - Buyer email address no longer missing when `Don't save card` option enabled.
