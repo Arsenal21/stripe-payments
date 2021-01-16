@@ -1066,6 +1066,9 @@ function handlePayment() {
 					email: emailInput.value
 				};
 			}
+		} else {
+			delete (opts.save_payment_method);
+			delete (opts.setup_future_usage);
 		}
 
 		vars.confirmCardPayment = {};
@@ -1102,24 +1105,6 @@ function handlePayment() {
 							jQuery(this).fadeIn();
 							jQuery('#threeds-iframe-close-btn').show();
 							jQuery(this).off('load');
-							jQuery('#threeds-iframe-close-btn').on('click', function () {
-								if (confirm(vars.str.strAbort3DSecure)) {
-									console.log('3d Secure check aborted');
-									jQuery('#asp-3ds-popup').fadeOut();
-									jQuery('#threeds-iframe-close-btn').hide();
-									jQuery('#redirect-spinner').hide();
-									jQuery('#btn-spinner').fadeIn();
-
-									vars.data.token_id = null;
-									vars.data.pm_id = null;
-									vars.data.pm_confirmed = false;
-
-									submitBtn.disabled = false;
-									errorCont.innerHTML = vars.str.str3DSecureFailed;
-									errorCont.style.display = 'block';
-									smokeScreen(false);
-								}
-							});
 						});
 					} else {
 						console.log('3D Secure redirect');
@@ -1155,7 +1140,7 @@ function handlePayment() {
 
 function ThreeDSCompleted(pi_cs) {
 	console.log('3D Secure completed');
-	jQuery('#asp-3ds-popup').fadeOut();
+	jQuery('#asp-3ds-popup').remove();
 	jQuery('#threeds-iframe-close-btn').hide();
 	jQuery('#redirect-spinner').hide();
 	jQuery('#btn-spinner').fadeIn();
@@ -1374,3 +1359,22 @@ var ajaxRequest = function (URL, reqStr, doneFunc, failFunc) {
 	parent.XMLHttpReq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 	parent.XMLHttpReq.send(reqStr);
 };
+
+jQuery('#threeds-iframe-close-btn').on('click', function () {
+	if (confirm(vars.str.strAbort3DSecure)) {
+		console.log('3d Secure check aborted');
+		jQuery('#asp-3ds-popup').remove();
+		jQuery('#threeds-iframe-close-btn').hide();
+		jQuery('#redirect-spinner').hide();
+		jQuery('#btn-spinner').fadeIn();
+
+		vars.data.token_id = null;
+		vars.data.pm_id = null;
+		vars.data.pm_confirmed = false;
+
+		submitBtn.disabled = false;
+		errorCont.innerHTML = vars.str.str3DSecureFailed;
+		errorCont.style.display = 'block';
+		smokeScreen(false);
+	}
+});
