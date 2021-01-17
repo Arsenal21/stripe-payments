@@ -156,7 +156,7 @@ None.
 == Changelog ==
 
 = 2.0.42 =
-- 3D Secure iframe endless loop has been addressed.
+- 3D Secure feature's iframe loop issue has been addressed.
 
 = 2.0.41 =
 - Replaced 3D Secure redirect with full screen iframe.
