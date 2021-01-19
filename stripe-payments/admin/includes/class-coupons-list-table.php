@@ -115,7 +115,7 @@ class ASP_Coupons_Table extends WP_List_Table {
 		}
 		// If order is set use this as the order
 		if ( ! empty( $_GET['order'] ) ) {
-			$order = $_GET['order'];
+			$order = sanitize_text_field($_GET['order']);
 		}
 		$result = strcmp( $a[ $orderby ], $b[ $orderby ] );
 		if ( $order === 'asc' ) {

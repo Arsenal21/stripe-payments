@@ -138,11 +138,11 @@ class ASP_Self_Hooks_Handler {
 			$last_name  = array_pop( $parts );
 			$first_name = implode( ' ', $parts );
 		}
-		$addr_street  = isset( $_POST['stripeBillingAddressLine1'] ) ? $_POST['stripeBillingAddressLine1'] : '';
-		$addr_zip     = isset( $_POST['stripeBillingAddressZip'] ) ? $_POST['stripeBillingAddressZip'] : '';
-		$addr_city    = isset( $_POST['stripeBillingAddressCity'] ) ? $_POST['stripeBillingAddressCity'] : '';
-		$addr_state   = isset( $_POST['stripeBillingAddressState'] ) ? $_POST['stripeBillingAddressState'] : '';
-		$addr_country = isset( $_POST['stripeBillingAddressCountry'] ) ? $_POST['stripeBillingAddressCountry'] : '';
+		$addr_street  = isset( $_POST['stripeBillingAddressLine1'] ) ? sanitize_text_field($_POST['stripeBillingAddressLine1']) : '';
+		$addr_zip     = isset( $_POST['stripeBillingAddressZip'] ) ? sanitize_text_field($_POST['stripeBillingAddressZip']) : '';
+		$addr_city    = isset( $_POST['stripeBillingAddressCity'] ) ? sanitize_text_field($_POST['stripeBillingAddressCity']) : '';
+		$addr_state   = isset( $_POST['stripeBillingAddressState'] ) ? sanitize_text_field($_POST['stripeBillingAddressState']) : '';
+		$addr_country = isset( $_POST['stripeBillingAddressCountry'] ) ? sanitize_text_field($_POST['stripeBillingAddressCountry']) : '';
 
 		if ( empty( $addr_street ) && ! empty( $charge->source->address_line1 ) ) {
 			$addr_street = $charge->source->address_line1;
@@ -248,11 +248,11 @@ class ASP_Self_Hooks_Handler {
 			$last_name  = array_pop( $parts );
 			$first_name = implode( ' ', $parts );
 		}
-		$addr_street  = isset( $_POST['stripeBillingAddressLine1'] ) ? $_POST['stripeBillingAddressLine1'] : '';
-		$addr_zip     = isset( $_POST['stripeBillingAddressZip'] ) ? $_POST['stripeBillingAddressZip'] : '';
-		$addr_city    = isset( $_POST['stripeBillingAddressCity'] ) ? $_POST['stripeBillingAddressCity'] : '';
-		$addr_state   = isset( $_POST['stripeBillingAddressState'] ) ? $_POST['stripeBillingAddressState'] : '';
-		$addr_country = isset( $_POST['stripeBillingAddressCountry'] ) ? $_POST['stripeBillingAddressCountry'] : '';
+		$addr_street  = isset( $_POST['stripeBillingAddressLine1'] ) ? sanitize_text_field($_POST['stripeBillingAddressLine1']) : '';
+		$addr_zip     = isset( $_POST['stripeBillingAddressZip'] ) ? sanitize_text_field($_POST['stripeBillingAddressZip']) : '';
+		$addr_city    = isset( $_POST['stripeBillingAddressCity'] ) ? sanitize_text_field($_POST['stripeBillingAddressCity']) : '';
+		$addr_state   = isset( $_POST['stripeBillingAddressState'] ) ? sanitize_text_field($_POST['stripeBillingAddressState']) : '';
+		$addr_country = isset( $_POST['stripeBillingAddressCountry'] ) ? sanitize_text_field($_POST['stripeBillingAddressCountry']) : '';
 
 		if ( empty( $addr_street ) && ! empty( $charge->source->address_line1 ) ) {
 			$addr_street = $charge->source->address_line1;

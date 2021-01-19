@@ -225,8 +225,8 @@ class AcceptStripePayments_Process_IPN {
 			$item_quantity        = sanitize_text_field( $_POST['item_quantity'] );
 			$item_custom_quantity = isset( $_POST['stripeCustomQuantity'] ) ? intval( $_POST['stripeCustomQuantity'] ) : false;
 			$item_url             = sanitize_text_field( $_POST['item_url'] );
-			$button_key           = $_POST['stripeButtonKey'];
-			$reported_price       = $_POST['stripeItemPrice'];
+			$button_key           = sanitize_text_field($_POST['stripeButtonKey']);
+			$reported_price       = sanitize_text_field($_POST['stripeItemPrice']);
 
 			ASP_Debug_Logger::log( 'Checking price consistency.' );
 			$calculated_button_key = md5( htmlspecialchars_decode( $item_name ) . $reported_price );
@@ -374,8 +374,8 @@ class AcceptStripePayments_Process_IPN {
 		$data['custom_fields'] = array();
 		if ( isset( $_POST['stripeCustomField'] ) ) {
 			$data['custom_fields'][] = array(
-				'name'  => $_POST['stripeCustomFieldName'],
-				'value' => $_POST['stripeCustomField'],
+				'name'  => sanitize_text_field($_POST['stripeCustomFieldName']),
+				'value' => sanitize_text_field($_POST['stripeCustomField']),
 			);
 		}
 		$data['custom_fields'] = apply_filters( 'asp_process_custom_fields', $data['custom_fields'], $data );
@@ -470,13 +470,13 @@ class AcceptStripePayments_Process_IPN {
 
 				//Shipping address data (if any)
 				$shipping_address         = '';
-				$shipping_address        .= isset( $_POST['stripeShippingName'] ) ? $_POST['stripeShippingName'] . "\n" : '';
-				$shipping_address        .= isset( $_POST['stripeShippingAddressLine1'] ) ? $_POST['stripeShippingAddressLine1'] . "\n" : '';
-				$shipping_address        .= isset( $_POST['stripeShippingAddressApt'] ) ? $_POST['stripeShippingAddressApt'] . "\n" : '';
-				$shipping_address        .= isset( $_POST['stripeShippingAddressZip'] ) ? $_POST['stripeShippingAddressZip'] . "\n" : '';
-				$shipping_address        .= isset( $_POST['stripeShippingAddressCity'] ) ? $_POST['stripeShippingAddressCity'] . "\n" : '';
-				$shipping_address        .= isset( $_POST['stripeShippingAddressState'] ) ? $_POST['stripeShippingAddressState'] . "\n" : '';
-				$shipping_address        .= isset( $_POST['stripeShippingAddressCountry'] ) ? $_POST['stripeShippingAddressCountry'] . "\n" : '';
+				$shipping_address        .= isset( $_POST['stripeShippingName'] ) ? sanitize_text_field($_POST['stripeShippingName']) . "\n" : '';
+				$shipping_address        .= isset( $_POST['stripeShippingAddressLine1'] ) ? sanitize_text_field($_POST['stripeShippingAddressLine1']) . "\n" : '';
+				$shipping_address        .= isset( $_POST['stripeShippingAddressApt'] ) ? sanitize_text_field($_POST['stripeShippingAddressApt']) . "\n" : '';
+				$shipping_address        .= isset( $_POST['stripeShippingAddressZip'] ) ? sanitize_text_field($_POST['stripeShippingAddressZip']) . "\n" : '';
+				$shipping_address        .= isset( $_POST['stripeShippingAddressCity'] ) ? sanitize_text_field($_POST['stripeShippingAddressCity']) . "\n" : '';
+				$shipping_address        .= isset( $_POST['stripeShippingAddressState'] ) ? sanitize_text_field($_POST['stripeShippingAddressState']) . "\n" : '';
+				$shipping_address        .= isset( $_POST['stripeShippingAddressCountry'] ) ? sanitize_text_field($_POST['stripeShippingAddressCountry']) . "\n" : '';
 				$data['shipping_address'] = $shipping_address;
 
 				if ( ! empty( $shipping_address ) ) {
@@ -507,13 +507,13 @@ class AcceptStripePayments_Process_IPN {
 
 		//Billing address data (if any)
 		$billing_address  = '';
-		$billing_address .= isset( $_POST['stripeBillingName'] ) ? $_POST['stripeBillingName'] . "\n" : '';
-		$billing_address .= isset( $_POST['stripeBillingAddressLine1'] ) ? $_POST['stripeBillingAddressLine1'] . "\n" : '';
-		$billing_address .= isset( $_POST['stripeBillingAddressApt'] ) ? $_POST['stripeBillingAddressApt'] . "\n" : '';
-		$billing_address .= isset( $_POST['stripeBillingAddressZip'] ) ? $_POST['stripeBillingAddressZip'] . "\n" : '';
-		$billing_address .= isset( $_POST['stripeBillingAddressCity'] ) ? $_POST['stripeBillingAddressCity'] . "\n" : '';
-		$billing_address .= isset( $_POST['stripeBillingAddressState'] ) ? $_POST['stripeBillingAddressState'] . "\n" : '';
-		$billing_address .= isset( $_POST['stripeBillingAddressCountry'] ) ? $_POST['stripeBillingAddressCountry'] . "\n" : '';
+		$billing_address .= isset( $_POST['stripeBillingName'] ) ? sanitize_text_field($_POST['stripeBillingName']) . "\n" : '';
+		$billing_address .= isset( $_POST['stripeBillingAddressLine1'] ) ? sanitize_text_field($_POST['stripeBillingAddressLine1']) . "\n" : '';
+		$billing_address .= isset( $_POST['stripeBillingAddressApt'] ) ? sanitize_text_field($_POST['stripeBillingAddressApt']) . "\n" : '';
+		$billing_address .= isset( $_POST['stripeBillingAddressZip'] ) ? sanitize_text_field($_POST['stripeBillingAddressZip']) . "\n" : '';
+		$billing_address .= isset( $_POST['stripeBillingAddressCity'] ) ? sanitize_text_field($_POST['stripeBillingAddressCity']) . "\n" : '';
+		$billing_address .= isset( $_POST['stripeBillingAddressState'] ) ? sanitize_text_field($_POST['stripeBillingAddressState']) . "\n" : '';
+		$billing_address .= isset( $_POST['stripeBillingAddressCountry'] ) ? sanitize_text_field($_POST['stripeBillingAddressCountry']) . "\n" : '';
 
 		if ( empty( $billing_address ) && ( isset( $data['product_id'] ) && get_post_meta( $data['product_id'], 'asp_product_collect_billing_addr', true ) ) ) {
 			//let's try to fetch billing address from payment data
