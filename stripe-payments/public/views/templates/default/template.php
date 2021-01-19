@@ -26,9 +26,7 @@ function asp_get_template( $css_inserted = false ) {
 	</div>
 	<?php
 	$tpl = ob_get_clean();
-	if ( ! $css_inserted ) {
-		$tpl = "<link rel='stylesheet' href='" . WP_ASP_PLUGIN_URL . '/public/views/templates/default/style.css' . "' type='text/css' media='all' />" . $tpl;
-	}
+	wp_enqueue_style( 'asp-default-style' );
 	return $tpl;
 }
 
@@ -57,8 +55,6 @@ function asp_get_post_template( $css_inserted = false ) {
 	</div>
 	<?php
 	$tpl = ob_get_clean();
-	if ( ! $css_inserted ) {
-		$tpl = "<link rel='stylesheet' href='" . WP_ASP_PLUGIN_URL . '/public/views/templates/default/style.css' . "' type='text/css' media='all' />" . $tpl;
-	}
+	wp_enqueue_style( 'asp-default-style' );
 	return $tpl;
 }

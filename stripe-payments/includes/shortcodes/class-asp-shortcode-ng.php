@@ -23,6 +23,8 @@ class ASP_Shortcode_NG {
 
 		$use_old_api = $this->asp_main->get_setting( 'use_old_checkout_api1' );
 
+		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+
 		add_shortcode( 'asp_product_ng', array( $this, 'shortcode_asp_product' ) );
 		add_shortcode( 'accept_stripe_payment_ng', array( $this, 'shortcode_accept_stripe_payment' ) );
 		if ( ! $use_old_api ) {
@@ -30,6 +32,12 @@ class ASP_Shortcode_NG {
 			add_shortcode( 'accept_stripe_payment', array( $this, 'shortcode_accept_stripe_payment' ) );
 			add_filter( 'the_content', array( $this, 'filter_post_type_content' ) );
 		}
+	}
+
+	public function enqueue_scripts() {
+		wp_register_style( 'asp-default-style', WP_ASP_PLUGIN_URL . '/public/views/templates/default/style.css', array(), WP_ASP_PLUGIN_VERSION );
+
+		wp_register_style( 'asp-stripe-button-css', 'https://checkout.stripe.com/v3/checkout/button.css' );
 	}
 
 	public static function filter_post_type_content( $content ) {
@@ -263,7 +271,7 @@ class ASP_Shortcode_NG {
 		if ( ( isset( $atts['fancy'] ) && empty( $atts['fancy'] ) ) || $button_only ) {
 			//Just show the stripe payment button (no fancy template)
 			$tpl = '<div class="asp_product_buy_button">' . $buy_btn . '</div>';
-			$tpl = "<link rel='stylesheet' href='" . WP_ASP_PLUGIN_URL . '/public/views/templates/default/style.css' . "' type='text/css' media='all' />" . $tpl; //phpcs:ignore
+			wp_enqueue_style( 'asp-default-style' );
 			if ( ! $this->compat_mode ) {
 				$this->product_css_inserted = true;
 			}
@@ -606,7 +614,7 @@ class ASP_Shortcode_NG {
 
 		//Let's insert Stripe default stylesheet only when it's needed
 		if ( 'stripe-button-el' === $class && ! ( ! $this->compat_mode && $this->stripe_css_inserted ) ) {
-			$output                    = "<link rel = 'stylesheet' href = 'https://checkout.stripe.com/v3/checkout/button.css' type = 'text/css' media = 'all' />";
+			wp_enqueue_style( 'asp-stripe-button-css' );
 			$this->stripe_css_inserted = true;
 		}
 

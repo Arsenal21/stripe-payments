@@ -125,6 +125,9 @@ class AcceptStripePaymentsShortcode {
 		wp_register_script( 'stripe-handler', WP_ASP_PLUGIN_URL . '/public/assets/js/stripe-handler.js', array( 'jquery' ), WP_ASP_PLUGIN_VERSION, true );
 
 		wp_localize_script( 'stripe-handler', 'stripehandler', $this->get_loc_data() );
+
+		wp_register_style( 'asp-all-products-css', WP_ASP_PLUGIN_URL . '/public/views/all-products/default/style.css', array(), WP_ASP_PLUGIN_VERSION );
+
 		// addons can register their scripts if needed
 		do_action( 'asp-button-output-register-script' );
 	}
