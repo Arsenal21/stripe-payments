@@ -86,12 +86,16 @@ class AcceptStripePayments_CouponsAdmin {
 
 	function frontend_check_coupon() {
 		$out = array();
-		if ( empty( $_POST['coupon_code'] ) ) {
+
+		$coupon_code = filter_input( INPUT_POST, 'coupon_code', FILTER_SANITIZE_STRING );
+
+		if ( empty( $coupon_code ) ) {
 			$out['success'] = false;
 			$out['msg']     = __( 'Empty coupon code', 'stripe-payments' );
 			wp_send_json( $out );
 		}
-		$coupon_code = strtoupper( $_POST['coupon_code'] );
+
+		$coupon_code = strtoupper( $coupon_code );
 
 		$tax = ! empty( $_POST['tax'] ) ? intval( $_POST['tax'] ) : 0;
 
@@ -117,12 +121,14 @@ class AcceptStripePayments_CouponsAdmin {
 			wp_send_json( $out );
 		}
 
-		$curr = isset( $_POST['curr'] ) ? $_POST['curr'] : '';
+		$curr = filter_input( INPUT_POST, 'curr', FILTER_SANITIZE_STRING );
+
+		$curr = isset( $curr ) ? $curr : '';
 
 		$discount      = $coupon['discount'];
 		$discount_type = $coupon['discountType'];
 
-		$amount = intval( $_POST['amount'] );
+		$amount = filter_input( INPUT_POST, 'amount', FILTER_SANITIZE_NUMBER_INT );
 
 		$perc = AcceptStripePayments::is_zero_cents( $curr ) ? 0 : 2;
 
@@ -489,6 +495,8 @@ jQuery(document).ready(function($) {
 		$coupon['active'] = isset( $coupon['active'] ) ? 1 : 0;
 
 		$coupon['per_order'] = isset( $coupon['per_order'] ) ? 1 : 0;
+
+		$coupon['code'] = ! empty( $coupon['code'] ) ? sanitize_text_field( $coupon['code'] ) : '';
 
 		if ( empty( $coupon['code'] ) ) {
 			$err_msg[] = __( 'Please enter coupon code.', 'stripe-payments' );

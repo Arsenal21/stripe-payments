@@ -1779,8 +1779,10 @@ class AcceptStripePayments_Admin {
 			add_settings_error( 'AcceptStripePayments-settings', 'invalid-price-decimals-num', __( 'Price number of decimals can\'t be empty.', 'stripe-payments' ) );
 		}
 
-		if ( isset( $_POST['wp-asp-urlHash'] ) ) {
-			set_transient( 'wp-asp-urlHash', $_POST['wp-asp-urlHash'], 300 );
+		$url_hash = filter_input( INPUT_POST, 'wp-asp-urlHash', FILTER_SANITIZE_STRING );
+
+		if ( ! empty( $url_hash ) ) {
+			set_transient( 'wp-asp-urlHash', $url_hash, 300 );
 		}
 
 		//regen ckey
