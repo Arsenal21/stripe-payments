@@ -139,7 +139,7 @@ jQuery(document).ready(function ($) {
 	$('input[name="asp_product_type_radio"]').on('change', function (e) {
 		aspProductTypeChange(this.value);
 	});
-	aspProductTypeChange($('input[name="asp_product_type_radio"]').val());
+	aspProductTypeChange($('input[name="asp_product_type_radio"]:checked').val());
 
 	$('input[name="asp_use_other_stripe_acc"]').on('change', function (e) {
 		$('input[data-asp-other-acc]').prop('disabled', !this.checked);
@@ -147,7 +147,6 @@ jQuery(document).ready(function ($) {
 	$('input[name="asp_use_other_stripe_acc"]').trigger('change');
 
 	function aspProductTypeChange(val) {
-		console.log(val);
 		if (val === 'subscription') {
 			$('.asp-other-stripe-acc').hide();
 		} else {
