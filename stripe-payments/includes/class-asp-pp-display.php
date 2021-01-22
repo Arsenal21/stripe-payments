@@ -496,7 +496,7 @@ class ASP_PP_Display {
 			$a['vars']['vars']['fatal_error'] = $a['fatal_error'];
 		}
 
-		$a['pay_btn_text'] = sprintf( $pay_btn_text, AcceptStripePayments::formatted_price( $this->item->get_total(), $this->item->get_currency() ) );
+		$a ['pay_btn_text'] = str_replace( '%s', AcceptStripePayments::formatted_price( $this->item->get_total(), $this->item->get_currency() ), $pay_btn_text );
 
 		//output custom PP CSS if needed
 		add_action( 'asp_ng_pp_output_before_closing_body', array( $this, 'output_custom_css' ), 1000 );
