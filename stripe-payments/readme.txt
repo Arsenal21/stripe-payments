@@ -156,10 +156,10 @@ None.
 == Changelog ==
 
 = 2.0.43 =
-- Plugin  name has been chaged to has been changed to "Accept Stripe Payments" according to WP guidelines.
-- Improved sanitization of the incoming `$_POST` data.
+- Plugin's display name has been changed to "Accept Stripe Payments" according to WP guidelines.
+- Improved sanitization of the incoming request data.
 - Scripts and styles are now being loaded via `wp_enqueue_scripts` where possible.
-- Fixed few minor cosmetic issues and PHP warnings.
+- Addressed a few minor cosmetic issues and PHP warnings.
 
 = 2.0.42 =
 - 3D Secure feature's iframe loop issue has been addressed.
