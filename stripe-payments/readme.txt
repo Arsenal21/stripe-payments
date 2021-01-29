@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 5.0
 Tested up to: 5.6
 Requires PHP: 5.6
-Stable tag: 2.0.43
+Stable tag: 2.0.44t1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -154,6 +154,9 @@ Yes, please visit Stripe Payments > Settings screen for options.
 None.
 
 == Changelog ==
+
+= WIP 2.0.44 =
+- Updated Stripe PHP SDK.
 
 = 2.0.43 =
 - Plugin's display name has been changed to "Accept Stripe Payments" according to WP guidelines.
