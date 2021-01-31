@@ -152,7 +152,9 @@ class AcceptStripePayments_Admin {
 			delete_transient( 'asp_admin_msg_arr' );
 			$tpl = '<div class="notice notice-%1$s%3$s"><p>%2$s</p></div>';
 			foreach ( $msg_arr as $msg ) {
-				echo sprintf( $tpl, $msg['type'], $msg['text'], true === $msg['dism'] ? ' is-dismissible' : '' );
+				if ( ! empty( $msg ) ) {
+					echo sprintf( $tpl, $msg['type'], $msg['text'], true === $msg['dism'] ? ' is-dismissible' : '' );
+				}
 			}
 		}
 
@@ -163,7 +165,12 @@ class AcceptStripePayments_Admin {
 
 		$notice_dismissed_get = filter_input( INPUT_GET, 'asp_dismiss_auc_msg', FILTER_SANITIZE_NUMBER_INT );
 		if ( ! empty( $notice_dismissed_get ) && check_admin_referer( 'asp_dismiss_auc_msg' ) ) {
-			update_option( 'asp_dismiss_auc_msg', true );
+			$user_id = get_current_user_id();
+			if ( ! empty( $user_id ) ) {
+				update_user_meta( $user_id, 'asp_dismiss_auc_msg', true );
+				wp_safe_redirect( get_admin_url() );
+				exit;
+			}
 		}
 
 		//show new API notice
@@ -198,6 +205,18 @@ class AcceptStripePayments_Admin {
 
 		if ( ! isset( $msg_arr[ $item_hash ] ) ) {
 			$msg_arr[ $item_hash ] = $arr_item;
+			set_transient( 'asp_admin_msg_arr', $msg_arr );
+		}
+
+		return $item_hash;
+	}
+
+	static function remove_admin_notice_by_hash( $item_hash ) {
+		$msg_arr = get_transient( 'asp_admin_msg_arr' );
+		$msg_arr = empty( $msg_arr ) ? array() : $msg_arr;
+
+		if ( isset( $msg_arr[ $item_hash ] ) ) {
+			$msg_arr[ $item_hash ] = '';
 			set_transient( 'asp_admin_msg_arr', $msg_arr );
 		}
 	}
@@ -507,7 +526,7 @@ class AcceptStripePayments_Admin {
 			array(
 				'field' => 'popup_button_text',
 				'desc'  => __(
-				'&percnt;s is replaced by formatted payment amount (example: Pay $29.90). If this field is empty, it defaults to "Pay &percnt;s"', //phpcs:ignore
+					'&percnt;s is replaced by formatted payment amount (example: Pay $29.90). If this field is empty, it defaults to "Pay &percnt;s"', //phpcs:ignore
 					'stripe-payments'
 				),
 			)
