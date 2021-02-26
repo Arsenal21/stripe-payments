@@ -509,6 +509,13 @@ class ASP_PP_Display {
 		// 	header( 'Pragma: no-cache' );
 		// }
 
+		// disable WPEngine cache for the page
+		if ( ! headers_sent() && class_exists( 'WpeCommon' ) ) {
+			$cookiepath    = ! defined( 'COOKIEPATH' ) ? '/' : COOKIEPATH;
+			$cookie_domain = ! defined( 'COOKIE_DOMAIN' ) ? false : COOKIE_DOMAIN;
+			setcookie( 'wordpress_wpe_no_cache', 1, time() + 5, $cookiepath, $cookie_domain, true, true );
+		}
+
 		ob_start();
 		require_once WP_ASP_PLUGIN_PATH . 'public/views/templates/default/payment-popup.php';
 		$tpl = ob_get_clean();
