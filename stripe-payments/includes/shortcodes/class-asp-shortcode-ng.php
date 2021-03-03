@@ -553,10 +553,9 @@ class ASP_Shortcode_NG {
 		$display_str['tax']  = '%s (' . strtolower( $tax_str ) . ')';
 		$display_str['ship'] = '%s (' . strtolower( $ship_str ) . ')';
 
-		$home_url = get_home_url( null, '/' );
+		$home_url = get_home_url( null, AcceptStripePayments::$pp_slug . '/' );
 
 		$url_params = array(
-			'asp_action' => 'show_pp',
 			'product_id' => $product_id,
 		);
 

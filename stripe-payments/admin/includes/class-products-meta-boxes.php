@@ -743,11 +743,10 @@ jQuery(document).ready(function($) {
 	}
 
 	public function display_embed_meta_box( $post ) {
-		$home_url = get_home_url( null, '/' );
+		$home_url = get_home_url( null, AcceptStripePayments::$pp_slug . '/' );
 
 		$embed_url = add_query_arg(
 			array(
-				'asp_action' => 'show_pp',
 				'product_id' => $post->ID,
 			),
 			$home_url

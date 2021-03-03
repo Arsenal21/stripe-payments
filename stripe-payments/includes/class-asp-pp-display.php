@@ -17,6 +17,30 @@ class ASP_PP_Display {
 			}
 			$this->asp_main = AcceptStripePayments::get_instance();
 			add_action( 'init', array( $this, 'showpp' ), 2147483647 );
+		} else {
+			add_action( 'wp', array( $this, 'handle_wp' ) );
+		}
+
+		add_filter( 'pre_handle_404', array( $this, 'pre_handle_404' ), 10, 2 );
+	}
+
+	public function pre_handle_404( $preempt, $wp_query ) {
+		global $wp;
+		$custom_pages = array( AcceptStripePayments::$pp_slug );
+
+		if ( in_array( $wp->request, $custom_pages, true ) ) {
+			$preempt = true;
+		}
+
+		return $preempt;
+	}
+
+	public function handle_wp() {
+		global $wp;
+		$current_slug = $wp->request;
+		if ( AcceptStripePayments::$pp_slug === $current_slug ) {
+			$this->asp_main = AcceptStripePayments::get_instance();
+			$this->showpp();
 		}
 	}
 
