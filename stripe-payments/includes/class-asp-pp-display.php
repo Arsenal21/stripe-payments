@@ -45,6 +45,23 @@ class ASP_PP_Display {
 	}
 
 	public function showpp() {
+		if ( ! defined( 'DONOTCACHEPAGE' ) ) {
+			define( 'DONOTCACHEPAGE', true );
+		}
+
+		if ( ! headers_sent() ) {
+			// disable WPEngine cache for the page
+			if ( class_exists( 'WpeCommon' ) ) {
+				$cookiepath    = parse_url( get_home_url( null, AcceptStripePayments::$pp_slug ), PHP_URL_PATH );
+				$cookie_domain = ! defined( 'COOKIE_DOMAIN' ) ? false : COOKIE_DOMAIN;
+				setcookie( 'wordpress_wpe_no_cache', 1, 0, $cookiepath, $cookie_domain, true, true );
+			}
+			// set no-cache headers
+			header( 'Cache-Control: no-store, no-cache, must-revalidate, max-age=0' );
+			header( 'Cache-Control: post-check=0, pre-check=0', false );
+			header( 'Pragma: no-cache' );
+		}
+
 		$product_id = filter_input( INPUT_GET, 'product_id', FILTER_SANITIZE_NUMBER_INT );
 
 		$this->item = new ASP_Product_Item( $product_id );
@@ -524,21 +541,6 @@ class ASP_PP_Display {
 
 		//output custom PP CSS if needed
 		add_action( 'asp_ng_pp_output_before_closing_body', array( $this, 'output_custom_css' ), 1000 );
-
-		// set no cache headers for payment popup
-		// commented out for now as it needs more testing
-		// if ( ! headers_sent() ) {
-		// 	header( 'Cache-Control: no-store, no-cache, must-revalidate, max-age=0' );
-		// 	header( 'Cache-Control: post-check=0, pre-check=0', false );
-		// 	header( 'Pragma: no-cache' );
-		// }
-
-		// disable WPEngine cache for the page
-		if ( ! headers_sent() && class_exists( 'WpeCommon' ) ) {
-			$cookiepath    = ! defined( 'COOKIEPATH' ) ? '/' : COOKIEPATH;
-			$cookie_domain = ! defined( 'COOKIE_DOMAIN' ) ? false : COOKIE_DOMAIN;
-			setcookie( 'wordpress_wpe_no_cache', 1, time() + 5, $cookiepath, $cookie_domain, true, true );
-		}
 
 		ob_start();
 		require_once WP_ASP_PLUGIN_PATH . 'public/views/templates/default/payment-popup.php';
