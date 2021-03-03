@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 5.0
 Tested up to: 5.6
 Requires PHP: 5.6
-Stable tag: 2.0.44t3
+Stable tag: 2.0.44t4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -156,7 +156,8 @@ None.
 == Changelog ==
 
 = WIP 2.0.44 =
-- Addressed issue with WPEngine caching.
+- Payment popup now has its own slug `asp-payment-box`.
+- Implemented some measures to avoid payment popup page caching by caching plugins.
 - Updated Stripe PHP SDK.
 
 = 2.0.43 =
