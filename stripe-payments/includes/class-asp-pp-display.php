@@ -57,7 +57,7 @@ class ASP_PP_Display {
 				setcookie( 'wordpress_wpe_no_cache', 1, 0, $cookiepath, $cookie_domain, true, true );
 			}
 			// set no-cache headers
-			header( 'Cache-Control: no-store, no-cache, must-revalidate, max-age=0' );
+			header( 'Cache-Control: no-cache, must-revalidate, max-age=0' );
 			header( 'Cache-Control: post-check=0, pre-check=0', false );
 			header( 'Pragma: no-cache' );
 		}
