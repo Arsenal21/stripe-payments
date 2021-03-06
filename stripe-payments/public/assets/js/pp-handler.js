@@ -417,11 +417,13 @@ function updateAllAmounts() {
 		}
 		if (vars.data.variations.applied) {
 			for (grpId = 0; grpId < vars.data.variations.applied.length; ++grpId) {
-				if (jQuery('#order-variation-' + grpId + '-line').length === 0) {
-					jQuery('tr#order-item-line').after('<tr id="order-variation-' + grpId + '-line" class="variation-line"><td class="variation-name"></td><td class="variation-price"></td></tr>');
+				if (vars.data.variations.groups[grpId]) {
+					if (jQuery('#order-variation-' + grpId + '-line').length === 0) {
+						jQuery('tr#order-item-line').after('<tr id="order-variation-' + grpId + '-line" class="variation-line"><td class="variation-name"></td><td class="variation-price"></td></tr>');
+					}
+					jQuery('#order-variation-' + grpId + '-line').find('.variation-name').html(vars.data.variations.groups[grpId] + '<br>' + vars.data.variations.names[grpId][vars.data.variations.applied[grpId]]);
+					jQuery('#order-variation-' + grpId + '-line').find('.variation-price').html(formatMoney(amount_to_cents(vars.data.variations.prices[grpId][vars.data.variations.applied[grpId]], vars.data.currency) * vars.data.quantity));
 				}
-				jQuery('#order-variation-' + grpId + '-line').find('.variation-name').html(vars.data.variations.groups[grpId] + '<br>' + vars.data.variations.names[grpId][vars.data.variations.applied[grpId]]);
-				jQuery('#order-variation-' + grpId + '-line').find('.variation-price').html(formatMoney(amount_to_cents(vars.data.variations.prices[grpId][vars.data.variations.applied[grpId]], vars.data.currency) * vars.data.quantity));
 			}
 		}
 	}
@@ -440,7 +442,9 @@ function calcTotal() {
 	}
 	if (vars.data.variations.applied) {
 		for (grpId = 0; grpId < vars.data.variations.applied.length; ++grpId) {
-			itemSubt = itemSubt + amount_to_cents(vars.data.variations.prices[grpId][vars.data.variations.applied[grpId]], vars.data.currency);
+			if (vars.data.variations.prices[grpId]) {
+				itemSubt = itemSubt + amount_to_cents(vars.data.variations.prices[grpId][vars.data.variations.applied[grpId]], vars.data.currency);
+			}
 		}
 	}
 
