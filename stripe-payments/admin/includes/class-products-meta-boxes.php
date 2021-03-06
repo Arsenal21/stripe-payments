@@ -889,15 +889,15 @@ jQuery(document).ready(function($) {
 				$variations_groups = filter_input( INPUT_POST, 'asp-variations-group-names', FILTER_UNSAFE_RAW, FILTER_REQUIRE_ARRAY );
 				if ( ! empty( $variations_groups ) && is_array( $variations_groups ) ) {
 					//we got variations groups. Let's process them
-					update_post_meta( $post_id, 'asp_variations_groups', $variations_groups );
+					update_post_meta( $post_id, 'asp_variations_groups', array_values( $variations_groups ) );
 					$variations_names = filter_input( INPUT_POST, 'asp-variation-names', FILTER_UNSAFE_RAW, FILTER_REQUIRE_ARRAY );
-					update_post_meta( $post_id, 'asp_variations_names', $variations_names );
+					update_post_meta( $post_id, 'asp_variations_names', array_values( $variations_names ) );
 					$variations_prices = filter_input( INPUT_POST, 'asp-variation-prices', FILTER_UNSAFE_RAW, FILTER_REQUIRE_ARRAY );
-					update_post_meta( $post_id, 'asp_variations_prices', $variations_prices );
+					update_post_meta( $post_id, 'asp_variations_prices', array_values( $variations_prices ) );
 					$variations_urls = filter_input( INPUT_POST, 'asp-variation-urls', FILTER_UNSAFE_RAW, FILTER_REQUIRE_ARRAY );
-					update_post_meta( $post_id, 'asp_variations_urls', $variations_urls );
+					update_post_meta( $post_id, 'asp_variations_urls', array_values( $variations_urls ) );
 					$variations_opts = filter_input( INPUT_POST, 'asp-variations-opts', FILTER_UNSAFE_RAW, FILTER_REQUIRE_ARRAY );
-					update_post_meta( $post_id, 'asp_variations_opts', $variations_opts );
+					update_post_meta( $post_id, 'asp_variations_opts', array_values( $variations_opts ) );
 				} else {
 					//we got no variations groups. Let's clear meta values
 					update_post_meta( $post_id, 'asp_variations_groups', false );
