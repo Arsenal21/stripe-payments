@@ -120,6 +120,19 @@ class ASP_Process_IPN_NG {
 			ASP_Debug_Logger::log( 'Payment has been processed successfully.' );
 		}
 
+		$structure = get_option( 'permalink_structure' );
+
+		$url_host      = str_replace( 'www.', '', parse_url( $this->asp_redirect_url, PHP_URL_HOST ) );
+		$home_url_host = str_replace( 'www.', '', parse_url( home_url(), PHP_URL_HOST ) );
+
+		if ( empty( $structure && ( $url_host && $url_host === $home_url_host ) ) ) {
+			$path   = basename( parse_url( $this->asp_redirect_url, PHP_URL_PATH ) );
+			$r_post = get_page_by_path( $path );
+			if ( ! empty( $r_post ) ) {
+				$this->asp_redirect_url = get_permalink( $r_post->ID );
+			}
+		}
+
 		if ( is_ssl() ) {
 			$this->asp_redirect_url = ASP_Utils::url_to_https( $this->asp_redirect_url );
 		}
