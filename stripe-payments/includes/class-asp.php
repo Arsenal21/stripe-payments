@@ -574,9 +574,8 @@ class AcceptStripePayments {
 
 	public function enqueue_frontend_scripts_styles() {
 		wp_register_script( 'stripe-handler-ng', WP_ASP_PLUGIN_URL . '/public/assets/js/stripe-handler-ng.js', array( 'jquery' ), WP_ASP_PLUGIN_VERSION, true );
-		$home_url = get_home_url( null, AcceptStripePayments::$pp_slug . '/' );
 
-		$iframe_url = $home_url;
+		$iframe_url = ASP_Utils::get_base_pp_url();
 
 		$prefetch = $this->get_setting( 'frontend_prefetch_scripts' );
 

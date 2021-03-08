@@ -911,4 +911,21 @@ class ASP_Utils {
 
 		do_action( 'asp_clear_external_caches' );
 	}
+
+	public static function get_base_pp_url() {
+		$base_url  = '';
+		$structure = get_option( 'permalink_structure' );
+		if ( empty( $structure ) ) {
+			$home_url = get_home_url( null, '/' );
+			$base_url = add_query_arg(
+				array(
+					'asp_action' => 'show_pp',
+				),
+				$home_url
+			);
+		} else {
+			$base_url = get_home_url( null, AcceptStripePayments::$pp_slug . '/' );
+		}
+		return $base_url;
+	}
 }
