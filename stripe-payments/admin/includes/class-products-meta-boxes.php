@@ -881,7 +881,10 @@ jQuery(document).ready(function($) {
 			//check if this is not subscription product
 			$asp_plan_id = get_post_meta( $post_id, 'asp_sub_plan_id', true );
 
-			if ( empty( $asp_plan_id ) ) {
+			$product_type = filter_input( INPUT_POST, 'asp_product_type_radio', FILTER_SANITIZE_STRING );
+
+			if ( empty( $asp_plan_id ) || ( ! empty( $product_type ) && 'subscription' !== $product_type ) ) {
+				update_post_meta( $post_id, 'asp_sub_plan_id', 0 );
 
 				//handle variations
 				$variations_groups = filter_input( INPUT_POST, 'asp-variations-group-names', FILTER_UNSAFE_RAW, FILTER_REQUIRE_ARRAY );
@@ -913,8 +916,6 @@ jQuery(document).ready(function($) {
 				$price    = sanitize_text_field( $_POST['asp_product_price'] );
 				$price    = AcceptStripePayments::tofloat( $price );
 				$currency = sanitize_text_field( $_POST['asp_product_currency'] );
-
-				$product_type = filter_input( INPUT_POST, 'asp_product_type_radio', FILTER_SANITIZE_STRING );
 
 				if ( ! empty( $product_type ) ) {
 					update_post_meta( $post_id, 'asp_product_type', $product_type );
