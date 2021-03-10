@@ -50,6 +50,7 @@ class ASP_PP_Display {
 		}
 
 		if ( ! headers_sent() ) {
+			status_header( 200 );
 			// disable WPEngine cache for the page
 			if ( class_exists( 'WpeCommon' ) ) {
 				$cookiepath    = parse_url( get_home_url( null, AcceptStripePayments::$pp_slug ), PHP_URL_PATH );
