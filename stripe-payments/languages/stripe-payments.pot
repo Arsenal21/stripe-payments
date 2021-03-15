@@ -2,15 +2,15 @@
 # This file is distributed under the same license as the Accept Stripe Payments plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Accept Stripe Payments 2.0.44t5\n"
+"Project-Id-Version: Accept Stripe Payments 2.0.44\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/stripe-payments\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2021-03-06T17:56:23+02:00\n"
-"PO-Revision-Date: 2021-03-06T17:56:23+02:00\n"
+"POT-Creation-Date: 2021-03-15T22:02:27+02:00\n"
+"PO-Revision-Date: 2021-03-15T22:02:27+02:00\n"
 "X-Generator: WP-CLI 2.0.1\n"
 "X-Domain: stripe-payments\n"
 
@@ -909,7 +909,7 @@ msgstr ""
 #. translators: %s is not a placeholder
 #: admin/class-asp-admin.php:1691
 #: includes/class-asp.php:317
-#: includes/class-asp-pp-display.php:466
+#: includes/class-asp-pp-display.php:467
 msgid "Pay %s"
 msgstr ""
 
@@ -1153,7 +1153,7 @@ msgid "Stock"
 msgstr ""
 
 #: admin/includes/class-products.php:137
-#: admin/includes/class-products-meta-boxes.php:757
+#: admin/includes/class-products-meta-boxes.php:755
 msgid "Shortcode"
 msgstr ""
 
@@ -1162,7 +1162,7 @@ msgid "Date"
 msgstr ""
 
 #: admin/includes/class-products.php:151
-#: includes/class-asp-pp-display.php:220
+#: includes/class-asp-pp-display.php:221
 #: includes/shortcodes/class-asp-shortcode-ng.php:517
 #: includes/shortcodes/class-shortcode-asp.php:621
 msgid "Out of stock"
@@ -1239,7 +1239,7 @@ msgid "Coupons Settings"
 msgstr ""
 
 #: admin/includes/class-products-meta-boxes.php:33
-#: includes/class-asp-pp-display.php:579
+#: includes/class-asp-pp-display.php:580
 #: includes/shortcodes/class-shortcode-asp.php:181
 msgid "Custom Field"
 msgstr ""
@@ -1665,45 +1665,45 @@ msgstr ""
 msgid "Use Other Stripe Account"
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:759
+#: admin/includes/class-products-meta-boxes.php:757
 msgid "Use this shortcode to display this product."
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:762
+#: admin/includes/class-products-meta-boxes.php:760
 msgid "CSS Class"
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:764
+#: admin/includes/class-products-meta-boxes.php:762
 msgid "Attach this product to any html element by adding this CSS class to it."
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:767
+#: admin/includes/class-products-meta-boxes.php:765
 msgid "Link URL"
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:769
+#: admin/includes/class-products-meta-boxes.php:767
 msgid "Use this URL to create a custom payment button using a text or image link."
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:791
+#: admin/includes/class-products-meta-boxes.php:789
 msgid "Please specify product name."
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:836
+#: admin/includes/class-products-meta-boxes.php:834
 msgid "Please enter all API keys for other Stripe account."
 msgstr ""
 
 #. translators: %1$s - currency code, %2$s - minimum amount, %3$s - current amount
-#: admin/includes/class-products-meta-boxes.php:953
+#: admin/includes/class-products-meta-boxes.php:952
 msgid "<b>Invalid product price</b>: minimum price in %1$s should be %2$s, you specified %3$s. This price limitation comes from Stripe."
 msgstr ""
 
 #. translators: %1$s - maximum allowed amount, %2$s - current amount
-#: admin/includes/class-products-meta-boxes.php:963
+#: admin/includes/class-products-meta-boxes.php:962
 msgid "<b>Invalid product price</b>: maximum allowed product price is %1$s, you specified %2$s"
 msgstr ""
 
-#: admin/includes/class-products-meta-boxes.php:970
+#: admin/includes/class-products-meta-boxes.php:969
 msgid "<b>Invalid product price</b>: one-time payment product price cannot be zero."
 msgstr ""
 
@@ -2303,8 +2303,8 @@ msgstr ""
 
 #. translators: %d is number of items in stock
 #: includes/class-asp-product-item.php:392
-#: includes/class-asp-process-ipn-ng.php:479
-#: includes/class-asp-pp-display.php:518
+#: includes/class-asp-process-ipn-ng.php:492
+#: includes/class-asp-pp-display.php:519
 #: includes/shortcodes/class-asp-shortcode-ng.php:192
 #: includes/shortcodes/class-asp-shortcode-ng.php:550
 #: includes/shortcodes/class-shortcode-asp.php:103
@@ -2316,8 +2316,8 @@ msgid "Tax"
 msgstr ""
 
 #: includes/class-asp-product-item.php:403
-#: includes/class-asp-process-ipn-ng.php:487
-#: includes/class-asp-pp-display.php:519
+#: includes/class-asp-process-ipn-ng.php:500
+#: includes/class-asp-pp-display.php:520
 #: includes/shortcodes/class-asp-shortcode-ng.php:202
 #: includes/shortcodes/class-asp-shortcode-ng.php:551
 #: includes/shortcodes/class-shortcode-asp.php:104
@@ -2391,146 +2391,146 @@ msgid "Debug data:"
 msgstr ""
 
 #. translators: placeholders are expected and received amounts
-#: includes/class-asp-process-ipn-ng.php:351
+#: includes/class-asp-process-ipn-ng.php:364
 msgid "Invalid payment amount received. Expected %1$s, got %2$s."
 msgstr ""
 
 #. translators: %s is coupon code
-#: includes/class-asp-process-ipn-ng.php:467
+#: includes/class-asp-process-ipn-ng.php:480
 #: includes/process_ipn.php:564
 msgid "Coupon \"%s\""
 msgstr ""
 
-#: includes/class-asp-process-ipn-ng.php:471
+#: includes/class-asp-process-ipn-ng.php:484
 #: includes/process_ipn.php:565
 msgid "Subtotal"
 msgstr ""
 
-#: includes/class-asp-process-ipn-ng.php:559
+#: includes/class-asp-process-ipn-ng.php:572
 msgid "Product Name: "
 msgstr ""
 
-#: includes/class-asp-process-ipn-ng.php:560
+#: includes/class-asp-process-ipn-ng.php:573
 msgid "Quantity: "
 msgstr ""
 
-#: includes/class-asp-process-ipn-ng.php:561
+#: includes/class-asp-process-ipn-ng.php:574
 msgid "Item Price: "
 msgstr ""
 
-#: includes/class-asp-process-ipn-ng.php:566
+#: includes/class-asp-process-ipn-ng.php:579
 msgid "Total Amount: "
 msgstr ""
 
-#: includes/class-asp-pp-display.php:130
+#: includes/class-asp-pp-display.php:131
 #: includes/shortcodes/class-shortcode-asp.php:652
 msgid "Only numbers are allowed: 0-9"
 msgstr ""
 
-#: includes/class-asp-pp-display.php:350
+#: includes/class-asp-pp-display.php:351
 #: public/views/templates/default/payment-popup.php:390
 msgid "Credit or debit card"
 msgstr ""
 
 #. translators: %s is not a placeholder
-#: includes/class-asp-pp-display.php:473
+#: includes/class-asp-pp-display.php:474
 msgid "Authorize %s"
 msgstr ""
 
-#: includes/class-asp-pp-display.php:483
-#: includes/class-asp-pp-display.php:526
+#: includes/class-asp-pp-display.php:484
+#: includes/class-asp-pp-display.php:527
 #: includes/shortcodes/class-shortcode-asp.php:111
 msgid "Start Free Trial"
 msgstr ""
 
-#: includes/class-asp-pp-display.php:511
+#: includes/class-asp-pp-display.php:512
 #: includes/shortcodes/class-shortcode-asp.php:97
 msgid "Please enter a valid amount"
 msgstr ""
 
-#: includes/class-asp-pp-display.php:512
+#: includes/class-asp-pp-display.php:513
 #: includes/shortcodes/class-shortcode-asp.php:98
 #: includes/class-asp-pp-ajax.php:196
 msgid "Minimum amount is"
 msgstr ""
 
-#: includes/class-asp-pp-display.php:513
+#: includes/class-asp-pp-display.php:514
 #: includes/shortcodes/class-shortcode-asp.php:99
 msgid "Please enter quantity."
 msgstr ""
 
-#: includes/class-asp-pp-display.php:514
+#: includes/class-asp-pp-display.php:515
 #: includes/shortcodes/class-shortcode-asp.php:100
 msgid "Quantity can't be zero."
 msgstr ""
 
-#: includes/class-asp-pp-display.php:515
+#: includes/class-asp-pp-display.php:516
 #: includes/shortcodes/class-shortcode-asp.php:101
 msgid "Quantity should be integer value."
 msgstr ""
 
 #. translators: %d is number of items in stock
-#: includes/class-asp-pp-display.php:517
+#: includes/class-asp-pp-display.php:518
 #: includes/shortcodes/class-shortcode-asp.php:102
 #: includes/class-asp-pp-ajax.php:186
 msgid "You cannot order more items than available: %d"
 msgstr ""
 
-#: includes/class-asp-pp-display.php:520
+#: includes/class-asp-pp-display.php:521
 #: includes/shortcodes/class-asp-shortcode-ng.php:213
 #: includes/shortcodes/class-shortcode-asp.php:105
 #: includes/shortcodes/class-shortcode-asp.php:365
 msgid "Total:"
 msgstr ""
 
-#: includes/class-asp-pp-display.php:521
+#: includes/class-asp-pp-display.php:522
 #: includes/shortcodes/class-shortcode-asp.php:106
 msgid "Please fill in this field."
 msgstr ""
 
-#: includes/class-asp-pp-display.php:522
+#: includes/class-asp-pp-display.php:523
 #: includes/shortcodes/class-shortcode-asp.php:107
 msgid "Please check this checkbox."
 msgstr ""
 
-#: includes/class-asp-pp-display.php:523
+#: includes/class-asp-pp-display.php:524
 #: includes/shortcodes/class-shortcode-asp.php:108
 msgid "You must accept the terms before you can proceed."
 msgstr ""
 
-#: includes/class-asp-pp-display.php:524
+#: includes/class-asp-pp-display.php:525
 #: includes/shortcodes/class-shortcode-asp.php:109
 msgid "Remove coupon"
 msgstr ""
 
-#: includes/class-asp-pp-display.php:525
+#: includes/class-asp-pp-display.php:526
 #: includes/shortcodes/class-shortcode-asp.php:110
 #: public/views/templates/default/payment-popup.php:182
 msgid "Remove"
 msgstr ""
 
-#: includes/class-asp-pp-display.php:527
+#: includes/class-asp-pp-display.php:528
 #: includes/shortcodes/class-shortcode-asp.php:112
 msgid "Invalid validation RegEx: "
 msgstr ""
 
-#: includes/class-asp-pp-display.php:528
+#: includes/class-asp-pp-display.php:529
 msgid "Purchase for Free"
 msgstr ""
 
-#: includes/class-asp-pp-display.php:529
+#: includes/class-asp-pp-display.php:530
 msgid "Currency not supported for this payment method."
 msgstr ""
 
-#: includes/class-asp-pp-display.php:530
+#: includes/class-asp-pp-display.php:531
 msgid " for upcoming recurring payments"
 msgstr ""
 
-#: includes/class-asp-pp-display.php:531
+#: includes/class-asp-pp-display.php:532
 msgid "3D Secure failed."
 msgstr ""
 
-#: includes/class-asp-pp-display.php:532
+#: includes/class-asp-pp-display.php:533
 msgid "Abort 3D Secure check?"
 msgstr ""
 
