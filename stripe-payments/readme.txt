@@ -3,9 +3,9 @@ Contributors: Tips and Tricks HQ, wptipsntricks, alexanderfoxc
 Donate link: https://s-plugins.com
 Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortcode, digital goods, payment gateway, instant payment, commerce, digital downloads, downloads, e-commerce, e-store, ecommerce, eshop, donation
 Requires at least: 5.0
-Tested up to: 5.6
+Tested up to: 5.7
 Requires PHP: 5.6
-Stable tag: 2.0.44t6
+Stable tag: 2.0.44
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -155,11 +155,13 @@ None.
 
 == Changelog ==
 
-= WIP 2.0.44 =
+= 2.0.44 =
 - Payment popup now has its own slug `asp-payment-box`.
+- Addressed variations index issue that could prevent payment popup display.
 - Implemented some measures to avoid payment popup page caching by caching plugins.
 - Addressed rare payment popup loading failure issue related to variations.
 - Updated Stripe PHP SDK.
+- Various improvements and bugfixes.
 
 = 2.0.43 =
 - Plugin's display name has been changed to "Accept Stripe Payments" according to WP guidelines.
@@ -187,19 +189,5 @@ None.
 - Buyer email address no longer missing when `Don't save card` option enabled.
 - Added add-ons upgrade notice.
 - WP 5.6 compatibility.
-
-= 2.0.38 =
-- Payment confirmation is now done on backend.
-- Limit reCaptcha token reusage.
-- Fixed full discount coupons were improperly handled in some situations.
-- Fixed rare internal Stripe API wrapper issue.
-
-= 2.0.37 =
-- Proper tax amount rounding when quantity is >1.
-- Coupons are supported for trial subscriptions now.
-- Front-end card errors are now also sent via error email.
-- Countries displayed in alphabetical order now.
-- Prevented backend access to Legacy API functions if it's disabled.
-- Added extra note to the "error email" body explaining what an "error email" means.
 
 Full changelog available [at changelog.txt](https://plugins.svn.wordpress.org/stripe-payments/trunk/changelog.txt)
