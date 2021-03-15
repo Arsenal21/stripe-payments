@@ -553,10 +553,9 @@ class ASP_Shortcode_NG {
 		$display_str['tax']  = '%s (' . strtolower( $tax_str ) . ')';
 		$display_str['ship'] = '%s (' . strtolower( $ship_str ) . ')';
 
-		$home_url = get_home_url( null, '/' );
+		$base_url = ASP_Utils::get_base_pp_url();
 
 		$url_params = array(
-			'asp_action' => 'show_pp',
 			'product_id' => $product_id,
 		);
 
@@ -570,7 +569,7 @@ class ASP_Shortcode_NG {
 			$url_params['ckey'] = ASP_Utils::get_ckey();
 		}
 
-		$iframe_url = add_query_arg( $url_params, $home_url );
+		$iframe_url = add_query_arg( $url_params, $base_url );
 
 		$data = array(
 			'is_live'                  => $this->asp_main->is_live,

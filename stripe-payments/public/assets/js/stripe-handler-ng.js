@@ -179,7 +179,8 @@ function WPASPAttachToAElement(el) {
 	if (!hrefStr) {
 		return false;
 	}
-	var meinHref = hrefStr.match(/asp_action=show_pp&product_id=[0-9]*(.*)/);
+	var regExp = new RegExp('asp_action=show_pp&product_id=[0-9]*(.*)|' + wpASPNG.ppSlug + '(.*)product_id=[0-9]*(.*)');
+	var meinHref = hrefStr.match(regExp);
 	if (meinHref[0]) {
 		var productId = meinHref[0].match(/product_id=([0-9]+)/);
 		if (productId[1]) {
@@ -199,7 +200,11 @@ function WPASPAttach(el, prodId, params) {
 	if (item_price) {
 		params += '&price=' + item_price;
 	}
-	new stripeHandlerNG({ 'attachToElement': el, 'uniq_id': uniqId, 'product_id': prodId, 'doSelfSubmit': true, 'iframe_url': wpASPNG.iframeUrl + '&product_id=' + prodId + params, 'prefetch': wpASPNG.prefetch === '1' ? true : false });
+	var params_sep = '&';
+	if (wpASPNG.iframeUrl.indexOf('?') === -1) {
+		params_sep = '?';
+	}
+	new stripeHandlerNG({ 'attachToElement': el, 'uniq_id': uniqId, 'product_id': prodId, 'doSelfSubmit': true, 'iframe_url': wpASPNG.iframeUrl + params_sep + 'product_id=' + prodId + params, 'prefetch': wpASPNG.prefetch === '1' ? true : false });
 }
 
 function WPASPDocReady(callbackFunc) {
@@ -234,7 +239,7 @@ WPASPDocReady(function () {
 		}
 	});
 
-	jQuery('a[href*="asp_action=show_pp&product_id="]').each(function (id, el) {
+	jQuery('a[href*="asp_action=show_pp&product_id="],a[href*="' + wpASPNG.ppSlug + '"]').each(function (id, el) {
 		WPASPAttachToAElement(el);
 	});
 

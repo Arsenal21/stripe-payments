@@ -1,3 +1,17 @@
+= 2.0.38 =
+- Payment confirmation is now done on backend.
+- Limit reCaptcha token reusage.
+- Fixed full discount coupons were improperly handled in some situations.
+- Fixed rare internal Stripe API wrapper issue.
+
+= 2.0.37 =
+- Proper tax amount rounding when quantity is >1.
+- Coupons are supported for trial subscriptions now.
+- Front-end card errors are now also sent via error email.
+- Countries displayed in alphabetical order now.
+- Prevented backend access to Legacy API functions if it's disabled.
+- Added extra note to the "error email" body explaining what an "error email" means.
+
 = 2.0.36 =
 - Added "Apply Per-Order" option for fixed amount coupons.
 - `2020-08-27` Stripe API version compatibility.

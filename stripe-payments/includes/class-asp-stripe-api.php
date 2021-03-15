@@ -6,6 +6,9 @@ class ASP_Stripe_API {
 	protected $api_key;
 	protected $api_url    = 'https://api.stripe.com/v1/';
 	protected $last_error = array();
+	//Since 2.0.44t2
+	protected $throw_exception = false;
+	//If true, throws PHP exception when error occurs
 
 	protected $app_info = array(
 		'name'       => 'Stripe Payments',
@@ -23,6 +26,10 @@ class ASP_Stripe_API {
 
 	public function set_api_key( $key ) {
 		$this->api_key = $key;
+	}
+
+	public function set_param( $param, $value ) {
+		$this->$param = $value;
 	}
 
 	private function encode_params( $d ) {
@@ -78,6 +85,9 @@ class ASP_Stripe_API {
 		if ( is_wp_error( $res ) ) {
 			$this->last_error['message']    = $res->get_error_message();
 			$this->last_error['error_code'] = $res->get_error_code();
+			if ( $this->throw_exception ) {
+				throw new \Exception( $res->get_error_message(), $res->get_error_code() );
+			}
 			return false;
 		}
 
@@ -87,6 +97,9 @@ class ASP_Stripe_API {
 				if ( isset( $body['error'] ) ) {
 					$this->last_error              = $body['error'];
 					$this->last_error['http_code'] = $res['response']['code'];
+					if ( $this->throw_exception ) {
+						throw new \Exception( $body['error']['message'], $res['response']['code'] );
+					}
 				}
 			}
 			return false;
@@ -97,6 +110,16 @@ class ASP_Stripe_API {
 		return $return;
 	}
 
+	/**
+	 * Make GET API request
+	 *
+	 * @param  string $endpoint
+	 * Endpoint to make request to. Example: 'customers/'
+	 * @param  array $params
+	 * Parameters to send. Was ignored before 2.0.44
+	 * @return mixed
+	 * `object` on success, `false` on error
+	 */
 	public function get( $endpoint, $params = array() ) {
 
 		$this->before_request();
@@ -105,7 +128,10 @@ class ASP_Stripe_API {
 
 		$res = wp_remote_get(
 			$this->api_url . $endpoint,
-			array( 'headers' => $headers )
+			array(
+				'headers' => $headers,
+				'body'    => $this->encode_params( $params ),
+			)
 		);
 
 		$return = $this->process_result( $res );

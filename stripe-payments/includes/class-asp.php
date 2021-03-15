@@ -35,6 +35,8 @@ class AcceptStripePayments {
 	public $APISecKeyLive  = '';
 	public $is_live        = false;
 
+	public static $pp_slug = 'asp-payment-box';
+
 	/**
 	 * Plugin version, used for cache-busting of style and script file references.
 	 *
@@ -572,14 +574,8 @@ class AcceptStripePayments {
 
 	public function enqueue_frontend_scripts_styles() {
 		wp_register_script( 'stripe-handler-ng', WP_ASP_PLUGIN_URL . '/public/assets/js/stripe-handler-ng.js', array( 'jquery' ), WP_ASP_PLUGIN_VERSION, true );
-		$home_url = get_home_url( null, '/' );
 
-		$iframe_url = add_query_arg(
-			array(
-				'asp_action' => 'show_pp',
-			),
-			$home_url
-		);
+		$iframe_url = ASP_Utils::get_base_pp_url();
 
 		$prefetch = $this->get_setting( 'frontend_prefetch_scripts' );
 
@@ -588,6 +584,7 @@ class AcceptStripePayments {
 			'wpASPNG',
 			array(
 				'iframeUrl' => $iframe_url,
+				'ppSlug'    => AcceptStripePayments::$pp_slug,
 				'prefetch'  => $prefetch,
 				'ckey'      => ASP_Utils::get_ckey(),
 			)

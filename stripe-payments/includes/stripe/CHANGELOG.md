@@ -1,5 +1,20 @@
 # Changelog
 
+## 7.32.1 - 2020-05-13
+* [#932](https://github.com/stripe/stripe-php/pull/932) Fix multiple PHPDoc
+
+## 7.32.0 - 2020-05-11
+* [#931](https://github.com/stripe/stripe-php/pull/931) Add support for the `LineItem` resource and APIs
+
+## 7.31.0 - 2020-05-01
+* [#927](https://github.com/stripe/stripe-php/pull/927) Add support for new tax IDs
+
+## 7.30.0 - 2020-04-29
+* [#924](https://github.com/stripe/stripe-php/pull/924) Add support for the `Price` resource and APIs
+
+## 7.29.0 - 2020-04-22
+* [#920](https://github.com/stripe/stripe-php/pull/920) Add support for the `Session` resource and APIs on the `BillingPortal` namespace
+
 ## 7.28.1 - 2020-04-10
 * [#915](https://github.com/stripe/stripe-php/pull/915) Improve PHPdocs for many classes
 

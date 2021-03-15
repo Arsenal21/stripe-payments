@@ -743,14 +743,11 @@ jQuery(document).ready(function($) {
 	}
 
 	public function display_embed_meta_box( $post ) {
-		$home_url = get_home_url( null, '/' );
-
 		$embed_url = add_query_arg(
 			array(
-				'asp_action' => 'show_pp',
 				'product_id' => $post->ID,
 			),
-			$home_url
+			ASP_Utils::get_base_pp_url()
 		);
 		$css_class = sprintf( 'asp-attach-product-%d', $post->ID );
 		?>
@@ -884,21 +881,24 @@ jQuery(document).ready(function($) {
 			//check if this is not subscription product
 			$asp_plan_id = get_post_meta( $post_id, 'asp_sub_plan_id', true );
 
-			if ( empty( $asp_plan_id ) ) {
+			$product_type = filter_input( INPUT_POST, 'asp_product_type_radio', FILTER_SANITIZE_STRING );
+
+			if ( empty( $asp_plan_id ) || ( ! empty( $product_type ) && 'subscription' !== $product_type ) ) {
+				update_post_meta( $post_id, 'asp_sub_plan_id', 0 );
 
 				//handle variations
 				$variations_groups = filter_input( INPUT_POST, 'asp-variations-group-names', FILTER_UNSAFE_RAW, FILTER_REQUIRE_ARRAY );
 				if ( ! empty( $variations_groups ) && is_array( $variations_groups ) ) {
 					//we got variations groups. Let's process them
-					update_post_meta( $post_id, 'asp_variations_groups', $variations_groups );
+					update_post_meta( $post_id, 'asp_variations_groups', array_values( $variations_groups ) );
 					$variations_names = filter_input( INPUT_POST, 'asp-variation-names', FILTER_UNSAFE_RAW, FILTER_REQUIRE_ARRAY );
-					update_post_meta( $post_id, 'asp_variations_names', $variations_names );
+					update_post_meta( $post_id, 'asp_variations_names', array_values( $variations_names ) );
 					$variations_prices = filter_input( INPUT_POST, 'asp-variation-prices', FILTER_UNSAFE_RAW, FILTER_REQUIRE_ARRAY );
-					update_post_meta( $post_id, 'asp_variations_prices', $variations_prices );
+					update_post_meta( $post_id, 'asp_variations_prices', array_values( $variations_prices ) );
 					$variations_urls = filter_input( INPUT_POST, 'asp-variation-urls', FILTER_UNSAFE_RAW, FILTER_REQUIRE_ARRAY );
-					update_post_meta( $post_id, 'asp_variations_urls', $variations_urls );
+					update_post_meta( $post_id, 'asp_variations_urls', array_values( $variations_urls ) );
 					$variations_opts = filter_input( INPUT_POST, 'asp-variations-opts', FILTER_UNSAFE_RAW, FILTER_REQUIRE_ARRAY );
-					update_post_meta( $post_id, 'asp_variations_opts', $variations_opts );
+					update_post_meta( $post_id, 'asp_variations_opts', array_values( $variations_opts ) );
 				} else {
 					//we got no variations groups. Let's clear meta values
 					update_post_meta( $post_id, 'asp_variations_groups', false );
@@ -916,8 +916,6 @@ jQuery(document).ready(function($) {
 				$price    = sanitize_text_field( $_POST['asp_product_price'] );
 				$price    = AcceptStripePayments::tofloat( $price );
 				$currency = sanitize_text_field( $_POST['asp_product_currency'] );
-
-				$product_type = filter_input( INPUT_POST, 'asp_product_type_radio', FILTER_SANITIZE_STRING );
 
 				if ( ! empty( $product_type ) ) {
 					update_post_meta( $post_id, 'asp_product_type', $product_type );

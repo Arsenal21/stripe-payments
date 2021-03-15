@@ -5,6 +5,7 @@ class ASP_Addons_Helper {
 	public $addon = null;
 	public $section;
 	public $asp_admin;
+	private $auc_plugin_path = 'stripe-payments-addons-update-checker/class-asp-addons-update-checker.php';
 
 	protected $addons = array(
 		array( 'stripe-payments-country-autodetect', 'stripe-payments-country-autodetect/asp-country-autodetect-main.php', 'stripe-payments-country-autodetect', '' ),
@@ -20,12 +21,20 @@ class ASP_Addons_Helper {
 		if ( is_admin() ) {
 			$this->asp_admin = AcceptStripePayments_Admin::get_instance();
 
+			add_action( 'activate_' . $this->auc_plugin_path, array( $this, 'remove_auc_notice' ) );
+
 			foreach ( $this->addons as $addon ) {
 				if ( ! empty( $addon[3] ) ) {
 					$this->icons[ $addon[2] ] = $this->icons_path . $addon[3];
 					add_filter( 'puc_request_info_result-' . $addon[2], array( $this, 'set_icon' ) );
 				}
 			}
+		}
+	}
+
+	public function remove_auc_notice() {
+		if ( ! empty( $this->item_hash ) ) {
+			AcceptStripePayments_Admin::remove_admin_notice_by_hash( $this->item_hash );
 		}
 	}
 
@@ -61,7 +70,15 @@ class ASP_Addons_Helper {
 			ASP_Addons_Update_Checker::check_updates( $this->addon->SLUG, $this->addon->file );
 		} else {
 			// let's display admin notice to install Addons Update Checker (if the message is not yet dismissed)
-			$notice_dismissed = get_option( 'asp_dismiss_auc_msg' );
+			$user_id = get_current_user_id();
+			if ( empty( $user_id ) ) {
+				return;
+			}
+			if ( ! current_user_can( 'install_plugins' ) && ! current_user_can( 'activate_plugins' ) ) {
+				return;
+			}
+
+			$notice_dismissed = get_user_meta( $user_id, 'asp_dismiss_auc_msg', true );
 			if ( ! empty( $notice_dismissed ) ) {
 				return;
 			}
@@ -69,7 +86,8 @@ class ASP_Addons_Helper {
 			$dismiss_url = add_query_arg( 'asp_dismiss_auc_msg', '1', $admin_url );
 			$dismiss_url = wp_nonce_url( $dismiss_url, 'asp_dismiss_auc_msg' );
 			$dismiss_msg = '<div class="asp_dismiss_notice_update_checker"><a style="text-decoration: none; border-bottom: 1px dashed;font-size:0.9em;" href="' . $dismiss_url . '">' . __( 'Don\'t show this message again', 'stripe-payments' ) . '</a></div>';
-			AcceptStripePayments_Admin::add_admin_notice(
+
+			$this->item_hash = AcceptStripePayments_Admin::add_admin_notice(
 				'warning',
 				// translators: %s is replaced by a link to plugin page
 				sprintf( __( 'Please install the <a target="_blank" href="%s">Stripe Payments Addons Update Checker</a> plugin to keep your addons upto date.', 'stripe-payments' ), 'https://s-plugins.com/update-checker-plugin-for-the-addons/' ) .
