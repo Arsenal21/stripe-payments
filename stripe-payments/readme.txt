@@ -156,6 +156,7 @@ None.
 == Changelog ==
 
 = 2.0.44 =
+- Added a new email merge tag {item_short_desc} for the sale notification email.
 - Payment popup now has its own slug `asp-payment-box`.
 - Addressed variations index issue that could prevent payment popup display.
 - Implemented some measures to avoid payment popup page caching by caching plugins.
