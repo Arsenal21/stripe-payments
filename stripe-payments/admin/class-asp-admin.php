@@ -1842,6 +1842,7 @@ class AcceptStripePayments_Admin {
 		if ( empty( $email_tags ) ) {
 			$email_tags = array(
 				'{item_name}'         => __( 'Name of the purchased item', 'stripe-payments' ),
+				'{item_short_desc}'   => __( 'Short description of item', 'stripe-payments' ),
 				'{item_quantity}'     => __( 'Number of items purchased', 'stripe-payments' ),
 				'{item_price}'        => __( 'Item price. Example: 1000,00', 'stripe-payments' ),
 				'{item_price_curr}'   => __( 'Item price with currency symbol. Example: $1,000.00', 'stripe-payments' ),

@@ -811,6 +811,7 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post, $seller_email = fal
 
 	$tags = array(
 		'{item_name}',
+		'{item_short_desc}',
 		'{item_quantity}',
 		'{item_url}',
 		'{payer_email}',
@@ -836,6 +837,7 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post, $seller_email = fal
 	);
 	$vals = array(
 		$post['item_name'],
+		$post['charge_description'],
 		$post['item_quantity'],
 		! empty( $post['item_url'] ) ? $post['item_url'] : '',
 		$post['stripeEmail'],
