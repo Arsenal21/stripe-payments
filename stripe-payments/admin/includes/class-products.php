@@ -9,7 +9,7 @@ class ASPProducts {
 
 		if ( is_admin() ) {
 			//products meta boxes handler
-			require_once WP_ASP_PLUGIN_PATH . 'admin/includes/class-products-meta-boxes.php';
+			require_once WP_ASP_PLUGIN_PATH . 'admin/includes/class-asp-admin-product-meta-boxes.php';
 		}
 	}
 

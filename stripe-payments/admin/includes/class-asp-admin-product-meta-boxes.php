@@ -1,6 +1,6 @@
 <?php
 
-class ASPProductsMetaboxes {
+class ASP_Admin_Product_Meta_Boxes {
 
 	protected $asp_main;
 	protected $metaboxes;
@@ -987,4 +987,4 @@ jQuery(document).ready(function($) {
 
 }
 
-new ASPProductsMetaboxes();
+new ASP_Admin_Product_Meta_Boxes();
