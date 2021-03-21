@@ -433,7 +433,7 @@ class AcceptStripePayments {
 			}
 		}
 		//Flush rewrite rules so new pages and slugs are properly handled
-		$asp_products = ASPProducts::get_instance();
+		$asp_products = ASP_Admin_Products::get_instance();
 		$asp_products->register_post_type();
 		$asp_order = ASPOrder::get_instance();
 		$asp_order->register_post_type();

@@ -1,6 +1,6 @@
 <?php
 
-class ASPProducts {
+class ASP_Admin_Products {
 
 	protected static $instance = null;
 
