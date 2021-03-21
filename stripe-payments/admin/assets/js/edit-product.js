@@ -146,6 +146,11 @@ jQuery(document).ready(function ($) {
 	});
 	$('input[name="asp_use_other_stripe_acc"]').trigger('change');
 
+	$('input[name="asp_product_enable_stock"]').on('change', function (e) {
+		$('input[name="asp_product_show_remaining_items"]').prop('disabled', !this.checked);
+	});
+	$('input[name="asp_product_enable_stock"]').trigger('change');
+
 	function aspProductTypeChange(val) {
 		if (val === 'subscription') {
 			$('.asp-other-stripe-acc').hide();

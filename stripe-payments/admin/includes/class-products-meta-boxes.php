@@ -453,6 +453,7 @@ class ASPProductsMetaboxes {
 		$current_val           = get_post_meta( $post->ID, 'asp_product_quantity', true );
 		$allow_custom_quantity = get_post_meta( $post->ID, 'asp_product_custom_quantity', true );
 		$enable_stock          = get_post_meta( $post->ID, 'asp_product_enable_stock', true );
+		$show_remaining        = get_post_meta( $post->ID, 'asp_product_show_remaining_items', true );
 		$stock_items           = get_post_meta( $post->ID, 'asp_product_stock_items', true );
 		?>
 <p><?php esc_html_e( 'By default, if you leave this field empty, the product quantity will be set to 1. You can change this behavior by using the following options.', 'stripe-payments' ); ?></p>
@@ -480,7 +481,11 @@ class ASPProductsMetaboxes {
 	<br />
 	<input type="number" min="0" step="1" name="asp_product_stock_items" value="<?php echo esc_attr( ! $stock_items ? 0 : $stock_items ); ?>">
 	<p class="description"><?php esc_html_e( 'Specify the quantity available for this product.', 'stripe-payments' ); ?></p>
-
+	<label>
+	<input type="checkbox" name="asp_product_show_remaining_items" value="1" <?php echo esc_attr( ( '1' === $show_remaining ) ? ' checked' : '' ); ?>>
+		<?php esc_html_e( 'Show the available quantity in the payment popup', 'stripe-payments' ); ?>
+	</label>
+	<p class="description"><?php esc_html_e( 'When this is checked, the number of remaining items is displayed on payment popup.', 'stripe-payments' ); ?></p>
 		<?php
 	}
 
@@ -808,6 +813,10 @@ jQuery(document).ready(function($) {
 			update_post_meta( $post_id, 'asp_product_custom_quantity', isset( $_POST['asp_product_custom_quantity'] ) ? '1' : false );
 			update_post_meta( $post_id, 'asp_product_enable_stock', isset( $_POST['asp_product_enable_stock'] ) ? '1' : false );
 			update_post_meta( $post_id, 'asp_product_stock_items', sanitize_text_field( absint( $_POST['asp_product_stock_items'] ) ) );
+
+			$show_remaining = filter_input( INPUT_POST, 'asp_product_show_remaining_items', FILTER_SANITIZE_NUMBER_INT );
+			$show_remaining = ! empty( $show_remaining ) ? true : false;
+			update_post_meta( $post_id, 'asp_product_show_remaining_items', $show_remaining );
 
 			$force_test_mode = filter_input( INPUT_POST, 'asp_product_force_test_mode', FILTER_SANITIZE_STRING );
 			$force_test_mode = ! empty( $force_test_mode ) ? true : false;
