@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 5.0
 Tested up to: 5.7
 Requires PHP: 5.6
-Stable tag: 2.0.44
+Stable tag: 2.0.45t1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -154,6 +154,10 @@ Yes, please visit Stripe Payments > Settings screen for options.
 None.
 
 == Changelog ==
+
+= WIP 2.0.45 =
+- Added `Show the available quantity in the payment popup` product option.
+- Trashed products no longer can be accessed via link URL.
 
 = 2.0.44 =
 - Added a new email merge tag {item_short_desc} for the sale notification email.
