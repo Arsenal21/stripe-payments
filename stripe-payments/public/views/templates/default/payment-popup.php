@@ -75,6 +75,11 @@ echo '<style>' . $css . '</style>' . "\r\n";
 						<?php echo isset( $a['fatal_error'] ) ? esc_html( $a['fatal_error'] ) : ''; ?>
 					</div>
 					<form method="post" id="payment-form" class="pure-form pure-form-stacked" <?php echo isset( $a['fatal_error'] ) ? 'style="display: none;"' : ''; ?>>
+						<?php if ( $a['data']['stock_control_enabled'] && $a['data']['show_remaining'] ) { ?>
+							<div id="available-quantity-cont" class="pure-u-1">
+								<span><?php esc_html_e( 'Available quantity', 'stripe-payments' ); ?>: </span><span><?php echo $a['data']['stock_items']; ?></span>
+							</div>
+						<?php } ?>
 						<?php if ( $a['data']['amount_variable'] && ! $this->item->get_meta( 'asp_product_hide_amount_input' ) ) { ?>
 						<div id="amount-cont" class="pure-u-1">
 							<label for="amount"><?php esc_html_e( 'Enter amount', 'stripe-payments' ); ?></label>
@@ -105,11 +110,6 @@ echo '<style>' . $css . '</style>' . "\r\n";
 						<?php } ?>
 						<?php if ( $a['data']['custom_quantity'] ) { ?>
 						<div id="quantity-cont" class="pure-u-1">
-							<?php if ( $a['data']['stock_control_enabled'] && $a['data']['show_remaining'] ) { ?>
-							<div id="available-quantity-cont">
-							<span><?php esc_html_e( 'Available quantity', 'stripe-payments' ); ?>: </span><span><?php echo $a['data']['stock_items']; ?></span>
-							</div>
-							<?php } ?>
 							<label for="quantity"><?php esc_html_e( 'Enter quantity', 'stripe-payments' ); ?></label>
 							<input type="number" min="1" class="pure-input-1" id="quantity" name="quantity" inputmode="numeric" value="<?php echo esc_attr( $a['data']['quantity'] ); ?>" required>
 							<div id="quantity-error" class="form-err" role="alert"></div>

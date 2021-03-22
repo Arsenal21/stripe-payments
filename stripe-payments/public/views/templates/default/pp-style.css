@@ -15,6 +15,13 @@
 	display: block;
 }
 
+#available-quantity-cont {
+	padding-bottom: .3em;
+	margin-bottom: .3em;
+	color: #333;
+	border-bottom: 1px solid #e5e5e5;
+}
+
 #variations-cont .variation:nth-child(odd) fieldset {
 	margin-right: 4%;
 }
@@ -397,9 +404,6 @@ input.pure-input-1.has-icon, select.pure-input-1.has-icon {
 	}
 	.half-width .half-inner-left, .half-inner-right {
 		padding: 0;
-	}
-	#Aligner {
-		/* display: block; */
 	}
 	#Aligner-item {
 		margin: 0;
