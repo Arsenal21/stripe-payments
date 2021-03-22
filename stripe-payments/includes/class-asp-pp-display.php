@@ -87,6 +87,11 @@ class ASP_PP_Display {
 			exit;
 		}
 
+		$post_status = get_post_status( $product_id );
+		if ( 'trash' === $post_status ) {
+			wp_die( __( 'This product is in the trash. Please restore this product from the trash if you want to use it', 'stripe-payments' ), '', 404 );
+		}
+
 		$a = array();
 
 		$a['prod_id'] = $product_id;
