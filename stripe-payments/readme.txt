@@ -155,6 +155,9 @@ None.
 
 == Changelog ==
 
+= WIP 2.0.45 =
+- Added German language translation files.
+
 = 2.0.44 =
 - Added a new email merge tag {item_short_desc} for the sale notification email.
 - Payment popup now has its own slug `asp-payment-box`.
