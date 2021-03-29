@@ -52,7 +52,7 @@ class ASP_Session {
 			if ( ! headers_sent() ) {
 				$cookiepath    = ! defined( 'COOKIEPATH' ) ? '/' : COOKIEPATH;
 				$cookie_domain = ! defined( 'COOKIE_DOMAIN' ) ? false : COOKIE_DOMAIN;
-				setcookie( 'asp_transient_id', $this->get_transient_id(), 0, $cookiepath, $cookie_domain );
+				setcookie( 'asp_transient_id', $this->get_transient_id(), time() + 604800, $cookiepath, $cookie_domain );
 			}
 		} else {
 			$this->transient_id = $cookie_transient_id;
