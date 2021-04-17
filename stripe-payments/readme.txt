@@ -87,7 +87,7 @@ Option 2) You can specify the item details in a shortcode to dynamically create 
 
 = Detailed Documentation =
 
-For detailed documentation and instructions please check the [WordPress Stripe Payments Plugin](https://www.tipsandtricks-hq.com/ecommerce/wordpress-stripe-plugin-accept-payments-using-stripe) documentation page.
+For detailed documentation and instructions please check the [WordPress Stripe Payments Plugin](https://s-plugins.com/stripe-payments-plugin-tutorials/) documentation page.
 
 == Installation ==
 
