@@ -20,15 +20,7 @@ class ASP_Addons_Helper {
 
 		if ( is_admin() ) {
 			$this->asp_admin = AcceptStripePayments_Admin::get_instance();
-
 			add_action( 'activate_' . $this->auc_plugin_path, array( $this, 'remove_auc_notice' ) );
-
-			foreach ( $this->addons as $addon ) {
-				if ( ! empty( $addon[3] ) ) {
-					$this->icons[ $addon[2] ] = $this->icons_path . $addon[3];
-					add_filter( 'puc_request_info_result-' . $addon[2], array( $this, 'set_icon' ) );
-				}
-			}
 		}
 	}
 
@@ -50,13 +42,6 @@ class ASP_Addons_Helper {
 		if ( method_exists( 'ASP_Debug_Logger', 'log' ) ) {
 			ASP_Debug_Logger::log( $msg, $success, $this->addon->ADDON_SHORT_NAME );
 		}
-	}
-
-	public function set_icon( $data ) {
-		if ( isset( $this->icons[ $data->slug ] ) ) {
-			$data->icons = array( 'default' => $this->icons[ $data->slug ] );
-		}
-		return $data;
 	}
 
 	public function check_updates() {
