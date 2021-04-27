@@ -582,6 +582,7 @@ class ASP_Utils {
 			'COP' => array( __( 'Colombian Peso (COP)', 'stripe-payments' ), 'COL$' ),
 			'CZK' => array( __( 'Czech Koruna (CZK)', 'stripe-payments' ), 'Kč' ),
 			'DKK' => array( __( 'Danish Krone (DKK)', 'stripe-payments' ), 'kr' ),
+			'DOP' => array( __( 'Dominican Peso (DOP)', 'stripe-payments' ), 'RD$' ),
 			'EGP' => array( __( 'Egyptian Pound (EGP)', 'stripe-payments' ), 'E£' ),
 			'HKD' => array( __( 'Hong Kong Dollar (HKD)', 'stripe-payments' ), 'HK$' ),
 			'HUF' => array( __( 'Hungarian Forint (HUF)', 'stripe-payments' ), 'Ft' ),
