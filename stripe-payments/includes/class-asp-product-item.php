@@ -354,6 +354,9 @@ class ASP_Product_Item {
 	}
 
 	public function is_currency_variable() {
+		if ( $this->get_type() !== 'donation' ) {
+			return false;
+		}
 		$currency_variable = get_post_meta( $this->post_id, 'asp_product_currency_variable', true );
 		return $currency_variable;
 	}
