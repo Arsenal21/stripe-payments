@@ -202,11 +202,12 @@ class ASP_Payment_Data {
 
 		$b_city   = $ipn_ng_class->get_post_var( 'asp_city', FILTER_SANITIZE_STRING );
 		$bd->city = empty( $b_city ) ? '' : $b_city;
+		
+		$b_state   = $ipn_ng_class->get_post_var( 'asp_state', FILTER_SANITIZE_STRING );
+		$bd->state = empty( $b_state ) ? '' : $b_state;
 
 		$b_country   = $ipn_ng_class->get_post_var( 'asp_country', FILTER_SANITIZE_STRING );
 		$bd->country = empty( $b_country ) ? '' : $b_country;
-
-		$bd->state = '';
 
 		$this->billing_details_obj = $bd;
 
@@ -227,11 +228,12 @@ class ASP_Payment_Data {
 
 			$s_city   = $ipn_ng_class->get_post_var( 'asp_shipping_city', FILTER_SANITIZE_STRING );
 			$sd->city = empty( $s_city ) ? '' : $s_city;
+			
+			$s_state   = $ipn_ng_class->get_post_var( 'asp_shipping_state', FILTER_SANITIZE_STRING );
+			$sd->state = empty( $s_state ) ? '' : $s_state;
 
 			$s_country   = $ipn_ng_class->get_post_var( 'asp_shipping_country', FILTER_SANITIZE_STRING );
 			$sd->country = empty( $s_country ) ? '' : $s_country;
-
-			$sd->state = '';
 
 			$this->shipping_details_obj = $sd;
 		}
