@@ -66,20 +66,21 @@ if ( $_GET['page'] == 'stripe-payments-settings' ) {
 				?>
 				</div>
 			</div>
-			<div class="postbox" style="min-width: inherit;">
+			<div class="postbox yellowish" style="min-width: inherit;">
 				<h3 class="hndle"><label for="title"><?php echo __( 'Add-ons', 'stripe-payments' ); ?></label></h3>
 				<div class="inside">
 				<?php
 				// translators: %s is link to addons page
-				echo sprintf( __( 'Want additional functionality like subscriptions, Apple Pay support or MailChimp integration? Check out our <a target="_blank" href="%s">Add-Ons!</a>', 'stripe-payments' ), 'edit.php?post_type=' . ASPMain::$products_slug . '&page=stripe-payments-addons' );
+				echo sprintf( __( 'Want additional functionality like Subscriptions, Apple Pay support or MailChimp integration? Check out our <a target="_blank" href="%s">Add-Ons!</a>', 'stripe-payments' ), 'edit.php?post_type=' . ASPMain::$products_slug . '&page=stripe-payments-addons' );
 				?>
 				</div>
 			</div>
-			<div class="postbox yellowish" style="min-width: inherit;">
-				<h3 class="hndle"><label for="title"><?php echo __( 'Need Something Bigger?', 'stripe-payments' ); ?></label></h3>
+			<div class="postbox" style="min-width: inherit;">
+				<h3 class="hndle"><label for="title"><?php echo __( 'Need Something for PayPal?', 'stripe-payments' ); ?></label></h3>
 				<div class="inside">
-				<?php _ex( 'If you need a feature rich plugin (with good support) for selling your products and services then check out our', 'Followed by a link to eStore plugin', 'stripe-payments' ); ?>
-				<a target="_blank" href="https://www.tipsandtricks-hq.com/wordpress-estore-plugin-complete-solution-to-sell-digital-products-from-your-wordpress-blog-securely-1059">WP eStore Plugin</a>.
+				<?php _ex( 'If you need a lightweight plugin to sell your products and services using PayPal then check out our', 'Followed by a link to Express Checkout and eStore plugins', 'stripe-payments' ); ?>
+                                    <a target="_blank" href="https://wordpress.org/plugins/wp-express-checkout/">Express Checkout Plugin</a> or
+                                    <a target="_blank" href="https://www.tipsandtricks-hq.com/wordpress-estore-plugin-complete-solution-to-sell-digital-products-from-your-wordpress-blog-securely-1059">WP eStore Plugin</a>.
 				</div>
 			</div>
 			<div class="postbox" style="min-width: inherit;">
