@@ -168,6 +168,16 @@ $output = '';
 		);
 		array_push( $addons_data, $addon_16 );
 
+		$addon_17 = array(
+			'name'         => __( 'Google Analytics Tracking', 'stripe-payments' ),
+			'thumbnail'    => WP_ASP_PLUGIN_URL . '/admin/assets/images/google-analytics-ecommerce-tracking.png',
+			'description'  => __( 'This addon allows you to do Google analytics eCommerce tracking for our Stripe plugin transactions.', 'stripe-payments' ),
+			'page_url'     => 'https://s-plugins.com/stripe-payments-google-analytics-ecommerce-tracking-addon/',
+			'settings_url' => 'edit.php?post_type=' . ASPMain::$products_slug . '&page=stripe-payments-settings#gaet',
+			'installed'    => class_exists( 'ASPGAET_main' ) ? true : false,
+		);
+		array_push( $addons_data, $addon_17 );
+
 		/* Show the addons list */
 		foreach ( $addons_data as $addon ) {
 			$output .= '<div class="stripe_addon_item_canvas">';

@@ -87,7 +87,7 @@ Option 2) You can specify the item details in a shortcode to dynamically create 
 
 = Detailed Documentation =
 
-For detailed documentation and instructions please check the [WordPress Stripe Payments Plugin](https://www.tipsandtricks-hq.com/ecommerce/wordpress-stripe-plugin-accept-payments-using-stripe) documentation page.
+For detailed documentation and instructions please check the [WordPress Stripe Payments Plugin](https://s-plugins.com/stripe-payments-plugin-tutorials/) documentation page.
 
 == Installation ==
 
@@ -155,9 +155,11 @@ None.
 
 == Changelog ==
 
-= WIP 2.0.45 =
+= 2.0.45 =
 - Added `Show the available quantity in the payment popup` product option.
 - Trashed products no longer can be accessed via link URL.
+- Added Dominican Peso (DOP) currency support.
+- Added German language translation files.
 
 = 2.0.44 =
 - Added a new email merge tag {item_short_desc} for the sale notification email.
