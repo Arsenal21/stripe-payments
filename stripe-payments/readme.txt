@@ -158,7 +158,7 @@ None.
 = WIP 2.0.45 =
 - Added `Show the available quantity in the payment popup` product option.
 - Trashed products no longer can be accessed via link URL.
-- Variable currency option for donation product type is not longer applied to other product types.
+- Variable currency option for donation product type is no longer applied to other product types.
 - Added Dominican Peso (DOP) currency support.
 - Added German language translation files.
 
