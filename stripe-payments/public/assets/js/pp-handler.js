@@ -783,7 +783,7 @@ function canProceed() {
 
 function handlePayment() {
 	var billingNameInput = document.getElementById('billing-name');
-	var emailInput = document.getElementById('email');
+	var emailInput = encodeURIComponent(document.getElementById('email'));
 	var billingDetails = {
 		name: billingNameInput.value,
 		email: emailInput.value,
