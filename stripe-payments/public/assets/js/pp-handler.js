@@ -783,10 +783,10 @@ function canProceed() {
 
 function handlePayment() {
 	var billingNameInput = document.getElementById('billing-name');
-	var emailInput = encodeURIComponent(document.getElementById('email'));
+	var emailInput = document.getElementById('email');
 	var billingDetails = {
 		name: billingNameInput.value,
-		email: emailInput.value,
+		email: encodeURIComponent(emailInput.value),
 	};
 	if (vars.data.billing_address) {
 		var bAddr = document.getElementById('address');
@@ -1021,7 +1021,7 @@ function handlePayment() {
 		opts.setup_future_usage = 'off_session';
 	}
 	if (vars.data.stripe_receipt_email) {
-		opts.receipt_email = emailInput.value;
+		opts.receipt_email = encodeURIComponent(emailInput.value);
 	}
 
 	if (vars.data.pm_id || vars.data.token_id) {
@@ -1067,7 +1067,7 @@ function handlePayment() {
 			if (vars.data.dont_save_card) {
 				opts.payment_method_data.billing_details = {
 					name: billingNameInput.value,
-					email: emailInput.value
+					email: encodeURIComponent(emailInput.value)
 				};
 			}
 		} else {
