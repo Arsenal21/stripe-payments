@@ -173,7 +173,10 @@ class ASP_Process_IPN_NG {
 		ASP_Debug_Logger::log( 'Payment processing started.' );
 
 		if ( ! empty( $post_data ) ) {
+			ASP_Debug_Logger::log( 'Custom $_POST data: ' . json_encode( $post_data ) );
 			$this->post_data = $post_data;
+		} else {
+			ASP_Debug_Logger::log( 'Original $_POST data: ' . json_encode( $_POST ) );
 		}
 
 		do_action( 'asp_ng_before_payment_processing', $post_data );
@@ -506,6 +509,7 @@ class ASP_Process_IPN_NG {
 		$custom_fields = $this->sess->get_transient_data( 'custom_fields' );
 		if ( ! empty( $custom_fields ) ) {
 			$data['custom_fields'] = $custom_fields;
+			$this->sess->set_transient_data( 'custom_fields', array() );
 		}
 
 		$metadata = array();
@@ -676,6 +680,8 @@ class ASP_Process_IPN_NG {
 		}
 
 		$this->sess->set_transient_data( 'asp_data', $data );
+
+		$this->sess->set_transient_data( 'asp_pp_form_data', array() );
 
 		//Clear the txn lock
 		update_option( 'asp_ng_ipn_txn_being_processed', '' );

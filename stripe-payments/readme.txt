@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 5.0
 Tested up to: 5.7
 Requires PHP: 5.6
-Stable tag: 2.0.44
+Stable tag: 2.0.45t4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -156,6 +156,10 @@ None.
 == Changelog ==
 
 = WIP 2.0.45 =
+- Added `Show the available quantity in the payment popup` product option.
+- Trashed products no longer can be accessed via link URL.
+- Variable currency option for donation product type is no longer applied to other product types.
+- Added Dominican Peso (DOP) currency support.
 - Added German language translation files.
 
 = 2.0.44 =

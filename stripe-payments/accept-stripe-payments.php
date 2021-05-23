@@ -3,7 +3,7 @@
 /**
  * Plugin Name: Accept Stripe Payments
  * Description: Easily accept credit card payments via Stripe payment gateway in WordPress.
- * Version: 2.0.44
+ * Version: 2.0.45t4
  * Author: Tips and Tricks HQ, wptipsntricks
  * Author URI: https://www.tipsandtricks-hq.com/
  * Plugin URI: https://s-plugins.com
@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; //Exit if accessed directly
 }
 
-define( 'WP_ASP_PLUGIN_VERSION', '2.0.44' );
+define( 'WP_ASP_PLUGIN_VERSION', '2.0.45t4' );
 define( 'WP_ASP_MIN_PHP_VERSION', '5.6' );
 define( 'WP_ASP_PLUGIN_URL', plugins_url( '', __FILE__ ) );
 define( 'WP_ASP_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
@@ -42,7 +42,7 @@ class ASPMain {
 		require_once WP_ASP_PLUGIN_PATH . 'includes/class-asp-debug-logger.php';
 		require_once WP_ASP_PLUGIN_PATH . 'includes/class-asp.php';
 		require_once WP_ASP_PLUGIN_PATH . 'includes/class-asp-stripe-api.php';
-		require_once WP_ASP_PLUGIN_PATH . 'admin/includes/class-products.php';
+		require_once WP_ASP_PLUGIN_PATH . 'admin/includes/class-asp-admin-products.php';
 		require_once WP_ASP_PLUGIN_PATH . 'admin/includes/class-coupons.php';
 		require_once WP_ASP_PLUGIN_PATH . 'admin/includes/class-order.php';
 		require_once WP_ASP_PLUGIN_PATH . 'admin/views/blocks.php';
@@ -69,7 +69,7 @@ class ASPMain {
 		add_action( 'init', array( $this, 'init_handler' ), 0 );
 
 		// register custom post type
-		$asp_products = ASPProducts::get_instance();
+		$asp_products = ASP_Admin_Products::get_instance();
 		add_action( 'init', array( $asp_products, 'register_post_type' ), 0 );
 		$asp_order = ASPOrder::get_instance();
 		add_action( 'init', array( $asp_order, 'register_post_type' ), 0 );

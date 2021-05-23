@@ -87,6 +87,11 @@ class ASP_PP_Display {
 			exit;
 		}
 
+		$post_status = get_post_status( $product_id );
+		if ( 'trash' === $post_status ) {
+			wp_die( __( 'This product is in the trash. Please restore this product from the trash if you want to use it', 'stripe-payments' ), '', 404 );
+		}
+
 		$a = array();
 
 		$a['prod_id'] = $product_id;
@@ -214,6 +219,7 @@ class ASP_PP_Display {
 
 		//stock control
 		$stock_control_enabled = false;
+		$show_remaining        = false;
 		$stock_items           = 0;
 		if ( $this->item->stock_control_enabled() ) {
 			$stock_items = $this->item->get_stock_items();
@@ -222,6 +228,7 @@ class ASP_PP_Display {
 			} else {
 				$stock_control_enabled = true;
 				$stock_items           = $stock_items;
+				$show_remaining        = get_post_meta( $product_id, 'asp_product_show_remaining_items', true );
 			}
 		}
 
@@ -291,6 +298,7 @@ class ASP_PP_Display {
 
 		$data['stock_control_enabled'] = $stock_control_enabled;
 		$data['stock_items']           = $stock_items;
+		$data['show_remaining']        = $show_remaining;
 
 		$data['billing_address']  = $billing_address;
 		$data['shipping_address'] = $shipping_address;

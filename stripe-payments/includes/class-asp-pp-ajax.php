@@ -411,6 +411,7 @@ class ASP_PP_Ajax {
 		$sess           = ASP_Session::get_instance();
 		parse_str( $_POST['form_data'], $form_data );
 		$sess->set_transient_data( 'asp_pp_form_data', $form_data );
+		ASP_Debug_Logger::log( 'Saved form data: ' . json_encode( $form_data ) );
 		wp_send_json( $out );
 	}
 

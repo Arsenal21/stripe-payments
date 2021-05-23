@@ -75,6 +75,11 @@ echo '<style>' . $css . '</style>' . "\r\n";
 						<?php echo isset( $a['fatal_error'] ) ? esc_html( $a['fatal_error'] ) : ''; ?>
 					</div>
 					<form method="post" id="payment-form" class="pure-form pure-form-stacked" <?php echo isset( $a['fatal_error'] ) ? 'style="display: none;"' : ''; ?>>
+						<?php if ( $a['data']['stock_control_enabled'] && $a['data']['show_remaining'] ) { ?>
+							<div id="available-quantity-cont" class="pure-u-1">
+								<span><?php esc_html_e( 'Available quantity', 'stripe-payments' ); ?>: </span><span><?php echo $a['data']['stock_items']; ?></span>
+							</div>
+						<?php } ?>
 						<?php if ( $a['data']['amount_variable'] && ! $this->item->get_meta( 'asp_product_hide_amount_input' ) ) { ?>
 						<div id="amount-cont" class="pure-u-1">
 							<label for="amount"><?php esc_html_e( 'Enter amount', 'stripe-payments' ); ?></label>

@@ -230,8 +230,7 @@ class ASP_Shortcode_NG {
 			$shipping_address = false;
 		}
 
-		$currency_variable = get_post_meta( $id, 'asp_product_currency_variable', true );
-		$currency_variable = ! empty( $currency_variable ) ? true : false;
+		$currency_variable = $item->is_currency_variable();
 
 		//Let's only output buy button if we're in the loop. Since the_content hook could be called several times (for example, by a plugin like Yoast SEO for its purposes), we should only output the button only when it's actually needed.
 		if ( ! isset( $atts['in_the_loop'] ) || '1' === $atts['in_the_loop'] ) {
