@@ -174,7 +174,7 @@ echo '<style>' . $css . '</style>' . "\r\n";
 						?>
 						<?php if ( $a['data']['coupons_enabled'] ) { ?>
 						<div id="coupon-cont" class='pure-u-1'>
-							<label for="coupon"><?php echo esc_html( __( 'Coupon Code', 'stripe-payments' ) ); ?></label>
+							<label for="coupon"><?php echo esc_html( apply_filters( 'asp_customize_text_msg', __( 'Coupon Code', 'stripe-payments' ), 'pp_coupon_code' ), ); ?></label>
 							<div id="coupon-input-cont">
 								<div style="position: relative;">
 									<input class="pure-input-1" type="text" id="coupon-code" name="coupon-code">
@@ -269,7 +269,7 @@ echo '<style>' . $css . '</style>' . "\r\n";
 							<div class="pure-g">
 								<fieldset id="name-email-cont" style="width: 100%;">
 									<div class="pure-u-1 pure-u-md-11-24">
-										<label for="billing_name"><?php echo esc_html( _x( 'Name', 'Customer name', 'stripe-payments' ) ); ?></label>
+										<label for="billing_name"><?php echo esc_html( apply_filters( 'asp_customize_text_msg', _x( 'Name', 'Customer name', 'stripe-payments' ), 'pp_billing_name' ) ); ?></label>
 										<div style="position: relative;">
 											<svg id="i-user" class="icon input-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
 												<path d="M22 11 C22 16 19 20 16 20 13 20 10 16 10 11 10 6 12 3 16 3 20 3 22 6 22 11 Z M4 30 L28 30 C28 21 22 20 16 20 10 20 4 21 4 30 Z" />
@@ -279,7 +279,7 @@ echo '<style>' . $css . '</style>' . "\r\n";
 									</div>
 									<div class="pure-u-md-1-24"></div>
 									<div class="pure-u-1 pure-u-md-12-24">
-										<label for="email"><?php esc_html_e( 'Email', 'stripe-payments' ); ?></label>
+										<label for="email"><?php echo esc_html( apply_filters( 'asp_customize_text_msg', __( 'Email', 'stripe-payments' ), 'pp_email' ) ); ?></label>
 										<div style="position: relative;">
 											<svg id="i-mail" class="icon input-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
 												<path d="M2 26 L30 26 30 6 2 6 Z M2 6 L16 16 30 6" />
@@ -392,7 +392,7 @@ echo '<style>' . $css . '</style>' . "\r\n";
 						</div>
 						<?php } ?>
 						<div id="card-cont" data-pm-name="def" class="pure-u-1">
-							<label for="card-element"><?php esc_html_e( 'Credit or debit card', 'stripe-payments' ); ?></label>
+							<label for="card-element"><?php echo esc_html( apply_filters( 'asp_customize_text_msg', __( 'Credit or debit card', 'stripe-payments' ), 'pp_credit_or_debit_card' ) ); ?></label>
 							<div id="card-element">
 							</div>
 							<div id="card-errors" class="form-err" role="alert"></div>
