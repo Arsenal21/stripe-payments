@@ -155,11 +155,11 @@ None.
 
 == Changelog ==
 
-= WIP 2.0.45 =
+= 2.0.45 =
 - Added `Show the available quantity in the payment popup` product option.
-- Trashed products no longer can be accessed via link URL.
+- Trashed products no longer accessible via link URL.
 - Variable currency option for donation product type is no longer applied to other product types.
-- "+" sign can now be used in customer's email address on payment popup.
+- The "+" character can now be used in customer's email address on payment popup.
 - Added Dominican Peso (DOP) currency support.
 - Added German language translation files.
 
