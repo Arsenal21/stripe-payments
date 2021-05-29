@@ -174,7 +174,7 @@ echo '<style>' . $css . '</style>' . "\r\n";
 						?>
 						<?php if ( $a['data']['coupons_enabled'] ) { ?>
 						<div id="coupon-cont" class='pure-u-1'>
-							<label for="coupon"><?php echo esc_html( apply_filters( 'asp_customize_text_msg', __( 'Coupon Code', 'stripe-payments' ), 'pp_coupon_code' ), ); ?></label>
+							<label for="coupon"><?php echo esc_html( apply_filters( 'asp_customize_text_msg', __( 'Coupon Code', 'stripe-payments' ), 'pp_coupon_code' ) ); ?></label>
 							<div id="coupon-input-cont">
 								<div style="position: relative;">
 									<input class="pure-input-1" type="text" id="coupon-code" name="coupon-code">
