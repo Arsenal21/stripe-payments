@@ -82,7 +82,7 @@ echo '<style>' . $css . '</style>' . "\r\n";
 						<?php } ?>
 						<?php if ( $a['data']['amount_variable'] && ! $this->item->get_meta( 'asp_product_hide_amount_input' ) ) { ?>
 						<div id="amount-cont" class="pure-u-1">
-							<label for="amount"><?php esc_html_e( 'Enter amount', 'stripe-payments' ); ?></label>
+							<label for="amount"><?php echo esc_html( apply_filters( 'asp_customize_text_msg', __( 'Enter amount', 'stripe-payments' ), 'enter_amount' ) ); ?></label>
 							<input class="pure-input-1" id="amount" name="amount" inputmode="decimal" value="<?php echo esc_attr( ! empty( $a['data']['item_price'] ) ? ASP_Utils::formatted_price( $a['data']['item_price'], false, true ) : '' ); ?>" required>
 							<div id="amount-error" class="form-err" role="alert"></div>
 						</div>
