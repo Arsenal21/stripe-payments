@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 5.0
 Tested up to: 5.7
 Requires PHP: 5.6
-Stable tag: 2.0.47t1
+Stable tag: 2.0.47t2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -156,6 +156,7 @@ None.
 == Changelog ==
 
 = WIP 2.0.47 =
+- Fixed all-off coupons issue in Firefox when payment popup is integrated via link URL.
 - More text messages can now be customized via Custom Messages add-on.
 
 = 2.0.46 =
