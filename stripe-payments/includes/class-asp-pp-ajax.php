@@ -102,6 +102,8 @@ class ASP_PP_Ajax {
 
 		$opts['return_url'] = $return_url;
 
+		$opts = apply_filters( 'asp_ng_confirm_pi_opts', $opts, $pi_id );
+
 		try {
 			ASP_Utils::load_stripe_lib();
 			$key = $this->asp_main->is_live ? $this->asp_main->APISecKey : $this->asp_main->APISecKeyTest;
@@ -157,8 +159,9 @@ class ASP_PP_Ajax {
 			$out['use_iframe']  = ! $disable_3ds_iframe;
 		}
 
-		wp_send_json( $out );
+		$out = apply_filters( 'asp_ng_confirm_pi_result_out', $out, $pi_id );
 
+		wp_send_json( $out );
 	}
 
 	public function handle_create_pi() {
