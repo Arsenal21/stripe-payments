@@ -929,4 +929,22 @@ class ASP_Utils {
 		}
 		return $base_url;
 	}
+
+	public static function get_stripe_acc_info() {
+		$acc_info = false;
+
+		$asp_main = AcceptStripePayments::get_instance();
+
+		try {
+			ASP_Utils::load_stripe_lib();
+			$key = $asp_main->is_live ? $asp_main->APISecKey : $asp_main->APISecKeyTest;
+			\Stripe\Stripe::setApiKey( $key );
+
+			$acc_info = \Stripe\Account::retrieve();
+		} catch ( \Throwable $e ) {
+			// handle error if needed
+		}
+
+		return $acc_info;
+	}
 }
