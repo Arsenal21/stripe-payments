@@ -725,9 +725,9 @@ jQuery(document).ready(function($) {
 		</fieldset>
 		<fieldset class="asp-other-stripe-acc">
 			<legend><?php esc_html_e( 'Other Stripe Account', 'stripe-payments' ); ?></legend>
-			<p class="description"><i><?php echo __( 'Note: this functionality is currently being tested and is not supported by Subscription products, APM, Alipay, SOFORT and iDEAL add-ons. Please do not enable it if you\'re using one of these add-ons.', 'stripe-payments' ); ?></i></p>
-			<label><input type="checkbox" name="asp_use_other_stripe_acc" value="1"<?php echo $use_other_stripe_acc ? ' checked' : ''; ?>> <?php echo esc_html_e( 'Use Other Stripe Account', 'stripe-payments' ); ?></label>
-			<p class="description"><?php _e( 'Enable this if you want to use other Stripe account for this product. Enter corresponding API keys of the account below.' ); ?></p>
+			<p class="description"><i><?php echo __( 'Note: this functionality is currently being tested and is not supported by Subscription products, APM, Alipay, SOFORT and iDEAL add-ons. Please do not enable it if you are using one of these add-ons.', 'stripe-payments' ); ?></i></p>
+			<label><input type="checkbox" name="asp_use_other_stripe_acc" value="1"<?php echo $use_other_stripe_acc ? ' checked' : ''; ?>> <?php echo esc_html_e( 'Use Another Stripe Account', 'stripe-payments' ); ?></label>
+			<p class="description"><?php _e( 'Enable this option if you want to use another Stripe account for this product only. The payment for this product will go to the Stripe account specified below. Enter API keys of the Stripe account below.' ); ?></p>
 			<label>Live Stripe Publishable Key</label>
 			<br>
 			<input type="text" size="45" data-asp-other-acc name="asp_stripe_live_pub_key" value="<?php echo esc_attr( $live_pub_key ); ?>">
