@@ -1430,7 +1430,7 @@ msgid "Collect Billing Address Only"
 msgstr ""
 
 #: admin/includes/class-asp-admin-product-meta-boxes.php:630
-msgid "Enter Thank You page URL. Leave it blank if you want ot use default Thank You page."
+msgid "Enter the Thank You page URL for this product. Leave it blank to use the default Thank You page specified in the settings."
 msgstr ""
 
 #: admin/includes/class-asp-admin-product-meta-boxes.php:632

@@ -627,9 +627,9 @@ jQuery(document).ready(function($) {
 		$current_val = get_post_meta( $post->ID, 'asp_product_thankyou_page', true );
 		?>
 <input type="text" name="asp_product_thankyou_page" style="width: 100%;" value="<?php echo ! empty( $current_val ) ? $current_val : ''; ?>">
-<p class="description"><?php _e( 'Enter Thank You page URL. Leave it blank if you want ot use default Thank You page.', 'stripe-payments' ); ?>
+<p class="description"><?php _e( 'Enter the Thank You page URL for this product. Leave it blank to use the default Thank You page specified in the settings.', 'stripe-payments' ); ?>
 	<br />
-		<?php _e( 'You can read how to customize messages on Thank You page <a href="https://s-plugins.com/customize-the-thank-page-message-of-stripe-payments-plugin/" target="_blank">in the documentation</a>.', 'stripe-payments' ); ?>
+		<?php _e( 'You can read on how to customize some of the messages on the Thank You page <a href="https://s-plugins.com/customize-the-thank-page-message-of-stripe-payments-plugin/" target="_blank">in this documentation</a>.', 'stripe-payments' ); ?>
 </p>
 		<?php
 	}
