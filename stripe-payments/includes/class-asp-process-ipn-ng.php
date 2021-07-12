@@ -624,58 +624,88 @@ class ASP_Process_IPN_NG {
 		do_action( 'asp_stripe_payment_completed', $data, $data['charge'] );
 
 		//Let's handle email sending stuff
-		if ( isset( $opt['send_emails_to_buyer'] ) ) {
-			if ( $opt['send_emails_to_buyer'] ) {
-				$from = $opt['from_email_address'];
-				$to   = $data['stripeEmail'];
-				$subj = $opt['buyer_email_subject'];
-				$body = asp_apply_dynamic_tags_on_email_body( $opt['buyer_email_body'], $data );
+		if ( ! empty( $opt['send_emails_to_buyer'] ) ) {
+			$from = $opt['from_email_address'];
+			$to   = $data['stripeEmail'];
+			$subj = $opt['buyer_email_subject'];
+			$body = $opt['buyer_email_body'];
 
-				$subj = apply_filters( 'asp_buyer_email_subject', $subj, $data );
-				$body = apply_filters( 'asp_buyer_email_body', $body, $data );
-				$from = apply_filters( 'asp_buyer_email_from', $from, $data );
+			// * since 2.0.47
+			$email_data = array(
+				'from' => $from,
+				'to'   => $to,
+				'subj' => $subj,
+				'body' => $body,
+			);
+			$email_data = apply_filters( 'asp_buyer_email_data', $email_data, $data );
 
-				$headers = array();
-				if ( ! empty( $opt['buyer_email_type'] ) && 'html' === $opt['buyer_email_type'] ) {
-					$headers[] = 'Content-Type: text/html; charset=UTF-8';
-					$body      = nl2br( $body );
-				}
-				$headers[] = 'From: ' . $from;
+			$from = $email_data['from'];
+			$to   = $email_data['to'];
+			$subj = $email_data['subj'];
+			$body = $email_data['body'];
+			// * end since
 
-				$schedule_result = ASP_Utils::mail( $to, $subj, $body, $headers );
+			$body = asp_apply_dynamic_tags_on_email_body( $body, $data );
 
-				if ( ! $schedule_result ) {
-					ASP_Debug_Logger::log( 'Notification email sent to buyer: ' . $to . ', from email address used: ' . $from );
-				} else {
-					ASP_Debug_Logger::log( 'Notification email to buyer scheduled: ' . $to . ', from email address used: ' . $from );
-				}
+			$subj = apply_filters( 'asp_buyer_email_subject', $subj, $data );
+			$body = apply_filters( 'asp_buyer_email_body', $body, $data );
+			$from = apply_filters( 'asp_buyer_email_from', $from, $data );
+
+			$headers = array();
+			if ( ! empty( $opt['buyer_email_type'] ) && 'html' === $opt['buyer_email_type'] ) {
+				$headers[] = 'Content-Type: text/html; charset=UTF-8';
+				$body      = nl2br( $body );
+			}
+			$headers[] = 'From: ' . $from;
+
+			$schedule_result = ASP_Utils::mail( $to, $subj, $body, $headers );
+
+			if ( ! $schedule_result ) {
+				ASP_Debug_Logger::log( 'Notification email sent to buyer: ' . $to . ', from email address used: ' . $from );
+			} else {
+				ASP_Debug_Logger::log( 'Notification email to buyer scheduled: ' . $to . ', from email address used: ' . $from );
 			}
 		}
 
-		if ( isset( $opt['send_emails_to_seller'] ) ) {
-			if ( $opt['send_emails_to_seller'] ) {
-				$from = $opt['from_email_address'];
-				$to   = $opt['seller_notification_email'];
-				$subj = $opt['seller_email_subject'];
-				$body = asp_apply_dynamic_tags_on_email_body( $opt['seller_email_body'], $data, true );
+		if ( ! empty( $opt['send_emails_to_seller'] ) ) {
+			$from = $opt['from_email_address'];
+			$to   = $opt['seller_notification_email'];
+			$subj = $opt['seller_email_subject'];
+			$body = $opt['seller_email_body'];
 
-				$subj = apply_filters( 'asp_seller_email_subject', $subj, $data );
-				$body = apply_filters( 'asp_seller_email_body', $body, $data );
-				$from = apply_filters( 'asp_seller_email_from', $from, $data );
+			// * since 2.0.47
+			$email_data = array(
+				'from' => $from,
+				'to'   => $to,
+				'subj' => $subj,
+				'body' => $body,
+			);
+			$email_data = apply_filters( 'asp_seller_email_data', $email_data, $data );
 
-				$headers = array();
-				if ( ! empty( $opt['seller_email_type'] ) && 'html' === $opt['seller_email_type'] ) {
-					$headers[] = 'Content-Type: text/html; charset=UTF-8';
-					$body      = nl2br( $body );
-				}
-				$headers[] = 'From: ' . $from;
+			$from = $email_data['from'];
+			$to   = $email_data['to'];
+			$subj = $email_data['subj'];
+			$body = $email_data['body'];
+			// * end since
 
-				$schedule_result = ASP_Utils::mail( $to, $subj, $body, $headers );
-				if ( ! $schedule_result ) {
-					ASP_Debug_Logger::log( 'Notification email sent to seller: ' . $to . ', from email address used: ' . $from );
-				} else {
-					ASP_Debug_Logger::log( 'Notification email to seller scheduled: ' . $to . ', from email address used: ' . $from );
-				}
+			$body = asp_apply_dynamic_tags_on_email_body( $body, $data, true );
+
+			$subj = apply_filters( 'asp_seller_email_subject', $subj, $data );
+			$body = apply_filters( 'asp_seller_email_body', $body, $data );
+			$from = apply_filters( 'asp_seller_email_from', $from, $data );
+
+			$headers = array();
+			if ( ! empty( $opt['seller_email_type'] ) && 'html' === $opt['seller_email_type'] ) {
+				$headers[] = 'Content-Type: text/html; charset=UTF-8';
+				$body      = nl2br( $body );
+			}
+			$headers[] = 'From: ' . $from;
+
+			$schedule_result = ASP_Utils::mail( $to, $subj, $body, $headers );
+			if ( ! $schedule_result ) {
+				ASP_Debug_Logger::log( 'Notification email sent to seller: ' . $to . ', from email address used: ' . $from );
+			} else {
+				ASP_Debug_Logger::log( 'Notification email to seller scheduled: ' . $to . ', from email address used: ' . $from );
 			}
 		}
 
