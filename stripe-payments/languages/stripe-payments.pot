@@ -2,15 +2,15 @@
 # This file is distributed under the same license as the Accept Stripe Payments plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Accept Stripe Payments 2.0.45\n"
+"Project-Id-Version: Accept Stripe Payments 2.0.47\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/stripe-payments\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2021-05-23T23:27:50+03:00\n"
-"PO-Revision-Date: 2021-05-23T23:27:50+03:00\n"
+"POT-Creation-Date: 2021-07-29T01:57:22+03:00\n"
+"PO-Revision-Date: 2021-07-29T01:57:22+03:00\n"
 "X-Generator: WP-CLI 2.0.1\n"
 "X-Domain: stripe-payments\n"
 
@@ -1016,30 +1016,38 @@ msgid "Customer name. Available only if collect billing address option enabled"
 msgstr ""
 
 #: admin/class-asp-admin.php:1860
-msgid "Email Address of the buyer"
+msgid "Customer first name. Available only if collect billing address option enabled"
 msgstr ""
 
 #: admin/class-asp-admin.php:1861
-msgid "Currency symbol. Example: $"
+msgid "Customer last name. Available only if collect billing address option enabled"
 msgstr ""
 
 #: admin/class-asp-admin.php:1862
-msgid "3-letter currency code. Example: USD"
+msgid "Email Address of the buyer"
 msgstr ""
 
 #: admin/class-asp-admin.php:1863
-msgid "The date of the purchase"
+msgid "Currency symbol. Example: $"
 msgstr ""
 
 #: admin/class-asp-admin.php:1864
-msgid "Custom field name and value (if enabled)"
+msgid "3-letter currency code. Example: USD"
 msgstr ""
 
 #: admin/class-asp-admin.php:1865
+msgid "The date of the purchase"
+msgstr ""
+
+#: admin/class-asp-admin.php:1866
+msgid "Custom field name and value (if enabled)"
+msgstr ""
+
+#: admin/class-asp-admin.php:1867
 msgid "Coupon code (if available)"
 msgstr ""
 
-#: admin/class-asp-admin.php:1888
+#: admin/class-asp-admin.php:1890
 msgid "Click here to toggle tags hint"
 msgstr ""
 
@@ -1434,7 +1442,7 @@ msgid "Enter the Thank You page URL for this product. Leave it blank to use the 
 msgstr ""
 
 #: admin/includes/class-asp-admin-product-meta-boxes.php:632
-msgid "You can read how to customize messages on Thank You page <a href=\"https://s-plugins.com/customize-the-thank-page-message-of-stripe-payments-plugin/\" target=\"_blank\">in the documentation</a>."
+msgid "You can read on how to customize some of the messages on the Thank You page <a href=\"https://s-plugins.com/customize-the-thank-page-message-of-stripe-payments-plugin/\" target=\"_blank\">in this documentation</a>."
 msgstr ""
 
 #: admin/includes/class-asp-admin-product-meta-boxes.php:645
@@ -1527,11 +1535,11 @@ msgid "Other Stripe Account"
 msgstr ""
 
 #: admin/includes/class-asp-admin-product-meta-boxes.php:728
-msgid "Note: this functionality is currently being tested and is not supported by Subscription products, APM, Alipay, SOFORT and iDEAL add-ons. Please do not enable it if you're using one of these add-ons."
+msgid "Note: this functionality is currently being tested and is not supported by Subscription products, APM, Alipay, SOFORT and iDEAL add-ons. Please do not enable it if you are using one of these add-ons."
 msgstr ""
 
 #: admin/includes/class-asp-admin-product-meta-boxes.php:729
-msgid "Use Other Stripe Account"
+msgid "Use Another Stripe Account"
 msgstr ""
 
 #: admin/includes/class-asp-admin-product-meta-boxes.php:760
@@ -2316,10 +2324,10 @@ msgstr ""
 
 #: admin/views/admin.php:132
 #: includes/class-asp-pp-ajax.php:66
-#: includes/class-asp-pp-ajax.php:177
-#: includes/class-asp-pp-ajax.php:389
-#: includes/class-asp-pp-ajax.php:393
-#: includes/class-asp-pp-ajax.php:423
+#: includes/class-asp-pp-ajax.php:180
+#: includes/class-asp-pp-ajax.php:392
+#: includes/class-asp-pp-ajax.php:396
+#: includes/class-asp-pp-ajax.php:426
 msgid "Error occurred:"
 msgstr ""
 
@@ -2401,14 +2409,14 @@ msgstr ""
 
 #: includes/class-asp-process-ipn-ng.php:109
 #: includes/process_ipn.php:64
-#: includes/class-asp-pp-ajax.php:144
-#: includes/class-asp-pp-ajax.php:148
+#: includes/class-asp-pp-ajax.php:146
+#: includes/class-asp-pp-ajax.php:150
 msgid "Following error occurred during payment processing:"
 msgstr ""
 
 #: includes/class-asp-process-ipn-ng.php:111
 #: includes/process_ipn.php:67
-#: includes/class-asp-pp-ajax.php:146
+#: includes/class-asp-pp-ajax.php:148
 msgid "Debug data:"
 msgstr ""
 
@@ -2476,7 +2484,7 @@ msgstr ""
 
 #: includes/class-asp-pp-display.php:521
 #: includes/shortcodes/class-shortcode-asp.php:98
-#: includes/class-asp-pp-ajax.php:196
+#: includes/class-asp-pp-ajax.php:199
 msgid "Minimum amount is"
 msgstr ""
 
@@ -2498,7 +2506,7 @@ msgstr ""
 #. translators: %d is number of items in stock
 #: includes/class-asp-pp-display.php:526
 #: includes/shortcodes/class-shortcode-asp.php:102
-#: includes/class-asp-pp-ajax.php:186
+#: includes/class-asp-pp-ajax.php:189
 msgid "You cannot order more items than available: %d"
 msgstr ""
 
@@ -2874,9 +2882,9 @@ msgstr ""
 msgid "Order Info: "
 msgstr ""
 
-#: includes/class-asp-pp-ajax.php:139
-#: includes/class-asp-pp-ajax.php:215
+#: includes/class-asp-pp-ajax.php:141
 #: includes/class-asp-pp-ajax.php:218
+#: includes/class-asp-pp-ajax.php:221
 msgid "Stripe API error occurred:"
 msgstr ""
 
