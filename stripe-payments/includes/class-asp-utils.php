@@ -929,4 +929,37 @@ class ASP_Utils {
 		}
 		return $base_url;
 	}
+
+	/**
+	 * Returns Stripe account info
+	 *
+	 * Since 2.0.47
+	 * @return mixed
+	 */
+	public static function get_stripe_acc_info() {
+		$acc_info = false;
+
+		$asp_main = AcceptStripePayments::get_instance();
+
+		$key = $asp_main->is_live ? $asp_main->APISecKey : $asp_main->APISecKeyTest;
+
+		try {
+			if ( self::use_internal_api() ) {
+				$api = ASP_Stripe_API::get_instance();
+				$api->set_api_key( $key );
+				$api->set_param( 'throw_exception', true );
+
+				$acc_info = $api->get( 'account' );
+			} else {
+				ASP_Utils::load_stripe_lib();
+				\Stripe\Stripe::setApiKey( $key );
+
+				$acc_info = \Stripe\Account::retrieve();
+			}
+		} catch ( \Throwable $e ) {
+			// handle error if needed
+		}
+
+		return $acc_info;
+	}
 }

@@ -1857,6 +1857,8 @@ class AcceptStripePayments_Admin {
 				'{shipping_address}'  => __( 'Shipping address of the buyer', 'stripe-payments' ),
 				'{billing_address}'   => __( 'Billing address of the buyer', 'stripe-payments' ),
 				'{customer_name}'     => __( 'Customer name. Available only if collect billing address option enabled', 'stripe-payments' ),
+				'{first_name}'        => __( 'Customer first name. Available only if collect billing address option enabled', 'stripe-payments' ),
+				'{last_name}'         => __( 'Customer last name. Available only if collect billing address option enabled', 'stripe-payments' ),
 				'{payer_email}'       => __( 'Email Address of the buyer', 'stripe-payments' ),
 				'{currency}'          => __( 'Currency symbol. Example: $', 'stripe-payments' ),
 				'{currency_code}'     => __( '3-letter currency code. Example: USD', 'stripe-payments' ),

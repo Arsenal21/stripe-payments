@@ -100,7 +100,7 @@ var stripeHandlerNG = function (data) {
 				parent.iForm = iframe.contents().find('form#payment-form');
 				parent.iForm.on('submit', function (e) {
 					e.preventDefault();
-					if (parent.form_submitted) {
+					if (parent.form_submitted || parent.redirectToResult) {
 						return false;
 					}
 					var token = parent.iForm.find('input#payment-intent').val();

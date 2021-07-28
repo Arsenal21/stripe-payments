@@ -86,15 +86,15 @@ if (vars.data.coupons_enabled) {
 	var couponInput = document.getElementById('coupon-code');
 	var couponErr = document.getElementById('coupon-err');
 	var couponInfo = document.getElementById('coupon-info');
-	couponInput.addEventListener('keydown', function (e) {
-		if (e.keyCode === 13) {
-			e.preventDefault();
+	couponInput.addEventListener('keydown', function (event) {
+		if (event.keyCode === 13) {
+			event.preventDefault();
 			couponBtn.click();
 			return false;
 		}
 	});
-	couponBtn.addEventListener('click', function (e) {
-		e.preventDefault();
+	couponBtn.addEventListener('click', function (event) {
+		event.preventDefault();
 		couponErr.style.display = 'none';
 		if (couponInput.value === '') {
 			return false;
@@ -289,13 +289,7 @@ card.addEventListener('change', function (event) {
 	vars.data.cardComplete = event.complete;
 });
 
-submitBtn.addEventListener('click', function () {
-	if (!vars.data.isEvent) {
-		vars.data.buttonClicked = '';
-	}
-});
-
-form.addEventListener('submit', function (event) {
+jQuery(form).on('submit', function (event) {
 	event.preventDefault();
 
 	if (!canProceed()) {
@@ -303,7 +297,6 @@ form.addEventListener('submit', function (event) {
 	}
 
 	if (!is_full_discount() && ('def' === vars.data.currentPM || !vars.data.currentPM) && !vars.data.cardComplete) {
-		event.preventDefault();
 		card.focus();
 		return false;
 	}
@@ -319,6 +312,12 @@ form.addEventListener('submit', function (event) {
 
 	handlePayment();
 
+});
+
+submitBtn.addEventListener('click', function () {
+	if (!vars.data.isEvent) {
+		vars.data.buttonClicked = '';
+	}
 });
 
 vars.data.initShowPopup = true;
@@ -576,15 +575,17 @@ function is_full_discount() {
 }
 
 function triggerEvent(el, type) {
-	var e;
+	var evt;
 	if ('createEvent' in document) {
-		e = document.createEvent('HTMLEvents');
-		e.initEvent(type, false, true);
-		el.dispatchEvent(e);
+		evt = new Event(type, {
+			bubbles: true,
+			cancelable: true
+		});
+		el.dispatchEvent(evt);
 	} else {
-		e = document.createEventObject();
-		e.eventType = type;
-		el.fireEvent('on' + e.eventType, e);
+		evt = document.createEventObject();
+		evt.eventType = type;
+		el.fireEvent('on' + evt.eventType, evt);
 	}
 }
 
@@ -1179,7 +1180,8 @@ function handleCardPaymentResult(result) {
 		if (!vars.data.coupon && couponInput) {
 			couponInput.value = '';
 		}
-		triggerEvent(form, 'submit');
+		jQuery(form).trigger('submit');
+		return true;
 	}
 }
 

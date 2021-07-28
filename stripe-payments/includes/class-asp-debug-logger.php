@@ -20,7 +20,7 @@ class ASP_Debug_Logger {
 
 		$output = '';
 		//Timestamp it
-		$output .= '[' . date( 'm/d/Y g:i:s A' ) . '] - ';
+		$output .= '[' . gmdate( 'm/d/Y g:i:s A' ) . '] - ';
 
 		//Add the addon's name (if applicable)
 		if ( ! empty( $addon_name ) ) {
@@ -56,7 +56,7 @@ class ASP_Debug_Logger {
 
 		$output = '';
 		//Timestamp it
-		$output .= '[' . date( 'm/d/Y g:i:s A' ) . '] - ';
+		$output .= '[' . gmdate( 'm/d/Y g:i:s A' ) . '] - ';
 
 		//Add the addon's name (if applicable)
 		if ( ! empty( $addon_name ) ) {
@@ -68,15 +68,12 @@ class ASP_Debug_Logger {
 			$output .= 'FAILURE: ';
 		}
 
-			//Put the array content into a string
-			ob_start();
-			print_r( $array_to_write );
-			$var = ob_get_contents();
-			ob_end_clean();
-			$msg .= $var;
-
-		//Final debug output msg
-		$output = $output . $msg;
+		//Put the array content into a string
+		ob_start();
+		print_r( $array_to_write );
+		$var = ob_get_contents();
+		ob_end_clean();
+		$output .= $var;
 
 		if ( ! file_put_contents( WP_ASP_PLUGIN_PATH . $log_file, $output . "\r\n", ( ! $overwrite ? FILE_APPEND : 0 ) ) ) {
 			return false;
