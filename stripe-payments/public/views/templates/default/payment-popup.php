@@ -219,7 +219,7 @@ echo '<style>' . $css . '</style>' . "\r\n";
 										if ( $a['data']['tax'] ) {
 											$tax_str        = apply_filters( 'asp_customize_text_msg', __( 'Tax', 'stripe-payments' ), 'tax_str' );
 											$tax_amount_str = AcceptStripePayments::formatted_price( $a['item']->get_tax_amount(), $this->item->get_currency() );
-											$out            = sprintf( '<tr><td>%s (%s%%)</td><td><span id="order-tax">%s</span></td></tr>', $tax_str, $a['item']->get_tax(), $tax_amount_str );
+											$out            = sprintf( '<tr><td>%s (<span id="order-tax-perc">%s</span>%%)</td><td><span id="order-tax">%s</span></td></tr>', $tax_str, $a['item']->get_tax(), $tax_amount_str );
 											echo $out; //phpcs:ignore
 										}
 										if ( $a['data']['shipping'] ) {

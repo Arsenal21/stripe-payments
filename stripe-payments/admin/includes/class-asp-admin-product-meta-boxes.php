@@ -420,8 +420,10 @@ class ASP_Admin_Product_Meta_Boxes {
 	}
 
 	public function display_shipping_tax_meta_box( $post ) {
-		$current_shipping = get_post_meta( $post->ID, 'asp_product_shipping', true );
-		$current_tax      = get_post_meta( $post->ID, 'asp_product_tax', true );
+		$current_shipping    = get_post_meta( $post->ID, 'asp_product_shipping', true );
+		$current_tax         = get_post_meta( $post->ID, 'asp_product_tax', true );
+		$tax_variations      = get_post_meta( $post->ID, 'asp_product_tax_variations', true );
+		$tax_variations_type = get_post_meta( $post->ID, 'asp_product_tax_variations_type', true );
 		?>
 <div id="asp_shipping_cost_container">
 	<label><?php esc_html_e( 'Shipping Cost', 'stripe-payments' ); ?></label>
@@ -446,6 +448,21 @@ class ASP_Admin_Product_Meta_Boxes {
 		esc_html_e( 'Leave it blank if you don\'t want to apply tax.', 'stripe-payments' );
 		?>
 </p>
+<hr />
+<label><?php esc_html_e( 'Tax Variations', 'stripe-payments' ); ?></label>
+<br />
+<input type="text" size="50" name="asp_product_tax_variations" value="<?php echo esc_attr( $tax_variations ); ?>">
+<p class="description">
+		<?php
+		esc_html_e( 'Use this to configure tax variations on per-country basis.', 'stripe-payments' );
+		?>
+</p>
+<label><?php esc_html_e( 'Apply the tax variation based on:', 'stripe-payments' ); ?></label>
+<br>
+<label><input type="radio" name="asp_product_tax_variations_type" value="b"<?php echo 'b' === $tax_variations_type || empty( $tax_variations_type ) ? ' checked' : ''; ?>><?php _e( 'Billing address', 'stripe-payments' ); ?></label>
+<label><input type="radio" name="asp_product_tax_variations_type" value="s"<?php echo 's' === $tax_variations_type ? ' checked' : ''; ?>><?php _e( 'Shipping address', 'stripe-payments' ); ?></label>
+
+
 		<?php
 	}
 
@@ -805,6 +822,24 @@ jQuery(document).ready(function($) {
 			$tax = floatval( $tax );
 			$tax = empty( $tax ) ? '' : $tax;
 			update_post_meta( $post_id, 'asp_product_tax', $tax );
+
+			$tax_variations_str = filter_input( INPUT_POST, 'asp_product_tax_variations', FILTER_SANITIZE_STRING );
+
+			$tax_variations_arr = array();
+
+			if ( ! empty( $tax_variations_str ) ) {
+				$tax_variations = explode( '|', $tax_variations_str );
+				foreach ( $tax_variations as $tax_variation ) {
+					$country_tax                           = explode( ':', $tax_variation );
+					$tax_variations_arr[ $country_tax[0] ] = $country_tax[1];
+				}
+			}
+
+			update_post_meta( $post_id, 'asp_product_tax_variations', $tax_variations_str );
+			update_post_meta( $post_id, 'asp_product_tax_variations_arr', $tax_variations_arr );
+
+			$tax_variations_type = filter_input( INPUT_POST, 'asp_product_tax_variations_type', FILTER_SANITIZE_STRING );
+			update_post_meta( $post_id, 'asp_product_tax_variations_type', $tax_variations_type );
 
 			$quantity = filter_input( INPUT_POST, 'asp_product_quantity', FILTER_SANITIZE_NUMBER_INT );
 			$quantity = empty( $quantity ) ? '' : $quantity;

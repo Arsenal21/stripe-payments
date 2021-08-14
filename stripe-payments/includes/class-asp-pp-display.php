@@ -322,6 +322,12 @@ class ASP_PP_Display {
 		$data['shipping'] = $this->item->get_shipping( true );
 		$data['descr']    = $this->item->get_description();
 
+		$data['tax_variations'] = $this->item->get_meta( 'asp_product_tax_variations_arr' );
+
+		$tax_variations_type = $this->item->get_meta( 'asp_product_tax_variations_type' );
+
+		$data['tax_variations_type'] = empty( $tax_variations_type ) ? 'b' : $tax_variations_type;
+
 		$data['custom_field']                    = $custom_field;
 		$data['custom_field_validation_regex']   = $cf_validation_regex;
 		$data['custom_field_validation_err_msg'] = $cf_validation_err_msg;
@@ -459,6 +465,10 @@ class ASP_PP_Display {
 			$a['scripts'][] = array(
 				'footer' => true,
 				'src'    => WP_ASP_PLUGIN_URL . '/public/assets/js/md5.min.js?ver=' . WP_ASP_PLUGIN_VERSION,
+			);
+			$a['scripts'][] = array(
+				'footer' => true,
+				'src'    => WP_ASP_PLUGIN_URL . '/public/assets/js/add-ons/tax-variations.js?ver=' . WP_ASP_PLUGIN_VERSION,
 			);
 			$a['scripts'][] = array(
 				'footer' => true,

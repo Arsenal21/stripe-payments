@@ -16,6 +16,10 @@ class ASP_Self_Hooks_Handler {
 
 		add_action( 'asp_ng_before_token_request', array( $this, 'check_token' ), 100 );
 		add_action( 'asp_ng_before_token_request', array( $this, 'check_rate_limit' ), 101 );
+
+		add_action( 'asp_ng_before_token_request', array( $this, 'tax_variations' ) );
+
+		add_filter( 'asp_ng_pp_data_ready', array( $this, 'tax_variations_addon' ), 10, 2 );
 	}
 
 	public function plugins_loaded() {
@@ -410,6 +414,52 @@ class ASP_Self_Hooks_Handler {
 			wp_send_json( $out );
 		}
 
+	}
+
+	public function tax_variations( $item ) {
+
+		$tax_variations_arr = $item->get_meta( 'asp_product_tax_variations_arr' );
+
+		if ( empty( $tax_variations_arr ) ) {
+			return $item;
+		}
+
+		$this->tax_variations_arr = $tax_variations_arr;
+
+		$this->item = $item;
+
+		add_filter( 'asp_ng_before_customer_create_update', array( $this, 'tax_variations_check_apply' ), 10, 2 );
+
+		return $this->item;
+
+	}
+
+	public function tax_variations_check_apply( $cust_opts, $cust_id ) {
+		ASP_Debug_Logger::log_array_data( $cust_opts );
+
+		if ( empty( $cust_opts['address']['country'] ) ) {
+			return $cust_opts;
+		}
+
+		if ( ! empty( $this->tax_variations_arr[ $cust_opts['address']['country'] ] ) ) {
+			$this->item->set_tax( $this->tax_variations_arr[ $cust_opts['address']['country'] ] );
+		}
+
+		return $cust_opts;
+
+	}
+
+	public function tax_variations_addon( $data, $prod_id ) {
+		if ( empty( $data['tax_variations'] ) ) {
+			return $data;
+		}
+		$addon            = array(
+			'name'    => 'aspTaxVariations',
+			'handler' => 'aspTaxVariationsNG',
+		);
+		$data['addons'][] = $addon;
+
+		return $data;
 	}
 
 }

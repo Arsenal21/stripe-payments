@@ -398,6 +398,7 @@ function updateAllAmounts() {
 		jQuery('#order-item-price').html(formatMoney(vars.data.item_price * vars.data.quantity));
 		jQuery('#order-quantity').html(vars.data.quantity);
 		jQuery('#order-tax').html(formatMoney(vars.data.taxAmount));
+		jQuery('#order-tax-perc').html(vars.data.tax);
 		jQuery('#shipping').html(formatMoney(vars.data.shipping));
 		if (vars.data.coupon && !vars.data.is_trial) {
 			if (jQuery('tr#order-coupon-line').length === 0) {
