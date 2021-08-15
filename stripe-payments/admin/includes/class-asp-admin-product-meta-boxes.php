@@ -444,13 +444,24 @@ class ASP_Admin_Product_Meta_Boxes {
 			}
 		}
 
+		$tax_variations_disabled = false;
+
+		$prod_type = get_post_meta( $post->ID, 'asp_product_type', true );
+		$prod_type = apply_filters( 'asp_product_edit_product_type_selected', $prod_type, $post );
+		if ( 'subscription' === $prod_type
+		&& class_exists( 'ASPSUB_main' )
+		&& version_compare( ASPSUB_main::ADDON_VER, '2.0.35', '<' ) ) {
+			$tax_variations_disabled = true;
+		}
+
 		wp_localize_script(
 			'asp-admin-edit-product-js',
 			'aspTaxVarData',
 			array(
-				'tplLine' => $t_var_line_tpl,
-				'cOpts'   => ASP_Utils::get_countries_opts(),
-				'str'     => array(
+				'tplLine'        => $t_var_line_tpl,
+				'cOpts'          => ASP_Utils::get_countries_opts(),
+				'disabledForSub' => $tax_variations_disabled,
+				'str'            => array(
 					'delConfirm' => __( 'Are you sure you want to delete this variation?', 'stripe-payments' ),
 				),
 			)
@@ -482,12 +493,18 @@ class ASP_Admin_Product_Meta_Boxes {
 </p>
 <fieldset>
 	<legend><?php esc_html_e( 'Tax Variations', 'stripe-payments' ); ?></legend>
-	<p class="description">
-		<?php
-		esc_html_e( 'Use this to configure tax variations on per-country basis.', 'stripe-payments' );
-		?>
+		<div id="wp-asp-tax-variations-disabled-msg" style="color:red;<?php echo ! empty( $tax_variations_disabled ) ? '' : 'display:none;'; ?>">
+			<?php
+			// translators: %s is add-on version number
+				echo sprintf( __( 'Update Stripe Payments Subscriptions add-on to version %s to enable this functionailty.', 'stripe-payments' ), '2.0.35+' );
+			?>
+</div>
+<div id="wp-asp-tax-variations-cont"<?php echo ! empty( $tax_variations_disabled ) ? ' style="display:none;"' : ''; ?>>
+<p class="description">
+			<?php
+			esc_html_e( 'Use this to configure tax variations on per-country basis.', 'stripe-payments' );
+			?>
 </p>
-<div>
 <table class="fixed" id="wp-asp-tax-variations-tbl"<?php echo empty( $out ) ? 'style="display:none;"' : ''; ?>>
 <thead><tr><th style="width: 60%;">Country</th><th style="width: 30%;">Tax</th><th style="width: 10%;"></th></tr>
 </thead>
@@ -495,12 +512,12 @@ class ASP_Admin_Product_Meta_Boxes {
 		<?php echo $out; ?>
 </tbody>
 </table>
-	</div>
 <p><button type="button" id="wp-asp-tax-variations-add-btn" class="button"><span class="dashicons dashicons-plus"></span> <?php _e( 'Add Tax Variation', 'stripe-payments' ); ?></button></p>
 <label><?php esc_html_e( 'Apply the tax variation based on:', 'stripe-payments' ); ?></label>
 <br>
 <label><input type="radio" name="asp_product_tax_variations_type" value="b"<?php echo 'b' === $tax_variations_type || empty( $tax_variations_type ) ? ' checked' : ''; ?>><?php _e( 'Billing address', 'stripe-payments' ); ?></label>
 <label><input type="radio" name="asp_product_tax_variations_type" value="s"<?php echo 's' === $tax_variations_type ? ' checked' : ''; ?>><?php _e( 'Shipping address', 'stripe-payments' ); ?></label>
+</div>
 </fieldset>
 		<?php
 	}

@@ -154,8 +154,16 @@ jQuery(document).ready(function ($) {
 	function aspProductTypeChange(val) {
 		if (val === 'subscription') {
 			$('.asp-other-stripe-acc').hide();
+			if (aspTaxVarData.disabledForSub) {
+				jQuery('#wp-asp-tax-variations-cont').hide();
+				jQuery('#wp-asp-tax-variations-disabled-msg').show();
+			}
 		} else {
 			$('.asp-other-stripe-acc').show();
+			if (aspTaxVarData.disabledForSub) {
+				jQuery('#wp-asp-tax-variations-cont').show();
+				jQuery('#wp-asp-tax-variations-disabled-msg').hide();
+			}
 		}
 	}
 
