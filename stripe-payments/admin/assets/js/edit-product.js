@@ -158,4 +158,21 @@ jQuery(document).ready(function ($) {
 			$('.asp-other-stripe-acc').show();
 		}
 	}
+
+	jQuery('#wp-asp-tax-variations-add-btn').click(function (e) {
+		e.preventDefault();
+		var tplLine = aspTaxVarData.tplLine;
+		tplLine = tplLine.replaceAll('%1$s', aspTaxVarData.cOpts);
+		tplLine = tplLine.replaceAll('%2$s', 0);
+		jQuery('#wp-asp-tax-variations-tbl').find('tbody').append(tplLine);
+		jQuery('#wp-asp-tax-variations-tbl').show();
+	});
+
+	jQuery('#wp-asp-tax-variations-tbl').on('click', 'button.wp-asp-tax-variations-del-btn', function (e) {
+		e.preventDefault();
+		if (confirm(aspTaxVarData.str.delConfirm)) {
+			jQuery(this).closest('tr').remove();
+		}
+	});
+
 });

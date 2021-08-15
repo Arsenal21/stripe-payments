@@ -184,6 +184,32 @@ a.wp-asp-product-menu-nav-item.nav-tab-active:focus {
 	}
 }
 
+#wp-asp-tax-variations-tbl {
+	width: 50%;
+}
+
+#wp-asp-tax-variations-tbl tr {
+	text-align: center;
+}
+
+.wp-asp-tax-variations-input {
+	width: 100%;
+}
+
+.wp-asp-tax-variations-del-btn span {
+	vertical-align: sub;
+}
+
+#wp-asp-tax-variations-add-btn span {
+	vertical-align: middle;
+}
+
+@media screen and (max-width: 960px) {
+	#wp-asp-tax-variations-tbl {
+		width: 100%;
+	}
+}
+
 /*----- END Product Settings ----- */
 
 /*----- Variations ----- */
