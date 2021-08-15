@@ -19,7 +19,7 @@ class ASP_Self_Hooks_Handler {
 
 		add_action( 'asp_ng_before_token_request', array( $this, 'tax_variations' ) );
 
-		add_filter( 'asp_ng_pp_data_ready', array( $this, 'tax_variations_addon' ), 10, 2 );
+		add_filter( 'asp_ng_pp_data_ready', array( $this, 'tax_variations_addon' ), 100, 2 );
 	}
 
 	public function plugins_loaded() {

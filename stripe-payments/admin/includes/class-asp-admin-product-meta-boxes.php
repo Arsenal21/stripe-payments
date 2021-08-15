@@ -427,7 +427,6 @@ class ASP_Admin_Product_Meta_Boxes {
 	public function display_shipping_tax_meta_box( $post ) {
 		$current_shipping    = get_post_meta( $post->ID, 'asp_product_shipping', true );
 		$current_tax         = get_post_meta( $post->ID, 'asp_product_tax', true );
-		$tax_variations      = get_post_meta( $post->ID, 'asp_product_tax_variations', true );
 		$tax_variations_type = get_post_meta( $post->ID, 'asp_product_tax_variations_type', true );
 		$tax_variations_arr  = get_post_meta( $post->ID, 'asp_product_tax_variations_arr', true );
 
@@ -438,11 +437,11 @@ class ASP_Admin_Product_Meta_Boxes {
 		</tr>';
 
 		$out = '';
-		$i   = 0;
-		foreach ( $tax_variations_arr as $c_code => $tax_perc ) {
-			ASP_Utils::get_countries_opts( $c_code );
-			$out .= sprintf( $t_var_line_tpl, ASP_Utils::get_countries_opts( $c_code ), $tax_perc );
-			$i++;
+		if ( ! empty( $tax_variations_arr ) ) {
+			foreach ( $tax_variations_arr as $c_code => $tax_perc ) {
+				ASP_Utils::get_countries_opts( $c_code );
+				$out .= sprintf( $t_var_line_tpl, ASP_Utils::get_countries_opts( $c_code ), $tax_perc );
+			}
 		}
 
 		wp_localize_script(

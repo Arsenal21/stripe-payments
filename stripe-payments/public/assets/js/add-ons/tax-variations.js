@@ -6,21 +6,37 @@ var aspTaxVariationsNG = function (data) {
         parent.billingSwitch = document.getElementById('same-bill-ship-addr');
         parent.bCountrySelect = document.getElementById('country');
         parent.sCountrySelect = document.getElementById('shipping_country');
-        parent.bCountrySelect.addEventListener('change', function () {
-            if (this.value === '0') {
-                return;
-            }
-            doAddonAction('billingAddressChanged');
-            if (parent.billingSwitch.checked) {
+        if (parent.bCountrySelect) {
+            parent.bCountrySelect.addEventListener('change', function () {
+                if (this.value === '0') {
+                    return;
+                }
+                doAddonAction('billingAddressChanged');
+                if (parent.billingSwitch.checked) {
+                    doAddonAction('shippingAddressChanged');
+                }
+            });
+        }
+        if (parent.sCountrySelect) {
+            parent.sCountrySelect.addEventListener('change', function () {
+                if (this.value === '0') {
+                    return;
+                }
                 doAddonAction('shippingAddressChanged');
-            }
-        });
+            });
+        }
+        if (parent.billingSwitch) {
+            parent.billingSwitch.addEventListener('change', function () {
+                doAddonAction('billingAddressChanged');
+                doAddonAction('shippingAddressChanged');
+            });
+        }
         doAddonAction('billingAddressChanged');
     }
 
-    parent.billingAddressChanged = function () {
-        if (vars.data.tax_variations[parent.bCountrySelect.value]) {
-            vars.data.tax = vars.data.tax_variations[parent.bCountrySelect.value];
+    this.setCountryTax = function (cCode) {
+        if (vars.data.tax_variations[cCode]) {
+            vars.data.tax = vars.data.tax_variations[cCode];
             updateAllAmounts();
         } else {
             if (vars.data.tax !== vars.data.default_tax) {
@@ -30,20 +46,36 @@ var aspTaxVariationsNG = function (data) {
         }
     }
 
+    parent.billingAddressChanged = function () {
+        if (vars.data.tax_variations_type !== 'b') {
+            if (parent.billingSwitch && !parent.billingSwitch.checked) {
+                return;
+            }
+        }
+        if (!parent.bCountrySelect) {
+            if (vars.data.new_bill_addr && vars.data.new_bill_addr.country) {
+                parent.setCountryTax(vars.data.new_bill_addr.country);
+            }
+            return;
+        }
+        parent.setCountryTax(parent.bCountrySelect.value);
+    }
+
     parent.shippingAddressChanged = function () {
+        if (!parent.billingSwitch) {
+            if (vars.data.new_ship_addr && vars.data.new_ship_addr.country) {
+                parent.setCountryTax(vars.data.new_ship_addr.country);
+            }
+            return;
+        }
         if (vars.data.tax_variations_type === 's') {
             if (parent.billingSwitch.checked) {
                 doAddonAction('billingAddressChanged');
             } else {
-                if (vars.data.tax_variations[parent.sCountrySelect.value]) {
-                    vars.data.tax = vars.data.tax_variations[parent.sCountrySelect.value];
-                    updateAllAmounts();
-                } else {
-                    if (vars.data.tax !== vars.data.default_tax) {
-                        vars.data.tax = vars.data.default_tax;
-                        updateAllAmounts();
-                    }
+                if (!parent.sCountrySelect) {
+                    return;
                 }
+                parent.setCountryTax(parent.sCountrySelect.value);
 
             }
         }
