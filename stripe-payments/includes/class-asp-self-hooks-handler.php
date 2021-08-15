@@ -430,11 +430,13 @@ class ASP_Self_Hooks_Handler {
 
 		add_filter( 'asp_ng_before_customer_create_update', array( $this, 'tax_variations_check_apply' ), 10, 2 );
 
+		add_filter( 'asp_ng_sub_confirm_token_customer_opts', array( $this, 'tax_variations_check_apply' ) );
+
 		return $this->item;
 
 	}
 
-	public function tax_variations_check_apply( $cust_opts, $cust_id ) {
+	public function tax_variations_check_apply( $cust_opts ) {
 		ASP_Debug_Logger::log_array_data( $cust_opts );
 
 		if ( empty( $cust_opts['address']['country'] ) ) {
