@@ -12,7 +12,7 @@ var aspTaxVariationsNG = function (data) {
                     return;
                 }
                 doAddonAction('billingAddressChanged');
-                if (parent.billingSwitch.checked) {
+                if (parent.billingSwitch && parent.billingSwitch.checked) {
                     doAddonAction('shippingAddressChanged');
                 }
             });
