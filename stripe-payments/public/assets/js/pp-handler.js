@@ -402,7 +402,7 @@ function updateAllAmounts() {
 		jQuery('#shipping').html(formatMoney(vars.data.shipping));
 		if (vars.data.coupon && !vars.data.is_trial) {
 			if (jQuery('tr#order-coupon-line').length === 0) {
-				var couponOrderLine = '<tr id="order-coupon-line"><td>Coupon "' + vars.data.coupon.code + '"</td><td>- <span id="order-coupon"></span></td></tr>';
+				var couponOrderLine = '<tr id="order-coupon-line"><td>' + vars.str.strCoupon + ' "' + vars.data.coupon.code + '"</td><td>- <span id="order-coupon"></span></td></tr>';
 				if (jQuery('tr.variation-line').last().length !== 0) {
 					jQuery('tr.variation-line').last().after(couponOrderLine);
 				} else {
