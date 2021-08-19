@@ -883,6 +883,8 @@ jQuery(document).ready(function($) {
 			$tax_variations_c = filter_input( INPUT_POST, 'asp_product_tax_variations_c', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
 			$tax_variations_a = filter_input( INPUT_POST, 'asp_product_tax_variations_a', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
 
+			$tax_variations_arr = array();
+
 			if ( ! empty( $tax_variations_c ) && ! empty( $tax_variations_a ) ) {
 				$c_arr = ASP_Utils::get_countries();
 				foreach ( $tax_variations_c as $i => $c ) {
