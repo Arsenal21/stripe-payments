@@ -366,7 +366,7 @@ class ASP_Admin_Product_Meta_Boxes {
 <div class="asp-html-tpl asp-html-tpl-variations-group">
 	<div class="asp-variations-group-cont">
 		<div class="asp-variations-group-title">
-			<span><?php esc_html_e( 'Group Name:', 'stripe-payments' ); ?> </span>
+			<label><?php esc_html_e( 'Group Name:', 'stripe-payments' ); ?> </label>
 			<input type="text" value="" class="asp-variations-group-name">
 			<button type="button" class="button asp-variations-delete-group-btn asp-btn-small">
 				<span class="dashicons dashicons-trash" title="<?php esc_html_e( 'Delete group', 'stripe-payments' ); ?>"></span>
@@ -384,6 +384,7 @@ class ASP_Admin_Product_Meta_Boxes {
 				<th width="40%"><?php echo esc_html( _x( 'Name', 'Variation name', 'stripe-payments' ) ); ?></th>
 				<th width="20%"><?php esc_html_e( 'Price Mod', 'stripe-payments' ); ?> <?php echo ASP_Utils::gen_help_popup( $price_mod_help ); ?></th>
 				<th width="30%"><?php esc_html_e( 'Product URL', 'stripe-payments' ); ?></th>
+				<th width="30px"></th>
 			</tr>
 		</table>
 		<div class="asp-variations-buttons-cont">

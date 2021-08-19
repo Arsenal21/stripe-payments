@@ -160,7 +160,7 @@ a.wp-asp-product-menu-nav-item.nav-tab-active:focus {
 		margin: 0 auto;
 	}
 	.wp-asp-product-tab-item input[type=text] {
-		width: 100%;
+		width: auto;
 	}
 	a.wp-asp-product-menu-nav-item {
 		display: none;
@@ -181,6 +181,16 @@ a.wp-asp-product-menu-nav-item.nav-tab-active:focus {
 		width: auto;
 		max-width: 100%;
 		min-inline-size: auto;
+	}
+	.asp-variations-group-cont label {
+		display: block;
+	}
+	.asp-variations-group-cont .wp-asp-help {
+		float: none;
+		vertical-align: middle;
+	}
+	.asp-variations-delete-group-btn {
+		vertical-align: top !important;
 	}
 }
 
@@ -276,6 +286,10 @@ a.wp-asp-product-menu-nav-item.nav-tab-active:focus {
 @media screen and (max-width: 782px) {
 	.asp-variations-display-type-cont {
 		float: none;
+	}
+	.asp-variations-select-from-ml-btn {
+		top: auto;
+		bottom: 20%;
 	}
 }
 
