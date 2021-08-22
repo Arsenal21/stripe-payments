@@ -346,11 +346,15 @@ class ASP_Process_IPN_NG {
 				//there are variations configured for the product
 				ASP_Debug_Logger::log( 'Processing variations.' );
 				foreach ( $posted_variations as $grp_id => $var_id ) {
-					$var = $v->get_variation( $grp_id, $var_id[0] );
-					if ( ! empty( $var ) ) {
-						$item->add_item( $var['name'], $var['price'] );
-						$variations[]  = array( $var['group_name'] . ' - ' . $var['name'], $var['price'] );
-						$var_applied[] = $var;
+					if ( is_array( $var_id ) && ! empty( $var_id ) ) {
+						foreach ( $var_id as $p_var ) {
+							$var = $v->get_variation( $grp_id, $p_var );
+							if ( ! empty( $var ) ) {
+								$item->add_item( $var['name'], $var['price'] );
+								$variations[]  = array( $var['group_name'] . ' - ' . $var['name'], $var['price'] );
+								$var_applied[] = $var;
+							}
+						}
 					}
 				}
 			}

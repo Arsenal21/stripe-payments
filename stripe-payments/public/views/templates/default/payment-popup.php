@@ -134,16 +134,18 @@ echo '<style>' . $css . '</style>' . "\r\n";
 									}
 									$variations_str .= '<fieldset>';
 									$variations_str .= '<legend>' . $group . '</legend>';
-									if ( isset( $a['data']['variations']['opts'][ $grp_id ] ) && '1' === $a['data']['variations']['opts'][ $grp_id ] ) {
-										//radio buttons output
-									} else {
+									if ( isset( $a['data']['variations']['opts'][ $grp_id ] ) && '0' === $a['data']['variations']['opts'][ $grp_id ] ) {
 										$variations_str .= sprintf( '<select class="pure-input-1 variations-input" data-asp-variations-group-id="%1$d" name="stripeVariations[%1$d][]">', $grp_id );
+									} else {
+										//radio or checkbox output
 									}
 									foreach ( $a['data']['variations']['names'][ $grp_id ] as $var_id => $name ) {
 										if ( isset( $a['data']['variations']['opts'][ $grp_id ] ) && '1' === $a['data']['variations']['opts'][ $grp_id ] ) {
-											$tpl = '<label class="pure-radio"><input class="variations-input" data-asp-variations-group-id="' . $grp_id . '" name="stripeVariations[' . $grp_id . '][]" type="radio" name="123" value="%d"' . ( 0 === $var_id ? 'checked' : '' ) . '> %s %s</label>';
-										} else {
+											$tpl = '<label class="pure-radio"><input class="variations-input" data-asp-variations-group-id="' . $grp_id . '" name="stripeVariations[' . $grp_id . '][]" type="radio" value="%d"' . ( 0 === $var_id ? 'checked' : '' ) . '> %s %s</label>';
+										} elseif ( '0' === $a['data']['variations']['opts'][ $grp_id ] ) {
 											$tpl = '<option value="%d">%s %s</option>';
+										} else {
+											$tpl = '<label><input class="variations-input" data-asp-variations-group-id="' . $grp_id . '" name="stripeVariations[' . $grp_id . '][]" type="checkbox" value="%d"' . ( 0 === $var_id ? 'checked' : '' ) . '> %s %s</label>';
 										}
 										$price_mod = $a['data']['variations']['prices'][ $grp_id ][ $var_id ];
 										if ( ! empty( $price_mod ) ) {
@@ -155,10 +157,10 @@ echo '<style>' . $css . '</style>' . "\r\n";
 										}
 										$variations_str .= sprintf( $tpl, $var_id, $name, $price_mod );
 									}
-									if ( isset( $a['data']['variations']['opts'][ $grp_id ] ) && '1' === $a['data']['variations']['opts'][ $grp_id ] ) {
-										//radio buttons output
-									} else {
+									if ( isset( $a['data']['variations']['opts'][ $grp_id ] ) && '0' === $a['data']['variations']['opts'][ $grp_id ] ) {
 										$variations_str .= '</select>';
+									} else {
+										//radio or checkbox output
 									}
 									$variations_str .= '</fieldset></div>';
 									//                                      $variations_str .= '<div class="pure-u-md-1-24 variation"></div>';

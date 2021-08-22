@@ -376,6 +376,7 @@ class ASP_Admin_Product_Meta_Boxes {
 				<select class="asp-variations-display-type">
 					<option value="0"><?php esc_html_e( 'Dropdown', 'stripe-payments' ); ?></option>
 					<option value="1"><?php esc_html_e( 'Radio Buttons', 'stripe-payments' ); ?></option>
+					<option value="2"><?php esc_html_e( 'Checkboxes', 'stripe-payments' ); ?></option>
 				</select>
 			</div>
 		</div>
