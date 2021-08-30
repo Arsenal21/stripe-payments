@@ -259,8 +259,9 @@ a.wp-asp-product-menu-nav-item.nav-tab-active:focus {
 	margin-bottom: 10px;
 }
 
-.asp-variations-tbl input [type=text] {
+.asp-variations-tbl input[type=text] {
 	width: 100%;
+	max-width: 100%;
 }
 
 .asp-btn-small {
