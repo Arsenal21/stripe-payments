@@ -408,6 +408,15 @@ class ASP_Admin_Product_Meta_Boxes {
 		</tr>
 	</tbody>
 </table>
+<div class="asp-html-tpl asp-html-tpl-variation-options-2">
+	<div data-asp-var-type="2" class="asp-variations-options-cont" style="display:none;">
+	<label>
+		<input type="hidden" class="asp-variations-opts-checked-hidden" name="asp-variations-opts[%_group_id_%][][checked]" value="0" disabled>
+		<input type="checkbox" class="asp-variations-opts-checked" name="asp-variations-opts[%_group_id_%][][checked]" value="1" disabled>
+		<?php esc_html_e( 'Checked by default', 'stripe-payments' ); ?>
+	</label>
+	</div>
+</div>
 		<?php
 			wp_localize_script(
 				'asp-admin-edit-product-js',

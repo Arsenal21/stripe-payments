@@ -259,7 +259,7 @@ a.wp-asp-product-menu-nav-item.nav-tab-active:focus {
 	margin-bottom: 10px;
 }
 
-.asp-variations-tbl input {
+.asp-variations-tbl input [type=text] {
 	width: 100%;
 }
 
@@ -273,9 +273,9 @@ a.wp-asp-product-menu-nav-item.nav-tab-active:focus {
 
 .asp-variations-select-from-ml-btn {
 	position: absolute;
-	top: 50%;
+	top: 0;
 	bottom: 50%;
-	margin: auto 0 !important;
+	margin-top: 8px !important;
 	right: 7px;
 }
 
@@ -287,9 +287,8 @@ a.wp-asp-product-menu-nav-item.nav-tab-active:focus {
 	.asp-variations-display-type-cont {
 		float: none;
 	}
-	.asp-variations-select-from-ml-btn {
-		top: auto;
-		bottom: 20%;
+	.asp-variations-options-cont {
+		margin-top: 0.5rem;
 	}
 }
 

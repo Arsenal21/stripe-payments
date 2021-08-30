@@ -123,6 +123,7 @@ echo '<style>' . $css . '</style>' . "\r\n";
 						<?php
 						if ( ! empty( $a['data']['variations'] ) ) {
 							$variations_str = '';
+							$vs             = new ASPVariations( $a['prod_id'] );
 							$var_count      = count( $a['data']['variations']['groups'] );
 							$curr_var       = 1;
 							foreach ( $a['data']['variations']['groups'] as $grp_id => $group ) {
@@ -134,18 +135,22 @@ echo '<style>' . $css . '</style>' . "\r\n";
 									}
 									$variations_str .= '<fieldset>';
 									$variations_str .= '<legend>' . $group . '</legend>';
-									if ( isset( $a['data']['variations']['opts'][ $grp_id ] ) && '0' === $a['data']['variations']['opts'][ $grp_id ] ) {
+
+									$g      = $vs->get_group( $grp_id );
+									$g_type = $g['type'];
+
+									if ( '0' === $g_type ) {
 										$variations_str .= sprintf( '<select class="pure-input-1 variations-input" data-asp-variations-group-id="%1$d" name="stripeVariations[%1$d][]">', $grp_id );
 									} else {
 										//radio or checkbox output
 									}
 									foreach ( $a['data']['variations']['names'][ $grp_id ] as $var_id => $name ) {
-										if ( isset( $a['data']['variations']['opts'][ $grp_id ] ) && '1' === $a['data']['variations']['opts'][ $grp_id ] ) {
+										if ( '1' === $g_type ) {
 											$tpl = '<label class="pure-radio"><input class="variations-input" data-asp-variations-group-id="' . $grp_id . '" name="stripeVariations[' . $grp_id . '][]" type="radio" value="%d"' . ( 0 === $var_id ? 'checked' : '' ) . '> %s %s</label>';
-										} elseif ( '0' === $a['data']['variations']['opts'][ $grp_id ] ) {
+										} elseif ( '0' === $g_type ) {
 											$tpl = '<option value="%d">%s %s</option>';
 										} else {
-											$tpl = '<label><input class="variations-input" data-asp-variations-group-id="' . $grp_id . '" name="stripeVariations[' . $grp_id . '][]" type="checkbox" value="%d"' . ( 0 === $var_id ? 'checked' : '' ) . '> %s %s</label>';
+											$tpl = '<label><input class="variations-input" data-asp-variations-group-id="' . $grp_id . '" name="stripeVariations[' . $grp_id . '][]" type="checkbox" value="%d"' . ( ! empty( $g['opts'][ $var_id ]['checked'] ) ? ' checked' : '' ) . '> %s %s</label>';
 										}
 										$price_mod = $a['data']['variations']['prices'][ $grp_id ][ $var_id ];
 										if ( ! empty( $price_mod ) ) {
@@ -157,7 +162,7 @@ echo '<style>' . $css . '</style>' . "\r\n";
 										}
 										$variations_str .= sprintf( $tpl, $var_id, $name, $price_mod );
 									}
-									if ( isset( $a['data']['variations']['opts'][ $grp_id ] ) && '0' === $a['data']['variations']['opts'][ $grp_id ] ) {
+									if ( '0' === $g_type ) {
 										$variations_str .= '</select>';
 									} else {
 										//radio or checkbox output
