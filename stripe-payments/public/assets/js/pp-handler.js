@@ -561,7 +561,7 @@ function amount_to_cents(amount, curr) {
 	if (!is_zero_cents(curr)) {
 		amount = amount * 100;
 	}
-	return amount;
+	return parseInt(amount, 10);
 }
 
 function showFormInputErr(msg, el, inp) {
