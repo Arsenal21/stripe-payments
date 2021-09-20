@@ -398,6 +398,7 @@ class ASP_PP_Display {
 
 		}
 
+		//APM < 2.0.17 does not support tax variations
 		if ( ! empty( $data['tax_variations'] )
 		&& class_exists( 'ASPAPM_main' )
 		&& version_compare( ASPAPM_main::ADDON_VER, '2.0.17', '<' ) ) {
@@ -416,6 +417,33 @@ class ASP_PP_Display {
 			}
 
 			$data['payment_methods'] = array_values( $data['payment_methods'] );
+			ASP_Debug_Logger::log( sprintf( 'APM disabled for product %d: need APM 2.0.17+ for tax variation support.', $data['product_id'] ) );
+		}
+
+		//APM < 2.0.17 does not support checkbox variation type
+		if ( ! empty( $data['variations'] ) && class_exists( 'ASPAPM_main' ) && version_compare( ASPAPM_main::ADDON_VER, '2.0.17', '<' ) ) {
+			foreach ( $data['variations']['opts'] as $v_opt ) {
+				if ( $v_opt['type'] === '2' ) {
+					foreach ( $data['addons'] as $key => $addon ) {
+						if ( 'APM' === $addon['name'] ) {
+							unset( $data['addons'][ $key ] );
+						}
+					}
+
+					$data['addons'] = array_values( $data['addons'] );
+
+					foreach ( $data['payment_methods'] as $key => $pm ) {
+						if ( 'APM' === strtoupper( $pm['id'] ) ) {
+							unset( $data['payment_methods'][ $key ] );
+						}
+					}
+
+					$data['payment_methods'] = array_values( $data['payment_methods'] );
+
+					ASP_Debug_Logger::log( sprintf( 'APM disabled for product %d: need APM 2.0.17+ for checkbox variation type support.', $data['product_id'] ) );
+					break;
+				}
+			}
 		}
 
 		if ( empty( $plan_id ) ) {
