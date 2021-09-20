@@ -337,7 +337,15 @@ vars.data.initShowPopup = true;
 
 vars.data.currentPM = 'def';
 
-doAddonAction('init');
+try {
+	doAddonAction('init');
+} catch (error) {
+	showPopup();
+	errorCont.innerHTML = error;
+	errorCont.style.display = 'block';
+	document.getElementById('payment-form').style.display = 'none';
+	throw new Error(error);
+}
 
 jQuery('select#currency').on('change', function () {
 	if (!vars.data.addons || !vars.data.currentPM) {
