@@ -52,4 +52,19 @@ class ASPVariations {
 		return $var;
 	}
 
+	public function get_group( $grp_id ) {
+		if ( empty( $this->variations[ $grp_id ] ) ) {
+			return false;
+		}
+
+		$grp = array(
+			'id'         => $grp_id,
+			'group_name' => $this->groups[ $grp_id ],
+			'type'       => isset( $this->variations[ $grp_id ]['opts']['type'] ) ? $this->variations[ $grp_id ]['opts']['type'] : $this->variations[ $grp_id ]['opts'],
+			'opts'       => isset( $this->variations[ $grp_id ]['opts'] ) ? $this->variations[ $grp_id ]['opts'] : array(),
+		);
+
+		return $grp;
+	}
+
 }

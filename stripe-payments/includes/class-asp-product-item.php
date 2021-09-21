@@ -94,11 +94,18 @@ class ASP_Product_Item {
 		if ( false !== $this->overriden_data && isset( $this->overriden_data['tax'] ) ) {
 			return $this->overriden_data['tax'];
 		}
+		if ( ! empty( $this->tax ) ) {
+			return $this->tax;
+		}
 		$this->tax = get_post_meta( $this->post_id, 'asp_product_tax', true );
 		if ( empty( $this->tax ) ) {
 			$this->tax = 0;
 		}
 		return $this->tax;
+	}
+
+	public function set_tax( $tax ) {
+		$this->tax = $tax;
 	}
 
 	public function get_shipping( $in_cents = false ) {

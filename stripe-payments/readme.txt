@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 5.0
 Tested up to: 5.8
 Requires PHP: 5.6
-Stable tag: 2.0.47
+Stable tag: 2.0.48
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -154,6 +154,14 @@ Yes, please visit Stripe Payments > Settings screen for options.
 None.
 
 == Changelog ==
+
+= 2.0.48 =
+- Added per-product tax variations option.
+- Added checkbox variation type.
+- Improved layout and functionality of some admin-side pages.
+- Only users with admin capabilities can edit products now.
+- Added United Arab Emirates Dirham (AED) currency support.
+- Minor improvements and bugfixes.
 
 = 2.0.47 =
 - Fixed all-off coupons issue in Firefox when payment popup is integrated via link URL.

@@ -388,11 +388,11 @@ class ASP_PP_Ajax {
 				}
 			}
 		} catch ( \Exception $e ) {
-			$out['shipping'] = wp_json_encode( $shipping );
+			$out['shipping'] = isset( $shipping ) ? wp_json_encode( $shipping ) : null;
 			$out['err']      = __( 'Error occurred:', 'stripe-payments' ) . ' ' . $e->getMessage();
 			wp_send_json( $out );
 		} catch ( \Throwable $e ) {
-			$out['shipping'] = wp_json_encode( $shipping );
+			$out['shipping'] = isset( $shipping ) ? wp_json_encode( $shipping ) : null;
 			$out['err']      = __( 'Error occurred:', 'stripe-payments' ) . ' ' . $e->getMessage();
 			wp_send_json( $out );
 		}

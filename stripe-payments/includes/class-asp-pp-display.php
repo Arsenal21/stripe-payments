@@ -322,6 +322,12 @@ class ASP_PP_Display {
 		$data['shipping'] = $this->item->get_shipping( true );
 		$data['descr']    = $this->item->get_description();
 
+		$data['tax_variations'] = $this->item->get_meta( 'asp_product_tax_variations_arr' );
+
+		$tax_variations_type = $this->item->get_meta( 'asp_product_tax_variations_type' );
+
+		$data['tax_variations_type'] = empty( $tax_variations_type ) ? 'b' : $tax_variations_type;
+
 		$data['custom_field']                    = $custom_field;
 		$data['custom_field_validation_regex']   = $cf_validation_regex;
 		$data['custom_field_validation_err_msg'] = $cf_validation_err_msg;
@@ -390,6 +396,54 @@ class ASP_PP_Display {
 
 			$data['payment_methods'] = array_values( $data['payment_methods'] );
 
+		}
+
+		//APM < 2.0.17 does not support tax variations
+		if ( ! empty( $data['tax_variations'] )
+		&& class_exists( 'ASPAPM_main' )
+		&& version_compare( ASPAPM_main::ADDON_VER, '2.0.17', '<' ) ) {
+			foreach ( $data['addons'] as $key => $addon ) {
+				if ( 'APM' === $addon['name'] ) {
+					unset( $data['addons'][ $key ] );
+				}
+			}
+
+			$data['addons'] = array_values( $data['addons'] );
+
+			foreach ( $data['payment_methods'] as $key => $pm ) {
+				if ( 'APM' === strtoupper( $pm['id'] ) ) {
+					unset( $data['payment_methods'][ $key ] );
+				}
+			}
+
+			$data['payment_methods'] = array_values( $data['payment_methods'] );
+			ASP_Debug_Logger::log( sprintf( 'APM disabled for product %d: need APM 2.0.17+ for tax variation support.', $data['product_id'] ) );
+		}
+
+		//APM < 2.0.17 does not support checkbox variation type
+		if ( ! empty( $data['variations'] ) && class_exists( 'ASPAPM_main' ) && version_compare( ASPAPM_main::ADDON_VER, '2.0.17', '<' ) ) {
+			foreach ( $data['variations']['opts'] as $v_opt ) {
+				if ( $v_opt['type'] === '2' ) {
+					foreach ( $data['addons'] as $key => $addon ) {
+						if ( 'APM' === $addon['name'] ) {
+							unset( $data['addons'][ $key ] );
+						}
+					}
+
+					$data['addons'] = array_values( $data['addons'] );
+
+					foreach ( $data['payment_methods'] as $key => $pm ) {
+						if ( 'APM' === strtoupper( $pm['id'] ) ) {
+							unset( $data['payment_methods'][ $key ] );
+						}
+					}
+
+					$data['payment_methods'] = array_values( $data['payment_methods'] );
+
+					ASP_Debug_Logger::log( sprintf( 'APM disabled for product %d: need APM 2.0.17+ for checkbox variation type support.', $data['product_id'] ) );
+					break;
+				}
+			}
 		}
 
 		if ( empty( $plan_id ) ) {
@@ -462,6 +516,10 @@ class ASP_PP_Display {
 			);
 			$a['scripts'][] = array(
 				'footer' => true,
+				'src'    => WP_ASP_PLUGIN_URL . '/public/assets/js/add-ons/tax-variations.js?ver=' . WP_ASP_PLUGIN_VERSION,
+			);
+			$a['scripts'][] = array(
+				'footer' => true,
 				'src'    => WP_ASP_PLUGIN_URL . '/public/assets/js/pp-handler.js?ver=' . WP_ASP_PLUGIN_VERSION,
 			);
 		}
@@ -530,6 +588,7 @@ class ASP_PP_Display {
 				'strPleaseFillIn'             => apply_filters( 'asp_customize_text_msg', __( 'Please fill in this field.', 'stripe-payments' ), 'fill_in_field' ),
 				'strPleaseCheckCheckbox'      => __( 'Please check this checkbox.', 'stripe-payments' ),
 				'strMustAcceptTos'            => apply_filters( 'asp_customize_text_msg', __( 'You must accept the terms before you can proceed.', 'stripe-payments' ), 'accept_terms' ),
+				'strCoupon'                   => __( 'Coupon', 'stripe-payments' ),
 				'strRemoveCoupon'             => apply_filters( 'asp_customize_text_msg', __( 'Remove coupon', 'stripe-payments' ), 'remove_coupon' ),
 				'strRemove'                   => apply_filters( 'asp_customize_text_msg', __( 'Remove', 'stripe-payments' ), 'remove' ),
 				'strStartFreeTrial'           => apply_filters( 'asp_customize_text_msg', __( 'Start Free Trial', 'stripe-payments' ), 'start_free_trial' ),

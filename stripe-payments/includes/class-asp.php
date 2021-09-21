@@ -26,6 +26,7 @@ class AcceptStripePayments {
 		'RON' => 200,
 		'SEK' => 300,
 		'SGD' => 50,
+		'AED' => 200,
 	);
 	public $APISecKey      = '';
 	public $APIPubKey      = '';

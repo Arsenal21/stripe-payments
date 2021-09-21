@@ -5,17 +5,29 @@ jQuery(document).ready(function ($) {
 	var aspVariationsUrls = aspEditProdData.varUrls;
 	var aspVariationsOpts = aspEditProdData.varOpts;
 	var aspVariationsGroupsId = 0;
+	var aspVariationsVarId = 0;
+
+	function asp_variations_get_type(groupId) {
+		var varType = 0;
+		if (typeof aspVariationsOpts[groupId] !== 'undefined') {
+			if (typeof aspVariationsOpts[groupId] === 'object') {
+				varType = aspVariationsOpts[groupId].type;
+			} else {
+				varType = aspVariationsOpts[groupId];
+			}
+		}
+		return varType;
+	}
+
 	function asp_create_variations_group(aspGroupId, groupName, focus) {
 		$('span.asp-variations-no-variations-msg').hide();
 		var tpl_html = $('div.asp-html-tpl-variations-group').html();
 		tpl_html = $.parseHTML(tpl_html);
 		$(tpl_html).find('input.asp-variations-group-name').attr('name', 'asp-variations-group-names[' + aspGroupId + ']');
 		$(tpl_html).find('input.asp-variations-group-name').val(groupName);
-		var displayType = 0;
-		if (typeof aspVariationsOpts[aspGroupId] !== 'undefined') {
-			displayType = aspVariationsOpts[aspGroupId];
-		}
-		$(tpl_html).find('select.asp-variations-display-type').attr('name', 'asp-variations-opts[' + aspGroupId + ']');
+		var displayType = asp_variations_get_type(aspGroupId);
+
+		$(tpl_html).find('select.asp-variations-display-type').attr('name', 'asp-variations-opts[' + aspGroupId + '][type]');
 		$(tpl_html).find('select.asp-variations-display-type').val(displayType);
 		$(tpl_html).closest('div.asp-variations-group-cont').attr('data-asp-group-id', aspGroupId);
 		$('div#asp-variations-cont').append(tpl_html);
@@ -33,9 +45,27 @@ jQuery(document).ready(function ($) {
 		$(tpl_html).find('input.asp-variation-price').val(variationPrice);
 		$(tpl_html).find('input.asp-variation-url').attr('name', 'asp-variation-urls[' + aspGroupId + '][]');
 		$(tpl_html).find('input.asp-variation-url').val(variationUrl);
+
+		var var_opt_tpl = $('div.asp-html-tpl-variation-options-2').html();
+		var_opt_tpl = var_opt_tpl.replace(/%_group_id_%/g, aspGroupId);
+		var_opt_tpl = $.parseHTML(var_opt_tpl);
+		$(var_opt_tpl).find('input').prop('disabled', false);
+		$(tpl_html).find('input.asp-variation-name').after(var_opt_tpl);
+
 		$('div.asp-variations-group-cont[data-asp-group-id="' + aspGroupId + '"]').find('table.asp-variations-tbl').append(tpl_html);
+
+		var varType = $(tpl_html).closest('.asp-variations-group-cont').find('select.asp-variations-display-type').val();
+		$(tpl_html).closest('.asp-variations-group-cont').find('div[data-asp-var-type="' + varType + '"]').show();
+
 		if (focus) {
 			$(tpl_html).find('input.asp-variation-name').focus();
+		} else {
+			if (varType === '2') {
+				if (aspVariationsOpts[aspGroupId][aspVariationsVarId]['checked']==='1') {
+					$(var_opt_tpl).find('input[type="checkbox"]').prop('checked', true);
+					$(var_opt_tpl).find('input[type="checkbox"]').trigger('change');
+				}
+			}
 		}
 	}
 	$('button#asp-create-variations-group-btn').click(function (e) {
@@ -82,13 +112,23 @@ jQuery(document).ready(function ($) {
 		});
 		return false;
 	});
+	$(document).on('change', 'input.asp-variations-opts-checked', function (e) {
+		$(this).siblings('input.asp-variations-opts-checked-hidden').attr('disabled', $(this).prop('checked'));
+	});
+	$(document).on('change', 'select.asp-variations-display-type', function (e) {
+		$(this).closest('.asp-variations-group-cont').find('div[data-asp-var-type]').hide();
+		$(this).closest('.asp-variations-group-cont').find('div[data-asp-var-type="' + $(this).val() + '"]').show();
+	});
+
 	if (aspVariationsGroups.length !== 0) {
 		$.each(aspVariationsGroups, function (index, item) {
 			aspVariationsGroupsId = index;
 			asp_create_variations_group(index, item, false);
 			if (aspVariationsNames !== null) {
+				aspVariationsVarId = 0;
 				$.each(aspVariationsNames[index], function (index, item) {
 					asp_add_variation(aspVariationsGroupsId, item, aspVariationsPrices[aspVariationsGroupsId][index], aspVariationsUrls[aspVariationsGroupsId][index], false);
+					aspVariationsVarId++;
 				});
 			}
 		});
@@ -154,8 +194,33 @@ jQuery(document).ready(function ($) {
 	function aspProductTypeChange(val) {
 		if (val === 'subscription') {
 			$('.asp-other-stripe-acc').hide();
+			if (aspTaxVarData.disabledForSub) {
+				jQuery('#wp-asp-tax-variations-cont').hide();
+				jQuery('#wp-asp-tax-variations-disabled-msg').show();
+			}
 		} else {
 			$('.asp-other-stripe-acc').show();
+			if (aspTaxVarData.disabledForSub) {
+				jQuery('#wp-asp-tax-variations-cont').show();
+				jQuery('#wp-asp-tax-variations-disabled-msg').hide();
+			}
 		}
 	}
+
+	jQuery('#wp-asp-tax-variations-add-btn').click(function (e) {
+		e.preventDefault();
+		var tplLine = aspTaxVarData.tplLine;
+		tplLine = tplLine.replaceAll('%1$s', aspTaxVarData.cOpts);
+		tplLine = tplLine.replaceAll('%2$s', 0);
+		jQuery('#wp-asp-tax-variations-tbl').find('tbody').append(tplLine);
+		jQuery('#wp-asp-tax-variations-tbl').show();
+	});
+
+	jQuery('#wp-asp-tax-variations-tbl').on('click', 'button.wp-asp-tax-variations-del-btn', function (e) {
+		e.preventDefault();
+		if (confirm(aspTaxVarData.str.delConfirm)) {
+			jQuery(this).closest('tr').remove();
+		}
+	});
+
 });

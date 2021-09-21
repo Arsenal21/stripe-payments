@@ -170,8 +170,23 @@ class AcceptStripePayments_CouponsAdmin {
 		);
 		register_post_type( self::$post_slug, $args );
 
+		if ( ! is_admin() ) {
+			return;
+		}
+
 		if ( isset( $_POST['asp_coupon'] ) ) {
 			$this->save_coupon();
+		}
+
+		if ( isset( $_POST['asp_coupons_opts'] ) ) {
+			$this->save_settings();
+		}
+
+		$action = filter_input( INPUT_GET, 'action', FILTER_SANITIZE_STRING );
+		$action = empty( $action ) ? '' : $action;
+
+		if ( $action === 'asp_delete_coupon' ) {
+			$this->delete_coupon();
 		}
 	}
 
@@ -184,16 +199,17 @@ class AcceptStripePayments_CouponsAdmin {
 		$settings                    = get_option( 'AcceptStripePayments-settings' );
 		$opts                        = $_POST['asp_coupons_opts'];
 		$settings['coupons_enabled'] = isset( $opts['coupons_enabled'] ) ? 1 : 0;
-		unregister_setting( 'AcceptStripePayments-settings-group', 'AcceptStripePayments-settings' );
+		//unregister_setting( 'AcceptStripePayments-settings-group', 'AcceptStripePayments-settings' );
 		update_option( 'AcceptStripePayments-settings', $settings );
-		set_transient( 'asp_coupons_admin_notice', __( 'Settings updated.', 'stripe-payments' ), 60 * 60 );
+
+		AcceptStripePayments_Admin::add_admin_notice(
+			'success',
+			__( 'Settings updated.', 'stripe-payments' ),
+			false
+		);
 	}
 
 	function display_coupons_menu_page() {
-
-		if ( isset( $_POST['asp_coupons_opts'] ) ) {
-			$this->save_settings();
-		}
 
 		if ( isset( $_GET['action'] ) ) {
 			$action = $_GET['action'];
@@ -202,32 +218,6 @@ class AcceptStripePayments_CouponsAdmin {
 				$this->display_coupon_add_edit_page();
 				return;
 			}
-			if ( $action === 'asp_delete_coupon' ) {
-				//coupon delete action
-				$this->delete_coupon();
-			}
-		}
-
-		$msg = get_transient( 'asp_coupons_admin_notice' );
-
-		if ( $msg !== false ) {
-			delete_transient( 'asp_coupons_admin_notice' );
-			?>
-<div class="notice notice-success">
-	<p><?php echo $msg; ?></p>
-</div>
-			<?php
-		}
-
-		$msg = get_transient( 'asp_coupons_admin_error' );
-
-		if ( $msg !== false ) {
-			delete_transient( 'asp_coupons_admin_error' );
-			?>
-<div class="notice notice-error">
-	<p><?php echo $msg; ?></p>
-</div>
-			<?php
 		}
 
 		$asp_main        = AcceptStripePayments::get_instance();
@@ -461,24 +451,44 @@ jQuery(document).ready(function($) {
 		$coupon_id = isset( $_GET['asp_coupon_id'] ) ? absint( $_GET['asp_coupon_id'] ) : false;
 
 		if ( ! $coupon_id ) {
-			set_transient( 'asp_coupons_admin_error', __( 'Can\'t delete coupon: coupon ID is not provided.', 'stripe-payments' ), 60 * 60 );
+			AcceptStripePayments_Admin::add_admin_notice(
+				'error',
+				__( 'Can\'t delete coupon: coupon ID is not provided.', 'stripe-payments' ),
+				false
+			);
 			return false;
 		}
 		$the_post = get_post( $coupon_id );
 		if ( is_null( $the_post ) ) {
-			// translators: %d is coupon ID
-			set_transient( 'asp_coupons_admin_error', sprintf( __( 'Can\'t delete coupon: coupon #%d not found.', 'stripe-payments' ), $coupon_id ), 60 * 60 );
+			AcceptStripePayments_Admin::add_admin_notice(
+				'error',
+				// translators: %d is coupon ID
+				sprintf( __( 'Can\'t delete coupon: coupon #%d not found.', 'stripe-payments' ), $coupon_id ),
+				false
+			);
 			return false;
 		}
 		if ( $the_post->post_type !== self::$post_slug ) {
-			// translators: %d is coupon ID
-			set_transient( 'asp_coupons_admin_error', sprintf( __( 'Can\'t delete coupon: post #%d is not a coupon.', 'stripe-payments' ), $coupon_id ), 60 * 60 );
+			AcceptStripePayments_Admin::add_admin_notice(
+				'error',
+				// translators: %d is coupon ID
+				sprintf( __( 'Can\'t delete coupon: post #%d is not a coupon.', 'stripe-payments' ), $coupon_id ),
+				false
+			);
 			return false;
 		}
 		check_admin_referer( 'delete-coupon_' . $coupon_id );
 		wp_delete_post( $coupon_id, true );
-		// translators: %d is coupon ID
-		set_transient( 'asp_coupons_admin_notice', sprintf( __( 'Coupon #%d has been deleted.', 'stripe-payments' ), $coupon_id ), 60 * 60 );
+
+		AcceptStripePayments_Admin::add_admin_notice(
+			'success',
+			// translators: %d is coupon ID
+			sprintf( __( 'Coupon #%d has been deleted.', 'stripe-payments' ), $coupon_id ),
+			false
+		);
+
+		wp_safe_redirect( remove_query_arg( array( 'action', 'asp_coupon_id', '_wpnonce' ) ) );
+		exit();
 	}
 
 	function save_coupon() {
@@ -508,14 +518,11 @@ jQuery(document).ready(function($) {
 
 		if ( ! empty( $err_msg ) ) {
 			foreach ( $err_msg as $msg ) {
-				?>
-<div class="notice notice-error">
-	<p><?php echo $msg; ?></p>
-</div>
-				<?php
+				AcceptStripePayments_Admin::add_admin_notice( 'error', $msg, false );
 			}
 			return false;
 		}
+
 		if ( ! $is_edit ) {
 			$post                = array();
 			$post['post_title']  = '';
@@ -533,8 +540,13 @@ jQuery(document).ready(function($) {
 			update_post_meta( $coupon_id, 'asp_coupon_' . $key, $value );
 		}
 		do_action( 'asp_admin_save_coupon', $coupon_id, $coupon );
-		// translators: %s is coupon code
-		set_transient( 'asp_coupons_admin_notice', sprintf( $is_edit ? __( 'Coupon "%s" has been updated.', 'stripe-payments' ) : __( 'Coupon "%s" has been created.', 'stripe-payments' ), $coupon['code'] ), 60 * 60 );
+
+		AcceptStripePayments_Admin::add_admin_notice(
+			'success',
+			// translators: %s is coupon code
+			sprintf( $is_edit ? __( 'Coupon "%s" has been updated.', 'stripe-payments' ) : __( 'Coupon "%s" has been created.', 'stripe-payments' ), $coupon['code'] ),
+			false
+		);
 
 		wp_safe_redirect( 'edit.php?post_type=' . ASPMain::$products_slug . '&page=stripe-payments-coupons' );
 		exit;

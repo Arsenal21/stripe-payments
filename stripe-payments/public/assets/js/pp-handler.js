@@ -191,6 +191,19 @@ if (!jQuery.isEmptyObject(vars.data.variations)) {
 			varInputs[index].addEventListener('change', function () {
 				var grpId = this.getAttribute('data-asp-variations-group-id');
 				var varId = this.value;
+				if (this.tagName === "INPUT" && this.type === 'checkbox') {
+					if (!vars.data.variations.applied) {
+						vars.data.variations.applied = [];
+					}
+					if (!vars.data.variations.applied[grpId]) {
+						vars.data.variations.applied[grpId] = [];
+					}
+					vars.data.variations.applied[grpId][varId] = !this.checked ? 0 : 1;
+					if (!vars.data.temp.prePopupDisplayVariationsUpdate) {
+						updateAllAmounts();
+					}
+					return;
+				}
 				if (Object.getOwnPropertyNames(vars.data.variations).length !== 0) {
 					if (!vars.data.variations.applied) {
 						vars.data.variations.applied = [];
@@ -324,7 +337,15 @@ vars.data.initShowPopup = true;
 
 vars.data.currentPM = 'def';
 
-doAddonAction('init');
+try {
+	doAddonAction('init');
+} catch (error) {
+	showPopup();
+	errorCont.innerHTML = error;
+	errorCont.style.display = 'block';
+	document.getElementById('payment-form').style.display = 'none';
+	throw new Error(error);
+}
 
 jQuery('select#currency').on('change', function () {
 	if (!vars.data.addons || !vars.data.currentPM) {
@@ -398,10 +419,11 @@ function updateAllAmounts() {
 		jQuery('#order-item-price').html(formatMoney(vars.data.item_price * vars.data.quantity));
 		jQuery('#order-quantity').html(vars.data.quantity);
 		jQuery('#order-tax').html(formatMoney(vars.data.taxAmount));
+		jQuery('#order-tax-perc').html(vars.data.tax);
 		jQuery('#shipping').html(formatMoney(vars.data.shipping));
 		if (vars.data.coupon && !vars.data.is_trial) {
 			if (jQuery('tr#order-coupon-line').length === 0) {
-				var couponOrderLine = '<tr id="order-coupon-line"><td>Coupon "' + vars.data.coupon.code + '"</td><td>- <span id="order-coupon"></span></td></tr>';
+				var couponOrderLine = '<tr id="order-coupon-line"><td>' + vars.str.strCoupon + ' "' + vars.data.coupon.code + '"</td><td>- <span id="order-coupon"></span></td></tr>';
 				if (jQuery('tr.variation-line').last().length !== 0) {
 					jQuery('tr.variation-line').last().after(couponOrderLine);
 				} else {
@@ -420,8 +442,27 @@ function updateAllAmounts() {
 					if (jQuery('#order-variation-' + grpId + '-line').length === 0) {
 						jQuery('tr#order-item-line').after('<tr id="order-variation-' + grpId + '-line" class="variation-line"><td class="variation-name"></td><td class="variation-price"></td></tr>');
 					}
-					jQuery('#order-variation-' + grpId + '-line').find('.variation-name').html(vars.data.variations.groups[grpId] + '<br>' + vars.data.variations.names[grpId][vars.data.variations.applied[grpId]]);
-					jQuery('#order-variation-' + grpId + '-line').find('.variation-price').html(formatMoney(amount_to_cents(vars.data.variations.prices[grpId][vars.data.variations.applied[grpId]], vars.data.currency) * vars.data.quantity));
+					var varNames = ''
+					var varPrices = '';
+					if (vars.data.variations.applied[grpId] instanceof Array) {
+						for (varId = 0; varId < vars.data.variations.applied[grpId].length; varId++) {
+							if (vars.data.variations.applied[grpId][varId]) {
+								varNames += vars.data.variations.names[grpId][varId] + '<br />';
+								varPrices += formatMoney(amount_to_cents(vars.data.variations.prices[grpId][varId], vars.data.currency) * vars.data.quantity) + '<br />';
+							}
+						}
+					} else {
+						varNames = vars.data.variations.names[grpId][vars.data.variations.applied[grpId]];
+						varPrices = formatMoney(amount_to_cents(vars.data.variations.prices[grpId][vars.data.variations.applied[grpId]], vars.data.currency) * vars.data.quantity);
+					}
+					if (!varNames && !varPrices) {
+						jQuery('tr#order-variation-' + grpId + '-line').remove();
+					} else {
+						varNames = vars.data.variations.groups[grpId] + '<br />' + varNames;
+						varPrices = '<br />' + varPrices;
+						jQuery('#order-variation-' + grpId + '-line').find('.variation-name').html(varNames);
+						jQuery('#order-variation-' + grpId + '-line').find('.variation-price').html(varPrices);
+					}
 				}
 			}
 		}
@@ -441,8 +482,18 @@ function calcTotal() {
 	}
 	if (vars.data.variations.applied) {
 		for (grpId = 0; grpId < vars.data.variations.applied.length; ++grpId) {
-			if (vars.data.variations.prices[grpId]) {
-				itemSubt = itemSubt + amount_to_cents(vars.data.variations.prices[grpId][vars.data.variations.applied[grpId]], vars.data.currency);
+			var varPrice = 0;
+			if (vars.data.variations.prices[grpId] && typeof vars.data.variations.applied[grpId] !== 'undefined') {
+				if (vars.data.variations.applied[grpId] instanceof Array) {
+					for (varId = 0; varId < vars.data.variations.applied[grpId].length; varId++) {
+						if (vars.data.variations.applied[grpId][varId]) {
+							varPrice += parseFloat(vars.data.variations.prices[grpId][varId]);
+						}
+					}
+				} else {
+					varPrice = vars.data.variations.prices[grpId][vars.data.variations.applied[grpId]];
+				}
+				itemSubt = itemSubt + amount_to_cents(varPrice, vars.data.currency);
 			}
 		}
 	}
@@ -500,7 +551,9 @@ function is_zero_cents(curr) {
 
 function cents_to_amount(amount, curr) {
 	if (!is_zero_cents(curr)) {
-		amount = amount / 100;
+		amount = PHP_round(amount / 100, 2);
+	} else {
+		amount = PHP_round(amount, 0);
 	}
 	return amount;
 }
@@ -510,7 +563,7 @@ function amount_to_cents(amount, curr) {
 	if (!is_zero_cents(curr)) {
 		amount = amount * 100;
 	}
-	return amount;
+	return PHP_round(amount, 0);
 }
 
 function showFormInputErr(msg, el, inp) {

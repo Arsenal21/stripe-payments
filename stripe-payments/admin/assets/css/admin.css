@@ -160,7 +160,7 @@ a.wp-asp-product-menu-nav-item.nav-tab-active:focus {
 		margin: 0 auto;
 	}
 	.wp-asp-product-tab-item input[type=text] {
-		width: 100%;
+		width: auto;
 	}
 	a.wp-asp-product-menu-nav-item {
 		display: none;
@@ -181,6 +181,42 @@ a.wp-asp-product-menu-nav-item.nav-tab-active:focus {
 		width: auto;
 		max-width: 100%;
 		min-inline-size: auto;
+	}
+	.asp-variations-group-cont label {
+		display: block;
+	}
+	.asp-variations-group-cont .wp-asp-help {
+		float: none;
+		vertical-align: middle;
+	}
+	.asp-variations-delete-group-btn {
+		vertical-align: top !important;
+	}
+}
+
+#wp-asp-tax-variations-tbl {
+	width: 50%;
+}
+
+#wp-asp-tax-variations-tbl tr {
+	text-align: center;
+}
+
+.wp-asp-tax-variations-input {
+	width: 100%;
+}
+
+.wp-asp-tax-variations-del-btn span {
+	vertical-align: sub;
+}
+
+#wp-asp-tax-variations-add-btn span {
+	vertical-align: middle;
+}
+
+@media screen and (max-width: 960px) {
+	#wp-asp-tax-variations-tbl {
+		width: 100%;
 	}
 }
 
@@ -223,8 +259,9 @@ a.wp-asp-product-menu-nav-item.nav-tab-active:focus {
 	margin-bottom: 10px;
 }
 
-.asp-variations-tbl input {
+.asp-variations-tbl input[type=text] {
 	width: 100%;
+	max-width: 100%;
 }
 
 .asp-btn-small {
@@ -237,9 +274,9 @@ a.wp-asp-product-menu-nav-item.nav-tab-active:focus {
 
 .asp-variations-select-from-ml-btn {
 	position: absolute;
-	top: 50%;
+	top: 0;
 	bottom: 50%;
-	margin: auto 0 !important;
+	margin-top: 8px !important;
 	right: 7px;
 }
 
@@ -250,6 +287,9 @@ a.wp-asp-product-menu-nav-item.nav-tab-active:focus {
 @media screen and (max-width: 782px) {
 	.asp-variations-display-type-cont {
 		float: none;
+	}
+	.asp-variations-options-cont {
+		margin-top: 0.5rem;
 	}
 }
 
