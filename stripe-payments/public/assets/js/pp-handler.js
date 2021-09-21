@@ -551,7 +551,9 @@ function is_zero_cents(curr) {
 
 function cents_to_amount(amount, curr) {
 	if (!is_zero_cents(curr)) {
-		amount = amount / 100;
+		amount = PHP_round(amount / 100, 2);
+	} else {
+		amount = PHP_round(amount, 0);
 	}
 	return amount;
 }
@@ -561,7 +563,7 @@ function amount_to_cents(amount, curr) {
 	if (!is_zero_cents(curr)) {
 		amount = amount * 100;
 	}
-	return parseInt(amount, 10);
+	return PHP_round(amount, 0);
 }
 
 function showFormInputErr(msg, el, inp) {
