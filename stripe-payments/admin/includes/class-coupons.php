@@ -7,7 +7,6 @@ class AcceptStripePayments_CouponsAdmin {
 	function __construct() {
 		add_action( 'init', array( $this, 'init_handler' ) );
 		if ( is_admin() ) {
-			add_action( 'plugins_loaded', array( $this, 'plugins_loaded' ) );
 			add_action( 'admin_menu', array( $this, 'add_menu' ) );
 			if ( wp_doing_ajax() ) {
 				add_action( 'wp_ajax_asp_check_coupon', array( $this, 'frontend_check_coupon' ) );
@@ -157,7 +156,24 @@ class AcceptStripePayments_CouponsAdmin {
 		wp_send_json( $out );
 	}
 
-	public function plugins_loaded() {
+	function init_handler() {
+		$args = array(
+			'supports'            => array( '' ),
+			'hierarchical'        => false,
+			'public'              => false,
+			'show_ui'             => false,
+			'can_export'          => false,
+			'has_archive'         => false,
+			'exclude_from_search' => true,
+			'publicly_queryable'  => false,
+			'capability_type'     => 'post',
+		);
+		register_post_type( self::$post_slug, $args );
+
+		if ( ! is_admin() ) {
+			return;
+		}
+
 		if ( isset( $_POST['asp_coupon'] ) ) {
 			$this->save_coupon();
 		}
@@ -172,21 +188,6 @@ class AcceptStripePayments_CouponsAdmin {
 		if ( $action === 'asp_delete_coupon' ) {
 			$this->delete_coupon();
 		}
-	}
-
-	function init_handler() {
-		$args = array(
-			'supports'            => array( '' ),
-			'hierarchical'        => false,
-			'public'              => false,
-			'show_ui'             => false,
-			'can_export'          => false,
-			'has_archive'         => false,
-			'exclude_from_search' => true,
-			'publicly_queryable'  => false,
-			'capability_type'     => 'post',
-		);
-		register_post_type( self::$post_slug, $args );
 	}
 
 	function add_menu() {
