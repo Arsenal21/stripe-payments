@@ -2,16 +2,16 @@
 # This file is distributed under the same license as the Accept Stripe Payments plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Accept Stripe Payments 2.0.48t2\n"
+"Project-Id-Version: Accept Stripe Payments 2.0.48\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/stripe-payments\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2021-08-17T17:32:21+03:00\n"
-"PO-Revision-Date: 2021-08-17T17:32:21+03:00\n"
-"X-Generator: WP-CLI 2.0.1\n"
+"POT-Creation-Date: 2021-09-21T23:25:43+03:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.4.0\n"
 "X-Domain: stripe-payments\n"
 
 #. Plugin Name of the plugin
@@ -54,7 +54,6 @@ msgstr ""
 msgid "Confirm cancel authorized funds for order #%s"
 msgstr ""
 
-#. translators: %s is order ID
 #: admin/class-asp-admin.php:105
 msgid "Error occurred during request. Please refresh page and try again."
 msgstr ""
@@ -188,7 +187,7 @@ msgid "Example: $, €, £ etc."
 msgstr ""
 
 #: admin/class-asp-admin.php:508
-#: admin/includes/class-asp-admin-product-meta-boxes.php:719
+#: admin/includes/class-asp-admin-product-meta-boxes.php:730
 msgid "Button Text"
 msgstr ""
 
@@ -816,7 +815,6 @@ msgstr ""
 msgid "Enter your custom validation rule using <a href=\"%s\" target=\"_blank\">JavaScript RegExp</a> format. No need to enclose those using \"/\"."
 msgstr ""
 
-#. translators: %s is a link to JavaScript RegExp page
 #: admin/class-asp-admin.php:1368
 msgid "Example RegExp to allow numbers only: ^[0-9]+$"
 msgstr ""
@@ -910,8 +908,8 @@ msgstr ""
 
 #. translators: %s is not a placeholder
 #: admin/class-asp-admin.php:1691
+#: includes/class-asp-pp-display.php:533
 #: includes/class-asp.php:318
-#: includes/class-asp-pp-display.php:505
 msgid "Pay %s"
 msgstr ""
 
@@ -1051,6 +1049,22 @@ msgstr ""
 msgid "Click here to toggle tags hint"
 msgstr ""
 
+#: admin/includes/class-asp-admin-order-meta-boxes.php:11
+msgid "Order Events"
+msgstr ""
+
+#: admin/includes/class-asp-admin-order-meta-boxes.php:26
+msgid "Order created."
+msgstr ""
+
+#: admin/includes/class-asp-admin-order-meta-boxes.php:29
+msgid "Payment completed."
+msgstr ""
+
+#: admin/includes/class-asp-admin-order-meta-boxes.php:50
+msgid "No data available."
+msgstr ""
+
 #: admin/includes/class-asp-admin-product-meta-boxes.php:23
 #: includes/class-asp-order-item.php:126
 msgid "Description"
@@ -1102,7 +1116,7 @@ msgid "Coupons Settings"
 msgstr ""
 
 #: admin/includes/class-asp-admin-product-meta-boxes.php:39
-#: includes/class-asp-pp-display.php:619
+#: includes/class-asp-pp-display.php:647
 #: includes/shortcodes/class-shortcode-asp.php:181
 msgid "Custom Field"
 msgstr ""
@@ -1164,7 +1178,7 @@ msgstr ""
 
 #: admin/includes/class-asp-admin-product-meta-boxes.php:233
 #: admin/includes/class-asp-admin-product-meta-boxes.php:301
-#: admin/includes/class-asp-admin-products.php:135
+#: admin/includes/class-asp-admin-products.php:146
 msgid "Price"
 msgstr ""
 
@@ -1265,386 +1279,502 @@ msgstr ""
 msgid "Radio Buttons"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:384
+#: admin/includes/class-asp-admin-product-meta-boxes.php:379
+msgid "Checkboxes"
+msgstr ""
+
+#: admin/includes/class-asp-admin-product-meta-boxes.php:385
 msgctxt "Variation name"
 msgid "Name"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:385
+#: admin/includes/class-asp-admin-product-meta-boxes.php:386
 msgid "Price Mod"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:386
+#: admin/includes/class-asp-admin-product-meta-boxes.php:387
 msgid "Product URL"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:390
+#: admin/includes/class-asp-admin-product-meta-boxes.php:392
 msgid "Add Variation"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:401
+#: admin/includes/class-asp-admin-product-meta-boxes.php:403
 msgid "Select from Media Library"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:404
-#: admin/includes/class-asp-admin-product-meta-boxes.php:436
+#: admin/includes/class-asp-admin-product-meta-boxes.php:406
+#: admin/includes/class-asp-admin-product-meta-boxes.php:447
 msgid "Delete variation"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:420
+#: admin/includes/class-asp-admin-product-meta-boxes.php:416
+msgid "Checked by default"
+msgstr ""
+
+#: admin/includes/class-asp-admin-product-meta-boxes.php:431
 msgid "Are you sure you want to delete this group?"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:421
-#: admin/includes/class-asp-admin-product-meta-boxes.php:465
+#: admin/includes/class-asp-admin-product-meta-boxes.php:432
+#: admin/includes/class-asp-admin-product-meta-boxes.php:476
 msgid "Are you sure you want to delete this variation?"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:472
+#: admin/includes/class-asp-admin-product-meta-boxes.php:483
 msgid "Shipping Cost"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:477
+#: admin/includes/class-asp-admin-product-meta-boxes.php:488
 msgid "Numbers only, no need to put currency symbol. Example: 5.90"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:479
+#: admin/includes/class-asp-admin-product-meta-boxes.php:490
 msgid "Leave it blank if you are not shipping your product or not charging additional shipping costs."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:484
+#: admin/includes/class-asp-admin-product-meta-boxes.php:495
 msgid "Tax (%)"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:489
+#: admin/includes/class-asp-admin-product-meta-boxes.php:500
 msgid "Enter tax (in percent) which should be added to product price during purchase."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:491
+#: admin/includes/class-asp-admin-product-meta-boxes.php:502
 msgid "Leave it blank if you don't want to apply tax."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:495
+#: admin/includes/class-asp-admin-product-meta-boxes.php:506
 msgid "Tax Variations"
 msgstr ""
 
 #. translators: %s is add-on version number
-#: admin/includes/class-asp-admin-product-meta-boxes.php:499
+#: admin/includes/class-asp-admin-product-meta-boxes.php:510
 msgid "Update Stripe Payments Subscriptions add-on to version %s to enable this functionailty."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:505
+#: admin/includes/class-asp-admin-product-meta-boxes.php:516
 msgid "Use this to configure tax variations on per-country basis."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:515
+#: admin/includes/class-asp-admin-product-meta-boxes.php:526
 msgid "Add Tax Variation"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:516
+#: admin/includes/class-asp-admin-product-meta-boxes.php:527
 msgid "Apply the tax variation based on:"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:518
+#: admin/includes/class-asp-admin-product-meta-boxes.php:529
 msgid "Billing address"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:519
+#: admin/includes/class-asp-admin-product-meta-boxes.php:530
 msgid "Shipping address"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:532
+#: admin/includes/class-asp-admin-product-meta-boxes.php:543
 msgid "By default, if you leave this field empty, the product quantity will be set to 1. You can change this behavior by using the following options."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:536
+#: admin/includes/class-asp-admin-product-meta-boxes.php:547
 msgid "Allow users to specify quantity"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:538
+#: admin/includes/class-asp-admin-product-meta-boxes.php:549
 msgid "When checked, users can enter the quantity they want to buy."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:540
+#: admin/includes/class-asp-admin-product-meta-boxes.php:551
 msgid "Set Quantity:"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:543
+#: admin/includes/class-asp-admin-product-meta-boxes.php:554
 msgid "If you want to use a set quantity for this item then enter the value in this field."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:549
+#: admin/includes/class-asp-admin-product-meta-boxes.php:560
 msgid "Enable stock control"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:551
+#: admin/includes/class-asp-admin-product-meta-boxes.php:562
 msgid "When enabled, you can specify the quantity available for this product. It will be decreased each time the item is purchased. When stock reaches zero, an \"Out of stock\" message will be displayed instead of the buy button."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:553
+#: admin/includes/class-asp-admin-product-meta-boxes.php:564
 msgid "Quantity Available:"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:556
+#: admin/includes/class-asp-admin-product-meta-boxes.php:567
 msgid "Specify the quantity available for this product."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:559
+#: admin/includes/class-asp-admin-product-meta-boxes.php:570
 msgid "Show the available quantity in the payment popup"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:561
+#: admin/includes/class-asp-admin-product-meta-boxes.php:572
 msgid "When this is checked, the number of remaining items is displayed on payment popup."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:568
+#: admin/includes/class-asp-admin-product-meta-boxes.php:579
 msgid "URL of your product (if you're selling digital products)."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:574
+#: admin/includes/class-asp-admin-product-meta-boxes.php:585
 msgid "Manually enter a valid URL of the file in the text box below, or click \"Select File\" button to upload (or choose) the downloadable file."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:578
-#: admin/includes/class-asp-admin-product-meta-boxes.php:596
+#: admin/includes/class-asp-admin-product-meta-boxes.php:589
+#: admin/includes/class-asp-admin-product-meta-boxes.php:607
 msgid "Select File"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:582
+#: admin/includes/class-asp-admin-product-meta-boxes.php:593
 msgid "Steps to upload a file or choose one from your media library:"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:584
+#: admin/includes/class-asp-admin-product-meta-boxes.php:595
 msgid "Hit the \"Select File\" button."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:585
+#: admin/includes/class-asp-admin-product-meta-boxes.php:596
 msgid "Upload a new file or choose an existing one from your media library."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:586
+#: admin/includes/class-asp-admin-product-meta-boxes.php:597
 msgid "Click the \"Insert\" button, this will populate the uploaded file's URL in the above text field."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:598
-#: admin/includes/class-asp-admin-product-meta-boxes.php:649
+#: admin/includes/class-asp-admin-product-meta-boxes.php:609
+#: admin/includes/class-asp-admin-product-meta-boxes.php:660
 msgid "Insert"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:623
+#: admin/includes/class-asp-admin-product-meta-boxes.php:634
 msgid "Manually enter a valid URL, or click \"Select Image\" to upload (or choose) the file thumbnail image."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:627
-#: admin/includes/class-asp-admin-product-meta-boxes.php:647
+#: admin/includes/class-asp-admin-product-meta-boxes.php:638
+#: admin/includes/class-asp-admin-product-meta-boxes.php:658
 msgid "Select Image"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:628
+#: admin/includes/class-asp-admin-product-meta-boxes.php:639
 msgid "Remove Image"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:637
+#: admin/includes/class-asp-admin-product-meta-boxes.php:648
 msgid "Don't use product thumbnail in Stripe pop-up"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:639
+#: admin/includes/class-asp-admin-product-meta-boxes.php:650
 msgid "Use this checkbox if you do not want to show the product thumbnail in Stripe checkout popup."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:679
+#: admin/includes/class-asp-admin-product-meta-boxes.php:690
 msgid "Collect Address on Checkout"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:680
+#: admin/includes/class-asp-admin-product-meta-boxes.php:691
 msgid "Enable this to collect customer address on checkout."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:687
+#: admin/includes/class-asp-admin-product-meta-boxes.php:698
 msgid "Collect Both Billing And Shipping Addresses"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:694
+#: admin/includes/class-asp-admin-product-meta-boxes.php:705
 msgid "Collect Billing Address Only"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:703
+#: admin/includes/class-asp-admin-product-meta-boxes.php:714
 msgid "Enter the Thank You page URL for this product. Leave it blank to use the default Thank You page specified in the settings."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:705
+#: admin/includes/class-asp-admin-product-meta-boxes.php:716
 msgid "You can read on how to customize some of the messages on the Thank You page <a href=\"https://s-plugins.com/customize-the-thank-page-message-of-stripe-payments-plugin/\" target=\"_blank\">in this documentation</a>."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:718
+#: admin/includes/class-asp-admin-product-meta-boxes.php:729
 msgid "Button Options"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:722
+#: admin/includes/class-asp-admin-product-meta-boxes.php:733
 msgid "Specify text to be displayed on the button. Leave it blank to use button text specified on settings page."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:723
+#: admin/includes/class-asp-admin-product-meta-boxes.php:734
 msgid "Button CSS Class"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:726
+#: admin/includes/class-asp-admin-product-meta-boxes.php:737
 msgid "CSS class to be assigned to the button. This is used for styling purposes. You can get additional information <a href=\"https://s-plugins.com/customize-stripe-payment-button-appearance-using-css/\" target=\"_blank\">in this tutorial</a>."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:727
+#: admin/includes/class-asp-admin-product-meta-boxes.php:738
 #: admin/views/blocks.php:30
 msgid "Show Button Only"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:728
+#: admin/includes/class-asp-admin-product-meta-boxes.php:739
 #: admin/views/blocks.php:31
 msgid "Check this box if you just want to show the button only without any additional product info."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:731
+#: admin/includes/class-asp-admin-product-meta-boxes.php:742
 msgid "Payment Popup Options"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:732
+#: admin/includes/class-asp-admin-product-meta-boxes.php:743
 msgid "Show Order Total On Payment Popup"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:733
+#: admin/includes/class-asp-admin-product-meta-boxes.php:744
 msgid "If enabled, an additional \"Your order\" section with itemized product info (shipping, tax amount, variations etc) will be displayed on payment popup."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:750
+#: admin/includes/class-asp-admin-product-meta-boxes.php:761
 msgid "Custom field is disabled. Configure custom field in the settings menu of this plugin to enable it."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:754
+#: admin/includes/class-asp-admin-product-meta-boxes.php:765
 msgid "Select how Custom Field display should be handled for this product."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:755
 #: admin/includes/class-asp-admin-product-meta-boxes.php:766
+#: admin/includes/class-asp-admin-product-meta-boxes.php:777
 msgid "Use Global Setting"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:756
 #: admin/includes/class-asp-admin-product-meta-boxes.php:767
+#: admin/includes/class-asp-admin-product-meta-boxes.php:778
 msgid "Enabled"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:757
 #: admin/includes/class-asp-admin-product-meta-boxes.php:768
+#: admin/includes/class-asp-admin-product-meta-boxes.php:779
 msgid "Disabled"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:765
+#: admin/includes/class-asp-admin-product-meta-boxes.php:776
 msgid "Select how Coupons should be handled for this product."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:790
+#: admin/includes/class-asp-admin-product-meta-boxes.php:801
 msgid "Authorize Only"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:792
+#: admin/includes/class-asp-admin-product-meta-boxes.php:803
 msgid "Place a hold on a card to reserve the funds now and capture it later manually."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:794
+#: admin/includes/class-asp-admin-product-meta-boxes.php:805
 msgid "Note: this option is not supported by Subscription products, Alipay, SOFORT, iDEAL and FPX payment methods. If enabled, those won't be offered as payment option for this product."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:796
+#: admin/includes/class-asp-admin-product-meta-boxes.php:807
 msgid "Force Test Mode"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:797
+#: admin/includes/class-asp-admin-product-meta-boxes.php:808
 msgid "When enabled, this product will stay in test mode regardless of the value set in the global \"Live Mode\" settings option. Can be useful to create a test product."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:800
+#: admin/includes/class-asp-admin-product-meta-boxes.php:811
 msgid "Other Stripe Account"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:801
+#: admin/includes/class-asp-admin-product-meta-boxes.php:812
 msgid "Note: this functionality is currently being tested and is not supported by Subscription products, APM, Alipay, SOFORT and iDEAL add-ons. Please do not enable it if you are using one of these add-ons."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:802
+#: admin/includes/class-asp-admin-product-meta-boxes.php:813
 msgid "Use Another Stripe Account"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:833
-#: admin/includes/class-asp-admin-products.php:137
+#: admin/includes/class-asp-admin-product-meta-boxes.php:844
+#: admin/includes/class-asp-admin-products.php:148
 msgid "Shortcode"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:835
+#: admin/includes/class-asp-admin-product-meta-boxes.php:846
 msgid "Use this shortcode to display this product."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:838
+#: admin/includes/class-asp-admin-product-meta-boxes.php:849
 msgid "CSS Class"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:840
+#: admin/includes/class-asp-admin-product-meta-boxes.php:851
 msgid "Attach this product to any html element by adding this CSS class to it."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:843
+#: admin/includes/class-asp-admin-product-meta-boxes.php:854
 msgid "Link URL"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:845
+#: admin/includes/class-asp-admin-product-meta-boxes.php:856
 msgid "Use this URL to create a custom payment button using a text or image link."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:867
+#: admin/includes/class-asp-admin-product-meta-boxes.php:878
 msgid "Please specify product name."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:934
+#: admin/includes/class-asp-admin-product-meta-boxes.php:947
 msgid "Please enter all API keys for other Stripe account."
 msgstr ""
 
 #. translators: %1$s - currency code, %2$s - minimum amount, %3$s - current amount
-#: admin/includes/class-asp-admin-product-meta-boxes.php:1052
+#: admin/includes/class-asp-admin-product-meta-boxes.php:1065
 msgid "<b>Invalid product price</b>: minimum price in %1$s should be %2$s, you specified %3$s. This price limitation comes from Stripe."
 msgstr ""
 
 #. translators: %1$s - maximum allowed amount, %2$s - current amount
-#: admin/includes/class-asp-admin-product-meta-boxes.php:1062
+#: admin/includes/class-asp-admin-product-meta-boxes.php:1075
 msgid "<b>Invalid product price</b>: maximum allowed product price is %1$s, you specified %2$s"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:1069
+#: admin/includes/class-asp-admin-product-meta-boxes.php:1082
 msgid "<b>Invalid product price</b>: one-time payment product price cannot be zero."
 msgstr ""
 
-#: admin/includes/class-asp-admin-order-meta-boxes.php:11
-msgid "Order Events"
+#: admin/includes/class-asp-admin-products.php:30
+#: admin/includes/class-asp-admin-products.php:88
+msgctxt "Post Type General Name"
+msgid "Products"
 msgstr ""
 
-#: admin/includes/class-asp-admin-order-meta-boxes.php:26
-msgid "Order created."
+#: admin/includes/class-asp-admin-products.php:31
+#: admin/includes/class-asp-admin-products.php:89
+msgctxt "Post Type Singular Name"
+msgid "Product"
 msgstr ""
 
-#: admin/includes/class-asp-admin-order-meta-boxes.php:29
-msgid "Payment completed."
+#: admin/includes/class-asp-admin-products.php:32
+msgid "Stripe Payments"
 msgstr ""
 
-#: admin/includes/class-asp-admin-order-meta-boxes.php:50
-msgid "No data available."
+#: admin/includes/class-asp-admin-products.php:33
+#: admin/includes/class-asp-admin-products.php:90
+msgid "Products"
+msgstr ""
+
+#: admin/includes/class-asp-admin-products.php:34
+#: admin/includes/class-asp-admin-products.php:91
+msgid "View Product"
+msgstr ""
+
+#: admin/includes/class-asp-admin-products.php:35
+#: admin/includes/class-asp-admin-products.php:36
+#: admin/includes/class-asp-admin-products.php:92
+#: admin/includes/class-asp-admin-products.php:93
+msgid "Add New Product"
+msgstr ""
+
+#: admin/includes/class-asp-admin-products.php:37
+#: admin/includes/class-asp-admin-products.php:94
+#: admin/includes/class-asp-admin-products.php:173
+msgid "Edit Product"
+msgstr ""
+
+#: admin/includes/class-asp-admin-products.php:38
+#: admin/includes/class-asp-admin-products.php:95
+msgid "Update Products"
+msgstr ""
+
+#: admin/includes/class-asp-admin-products.php:39
+#: admin/includes/class-asp-admin-products.php:96
+msgid "Search Product"
+msgstr ""
+
+#: admin/includes/class-asp-admin-products.php:40
+#: admin/includes/class-asp-admin-products.php:97
+#: admin/includes/class-order.php:46
+msgid "Not found"
+msgstr ""
+
+#: admin/includes/class-asp-admin-products.php:41
+#: admin/includes/class-asp-admin-products.php:98
+#: admin/includes/class-order.php:47
+msgid "Not found in Trash"
+msgstr ""
+
+#: admin/includes/class-asp-admin-products.php:126
+msgid "View product"
+msgstr ""
+
+#: admin/includes/class-asp-admin-products.php:128
+msgid "Preview product"
+msgstr ""
+
+#: admin/includes/class-asp-admin-products.php:130
+#: admin/includes/class-asp-admin-products.php:131
+msgid "Product updated."
+msgstr ""
+
+#: admin/includes/class-asp-admin-products.php:132
+msgid "Product published."
+msgstr ""
+
+#: admin/includes/class-asp-admin-products.php:133
+msgid "Product saved."
+msgstr ""
+
+#: admin/includes/class-asp-admin-products.php:134
+msgid "Product submitted."
+msgstr ""
+
+#: admin/includes/class-asp-admin-products.php:135
+msgid "Product draft updated."
+msgstr ""
+
+#: admin/includes/class-asp-admin-products.php:143
+msgid "Thumbnail"
+msgstr ""
+
+#: admin/includes/class-asp-admin-products.php:144
+#: includes/class-asp-order-item.php:128
+#: includes/process_ipn.php:701
+#: includes/shortcodes/class-shortcode-asp.php:1006
+msgid "Product Name"
+msgstr ""
+
+#: admin/includes/class-asp-admin-products.php:145
+msgid "ID"
+msgstr ""
+
+#: admin/includes/class-asp-admin-products.php:147
+msgid "Stock"
+msgstr ""
+
+#: admin/includes/class-asp-admin-products.php:149
+msgid "Date"
+msgstr ""
+
+#: admin/includes/class-asp-admin-products.php:162
+#: includes/class-asp-pp-display.php:227
+#: includes/shortcodes/class-asp-shortcode-ng.php:516
+#: includes/shortcodes/class-shortcode-asp.php:621
+msgid "Out of stock"
+msgstr ""
+
+#: admin/includes/class-asp-admin-products.php:193
+msgid "Custom"
 msgstr ""
 
 #: admin/includes/class-coupons-list-table.php:52
-#: admin/includes/class-coupons.php:360
+#: admin/includes/class-coupons.php:350
 #: includes/shortcodes/class-shortcode-asp.php:958
-#: public/views/templates/default/payment-popup.php:177
+#: public/views/templates/default/payment-popup.php:184
 msgid "Coupon Code"
 msgstr ""
 
 #: admin/includes/class-coupons-list-table.php:54
-#: admin/includes/class-coupons.php:343
+#: admin/includes/class-coupons.php:333
 msgid "Active"
 msgstr ""
 
@@ -1653,22 +1783,22 @@ msgid "Discount Value"
 msgstr ""
 
 #: admin/includes/class-coupons-list-table.php:56
-#: admin/includes/class-coupons.php:394
+#: admin/includes/class-coupons.php:384
 msgid "Redemption Count"
 msgstr ""
 
 #: admin/includes/class-coupons-list-table.php:57
-#: admin/includes/class-coupons.php:387
+#: admin/includes/class-coupons.php:377
 msgid "Redemption Limit"
 msgstr ""
 
 #: admin/includes/class-coupons-list-table.php:58
-#: admin/includes/class-coupons.php:401
+#: admin/includes/class-coupons.php:391
 msgid "Start Date"
 msgstr ""
 
 #: admin/includes/class-coupons-list-table.php:59
-#: admin/includes/class-coupons.php:408
+#: admin/includes/class-coupons.php:398
 msgid "Expiry Date"
 msgstr ""
 
@@ -1706,128 +1836,205 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
-#: admin/includes/class-asp-admin-products.php:30
-#: admin/includes/class-asp-admin-products.php:77
-msgctxt "Post Type General Name"
-msgid "Products"
+#: admin/includes/class-coupons.php:37
+#: includes/class-asp-product-item.php:443
+msgid "Coupon not found."
 msgstr ""
 
-#: admin/includes/class-asp-admin-products.php:31
-#: admin/includes/class-asp-admin-products.php:78
-msgctxt "Post Type Singular Name"
-msgid "Product"
+#: admin/includes/class-coupons.php:44
+#: includes/class-asp-product-item.php:449
+msgid "Coupon is not active."
 msgstr ""
 
-#: admin/includes/class-asp-admin-products.php:32
-msgid "Stripe Payments"
+#: admin/includes/class-coupons.php:51
+#: includes/class-asp-product-item.php:455
+msgid "Coupon is not available yet."
 msgstr ""
 
-#: admin/includes/class-asp-admin-products.php:33
-#: admin/includes/class-asp-admin-products.php:79
-msgid "Products"
+#: admin/includes/class-coupons.php:58
+#: includes/class-asp-product-item.php:461
+msgid "Coupon has expired."
 msgstr ""
 
-#: admin/includes/class-asp-admin-products.php:34
-#: admin/includes/class-asp-admin-products.php:80
-msgid "View Product"
+#: admin/includes/class-coupons.php:66
+#: includes/class-asp-product-item.php:468
+msgid "Coupon redemption limit is reached."
 msgstr ""
 
-#: admin/includes/class-asp-admin-products.php:35
-#: admin/includes/class-asp-admin-products.php:36
-#: admin/includes/class-asp-admin-products.php:81
-#: admin/includes/class-asp-admin-products.php:82
-msgid "Add New Product"
+#: admin/includes/class-coupons.php:94
+msgid "Empty coupon code"
 msgstr ""
 
-#: admin/includes/class-asp-admin-products.php:37
-#: admin/includes/class-asp-admin-products.php:83
-#: admin/includes/class-asp-admin-products.php:162
-msgid "Edit Product"
+#: admin/includes/class-coupons.php:115
+msgid "No product ID specified."
 msgstr ""
 
-#: admin/includes/class-asp-admin-products.php:38
-#: admin/includes/class-asp-admin-products.php:84
-msgid "Update Products"
+#: admin/includes/class-coupons.php:120
+#: includes/class-asp-product-item.php:499
+msgid "Coupon is not allowed for this product."
 msgstr ""
 
-#: admin/includes/class-asp-admin-products.php:39
-#: admin/includes/class-asp-admin-products.php:85
-msgid "Search Product"
+#: admin/includes/class-coupons.php:194
+#: admin/includes/class-coupons.php:241
+#: admin/includes/class-coupons.php:267
+msgid "Coupons"
 msgstr ""
 
-#: admin/includes/class-asp-admin-products.php:40
-#: admin/includes/class-asp-admin-products.php:86
-#: admin/includes/class-order.php:46
-msgid "Not found"
+#: admin/includes/class-coupons.php:207
+msgid "Settings updated."
 msgstr ""
 
-#: admin/includes/class-asp-admin-products.php:41
-#: admin/includes/class-asp-admin-products.php:87
-#: admin/includes/class-order.php:47
-msgid "Not found in Trash"
+#: admin/includes/class-coupons.php:245
+msgid "Coupon Settings"
 msgstr ""
 
-#: admin/includes/class-asp-admin-products.php:115
-msgid "View product"
+#: admin/includes/class-coupons.php:251
+msgid "Enable Coupons"
 msgstr ""
 
-#: admin/includes/class-asp-admin-products.php:117
-msgid "Preview product"
+#: admin/includes/class-coupons.php:254
+msgid "Enables the discount coupon functionality."
 msgstr ""
 
-#: admin/includes/class-asp-admin-products.php:119
-#: admin/includes/class-asp-admin-products.php:120
-msgid "Product updated."
+#: admin/includes/class-coupons.php:260
+msgid "Save Settings"
 msgstr ""
 
-#: admin/includes/class-asp-admin-products.php:121
-msgid "Product published."
+#: admin/includes/class-coupons.php:267
+msgid "Add a Coupon"
 msgstr ""
 
-#: admin/includes/class-asp-admin-products.php:122
-msgid "Product saved."
+#: admin/includes/class-coupons.php:324
+msgid "No products created yet."
 msgstr ""
 
-#: admin/includes/class-asp-admin-products.php:123
-msgid "Product submitted."
+#: admin/includes/class-coupons.php:329
+msgid "Add Coupon"
 msgstr ""
 
-#: admin/includes/class-asp-admin-products.php:124
-msgid "Product draft updated."
+#: admin/includes/class-coupons.php:329
+msgid "Edit Coupon"
 msgstr ""
 
-#: admin/includes/class-asp-admin-products.php:132
-msgid "Thumbnail"
+#: admin/includes/class-coupons.php:336
+msgid "Use this to enable/disable this coupon."
 msgstr ""
 
-#: admin/includes/class-asp-admin-products.php:133
-#: includes/shortcodes/class-shortcode-asp.php:1006
-#: includes/class-asp-order-item.php:128
-#: includes/process_ipn.php:701
-msgid "Product Name"
+#: admin/includes/class-coupons.php:341
+msgid "Coupon ID"
 msgstr ""
 
-#: admin/includes/class-asp-admin-products.php:134
-msgid "ID"
+#: admin/includes/class-coupons.php:345
+msgid "Coupon ID. This value cannot be changed."
 msgstr ""
 
-#: admin/includes/class-asp-admin-products.php:136
-msgid "Stock"
+#: admin/includes/class-coupons.php:353
+msgid "Coupon code that you can share with your customers. Example: GET10OFF"
 msgstr ""
 
-#: admin/includes/class-asp-admin-products.php:138
-msgid "Date"
+#: admin/includes/class-coupons.php:357
+msgid "Discount"
 msgstr ""
 
-#: admin/includes/class-asp-admin-products.php:151
-#: includes/class-asp-pp-display.php:227
-#: includes/shortcodes/class-asp-shortcode-ng.php:516
-#: includes/shortcodes/class-shortcode-asp.php:621
-msgid "Out of stock"
+#: admin/includes/class-coupons.php:361
+msgid "Percent (%)"
 msgstr ""
 
-#: admin/includes/class-asp-admin-products.php:182
-msgid "Custom"
+#: admin/includes/class-coupons.php:362
+msgid "Fixed amount"
+msgstr ""
+
+#: admin/includes/class-coupons.php:364
+msgid "Select discount amount and type. Enter a numeric value only. Example: 25"
+msgstr ""
+
+#: admin/includes/class-coupons.php:367
+msgid "Apply Per-Order"
+msgstr ""
+
+#: admin/includes/class-coupons.php:369
+msgid "If enabled, discount is applied on per-order basis rather than per-item."
+msgstr ""
+
+#: admin/includes/class-coupons.php:371
+msgid "This option is only available for \"fixed amount\" type coupons."
+msgstr ""
+
+#: admin/includes/class-coupons.php:380
+msgid "Set max number of coupons available for redemption. Put 0 to make it unlimited."
+msgstr ""
+
+#: admin/includes/class-coupons.php:387
+msgid "Number of already redeemed coupons."
+msgstr ""
+
+#: admin/includes/class-coupons.php:394
+msgid "Start date when this coupon can be used."
+msgstr ""
+
+#: admin/includes/class-coupons.php:401
+msgid "Date when this coupon will expire. Put 0 to disable expiry check."
+msgstr ""
+
+#: admin/includes/class-coupons.php:405
+msgid "Coupon Available For:"
+msgstr ""
+
+#: admin/includes/class-coupons.php:407
+msgid "All products"
+msgstr ""
+
+#: admin/includes/class-coupons.php:409
+msgid "Specific Products Only"
+msgstr ""
+
+#: admin/includes/class-coupons.php:413
+msgid "Choose availability of the coupon. You can specify which products coupon is available when \"Specific Products Only\" is selected."
+msgstr ""
+
+#: admin/includes/class-coupons.php:422
+msgid "Update Coupon"
+msgstr ""
+
+#: admin/includes/class-coupons.php:422
+msgid "Create Coupon"
+msgstr ""
+
+#: admin/includes/class-coupons.php:456
+msgid "Can't delete coupon: coupon ID is not provided."
+msgstr ""
+
+#. translators: %d is coupon ID
+#: admin/includes/class-coupons.php:466
+msgid "Can't delete coupon: coupon #%d not found."
+msgstr ""
+
+#. translators: %d is coupon ID
+#: admin/includes/class-coupons.php:475
+msgid "Can't delete coupon: post #%d is not a coupon."
+msgstr ""
+
+#. translators: %d is coupon ID
+#: admin/includes/class-coupons.php:486
+msgid "Coupon #%d has been deleted."
+msgstr ""
+
+#: admin/includes/class-coupons.php:512
+msgid "Please enter coupon code."
+msgstr ""
+
+#: admin/includes/class-coupons.php:516
+msgid "Please enter discount."
+msgstr ""
+
+#. translators: %s is coupon code
+#: admin/includes/class-coupons.php:547
+msgid "Coupon \"%s\" has been updated."
+msgstr ""
+
+#. translators: %s is coupon code
+#: admin/includes/class-coupons.php:547
+msgid "Coupon \"%s\" has been created."
 msgstr ""
 
 #: admin/includes/class-order.php:36
@@ -1881,8 +2088,8 @@ msgid "Stripe Orders"
 msgstr ""
 
 #: admin/includes/class-order.php:141
-#: public/views/templates/default/payment-popup.php:199
-#: public/views/templates/default/payment-popup.php:233
+#: public/views/templates/default/payment-popup.php:206
+#: public/views/templates/default/payment-popup.php:240
 msgid "Total"
 msgstr ""
 
@@ -1936,219 +2143,6 @@ msgstr ""
 
 #: admin/includes/class-order.php:397
 msgid "Error"
-msgstr ""
-
-#: admin/includes/class-coupons.php:37
-#: includes/class-asp-product-item.php:443
-msgid "Coupon not found."
-msgstr ""
-
-#: admin/includes/class-coupons.php:44
-#: includes/class-asp-product-item.php:449
-msgid "Coupon is not active."
-msgstr ""
-
-#: admin/includes/class-coupons.php:51
-#: includes/class-asp-product-item.php:455
-msgid "Coupon is not available yet."
-msgstr ""
-
-#: admin/includes/class-coupons.php:58
-#: includes/class-asp-product-item.php:461
-msgid "Coupon has expired."
-msgstr ""
-
-#: admin/includes/class-coupons.php:66
-#: includes/class-asp-product-item.php:468
-msgid "Coupon redemption limit is reached."
-msgstr ""
-
-#: admin/includes/class-coupons.php:94
-msgid "Empty coupon code"
-msgstr ""
-
-#: admin/includes/class-coupons.php:115
-msgid "No product ID specified."
-msgstr ""
-
-#: admin/includes/class-coupons.php:120
-#: includes/class-asp-product-item.php:499
-msgid "Coupon is not allowed for this product."
-msgstr ""
-
-#: admin/includes/class-coupons.php:179
-#: admin/includes/class-coupons.php:251
-#: admin/includes/class-coupons.php:277
-msgid "Coupons"
-msgstr ""
-
-#: admin/includes/class-coupons.php:189
-msgid "Settings updated."
-msgstr ""
-
-#: admin/includes/class-coupons.php:255
-msgid "Coupon Settings"
-msgstr ""
-
-#: admin/includes/class-coupons.php:261
-msgid "Enable Coupons"
-msgstr ""
-
-#: admin/includes/class-coupons.php:264
-msgid "Enables the discount coupon functionality."
-msgstr ""
-
-#: admin/includes/class-coupons.php:270
-msgid "Save Settings"
-msgstr ""
-
-#: admin/includes/class-coupons.php:277
-msgid "Add a Coupon"
-msgstr ""
-
-#: admin/includes/class-coupons.php:334
-msgid "No products created yet."
-msgstr ""
-
-#: admin/includes/class-coupons.php:339
-msgid "Add Coupon"
-msgstr ""
-
-#: admin/includes/class-coupons.php:339
-msgid "Edit Coupon"
-msgstr ""
-
-#: admin/includes/class-coupons.php:346
-msgid "Use this to enable/disable this coupon."
-msgstr ""
-
-#: admin/includes/class-coupons.php:351
-msgid "Coupon ID"
-msgstr ""
-
-#: admin/includes/class-coupons.php:355
-msgid "Coupon ID. This value cannot be changed."
-msgstr ""
-
-#: admin/includes/class-coupons.php:363
-msgid "Coupon code that you can share with your customers. Example: GET10OFF"
-msgstr ""
-
-#: admin/includes/class-coupons.php:367
-msgid "Discount"
-msgstr ""
-
-#: admin/includes/class-coupons.php:371
-msgid "Percent (%)"
-msgstr ""
-
-#: admin/includes/class-coupons.php:372
-msgid "Fixed amount"
-msgstr ""
-
-#: admin/includes/class-coupons.php:374
-msgid "Select discount amount and type. Enter a numeric value only. Example: 25"
-msgstr ""
-
-#: admin/includes/class-coupons.php:377
-msgid "Apply Per-Order"
-msgstr ""
-
-#: admin/includes/class-coupons.php:379
-msgid "If enabled, discount is applied on per-order basis rather than per-item."
-msgstr ""
-
-#: admin/includes/class-coupons.php:381
-msgid "This option is only available for \"fixed amount\" type coupons."
-msgstr ""
-
-#: admin/includes/class-coupons.php:390
-msgid "Set max number of coupons available for redemption. Put 0 to make it unlimited."
-msgstr ""
-
-#: admin/includes/class-coupons.php:397
-msgid "Number of already redeemed coupons."
-msgstr ""
-
-#: admin/includes/class-coupons.php:404
-msgid "Start date when this coupon can be used."
-msgstr ""
-
-#: admin/includes/class-coupons.php:411
-msgid "Date when this coupon will expire. Put 0 to disable expiry check."
-msgstr ""
-
-#: admin/includes/class-coupons.php:415
-msgid "Coupon Available For:"
-msgstr ""
-
-#: admin/includes/class-coupons.php:417
-msgid "All products"
-msgstr ""
-
-#: admin/includes/class-coupons.php:419
-msgid "Specific Products Only"
-msgstr ""
-
-#: admin/includes/class-coupons.php:423
-msgid "Choose availability of the coupon. You can specify which products coupon is available when \"Specific Products Only\" is selected."
-msgstr ""
-
-#: admin/includes/class-coupons.php:432
-msgid "Update Coupon"
-msgstr ""
-
-#: admin/includes/class-coupons.php:432
-msgid "Create Coupon"
-msgstr ""
-
-#: admin/includes/class-coupons.php:464
-msgid "Can't delete coupon: coupon ID is not provided."
-msgstr ""
-
-#. translators: %d is coupon ID
-#: admin/includes/class-coupons.php:470
-msgid "Can't delete coupon: coupon #%d not found."
-msgstr ""
-
-#. translators: %d is coupon ID
-#: admin/includes/class-coupons.php:475
-msgid "Can't delete coupon: post #%d is not a coupon."
-msgstr ""
-
-#. translators: %d is coupon ID
-#: admin/includes/class-coupons.php:481
-msgid "Coupon #%d has been deleted."
-msgstr ""
-
-#: admin/includes/class-coupons.php:502
-msgid "Please enter coupon code."
-msgstr ""
-
-#: admin/includes/class-coupons.php:506
-msgid "Please enter discount."
-msgstr ""
-
-#. translators: %s is coupon code
-#: admin/includes/class-coupons.php:537
-msgid "Coupon \"%s\" has been updated."
-msgstr ""
-
-#. translators: %s is coupon code
-#: admin/includes/class-coupons.php:537
-msgid "Coupon \"%s\" has been created."
-msgstr ""
-
-#: admin/views/blocks.php:29
-msgid "Product"
-msgstr ""
-
-#: admin/views/blocks.php:59
-msgid "Select product to view"
-msgstr ""
-
-#: admin/views/blocks.php:84
-msgid "(Select product)"
 msgstr ""
 
 #: admin/views/addons-listing.php:22
@@ -2362,368 +2356,16 @@ msgstr ""
 msgid "Error occurred:"
 msgstr ""
 
-#. translators: %d is number of items in stock
-#: includes/class-asp-product-item.php:402
-#: includes/class-asp-process-ipn-ng.php:511
-#: includes/class-asp-pp-display.php:557
-#: includes/shortcodes/class-asp-shortcode-ng.php:192
-#: includes/shortcodes/class-asp-shortcode-ng.php:549
-#: includes/shortcodes/class-shortcode-asp.php:103
-#: includes/shortcodes/class-shortcode-asp.php:344
-#: includes/shortcodes/class-shortcode-asp.php:689
-#: includes/process_ipn.php:569
-#: public/views/templates/default/payment-popup.php:220
-msgid "Tax"
+#: admin/views/blocks.php:29
+msgid "Product"
 msgstr ""
 
-#: includes/class-asp-product-item.php:413
-#: includes/class-asp-process-ipn-ng.php:519
-#: includes/class-asp-pp-display.php:558
-#: includes/shortcodes/class-asp-shortcode-ng.php:202
-#: includes/shortcodes/class-asp-shortcode-ng.php:550
-#: includes/shortcodes/class-shortcode-asp.php:104
-#: includes/shortcodes/class-shortcode-asp.php:354
-#: includes/shortcodes/class-shortcode-asp.php:690
-#: includes/process_ipn.php:576
-#: public/views/templates/default/payment-popup.php:226
-msgid "Shipping"
+#: admin/views/blocks.php:59
+msgid "Select product to view"
 msgstr ""
 
-#: includes/class-asp-product-item.php:544
-msgid "No product ID provided."
-msgstr ""
-
-#. translators: %d is product id
-#: includes/class-asp-product-item.php:552
-msgid "Can't find product with ID %d"
-msgstr ""
-
-#: includes/class-asp.php:316
-msgid "Buy Now"
-msgstr ""
-
-#: includes/class-asp.php:322
-msgid "Thank you for the purchase"
-msgstr ""
-
-#: includes/class-asp.php:323
-msgid "Hello"
-msgstr ""
-
-#: includes/class-asp.php:324
-msgid "Thank you for your purchase! You ordered the following item(s):"
-msgstr ""
-
-#: includes/class-asp.php:327
-msgid "Notification of product sale"
-msgstr ""
-
-#: includes/class-asp.php:328
-msgid "Dear Seller"
-msgstr ""
-
-#: includes/class-asp.php:329
-msgid "This mail is to notify you of a product sale."
-msgstr ""
-
-#: includes/class-asp.php:331
-msgid "The sale was made to"
-msgstr ""
-
-#: includes/class-asp.php:332
-msgid "Thanks"
-msgstr ""
-
-#: includes/class-asp.php:348
-msgid "I accept the <a href=\"https://example.com/terms-and-conditions/\" target=\"_blank\">Terms and Conditions</a>"
-msgstr ""
-
-#: includes/class-asp-process-ipn-ng.php:109
-#: includes/process_ipn.php:64
-#: includes/class-asp-pp-ajax.php:146
-#: includes/class-asp-pp-ajax.php:150
-msgid "Following error occurred during payment processing:"
-msgstr ""
-
-#: includes/class-asp-process-ipn-ng.php:111
-#: includes/process_ipn.php:67
-#: includes/class-asp-pp-ajax.php:148
-msgid "Debug data:"
-msgstr ""
-
-#. translators: placeholders are expected and received amounts
-#: includes/class-asp-process-ipn-ng.php:383
-msgid "Invalid payment amount received. Expected %1$s, got %2$s."
-msgstr ""
-
-#. translators: %s is coupon code
-#: includes/class-asp-process-ipn-ng.php:499
-#: includes/process_ipn.php:564
-msgid "Coupon \"%s\""
-msgstr ""
-
-#: includes/class-asp-process-ipn-ng.php:503
-#: includes/process_ipn.php:565
-msgid "Subtotal"
-msgstr ""
-
-#: includes/class-asp-process-ipn-ng.php:592
-msgid "Product Name: "
-msgstr ""
-
-#: includes/class-asp-process-ipn-ng.php:593
-msgid "Quantity: "
-msgstr ""
-
-#: includes/class-asp-process-ipn-ng.php:594
-msgid "Item Price: "
-msgstr ""
-
-#: includes/class-asp-process-ipn-ng.php:599
-msgid "Total Amount: "
-msgstr ""
-
-#: includes/class-asp-pp-display.php:92
-msgid "This product is in the trash. Please restore this product from the trash if you want to use it"
-msgstr ""
-
-#: includes/class-asp-pp-display.php:136
-#: includes/shortcodes/class-shortcode-asp.php:652
-msgid "Only numbers are allowed: 0-9"
-msgstr ""
-
-#: includes/class-asp-pp-display.php:365
-#: public/views/templates/default/payment-popup.php:395
-msgid "Credit or debit card"
-msgstr ""
-
-#. translators: %s is not a placeholder
-#: includes/class-asp-pp-display.php:512
-msgid "Authorize %s"
-msgstr ""
-
-#: includes/class-asp-pp-display.php:522
-#: includes/class-asp-pp-display.php:566
-#: includes/shortcodes/class-shortcode-asp.php:111
-msgid "Start Free Trial"
-msgstr ""
-
-#: includes/class-asp-pp-display.php:550
-#: includes/shortcodes/class-shortcode-asp.php:97
-msgid "Please enter a valid amount"
-msgstr ""
-
-#: includes/class-asp-pp-display.php:551
-#: includes/shortcodes/class-shortcode-asp.php:98
-#: includes/class-asp-pp-ajax.php:199
-msgid "Minimum amount is"
-msgstr ""
-
-#: includes/class-asp-pp-display.php:552
-#: includes/shortcodes/class-shortcode-asp.php:99
-msgid "Please enter quantity."
-msgstr ""
-
-#: includes/class-asp-pp-display.php:553
-#: includes/shortcodes/class-shortcode-asp.php:100
-msgid "Quantity can't be zero."
-msgstr ""
-
-#: includes/class-asp-pp-display.php:554
-#: includes/shortcodes/class-shortcode-asp.php:101
-msgid "Quantity should be integer value."
-msgstr ""
-
-#. translators: %d is number of items in stock
-#: includes/class-asp-pp-display.php:556
-#: includes/shortcodes/class-shortcode-asp.php:102
-#: includes/class-asp-pp-ajax.php:189
-msgid "You cannot order more items than available: %d"
-msgstr ""
-
-#: includes/class-asp-pp-display.php:559
-#: includes/shortcodes/class-asp-shortcode-ng.php:213
-#: includes/shortcodes/class-shortcode-asp.php:105
-#: includes/shortcodes/class-shortcode-asp.php:365
-msgid "Total:"
-msgstr ""
-
-#: includes/class-asp-pp-display.php:560
-#: includes/shortcodes/class-shortcode-asp.php:106
-msgid "Please fill in this field."
-msgstr ""
-
-#: includes/class-asp-pp-display.php:561
-#: includes/shortcodes/class-shortcode-asp.php:107
-msgid "Please check this checkbox."
-msgstr ""
-
-#: includes/class-asp-pp-display.php:562
-#: includes/shortcodes/class-shortcode-asp.php:108
-msgid "You must accept the terms before you can proceed."
-msgstr ""
-
-#: includes/class-asp-pp-display.php:563
-msgid "Coupon"
-msgstr ""
-
-#: includes/class-asp-pp-display.php:564
-#: includes/shortcodes/class-shortcode-asp.php:109
-msgid "Remove coupon"
-msgstr ""
-
-#: includes/class-asp-pp-display.php:565
-#: includes/shortcodes/class-shortcode-asp.php:110
-#: public/views/templates/default/payment-popup.php:187
-msgid "Remove"
-msgstr ""
-
-#: includes/class-asp-pp-display.php:567
-#: includes/shortcodes/class-shortcode-asp.php:112
-msgid "Invalid validation RegEx: "
-msgstr ""
-
-#: includes/class-asp-pp-display.php:568
-msgid "Purchase for Free"
-msgstr ""
-
-#: includes/class-asp-pp-display.php:569
-msgid "Currency not supported for this payment method."
-msgstr ""
-
-#: includes/class-asp-pp-display.php:570
-msgid " for upcoming recurring payments"
-msgstr ""
-
-#: includes/class-asp-pp-display.php:571
-msgid "3D Secure failed."
-msgstr ""
-
-#: includes/class-asp-pp-display.php:572
-msgid "Abort 3D Secure check?"
-msgstr ""
-
-#: includes/shortcodes/class-asp-shortcode-ng.php:78
-msgid "Error: product ID is invalid."
-msgstr ""
-
-#: includes/shortcodes/class-asp-shortcode-ng.php:525
-#: includes/shortcodes/class-shortcode-asp.php:630
-msgid "Stripe Payments requires Javascript to be supported by the browser in order to operate."
-msgstr ""
-
-#: includes/shortcodes/class-asp-shortcode-ng.php:704
-#: includes/shortcodes/class-shortcode-asp.php:866
-#: public/views/templates/default/payment-popup.php:85
-msgid "Enter amount"
-msgstr ""
-
-#: includes/shortcodes/class-shortcode-asp.php:896
-#: public/views/templates/default/payment-popup.php:113
-msgid "Enter quantity"
-msgstr ""
-
-#: includes/shortcodes/class-shortcode-asp.php:897
-msgid "X item(s)"
-msgstr ""
-
-#: includes/shortcodes/class-shortcode-asp.php:960
-#: public/views/templates/default/payment-popup.php:181
-msgid "Apply"
-msgstr ""
-
-#: includes/shortcodes/class-shortcode-asp.php:1001
-#: includes/shortcodes/class-shortcode-asp.php:1062
-msgid "System was not able to complete the payment."
-msgstr ""
-
-#: includes/shortcodes/class-shortcode-asp.php:1004
-msgid "Thank you for your payment."
-msgstr ""
-
-#: includes/shortcodes/class-shortcode-asp.php:1005
-msgid "Here's what you purchased: "
-msgstr ""
-
-#: includes/shortcodes/class-shortcode-asp.php:1007
-#: includes/class-asp-order-item.php:129
-#: includes/process_ipn.php:702
-msgid "Quantity"
-msgstr ""
-
-#: includes/shortcodes/class-shortcode-asp.php:1008
-#: includes/class-asp-order-item.php:130
-#: includes/process_ipn.php:703
-msgid "Item Price"
-msgstr ""
-
-#: includes/shortcodes/class-shortcode-asp.php:1012
-#: includes/class-asp-order-item.php:134
-#: includes/process_ipn.php:707
-msgid "Total Amount"
-msgstr ""
-
-#: includes/shortcodes/class-shortcode-asp.php:1014
-#: includes/class-asp-order-item.php:124
-msgid "Transaction ID"
-msgstr ""
-
-#: includes/shortcodes/class-shortcode-asp.php:1019
-msgctxt "Is a part of 'Please click here to download'"
-msgid "Please "
-msgstr ""
-
-#: includes/shortcodes/class-shortcode-asp.php:1019
-msgctxt "Is a part of 'Please click here to download'"
-msgid "click here"
-msgstr ""
-
-#: includes/shortcodes/class-shortcode-asp.php:1019
-msgctxt "Is a part of 'Please click here to download'"
-msgid " to download."
-msgstr ""
-
-#: includes/shortcodes/class-shortcode-asp.php:1028
-#: includes/process_ipn.php:727
-msgid "Download links"
-msgstr ""
-
-#: includes/shortcodes/class-shortcode-asp.php:1029
-#: includes/shortcodes/show-user-transactions.php:60
-msgid "Click here to download"
-msgstr ""
-
-#: includes/shortcodes/class-shortcode-asp.php:1136
-msgid "No products have been configured yet"
-msgstr ""
-
-#: includes/shortcodes/class-shortcode-asp.php:1145
-msgid "Nothing found for"
-msgstr ""
-
-#: includes/shortcodes/class-shortcode-asp.php:1145
-msgid "Search results for"
-msgstr ""
-
-#. translators: %s is login URL
-#: includes/shortcodes/show-user-transactions.php:18
-msgid "Please <a href=\"%s\">login</a> to see your transactions history."
-msgstr ""
-
-#: includes/shortcodes/show-user-transactions.php:38
-msgid "No transactions found."
-msgstr ""
-
-#: includes/shortcodes/show-user-transactions.php:60
-msgid "Download link:"
-msgstr ""
-
-#: includes/class-asp-self-hooks-handler.php:386
-msgid "Invalid security token."
-msgstr ""
-
-#: includes/class-asp-self-hooks-handler.php:413
-msgid "Rate limit exceeded. Please try again later."
+#: admin/views/blocks.php:84
+msgid "(Select product)"
 msgstr ""
 
 #: includes/class-asp-addons-helper.php:73
@@ -2740,118 +2382,6 @@ msgstr ""
 msgid "%1$s requires Stripe Payments plugin minimum version to be %2$s (you have version %3$s installed). Please update Stripe Payments plugin."
 msgstr ""
 
-#: includes/recaptcha/admin/asp-recaptcha-admin-menu.php:16
-msgid "reCaptcha add-on is a part of core plugin now. Please delete \"Stripe Payments reCapthca Addon\" plugin to prevent potential issues."
-msgstr ""
-
-#: includes/recaptcha/admin/asp-recaptcha-admin-menu.php:17
-msgid "Click here to see the plugin on Plugins page."
-msgstr ""
-
-#: includes/recaptcha/admin/asp-recaptcha-admin-menu.php:40
-msgid "Please enter reCaptcha Site Key."
-msgstr ""
-
-#: includes/recaptcha/admin/asp-recaptcha-admin-menu.php:43
-msgid "Please enter reCaptcha Secret Key."
-msgstr ""
-
-#: includes/recaptcha/admin/asp-recaptcha-admin-menu.php:68
-msgid "reCAPTCHA Settings"
-msgstr ""
-
-#: includes/recaptcha/admin/asp-recaptcha-admin-menu.php:72
-msgid "Enable reCAPTCHA"
-msgstr ""
-
-#: includes/recaptcha/admin/asp-recaptcha-admin-menu.php:79
-msgid "Enables the reCAPTCHA feature. Enter reCAPTCHA v2 API Keys below."
-msgstr ""
-
-#: includes/recaptcha/admin/asp-recaptcha-admin-menu.php:85
-msgid "Use Invisible reCAPTCHA Badge"
-msgstr ""
-
-#: includes/recaptcha/admin/asp-recaptcha-admin-menu.php:92
-msgid "If you enable this option then you must enter reCAPTCHA v2 Invisible badge API Keys below."
-msgstr ""
-
-#: includes/recaptcha/admin/asp-recaptcha-admin-menu.php:98
-msgid "Site Key"
-msgstr ""
-
-#: includes/recaptcha/admin/asp-recaptcha-admin-menu.php:105
-msgid "Your reCaptcha Site Key."
-msgstr ""
-
-#: includes/recaptcha/admin/asp-recaptcha-admin-menu.php:111
-msgid "Secret Key"
-msgstr ""
-
-#: includes/recaptcha/admin/asp-recaptcha-admin-menu.php:118
-msgid "Your reCaptcha Secret Key."
-msgstr ""
-
-#: includes/recaptcha/admin/asp-recaptcha-admin-menu.php:124
-msgid "<a href=\"https://s-plugins.com/stripe-payments-recaptcha-addon/\" target=\"_blank\">Click here</a> to read the documentation to learn how to configure this and get API keys for your website."
-msgstr ""
-
-#: includes/recaptcha/admin/asp-recaptcha-admin-menu.php:129
-msgid "reCAPTCHA"
-msgstr ""
-
-#: includes/recaptcha/asp-recaptcha-main.php:62
-msgid "reCaptcha: error occurred during API request."
-msgstr ""
-
-#: includes/recaptcha/asp-recaptcha-main.php:67
-msgid "reCaptcha: error occurred during API request. HTTP Error code:"
-msgstr ""
-
-#: includes/recaptcha/asp-recaptcha-main.php:74
-msgid "reCaptcha: error occured parsing API response, invalid JSON data."
-msgstr ""
-
-#: includes/recaptcha/asp-recaptcha-main.php:84
-msgid "The response parameter is invalid or malformed."
-msgstr ""
-
-#: includes/recaptcha/asp-recaptcha-main.php:87
-msgid "Secret key is missing."
-msgstr ""
-
-#: includes/recaptcha/asp-recaptcha-main.php:90
-msgid "Secret key is invalid or malformed."
-msgstr ""
-
-#: includes/recaptcha/asp-recaptcha-main.php:93
-msgid "The response parameter is missing."
-msgstr ""
-
-#: includes/recaptcha/asp-recaptcha-main.php:101
-msgid "reCaptcha: check failed. Following error(s) occurred:"
-msgstr ""
-
-#: includes/recaptcha/asp-recaptcha-main.php:111
-msgid "Empty reCaptcha response received."
-msgstr ""
-
-#: includes/recaptcha/asp-recaptcha-main.php:139
-msgid "reCaptcha check failed."
-msgstr ""
-
-#: includes/recaptcha/asp-recaptcha-main.php:155
-msgid "reCaptcha tokens expired. Please refresh the page and try again."
-msgstr ""
-
-#: includes/recaptcha/asp-recaptcha-main.php:231
-msgid "Please enter reCaptcha keys."
-msgstr ""
-
-#: includes/recaptcha/asp-recaptcha-main.php:270
-msgid "reCaptcha: missing user response data."
-msgstr ""
-
 #: includes/class-asp-order-item.php:122
 msgid "Order Details"
 msgstr ""
@@ -2860,8 +2390,31 @@ msgstr ""
 msgid "Order Time"
 msgstr ""
 
+#: includes/class-asp-order-item.php:124
+#: includes/shortcodes/class-shortcode-asp.php:1014
+msgid "Transaction ID"
+msgstr ""
+
 #: includes/class-asp-order-item.php:125
 msgid "Stripe Token"
+msgstr ""
+
+#: includes/class-asp-order-item.php:129
+#: includes/process_ipn.php:702
+#: includes/shortcodes/class-shortcode-asp.php:1007
+msgid "Quantity"
+msgstr ""
+
+#: includes/class-asp-order-item.php:130
+#: includes/process_ipn.php:703
+#: includes/shortcodes/class-shortcode-asp.php:1008
+msgid "Item Price"
+msgstr ""
+
+#: includes/class-asp-order-item.php:134
+#: includes/process_ipn.php:707
+#: includes/shortcodes/class-shortcode-asp.php:1012
+msgid "Total Amount"
 msgstr ""
 
 #: includes/class-asp-order-item.php:138
@@ -2895,32 +2448,218 @@ msgstr ""
 msgid "Shipping Address"
 msgstr ""
 
-#: includes/process_ipn.php:44
-msgid "Error occurred before user interacted with payment popup. This might be caused by JavaScript errors on page."
-msgstr ""
-
-#: includes/process_ipn.php:45
-msgid "Error occurred after user interacted with popup."
-msgstr ""
-
-#: includes/process_ipn.php:63
-#: includes/class-asp-utils.php:642
-msgid "Stripe Payments Error Details"
-msgstr ""
-
-#: includes/process_ipn.php:719
-#: includes/process_ipn.php:725
-msgid "Download link"
-msgstr ""
-
-#: includes/process_ipn.php:738
-msgid "Order Info: "
-msgstr ""
-
 #: includes/class-asp-pp-ajax.php:141
 #: includes/class-asp-pp-ajax.php:218
 #: includes/class-asp-pp-ajax.php:221
 msgid "Stripe API error occurred:"
+msgstr ""
+
+#: includes/class-asp-pp-ajax.php:146
+#: includes/class-asp-pp-ajax.php:150
+#: includes/class-asp-process-ipn-ng.php:109
+#: includes/process_ipn.php:64
+msgid "Following error occurred during payment processing:"
+msgstr ""
+
+#: includes/class-asp-pp-ajax.php:148
+#: includes/class-asp-process-ipn-ng.php:111
+#: includes/process_ipn.php:67
+msgid "Debug data:"
+msgstr ""
+
+#. translators: %d is number of items in stock
+#: includes/class-asp-pp-ajax.php:189
+#: includes/class-asp-pp-display.php:584
+#: includes/shortcodes/class-shortcode-asp.php:102
+msgid "You cannot order more items than available: %d"
+msgstr ""
+
+#: includes/class-asp-pp-ajax.php:199
+#: includes/class-asp-pp-display.php:579
+#: includes/shortcodes/class-shortcode-asp.php:98
+msgid "Minimum amount is"
+msgstr ""
+
+#: includes/class-asp-pp-display.php:92
+msgid "This product is in the trash. Please restore this product from the trash if you want to use it"
+msgstr ""
+
+#: includes/class-asp-pp-display.php:136
+#: includes/shortcodes/class-shortcode-asp.php:652
+msgid "Only numbers are allowed: 0-9"
+msgstr ""
+
+#: includes/class-asp-pp-display.php:365
+#: public/views/templates/default/payment-popup.php:402
+msgid "Credit or debit card"
+msgstr ""
+
+#. translators: %s is not a placeholder
+#: includes/class-asp-pp-display.php:540
+msgid "Authorize %s"
+msgstr ""
+
+#: includes/class-asp-pp-display.php:550
+#: includes/class-asp-pp-display.php:594
+#: includes/shortcodes/class-shortcode-asp.php:111
+msgid "Start Free Trial"
+msgstr ""
+
+#: includes/class-asp-pp-display.php:578
+#: includes/shortcodes/class-shortcode-asp.php:97
+msgid "Please enter a valid amount"
+msgstr ""
+
+#: includes/class-asp-pp-display.php:580
+#: includes/shortcodes/class-shortcode-asp.php:99
+msgid "Please enter quantity."
+msgstr ""
+
+#: includes/class-asp-pp-display.php:581
+#: includes/shortcodes/class-shortcode-asp.php:100
+msgid "Quantity can't be zero."
+msgstr ""
+
+#: includes/class-asp-pp-display.php:582
+#: includes/shortcodes/class-shortcode-asp.php:101
+msgid "Quantity should be integer value."
+msgstr ""
+
+#: includes/class-asp-pp-display.php:585
+#: includes/class-asp-process-ipn-ng.php:515
+#: includes/class-asp-product-item.php:402
+#: includes/process_ipn.php:569
+#: includes/shortcodes/class-asp-shortcode-ng.php:192
+#: includes/shortcodes/class-asp-shortcode-ng.php:549
+#: includes/shortcodes/class-shortcode-asp.php:103
+#: includes/shortcodes/class-shortcode-asp.php:344
+#: includes/shortcodes/class-shortcode-asp.php:689
+#: public/views/templates/default/payment-popup.php:227
+msgid "Tax"
+msgstr ""
+
+#: includes/class-asp-pp-display.php:586
+#: includes/class-asp-process-ipn-ng.php:523
+#: includes/class-asp-product-item.php:413
+#: includes/process_ipn.php:576
+#: includes/shortcodes/class-asp-shortcode-ng.php:202
+#: includes/shortcodes/class-asp-shortcode-ng.php:550
+#: includes/shortcodes/class-shortcode-asp.php:104
+#: includes/shortcodes/class-shortcode-asp.php:354
+#: includes/shortcodes/class-shortcode-asp.php:690
+#: public/views/templates/default/payment-popup.php:233
+msgid "Shipping"
+msgstr ""
+
+#: includes/class-asp-pp-display.php:587
+#: includes/shortcodes/class-asp-shortcode-ng.php:213
+#: includes/shortcodes/class-shortcode-asp.php:105
+#: includes/shortcodes/class-shortcode-asp.php:365
+msgid "Total:"
+msgstr ""
+
+#: includes/class-asp-pp-display.php:588
+#: includes/shortcodes/class-shortcode-asp.php:106
+msgid "Please fill in this field."
+msgstr ""
+
+#: includes/class-asp-pp-display.php:589
+#: includes/shortcodes/class-shortcode-asp.php:107
+msgid "Please check this checkbox."
+msgstr ""
+
+#: includes/class-asp-pp-display.php:590
+#: includes/shortcodes/class-shortcode-asp.php:108
+msgid "You must accept the terms before you can proceed."
+msgstr ""
+
+#: includes/class-asp-pp-display.php:591
+msgid "Coupon"
+msgstr ""
+
+#: includes/class-asp-pp-display.php:592
+#: includes/shortcodes/class-shortcode-asp.php:109
+msgid "Remove coupon"
+msgstr ""
+
+#: includes/class-asp-pp-display.php:593
+#: includes/shortcodes/class-shortcode-asp.php:110
+#: public/views/templates/default/payment-popup.php:194
+msgid "Remove"
+msgstr ""
+
+#: includes/class-asp-pp-display.php:595
+#: includes/shortcodes/class-shortcode-asp.php:112
+msgid "Invalid validation RegEx: "
+msgstr ""
+
+#: includes/class-asp-pp-display.php:596
+msgid "Purchase for Free"
+msgstr ""
+
+#: includes/class-asp-pp-display.php:597
+msgid "Currency not supported for this payment method."
+msgstr ""
+
+#: includes/class-asp-pp-display.php:598
+msgid " for upcoming recurring payments"
+msgstr ""
+
+#: includes/class-asp-pp-display.php:599
+msgid "3D Secure failed."
+msgstr ""
+
+#: includes/class-asp-pp-display.php:600
+msgid "Abort 3D Secure check?"
+msgstr ""
+
+#. translators: placeholders are expected and received amounts
+#: includes/class-asp-process-ipn-ng.php:387
+msgid "Invalid payment amount received. Expected %1$s, got %2$s."
+msgstr ""
+
+#. translators: %s is coupon code
+#: includes/class-asp-process-ipn-ng.php:503
+#: includes/process_ipn.php:564
+msgid "Coupon \"%s\""
+msgstr ""
+
+#: includes/class-asp-process-ipn-ng.php:507
+#: includes/process_ipn.php:565
+msgid "Subtotal"
+msgstr ""
+
+#: includes/class-asp-process-ipn-ng.php:596
+msgid "Product Name: "
+msgstr ""
+
+#: includes/class-asp-process-ipn-ng.php:597
+msgid "Quantity: "
+msgstr ""
+
+#: includes/class-asp-process-ipn-ng.php:598
+msgid "Item Price: "
+msgstr ""
+
+#: includes/class-asp-process-ipn-ng.php:603
+msgid "Total Amount: "
+msgstr ""
+
+#: includes/class-asp-product-item.php:544
+msgid "No product ID provided."
+msgstr ""
+
+#. translators: %d is product id
+#: includes/class-asp-product-item.php:552
+msgid "Can't find product with ID %d"
+msgstr ""
+
+#: includes/class-asp-self-hooks-handler.php:386
+msgid "Invalid security token."
+msgstr ""
+
+#: includes/class-asp-self-hooks-handler.php:413
+msgid "Rate limit exceeded. Please try again later."
 msgstr ""
 
 #: includes/class-asp-utils.php:292
@@ -4099,6 +3838,11 @@ msgstr ""
 msgid "Vietnamese Dong (VND)"
 msgstr ""
 
+#: includes/class-asp-utils.php:642
+#: includes/process_ipn.php:63
+msgid "Stripe Payments Error Details"
+msgstr ""
+
 #: includes/class-asp-utils.php:645
 msgid "Note: It is normal for transaction errors like this to happen. For example - if a customer enters an incorrect card number or an expired card details, it will trigger an error."
 msgstr ""
@@ -4111,12 +3855,285 @@ msgstr ""
 msgid "This email contains some raw transaction data just for the site admin to be aware of the incident."
 msgstr ""
 
+#: includes/class-asp.php:316
+msgid "Buy Now"
+msgstr ""
+
+#: includes/class-asp.php:322
+msgid "Thank you for the purchase"
+msgstr ""
+
+#: includes/class-asp.php:323
+msgid "Hello"
+msgstr ""
+
+#: includes/class-asp.php:324
+msgid "Thank you for your purchase! You ordered the following item(s):"
+msgstr ""
+
+#: includes/class-asp.php:327
+msgid "Notification of product sale"
+msgstr ""
+
+#: includes/class-asp.php:328
+msgid "Dear Seller"
+msgstr ""
+
+#: includes/class-asp.php:329
+msgid "This mail is to notify you of a product sale."
+msgstr ""
+
+#: includes/class-asp.php:331
+msgid "The sale was made to"
+msgstr ""
+
+#: includes/class-asp.php:332
+msgid "Thanks"
+msgstr ""
+
+#: includes/class-asp.php:348
+msgid "I accept the <a href=\"https://example.com/terms-and-conditions/\" target=\"_blank\">Terms and Conditions</a>"
+msgstr ""
+
+#: includes/process_ipn.php:44
+msgid "Error occurred before user interacted with payment popup. This might be caused by JavaScript errors on page."
+msgstr ""
+
+#: includes/process_ipn.php:45
+msgid "Error occurred after user interacted with popup."
+msgstr ""
+
+#: includes/process_ipn.php:719
+#: includes/process_ipn.php:725
+msgid "Download link"
+msgstr ""
+
+#: includes/process_ipn.php:727
+#: includes/shortcodes/class-shortcode-asp.php:1028
+msgid "Download links"
+msgstr ""
+
+#: includes/process_ipn.php:738
+msgid "Order Info: "
+msgstr ""
+
+#: includes/recaptcha/admin/asp-recaptcha-admin-menu.php:16
+msgid "reCaptcha add-on is a part of core plugin now. Please delete \"Stripe Payments reCapthca Addon\" plugin to prevent potential issues."
+msgstr ""
+
+#: includes/recaptcha/admin/asp-recaptcha-admin-menu.php:17
+msgid "Click here to see the plugin on Plugins page."
+msgstr ""
+
+#: includes/recaptcha/admin/asp-recaptcha-admin-menu.php:40
+msgid "Please enter reCaptcha Site Key."
+msgstr ""
+
+#: includes/recaptcha/admin/asp-recaptcha-admin-menu.php:43
+msgid "Please enter reCaptcha Secret Key."
+msgstr ""
+
+#: includes/recaptcha/admin/asp-recaptcha-admin-menu.php:68
+msgid "reCAPTCHA Settings"
+msgstr ""
+
+#: includes/recaptcha/admin/asp-recaptcha-admin-menu.php:72
+msgid "Enable reCAPTCHA"
+msgstr ""
+
+#: includes/recaptcha/admin/asp-recaptcha-admin-menu.php:79
+msgid "Enables the reCAPTCHA feature. Enter reCAPTCHA v2 API Keys below."
+msgstr ""
+
+#: includes/recaptcha/admin/asp-recaptcha-admin-menu.php:85
+msgid "Use Invisible reCAPTCHA Badge"
+msgstr ""
+
+#: includes/recaptcha/admin/asp-recaptcha-admin-menu.php:92
+msgid "If you enable this option then you must enter reCAPTCHA v2 Invisible badge API Keys below."
+msgstr ""
+
+#: includes/recaptcha/admin/asp-recaptcha-admin-menu.php:98
+msgid "Site Key"
+msgstr ""
+
+#: includes/recaptcha/admin/asp-recaptcha-admin-menu.php:105
+msgid "Your reCaptcha Site Key."
+msgstr ""
+
+#: includes/recaptcha/admin/asp-recaptcha-admin-menu.php:111
+msgid "Secret Key"
+msgstr ""
+
+#: includes/recaptcha/admin/asp-recaptcha-admin-menu.php:118
+msgid "Your reCaptcha Secret Key."
+msgstr ""
+
+#: includes/recaptcha/admin/asp-recaptcha-admin-menu.php:124
+msgid "<a href=\"https://s-plugins.com/stripe-payments-recaptcha-addon/\" target=\"_blank\">Click here</a> to read the documentation to learn how to configure this and get API keys for your website."
+msgstr ""
+
+#: includes/recaptcha/admin/asp-recaptcha-admin-menu.php:129
+msgid "reCAPTCHA"
+msgstr ""
+
+#: includes/recaptcha/asp-recaptcha-main.php:62
+msgid "reCaptcha: error occurred during API request."
+msgstr ""
+
+#: includes/recaptcha/asp-recaptcha-main.php:67
+msgid "reCaptcha: error occurred during API request. HTTP Error code:"
+msgstr ""
+
+#: includes/recaptcha/asp-recaptcha-main.php:74
+msgid "reCaptcha: error occured parsing API response, invalid JSON data."
+msgstr ""
+
+#: includes/recaptcha/asp-recaptcha-main.php:84
+msgid "The response parameter is invalid or malformed."
+msgstr ""
+
+#: includes/recaptcha/asp-recaptcha-main.php:87
+msgid "Secret key is missing."
+msgstr ""
+
+#: includes/recaptcha/asp-recaptcha-main.php:90
+msgid "Secret key is invalid or malformed."
+msgstr ""
+
+#: includes/recaptcha/asp-recaptcha-main.php:93
+msgid "The response parameter is missing."
+msgstr ""
+
+#: includes/recaptcha/asp-recaptcha-main.php:101
+msgid "reCaptcha: check failed. Following error(s) occurred:"
+msgstr ""
+
+#: includes/recaptcha/asp-recaptcha-main.php:111
+msgid "Empty reCaptcha response received."
+msgstr ""
+
+#: includes/recaptcha/asp-recaptcha-main.php:139
+msgid "reCaptcha check failed."
+msgstr ""
+
+#: includes/recaptcha/asp-recaptcha-main.php:155
+msgid "reCaptcha tokens expired. Please refresh the page and try again."
+msgstr ""
+
+#: includes/recaptcha/asp-recaptcha-main.php:231
+msgid "Please enter reCaptcha keys."
+msgstr ""
+
+#: includes/recaptcha/asp-recaptcha-main.php:270
+msgid "reCaptcha: missing user response data."
+msgstr ""
+
+#: includes/shortcodes/class-asp-shortcode-ng.php:78
+msgid "Error: product ID is invalid."
+msgstr ""
+
+#: includes/shortcodes/class-asp-shortcode-ng.php:525
+#: includes/shortcodes/class-shortcode-asp.php:630
+msgid "Stripe Payments requires Javascript to be supported by the browser in order to operate."
+msgstr ""
+
+#: includes/shortcodes/class-asp-shortcode-ng.php:704
+#: includes/shortcodes/class-shortcode-asp.php:866
+#: public/views/templates/default/payment-popup.php:85
+msgid "Enter amount"
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-asp.php:896
+#: public/views/templates/default/payment-popup.php:113
+msgid "Enter quantity"
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-asp.php:897
+msgid "X item(s)"
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-asp.php:960
+#: public/views/templates/default/payment-popup.php:188
+msgid "Apply"
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-asp.php:1001
+#: includes/shortcodes/class-shortcode-asp.php:1062
+msgid "System was not able to complete the payment."
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-asp.php:1004
+msgid "Thank you for your payment."
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-asp.php:1005
+msgid "Here's what you purchased: "
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-asp.php:1019
+msgctxt "Is a part of 'Please click here to download'"
+msgid "Please "
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-asp.php:1019
+msgctxt "Is a part of 'Please click here to download'"
+msgid "click here"
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-asp.php:1019
+msgctxt "Is a part of 'Please click here to download'"
+msgid " to download."
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-asp.php:1029
+#: includes/shortcodes/show-user-transactions.php:60
+msgid "Click here to download"
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-asp.php:1136
+msgid "No products have been configured yet"
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-asp.php:1145
+msgid "Nothing found for"
+msgstr ""
+
+#: includes/shortcodes/class-shortcode-asp.php:1145
+msgid "Search results for"
+msgstr ""
+
+#. translators: %s is login URL
+#: includes/shortcodes/show-user-transactions.php:18
+msgid "Please <a href=\"%s\">login</a> to see your transactions history."
+msgstr ""
+
+#: includes/shortcodes/show-user-transactions.php:38
+msgid "No transactions found."
+msgstr ""
+
+#: includes/shortcodes/show-user-transactions.php:60
+msgid "Download link:"
+msgstr ""
+
+#: public/views/all-products/default/template.php:18
+msgid "Search"
+msgstr ""
+
+#: public/views/all-products/default/template.php:19
+msgid "Clear search"
+msgstr ""
+
+#: public/views/all-products/default/template.php:20
+msgid "View Item"
+msgstr ""
+
 #: public/views/templates/default/payment-popup.php:42
 msgid "TEST MODE"
 msgstr ""
 
 #: public/views/templates/default/payment-popup.php:64
-#: public/views/templates/default/payment-popup.php:442
+#: public/views/templates/default/payment-popup.php:449
 msgid "Close"
 msgstr ""
 
@@ -4128,61 +4145,61 @@ msgstr ""
 msgid "Select currency"
 msgstr ""
 
-#: public/views/templates/default/payment-popup.php:194
+#: public/views/templates/default/payment-popup.php:201
 msgid "Your order"
 msgstr ""
 
-#: public/views/templates/default/payment-popup.php:198
+#: public/views/templates/default/payment-popup.php:205
 msgid "Item"
 msgstr ""
 
-#: public/views/templates/default/payment-popup.php:244
+#: public/views/templates/default/payment-popup.php:251
 msgid "Select payment method"
 msgstr ""
 
-#: public/views/templates/default/payment-popup.php:272
+#: public/views/templates/default/payment-popup.php:279
 msgctxt "Customer name"
 msgid "Name"
 msgstr ""
 
-#: public/views/templates/default/payment-popup.php:282
+#: public/views/templates/default/payment-popup.php:289
 msgid "Email"
 msgstr ""
 
-#: public/views/templates/default/payment-popup.php:300
+#: public/views/templates/default/payment-popup.php:307
 msgid "Same billing and shipping info"
 msgstr ""
 
-#: public/views/templates/default/payment-popup.php:309
+#: public/views/templates/default/payment-popup.php:316
 msgid "Billing info"
 msgstr ""
 
-#: public/views/templates/default/payment-popup.php:312
-#: public/views/templates/default/payment-popup.php:358
+#: public/views/templates/default/payment-popup.php:319
+#: public/views/templates/default/payment-popup.php:365
 msgid "Address"
 msgstr ""
 
-#: public/views/templates/default/payment-popup.php:323
-#: public/views/templates/default/payment-popup.php:368
+#: public/views/templates/default/payment-popup.php:330
+#: public/views/templates/default/payment-popup.php:375
 msgid "City"
 msgstr ""
 
-#: public/views/templates/default/payment-popup.php:327
-#: public/views/templates/default/payment-popup.php:372
+#: public/views/templates/default/payment-popup.php:334
+#: public/views/templates/default/payment-popup.php:379
 msgid "Country"
 msgstr ""
 
-#: public/views/templates/default/payment-popup.php:335
-#: public/views/templates/default/payment-popup.php:379
+#: public/views/templates/default/payment-popup.php:342
+#: public/views/templates/default/payment-popup.php:386
 msgid "State"
 msgstr ""
 
-#: public/views/templates/default/payment-popup.php:341
-#: public/views/templates/default/payment-popup.php:384
+#: public/views/templates/default/payment-popup.php:348
+#: public/views/templates/default/payment-popup.php:391
 msgid "Postcode"
 msgstr ""
 
-#: public/views/templates/default/payment-popup.php:354
+#: public/views/templates/default/payment-popup.php:361
 msgid "Shipping info"
 msgstr ""
 
@@ -4200,16 +4217,4 @@ msgstr ""
 
 #: public/views/templates/default/tpl-show-user-transactions.php:91
 msgid "Date:"
-msgstr ""
-
-#: public/views/all-products/default/template.php:18
-msgid "Search"
-msgstr ""
-
-#: public/views/all-products/default/template.php:19
-msgid "Clear search"
-msgstr ""
-
-#: public/views/all-products/default/template.php:20
-msgid "View Item"
 msgstr ""
