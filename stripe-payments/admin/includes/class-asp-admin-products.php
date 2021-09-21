@@ -42,12 +42,23 @@ class ASP_Admin_Products {
 		);
 		$menu_icon = WP_ASP_PLUGIN_URL . '/assets/asp-dashboard-menu-icon.png';
 		$asp_slug  = untrailingslashit( ASPMain::$products_slug );
-		$args      = array(
+
+		$capabilities = array(
+			'edit_post'          => 'manage_options',
+			'delete_post'        => 'manage_options',
+			'edit_posts'         => 'manage_options',
+			'edit_others_posts'  => 'manage_options',
+			'delete_posts'       => 'manage_options',
+			'publish_posts'      => 'manage_options',
+			'read_private_posts' => 'manage_options',
+		);
+
+		$args = array(
 			'labels'             => $labels,
 			'capability_type'    => 'post',
+			'capabilities'       => $capabilities,
 			'public'             => true,
 			'publicly_queryable' => true,
-			'capability_type'    => 'post',
 			'query_var'          => true,
 			'has_archive'        => false,
 			'hierarchical'       => false,
