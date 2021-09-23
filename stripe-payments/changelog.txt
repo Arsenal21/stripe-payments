@@ -1,3 +1,50 @@
+= 2.0.46 =
+- Fixed a PHP syntax error in the payment popup template file.
+
+= 2.0.45 =
+- Added `Show the available quantity in the payment popup` product option.
+- Trashed products no longer accessible via link URL.
+- Variable currency option for donation product type is no longer applied to other product types.
+- The "+" character can now be used in customer's email address on payment popup.
+- Added Dominican Peso (DOP) currency support.
+- Added German language translation files.
+
+= 2.0.44 =
+- Added a new email merge tag {item_short_desc} for the sale notification email.
+- Payment popup now has its own slug `asp-payment-box`.
+- Addressed variations index issue that could prevent payment popup display.
+- Implemented some measures to avoid payment popup page caching by caching plugins.
+- Addressed rare payment popup loading failure issue related to variations.
+- Updated Stripe PHP SDK.
+- Various improvements and bugfixes.
+
+= 2.0.43 =
+- Plugin's display name has been changed to "Accept Stripe Payments" according to WP guidelines.
+- Improved sanitization of the incoming request data.
+- Scripts and styles are now being loaded via `wp_enqueue_scripts` where possible.
+- Addressed a few minor cosmetic issues and PHP warnings.
+
+= 2.0.42 =
+- 3D Secure feature's iframe loop issue has been addressed.
+
+= 2.0.41 =
+- Replaced 3D Secure redirect with full screen iframe.
+- Added per-product option to use different Stripe account for some of the products.
+- Payment process no longer fails if a variation with negative price mod is selected.
+- Buyer name and email no longer missing when using add-ons with `Do Not Save Card Data on Stripe` option enabled.
+- Trial period support for variable subscriptions.
+- The jQuery UI CSS is included in the plugin (instead of including from an external URL).
+- Removed the update checker library for add-ons to adhere to WordPress's guidelines. 
+  You can install [Addons Update Checker plugin](https://s-plugins.com/update-checker-plugin-for-the-addons/) to keep your Stripe Payments add-ons upto date.
+
+= 2.0.40 =
+- Fixed an XSS issue with the "currency_code" settings field. Thanks to Park Won Seok.
+
+= 2.0.39 =
+- Buyer email address no longer missing when `Don't save card` option enabled.
+- Added add-ons upgrade notice.
+- WP 5.6 compatibility.
+
 = 2.0.38 =
 - Payment confirmation is now done on backend.
 - Limit reCaptcha token reusage.
