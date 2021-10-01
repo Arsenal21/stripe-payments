@@ -933,17 +933,8 @@ jQuery(document).ready(function($) {
 			$tax_variations_arr = array();
 
 			if ( ! empty( $tax_variations_base ) && ! empty( $tax_variations_l ) && ! empty( $tax_variations_a ) ) {
-				$c_arr = ASP_Utils::get_countries();
 				foreach ( $tax_variations_base as $i => $type ) {
-					$l = filter_var( $tax_variations_l[ $i ], FILTER_SANITIZE_STRING );
-					switch ( $type ) {
-						case '0':
-							$c = $tax_variations_l[ $i ];
-							$l = $c_arr[ $c ];
-							break;
-						default:
-							break;
-					}
+					$l                    = filter_var( $tax_variations_l[ $i ], FILTER_SANITIZE_STRING );
 					$tax                  = floatval( filter_var( $tax_variations_a[ $i ], FILTER_SANITIZE_STRING ) );
 					$tax_variations_arr[] = array(
 						'type'   => $type,
