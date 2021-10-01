@@ -61,7 +61,7 @@ jQuery(document).ready(function ($) {
 			$(tpl_html).find('input.asp-variation-name').focus();
 		} else {
 			if (varType === '2') {
-				if (aspVariationsOpts[aspGroupId][aspVariationsVarId]['checked']==='1') {
+				if (aspVariationsOpts[aspGroupId][aspVariationsVarId]['checked'] === '1') {
 					$(var_opt_tpl).find('input[type="checkbox"]').prop('checked', true);
 					$(var_opt_tpl).find('input[type="checkbox"]').trigger('change');
 				}
@@ -212,6 +212,10 @@ jQuery(document).ready(function ($) {
 		var tplLine = aspTaxVarData.tplLine;
 		tplLine = tplLine.replaceAll('%1$s', aspTaxVarData.cOpts);
 		tplLine = tplLine.replaceAll('%2$s', 0);
+		tplLine = tplLine.replaceAll('%3$s', '');
+		tplLine = tplLine.replaceAll('%4$s', 'display:none;');
+		tplLine = tplLine.replaceAll('%5$s', 'display:none;');
+		tplLine = tplLine.replaceAll(/%[0-9]*\$s/g, '');
 		jQuery('#wp-asp-tax-variations-tbl').find('tbody').append(tplLine);
 		jQuery('#wp-asp-tax-variations-tbl').show();
 	});
@@ -221,6 +225,14 @@ jQuery(document).ready(function ($) {
 		if (confirm(aspTaxVarData.str.delConfirm)) {
 			jQuery(this).closest('tr').remove();
 		}
+	});
+
+	jQuery('#wp-asp-tax-variations-tbl').on('change', 'select.wp-asp-tax-variation-base', function (e) {
+		var selBase = jQuery(this).val();
+		jQuery(this).closest('tr').find('div').hide();
+		jQuery(this).closest('tr').find('div').find('input,select').prop('disabled', true);
+		jQuery(this).closest('tr').find('.wp-asp-tax-variation-cont-type-' + selBase).show();
+		jQuery(this).closest('tr').find('.wp-asp-tax-variation-cont-type-' + selBase).find('input,select').prop('disabled', false);
 	});
 
 });

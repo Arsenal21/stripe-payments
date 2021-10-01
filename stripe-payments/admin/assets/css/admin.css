@@ -195,7 +195,7 @@ a.wp-asp-product-menu-nav-item.nav-tab-active:focus {
 }
 
 #wp-asp-tax-variations-tbl {
-	width: 50%;
+	width: 75%;
 }
 
 #wp-asp-tax-variations-tbl tr {
@@ -216,6 +216,10 @@ a.wp-asp-product-menu-nav-item.nav-tab-active:focus {
 
 @media screen and (max-width: 960px) {
 	#wp-asp-tax-variations-tbl {
+		width: 100%;
+	}
+
+	#wp-asp-tax-variations-tbl .wp-asp-tax-variations-input {
 		width: 100%;
 	}
 }
