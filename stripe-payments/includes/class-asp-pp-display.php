@@ -322,7 +322,7 @@ class ASP_PP_Display {
 		$data['shipping'] = $this->item->get_shipping( true );
 		$data['descr']    = $this->item->get_description();
 
-		$data['tax_variations'] = $this->item->get_meta( 'asp_product_tax_variations_arr' );
+		$data['tax_variations'] = $this->item->get_meta( 'asp_product_tax_variations' );
 
 		$tax_variations_type = $this->item->get_meta( 'asp_product_tax_variations_type' );
 

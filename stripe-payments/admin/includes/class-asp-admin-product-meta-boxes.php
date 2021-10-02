@@ -439,19 +439,49 @@ class ASP_Admin_Product_Meta_Boxes {
 		$current_shipping    = get_post_meta( $post->ID, 'asp_product_shipping', true );
 		$current_tax         = get_post_meta( $post->ID, 'asp_product_tax', true );
 		$tax_variations_type = get_post_meta( $post->ID, 'asp_product_tax_variations_type', true );
-		$tax_variations_arr  = get_post_meta( $post->ID, 'asp_product_tax_variations_arr', true );
+		$tax_variations_arr  = get_post_meta( $post->ID, 'asp_product_tax_variations', true );
 
 		$t_var_line_tpl = '<tr>
-		<td><select name="asp_product_tax_variations_c[]">%1$s</select></td>
+		<td>
+		<select class="wp-asp-tax-variation-base wp-asp-tax-variations-input" name="asp_product_tax_variations_base[]">
+			<option value="0" %11$s>' . esc_html__( 'Country', 'stripe-payments' ) . '</option>
+			<option value="1" %12$s>' . esc_html__( 'State', 'stripe-payments' ) . '</option>
+			<option value="2" %13$s>' . esc_html__( 'City', 'stripe-payments' ) . '</option>
+		</select>
+		</td>
+		<td>
+		<div class="wp-asp-tax-variation-cont-type-0" style="%3$s"><select class="wp-asp-tax-variations-input" name="asp_product_tax_variations_l[]" %6$s>%1$s</select></div>
+		<div class="wp-asp-tax-variation-cont-type-1" style="%4$s">
+		<input class="wp-asp-tax-variations-input" name="asp_product_tax_variations_l[]" type="text" %7$s value="%9$s">
+		</div>
+		<div class="wp-asp-tax-variation-cont-type-2" style="%5$s">
+		<input class="wp-asp-tax-variations-input" name="asp_product_tax_variations_l[]" type="text" %8$s value="%10$s">
+		</div>
+		</td>
 		<td><input type="number" class="wp-asp-tax-variations-input" step="any" min="0" name="asp_product_tax_variations_a[]" value="%2$s"></td>
 		<td><button type="button" class="button wp-asp-tax-variations-del-btn asp-btn-small"><span class="dashicons dashicons-trash" title="' . __( 'Delete variation', 'stripe-payments' ) . '"></span></button></td>
 		</tr>';
 
 		$out = '';
 		if ( ! empty( $tax_variations_arr ) ) {
-			foreach ( $tax_variations_arr as $c_code => $tax_perc ) {
-				ASP_Utils::get_countries_opts( $c_code );
-				$out .= sprintf( $t_var_line_tpl, ASP_Utils::get_countries_opts( $c_code ), $tax_perc );
+			foreach ( $tax_variations_arr as $v ) {
+				$c_code = '0' === $v['type'] ? $c_code = $v['loc'] : $c_code = '';
+				$out   .= sprintf(
+					$t_var_line_tpl,
+					ASP_Utils::get_countries_opts( $c_code ),
+					$v['amount'],
+					'0' === $v['type'] ? '' : 'display:none',
+					'1' === $v['type'] ? '' : 'display:none',
+					'2' === $v['type'] ? '' : 'display:none',
+					'0' === $v['type'] ? '' : 'disabled',
+					'1' === $v['type'] ? '' : 'disabled',
+					'2' === $v['type'] ? '' : 'disabled',
+					'1' === $v['type'] ? $v['loc'] : '',
+					'2' === $v['type'] ? $v['loc'] : '',
+					'0' === $v['type'] ? 'selected' : '',
+					'1' === $v['type'] ? 'selected' : '',
+					'2' === $v['type'] ? 'selected' : ''
+				);
 			}
 		}
 
@@ -513,11 +543,17 @@ class ASP_Admin_Product_Meta_Boxes {
 <div id="wp-asp-tax-variations-cont"<?php echo ! empty( $tax_variations_disabled ) ? ' style="display:none;"' : ''; ?>>
 <p class="description">
 			<?php
-			esc_html_e( 'Use this to configure tax variations on per-country basis.', 'stripe-payments' );
+			esc_html_e( 'Use this to configure tax variations on per-region basis.', 'stripe-payments' );
 			?>
 </p>
 <table class="fixed" id="wp-asp-tax-variations-tbl"<?php echo empty( $out ) ? 'style="display:none;"' : ''; ?>>
-<thead><tr><th style="width: 60%;">Country</th><th style="width: 30%;">Tax</th><th style="width: 10%;"></th></tr>
+<thead>
+	<tr>
+		<th style="width: 20%;"><?php esc_html_e( 'Type', 'stripe-payments' ); ?></th>
+		<th style="width: 50%;"><?php esc_html_e( 'Location', 'stripe-payments' ); ?></th>
+		<th style="width: 20%;"><?php esc_html_e( 'Tax', 'stripe-payments' ); ?></th>
+		<th style="width: 10%;"></th>
+	</tr>
 </thead>
 <tbody>
 		<?php echo $out; ?>
@@ -890,22 +926,25 @@ jQuery(document).ready(function($) {
 			$tax = empty( $tax ) ? '' : $tax;
 			update_post_meta( $post_id, 'asp_product_tax', $tax );
 
-			$tax_variations_c = filter_input( INPUT_POST, 'asp_product_tax_variations_c', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
-			$tax_variations_a = filter_input( INPUT_POST, 'asp_product_tax_variations_a', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
+			$tax_variations_base = filter_input( INPUT_POST, 'asp_product_tax_variations_base', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
+			$tax_variations_l    = filter_input( INPUT_POST, 'asp_product_tax_variations_l', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
+			$tax_variations_a    = filter_input( INPUT_POST, 'asp_product_tax_variations_a', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
 
 			$tax_variations_arr = array();
 
-			if ( ! empty( $tax_variations_c ) && ! empty( $tax_variations_a ) ) {
-				$c_arr = ASP_Utils::get_countries();
-				foreach ( $tax_variations_c as $i => $c ) {
-					if ( ! empty( $c ) && ! empty( $c_arr[ $c ] ) ) {
-						$tax                      = floatval( filter_var( $tax_variations_a[ $i ], FILTER_SANITIZE_STRING ) );
-						$tax_variations_arr[ $c ] = $tax;
-					}
+			if ( ! empty( $tax_variations_base ) && ! empty( $tax_variations_l ) && ! empty( $tax_variations_a ) ) {
+				foreach ( $tax_variations_base as $i => $type ) {
+					$l                    = filter_var( $tax_variations_l[ $i ], FILTER_SANITIZE_STRING );
+					$tax                  = floatval( filter_var( $tax_variations_a[ $i ], FILTER_SANITIZE_STRING ) );
+					$tax_variations_arr[] = array(
+						'type'   => $type,
+						'loc'    => $l,
+						'amount' => $tax,
+					);
 				}
 			}
 
-			update_post_meta( $post_id, 'asp_product_tax_variations_arr', $tax_variations_arr );
+			update_post_meta( $post_id, 'asp_product_tax_variations', $tax_variations_arr );
 
 			$tax_variations_type = filter_input( INPUT_POST, 'asp_product_tax_variations_type', FILTER_SANITIZE_STRING );
 			update_post_meta( $post_id, 'asp_product_tax_variations_type', $tax_variations_type );

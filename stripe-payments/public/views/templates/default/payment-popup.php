@@ -223,19 +223,25 @@ echo '<style>' . $css . '</style>' . "\r\n";
 												<?php
 											}
 										}
-										if ( $a['data']['tax'] ) {
-											$tax_str        = apply_filters( 'asp_customize_text_msg', __( 'Tax', 'stripe-payments' ), 'tax_str' );
-											$tax_amount_str = AcceptStripePayments::formatted_price( $a['item']->get_tax_amount(), $this->item->get_currency() );
-											$out            = sprintf( '<tr><td>%s (<span id="order-tax-perc">%s</span>%%)</td><td><span id="order-tax">%s</span></td></tr>', $tax_str, $a['item']->get_tax(), $tax_amount_str );
-											echo $out; //phpcs:ignore
-										}
-										if ( $a['data']['shipping'] ) {
-											$ship_str        = apply_filters( 'asp_customize_text_msg', __( 'Shipping', 'stripe-payments' ), 'shipping_str' );
-											$ship_amount_str = AcceptStripePayments::formatted_price( $a['item']->get_shipping(), $this->item->get_currency() );
-											$out             = sprintf( '<tr><td>%s</td><td><span id="shipping">%s</span></td></tr>', $ship_str, $ship_amount_str );
-											echo $out; //phpcs:ignore
-										}
-										?>
+										$tax_str        = apply_filters( 'asp_customize_text_msg', __( 'Tax', 'stripe-payments' ), 'tax_str' );
+										$tax_amount_str = AcceptStripePayments::formatted_price( $a['item']->get_tax_amount(), $this->item->get_currency() );
+
+										$out = sprintf(
+											'<tr id="order-tax-line" style="%s"><td>%s (<span id="order-tax-perc">%s</span>%%)</td><td><span id="order-tax">%s</span></td></tr>',
+											empty( $a['item']->get_tax() ) ? 'display:none;' : '',
+											$tax_str,
+											$a['item']->get_tax(),
+											$tax_amount_str
+										);
+										echo $out; //phpcs:ignore
+
+							if ( $a['data']['shipping'] ) {
+								$ship_str        = apply_filters( 'asp_customize_text_msg', __( 'Shipping', 'stripe-payments' ), 'shipping_str' );
+								$ship_amount_str = AcceptStripePayments::formatted_price( $a['item']->get_shipping(), $this->item->get_currency() );
+								$out             = sprintf( '<tr><td>%s</td><td><span id="shipping">%s</span></td></tr>', $ship_str, $ship_amount_str );
+								echo $out; //phpcs:ignore
+							}
+							?>
 										<tr>
 											<td><strong><?php esc_html_e( 'Total', 'stripe-payments' ); ?>:</strong></td>
 											<td><span id="order-total"><?php echo esc_html( AcceptStripePayments::formatted_price( $this->item->get_total(), $this->item->get_currency() ) ); ?></span></td>

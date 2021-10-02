@@ -156,7 +156,7 @@ None.
 == Changelog ==
 
 = 2.0.48 =
-- Added per-product tax variations option.
+- Added per-region tax variations option.
 - Added checkbox variation type.
 - Improved layout and functionality of some admin-side pages.
 - Only users with admin capabilities can edit products now.

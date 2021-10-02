@@ -418,7 +418,7 @@ class ASP_Self_Hooks_Handler {
 
 	public function tax_variations( $item ) {
 
-		$tax_variations_arr = $item->get_meta( 'asp_product_tax_variations_arr' );
+		$tax_variations_arr = $item->get_meta( 'asp_product_tax_variations' );
 
 		if ( empty( $tax_variations_arr ) ) {
 			return $item;
@@ -439,16 +439,26 @@ class ASP_Self_Hooks_Handler {
 	public function tax_variations_check_apply( $cust_opts ) {
 		ASP_Debug_Logger::log_array_data( $cust_opts );
 
-		if ( empty( $cust_opts['address']['country'] ) ) {
+		if ( empty( $cust_opts['address'] ) ) {
 			return $cust_opts;
 		}
 
-		if ( ! empty( $this->tax_variations_arr[ $cust_opts['address']['country'] ] ) ) {
-			$this->item->set_tax( $this->tax_variations_arr[ $cust_opts['address']['country'] ] );
+		if ( empty( $this->tax_variations_arr ) ) {
+			return $cust_opts;
+		}
+
+		$new_tax = ASP_Utils::get_tax_variations_tax(
+			$this->tax_variations_arr,
+			empty( $cust_opts['address']['country'] ) ? '' : $cust_opts['address']['country'],
+			empty( $cust_opts['address']['state'] ) ? '' : $cust_opts['address']['state'],
+			empty( $cust_opts['address']['city'] ) ? '' : $cust_opts['address']['city']
+		);
+
+		if ( false !== $new_tax ) {
+			$this->item->set_tax( $new_tax );
 		}
 
 		return $cust_opts;
-
 	}
 
 	public function tax_variations_addon( $data, $prod_id ) {
