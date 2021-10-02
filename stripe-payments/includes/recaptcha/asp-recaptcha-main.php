@@ -7,7 +7,7 @@ class ASPRECAPTCHA_main {
 	private $max_tokens  = 4;
 
 	public function __construct() {
-		add_action( 'plugins_loaded', array( $this, 'plugins_loaded' ) );
+		add_action( 'plugins_loaded', array( $this, 'plugins_loaded' ), 100 );
 	}
 
 	public function plugins_loaded() {
