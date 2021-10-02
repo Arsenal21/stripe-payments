@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Plugins - Stripe Payments - Development (trunk)\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2020-04-08 12:35+0200\n"
+"PO-Revision-Date: 2021-09-30 10:21+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: es\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Poedit 2.3\n"
+"X-Generator: Poedit 3.0\n"
 
 #: stripe-payments/admin/class-asp-admin.php:61
 #: stripe-payments/admin/class-asp-admin.php:330
@@ -1534,7 +1534,7 @@ msgstr ""
 #: stripe-payments/admin/includes/class-products-meta-boxes.php:171
 #: stripe-payments/public/views/templates/default/payment-popup.php:245
 msgid "Name"
-msgstr ""
+msgstr "Nome"
 
 #: stripe-payments/admin/includes/class-products-meta-boxes.php:172
 msgid "Price Mod"
@@ -3745,7 +3745,7 @@ msgstr "Informazioni di spedizione"
 
 #: stripe-payments/public/views/templates/default/tpl-show-user-transactions.php:88
 msgid "Name:"
-msgstr "nome."
+msgstr "Nome:"
 
 #: stripe-payments/public/views/templates/default/tpl-show-user-transactions.php:89
 msgid "Item ID:"
