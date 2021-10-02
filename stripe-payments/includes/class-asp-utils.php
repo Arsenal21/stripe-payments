@@ -963,4 +963,36 @@ class ASP_Utils {
 
 		return $acc_info;
 	}
+
+	public static function get_tax_variations_tax( $tax_var, $country, $state, $city ) {
+		$tax = 0;
+		if ( empty( $tax_var ) ) {
+			return false;
+		}
+
+		foreach ( $tax_var as $v ) {
+			switch ( $v['type'] ) {
+				case '0':
+					if ( $country === $v['loc'] ) {
+						$tax = $tax + $v['amount'];
+					}
+					break;
+				case '1':
+					if ( $state === $v['loc'] ) {
+						$tax = $tax + $v['amount'];
+					}
+					break;
+				case '2':
+					if ( $city === $v['loc'] ) {
+						$tax = $tax + $v['amount'];
+					}
+					break;
+				default:
+					break;
+
+			}
+		}
+
+		return ! empty( $tax ) ? $tax : false;
+	}
 }

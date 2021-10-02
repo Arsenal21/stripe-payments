@@ -303,7 +303,7 @@ class ASP_Process_IPN_NG {
 			$item->set_shipping( $price_arr['shipping'] );
 		}
 
-		$tax_variations_arr = $item->get_meta( 'asp_product_tax_variations_arr' );
+		$tax_variations_arr = $item->get_meta( 'asp_product_tax_variations' );
 
 		$tax_variations_type = $this->item->get_meta( 'asp_product_tax_variations_type' );
 
@@ -315,8 +315,16 @@ class ASP_Process_IPN_NG {
 			$bs_details = $p_data->get_shipping_details();
 		}
 
-		if ( ! empty( $bs_details->country ) && ! empty( $tax_variations_arr[ $bs_details->country ] ) ) {
-			$item->set_tax( $tax_variations_arr[ $bs_details->country ] );
+		if ( ! empty( $bs_details ) && ! empty( $tax_variations_arr ) ) {
+			$new_tax = ASP_Utils::get_tax_variations_tax(
+				$tax_variations_arr,
+				empty( $bs_details->country ) ? '' : $bs_details->country,
+				empty( $bs_details->state ) ? '' : $bs_details->state,
+				empty( $bs_details->city ) ? '' : $bs_details->city
+			);
+			if ( false !== $new_tax ) {
+				$item->set_tax( $new_tax );
+			}
 		}
 
 		if ( empty( $price ) ) {
