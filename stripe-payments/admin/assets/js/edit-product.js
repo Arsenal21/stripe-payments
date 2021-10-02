@@ -212,9 +212,10 @@ jQuery(document).ready(function ($) {
 		var tplLine = aspTaxVarData.tplLine;
 		tplLine = tplLine.replaceAll('%1$s', aspTaxVarData.cOpts);
 		tplLine = tplLine.replaceAll('%2$s', 0);
-		tplLine = tplLine.replaceAll('%3$s', '');
 		tplLine = tplLine.replaceAll('%4$s', 'display:none;');
 		tplLine = tplLine.replaceAll('%5$s', 'display:none;');
+		tplLine = tplLine.replaceAll('%7$s', 'disabled');
+		tplLine = tplLine.replaceAll('%8$s', 'disabled');
 		tplLine = tplLine.replaceAll(/%[0-9]*\$s/g, '');
 		jQuery('#wp-asp-tax-variations-tbl').find('tbody').append(tplLine);
 		jQuery('#wp-asp-tax-variations-tbl').show();
