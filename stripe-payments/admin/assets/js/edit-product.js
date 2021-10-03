@@ -217,14 +217,16 @@ jQuery(document).ready(function ($) {
 		tplLine = tplLine.replaceAll('%7$s', 'disabled');
 		tplLine = tplLine.replaceAll('%8$s', 'disabled');
 		tplLine = tplLine.replaceAll(/%[0-9]*\$s/g, '');
-		jQuery('#wp-asp-tax-variations-tbl').find('tbody').append(tplLine);
+		var tplLineHide = jQuery(tplLine).css('display', 'none');
+		jQuery('#wp-asp-tax-variations-tbl').find('tbody').append(tplLineHide);
 		jQuery('#wp-asp-tax-variations-tbl').show();
+		tplLineHide.fadeIn(200);
 	});
 
 	jQuery('#wp-asp-tax-variations-tbl').on('click', 'button.wp-asp-tax-variations-del-btn', function (e) {
 		e.preventDefault();
 		if (confirm(aspTaxVarData.str.delConfirm)) {
-			jQuery(this).closest('tr').remove();
+			jQuery(this).closest('tr').fadeOut(300, function () { this.remove });
 		}
 	});
 
