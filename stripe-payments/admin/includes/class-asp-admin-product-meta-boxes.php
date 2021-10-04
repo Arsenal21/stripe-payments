@@ -543,7 +543,7 @@ class ASP_Admin_Product_Meta_Boxes {
 <div id="wp-asp-tax-variations-cont"<?php echo ! empty( $tax_variations_disabled ) ? ' style="display:none;"' : ''; ?>>
 <p class="description">
 			<?php
-			esc_html_e( 'Use this to configure tax variations on per-region basis.', 'stripe-payments' );
+			esc_html_e( 'Use this to configure tax variations on a per-region basis.', 'stripe-payments' );
 			?>
 </p>
 <table class="fixed" id="wp-asp-tax-variations-tbl"<?php echo empty( $out ) ? 'style="display:none;"' : ''; ?>>

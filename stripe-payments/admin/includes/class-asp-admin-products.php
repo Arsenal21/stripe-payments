@@ -43,15 +43,18 @@ class ASP_Admin_Products {
 		$menu_icon = WP_ASP_PLUGIN_URL . '/assets/asp-dashboard-menu-icon.png';
 		$asp_slug  = untrailingslashit( ASPMain::$products_slug );
 
-		$capabilities = array(
-			'edit_post'          => 'manage_options',
-			'delete_post'        => 'manage_options',
-			'edit_posts'         => 'manage_options',
-			'edit_others_posts'  => 'manage_options',
-			'delete_posts'       => 'manage_options',
-			'publish_posts'      => 'manage_options',
-			'read_private_posts' => 'manage_options',
-		);
+                //Trigger filter hook to allow overriding of the default ASP Products Post Type capability.
+                $asp_post_capability = apply_filters( 'asp_post_type_capability', 'manage_options' );
+                $capabilities = array(
+                        'edit_post'          => $asp_post_capability,
+                        'delete_post'        => $asp_post_capability,
+                        'read_post'          => $asp_post_capability,
+                        'edit_posts'         => $asp_post_capability,
+                        'edit_others_posts'  => $asp_post_capability,
+                        'delete_posts'       => $asp_post_capability,
+                        'publish_posts'      => $asp_post_capability,
+                        'read_private_posts' => $asp_post_capability,
+                );
 
 		$args = array(
 			'labels'             => $labels,
