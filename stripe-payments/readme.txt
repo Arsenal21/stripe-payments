@@ -156,12 +156,13 @@ None.
 == Changelog ==
 
 = 2.0.48 =
-- Added per-region tax variations option.
-- Added checkbox variation type.
+- Added a new feature to configure per-region tax variations option.
+- Added checkbox variation type in the product variations feature.
+- Only users with admin capabilities (administrator role) can add/edit products now.
 - Improved layout and functionality of some admin-side pages.
-- Only users with admin capabilities can edit products now.
 - Added United Arab Emirates Dirham (AED) currency support.
 - Minor improvements and bugfixes.
+- Updated the Italian language translation file.
 
 = 2.0.47 =
 - Fixed all-off coupons issue in Firefox when payment popup is integrated via link URL.
