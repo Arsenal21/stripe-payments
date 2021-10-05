@@ -156,8 +156,8 @@ None.
 == Changelog ==
 
 = 2.0.49 -
-- Addressed `Class not found` issue on some configurations.
-- Minor admin-side layout improvements.
+- Addressed the `Class not found` error related issue on some configurations.
+- Minor CSS update to improve the admin-side layout.
 
 = 2.0.48 =
 - Added a new feature to configure per-region tax variations option.
