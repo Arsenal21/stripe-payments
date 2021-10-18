@@ -268,7 +268,16 @@ echo '<style>' . $css . '</style>' . "\r\n";
 											$pm['img']
 										);
 									}
-									$out .= sprintf( '<div class="pure-u-1 pure-u-md-1-3"><label class="pure-radio"><input name="pm" class="pm-select-btn" type="radio"%s value="%s" data-pm-id="%s">%s%s %s</label></div>', empty( $out ) ? ' checked' : '', $pm['id'], $pm['id'], isset( $pm['before_title'] ) ? $pm['before_title'] : '', ! empty( $img ) ? $img : '', isset( $pm['hide_title'] ) ? '' : $pm['title'] );
+									$out .= sprintf(
+										'<div class="pure-u-1 pure-u-md-1-3" data-cont-pm-id="%s"><label class="pure-radio"><input name="pm" class="pm-select-btn" type="radio"%s value="%s" data-pm-id="%s">%s%s %s</label></div>',
+										$pm['id'],
+										empty( $out ) ? ' checked' : '',
+										$pm['id'],
+										$pm['id'],
+										isset( $pm['before_title'] ) ? $pm['before_title'] : '',
+										! empty( $img ) ? $img : '',
+										isset( $pm['hide_title'] ) ? '' : $pm['title']
+									);
 								}
 									echo $out; //phpcs:ignore
 								?>
