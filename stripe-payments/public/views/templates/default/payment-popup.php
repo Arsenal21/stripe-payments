@@ -4,8 +4,11 @@
 <head>
 <?php
 //include inline css file
-$css = file_get_contents( WP_ASP_PLUGIN_PATH . 'public/views/templates/default/pp-inline-head.css' );
-$css = str_replace( array( "\t", "\r\n" ), array( '', '' ), $css );
+if ( ! defined( 'WP_ASP_DEV_MODE' ) ) {
+	$css = file_get_contents( WP_ASP_PLUGIN_PATH . 'public/views/templates/default/pp-inline-head.min.css' );
+} else {
+	$css = file_get_contents( WP_ASP_PLUGIN_PATH . 'public/views/templates/default/pp-inline-head.css' );
+}
 echo '<style>' . $css . '</style>' . "\r\n"; //phpcs:ignore
 ?>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
