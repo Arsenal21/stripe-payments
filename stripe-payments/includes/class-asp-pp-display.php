@@ -622,7 +622,7 @@ class ASP_PP_Display {
 		if ( empty( $pp_additional_css ) ) {
 			return;
 		}
-		echo sprintf( '<style>%s</style>', wp_kses( $pp_additional_css, array() ) );
+		echo sprintf( "<style>%s</style>\r\n", wp_kses( str_replace( array( "\t", "\r\n" ), '', $pp_additional_css ), array() ) );
 	}
 
 	public function tpl_get_cf( $output = '' ) {
