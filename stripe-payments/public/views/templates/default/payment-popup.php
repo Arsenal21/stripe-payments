@@ -6,7 +6,7 @@
 //include inline css file
 $css = file_get_contents( WP_ASP_PLUGIN_PATH . 'public/views/templates/default/pp-inline-head.css' );
 $css = str_replace( array( "\t", "\r\n" ), array( '', '' ), $css );
-echo '<style>' . $css . '</style>' . "\r\n";
+echo '<style>' . $css . '</style>' . "\r\n"; //phpcs:ignore
 ?>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta charset="utf-8">
@@ -77,7 +77,7 @@ echo '<style>' . $css . '</style>' . "\r\n";
 					<form method="post" id="payment-form" class="pure-form pure-form-stacked" <?php echo isset( $a['fatal_error'] ) ? 'style="display: none;"' : ''; ?>>
 						<?php if ( $a['data']['stock_control_enabled'] && $a['data']['show_remaining'] ) { ?>
 							<div id="available-quantity-cont" class="pure-u-1">
-								<span><?php esc_html_e( 'Available quantity', 'stripe-payments' ); ?>: </span><span><?php echo $a['data']['stock_items']; ?></span>
+								<span><?php esc_html_e( 'Available quantity', 'stripe-payments' ); ?>: </span><span><?php echo esc_html( $a['data']['stock_items'] ); ?></span>
 							</div>
 						<?php } ?>
 						<?php if ( $a['data']['amount_variable'] && ! $this->item->get_meta( 'asp_product_hide_amount_input' ) ) { ?>
@@ -141,8 +141,6 @@ echo '<style>' . $css . '</style>' . "\r\n";
 
 									if ( '0' === $g_type ) {
 										$variations_str .= sprintf( '<select class="pure-input-1 variations-input" data-asp-variations-group-id="%1$d" name="stripeVariations[%1$d][]">', $grp_id );
-									} else {
-										//radio or checkbox output
 									}
 									foreach ( $a['data']['variations']['names'][ $grp_id ] as $var_id => $name ) {
 										if ( '1' === $g_type ) {
@@ -164,11 +162,8 @@ echo '<style>' . $css . '</style>' . "\r\n";
 									}
 									if ( '0' === $g_type ) {
 										$variations_str .= '</select>';
-									} else {
-										//radio or checkbox output
 									}
 									$variations_str .= '</fieldset></div>';
-									//                                      $variations_str .= '<div class="pure-u-md-1-24 variation"></div>';
 								}
 								$curr_var++;
 							}
