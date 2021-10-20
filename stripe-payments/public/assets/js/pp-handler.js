@@ -1242,7 +1242,13 @@ function handleCardPaymentResult(result) {
 }
 
 function confirmToken(reqStr) {
+	vars.data.confirmTokenStr = reqStr;
+	vars.data.canProceed = true;
 	console.log('Doing action asp_pp_confirm_token');
+	doAddonAction('confirmToken');
+	if (!vars.data.canProceed) {
+		return false;
+	}
 	new ajaxRequest(vars.ajaxURL, reqStr,
 		function (res) {
 			try {
