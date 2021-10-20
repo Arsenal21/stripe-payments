@@ -44,6 +44,7 @@ var reCaptchaHandlerNG = function (data) {
 											handlePayment();
 											return;
 										}
+										smokeScreen(false);
 										triggerEvent(form, 'submit');
 										return;
 									}
