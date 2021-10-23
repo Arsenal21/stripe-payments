@@ -70,6 +70,15 @@ var reCaptchaHandlerNG = function (data) {
 		}
 	}
 
+	parent.csBeforeRegen = function () {
+		if (vars.data.recaptchaInvisible && !parent.data.recaptchaChecked) {
+			smokeScreen(true);
+			vars.data.doNotProceed = true;
+			vars.data.reConfirmToken = true;
+			grecaptcha.execute();
+		}		
+	}
+
 	parent.confirmToken = function () {
 		if (vars.data.recaptchaInvisible && !parent.data.recaptchaChecked) {
 			smokeScreen(true);
