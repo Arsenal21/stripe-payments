@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<ruleset name="Custom Standard">
+  <rule ref="WordPress">
+    <exclude name="Squiz.Commenting"/>
+    <exclude name="WordPress.Files.FileName"/>
+    <exclude name="PEAR.NamingConventions.ValidClassName.StartWithCapital"/>
+    <exclude name="WordPress.PHP.YodaConditions"/>
+    <exclude name="WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents"/>
+  </rule>
+</ruleset>
