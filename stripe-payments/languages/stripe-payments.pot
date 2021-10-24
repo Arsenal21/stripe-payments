@@ -2,15 +2,15 @@
 # This file is distributed under the same license as the Accept Stripe Payments plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Accept Stripe Payments 2.0.48\n"
+"Project-Id-Version: Accept Stripe Payments 2.0.50\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/stripe-payments\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2021-10-02T18:52:02+03:00\n"
-"PO-Revision-Date: 2021-10-02T18:52:02+03:00\n"
+"POT-Creation-Date: 2021-10-24T23:56:40+03:00\n"
+"PO-Revision-Date: 2021-10-24T23:56:40+03:00\n"
 "X-Generator: WP-CLI 2.0.1\n"
 "X-Domain: stripe-payments\n"
 
@@ -1164,7 +1164,7 @@ msgstr ""
 
 #: admin/includes/class-asp-admin-product-meta-boxes.php:233
 #: admin/includes/class-asp-admin-product-meta-boxes.php:301
-#: admin/includes/class-asp-admin-products.php:146
+#: admin/includes/class-asp-admin-products.php:149
 msgid "Price"
 msgstr ""
 
@@ -1309,20 +1309,20 @@ msgid "Are you sure you want to delete this variation?"
 msgstr ""
 
 #: admin/includes/class-asp-admin-product-meta-boxes.php:447
-#: public/views/templates/default/payment-popup.php:340
-#: public/views/templates/default/payment-popup.php:385
+#: public/views/templates/default/payment-popup.php:347
+#: public/views/templates/default/payment-popup.php:392
 msgid "Country"
 msgstr ""
 
 #: admin/includes/class-asp-admin-product-meta-boxes.php:448
-#: public/views/templates/default/payment-popup.php:348
-#: public/views/templates/default/payment-popup.php:392
+#: public/views/templates/default/payment-popup.php:355
+#: public/views/templates/default/payment-popup.php:399
 msgid "State"
 msgstr ""
 
 #: admin/includes/class-asp-admin-product-meta-boxes.php:449
-#: public/views/templates/default/payment-popup.php:336
-#: public/views/templates/default/payment-popup.php:381
+#: public/views/templates/default/payment-popup.php:343
+#: public/views/templates/default/payment-popup.php:388
 msgid "City"
 msgstr ""
 
@@ -1360,7 +1360,7 @@ msgid "Update Stripe Payments Subscriptions add-on to version %s to enable this 
 msgstr ""
 
 #: admin/includes/class-asp-admin-product-meta-boxes.php:546
-msgid "Use this to configure tax variations on per-region basis."
+msgid "Use this to configure tax variations on a per-region basis."
 msgstr ""
 
 #: admin/includes/class-asp-admin-product-meta-boxes.php:552
@@ -1382,7 +1382,7 @@ msgstr ""
 #: includes/shortcodes/class-shortcode-asp.php:344
 #: includes/shortcodes/class-shortcode-asp.php:689
 #: includes/process_ipn.php:569
-#: public/views/templates/default/payment-popup.php:226
+#: public/views/templates/default/payment-popup.php:224
 msgid "Tax"
 msgstr ""
 
@@ -1623,7 +1623,7 @@ msgid "Use Another Stripe Account"
 msgstr ""
 
 #: admin/includes/class-asp-admin-product-meta-boxes.php:880
-#: admin/includes/class-asp-admin-products.php:148
+#: admin/includes/class-asp-admin-products.php:151
 msgid "Shortcode"
 msgstr ""
 
@@ -1688,7 +1688,7 @@ msgstr ""
 #: admin/includes/class-coupons-list-table.php:52
 #: admin/includes/class-coupons.php:350
 #: includes/shortcodes/class-shortcode-asp.php:958
-#: public/views/templates/default/payment-popup.php:184
+#: public/views/templates/default/payment-popup.php:182
 msgid "Coupon Code"
 msgstr ""
 
@@ -1756,13 +1756,13 @@ msgid "Delete"
 msgstr ""
 
 #: admin/includes/class-asp-admin-products.php:30
-#: admin/includes/class-asp-admin-products.php:88
+#: admin/includes/class-asp-admin-products.php:91
 msgctxt "Post Type General Name"
 msgid "Products"
 msgstr ""
 
 #: admin/includes/class-asp-admin-products.php:31
-#: admin/includes/class-asp-admin-products.php:89
+#: admin/includes/class-asp-admin-products.php:92
 msgctxt "Post Type Singular Name"
 msgid "Product"
 msgstr ""
@@ -1772,110 +1772,110 @@ msgid "Stripe Payments"
 msgstr ""
 
 #: admin/includes/class-asp-admin-products.php:33
-#: admin/includes/class-asp-admin-products.php:90
+#: admin/includes/class-asp-admin-products.php:93
 msgid "Products"
 msgstr ""
 
 #: admin/includes/class-asp-admin-products.php:34
-#: admin/includes/class-asp-admin-products.php:91
+#: admin/includes/class-asp-admin-products.php:94
 msgid "View Product"
 msgstr ""
 
 #: admin/includes/class-asp-admin-products.php:35
 #: admin/includes/class-asp-admin-products.php:36
-#: admin/includes/class-asp-admin-products.php:92
-#: admin/includes/class-asp-admin-products.php:93
+#: admin/includes/class-asp-admin-products.php:95
+#: admin/includes/class-asp-admin-products.php:96
 msgid "Add New Product"
 msgstr ""
 
 #: admin/includes/class-asp-admin-products.php:37
-#: admin/includes/class-asp-admin-products.php:94
-#: admin/includes/class-asp-admin-products.php:173
+#: admin/includes/class-asp-admin-products.php:97
+#: admin/includes/class-asp-admin-products.php:176
 msgid "Edit Product"
 msgstr ""
 
 #: admin/includes/class-asp-admin-products.php:38
-#: admin/includes/class-asp-admin-products.php:95
+#: admin/includes/class-asp-admin-products.php:98
 msgid "Update Products"
 msgstr ""
 
 #: admin/includes/class-asp-admin-products.php:39
-#: admin/includes/class-asp-admin-products.php:96
+#: admin/includes/class-asp-admin-products.php:99
 msgid "Search Product"
 msgstr ""
 
 #: admin/includes/class-asp-admin-products.php:40
-#: admin/includes/class-asp-admin-products.php:97
+#: admin/includes/class-asp-admin-products.php:100
 #: admin/includes/class-order.php:46
 msgid "Not found"
 msgstr ""
 
 #: admin/includes/class-asp-admin-products.php:41
-#: admin/includes/class-asp-admin-products.php:98
+#: admin/includes/class-asp-admin-products.php:101
 #: admin/includes/class-order.php:47
 msgid "Not found in Trash"
 msgstr ""
 
-#: admin/includes/class-asp-admin-products.php:126
+#: admin/includes/class-asp-admin-products.php:129
 msgid "View product"
 msgstr ""
 
-#: admin/includes/class-asp-admin-products.php:128
+#: admin/includes/class-asp-admin-products.php:131
 msgid "Preview product"
 msgstr ""
 
-#: admin/includes/class-asp-admin-products.php:130
-#: admin/includes/class-asp-admin-products.php:131
+#: admin/includes/class-asp-admin-products.php:133
+#: admin/includes/class-asp-admin-products.php:134
 msgid "Product updated."
 msgstr ""
 
-#: admin/includes/class-asp-admin-products.php:132
+#: admin/includes/class-asp-admin-products.php:135
 msgid "Product published."
 msgstr ""
 
-#: admin/includes/class-asp-admin-products.php:133
+#: admin/includes/class-asp-admin-products.php:136
 msgid "Product saved."
 msgstr ""
 
-#: admin/includes/class-asp-admin-products.php:134
+#: admin/includes/class-asp-admin-products.php:137
 msgid "Product submitted."
 msgstr ""
 
-#: admin/includes/class-asp-admin-products.php:135
+#: admin/includes/class-asp-admin-products.php:138
 msgid "Product draft updated."
 msgstr ""
 
-#: admin/includes/class-asp-admin-products.php:143
+#: admin/includes/class-asp-admin-products.php:146
 msgid "Thumbnail"
 msgstr ""
 
-#: admin/includes/class-asp-admin-products.php:144
+#: admin/includes/class-asp-admin-products.php:147
 #: includes/shortcodes/class-shortcode-asp.php:1006
 #: includes/class-asp-order-item.php:128
 #: includes/process_ipn.php:701
 msgid "Product Name"
 msgstr ""
 
-#: admin/includes/class-asp-admin-products.php:145
+#: admin/includes/class-asp-admin-products.php:148
 msgid "ID"
 msgstr ""
 
-#: admin/includes/class-asp-admin-products.php:147
+#: admin/includes/class-asp-admin-products.php:150
 msgid "Stock"
 msgstr ""
 
-#: admin/includes/class-asp-admin-products.php:149
+#: admin/includes/class-asp-admin-products.php:152
 msgid "Date"
 msgstr ""
 
-#: admin/includes/class-asp-admin-products.php:162
+#: admin/includes/class-asp-admin-products.php:165
 #: includes/class-asp-pp-display.php:227
 #: includes/shortcodes/class-asp-shortcode-ng.php:516
 #: includes/shortcodes/class-shortcode-asp.php:621
 msgid "Out of stock"
 msgstr ""
 
-#: admin/includes/class-asp-admin-products.php:193
+#: admin/includes/class-asp-admin-products.php:196
 msgid "Custom"
 msgstr ""
 
@@ -1930,8 +1930,8 @@ msgid "Stripe Orders"
 msgstr ""
 
 #: admin/includes/class-order.php:141
-#: public/views/templates/default/payment-popup.php:206
-#: public/views/templates/default/payment-popup.php:246
+#: public/views/templates/default/payment-popup.php:204
+#: public/views/templates/default/payment-popup.php:244
 msgid "Total"
 msgstr ""
 
@@ -2420,7 +2420,7 @@ msgstr ""
 #: includes/shortcodes/class-shortcode-asp.php:354
 #: includes/shortcodes/class-shortcode-asp.php:690
 #: includes/process_ipn.php:576
-#: public/views/templates/default/payment-popup.php:239
+#: public/views/templates/default/payment-popup.php:237
 msgid "Shipping"
 msgstr ""
 
@@ -2528,7 +2528,7 @@ msgid "Only numbers are allowed: 0-9"
 msgstr ""
 
 #: includes/class-asp-pp-display.php:365
-#: public/views/templates/default/payment-popup.php:408
+#: public/views/templates/default/payment-popup.php:415
 msgid "Credit or debit card"
 msgstr ""
 
@@ -2609,7 +2609,7 @@ msgstr ""
 
 #: includes/class-asp-pp-display.php:593
 #: includes/shortcodes/class-shortcode-asp.php:110
-#: public/views/templates/default/payment-popup.php:194
+#: public/views/templates/default/payment-popup.php:192
 msgid "Remove"
 msgstr ""
 
@@ -2649,12 +2649,12 @@ msgstr ""
 
 #: includes/shortcodes/class-asp-shortcode-ng.php:704
 #: includes/shortcodes/class-shortcode-asp.php:866
-#: public/views/templates/default/payment-popup.php:85
+#: public/views/templates/default/payment-popup.php:88
 msgid "Enter amount"
 msgstr ""
 
 #: includes/shortcodes/class-shortcode-asp.php:896
-#: public/views/templates/default/payment-popup.php:113
+#: public/views/templates/default/payment-popup.php:116
 msgid "Enter quantity"
 msgstr ""
 
@@ -2663,7 +2663,7 @@ msgid "X item(s)"
 msgstr ""
 
 #: includes/shortcodes/class-shortcode-asp.php:960
-#: public/views/templates/default/payment-popup.php:188
+#: public/views/templates/default/payment-popup.php:186
 msgid "Apply"
 msgstr ""
 
@@ -4146,63 +4146,63 @@ msgstr ""
 msgid "This email contains some raw transaction data just for the site admin to be aware of the incident."
 msgstr ""
 
-#: public/views/templates/default/payment-popup.php:42
+#: public/views/templates/default/payment-popup.php:45
 msgid "TEST MODE"
 msgstr ""
 
-#: public/views/templates/default/payment-popup.php:64
-#: public/views/templates/default/payment-popup.php:455
+#: public/views/templates/default/payment-popup.php:67
+#: public/views/templates/default/payment-popup.php:462
 msgid "Close"
 msgstr ""
 
-#: public/views/templates/default/payment-popup.php:80
+#: public/views/templates/default/payment-popup.php:83
 msgid "Available quantity"
 msgstr ""
 
-#: public/views/templates/default/payment-popup.php:92
+#: public/views/templates/default/payment-popup.php:95
 msgid "Select currency"
 msgstr ""
 
-#: public/views/templates/default/payment-popup.php:201
+#: public/views/templates/default/payment-popup.php:199
 msgid "Your order"
 msgstr ""
 
-#: public/views/templates/default/payment-popup.php:205
+#: public/views/templates/default/payment-popup.php:203
 msgid "Item"
 msgstr ""
 
-#: public/views/templates/default/payment-popup.php:257
+#: public/views/templates/default/payment-popup.php:255
 msgid "Select payment method"
 msgstr ""
 
-#: public/views/templates/default/payment-popup.php:285
+#: public/views/templates/default/payment-popup.php:292
 msgctxt "Customer name"
 msgid "Name"
 msgstr ""
 
-#: public/views/templates/default/payment-popup.php:295
+#: public/views/templates/default/payment-popup.php:302
 msgid "Email"
 msgstr ""
 
-#: public/views/templates/default/payment-popup.php:313
+#: public/views/templates/default/payment-popup.php:320
 msgid "Same billing and shipping info"
 msgstr ""
 
-#: public/views/templates/default/payment-popup.php:322
+#: public/views/templates/default/payment-popup.php:329
 msgid "Billing info"
 msgstr ""
 
-#: public/views/templates/default/payment-popup.php:325
-#: public/views/templates/default/payment-popup.php:371
+#: public/views/templates/default/payment-popup.php:332
+#: public/views/templates/default/payment-popup.php:378
 msgid "Address"
 msgstr ""
 
-#: public/views/templates/default/payment-popup.php:354
-#: public/views/templates/default/payment-popup.php:397
+#: public/views/templates/default/payment-popup.php:361
+#: public/views/templates/default/payment-popup.php:404
 msgid "Postcode"
 msgstr ""
 
-#: public/views/templates/default/payment-popup.php:367
+#: public/views/templates/default/payment-popup.php:374
 msgid "Shipping info"
 msgstr ""
 
