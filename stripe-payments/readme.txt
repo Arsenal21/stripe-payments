@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 5.0
 Tested up to: 5.8
 Requires PHP: 5.6
-Stable tag: 2.0.49
+Stable tag: 2.0.50
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -154,6 +154,10 @@ Yes, please visit Stripe Payments > Settings screen for options.
 None.
 
 == Changelog ==
+
+= 2.0.50 =
+- Invisible reCaptcha no longer causes issues on some Apple devices.
+- Minor improvements and optimizations.
 
 = 2.0.49 -
 - Addressed the `Class not found` error related issue on some configurations.

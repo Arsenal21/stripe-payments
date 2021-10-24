@@ -20,7 +20,7 @@ class ASP_Debug_Logger {
 
 		$output = '';
 		//Timestamp it
-		$output .= '[' . gmdate( 'm/d/Y g:i:s A' ) . '] - ';
+		$output .= '[' . gmdate( 'm/d/Y h:i:s A' ) . '] - ';
 
 		//Add the addon's name (if applicable)
 		if ( ! empty( $addon_name ) ) {

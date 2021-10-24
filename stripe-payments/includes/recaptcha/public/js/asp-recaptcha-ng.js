@@ -26,26 +26,29 @@ var reCaptchaHandlerNG = function (data) {
 						var ajaxData = 'action=asp_recaptcha_check&recaptcha_response=' + resp;
 						new ajaxRequest(vars.ajaxURL, ajaxData,
 							function (res) {
-								smokeScreen(false);
 								var resp = JSON.parse(res.responseText);
 								if (resp.error) {
+									console.log('fail');
+									smokeScreen(false);
 									parent.data.recaptchaChecked = false;
 									parent.errCont.html(resp.error).hide().fadeIn();
 									grecaptcha.reset();
 								} else {
+									console.log('success');
 									parent.errCont.hide();
 									parent.data.recaptchaChecked = true;
 									if (vars.data.recaptchaInvisible) {
-										triggerEvent(form, 'submit');
-										if (vars.data.reShowPR) {
-											if (typeof vars.data.apmPR !== 'undefined') {
-												vars.data.apmPR.show();
-											} else {
-												smokeScreen(false);
-											}
-											vars.data.reShowPR = false;
+										if (vars.data.reConfirmToken) {
+											vars.data.reConfirmToken = false;
+											vars.data.canProceed = true;
+											handlePayment();
+											return;
 										}
+										smokeScreen(false);
+										triggerEvent(form, 'submit');
+										return;
 									}
+									smokeScreen(false);
 								}
 							},
 							function (res, errMsg) {
@@ -67,11 +70,30 @@ var reCaptchaHandlerNG = function (data) {
 		}
 	}
 
+	parent.csBeforeRegen = function () {
+		if (vars.data.recaptchaInvisible && !parent.data.recaptchaChecked) {
+			smokeScreen(true);
+			vars.data.doNotProceed = true;
+			vars.data.reConfirmToken = true;
+			grecaptcha.execute();
+		}		
+	}
+
+	parent.confirmToken = function () {
+		if (vars.data.recaptchaInvisible && !parent.data.recaptchaChecked) {
+			smokeScreen(true);
+			vars.data.canProceed = false;
+			vars.data.reConfirmToken = true;
+			grecaptcha.execute();
+		}
+	}
+
 	parent.submitCanProceed = function () {
 		if (parent.data.recaptchaChecked === false) {
-			parent.data.canProceed = false;
-			if (vars.data.isEvent) {
-				vars.data.reShowPR = true;
+			vars.data.canProceed = false;
+			if (vars.data.isEvent && vars.data.recaptchaInvisible) {
+				vars.data.canProceed = true;
+				return;
 			}
 			if (vars.data.recaptchaInvisible) {
 				smokeScreen(true);
