@@ -156,8 +156,8 @@ None.
 == Changelog ==
 
 = 2.0.50 =
-- Invisible reCaptcha no longer causes issues on some Apple devices.
-- Minor improvements and optimizations.
+- Invisible reCaptcha option no longer causes an issue on some Apple devices.
+- Minor improvements and optimizations to the debug logging feature.
 
 = 2.0.49 -
 - Addressed the `Class not found` error related issue on some configurations.
