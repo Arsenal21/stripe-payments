@@ -492,13 +492,13 @@ jQuery(document).ready(function($) {
 	}
 
 	public function save_coupon() {
-		$coupon = $_POST['asp_coupon'];
+		check_admin_referer( 'asp-add-edit-coupon' );
+
+		$coupon = filter_input( INPUT_POST, 'asp_coupon', FILTER_UNSAFE_RAW, FILTER_REQUIRE_ARRAY );
 
 		$coupon_id = isset( $_POST['asp_coupon_id'] ) ? absint( $_POST['asp_coupon_id'] ) : false;
 
 		$is_edit = $coupon_id ? true : false;
-
-		check_admin_referer( 'asp-add-edit-coupon' );
 
 		$err_msg = array();
 
