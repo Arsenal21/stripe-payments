@@ -77,7 +77,7 @@ class AcceptStripePayments_CouponsAdmin {
 		$only_for_allowed_products = get_post_meta( $coupon_id, 'asp_coupon_only_for_allowed_products', true );
 		if ( $only_for_allowed_products ) {
 			$allowed_products = get_post_meta( $coupon_id, 'asp_coupon_allowed_products', true );
-			if ( is_array( $allowed_products ) && ! in_array( $prod_id, $allowed_products ) ) {
+			if ( is_array( $allowed_products ) && ! in_array( $prod_id, $allowed_products, true ) ) {
 				return false;
 			}
 		}
@@ -281,11 +281,13 @@ th#id {
 	public function display_coupon_add_edit_page() {
 
 		wp_enqueue_script( 'jquery-ui-datepicker' );
-		wp_register_style( 'jquery-ui', WP_ASP_PLUGIN_URL . '/admin/assets/css/jquery-ui-theme/jquery-ui.min.css' );
+		wp_register_style( 'jquery-ui', WP_ASP_PLUGIN_URL . '/admin/assets/css/jquery-ui-theme/jquery-ui.min.css' ); //phpcs:ignore
 		wp_enqueue_style( 'jquery-ui' );
 
-		$coupon_id = isset( $_GET['asp_coupon_id'] ) ? absint( $_GET['asp_coupon_id'] ) : false;
-		$is_edit   = $coupon_id ? true : false;
+		$coupon_id = filter_input( INPUT_GET, 'asp_coupon_id', FILTER_SANITIZE_NUMBER_INT );
+		$coupon_id = empty( $coupon_id ) ? false : absint( $coupon_id );
+
+		$is_edit = $coupon_id ? true : false;
 		if ( $is_edit ) {
 			if ( is_null( get_post( $coupon_id ) ) ) {
 				echo 'error';
@@ -312,9 +314,9 @@ th#id {
 				'post_type'   => untrailingslashit( ASPMain::$products_slug ),
 				'post_status' => 'publish',
 				'numberposts' => -1,
-			// 'order'    => 'ASC'
 			)
 		);
+
 		$prod_inputs = '';
 		$input_tpl   = '<label><input type="checkbox" name="asp_coupon[allowed_products][]" value="%s"%s> %s</label>';
 		if ( $posts ) {
@@ -399,7 +401,7 @@ th#id {
 			<tr>
 				<th scope="row"><?php esc_html_e( 'Start Date', 'stripe-payments' ); ?></th>
 				<td>
-					<input class="datepicker-input" type="text" name="asp_coupon[start_date]" value="<?php echo $is_edit ? esc_attr( $coupon['start_date'] ) : esc_attr( date( 'Y-m-d' ) ); ?>">
+					<input class="datepicker-input" type="text" name="asp_coupon[start_date]" value="<?php echo $is_edit ? esc_attr( $coupon['start_date'] ) : esc_attr( date( 'Y-m-d' ) ); //phpcs:ignore?>">
 					<p class="description"><?php esc_html_e( 'Start date when this coupon can be used.', 'stripe-payments' ); ?></p>
 				</td>
 			</tr>
@@ -417,7 +419,7 @@ th#id {
 					<br>
 					<label><input type="radio" name="asp_coupon[only_for_allowed_products]" value="1" <?php echo $is_edit && $coupon['only_for_allowed_products'] ? ' checked' : ''; ?>> <?php esc_html_e( 'Specific Products Only', 'stripe-payments' ); ?></label>
 					<p class="asp-coupons-available-products" <?php echo ( $is_edit && ! $coupon['only_for_allowed_products'] ) || ( ! $is_edit ) ? ' style="display: none;"' : ''; ?>>
-						<?php echo $prod_inputs; ?>
+						<?php echo $prod_inputs; //phpcs:ignore?>
 					</p>
 					<p class="description"><?php esc_html_e( 'Choose availability of the coupon. You can specify which products coupon is available when "Specific Products Only" is selected.', 'stripe-payments' ); ?></p>
 				</td>
