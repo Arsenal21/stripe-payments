@@ -356,7 +356,7 @@ th#id {
 			<tr>
 				<th scope="row"><?php esc_html_e( 'Discount', 'stripe-payments' ); ?></th>
 				<td>
-					<input style="vertical-align: middle;" type="text" name="asp_coupon[discount]" value="<?php echo $is_edit ? esc_attr( $coupon['discount'] ) : ''; ?>">
+					<input style="vertical-align: middle;" type="number" name="asp_coupon[discount]" min="0" step="0.01" <?php echo $is_edit && $coupon['discount_type'] === 'perc' ? 'max="100"' : ''; ?>value="<?php echo $is_edit ? esc_attr( $coupon['discount'] ) : ''; ?>">
 					<select name="asp_coupon[discount_type]">
 						<option value="perc" <?php echo $is_edit && $coupon['discount_type'] === 'perc' ? ' selected' : ''; ?>><?php esc_html_e( 'Percent (%)', 'stripe-payments' ); ?></option>
 						<option value="fixed" <?php echo $is_edit && $coupon['discount_type'] === 'fixed' ? ' selected' : ''; ?>><?php esc_html_e( 'Fixed amount', 'stripe-payments' ); ?></option>
@@ -437,8 +437,12 @@ jQuery(document).ready(function($) {
 	});
 	$('select[name="asp_coupon[discount_type]"]').change(function() {
 		if (this.value === 'fixed') {
+			jQuery('input[name="asp_coupon[discount]"]').prop('max', '');
+
 			$('#asp-coupon-per-order-cont').slideDown('fast');
 		} else {
+			jQuery('input[name="asp_coupon[discount]"]').prop('max', 100);
+
 			$('#asp-coupon-per-order-cont').slideUp('fast');
 		}
 	});
@@ -514,6 +518,10 @@ jQuery(document).ready(function($) {
 
 		if ( empty( $coupon['discount'] ) ) {
 			$err_msg[] = __( 'Please enter discount.', 'stripe-payments' );
+		}
+
+		if ( $coupon['discount_type'] === 'perc' && $coupon['discount'] > 100 ) {
+			$err_msg[] = __( "Discount can't be more than 100%.", 'stripe-payments' );
 		}
 
 		if ( ! empty( $err_msg ) ) {
