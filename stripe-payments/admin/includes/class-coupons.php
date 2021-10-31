@@ -97,9 +97,11 @@ class AcceptStripePayments_CouponsAdmin {
 
 		$coupon_code = strtoupper( $coupon_code );
 
-		$tax = ! empty( $_POST['tax'] ) ? intval( $_POST['tax'] ) : 0;
+		$tax = filter_input( INPUT_POST, 'tax', FILTER_SANITIZE_NUMBER_INT );
+		$tax = empty( $tax ) ? 0 : absint( $tax );
 
-		$shipping = ! empty( $_POST['shipping'] ) ? intval( $_POST['shipping'] ) : 0;
+		$shipping = filter_input( INPUT_POST, 'shipping', FILTER_SANITIZE_NUMBER_INT );
+		$shipping = empty( $shipping ) ? 0 : absint( $shipping );
 
 		$coupon = self::get_coupon( $coupon_code );
 
@@ -197,7 +199,7 @@ class AcceptStripePayments_CouponsAdmin {
 	public function save_settings() {
 		check_admin_referer( 'asp-coupons-settings' );
 		$settings                    = get_option( 'AcceptStripePayments-settings' );
-		$opts                        = $_POST['asp_coupons_opts'];
+		$opts                        = filter_input( INPUT_POST, 'asp_coupons_opts', FILTER_UNSAFE_RAW, FILTER_REQUIRE_ARRAY );
 		$settings['coupons_enabled'] = isset( $opts['coupons_enabled'] ) ? 1 : 0;
 		update_option( 'AcceptStripePayments-settings', $settings );
 
