@@ -176,12 +176,18 @@ class AcceptStripePayments_CouponsAdmin {
 			return;
 		}
 
-		if ( isset( $_POST['asp_coupon'] ) ) {
-			$this->save_coupon();
-		}
+		$post_action = filter_input( INPUT_POST, 'asp_coupon_action', FILTER_SANITIZE_STRING );
+		$post_action = empty( $post_action ) ? '0' : $post_action;
 
-		if ( isset( $_POST['asp_coupons_opts'] ) ) {
-			$this->save_settings();
+		switch ( $post_action ) {
+			case 'save_coupon':
+				$this->save_coupon();
+				break;
+			case 'save_settings':
+				$this->save_settings();
+				break;
+			default:
+				break;
 		}
 
 		$action = filter_input( INPUT_GET, 'action', FILTER_SANITIZE_STRING );
@@ -247,7 +253,7 @@ th#id {
 				<h3 class="hndle"><label for="title"><?php esc_html_e( 'Coupon Settings', 'stripe-payments' ); ?></label></h3>
 				<div class="inside">
 					<form method="post">
-						<input type="hidden" name="asp_coupons_opts[_save-settings]" value="1">
+						<input type="hidden" name="asp_coupon_action" value="save_settings">
 						<table class="form-table">
 							<tr>
 								<th scope="row"><?php esc_html_e( 'Enable Coupons', 'stripe-payments' ); ?></th>
@@ -330,6 +336,7 @@ th#id {
 <div class="wrap">
 	<h2><?php empty( $coupon_id ) ? esc_html_e( 'Add Coupon', 'stripe-payments' ) : esc_html_e( 'Edit Coupon', 'stripe-payments' ); ?></h2>
 	<form method="post">
+		<input type="hidden" name="asp_coupon_action" value="save_coupon">
 		<table class="form-table">
 			<tr>
 				<th scope="row"><?php esc_html_e( 'Active', 'stripe-payments' ); ?></th>
