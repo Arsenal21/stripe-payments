@@ -171,9 +171,13 @@ jQuery(document).ready(function ($) {
 		}
 	});
 
-	$('input[name="asp_product_price"]').on('change', function (e) {
+	var aspPriceInputChange = function () {
 		$('input[name="asp_product_hide_amount_input"]').prop('disabled', !($(this).val() == 0));
-	});
+	};
+
+	$('input[name="asp_product_price"]').on('change', aspPriceInputChange);
+	$('input[name="asp_product_price"]').on('keyup', aspPriceInputChange);
+
 	$('input[name="asp_product_price"]').trigger('change');
 
 	$('input[name="asp_product_type_radio"]').on('change', function (e) {

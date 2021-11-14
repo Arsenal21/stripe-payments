@@ -6,5 +6,7 @@
     <exclude name="PEAR.NamingConventions.ValidClassName.StartWithCapital"/>
     <exclude name="WordPress.PHP.YodaConditions"/>
     <exclude name="WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents"/>
+    <exclude name="WordPress.DB.SlowDBQuery.slow_db_query_meta_key"/>
+    <exclude name="WordPress.DB.SlowDBQuery.slow_db_query_meta_value"/>
   </rule>
 </ruleset>

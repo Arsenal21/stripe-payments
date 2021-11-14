@@ -337,9 +337,13 @@ class ASP_Admin_Product_Meta_Boxes {
 		}
 		$current_hide_amount_input = get_post_meta( $post->ID, 'asp_product_hide_amount_input', true );
 		?>
-<label>
-	<input type="checkbox" name="asp_product_hide_amount_input" value="1" <?php echo esc_attr( ! empty( $current_hide_amount_input ) ? ' checked' : '' ); ?>> <?php esc_html_e( 'Use variations only to construct final product price', 'stripe-payments' ); ?>
-</label>
+<style>
+input[type=checkbox][disabled] + label {
+	color: rgba(44,51,56,.5);
+}
+</style>
+	<input id="asp-product-hide-amount-input" type="checkbox" name="asp_product_hide_amount_input" value="1" <?php echo esc_attr( ! empty( $current_hide_amount_input ) ? ' checked' : '' ); ?>>
+	<label for="asp-product-hide-amount-input"> <?php esc_html_e( 'Use variations only to construct final product price', 'stripe-payments' ); ?></label>
 <p class="description">
 		<?php esc_html_e( 'When enabled, the total product price will be calculated by using the variation prices only. Useful if you do not want to have a base price for this product.', 'stripe-payments' ); ?>
 	<br />

@@ -2,15 +2,15 @@
 # This file is distributed under the same license as the Accept Stripe Payments plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Accept Stripe Payments 2.0.50\n"
+"Project-Id-Version: Accept Stripe Payments 2.0.51\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/stripe-payments\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2021-10-24T23:56:40+03:00\n"
-"PO-Revision-Date: 2021-10-24T23:56:40+03:00\n"
+"POT-Creation-Date: 2021-11-14T18:33:30+02:00\n"
+"PO-Revision-Date: 2021-11-14T18:33:30+02:00\n"
 "X-Generator: WP-CLI 2.0.1\n"
 "X-Domain: stripe-payments\n"
 
@@ -188,7 +188,7 @@ msgid "Example: $, €, £ etc."
 msgstr ""
 
 #: admin/class-asp-admin.php:508
-#: admin/includes/class-asp-admin-product-meta-boxes.php:766
+#: admin/includes/class-asp-admin-product-meta-boxes.php:770
 msgid "Button Text"
 msgstr ""
 
@@ -1225,154 +1225,154 @@ msgstr ""
 msgid "Note: variations for subscription products are currently not supported."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:341
+#: admin/includes/class-asp-admin-product-meta-boxes.php:346
 msgid "Use variations only to construct final product price"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:344
+#: admin/includes/class-asp-admin-product-meta-boxes.php:348
 msgid "When enabled, the total product price will be calculated by using the variation prices only. Useful if you do not want to have a base price for this product."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:346
+#: admin/includes/class-asp-admin-product-meta-boxes.php:350
 msgid "Note: To enable this option, you will need to set the product price to 0."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:357
+#: admin/includes/class-asp-admin-product-meta-boxes.php:361
 msgid "No variations configured for this product."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:364
+#: admin/includes/class-asp-admin-product-meta-boxes.php:368
 msgid "Create Group"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:369
+#: admin/includes/class-asp-admin-product-meta-boxes.php:373
 msgid "Group Name:"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:372
+#: admin/includes/class-asp-admin-product-meta-boxes.php:376
 msgid "Delete group"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:375
+#: admin/includes/class-asp-admin-product-meta-boxes.php:379
 msgid "Display As:"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:377
+#: admin/includes/class-asp-admin-product-meta-boxes.php:381
 msgid "Dropdown"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:378
+#: admin/includes/class-asp-admin-product-meta-boxes.php:382
 msgid "Radio Buttons"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:379
+#: admin/includes/class-asp-admin-product-meta-boxes.php:383
 msgid "Checkboxes"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:385
+#: admin/includes/class-asp-admin-product-meta-boxes.php:389
 msgctxt "Variation name"
 msgid "Name"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:386
+#: admin/includes/class-asp-admin-product-meta-boxes.php:390
 msgid "Price Mod"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:387
+#: admin/includes/class-asp-admin-product-meta-boxes.php:391
 msgid "Product URL"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:392
+#: admin/includes/class-asp-admin-product-meta-boxes.php:396
 msgid "Add Variation"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:403
+#: admin/includes/class-asp-admin-product-meta-boxes.php:407
 msgid "Select from Media Library"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:406
-#: admin/includes/class-asp-admin-product-meta-boxes.php:462
+#: admin/includes/class-asp-admin-product-meta-boxes.php:410
+#: admin/includes/class-asp-admin-product-meta-boxes.php:466
 msgid "Delete variation"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:416
+#: admin/includes/class-asp-admin-product-meta-boxes.php:420
 msgid "Checked by default"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:431
+#: admin/includes/class-asp-admin-product-meta-boxes.php:435
 msgid "Are you sure you want to delete this group?"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:432
-#: admin/includes/class-asp-admin-product-meta-boxes.php:506
+#: admin/includes/class-asp-admin-product-meta-boxes.php:436
+#: admin/includes/class-asp-admin-product-meta-boxes.php:510
 msgid "Are you sure you want to delete this variation?"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:447
+#: admin/includes/class-asp-admin-product-meta-boxes.php:451
 #: public/views/templates/default/payment-popup.php:347
 #: public/views/templates/default/payment-popup.php:392
 msgid "Country"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:448
+#: admin/includes/class-asp-admin-product-meta-boxes.php:452
 #: public/views/templates/default/payment-popup.php:355
 #: public/views/templates/default/payment-popup.php:399
 msgid "State"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:449
+#: admin/includes/class-asp-admin-product-meta-boxes.php:453
 #: public/views/templates/default/payment-popup.php:343
 #: public/views/templates/default/payment-popup.php:388
 msgid "City"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:513
+#: admin/includes/class-asp-admin-product-meta-boxes.php:517
 msgid "Shipping Cost"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:518
+#: admin/includes/class-asp-admin-product-meta-boxes.php:522
 msgid "Numbers only, no need to put currency symbol. Example: 5.90"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:520
+#: admin/includes/class-asp-admin-product-meta-boxes.php:524
 msgid "Leave it blank if you are not shipping your product or not charging additional shipping costs."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:525
+#: admin/includes/class-asp-admin-product-meta-boxes.php:529
 msgid "Tax (%)"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:530
+#: admin/includes/class-asp-admin-product-meta-boxes.php:534
 msgid "Enter tax (in percent) which should be added to product price during purchase."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:532
+#: admin/includes/class-asp-admin-product-meta-boxes.php:536
 msgid "Leave it blank if you don't want to apply tax."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:536
+#: admin/includes/class-asp-admin-product-meta-boxes.php:540
 msgid "Tax Variations"
 msgstr ""
 
 #. translators: %s is add-on version number
-#: admin/includes/class-asp-admin-product-meta-boxes.php:540
+#: admin/includes/class-asp-admin-product-meta-boxes.php:544
 msgid "Update Stripe Payments Subscriptions add-on to version %s to enable this functionailty."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:546
+#: admin/includes/class-asp-admin-product-meta-boxes.php:550
 msgid "Use this to configure tax variations on a per-region basis."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:552
+#: admin/includes/class-asp-admin-product-meta-boxes.php:556
 msgid "Type"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:553
+#: admin/includes/class-asp-admin-product-meta-boxes.php:557
 msgid "Location"
 msgstr ""
 
 #. translators: %d is number of items in stock
-#: admin/includes/class-asp-admin-product-meta-boxes.php:554
+#: admin/includes/class-asp-admin-product-meta-boxes.php:558
 #: includes/class-asp-product-item.php:402
 #: includes/class-asp-process-ipn-ng.php:523
 #: includes/class-asp-pp-display.php:585
@@ -1386,286 +1386,286 @@ msgstr ""
 msgid "Tax"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:562
+#: admin/includes/class-asp-admin-product-meta-boxes.php:566
 msgid "Add Tax Variation"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:563
+#: admin/includes/class-asp-admin-product-meta-boxes.php:567
 msgid "Apply the tax variation based on:"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:565
+#: admin/includes/class-asp-admin-product-meta-boxes.php:569
 msgid "Billing address"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:566
+#: admin/includes/class-asp-admin-product-meta-boxes.php:570
 msgid "Shipping address"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:579
+#: admin/includes/class-asp-admin-product-meta-boxes.php:583
 msgid "By default, if you leave this field empty, the product quantity will be set to 1. You can change this behavior by using the following options."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:583
+#: admin/includes/class-asp-admin-product-meta-boxes.php:587
 msgid "Allow users to specify quantity"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:585
+#: admin/includes/class-asp-admin-product-meta-boxes.php:589
 msgid "When checked, users can enter the quantity they want to buy."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:587
+#: admin/includes/class-asp-admin-product-meta-boxes.php:591
 msgid "Set Quantity:"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:590
+#: admin/includes/class-asp-admin-product-meta-boxes.php:594
 msgid "If you want to use a set quantity for this item then enter the value in this field."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:596
+#: admin/includes/class-asp-admin-product-meta-boxes.php:600
 msgid "Enable stock control"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:598
+#: admin/includes/class-asp-admin-product-meta-boxes.php:602
 msgid "When enabled, you can specify the quantity available for this product. It will be decreased each time the item is purchased. When stock reaches zero, an \"Out of stock\" message will be displayed instead of the buy button."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:600
+#: admin/includes/class-asp-admin-product-meta-boxes.php:604
 msgid "Quantity Available:"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:603
+#: admin/includes/class-asp-admin-product-meta-boxes.php:607
 msgid "Specify the quantity available for this product."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:606
+#: admin/includes/class-asp-admin-product-meta-boxes.php:610
 msgid "Show the available quantity in the payment popup"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:608
+#: admin/includes/class-asp-admin-product-meta-boxes.php:612
 msgid "When this is checked, the number of remaining items is displayed on payment popup."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:615
+#: admin/includes/class-asp-admin-product-meta-boxes.php:619
 msgid "URL of your product (if you're selling digital products)."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:621
+#: admin/includes/class-asp-admin-product-meta-boxes.php:625
 msgid "Manually enter a valid URL of the file in the text box below, or click \"Select File\" button to upload (or choose) the downloadable file."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:625
-#: admin/includes/class-asp-admin-product-meta-boxes.php:643
+#: admin/includes/class-asp-admin-product-meta-boxes.php:629
+#: admin/includes/class-asp-admin-product-meta-boxes.php:647
 msgid "Select File"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:629
+#: admin/includes/class-asp-admin-product-meta-boxes.php:633
 msgid "Steps to upload a file or choose one from your media library:"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:631
+#: admin/includes/class-asp-admin-product-meta-boxes.php:635
 msgid "Hit the \"Select File\" button."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:632
+#: admin/includes/class-asp-admin-product-meta-boxes.php:636
 msgid "Upload a new file or choose an existing one from your media library."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:633
+#: admin/includes/class-asp-admin-product-meta-boxes.php:637
 msgid "Click the \"Insert\" button, this will populate the uploaded file's URL in the above text field."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:645
-#: admin/includes/class-asp-admin-product-meta-boxes.php:696
+#: admin/includes/class-asp-admin-product-meta-boxes.php:649
+#: admin/includes/class-asp-admin-product-meta-boxes.php:700
 msgid "Insert"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:670
+#: admin/includes/class-asp-admin-product-meta-boxes.php:674
 msgid "Manually enter a valid URL, or click \"Select Image\" to upload (or choose) the file thumbnail image."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:674
-#: admin/includes/class-asp-admin-product-meta-boxes.php:694
+#: admin/includes/class-asp-admin-product-meta-boxes.php:678
+#: admin/includes/class-asp-admin-product-meta-boxes.php:698
 msgid "Select Image"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:675
+#: admin/includes/class-asp-admin-product-meta-boxes.php:679
 msgid "Remove Image"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:684
+#: admin/includes/class-asp-admin-product-meta-boxes.php:688
 msgid "Don't use product thumbnail in Stripe pop-up"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:686
+#: admin/includes/class-asp-admin-product-meta-boxes.php:690
 msgid "Use this checkbox if you do not want to show the product thumbnail in Stripe checkout popup."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:726
+#: admin/includes/class-asp-admin-product-meta-boxes.php:730
 msgid "Collect Address on Checkout"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:727
+#: admin/includes/class-asp-admin-product-meta-boxes.php:731
 msgid "Enable this to collect customer address on checkout."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:734
+#: admin/includes/class-asp-admin-product-meta-boxes.php:738
 msgid "Collect Both Billing And Shipping Addresses"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:741
+#: admin/includes/class-asp-admin-product-meta-boxes.php:745
 msgid "Collect Billing Address Only"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:750
+#: admin/includes/class-asp-admin-product-meta-boxes.php:754
 msgid "Enter the Thank You page URL for this product. Leave it blank to use the default Thank You page specified in the settings."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:752
+#: admin/includes/class-asp-admin-product-meta-boxes.php:756
 msgid "You can read on how to customize some of the messages on the Thank You page <a href=\"https://s-plugins.com/customize-the-thank-page-message-of-stripe-payments-plugin/\" target=\"_blank\">in this documentation</a>."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:765
+#: admin/includes/class-asp-admin-product-meta-boxes.php:769
 msgid "Button Options"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:769
+#: admin/includes/class-asp-admin-product-meta-boxes.php:773
 msgid "Specify text to be displayed on the button. Leave it blank to use button text specified on settings page."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:770
+#: admin/includes/class-asp-admin-product-meta-boxes.php:774
 msgid "Button CSS Class"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:773
+#: admin/includes/class-asp-admin-product-meta-boxes.php:777
 msgid "CSS class to be assigned to the button. This is used for styling purposes. You can get additional information <a href=\"https://s-plugins.com/customize-stripe-payment-button-appearance-using-css/\" target=\"_blank\">in this tutorial</a>."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:774
+#: admin/includes/class-asp-admin-product-meta-boxes.php:778
 #: admin/views/blocks.php:30
 msgid "Show Button Only"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:775
+#: admin/includes/class-asp-admin-product-meta-boxes.php:779
 #: admin/views/blocks.php:31
 msgid "Check this box if you just want to show the button only without any additional product info."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:778
+#: admin/includes/class-asp-admin-product-meta-boxes.php:782
 msgid "Payment Popup Options"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:779
+#: admin/includes/class-asp-admin-product-meta-boxes.php:783
 msgid "Show Order Total On Payment Popup"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:780
+#: admin/includes/class-asp-admin-product-meta-boxes.php:784
 msgid "If enabled, an additional \"Your order\" section with itemized product info (shipping, tax amount, variations etc) will be displayed on payment popup."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:797
+#: admin/includes/class-asp-admin-product-meta-boxes.php:801
 msgid "Custom field is disabled. Configure custom field in the settings menu of this plugin to enable it."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:801
+#: admin/includes/class-asp-admin-product-meta-boxes.php:805
 msgid "Select how Custom Field display should be handled for this product."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:802
-#: admin/includes/class-asp-admin-product-meta-boxes.php:813
+#: admin/includes/class-asp-admin-product-meta-boxes.php:806
+#: admin/includes/class-asp-admin-product-meta-boxes.php:817
 msgid "Use Global Setting"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:803
-#: admin/includes/class-asp-admin-product-meta-boxes.php:814
+#: admin/includes/class-asp-admin-product-meta-boxes.php:807
+#: admin/includes/class-asp-admin-product-meta-boxes.php:818
 msgid "Enabled"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:804
-#: admin/includes/class-asp-admin-product-meta-boxes.php:815
+#: admin/includes/class-asp-admin-product-meta-boxes.php:808
+#: admin/includes/class-asp-admin-product-meta-boxes.php:819
 msgid "Disabled"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:812
+#: admin/includes/class-asp-admin-product-meta-boxes.php:816
 msgid "Select how Coupons should be handled for this product."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:837
+#: admin/includes/class-asp-admin-product-meta-boxes.php:841
 msgid "Authorize Only"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:839
+#: admin/includes/class-asp-admin-product-meta-boxes.php:843
 msgid "Place a hold on a card to reserve the funds now and capture it later manually."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:841
+#: admin/includes/class-asp-admin-product-meta-boxes.php:845
 msgid "Note: this option is not supported by Subscription products, Alipay, SOFORT, iDEAL and FPX payment methods. If enabled, those won't be offered as payment option for this product."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:843
+#: admin/includes/class-asp-admin-product-meta-boxes.php:847
 msgid "Force Test Mode"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:844
+#: admin/includes/class-asp-admin-product-meta-boxes.php:848
 msgid "When enabled, this product will stay in test mode regardless of the value set in the global \"Live Mode\" settings option. Can be useful to create a test product."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:847
+#: admin/includes/class-asp-admin-product-meta-boxes.php:851
 msgid "Other Stripe Account"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:848
+#: admin/includes/class-asp-admin-product-meta-boxes.php:852
 msgid "Note: this functionality is currently being tested and is not supported by Subscription products, APM, Alipay, SOFORT and iDEAL add-ons. Please do not enable it if you are using one of these add-ons."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:849
+#: admin/includes/class-asp-admin-product-meta-boxes.php:853
 msgid "Use Another Stripe Account"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:880
+#: admin/includes/class-asp-admin-product-meta-boxes.php:884
 #: admin/includes/class-asp-admin-products.php:151
 msgid "Shortcode"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:882
+#: admin/includes/class-asp-admin-product-meta-boxes.php:886
 msgid "Use this shortcode to display this product."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:885
+#: admin/includes/class-asp-admin-product-meta-boxes.php:889
 msgid "CSS Class"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:887
+#: admin/includes/class-asp-admin-product-meta-boxes.php:891
 msgid "Attach this product to any html element by adding this CSS class to it."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:890
+#: admin/includes/class-asp-admin-product-meta-boxes.php:894
 msgid "Link URL"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:892
+#: admin/includes/class-asp-admin-product-meta-boxes.php:896
 msgid "Use this URL to create a custom payment button using a text or image link."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:914
+#: admin/includes/class-asp-admin-product-meta-boxes.php:918
 msgid "Please specify product name."
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:986
+#: admin/includes/class-asp-admin-product-meta-boxes.php:990
 msgid "Please enter all API keys for other Stripe account."
 msgstr ""
 
 #. translators: %1$s - currency code, %2$s - minimum amount, %3$s - current amount
-#: admin/includes/class-asp-admin-product-meta-boxes.php:1104
+#: admin/includes/class-asp-admin-product-meta-boxes.php:1108
 msgid "<b>Invalid product price</b>: minimum price in %1$s should be %2$s, you specified %3$s. This price limitation comes from Stripe."
 msgstr ""
 
 #. translators: %1$s - maximum allowed amount, %2$s - current amount
-#: admin/includes/class-asp-admin-product-meta-boxes.php:1114
+#: admin/includes/class-asp-admin-product-meta-boxes.php:1118
 msgid "<b>Invalid product price</b>: maximum allowed product price is %1$s, you specified %2$s"
 msgstr ""
 
-#: admin/includes/class-asp-admin-product-meta-boxes.php:1121
+#: admin/includes/class-asp-admin-product-meta-boxes.php:1125
 msgid "<b>Invalid product price</b>: one-time payment product price cannot be zero."
 msgstr ""
 
@@ -1686,14 +1686,14 @@ msgid "No data available."
 msgstr ""
 
 #: admin/includes/class-coupons-list-table.php:52
-#: admin/includes/class-coupons.php:350
+#: admin/includes/class-coupons.php:361
 #: includes/shortcodes/class-shortcode-asp.php:958
 #: public/views/templates/default/payment-popup.php:182
 msgid "Coupon Code"
 msgstr ""
 
 #: admin/includes/class-coupons-list-table.php:54
-#: admin/includes/class-coupons.php:333
+#: admin/includes/class-coupons.php:344
 msgid "Active"
 msgstr ""
 
@@ -1702,22 +1702,22 @@ msgid "Discount Value"
 msgstr ""
 
 #: admin/includes/class-coupons-list-table.php:56
-#: admin/includes/class-coupons.php:384
+#: admin/includes/class-coupons.php:395
 msgid "Redemption Count"
 msgstr ""
 
 #: admin/includes/class-coupons-list-table.php:57
-#: admin/includes/class-coupons.php:377
+#: admin/includes/class-coupons.php:388
 msgid "Redemption Limit"
 msgstr ""
 
 #: admin/includes/class-coupons-list-table.php:58
-#: admin/includes/class-coupons.php:391
+#: admin/includes/class-coupons.php:402
 msgid "Start Date"
 msgstr ""
 
 #: admin/includes/class-coupons-list-table.php:59
-#: admin/includes/class-coupons.php:398
+#: admin/includes/class-coupons.php:409
 msgid "Expiry Date"
 msgstr ""
 
@@ -2016,175 +2016,179 @@ msgstr ""
 msgid "Empty coupon code"
 msgstr ""
 
-#: admin/includes/class-coupons.php:115
+#: admin/includes/class-coupons.php:117
 msgid "No product ID specified."
 msgstr ""
 
-#: admin/includes/class-coupons.php:120
+#: admin/includes/class-coupons.php:122
 #: includes/class-asp-product-item.php:499
 msgid "Coupon is not allowed for this product."
 msgstr ""
 
-#: admin/includes/class-coupons.php:194
-#: admin/includes/class-coupons.php:241
-#: admin/includes/class-coupons.php:267
+#: admin/includes/class-coupons.php:202
+#: admin/includes/class-coupons.php:249
+#: admin/includes/class-coupons.php:275
 msgid "Coupons"
 msgstr ""
 
-#: admin/includes/class-coupons.php:207
+#: admin/includes/class-coupons.php:214
 msgid "Settings updated."
 msgstr ""
 
-#: admin/includes/class-coupons.php:245
+#: admin/includes/class-coupons.php:253
 msgid "Coupon Settings"
 msgstr ""
 
-#: admin/includes/class-coupons.php:251
+#: admin/includes/class-coupons.php:259
 msgid "Enable Coupons"
 msgstr ""
 
-#: admin/includes/class-coupons.php:254
+#: admin/includes/class-coupons.php:262
 msgid "Enables the discount coupon functionality."
 msgstr ""
 
-#: admin/includes/class-coupons.php:260
+#: admin/includes/class-coupons.php:268
 msgid "Save Settings"
 msgstr ""
 
-#: admin/includes/class-coupons.php:267
+#: admin/includes/class-coupons.php:275
 msgid "Add a Coupon"
 msgstr ""
 
-#: admin/includes/class-coupons.php:324
+#: admin/includes/class-coupons.php:334
 msgid "No products created yet."
 msgstr ""
 
-#: admin/includes/class-coupons.php:329
+#: admin/includes/class-coupons.php:339
 msgid "Add Coupon"
 msgstr ""
 
-#: admin/includes/class-coupons.php:329
+#: admin/includes/class-coupons.php:339
 msgid "Edit Coupon"
 msgstr ""
 
-#: admin/includes/class-coupons.php:336
+#: admin/includes/class-coupons.php:347
 msgid "Use this to enable/disable this coupon."
 msgstr ""
 
-#: admin/includes/class-coupons.php:341
+#: admin/includes/class-coupons.php:352
 msgid "Coupon ID"
 msgstr ""
 
-#: admin/includes/class-coupons.php:345
+#: admin/includes/class-coupons.php:356
 msgid "Coupon ID. This value cannot be changed."
 msgstr ""
 
-#: admin/includes/class-coupons.php:353
+#: admin/includes/class-coupons.php:364
 msgid "Coupon code that you can share with your customers. Example: GET10OFF"
 msgstr ""
 
-#: admin/includes/class-coupons.php:357
+#: admin/includes/class-coupons.php:368
 msgid "Discount"
 msgstr ""
 
-#: admin/includes/class-coupons.php:361
+#: admin/includes/class-coupons.php:372
 msgid "Percent (%)"
 msgstr ""
 
-#: admin/includes/class-coupons.php:362
+#: admin/includes/class-coupons.php:373
 msgid "Fixed amount"
 msgstr ""
 
-#: admin/includes/class-coupons.php:364
+#: admin/includes/class-coupons.php:375
 msgid "Select discount amount and type. Enter a numeric value only. Example: 25"
 msgstr ""
 
-#: admin/includes/class-coupons.php:367
+#: admin/includes/class-coupons.php:378
 msgid "Apply Per-Order"
 msgstr ""
 
-#: admin/includes/class-coupons.php:369
+#: admin/includes/class-coupons.php:380
 msgid "If enabled, discount is applied on per-order basis rather than per-item."
 msgstr ""
 
-#: admin/includes/class-coupons.php:371
+#: admin/includes/class-coupons.php:382
 msgid "This option is only available for \"fixed amount\" type coupons."
 msgstr ""
 
-#: admin/includes/class-coupons.php:380
+#: admin/includes/class-coupons.php:391
 msgid "Set max number of coupons available for redemption. Put 0 to make it unlimited."
 msgstr ""
 
-#: admin/includes/class-coupons.php:387
+#: admin/includes/class-coupons.php:398
 msgid "Number of already redeemed coupons."
 msgstr ""
 
-#: admin/includes/class-coupons.php:394
+#: admin/includes/class-coupons.php:405
 msgid "Start date when this coupon can be used."
 msgstr ""
 
-#: admin/includes/class-coupons.php:401
+#: admin/includes/class-coupons.php:412
 msgid "Date when this coupon will expire. Put 0 to disable expiry check."
 msgstr ""
 
-#: admin/includes/class-coupons.php:405
+#: admin/includes/class-coupons.php:416
 msgid "Coupon Available For:"
 msgstr ""
 
-#: admin/includes/class-coupons.php:407
+#: admin/includes/class-coupons.php:418
 msgid "All products"
 msgstr ""
 
-#: admin/includes/class-coupons.php:409
+#: admin/includes/class-coupons.php:420
 msgid "Specific Products Only"
 msgstr ""
 
-#: admin/includes/class-coupons.php:413
+#: admin/includes/class-coupons.php:424
 msgid "Choose availability of the coupon. You can specify which products coupon is available when \"Specific Products Only\" is selected."
 msgstr ""
 
-#: admin/includes/class-coupons.php:422
+#: admin/includes/class-coupons.php:433
 msgid "Update Coupon"
 msgstr ""
 
-#: admin/includes/class-coupons.php:422
+#: admin/includes/class-coupons.php:433
 msgid "Create Coupon"
 msgstr ""
 
-#: admin/includes/class-coupons.php:456
+#: admin/includes/class-coupons.php:471
 msgid "Can't delete coupon: coupon ID is not provided."
 msgstr ""
 
 #. translators: %d is coupon ID
-#: admin/includes/class-coupons.php:466
+#: admin/includes/class-coupons.php:481
 msgid "Can't delete coupon: coupon #%d not found."
 msgstr ""
 
 #. translators: %d is coupon ID
-#: admin/includes/class-coupons.php:475
+#: admin/includes/class-coupons.php:490
 msgid "Can't delete coupon: post #%d is not a coupon."
 msgstr ""
 
 #. translators: %d is coupon ID
-#: admin/includes/class-coupons.php:486
+#: admin/includes/class-coupons.php:501
 msgid "Coupon #%d has been deleted."
 msgstr ""
 
-#: admin/includes/class-coupons.php:512
+#: admin/includes/class-coupons.php:527
 msgid "Please enter coupon code."
 msgstr ""
 
-#: admin/includes/class-coupons.php:516
+#: admin/includes/class-coupons.php:531
 msgid "Please enter discount."
 msgstr ""
 
+#: admin/includes/class-coupons.php:535
+msgid "Discount can't be more than 100%."
+msgstr ""
+
 #. translators: %s is coupon code
-#: admin/includes/class-coupons.php:547
+#: admin/includes/class-coupons.php:566
 msgid "Coupon \"%s\" has been updated."
 msgstr ""
 
 #. translators: %s is coupon code
-#: admin/includes/class-coupons.php:547
+#: admin/includes/class-coupons.php:566
 msgid "Coupon \"%s\" has been created."
 msgstr ""
 

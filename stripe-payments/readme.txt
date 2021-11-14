@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 5.0
 Tested up to: 5.8
 Requires PHP: 5.6
-Stable tag: 2.0.50
+Stable tag: 2.0.51
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -154,6 +154,11 @@ Yes, please visit Stripe Payments > Settings screen for options.
 None.
 
 == Changelog ==
+
+= 2.0.51 =
+- Made `Use variations only to construct final product price` reaction to product price change more obvious.
+- Improvements to coupons edit page.
+- Internal API improvements.
 
 = 2.0.50 =
 - Invisible reCaptcha option no longer causes an issue on some Apple devices.

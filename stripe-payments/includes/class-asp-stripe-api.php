@@ -140,7 +140,20 @@ class ASP_Stripe_API {
 
 	}
 
-	public function post( $endpoint, $params = array() ) {
+	/**
+	 * Make POST API request
+	 *
+	 * @param  string $endpoint
+	 * Endpoint to make request to. Example: 'customers/'
+	 * @param  array $params
+	 * Parameters to send
+	 * @param string $method
+	 * Since 2.0.51
+	 * Request method. Default is 'POST'
+	 * @return mixed
+	 * `object` on success, `false` on error
+	 */
+	public function post( $endpoint, $params = array(), $method = 'POST' ) {
 
 		$this->before_request();
 
@@ -149,7 +162,7 @@ class ASP_Stripe_API {
 		$res = wp_remote_get(
 			$this->api_url . $endpoint,
 			array(
-				'method'  => 'POST',
+				'method'  => $method,
 				'headers' => $headers,
 				'body'    => $this->encode_params( $params ),
 			)
