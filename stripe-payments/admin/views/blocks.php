@@ -12,10 +12,18 @@ class AcceptStripePayments_Blocks {
 			return;
 		}
 
+		$deps = array( 'wp-blocks', 'wp-element', 'wp-components' );
+
+		$wp_version = get_bloginfo( 'version' );
+
+		if ( version_compare( $wp_version, '5.8.0', '<' ) ) {
+			array_push( $deps, 'wp-editor' );
+		}
+
 		wp_register_script(
 			'stripe-payments-product-block',
 			WP_ASP_PLUGIN_URL . '/admin/assets/js/blocks/product-block.js',
-			array( 'wp-blocks', 'wp-element', 'wp-components' ),
+			$deps,
 			WP_ASP_PLUGIN_VERSION,
 			true
 		);
