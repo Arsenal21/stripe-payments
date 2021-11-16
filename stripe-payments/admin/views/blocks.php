@@ -15,7 +15,7 @@ class AcceptStripePayments_Blocks {
 		wp_register_script(
 			'stripe-payments-product-block',
 			WP_ASP_PLUGIN_URL . '/admin/assets/js/blocks/product-block.js',
-			array( 'wp-blocks', 'wp-element', 'wp-components', 'wp-editor' ),
+			array( 'wp-blocks', 'wp-element', 'wp-components' ),
 			WP_ASP_PLUGIN_VERSION,
 			true
 		);
