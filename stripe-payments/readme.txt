@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 5.0
 Tested up to: 5.8
 Requires PHP: 5.6
-Stable tag: 2.0.51
+Stable tag: 2.0.52t1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -154,6 +154,10 @@ Yes, please visit Stripe Payments > Settings screen for options.
 None.
 
 == Changelog ==
+
+= WIP 2.0.52 =
+- `Variable` is displayed instead of zero as price for products that are constructed via variations.
+- Fixed PHP warning on Widgets admin page.
 
 = 2.0.51 =
 - Improved the `Use variations only to construct final product price` option's reaction to product price change.
