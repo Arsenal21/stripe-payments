@@ -421,7 +421,7 @@ th#id {
 					<p class="asp-coupons-available-products" <?php echo ( $is_edit && ! $coupon['only_for_allowed_products'] ) || ( ! $is_edit ) ? ' style="display: none;"' : ''; ?>>
 						<?php echo $prod_inputs; //phpcs:ignore?>
 					</p>
-					<p class="description"><?php esc_html_e( 'Choose availability of the coupon. You can specify which products coupon is available when "Specific Products Only" is selected.', 'stripe-payments' ); ?></p>
+					<p class="description"><?php esc_html_e( 'Choose availability of the coupon. You can specify which products the coupon is available to when the "Specific Products Only" option is selected.', 'stripe-payments' ); ?></p>
 				</td>
 			</tr>
 			<?php

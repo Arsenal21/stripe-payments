@@ -156,7 +156,7 @@ None.
 == Changelog ==
 
 = 2.0.51 =
-- Made `Use variations only to construct final product price` reaction to product price change more obvious.
+- Improved the `Use variations only to construct final product price` option's reaction to product price change.
 - Improvements to coupons edit page.
 - Internal API improvements.
 
