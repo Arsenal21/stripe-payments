@@ -1190,9 +1190,17 @@ class AcceptStripePaymentsShortcode {
 				$curr = $currency;
 			}
 
+			$price_orig = $price;
+
 			$price = AcceptStripePayments::formatted_price( $price, $curr );
 			if ( empty( $price ) ) {
 				$price = '&nbsp';
+			}
+
+			$constr_price_var = get_post_meta( $id, 'asp_product_hide_amount_input', true );
+
+			if ( empty( $price_orig ) && ! empty( $constr_price_var ) ) {
+				$price = __( 'Variable', 'stripe-payments' );
 			}
 
 			$item_tags = array( 'price' => $price );

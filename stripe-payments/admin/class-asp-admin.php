@@ -375,6 +375,7 @@ class AcceptStripePayments_Admin {
 
 	/**
 	 * Register and enqueue admin-specific JavaScript.
+	 *
 	 * @return    null    Return early if no settings page is registered.
 	 */
 	public function enqueue_admin_scripts() {
@@ -720,13 +721,13 @@ class AcceptStripePayments_Admin {
 			)
 		);
 		add_settings_field(
-			'debug_log_link',
+			'debug_log_link_enable',
 			__( 'Debug Log Shareable Link', 'stripe-payments' ),
 			array( &$this, 'settings_field_callback' ),
 			$this->plugin_slug,
 			'AcceptStripePayments-debug-section',
 			array(
-				'field' => 'debug_log_link',
+				'field' => 'debug_log_link_enable',
 				'desc'  => __(
 					'Normally, the debug log is only accessible to you if you are logged-in as admin. However, in some situations it might be required for support personnel to view it without having admin credentials. This link can be helpful in that situation.',
 					'stripe-payments'
@@ -1525,7 +1526,10 @@ class AcceptStripePayments_Admin {
 				echo '<textarea name="AcceptStripePayments-settings[tos_text]" rows="4" cols="70">' . $field_value . '</textarea>';
 				echo '<p class="description">' . $desc . '</p>';
 				break;
-			case 'debug_log_link':
+			case 'debug_log_link_enable':
+				echo '<input id="asp-debug-log-link-enable" type="checkbox" value="1" name="AcceptStripePayments-settings[debug_log_link_enable]"' . ( $field_value ? ' checked="checked"' : '' ) . '>';
+				echo '<label for="asp-debug-log-link-enable">' . esc_html__( 'Enabled', 'stripe-payments' ) . '</label>';
+				echo '<p></p>';
 				//check if we have token generated
 				$token = $this->asp_main->get_setting( 'debug_log_access_token' );
 				if ( ! $token ) {
@@ -1536,8 +1540,8 @@ class AcceptStripePayments_Admin {
 					unregister_setting( 'AcceptStripePayments-settings-group', 'AcceptStripePayments-settings' );
 					update_option( 'AcceptStripePayments-settings', $opts );
 				}
-				echo '<input type="text" size="70" class="asp-debug-log-link asp-select-on-click" readonly value="' . admin_url() . '?asp_action=view_log&token=' . $token . '">';
-				echo '<p class="description">' . $desc . '</p>';
+				echo '<input type="text" size="70" class="asp-debug-log-link asp-select-on-click" readonly value="' . esc_attr( admin_url() ) . '?asp_action=view_log&token=' . esc_attr( $token ) . '">';
+				echo '<p class="description">' . esc_html( $desc ) . '</p>';
 				?>
 				<?php
 				break;
@@ -1617,6 +1621,8 @@ class AcceptStripePayments_Admin {
 		$output['is_live'] = empty( $input['is_live'] ) ? 0 : 1;
 
 		$output['debug_log_enable'] = empty( $input['debug_log_enable'] ) ? 0 : 1;
+
+		$output['debug_log_link_enable'] = empty( $input['debug_log_link_enable'] ) ? 0 : 1;
 
 		$output['dont_save_card'] = empty( $input['dont_save_card'] ) ? 0 : 1;
 
