@@ -85,7 +85,7 @@ class AcceptStripePayments {
 
 		if ( is_admin() ) {
 			if ( ! function_exists( 'is_plugin_active' ) ) {
-				require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
+				require_once ABSPATH . '/wp-admin/includes/plugin.php';
 			}
 			if ( is_plugin_active( 'stripe-payments-recaptcha/asp-recaptcha-main.php' ) ) {
 				deactivate_plugins( 'stripe-payments-recaptcha/asp-recaptcha-main.php' );
@@ -146,7 +146,7 @@ class AcceptStripePayments {
 		$token  = filter_input( INPUT_GET, 'token', FILTER_SANITIZE_STRING );
 		if ( isset( $action ) && 'view_log' === $action && isset( $token ) ) {
 			//let's check token
-			if ( $this->get_setting( 'debug_log_access_token' ) === $token ) {
+			if ( $this->get_setting( 'debug_log_link_enable', false ) && $this->get_setting( 'debug_log_access_token' ) === $token ) {
 				ASP_Debug_Logger::view_log();
 			}
 		}
@@ -585,7 +585,7 @@ class AcceptStripePayments {
 			'wpASPNG',
 			array(
 				'iframeUrl' => $iframe_url,
-				'ppSlug'    => AcceptStripePayments::$pp_slug,
+				'ppSlug'    => self::$pp_slug,
 				'prefetch'  => $prefetch,
 				'ckey'      => ASP_Utils::get_ckey(),
 			)
