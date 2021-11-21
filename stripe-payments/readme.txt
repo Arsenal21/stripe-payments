@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 5.0
 Tested up to: 5.8
 Requires PHP: 5.6
-Stable tag: 2.0.52t1
+Stable tag: 2.0.52
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -155,7 +155,8 @@ None.
 
 == Changelog ==
 
-= WIP 2.0.52 =
+= 2.0.52 =
+- Added enable\disable switch for `Debug Log Shareable Link` option (disabled by default).
 - `Variable` is displayed instead of zero as price for products that are constructed via variations.
 - Fixed PHP warning on Widgets admin page.
 
