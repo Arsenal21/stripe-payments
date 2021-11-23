@@ -156,8 +156,8 @@ None.
 == Changelog ==
 
 = 2.0.52 =
-- Added enable\disable switch for `Debug Log Shareable Link` option (disabled by default).
-- `Variable` is displayed instead of zero as price for products that are constructed via variations.
+- Added a checkbox to enable or disable the `Debug Log Shareable Link` option (disabled by default).
+- The word `Variable` is displayed (in the store page) instead of zero as price for products that are constructed via variations.
 - Fixed PHP warning on Widgets admin page.
 
 = 2.0.51 =
