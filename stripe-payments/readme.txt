@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 5.0
 Tested up to: 5.8
 Requires PHP: 5.6
-Stable tag: 2.0.52
+Stable tag: 2.0.53t1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -154,6 +154,10 @@ Yes, please visit Stripe Payments > Settings screen for options.
 None.
 
 == Changelog ==
+
+= WIP 2.0.53 =
+- Updated Stripe PHP SDK library to 7.110.0. This should resolve most issues related to PHP 8.0.X.
+- Better error handling for internal Stripe API
 
 = 2.0.52 =
 - Added a checkbox to enable or disable the `Debug Log Shareable Link` option (disabled by default).
