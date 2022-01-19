@@ -1,5 +1,7 @@
 <?php
 
+// File generated from our OpenAPI spec
+
 namespace Stripe;
 
 /**
@@ -33,7 +35,7 @@ namespace Stripe;
  * @property \Stripe\StripeObject $ideal
  * @property \Stripe\StripeObject $klarna
  * @property bool $livemode Has the value <code>true</code> if the object exists in live mode or the value <code>false</code> if the object exists in test mode.
- * @property null|\Stripe\StripeObject $metadata Set of key-value pairs that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
+ * @property null|\Stripe\StripeObject $metadata Set of <a href="https://stripe.com/docs/api/metadata">key-value pairs</a> that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
  * @property \Stripe\StripeObject $multibanco
  * @property null|\Stripe\StripeObject $owner Information about the owner of the payment instrument that may be used or required by particular source types.
  * @property \Stripe\StripeObject $p24
@@ -89,7 +91,7 @@ class Source extends ApiResource
 
         $id = $this['id'];
         if (!$id) {
-            $class = \get_class($this);
+            $class = static::class;
             $msg = "Could not determine which URL to request: {$class} instance "
              . "has invalid ID: {$id}";
 
@@ -153,7 +155,7 @@ class Source extends ApiResource
      *
      * @throws \Stripe\Exception\ApiErrorException if the request fails
      *
-     * @return Source the verified source
+     * @return \Stripe\Source the verified source
      */
     public function verify($params = null, $opts = null)
     {
