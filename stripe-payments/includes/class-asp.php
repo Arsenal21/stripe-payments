@@ -91,9 +91,11 @@ class AcceptStripePayments {
 				deactivate_plugins( 'stripe-payments-recaptcha/asp-recaptcha-main.php' );
 			}
 		}
-		if ( ! class_exists( 'ASPRECAPTCHA_main' ) ) {
+		if ( ! class_exists( 'ASP_RECAPTCHA_Main' ) ) {
 			require_once WP_ASP_PLUGIN_PATH . 'includes/recaptcha/asp-recaptcha-main.php';
 		}
+
+		require_once WP_ASP_PLUGIN_PATH . 'includes/hcaptcha/asp-hcaptcha-main.php';
 
 		$this->settings = (array) get_option( 'AcceptStripePayments-settings' );
 
@@ -387,6 +389,13 @@ class AcceptStripePayments {
 				$opt[ $key ] = $default[ $key ];
 			}
 		}
+
+		// 2.0.53: convert old `recaptcha_enabled` option to `captcha_type` if needed
+		if ( ! empty( $opt['recaptcha_enabled'] ) ) {
+			$opt['captcha_type']      = 'recaptcha';
+			$opt['recaptcha_enabled'] = 0;
+		}
+
 		update_option( 'AcceptStripePayments-settings', $opt );
 
 		//create checkout page

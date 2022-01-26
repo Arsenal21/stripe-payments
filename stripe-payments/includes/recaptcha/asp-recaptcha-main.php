@@ -1,5 +1,5 @@
 <?php
-class ASPRECAPTCHA_main {
+class ASP_RECAPTCHA_Main {
 
 	public $asp_main;
 	public $keys_entered = false;
@@ -13,7 +13,7 @@ class ASPRECAPTCHA_main {
 	public function plugins_loaded() {
 		$this->asp_main = AcceptStripePayments::get_instance();
 
-		$this->enabled = $this->asp_main->get_setting( 'recaptcha_enabled' ) === 1;
+		$this->enabled = $this->asp_main->get_setting( 'captcha_type' ) === 'recaptcha';
 
 		if ( ! empty( $this->asp_main->get_setting( 'recaptcha_secret_key' ) ) &&
 			! empty( $this->asp_main->get_setting( 'recaptcha_site_key' ) ) ) {
@@ -25,7 +25,7 @@ class ASPRECAPTCHA_main {
 
 		if ( is_admin() ) {
 			include_once WP_ASP_PLUGIN_PATH . 'includes/recaptcha/admin/asp-recaptcha-admin-menu.php';
-			new ASPRECAPTCHA_admin_menu();
+			new ASP_RECAPTCHA_Admin_Menu();
 		}
 
 		if ( $this->enabled ) {
@@ -258,8 +258,8 @@ class ASPRECAPTCHA_main {
 				if ( ! isset( $this->asp_main->footer_scripts ) ) {
 					$this->asp_main->footer_scripts = '';
 				}
-				$this->asp_main->footer_scripts .= '<link rel="prefetch" href="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" />';
-				$this->asp_main->footer_scripts .= '<link rel="prefetch" href="' . WP_ASP_PLUGIN_URL . '/includes/recaptcha/public/js/asp-recaptcha-ng.js?ver=' . WP_ASP_PLUGIN_VERSION . '" />';
+				$this->asp_main->footer_scripts .= '<link rel="prefetch" as="script" href="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" />';
+				$this->asp_main->footer_scripts .= '<link rel="prefetch" as="script" href="' . WP_ASP_PLUGIN_URL . '/includes/recaptcha/public/js/asp-recaptcha-ng.js?ver=' . WP_ASP_PLUGIN_VERSION . '" />';
 			}
 		}
 		return $output;
@@ -336,4 +336,4 @@ div.asp-recaptcha-modal div.iziModal-header {
 
 }
 
-new ASPRECAPTCHA_main();
+new ASP_RECAPTCHA_Main();

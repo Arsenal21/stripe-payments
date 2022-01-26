@@ -80,6 +80,13 @@ jQuery(function ($) {
 		$('#wp_asp_curr_symb').val(wp_asp_currencies[$('#wp_asp_curr_code').val()][1]);
 	});
 
+	$('input[name="AcceptStripePayments-settings[captcha_type]"]').change(function () {
+		$('[data-captcha-section]').slideUp('fast');
+		if (($(this).val())) {
+			$('div[data-captcha-section="' + $(this).val() + '"]').slideDown('fast');
+		}
+	});
+
 	$('#wp_asp_curr_code').change();
 
 	$('select[name="AcceptStripePayments-settings[custom_field_validation]"]').change();
