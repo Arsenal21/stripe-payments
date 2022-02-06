@@ -383,17 +383,17 @@ class AcceptStripePayments {
 			$opt['hide_state_field'] = 1;
 		}
 
+		// 2.0.53: convert old `recaptcha_enabled` option to `captcha_type` if needed
+		if ( ! empty( $opt['recaptcha_enabled'] ) ) {
+			$opt['captcha_type']      = 'recaptcha';
+			$opt['recaptcha_enabled'] = 0;
+		}
+
 		$opt_diff = array_diff_key( $default, $opt );
 		if ( ! empty( $opt_diff ) ) {
 			foreach ( $opt_diff as $key => $value ) {
 				$opt[ $key ] = $default[ $key ];
 			}
-		}
-
-		// 2.0.53: convert old `recaptcha_enabled` option to `captcha_type` if needed
-		if ( ! empty( $opt['recaptcha_enabled'] ) ) {
-			$opt['captcha_type']      = 'recaptcha';
-			$opt['recaptcha_enabled'] = 0;
 		}
 
 		update_option( 'AcceptStripePayments-settings', $opt );
