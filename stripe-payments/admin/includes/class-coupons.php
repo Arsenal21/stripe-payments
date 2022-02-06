@@ -323,7 +323,7 @@ th#id {
 			foreach ( $posts as $the_post ) {
 				$checked = '';
 				if ( ! empty( $coupon ) && is_array( $coupon['allowed_products'] ) ) {
-					if ( in_array( $the_post->ID, $coupon['allowed_products'], true ) ) {
+					if ( in_array( strval( $the_post->ID ), $coupon['allowed_products'], true ) ) {
 						$checked = ' checked';
 					}
 				}

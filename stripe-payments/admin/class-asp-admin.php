@@ -454,6 +454,8 @@ class AcceptStripePayments_Admin {
 		add_settings_section( 'AcceptStripePayments-additional-settings', __( 'Additional Settings', 'stripe-payments' ), null, $this->plugin_slug . '-advanced' );
 		add_settings_section( 'AcceptStripePayments-experimental-settings', __( 'Experemintal Settings', 'stripe-payments' ), array( $this, 'experemintal_section_description' ), $this->plugin_slug . '-advanced' );
 
+		add_settings_section( 'AcceptStripePayments-captcha', __( 'Captcha Settings', 'stripe-payments' ), array( $this, 'captcha_section_description' ), $this->plugin_slug . '-captcha' );
+
 		// Global section
 		add_settings_field(
 			'checkout_url',
@@ -1228,6 +1230,19 @@ class AcceptStripePayments_Admin {
 			)
 		);
 
+		//Captcha Tab
+		add_settings_field(
+			'captcha_type',
+			__( 'Captcha Type', 'stripe-payments' ),
+			array( &$this, 'settings_field_callback' ),
+			$this->plugin_slug . '-captcha',
+			'AcceptStripePayments-captcha',
+			array(
+				'field' => 'captcha_type',
+				'desc'  => __( 'Select Captcha type you want to use.', 'stripe-payments' ),
+			)
+		);
+
 	}
 
 	function tos_description() {
@@ -1238,6 +1253,9 @@ class AcceptStripePayments_Admin {
 		echo '<p>' . esc_html( __( "Warning: don't change options in this section unless you know what you're doing!", 'stripe-payments' ) ) . '</p>';
 	}
 
+	public function captcha_section_description() {
+
+	}
 
 	static function get_currency_options( $selected_value = '', $show_default = true ) {
 
@@ -1545,6 +1563,21 @@ class AcceptStripePayments_Admin {
 				?>
 				<?php
 				break;
+			case 'captcha_type':
+				?>
+				<input type='radio' data-captcha-type='none' id='captcha_type_none' name='AcceptStripePayments-settings[<?php echo $field; ?>]' value=''<?php echo ( empty( $field_value ) ? ' checked' : '' ); ?>>
+				<label for='captcha_type_none'><?php esc_html_e( 'None (not recommended)', 'stripe-payments' ); ?></label>
+				<p class="description"><?php esc_html_e( 'Disables captcha.', 'stripe-payments' ); ?></p>
+				<br>
+				<input type='radio' data-captcha-type='recaptcha' id='captcha_type_recaptcha' name='AcceptStripePayments-settings[<?php echo $field; ?>]' value='recaptcha'<?php echo ( $field_value === 'recaptcha' ? ' checked' : '' ); ?>>
+				<label for='captcha_type_recaptcha'><?php esc_html_e( 'reCaptcha', 'stripe-payments' ); ?></label>
+				<p class="description"><?php esc_html_e( 'Use reCaptcha from Google.', 'stripe-payments' ); ?></p>
+				<br>
+				<input type='radio' data-captcha-type='hcaptcha' id='captcha_type_hcaptcha' name='AcceptStripePayments-settings[<?php echo $field; ?>]' value='hcaptcha'<?php echo ( $field_value === 'hcaptcha' ? ' checked' : '' ); ?>>
+				<label for='captcha_type_hcaptcha'><?php esc_html_e( 'hCaptcha', 'stripe-payments' ); ?></label>
+				<p class="description"><?php esc_html_e( 'Use hCaptcha from Intuition Machines, Inc.', 'stripe-payments' ); ?></p>
+				<?php
+				break;
 			default:
 				echo "<input type='text' name='AcceptStripePayments-settings[{$field}]' value='{$field_value}' size='{$size}' /> <p class=\"description\">{$desc}</p>";
 				break;
@@ -1615,6 +1648,8 @@ class AcceptStripePayments_Admin {
 			$output['custom_field_custom_validation_regex']   = $custom_regex;
 			$output['custom_field_custom_validation_err_msg'] = sanitize_text_field( $input['custom_field_custom_validation_err_msg'] );
 		}
+
+		$output['captcha_type'] = $input['captcha_type'];
 
 		$output['custom_field_mandatory'] = empty( $input['custom_field_mandatory'] ) ? 0 : 1;
 
@@ -1818,6 +1853,9 @@ class AcceptStripePayments_Admin {
 		if ( ! empty( $submit ) ) {
 			ASP_Utils::clear_external_caches();
 		}
+
+		//Since 2.5.3
+		$output = apply_filters( 'asp_admin_settings_sanitize_field_end', $output, $input );
 
 		return $output;
 	}

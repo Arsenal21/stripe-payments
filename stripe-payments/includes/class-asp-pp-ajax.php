@@ -110,6 +110,7 @@ class ASP_PP_Ajax {
 			\Stripe\Stripe::setApiKey( $key );
 
 			$api = ASP_Stripe_API::get_instance();
+			$api->set_param( 'throw_exception', true );
 			$api->set_api_key( $key );
 
 			if ( ! ASP_Utils::use_internal_api() ) {
@@ -211,7 +212,7 @@ class ASP_PP_Ajax {
 			\Stripe\Stripe::setApiKey( $key );
 
 			$api = ASP_Stripe_API::get_instance();
-
+			$api->set_param( 'throw_exception', true );
 			$api->set_api_key( $key );
 
 		} catch ( \Exception $e ) {
@@ -313,6 +314,7 @@ class ASP_PP_Ajax {
 				if ( empty( $cust_id ) ) {
 					if ( ASP_Utils::use_internal_api() ) {
 						$api = ASP_Stripe_API::get_instance();
+						$api->set_param( 'throw_exception', true );
 
 						$customer = $api->post( 'customers', $customer_opts );
 
@@ -325,6 +327,7 @@ class ASP_PP_Ajax {
 
 					if ( ASP_Utils::use_internal_api() ) {
 						$api = ASP_Stripe_API::get_instance();
+						$api->set_param( 'throw_exception', true );
 
 						$customer = $api->post( 'customers/' . $cust_id, $customer_opts );
 
@@ -373,6 +376,7 @@ class ASP_PP_Ajax {
 			if ( $pi_id ) {
 				if ( ASP_Utils::use_internal_api() ) {
 					$api = ASP_Stripe_API::get_instance();
+					$api->set_param( 'throw_exception', true );
 
 					$intent = $api->post( 'payment_intents/' . $pi_id, $pi_params );
 				} else {
@@ -381,6 +385,7 @@ class ASP_PP_Ajax {
 			} else {
 				if ( ASP_Utils::use_internal_api() ) {
 					$api = ASP_Stripe_API::get_instance();
+					$api->set_param( 'throw_exception', true );
 
 					$intent = $api->post( 'payment_intents', $pi_params );
 				} else {

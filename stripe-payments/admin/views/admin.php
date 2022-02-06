@@ -17,6 +17,11 @@ if ( $_GET['page'] == 'stripe-payments-settings' ) {
 		delete_transient( 'wp-asp-urlHash' );
 	}
 	do_action( 'asp-settings-page-after-styles' );
+
+	$asp_admin = AcceptStripePayments_Admin::get_instance();
+	$asp_main = AcceptStripePayments::get_instance();
+	$captcha_type = $asp_main->get_setting('captcha_type');
+
 	?>
 	<div class="wrap">
 
@@ -33,6 +38,7 @@ if ( $_GET['page'] == 'stripe-payments-settings' ) {
 			<a href="#general" data-tab-name="general" class="nav-tab"><?php echo __( 'General Settings', 'stripe-payments' ); ?></a>
 			<a href="#email" data-tab-name="email" class="nav-tab"><?php echo __( 'Email Settings', 'stripe-payments' ); ?></a>
 			<a href="#advanced" data-tab-name="advanced" class="nav-tab"><?php echo __( 'Advanced Settings', 'stripe-payments' ); ?></a>
+			<a href="#captcha" data-tab-name="captcha" class="nav-tab"><?php echo __( 'Captcha', 'stripe-payments' ); ?></a>
 		<?php
 		do_action( 'asp-settings-page-after-tabs-menu' );
 		?>
@@ -51,6 +57,15 @@ if ( $_GET['page'] == 'stripe-payments-settings' ) {
 			</div>
 			<div class="wp-asp-tab-container" data-tab-name="advanced">
 			<?php do_settings_sections( 'accept_stripe_payment-advanced' ); ?>
+			</div>
+			<div class="wp-asp-tab-container" data-tab-name="captcha">
+				<?php do_settings_sections( 'accept_stripe_payment-captcha' ); ?>
+				<div data-captcha-section="recaptcha"<?php echo ( $captcha_type !== 'recaptcha' ? ' style="display:none;"' : '' ); ?>>
+					<?php do_settings_sections( $asp_admin->plugin_slug . '-recaptcha' ); ?>
+				</div>
+				<div data-captcha-section="hcaptcha"<?php echo ( $captcha_type !== 'hcaptcha' ? ' style="display:none;"' : '' ); ?>>
+					<?php do_settings_sections( $asp_admin->plugin_slug . '-hcaptcha' ); ?>
+				</div>
 			</div>
 			<?php
 			do_action( 'asp-settings-page-after-tabs' );

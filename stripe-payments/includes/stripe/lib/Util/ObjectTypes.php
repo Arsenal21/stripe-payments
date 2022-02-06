@@ -1,5 +1,7 @@
 <?php
 
+// File generated from our OpenAPI spec
+
 namespace Stripe\Util;
 
 class ObjectTypes
@@ -17,6 +19,7 @@ class ObjectTypes
         \Stripe\Balance::OBJECT_NAME => \Stripe\Balance::class,
         \Stripe\BalanceTransaction::OBJECT_NAME => \Stripe\BalanceTransaction::class,
         \Stripe\BankAccount::OBJECT_NAME => \Stripe\BankAccount::class,
+        \Stripe\BillingPortal\Configuration::OBJECT_NAME => \Stripe\BillingPortal\Configuration::class,
         \Stripe\BillingPortal\Session::OBJECT_NAME => \Stripe\BillingPortal\Session::class,
         \Stripe\BitcoinReceiver::OBJECT_NAME => \Stripe\BitcoinReceiver::class,
         \Stripe\BitcoinTransaction::OBJECT_NAME => \Stripe\BitcoinTransaction::class,
@@ -39,6 +42,8 @@ class ObjectTypes
         \Stripe\File::OBJECT_NAME => \Stripe\File::class,
         \Stripe\File::OBJECT_NAME_ALT => \Stripe\File::class,
         \Stripe\FileLink::OBJECT_NAME => \Stripe\FileLink::class,
+        \Stripe\Identity\VerificationReport::OBJECT_NAME => \Stripe\Identity\VerificationReport::class,
+        \Stripe\Identity\VerificationSession::OBJECT_NAME => \Stripe\Identity\VerificationSession::class,
         \Stripe\Invoice::OBJECT_NAME => \Stripe\Invoice::class,
         \Stripe\InvoiceItem::OBJECT_NAME => \Stripe\InvoiceItem::class,
         \Stripe\InvoiceLineItem::OBJECT_NAME => \Stripe\InvoiceLineItem::class,
@@ -61,6 +66,8 @@ class ObjectTypes
         \Stripe\Plan::OBJECT_NAME => \Stripe\Plan::class,
         \Stripe\Price::OBJECT_NAME => \Stripe\Price::class,
         \Stripe\Product::OBJECT_NAME => \Stripe\Product::class,
+        \Stripe\PromotionCode::OBJECT_NAME => \Stripe\PromotionCode::class,
+        \Stripe\Quote::OBJECT_NAME => \Stripe\Quote::class,
         \Stripe\Radar\EarlyFraudWarning::OBJECT_NAME => \Stripe\Radar\EarlyFraudWarning::class,
         \Stripe\Radar\ValueList::OBJECT_NAME => \Stripe\Radar\ValueList::class,
         \Stripe\Radar\ValueListItem::OBJECT_NAME => \Stripe\Radar\ValueListItem::class,
@@ -70,7 +77,9 @@ class ObjectTypes
         \Stripe\Reporting\ReportRun::OBJECT_NAME => \Stripe\Reporting\ReportRun::class,
         \Stripe\Reporting\ReportType::OBJECT_NAME => \Stripe\Reporting\ReportType::class,
         \Stripe\Review::OBJECT_NAME => \Stripe\Review::class,
+        \Stripe\SetupAttempt::OBJECT_NAME => \Stripe\SetupAttempt::class,
         \Stripe\SetupIntent::OBJECT_NAME => \Stripe\SetupIntent::class,
+        \Stripe\ShippingRate::OBJECT_NAME => \Stripe\ShippingRate::class,
         \Stripe\Sigma\ScheduledQueryRun::OBJECT_NAME => \Stripe\Sigma\ScheduledQueryRun::class,
         \Stripe\SKU::OBJECT_NAME => \Stripe\SKU::class,
         \Stripe\Source::OBJECT_NAME => \Stripe\Source::class,
@@ -78,6 +87,7 @@ class ObjectTypes
         \Stripe\Subscription::OBJECT_NAME => \Stripe\Subscription::class,
         \Stripe\SubscriptionItem::OBJECT_NAME => \Stripe\SubscriptionItem::class,
         \Stripe\SubscriptionSchedule::OBJECT_NAME => \Stripe\SubscriptionSchedule::class,
+        \Stripe\TaxCode::OBJECT_NAME => \Stripe\TaxCode::class,
         \Stripe\TaxId::OBJECT_NAME => \Stripe\TaxId::class,
         \Stripe\TaxRate::OBJECT_NAME => \Stripe\TaxRate::class,
         \Stripe\Terminal\ConnectionToken::OBJECT_NAME => \Stripe\Terminal\ConnectionToken::class,

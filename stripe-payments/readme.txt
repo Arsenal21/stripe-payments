@@ -3,9 +3,9 @@ Contributors: Tips and Tricks HQ, wptipsntricks, alexanderfoxc
 Donate link: https://s-plugins.com
 Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortcode, digital goods, payment gateway, instant payment, commerce, digital downloads, downloads, e-commerce, e-store, ecommerce, eshop, donation
 Requires at least: 5.0
-Tested up to: 5.8
+Tested up to: 5.9
 Requires PHP: 5.6
-Stable tag: 2.0.52
+Stable tag: 2.0.53
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -154,6 +154,12 @@ Yes, please visit Stripe Payments > Settings screen for options.
 None.
 
 == Changelog ==
+
+= 2.0.53 =
+- Updated Stripe PHP SDK library to 7.110.0. This should resolve most issues related to PHP 8.0.X.
+- Added hCaptcha support.
+- Addressed improper validation of `Specific Products Only` option on coupon edit page.
+- Better error handling for internal Stripe API.
 
 = 2.0.52 =
 - Added a checkbox to enable or disable the `Debug Log Shareable Link` option (disabled by default).
