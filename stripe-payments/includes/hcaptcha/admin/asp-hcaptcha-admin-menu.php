@@ -93,7 +93,7 @@ class ASP_HCAPTCHA_Admin_Menu {
 	}
 
 	public function show_settings_description() {
-		echo __( '<a href="https://s-plugins.com/stripe-payments-hcaptcha-addon/" target="_blank">Click here</a> to read the documentation to learn how to configure this and get API keys for your website.', 'stripe-payments' );
+		echo __( '<a href="https://s-plugins.com/stripe-payments-hcaptcha-integration/" target="_blank">Click here</a> to read the documentation to learn how to configure this and get API keys for your website.', 'stripe-payments' );
 	}
 
 }
