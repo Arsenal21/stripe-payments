@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 5.0
 Tested up to: 5.9
 Requires PHP: 5.6
-Stable tag: 2.0.53
+Stable tag: 2.0.54
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -154,6 +154,11 @@ Yes, please visit Stripe Payments > Settings screen for options.
 None.
 
 == Changelog ==
+
+= 2.0.54 = 
+- Added a capabilities check and a nonce check before the log file is cleared.
+- Regenerated the translation POT file.
+- Spanish Language translation file updated.
 
 = 2.0.53 =
 - Updated Stripe PHP SDK library to 7.110.0. This should resolve most issues related to PHP 8.0.X.

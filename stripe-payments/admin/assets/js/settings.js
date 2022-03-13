@@ -64,7 +64,7 @@ jQuery(function ($) {
 			var req = jQuery.ajax({
 				url: ajaxurl,
 				type: "post",
-				data: { action: "asp_clear_log" }
+				data: { action: "asp_clear_log", nonce: aspSettingsData.asp_settings_ajax_nonce }
 			});
 			req.done(function (data) {
 				if (data === '1') {

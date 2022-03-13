@@ -146,6 +146,7 @@ if ( $_GET['page'] == 'stripe-payments-settings' ) {
 				'logCleared'      => __( 'Log cleared.', 'stripe-payments' ),
 				'errorOccurred'   => __( 'Error occurred:', 'stripe-payments' ),
 			),
+                        'asp_settings_ajax_nonce' => wp_create_nonce('asp_settings_ajax_nonce'),
 		)
 	);
 	wp_enqueue_script( 'asp-admin-settings-js' );

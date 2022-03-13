@@ -100,6 +100,17 @@ class ASP_Debug_Logger {
 	}
 
 	public static function clear_log() {
+                if ( ! current_user_can( 'manage_options' ) ) {
+                        //No permission for the current user to do this operation.
+                        wp_die( 0 );
+                }
+                
+                if ( ! check_ajax_referer( 'asp_settings_ajax_nonce', 'nonce', false ) ) {
+                        //The nonce check failed
+                        echo 'Error! Nonce security check failed. Could not clear log.';
+                        wp_die( 0 );
+                }
+
 		if ( self::log( "Stripe Payments debug log reset\r\n", true, '', true ) !== false ) {
 			echo '1';
 		} else {
