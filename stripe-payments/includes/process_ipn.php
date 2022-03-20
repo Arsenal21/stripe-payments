@@ -280,6 +280,7 @@ class AcceptStripePayments_Process_IPN {
 			if ( ! empty( $v->variations ) ) {
 				//there are variations configured for the product
 				$posted_v = $_POST['stripeVariations'];
+                                $posted_v = filter_var( $_POST['stripeVariations'], FILTER_SANITIZE_STRING, FILTER_REQUIRE_ARRAY );
 				foreach ( $posted_v as $grp_id => $var_id ) {
 					$var = $v->get_variation( $grp_id, $var_id[0] );
 					if ( ! empty( $var ) ) {

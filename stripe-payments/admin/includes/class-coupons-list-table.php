@@ -111,7 +111,7 @@ class ASP_Coupons_Table extends WP_List_Table {
 		$order   = 'desc';
 		// If orderby is set, use this as the sort column
 		if ( ! empty( $_GET['orderby'] ) ) {
-			$orderby = $_GET['orderby'];
+			$orderby = sanitize_text_field($_GET['orderby']);
 		}
 		// If order is set use this as the order
 		if ( ! empty( $_GET['order'] ) ) {

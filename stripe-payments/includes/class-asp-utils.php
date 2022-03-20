@@ -878,7 +878,7 @@ class ASP_Utils {
 	}
 
 	public static function get_visitor_token( $str = '' ) {
-		$ua = ! empty( $_SERVER['HTTP_USER_AGENT'] ) ? $_SERVER['HTTP_USER_AGENT'] : '';
+		$ua = ! empty( $_SERVER['HTTP_USER_AGENT'] ) ? sanitize_text_field( $_SERVER['HTTP_USER_AGENT'] ) : '';
 
 		return md5( $ua . $str );
 	}

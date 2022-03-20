@@ -156,7 +156,7 @@ class ASP_Order_Item {
 		$tos_store   = $this->asp_main->get_setting( 'tos_store_ip' );
 
 		if ( $tos_enabled && $tos_store ) {
-			$ip = ! empty( $_SERVER['REMOTE_ADDR'] ) ? $_SERVER['REMOTE_ADDR'] : __( 'Unknown', 'stripe-payments' );
+			$ip = ! empty( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( $_SERVER['REMOTE_ADDR'] ) : __( 'Unknown', 'stripe-payments' );
 			// translators: %s is IP address
 			$output .= sprintf( __( 'IP Address: %s', 'stripe-payments' ), $ip ) . "\n";
 		}

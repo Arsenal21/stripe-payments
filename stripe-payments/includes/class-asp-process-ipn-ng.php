@@ -109,7 +109,7 @@ class ASP_Process_IPN_NG {
 				$body .= __( 'Following error occurred during payment processing:', 'stripe-payments' ) . "\r\n\r\n";
 				$body .= $err_msg . "\r\n\r\n";
 				$body .= __( 'Debug data:', 'stripe-payments' ) . "\r\n";
-				$post    = filter_var( $_POST, FILTER_DEFAULT, FILTER_REQUIRE_ARRAY ); //phpcs:ignore
+                                $post  = filter_var( $_POST, FILTER_SANITIZE_STRING, FILTER_REQUIRE_ARRAY );
 				foreach ( $post as $key => $value ) {
 					$value = is_array( $value ) ? wp_json_encode( $value ) : $value;
 					$body .= $key . ': ' . $value . "\r\n";
@@ -138,7 +138,7 @@ class ASP_Process_IPN_NG {
 		}
 
 		ASP_Debug_Logger::log( sprintf( 'Redirecting to results page "%s"', $this->asp_redirect_url ) . "\r\n" );
-		wp_redirect( $this->asp_redirect_url ); //phpcs:ignore
+		wp_redirect( $this->asp_redirect_url );
 		exit;
 	}
 

@@ -155,6 +155,9 @@ None.
 
 == Changelog ==
 
+= WIP =
+- Added sanitization to inputs that were missing sanitization.
+
 = 2.0.54 = 
 - Added a capabilities check and a nonce check before the log file is cleared.
 - Regenerated the translation POT file.
