@@ -147,7 +147,9 @@ class ASP_PP_Ajax {
 			$body  = __( 'Following error occurred during payment processing:', 'stripe-payments' ) . "\r\n\r\n";
 			$body .= $out['err'] . "\r\n\r\n";
 			$body .= __( 'Debug data:', 'stripe-payments' ) . "\r\n";
-			$body .= wp_json_encode( $_POST );
+                        $post_data = filter_var( $_POST, FILTER_SANITIZE_STRING, FILTER_REQUIRE_ARRAY );
+                        $post_data_str = http_build_query( $post_data, '', '; ' );
+			$body .= $post_data_str;
 			ASP_Debug_Logger::log( __( 'Following error occurred during payment processing:', 'stripe-payments' ) . ' ' . $out['err'], false );
 			ASP_Utils::send_error_email( $body );
 			wp_send_json( $out );

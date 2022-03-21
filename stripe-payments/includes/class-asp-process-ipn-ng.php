@@ -173,10 +173,14 @@ class ASP_Process_IPN_NG {
 		ASP_Debug_Logger::log( 'Payment processing started.' );
 
 		if ( ! empty( $post_data ) ) {
-			ASP_Debug_Logger::log( 'Custom $_POST data: ' . json_encode( $post_data ) );
+                        $post_data = filter_var( $post_data, FILTER_SANITIZE_STRING, FILTER_REQUIRE_ARRAY );
+                        $post_data_str = http_build_query( $post_data, '', '; ' );
+			ASP_Debug_Logger::log( 'Custom $_POST data: ' . $post_data_str );
 			$this->post_data = $post_data;
 		} else {
-			ASP_Debug_Logger::log( 'Original $_POST data: ' . json_encode( $_POST ) );
+                        $post_data = filter_var( $_POST, FILTER_SANITIZE_STRING, FILTER_REQUIRE_ARRAY );
+                        $post_data_str = http_build_query( $post_data, '', '; ' );
+			//ASP_Debug_Logger::log( 'Original $_POST data: ' . $post_data_str );
 		}
 
 		do_action( 'asp_ng_before_payment_processing', $post_data );
