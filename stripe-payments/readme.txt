@@ -158,6 +158,7 @@ None.
 = WIP =
 - Added sanitization to inputs that were missing sanitization.
 - Commented out the post data writing to the log file.
+- Added escaping to description output of settings fields.
 
 = 2.0.54 = 
 - Added a capabilities check and a nonce check before the log file is cleared.

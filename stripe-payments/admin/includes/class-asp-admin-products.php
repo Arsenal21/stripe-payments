@@ -162,7 +162,7 @@ class ASP_Admin_Products {
 			case 'stock':
 				if ( get_post_meta( $post_id, 'asp_product_enable_stock', true ) ) {
 					$stock_items = get_post_meta( $post_id, 'asp_product_stock_items', true );
-					echo ! $stock_items ? __( 'Out of stock', 'stripe-payments' ) : $stock_items;
+					echo ! $stock_items ? __( 'Out of stock', 'stripe-payments' ) : esc_attr( $stock_items );
 				} else {
 					echo '—';
 				}
@@ -177,7 +177,7 @@ class ASP_Admin_Products {
 				?>
 		<span class="asp-product-thumbnail-container">
 			<a href="<?php echo esc_attr( $edit_link ); ?>">
-			<img src="<?php echo esc_attr( $thumb_url ); ?>" title="<?php echo $title; ?>">
+			<img src="<?php echo esc_attr( $thumb_url ); ?>" title="<?php echo esc_attr( $title ); ?>">
 			</a>
 		</span>
 				<?php
@@ -197,7 +197,7 @@ class ASP_Admin_Products {
 				}
 				//let's apply filter to let addons change price column output if needed
 				$output = apply_filters( 'asp_products_table_price_column', $output, $price, $currency, $post_id );
-				echo $output;
+				echo wp_kses_post( $output );
 				break;
 			case 'shortcode':
 				?>

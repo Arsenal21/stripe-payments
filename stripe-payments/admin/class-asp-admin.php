@@ -529,7 +529,7 @@ class AcceptStripePayments_Admin {
 			array(
 				'field' => 'popup_button_text',
 				'desc'  => __(
-					'&percnt;s is replaced by formatted payment amount (example: Pay $29.90). If this field is empty, it defaults to "Pay &percnt;s"', //phpcs:ignore
+					'%s is replaced by formatted payment amount (example: Pay $29.90). If this field is empty, it defaults to "Pay %s"',
 					'stripe-payments'
 				),
 			)
@@ -1336,25 +1336,25 @@ class AcceptStripePayments_Admin {
 
 		switch ( $field ) {
 			case 'checkbox':
-				echo "<input type='checkbox' name='AcceptStripePayments-settings[{$field_name}]' value='1' " . ( $field_value ? 'checked=checked' : '' ) . " /><p class=\"description\">{$desc}</p>";
+				echo "<input type='checkbox' name='AcceptStripePayments-settings[{$field_name}]' value='1' " . ( $field_value ? 'checked=checked' : '' ) . " /><p class=\"description\">" . esc_attr( $desc ) . "</p>";
 				break;
 			case 'custom':
 				echo $addon_field['field_data'];
-				echo "<p class=\"description\">{$desc}</p>";
+				echo "<p class=\"description\">" . wp_kses_post( $desc ) . "</p>";
 				break;
 			case 'custom_field_type':
 				echo "<select name='AcceptStripePayments-settings[{$field}]'>";
 				echo "<option value='text'" . ( $field_value === 'text' ? ' selected' : '' ) . '>' . __( 'Text', 'stripe-payments' ) . '</option>';
 				echo "<option value='checkbox'" . ( $field_value === 'checkbox' ? ' selected' : '' ) . '>' . __( 'Checkbox', 'stripe-payments' ) . '</option>';
 				echo '</select>';
-				echo "<p class=\"description\">{$desc}</p>";
+				echo "<p class=\"description\">" . wp_kses_post( $desc ) . "</p>";
 				break;
 			case 'custom_field_descr_location':
 				echo "<select name='AcceptStripePayments-settings[{$field}]'>";
 				echo "<option value='placeholder'" . ( $field_value === 'placeholder' ? ' selected' : '' ) . '>' . __( 'Placeholder', 'stripe-payments' ) . '</option>';
 				echo "<option value='below'" . ( $field_value === 'below' ? ' selected' : '' ) . '>' . __( 'Below Input', 'stripe-payments' ) . '</option>';
 				echo '</select>';
-				echo "<p class=\"description\">{$desc}</p>";
+				echo "<p class=\"description\">" . wp_kses_post( $desc ) . "</p>";
 				break;
 			case 'custom_field_validation':
 				echo "<select name='AcceptStripePayments-settings[{$field}]'>";
@@ -1370,7 +1370,7 @@ class AcceptStripePayments_Admin {
 				. '<p><strong>' . __( 'Custom Validation', 'stripe-payments' ) . '</strong>: ' . sprintf( __( 'you can enter your own validation rules using <a href="%s" target="_blank">JavaScript RegExp</a> format.', 'stripe-payments' ), 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions' ) . '</p>'
 				. '</div>'
 				. '</div>';
-				echo "<p class=\"description\">{$desc}</p>";
+				echo "<p class=\"description\">" . wp_kses_post( $desc ) . "</p>";
 				$opts         = get_option( 'AcceptStripePayments-settings' );
 				$custom_regex = '';
 				if ( ! empty( $opts['custom_field_custom_validation_regex'] ) ) {
@@ -1396,7 +1396,7 @@ class AcceptStripePayments_Admin {
 				echo "<option value='above'" . ( $field_value === 'above' || empty( $field_value ) ? ' selected' : '' ) . '>' . __( 'Above Button', 'stripe-payments' ) . '</option>';
 				echo "<option value='below'" . ( $field_value === 'below' ? ' selected' : '' ) . '>' . __( 'Below Button', 'stripe-payments' ) . '</option>';
 				echo '</select>';
-				echo "<p class=\"description\">{$desc}</p>";
+				echo "<p class=\"description\">" . esc_attr( $desc ) . "</p>";
 				break;
 			case 'price_apply_for_input':
 			case 'tos_enabled':
@@ -1422,20 +1422,20 @@ class AcceptStripePayments_Admin {
 			case 'enable_email_schedule':
 			case 'frontend_prefetch_scripts':
 			case 'hide_state_field':
-				echo "<input type='checkbox' name='AcceptStripePayments-settings[{$field}]' value='1' " . ( $field_value ? 'checked=checked' : '' ) . " /><p class=\"description\">{$desc}</p>";
+				echo "<input type='checkbox' name='AcceptStripePayments-settings[{$field}]' value='1' " . ( $field_value ? 'checked=checked' : '' ) . " /><p class=\"description\">" . wp_kses_post( $desc ) . "</p>";
 				break;
 			case 'dont_use_stripe_php_sdk':
 				$desc = apply_filters( 'asp_int_dont_use_stripe_php_sdk_option_desc', $desc );
-				echo "<input type='checkbox' name='AcceptStripePayments-settings[{$field}]' value='1' " . ( $field_value ? 'checked=checked' : '' ) . " /><p class=\"description\">{$desc}</p>";
+				echo "<input type='checkbox' name='AcceptStripePayments-settings[{$field}]' value='1' " . ( $field_value ? 'checked=checked' : '' ) . " /><p class=\"description\">" . wp_kses_post( $desc ) . "</p>";
 				break;
 			case 'prefill_wp_user_details':
-				echo "<input type='checkbox' name='AcceptStripePayments-settings[{$field}]' value='1' " . ( $field_value ? 'checked=checked' : '' ) . " /><p class=\"description\">{$desc}</p>";
+				echo "<input type='checkbox' name='AcceptStripePayments-settings[{$field}]' value='1' " . ( $field_value ? 'checked=checked' : '' ) . " /><p class=\"description\">" . esc_attr( $desc ) . "</p>";
 				$last_name_first = $this->asp_main->get_setting( 'prefill_wp_user_last_name_first' );
 				echo '<label><input type="checkbox" name="AcceptStripePayments-settings[prefill_wp_user_last_name_first]"' . ( $last_name_first ? ' checked="checked"' : '' ) . '> ' . esc_html__( 'Last Name First', 'stripe-payments' ) . '</label>';
 				echo '<p class="description">' . esc_html__( 'When enabled, last name is placed before first name.', 'stripe-payments' ) . '</p>';
 				break;
 			case 'custom_field_enabled':
-				echo "<input type='checkbox' name='AcceptStripePayments-settings[{$field}]' value='1' " . ( $field_value ? 'checked=checked' : '' ) . " /><p class=\"description\">{$desc}</p>";
+				echo "<input type='checkbox' name='AcceptStripePayments-settings[{$field}]' value='1' " . ( $field_value ? 'checked=checked' : '' ) . " /><p class=\"description\">" . wp_kses_post( $desc ) . "</p>";
 				//do action so ACF addon can display its message if needed
 				do_action( 'asp_acf_settings_page_display_msg' );
 				break;
@@ -1447,7 +1447,7 @@ class AcceptStripePayments_Admin {
 				echo sprintf( '<option value="text"%s>' . __( 'Plain Text', 'stripe-payments' ) . '</option>', $checked_text );
 				echo sprintf( '<option value="html"%s>' . __( 'HTML', 'stripe-payments' ) . '</option>', $checked_html );
 				echo '</select>';
-				echo "<p class=\"description\">{$desc}</p>";
+				echo "<p class=\"description\">" . wp_kses_post( $desc ) . "</p>";
 				break;
 			case 'buyer_email_body':
 			case 'seller_email_body':
@@ -1461,24 +1461,24 @@ class AcceptStripePayments_Admin {
 					)
 				);
 				remove_filter( 'wp_default_editor', array( $this, 'set_default_editor' ) );
-				echo "<p class=\"description\">{$desc}</p>";
+				echo "<p class=\"description\">" . wp_kses_post( $desc ) . "</p>";
 				break;
 			case 'products_page_id':
 				//We save the products page ID internally but we show the URL of that page to the user (its user-friendly).
 				$products_page_id  = $field_value;
 				$products_page_url = get_permalink( $products_page_id );
 				//show the URL in a text field for display purpose. This field's value can't be updated as we store the page ID internally.
-				echo "<input type='text' name='asp_products_page_url_value' value='{$products_page_url}' size='{$size}' /> <p class=\"description\">{$desc}</p>";
+				echo "<input type='text' name='asp_products_page_url_value' value='{$products_page_url}' size='{$size}' /> <p class=\"description\">" . esc_attr( $desc ) . "</p>";
 				break;
 			case 'currency_code':
-				echo '<select name="AcceptStripePayments-settings[' . $field . ']" id="wp_asp_curr_code">';
+				echo '<select name="AcceptStripePayments-settings[' . esc_attr( $field ) . ']" id="wp_asp_curr_code">';
 				echo self::get_currency_options( $field_value, false );
 				echo '</select>';
-				//echo "<p class=\"description\">{$desc}</p>";
+				//echo "<p class=\"description\">" . esc_attr( $desc ) . "</p>";
 				break;
 			case 'currency_symbol':
-				echo '<input type="text" name="AcceptStripePayments-settings[' . $field . ']" value="" id="wp_asp_curr_symb">';
-				echo "<p class=\"description\">{$desc}</p>";
+				echo '<input type="text" name="AcceptStripePayments-settings[' . esc_attr( $field ) . ']" value="" id="wp_asp_curr_symb">';
+				echo "<p class=\"description\">" . esc_attr( $desc ) . "</p>";
 				break;
 			case 'allowed_currencies':
 				$all_curr = ASP_Utils::get_currencies();
@@ -1489,7 +1489,7 @@ class AcceptStripePayments_Admin {
 				} else {
 					$allowed = __( 'Selected', 'stripe-payments' );
 				}
-				echo $allowed;
+				echo esc_attr( $allowed );
 				echo '<div id="wp-asp-allowed-currencies-cont">';
 				echo '<a href="#" class="wp-asp-toggle toggled-off">' . __( 'Click here to select currencies', 'stripe-payments' ) . '</a>';
 				echo '<div class="wp-asp-allowed-currencies hidden">';
@@ -1516,16 +1516,16 @@ class AcceptStripePayments_Admin {
 				break;
 			case 'checkout_lang':
 				// list of supported languages can be found here: https://stripe.com/docs/checkout#supported-languages
-				echo '<select name="AcceptStripePayments-settings[' . $field . ']">';
+				echo '<select name="AcceptStripePayments-settings[' . esc_attr( $field ) . ']">';
 				echo $this->get_checkout_lang_options( $field_value );
 				echo '</select>';
-				echo "<p class=\"description\">{$desc}</p>";
+				echo "<p class=\"description\">" . wp_kses_post( $desc ) . "</p>";
 				break;
 			case 'popup_default_country':
-				echo '<select name="AcceptStripePayments-settings[' . $field . ']">';
+				echo '<select name="AcceptStripePayments-settings[' . esc_attr( $field ). ']">';
 				echo ASP_Utils::get_countries_opts( $field_value );
 				echo '</select>';
-				echo "<p class=\"description\">{$desc}</p>";
+				echo "<p class=\"description\">" . wp_kses_post( $desc ) . "</p>";
 				break;
 			case 'price_currency_pos':
 				?>
@@ -1579,7 +1579,7 @@ class AcceptStripePayments_Admin {
 				<?php
 				break;
 			default:
-				echo "<input type='text' name='AcceptStripePayments-settings[{$field}]' value='{$field_value}' size='{$size}' /> <p class=\"description\">{$desc}</p>";
+				echo "<input type='text' name='AcceptStripePayments-settings[{$field}]' value='{$field_value}' size='{$size}' /> <p class=\"description\">" . wp_kses_post( $desc ) . "</p>";
 				break;
 		}
 	}
