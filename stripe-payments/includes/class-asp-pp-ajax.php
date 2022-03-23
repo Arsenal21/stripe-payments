@@ -423,11 +423,16 @@ class ASP_PP_Ajax {
 	}
 
 	public function save_form_data() {
+                if ( ! check_ajax_referer( 'asp_pp_ajax_nonce', 'nonce', false ) ) {
+			$out['err'] = __( 'Error occurred: Nonce verification failed on save_form_data().', 'stripe-payments' );
+			wp_send_json( $out );
+                }
 		$out['success'] = true;
-		$sess           = ASP_Session::get_instance();
+		$sess = ASP_Session::get_instance();
 		parse_str( $_POST['form_data'], $form_data );
-		$sess->set_transient_data( 'asp_pp_form_data', $form_data );
-		ASP_Debug_Logger::log( 'Saved form data: ' . json_encode( $form_data ) );
+                $filtered_form_data = filter_var( $form_data, FILTER_SANITIZE_STRING, FILTER_REQUIRE_ARRAY );
+		$sess->set_transient_data( 'asp_pp_form_data', $filtered_form_data );
+		//ASP_Debug_Logger::log( 'Saved form data: ' . json_encode( $filtered_form_data ) );
 		wp_send_json( $out );
 	}
 

@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 5.0
 Tested up to: 5.9
 Requires PHP: 5.6
-Stable tag: 2.0.54
+Stable tag: 2.0.55
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -160,6 +160,7 @@ None.
 - Commented out the post data writing to the log file.
 - Added escaping to description output of settings fields.
 - Added nonce verification check to the payment intent handling code.
+- Added nonce verification check to the 3D secure handling code.
 
 = 2.0.54 = 
 - Added a capabilities check and a nonce check before the log file is cleared.

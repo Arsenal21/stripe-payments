@@ -1342,7 +1342,7 @@ function toggleRequiredElements(els, hide) {
 }
 
 function saveFormData(success_cb, error_cb) {
-	var reqStr = 'action=asp_pp_save_form_data&form_data=' + encodeURIComponent(jQuery(form).serialize());
+	var reqStr = 'action=asp_pp_save_form_data&nonce=' + vars.asp_pp_ajax_nonce + '&form_data=' + encodeURIComponent(jQuery(form).serialize());
 	new ajaxRequest(vars.ajaxURL, reqStr, success_cb, error_cb);
 }
 
