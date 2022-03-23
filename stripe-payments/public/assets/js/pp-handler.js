@@ -1140,7 +1140,7 @@ function handlePayment() {
 
 		opts = vars.confirmCardPayment.opts;
 
-		new ajaxRequest(vars.ajaxURL, 'action=asp_pp_confirm_pi&product_id=' + vars.data.product_id + '&pi_id=' + vars.data.pi_id + '&token=' + vars.data.visitor_token + '&opts=' + JSON.stringify(opts),
+		new ajaxRequest(vars.ajaxURL, 'action=asp_pp_confirm_pi&nonce=' + vars.asp_pp_ajax_nonce + '&product_id=' + vars.data.product_id + '&pi_id=' + vars.data.pi_id + '&token=' + vars.data.visitor_token + '&opts=' + JSON.stringify(opts),
 			function (response) {
 				console.log(response);
 				var resp = JSON.parse(response.response);

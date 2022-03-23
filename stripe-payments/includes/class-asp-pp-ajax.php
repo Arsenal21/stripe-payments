@@ -58,6 +58,12 @@ class ASP_PP_Ajax {
 	}
 
 	public function handle_confirm_pi() {
+
+                if ( ! check_ajax_referer( 'asp_pp_ajax_nonce', 'nonce', false ) ) {
+			$out['err'] = __( 'Error occurred: Nonce verification failed.', 'stripe-payments' );
+			wp_send_json( $out );
+                }
+
 		$product_id = filter_input( INPUT_POST, 'product_id', FILTER_SANITIZE_NUMBER_INT );
 
 		$item = new ASP_Product_Item( $product_id );
