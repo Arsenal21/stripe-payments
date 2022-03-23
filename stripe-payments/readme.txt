@@ -155,7 +155,7 @@ None.
 
 == Changelog ==
 
-= WIP =
+= 2.0.55 =
 - Added sanitization to inputs that were missing sanitization.
 - Commented out the post data writing to the log file.
 - Added escaping to description output of settings fields.
