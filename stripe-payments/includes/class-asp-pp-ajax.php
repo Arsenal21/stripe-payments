@@ -429,8 +429,8 @@ class ASP_PP_Ajax {
                 }
 		$out['success'] = true;
 		$sess = ASP_Session::get_instance();
-		parse_str( $_POST['form_data'], $form_data );
-                $filtered_form_data = filter_var( $form_data, FILTER_SANITIZE_STRING, FILTER_REQUIRE_ARRAY );
+		wp_parse_str( $_POST['form_data'], $form_data );
+                $filtered_form_data = array_map( 'sanitize_text_field', $form_data );
 		$sess->set_transient_data( 'asp_pp_form_data', $filtered_form_data );
 		//ASP_Debug_Logger::log( 'Saved form data: ' . json_encode( $filtered_form_data ) );
 		wp_send_json( $out );
