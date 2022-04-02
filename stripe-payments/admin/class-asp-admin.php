@@ -228,6 +228,9 @@ class AcceptStripePayments_Admin {
 			$asp_action = filter_input( INPUT_GET, 'asp_action', FILTER_SANITIZE_STRING );
 			if ( ! empty( $asp_action ) ) {
 				if ( 'view_log' === $asp_action ) {
+                                        //Lets check nonce
+                                        check_admin_referer( 'asp_view_log_nonce' );
+                                        
 					ASP_Debug_Logger::view_log();
 				}
 			}
@@ -719,7 +722,7 @@ class AcceptStripePayments_Admin {
 			array(
 				'field' => 'debug_log_enable',
 				'desc'  => __( 'Check this option to enable debug logging. This is useful for troubleshooting post payment failures.', 'stripe-payments' ) .
-				'<br /><a href="' . admin_url() . '?asp_action=view_log" target="_blank">' . __( 'View Log', 'stripe-payments' ) . '</a> | <a style="color: red;" id="asp_clear_log_btn" href="#0">' . __( 'Clear Log', 'stripe-payments' ) . '</a>',
+				'<br /><a href="' . esc_url( wp_nonce_url( get_admin_url() . '?asp_action=view_log', 'asp_view_log_nonce' ) ) . '" target="_blank">' . __( 'View Log', 'stripe-payments' ) . '</a> | <a style="color: red;" id="asp_clear_log_btn" href="#0">' . __( 'Clear Log', 'stripe-payments' ) . '</a>',
 			)
 		);
 		add_settings_field(
