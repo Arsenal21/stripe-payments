@@ -477,11 +477,10 @@ class ASP_Process_IPN_NG {
 			);
 		}
 
-		//compatability with ACF addon
-		$acf_fields = $this->get_post_var( 'asp_stripeCustomFields', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
-		if ( $acf_fields ) {
-			$_POST['stripeCustomFields'] = $acf_fields;
-		}
+		//Compatability with the ACF addon
+                //Note: This $acf_fields input is now handled directly in the new version of the ACF addon. So it is commented out here.
+		//$acf_fields = $this->get_post_var( 'asp_stripeCustomFields', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
+
 		$custom_fields = apply_filters( 'asp_process_custom_fields', $custom_fields, array( 'product_id' => $prod_id ) );
 
 		if ( ! empty( $custom_fields ) ) {

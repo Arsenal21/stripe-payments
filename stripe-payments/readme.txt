@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 5.0
 Tested up to: 5.9
 Requires PHP: 5.6
-Stable tag: 2.0.55
+Stable tag: 2.0.56
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -154,6 +154,12 @@ Yes, please visit Stripe Payments > Settings screen for options.
 None.
 
 == Changelog ==
+
+= 2.0.56 =
+- Fixed the additional payments settings menu (it correctly renders the description field)
+- Changed parse_str() call to using wp_parse_str()
+- Removed the Advanced Custom Field addon's input processing code from the core plugin. This task is now done inside the ACF addon
+- Minor code improvements (replaced the PHP buffer output with a direct require_once call)
 
 = 2.0.55 =
 - Added sanitization to inputs that were missing sanitization.
