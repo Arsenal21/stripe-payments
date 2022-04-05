@@ -312,8 +312,8 @@ div.asp-recaptcha-modal div.iziModal-header {
 	public function after_button( $output, $data, $class ) {
 		ob_start();
 		?>
-<div id="asp-recaptcha-modal-<?php echo $data['uniq_id']; ?>" class="asp-recaptcha-modal">
-	<div id="asp-recaptcha-container-<?php echo $data['uniq_id']; ?>" class="asp-recaptcha-container"></div>
+<div id="asp-recaptcha-modal-<?php echo esc_attr( $data['uniq_id'] ); ?>" class="asp-recaptcha-modal">
+	<div id="asp-recaptcha-container-<?php echo esc_attr( $data['uniq_id'] ); ?>" class="asp-recaptcha-container"></div>
 </div>
 		<?php
 		$output .= ob_get_clean();

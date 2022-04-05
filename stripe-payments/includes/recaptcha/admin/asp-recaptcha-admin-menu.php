@@ -71,7 +71,7 @@ class ASP_RECAPTCHA_Admin_Menu {
 			array(
 				'field' => 'recaptcha_invisible',
 				'size'  => 10,
-				'desc'  => __( 'If you enable this option then you must enter reCAPTCHA v2 Invisible badge API Keys below.', 'stripe-payments' ),
+				'desc'  => __( 'It is recommended to use the "I am not a robot" checkbox captcha option for better payment button protection. However, if you want to enable this option then you must enter reCAPTCHA v2 Invisible badge API Keys below.', 'stripe-payments' ),
 			)
 		);
 

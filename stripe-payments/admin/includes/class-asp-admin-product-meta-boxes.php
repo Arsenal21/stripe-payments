@@ -1005,7 +1005,7 @@ jQuery(document).ready(function($) {
 			update_post_meta( $post_id, 'asp_product_upload', sanitize_url( $_POST['asp_product_upload'], array( 'http', 'https', 'dropbox' ) ) );
 
 			$thumb_url_raw = filter_input( INPUT_POST, 'asp_product_thumbnail', FILTER_DEFAULT );
-			$thumb_url     = esc_url( $thumb_url_raw, array( 'http', 'https' ) );
+			$thumb_url = esc_url_raw( $thumb_url_raw, array( 'http', 'https' ) );
 
 			if ( ! empty( $thumb_url ) ) {
 				$curr_thumb  = get_post_meta( $post_id, 'asp_product_thumbnail', true );
@@ -1020,7 +1020,7 @@ jQuery(document).ready(function($) {
 			}
 
 			update_post_meta( $post_id, 'asp_product_no_popup_thumbnail', isset( $_POST['asp_product_no_popup_thumbnail'] ) ? '1' : false );
-			update_post_meta( $post_id, 'asp_product_thankyou_page', isset( $_POST['asp_product_thankyou_page'] ) && ! empty( $_POST['asp_product_thankyou_page'] ) ? esc_url( $_POST['asp_product_thankyou_page'] ) : '' );
+			update_post_meta( $post_id, 'asp_product_thankyou_page', isset( $_POST['asp_product_thankyou_page'] ) && ! empty( $_POST['asp_product_thankyou_page'] ) ? esc_url_raw( $_POST['asp_product_thankyou_page'] ) : '' );
 			$shipping_addr = false;
 
 			if ( isset( $_POST['asp_product_collect_shipping_addr'] ) ) {

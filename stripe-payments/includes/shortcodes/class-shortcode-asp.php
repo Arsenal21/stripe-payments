@@ -837,7 +837,7 @@ class AcceptStripePaymentsShortcode {
 			ob_start();
 			?>
 		<script type='text/javascript'>var stripehandler = <?php echo json_encode( $this->get_loc_data() ); ?>;</script>
-		<script type='text/javascript'>var stripehandler<?php echo $data['uniq_id']; ?> = <?php echo json_encode( array( 'data' => $data ) ); ?>;</script>
+		<script type='text/javascript'>var stripehandler<?php echo esc_attr( $data['uniq_id'] ); ?> = <?php echo json_encode( array( 'data' => $data ) ); ?>;</script>
 		<script type='text/javascript' src='https://checkout.stripe.com/checkout.js'></script>
 		<script type='text/javascript' src='<?php echo WP_ASP_PLUGIN_URL; ?>/public/assets/js/stripe-handler.js?ver=<?php echo WP_ASP_PLUGIN_VERSION; ?>'></script>
 			<?php

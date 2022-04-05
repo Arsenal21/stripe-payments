@@ -155,6 +155,10 @@ None.
 
 == Changelog ==
 
+= WIP 2.0.57 =
+- Updated the captcha settings menu interface to mention that the "I am not a robot" checkbox captcha option should be used for better protection against bot. 
+- Added escaping to $data variable in the [Accept Stripe Payments] shortcode.
+
 = 2.0.56 =
 - Fixed the additional payments settings menu (it correctly renders the description field)
 - Changed parse_str() call to using wp_parse_str()
