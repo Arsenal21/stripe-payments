@@ -182,6 +182,13 @@ class ASP_PP_Ajax {
 		$pi_id          = filter_input( INPUT_POST, 'pi', FILTER_SANITIZE_STRING );
 		$cust_id        = filter_input( INPUT_POST, 'cust_id', FILTER_SANITIZE_STRING );
 		$quantity       = filter_input( INPUT_POST, 'quantity', FILTER_SANITIZE_NUMBER_INT );
+                $nonce          = filter_input( INPUT_POST, 'nonce', FILTER_SANITIZE_STRING );
+
+                //Check create_pi nonce
+                if ( ! wp_verify_nonce( $nonce, 'asp_pp_ajax_create_pi_nonce' ) ) {
+			$out['err'] = __( 'Error occurred: Nonce security verification failed.', 'stripe-payments' );
+			wp_send_json( $out );
+                }
 
 		$item = new ASP_Product_Item( $product_id );
 

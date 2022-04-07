@@ -568,6 +568,7 @@ class ASP_PP_Display {
 			'zeroCents'      => $this->asp_main->zeroCents,
 			'ajaxURL'        => admin_url( 'admin-ajax.php' ),
                         'asp_pp_ajax_nonce' => wp_create_nonce( 'asp_pp_ajax_nonce' ),
+                        'asp_pp_ajax_create_pi_nonce' => wp_create_nonce( 'asp_pp_ajax_create_pi_nonce' ),
 			'currencyFormat' => $display_settings,
 			'payBtnText'     => $pay_btn_text,
 			'amountOpts'     => array(
