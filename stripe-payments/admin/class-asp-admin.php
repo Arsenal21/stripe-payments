@@ -230,7 +230,7 @@ class AcceptStripePayments_Admin {
 				if ( 'view_log' === $asp_action ) {
                                         //Lets check nonce
                                         check_admin_referer( 'asp_view_log_nonce' );
-                                        
+
 					ASP_Debug_Logger::view_log();
 				}
 			}
@@ -1536,16 +1536,16 @@ class AcceptStripePayments_Admin {
 	<option value="left" <?php echo ( 'left' === $field_value ) ? ' selected' : ''; ?>><?php _ex( 'Left', 'Currency symbol position', 'stripe-payments' ); ?></option>
 	<option value="right" <?php echo ( 'right' === $field_value ) ? ' selected' : ''; ?>><?php _ex( 'Right', 'Currency symbol position', 'stripe-payments' ); ?></option>
 </select>
-<p class="description"><?php echo $desc; ?></p>
+<p class="description"><?php echo wp_kses_post( $desc ); ?></p>
 				<?php
 				break;
 			case 'pp_additional_css':
 				echo sprintf( '<textarea name="AcceptStripePayments-settings[%s]" rows="8" cols="70" style="resize:both;max-width:100%%;min-height:100px;">%s</textarea>', $field, $field_value );
-				echo '<p class="description">' . $desc . '</p>';
+				echo '<p class="description">' . wp_kses_post( $desc ) . '</p>';
 				break;
 			case 'tos_text':
 				echo '<textarea name="AcceptStripePayments-settings[tos_text]" rows="4" cols="70">' . $field_value . '</textarea>';
-				echo '<p class="description">' . $desc . '</p>';
+				echo '<p class="description">' . wp_kses_post( $desc ) . '</p>';
 				break;
 			case 'debug_log_link_enable':
 				echo '<input id="asp-debug-log-link-enable" type="checkbox" value="1" name="AcceptStripePayments-settings[debug_log_link_enable]"' . ( $field_value ? ' checked="checked"' : '' ) . '>';
