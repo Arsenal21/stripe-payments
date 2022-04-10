@@ -1027,6 +1027,12 @@ class ASP_Utils {
                         'selected' => array(),
                         'value' => array(),
                 );
+                // button
+                $my_allowed['button'] = array(
+                        'type' => array(),
+                        'class' => array(),
+                        'id' => array(),
+                );
                 // style
                 $my_allowed['style'] = array(
                         'types' => array(),
