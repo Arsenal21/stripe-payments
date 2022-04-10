@@ -589,6 +589,8 @@ class AcceptStripePayments {
 
 		$prefetch = $this->get_setting( 'frontend_prefetch_scripts' );
 
+                $asp_dev_mode = ( defined( 'WP_ASP_DEV_MODE' ) ) ? $asp_dev_mode : '';
+
 		wp_localize_script(
 			'stripe-handler-ng',
 			'wpASPNG',
@@ -597,6 +599,7 @@ class AcceptStripePayments {
 				'ppSlug'    => self::$pp_slug,
 				'prefetch'  => $prefetch,
 				'ckey'      => ASP_Utils::get_ckey(),
+                                'aspDevMode' => $asp_dev_mode,
 			)
 		);
 
@@ -607,7 +610,18 @@ class AcceptStripePayments {
 
 	public function frontend_print_footer_scripts() {
 		if ( ! empty( $this->footer_scripts ) ) {
-			echo $this->footer_scripts;
+                        $allowed_tags = array(
+                            'a' => array(
+                                'href' => array(),
+                                'title' => array()
+                            ),
+                            'link' => array(
+                                'href' => array(),
+                                'rel' => array(),
+                                'as' => array(),
+                            ),
+                        );
+                        echo wp_kses( $this->footer_scripts, $allowed_tags );
 		}
 	}
 
