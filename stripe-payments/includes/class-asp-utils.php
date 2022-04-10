@@ -1013,6 +1013,8 @@ class ASP_Utils {
                         'step' => array(),
                         'min' => array(),
                         'checked' => array(),
+                        'size' => array(),
+                        'readonly' => array(),
                 );
                 // select
                 $my_allowed['select'] = array(
