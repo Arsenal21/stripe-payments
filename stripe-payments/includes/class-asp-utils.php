@@ -998,17 +998,11 @@ class ASP_Utils {
 
         /*
          * Useful for using with wp_kses() function.
+         * See also ASP_Utils::asp_allowed_tags_expanded()
          */
-        public static function asp_expanded_alowed_tags() {
+        public static function asp_allowed_tags() {
                 $my_allowed = wp_kses_allowed_html( 'post' );
-                // iframe
-                $my_allowed['iframe'] = array(
-                        'src'             => array(),
-                        'height'          => array(),
-                        'width'           => array(),
-                        'frameborder'     => array(),
-                        'allowfullscreen' => array(),
-                );
+
                 // form fields - input
                 $my_allowed['input'] = array(
                         'class' => array(),
@@ -1036,6 +1030,24 @@ class ASP_Utils {
                 // style
                 $my_allowed['style'] = array(
                         'types' => array(),
+                );
+
+                return $my_allowed;
+        }
+
+        /*
+         * Useful for using with wp_kses() function.
+         */
+        public static function asp_allowed_tags_expanded() {
+                $my_allowed = ASP_Utils::asp_allowed_tags();
+
+                // iframe
+                $my_allowed['iframe'] = array(
+                        'src'             => array(),
+                        'height'          => array(),
+                        'width'           => array(),
+                        'frameborder'     => array(),
+                        'allowfullscreen' => array(),
                 );
 
                 return $my_allowed;

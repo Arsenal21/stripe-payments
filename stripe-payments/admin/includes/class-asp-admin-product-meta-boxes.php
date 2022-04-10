@@ -277,7 +277,7 @@ class ASP_Admin_Product_Meta_Boxes {
 			$cont .= '</div>';
 		}
 		echo '</p>';
-                $allowed_tags = ASP_Utils::asp_expanded_alowed_tags();
+                $allowed_tags = ASP_Utils::asp_allowed_tags();
 		echo wp_kses( $cont, $allowed_tags );
 		?>
 		<script>
