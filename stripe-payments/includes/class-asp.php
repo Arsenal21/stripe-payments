@@ -589,7 +589,7 @@ class AcceptStripePayments {
 
 		$prefetch = $this->get_setting( 'frontend_prefetch_scripts' );
 
-                $asp_dev_mode = ( defined( 'WP_ASP_DEV_MODE' ) ) ? $asp_dev_mode : '';
+                $asp_dev_mode = ( defined( 'WP_ASP_DEV_MODE' ) ) ? '1' : '';
 
 		wp_localize_script(
 			'stripe-handler-ng',
