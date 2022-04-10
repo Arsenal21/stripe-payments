@@ -1016,6 +1016,9 @@ class ASP_Utils {
                         'name'  => array(),
                         'value' => array(),
                         'type'  => array(),
+                        'step' => array(),
+                        'min' => array(),
+                        'checked' => array(),
                 );
                 // select
                 $my_allowed['select'] = array(
@@ -1028,6 +1031,7 @@ class ASP_Utils {
                 // select options
                 $my_allowed['option'] = array(
                         'selected' => array(),
+                        'value' => array(),
                 );
                 // style
                 $my_allowed['style'] = array(
