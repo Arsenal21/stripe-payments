@@ -104,15 +104,15 @@ if (vars.data.coupons_enabled) {
 		var ajaxData = 'action=asp_pp_check_coupon&product_id=' + vars.data.product_id + '&coupon_code=' + couponInput.value;
 		new ajaxRequest(vars.ajaxURL, ajaxData,
 			function (res) {
-				console.log(res);
+				//console.log(res);
 				var resp = JSON.parse(res.responseText);
 				if (resp.err) {
 					delete (vars.data.coupon);
-					console.log(resp.err);
+					//console.log(resp.err);
 					showFormInputErr(resp.err, couponErr, couponInput);
 				} else {
 					vars.data.coupon = resp;
-					console.log(vars.data.coupon);
+					//console.log(vars.data.coupon);
 					calcTotal();
 					couponInfo.innerHTML = vars.data.coupon.code + ': ' + ' - ';
 					if (vars.data.coupon.discount_type === 'perc') {
@@ -926,7 +926,7 @@ function handlePayment() {
 			function (res) {
 				try {
 					var resp = JSON.parse(res.responseText);
-					console.log(resp);
+					//console.log(resp);
 					if (typeof resp.stock_items !== 'undefined') {
 						if (vars.data.stock_items !== resp.stock_items) {
 							vars.data.stock_items = resp.stock_items;
@@ -952,7 +952,7 @@ function handlePayment() {
 					handlePayment();
 					return true;
 				} catch (e) {
-					console.log(e);
+					//console.log(e);
 					alert('Caught Exception: ' + e);
 				}
 			},
@@ -1024,7 +1024,7 @@ function handlePayment() {
 		}
 
 		stripe.createToken(card, opts).then(function (result) {
-			console.log(result);
+			//console.log(result);
 			if (result.error) {
 				submitBtn.disabled = false;
 				errorCont.innerHTML = result.error.message;
@@ -1056,7 +1056,7 @@ function handlePayment() {
 		stripe.confirmCardSetup(
 			vars.data.client_secret, opts)
 			.then(function (result) {
-				console.log(result);
+				//console.log(result);
 				if (result.error) {
 					submitBtn.disabled = false;
 					errorCont.innerHTML = result.error.message;
@@ -1102,7 +1102,7 @@ function handlePayment() {
 	console.log('Doing createToken()');
 
 	stripe.createToken(card, c_opts).then(function (result) {
-		console.log(result);
+		//console.log(result);
 		if (result.error) {
 			submitBtn.disabled = false;
 			errorCont.innerHTML = result.error.message;
@@ -1142,7 +1142,7 @@ function handlePayment() {
 
 		new ajaxRequest(vars.ajaxURL, 'action=asp_pp_confirm_pi&nonce=' + vars.asp_pp_ajax_nonce + '&product_id=' + vars.data.product_id + '&pi_id=' + vars.data.pi_id + '&token=' + vars.data.visitor_token + '&opts=' + JSON.stringify(opts),
 			function (response) {
-				console.log(response);
+				//console.log(response);
 				var resp = JSON.parse(response.response);
 				if (resp.err) {
 					vars.data.token_id = null;
@@ -1208,7 +1208,7 @@ function ThreeDSCompleted(pi_cs) {
 
 	stripe.retrievePaymentIntent(pi_cs)
 		.then(function (result) {
-			console.log(result);
+			//console.log(result);
 			if (result.error || (result.paymentIntent.status !== 'requires_confirmation' && result.paymentIntent.status !== 'succeeded')) {
 				vars.data.token_id = null;
 				vars.data.pm_id = null;
@@ -1253,7 +1253,7 @@ function confirmToken(reqStr) {
 		function (res) {
 			try {
 				var resp = JSON.parse(res.responseText);
-				console.log(resp);
+				//console.log(resp);
 				if (!resp.success) {
 					submitBtn.disabled = false;
 					errorCont.innerHTML = resp.err;
@@ -1287,7 +1287,7 @@ function confirmToken(reqStr) {
 					submitForm();
 				}
 			} catch (e) {
-				console.log(e);
+				//console.log(e);
 				alert('Caught Exception: ' + e);
 			}
 		},

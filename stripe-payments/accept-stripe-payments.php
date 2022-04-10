@@ -24,6 +24,8 @@ define( 'WP_ASP_PLUGIN_URL', plugins_url( '', __FILE__ ) );
 define( 'WP_ASP_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 define( 'WP_ASP_PLUGIN_FILE', __FILE__ );
 
+define( 'WP_ASP_DEV_MODE', '1' );
+
 class ASPMain {
 
 
