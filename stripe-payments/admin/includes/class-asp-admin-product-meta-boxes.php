@@ -277,7 +277,8 @@ class ASP_Admin_Product_Meta_Boxes {
 			$cont .= '</div>';
 		}
 		echo '</p>';
-		echo $cont;
+                $allowed_tags = ASP_Utils::asp_expanded_alowed_tags();
+		echo wp_kses( $cont, $allowed_tags );
 		?>
 		<script>
 			jQuery('.asp_product_type_radio').change(function(e) {
