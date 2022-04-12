@@ -99,11 +99,11 @@ if ( $_GET['page'] == 'stripe-payments-settings' ) {
 				</div>
 			</div>
 			<div class="postbox" style="min-width: inherit;">
-				<h3 class="hndle"><label for="title"><?php echo __( 'Rate Us', 'stripe-payments' ); ?></label></h3>
+				<h3 class="hndle"><label for="title"><?php echo __( 'Help Us Keep the Plugin Free & Maintained', 'stripe-payments' ); ?></label></h3>
 				<div class="inside">
 				<?php
 				// translators: %s is replaced by "rating" link
-				echo sprintf( _x( 'Like the plugin? Please give us a good %s', '%s is replaced by "rating" link', 'stripe-payments' ), sprintf( '<a href="https://wordpress.org/support/plugin/stripe-payments/reviews/?filter=5" target="_blank">%s</a>', __( 'rating!', 'stripe-payments' ) ) );
+				echo sprintf( _x( 'Like the plugin? Please give it a good %s', '%s is replaced by "rating" link', 'stripe-payments' ), sprintf( '<a href="https://wordpress.org/support/plugin/stripe-payments/reviews/?filter=5" target="_blank">%s</a>', __( 'rating!', 'stripe-payments' ) ) );
 				?>
 				<div class="wp-asp-stars-container">
 					<a href="https://wordpress.org/support/plugin/stripe-payments/reviews/?filter=5" target="_blank">
