@@ -1015,6 +1015,7 @@ class ASP_Utils {
                         'checked' => array(),
                         'size' => array(),
                         'readonly' => array(),
+                        'style' => array(),
                 );
                 // select
                 $my_allowed['select'] = array(
@@ -1034,6 +1035,7 @@ class ASP_Utils {
                         'type' => array(),
                         'class' => array(),
                         'id' => array(),
+                        'style' => array(),
                 );
                 // style
                 $my_allowed['style'] = array(
@@ -1048,6 +1050,14 @@ class ASP_Utils {
          */
         public static function asp_allowed_tags_expanded() {
                 $my_allowed = ASP_Utils::asp_allowed_tags();
+
+                //Expanded allowed button tags
+                if( isset( $my_allowed['button'] ) && is_array( $my_allowed['button'] ) ){
+                    $button_extra = array(
+                        'data-hook-mode' => array(),
+                    );
+                    $my_allowed['button'] = array_merge( $my_allowed['button'] , $button_extra);
+                }
 
                 // iframe
                 $my_allowed['iframe'] = array(
