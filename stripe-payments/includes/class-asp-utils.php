@@ -1068,6 +1068,9 @@ class ASP_Utils {
                         'allowfullscreen' => array(),
                 );
 
+                // allow for some inline jquery
+                $my_allowed['script'] = array();
+
                 return $my_allowed;
         }
 }
