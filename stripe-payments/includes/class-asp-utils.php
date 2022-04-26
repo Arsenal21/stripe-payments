@@ -1059,6 +1059,14 @@ class ASP_Utils {
                     $my_allowed['button'] = array_merge( $my_allowed['button'] , $button_extra);
                 }
 
+                //Expanded allowed input tags
+                if( isset( $my_allowed['input'] ) && is_array( $my_allowed['input'] ) ){
+                    $input_extra = array(
+                        'placeholder' => array(),
+                    );
+                    $my_allowed['input'] = array_merge( $my_allowed['input'] , $input_extra);
+                }
+
                 // iframe
                 $my_allowed['iframe'] = array(
                         'src'             => array(),
