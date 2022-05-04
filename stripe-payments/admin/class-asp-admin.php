@@ -225,7 +225,7 @@ class AcceptStripePayments_Admin {
 		if ( current_user_can( 'manage_options' ) ) {
 			add_action( 'wp_ajax_asp_clear_log', array( 'ASP_Debug_Logger', 'clear_log' ) );
 			//view log file
-                        $asp_action = sanitize_text_field( $_GET['asp_action'] );
+                        $asp_action = isset( $_GET['asp_action'] ) ? sanitize_text_field( $_GET['asp_action'] ) : '';
 			if ( ! empty( $asp_action ) ) {
 				if ( 'view_log' === $asp_action ) {
                                         //Lets check nonce
@@ -1852,7 +1852,7 @@ class AcceptStripePayments_Admin {
 		ASP_Utils::get_ckey( true );
 
 		//clear caching plugins cache if this is settings save action
-                $submit = sanitize_text_field( $_POST['submit'] );
+                $submit = isset( $_POST['submit'] ) ? sanitize_text_field( $_POST['submit'] ) : '';
 		if ( ! empty( $submit ) ) {
 			ASP_Utils::clear_external_caches();
 		}

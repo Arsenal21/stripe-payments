@@ -900,7 +900,7 @@ jQuery(document).ready(function($) {
 	}
 
 	public function save_product_handler( $post_id, $post, $update ) {
-                $action = sanitize_text_field( $_POST['action'] );
+                $action = isset( $_POST['action'] ) ? sanitize_text_field( $_POST['action'] ) : '';
 
 		if ( empty( $action ) ) {
 			//this is probably not edit or new post creation event
