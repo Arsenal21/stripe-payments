@@ -155,6 +155,9 @@ None.
 
 == Changelog ==
 
+= WIP 2.0.59 =
+- Added escaping to the extension/addon settings output.
+
 = 2.0.58 =
 - Fixed a typo in the "Experimental Settings" heading in the settings menu.
 - Added escaping to "Additional CSS" description field in the settings menu.
