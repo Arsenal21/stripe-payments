@@ -1328,7 +1328,7 @@ class AcceptStripePayments_Admin {
 
 		$desc = isset( $args['desc'] ) ? $args['desc'] : '';
 
-		$size = isset( $args['size'] ) ? $args['size'] : 40;
+		$size = esc_attr( isset( $args['size'] ) ? $args['size'] : 40 );
 
 		$addon_field = apply_filters( 'asp-admin-settings-addon-field-display', $field, $field_value );
 
@@ -1346,21 +1346,21 @@ class AcceptStripePayments_Admin {
 				echo "<p class=\"description\">" . wp_kses_post( $desc ) . "</p>";
 				break;
 			case 'custom_field_type':
-				echo "<select name='AcceptStripePayments-settings[{$field}]'>";
+				echo "<select name='AcceptStripePayments-settings[" . esc_attr($field) . "]'>";
 				echo "<option value='text'" . ( $field_value === 'text' ? ' selected' : '' ) . '>' . __( 'Text', 'stripe-payments' ) . '</option>';
 				echo "<option value='checkbox'" . ( $field_value === 'checkbox' ? ' selected' : '' ) . '>' . __( 'Checkbox', 'stripe-payments' ) . '</option>';
 				echo '</select>';
 				echo "<p class=\"description\">" . wp_kses_post( $desc ) . "</p>";
 				break;
 			case 'custom_field_descr_location':
-				echo "<select name='AcceptStripePayments-settings[{$field}]'>";
+				echo "<select name='AcceptStripePayments-settings[" . esc_attr($field) . "]'>";
 				echo "<option value='placeholder'" . ( $field_value === 'placeholder' ? ' selected' : '' ) . '>' . __( 'Placeholder', 'stripe-payments' ) . '</option>';
 				echo "<option value='below'" . ( $field_value === 'below' ? ' selected' : '' ) . '>' . __( 'Below Input', 'stripe-payments' ) . '</option>';
 				echo '</select>';
 				echo "<p class=\"description\">" . wp_kses_post( $desc ) . "</p>";
 				break;
 			case 'custom_field_validation':
-				echo "<select name='AcceptStripePayments-settings[{$field}]'>";
+				echo "<select name='AcceptStripePayments-settings[" . esc_attr($field) . "]'>";
 				echo "<option value=''" . ( empty( $field_value ) ? ' selected' : '' ) . '>' . __( 'No Validation', 'stripe-payments' ) . '</option>';
 				echo "<option value='num'" . ( $field_value === 'num' ? ' selected' : '' ) . '>' . __( 'Numbers Only', 'stripe-payments' ) . '</option>';
 				echo "<option value='custom'" . ( $field_value === 'custom' ? ' selected' : '' ) . '>' . __( 'Custom Validation', 'stripe-payments' ) . '</option>';
@@ -1395,7 +1395,7 @@ class AcceptStripePayments_Admin {
 				break;
 			case 'tos_position':
 			case 'custom_field_position':
-				echo "<select name='AcceptStripePayments-settings[{$field}]'>";
+				echo "<select name='AcceptStripePayments-settings[" . esc_attr($field) . "]'>";
 				echo "<option value='above'" . ( $field_value === 'above' || empty( $field_value ) ? ' selected' : '' ) . '>' . __( 'Above Button', 'stripe-payments' ) . '</option>';
 				echo "<option value='below'" . ( $field_value === 'below' ? ' selected' : '' ) . '>' . __( 'Below Button', 'stripe-payments' ) . '</option>';
 				echo '</select>';
@@ -1425,20 +1425,20 @@ class AcceptStripePayments_Admin {
 			case 'enable_email_schedule':
 			case 'frontend_prefetch_scripts':
 			case 'hide_state_field':
-				echo "<input type='checkbox' name='AcceptStripePayments-settings[{$field}]' value='1' " . ( $field_value ? 'checked=checked' : '' ) . " /><p class=\"description\">" . wp_kses_post( $desc ) . "</p>";
+				echo "<input type='checkbox' name='AcceptStripePayments-settings[" . esc_attr($field) . "]' value='1' " . ( $field_value ? 'checked=checked' : '' ) . " /><p class=\"description\">" . wp_kses_post( $desc ) . "</p>";
 				break;
 			case 'dont_use_stripe_php_sdk':
 				$desc = apply_filters( 'asp_int_dont_use_stripe_php_sdk_option_desc', $desc );
-				echo "<input type='checkbox' name='AcceptStripePayments-settings[{$field}]' value='1' " . ( $field_value ? 'checked=checked' : '' ) . " /><p class=\"description\">" . wp_kses_post( $desc ) . "</p>";
+				echo "<input type='checkbox' name='AcceptStripePayments-settings[" . esc_attr($field) . "]' value='1' " . ( $field_value ? 'checked=checked' : '' ) . " /><p class=\"description\">" . wp_kses_post( $desc ) . "</p>";
 				break;
 			case 'prefill_wp_user_details':
-				echo "<input type='checkbox' name='AcceptStripePayments-settings[{$field}]' value='1' " . ( $field_value ? 'checked=checked' : '' ) . " /><p class=\"description\">" . esc_attr( $desc ) . "</p>";
+				echo "<input type='checkbox' name='AcceptStripePayments-settings[" . esc_attr($field) . "]' value='1' " . ( $field_value ? 'checked=checked' : '' ) . " /><p class=\"description\">" . esc_attr( $desc ) . "</p>";
 				$last_name_first = $this->asp_main->get_setting( 'prefill_wp_user_last_name_first' );
 				echo '<label><input type="checkbox" name="AcceptStripePayments-settings[prefill_wp_user_last_name_first]"' . ( $last_name_first ? ' checked="checked"' : '' ) . '> ' . esc_html__( 'Last Name First', 'stripe-payments' ) . '</label>';
 				echo '<p class="description">' . esc_html__( 'When enabled, last name is placed before first name.', 'stripe-payments' ) . '</p>';
 				break;
 			case 'custom_field_enabled':
-				echo "<input type='checkbox' name='AcceptStripePayments-settings[{$field}]' value='1' " . ( $field_value ? 'checked=checked' : '' ) . " /><p class=\"description\">" . wp_kses_post( $desc ) . "</p>";
+				echo "<input type='checkbox' name='AcceptStripePayments-settings[" . esc_attr($field) . "]' value='1' " . ( $field_value ? 'checked=checked' : '' ) . " /><p class=\"description\">" . wp_kses_post( $desc ) . "</p>";
 				//do action so ACF addon can display its message if needed
 				do_action( 'asp_acf_settings_page_display_msg' );
 				break;
@@ -1582,7 +1582,7 @@ class AcceptStripePayments_Admin {
 				<?php
 				break;
 			default:
-				echo "<input type='text' name='AcceptStripePayments-settings[{$field}]' value='{$field_value}' size='{$size}' /> <p class=\"description\">" . wp_kses_post( $desc ) . "</p>";
+				echo "<input type='text' name='AcceptStripePayments-settings[" . esc_attr($field) . "]' value='{$field_value}' size='{$size}' /> <p class=\"description\">" . wp_kses_post( $desc ) . "</p>";
 				break;
 		}
 	}
