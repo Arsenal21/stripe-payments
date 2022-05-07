@@ -153,7 +153,7 @@ class AcceptStripePayments_Admin {
 			$tpl = '<div class="notice notice-%1$s%3$s"><p>%2$s</p></div>';
 			foreach ( $msg_arr as $msg ) {
 				if ( ! empty( $msg ) ) {
-					echo sprintf( $tpl, $msg['type'], $msg['text'], true === $msg['dism'] ? ' is-dismissible' : '' );
+					echo wp_kses( sprintf( $tpl, $msg['type'], $msg['text'], true === $msg['dism'] ? ' is-dismissible' : '' ), ASP_Utils::asp_allowed_tags() );
 				}
 			}
 		}
@@ -186,7 +186,7 @@ class AcceptStripePayments_Admin {
 				$admin_url   = get_admin_url();
 				$dismiss_url = add_query_arg( 'asp_dismiss_new_api_msg', '1', $admin_url );
 				$msg        .= '<p><a style="text-decoration: none; border-bottom: 1px dashed;" href="' . $dismiss_url . '">Don\'t show this message again</a></p>';
-				echo sprintf( $tpl, 'warning', $msg, '' );
+				echo wp_kses( sprintf( $tpl, 'warning', $msg, '' ), ASP_Utils::asp_allowed_tags() );
 			}
 		}
 	}

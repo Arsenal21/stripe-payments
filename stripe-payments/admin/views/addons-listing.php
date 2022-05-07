@@ -211,7 +211,7 @@ $output = '';
 			$output .= '</div>'; //end canvas
 		}
 
-		echo $output;
+		echo wp_kses( $output, ASP_Utils::asp_allowed_tags() );
 		?>
 
 		</div>

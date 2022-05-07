@@ -419,7 +419,7 @@ th#id {
 					<br>
 					<label><input type="radio" name="asp_coupon[only_for_allowed_products]" value="1" <?php echo $is_edit && $coupon['only_for_allowed_products'] ? ' checked' : ''; ?>> <?php esc_html_e( 'Specific Products Only', 'stripe-payments' ); ?></label>
 					<p class="asp-coupons-available-products" <?php echo ( $is_edit && ! $coupon['only_for_allowed_products'] ) || ( ! $is_edit ) ? ' style="display: none;"' : ''; ?>>
-						<?php echo $prod_inputs; //phpcs:ignore?>
+						<?php echo wp_kses( $prod_inputs, ASP_Utils::asp_allowed_tags() ); ?>
 					</p>
 					<p class="description"><?php esc_html_e( 'Choose availability of the coupon. You can specify which products the coupon is available to when the "Specific Products Only" option is selected.', 'stripe-payments' ); ?></p>
 				</td>
