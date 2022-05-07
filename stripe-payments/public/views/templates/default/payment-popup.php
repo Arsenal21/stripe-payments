@@ -9,7 +9,7 @@ if ( ! defined( 'WP_ASP_DEV_MODE' ) ) {
 } else {
 	$css = file_get_contents( WP_ASP_PLUGIN_PATH . 'public/views/templates/default/pp-inline-head.css' );
 }
-echo '<style>' . $css . '</style>' . "\r\n"; //phpcs:ignore
+echo '<style>' . $css . '</style>' . "\r\n";
 ?>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta charset="utf-8">
@@ -106,7 +106,7 @@ echo '<style>' . $css . '</style>' . "\r\n"; //phpcs:ignore
 										$output .= sprintf( $tpl, $curr[1], $code, $checked, $curr[0] );
 									}
 								}
-							echo $output; //phpcs:ignore
+							echo $output;
 								?>
 							</select>
 						</div>
@@ -120,7 +120,7 @@ echo '<style>' . $css . '</style>' . "\r\n"; //phpcs:ignore
 						<?php } ?>
 						<?php if ( isset( $a['custom_fields'] ) ) { ?>
 						<div id="custom-fields-cont" class="pure-u-1">
-                            <?php echo $a['custom_fields']; //phpcs:ignore ?>
+                            <?php echo $a['custom_fields']; ?>
 						</div>
 						<?php } ?>
 						<?php
@@ -172,7 +172,7 @@ echo '<style>' . $css . '</style>' . "\r\n"; //phpcs:ignore
 							}
 							echo '<div id="variations-cont" class="pure-u-1">';
 							echo '<div class="pure-g">';
-							echo $variations_str; //phpcs:ignore
+							echo $variations_str;
 							echo '</div>';
 							echo '</div>';
 						}
@@ -231,13 +231,13 @@ echo '<style>' . $css . '</style>' . "\r\n"; //phpcs:ignore
 											$a['item']->get_tax(),
 											$tax_amount_str
 										);
-										echo $out; //phpcs:ignore
+										echo $out;
 
 							if ( $a['data']['shipping'] ) {
 								$ship_str        = apply_filters( 'asp_customize_text_msg', __( 'Shipping', 'stripe-payments' ), 'shipping_str' );
 								$ship_amount_str = AcceptStripePayments::formatted_price( $a['item']->get_shipping(), $this->item->get_currency() );
 								$out             = sprintf( '<tr><td>%s</td><td><span id="shipping">%s</span></td></tr>', $ship_str, $ship_amount_str );
-								echo $out; //phpcs:ignore
+								echo $out;
 							}
 							?>
 										<tr>
@@ -346,7 +346,7 @@ echo '<style>' . $css . '</style>' . "\r\n"; //phpcs:ignore
 										<div class="pure-u-1 pure-u-md-<?php echo $a['hide_state_field'] ? '14' : '10'; ?>-24 baddr-toggle" style="position: relative;">
 											<label for="country"><?php esc_html_e( 'Country', 'stripe-payments' ); ?></label>
 											<select class="pure-input-1" name="country" id="country" required>
-                                                <?php echo ASP_Utils::get_countries_opts($a['data']['customer_default_country']); //phpcs:ignore ?>
+                                                <?php echo ASP_Utils::get_countries_opts($a['data']['customer_default_country']); ?>
 											</select>
 										</div>
 										<?php if ( ! $a['hide_state_field'] ) { ?>
@@ -391,7 +391,7 @@ echo '<style>' . $css . '</style>' . "\r\n"; //phpcs:ignore
 										<div class="pure-u-1" style="position: relative;">
 											<label for="shipping_country"><?php esc_html_e( 'Country', 'stripe-payments' ); ?></label>
 											<select class="pure-input-1 saddr-required" name="shipping_country" id="shipping_country">
-                                                <?php echo ASP_Utils::get_countries_opts($a['data']['customer_default_country']); //phpcs:ignore ?>
+                                                <?php echo ASP_Utils::get_countries_opts($a['data']['customer_default_country']); ?>
 											</select>
 										</div>
 										<?php if ( ! $a['hide_state_field'] ) { ?>
@@ -421,14 +421,14 @@ echo '<style>' . $css . '</style>' . "\r\n"; //phpcs:ignore
 						<div id="tos-cont" class="pure-u-1">
 							<label for="tos" class="pure-checkbox">
 								<input id="tos" type="checkbox" value="1">
-                                <?php echo html_entity_decode( $a['tos_text'] ); //phpcs:ignore?>
+                                <?php echo html_entity_decode( $a['tos_text'] ); ?>
 							</label>
 							<div id="tos-error" class="form-err" role="alert"></div>
 						</div>
 						<?php } ?>
 						<?php
 							$out = apply_filters( 'asp_ng_pp_output_before_buttons', '', $a['data'] );
-							echo $out; //phpcs:ignore
+							echo $out;
 						?>
 						<div id="buttons-container">
 							<div class="pure-u-5-5" style="position: relative;">
@@ -437,7 +437,7 @@ echo '<style>' . $css . '</style>' . "\r\n"; //phpcs:ignore
 								</div>
 								<?php
 									$out = apply_filters( 'asp_ng_pp_after_button', '', $a['data'], '' );
-									echo $out; //phpcs:ignore
+									echo $out;
 								?>
 							</div>
 						</div>
@@ -468,24 +468,24 @@ echo '<style>' . $css . '</style>' . "\r\n"; //phpcs:ignore
 
 	foreach ( $a['styles'] as $style ) {
 		if ( ! $style['footer'] ) {
-			printf( '<link rel="stylesheet" href="%s">' . "\r\n", $style['src'] ); //phpcs:ignore
+			printf( '<link rel="stylesheet" href="%s">' . "\r\n", $style['src'] );
 		}
 	}
 	foreach ( $a['scripts'] as $script ) {
 		if ( ! $script['footer'] ) {
-			printf( '<script src="%s"></script>' . "\r\n",  $script['src'] ); //phpcs:ignore
+			printf( '<script src="%s"></script>' . "\r\n",  $script['src'] );
 		}
 	}
 
 	foreach ( $a['scripts'] as $script ) {
 		if ( $script['footer'] ) {
-			printf( '<script src="%s"></script>' . "\r\n",  $script['src'] ); //phpcs:ignore
+			printf( '<script src="%s"></script>' . "\r\n",  $script['src'] );
 		}
 	}
 
 	foreach ( $a['styles'] as $style ) {
 		if ( $style['footer'] ) {
-			printf( '<link rel="stylesheet" href="%s">' . "\r\n", $style['src'] ); //phpcs:ignore
+			printf( '<link rel="stylesheet" href="%s">' . "\r\n", $style['src'] );
 		}
 	}
 

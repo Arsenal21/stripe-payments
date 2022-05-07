@@ -281,7 +281,7 @@ th#id {
 	public function display_coupon_add_edit_page() {
 
 		wp_enqueue_script( 'jquery-ui-datepicker' );
-		wp_register_style( 'jquery-ui', WP_ASP_PLUGIN_URL . '/admin/assets/css/jquery-ui-theme/jquery-ui.min.css' ); //phpcs:ignore
+		wp_register_style( 'jquery-ui', WP_ASP_PLUGIN_URL . '/admin/assets/css/jquery-ui-theme/jquery-ui.min.css' );
 		wp_enqueue_style( 'jquery-ui' );
 
 		$coupon_id = filter_input( INPUT_GET, 'asp_coupon_id', FILTER_SANITIZE_NUMBER_INT );
@@ -401,7 +401,7 @@ th#id {
 			<tr>
 				<th scope="row"><?php esc_html_e( 'Start Date', 'stripe-payments' ); ?></th>
 				<td>
-					<input class="datepicker-input" type="text" name="asp_coupon[start_date]" value="<?php echo $is_edit ? esc_attr( $coupon['start_date'] ) : esc_attr( date( 'Y-m-d' ) ); //phpcs:ignore?>">
+					<input class="datepicker-input" type="text" name="asp_coupon[start_date]" value="<?php echo $is_edit ? esc_attr( $coupon['start_date'] ) : esc_attr( date( 'Y-m-d' ) ); ?>">
 					<p class="description"><?php esc_html_e( 'Start date when this coupon can be used.', 'stripe-payments' ); ?></p>
 				</td>
 			</tr>

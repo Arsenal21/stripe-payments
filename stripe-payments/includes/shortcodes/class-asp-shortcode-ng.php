@@ -141,7 +141,7 @@ class ASP_Shortcode_NG {
 			'shipping' => empty( $shipping ) ? false : $shipping,
 		);
 		$price_arr = apply_filters( 'asp_ng_modify_price_currency_shipping', $price_arr );
-		extract( $price_arr, EXTR_OVERWRITE ); //phpcs:ignore
+		extract( $price_arr, EXTR_OVERWRITE );
 
 		$buy_btn = '';
 
@@ -298,7 +298,7 @@ class ASP_Shortcode_NG {
 		remove_filter( 'the_content', array( $this, 'filter_post_type_content' ) );
 		$post = get_post( $id );
 		setup_postdata( $post );
-		$GLOBALS['post'] = $post; //phpcs:ignore
+		$GLOBALS['post'] = $post;
 		$descr           = $post->post_content;
 		global $wp_embed;
 		if ( isset( $wp_embed ) && is_object( $wp_embed ) ) {
@@ -333,7 +333,7 @@ class ASP_Shortcode_NG {
 	}
 
 	public function shortcode_accept_stripe_payment( $atts ) {
-		extract( ///phpcs:ignore
+		extract(
 			shortcode_atts(
 				array(
 					'product_id'        => 0,
@@ -373,13 +373,13 @@ class ASP_Shortcode_NG {
 		}
 
 		if ( ! empty( $url ) ) {
-			$url = base64_encode( $url ); //phpcs:ignore
+			$url = base64_encode( $url );
 		} else {
 			$url = '';
 		}
 
 		if ( ! empty( $thankyou_page_url ) ) {
-			$thankyou_page_url = base64_encode( $thankyou_page_url ); //phpcs:ignore
+			$thankyou_page_url = base64_encode( $thankyou_page_url );
 		} else {
 			$thankyou_page_url = '';
 		}
@@ -462,9 +462,9 @@ class ASP_Shortcode_NG {
 					'asp_product_collect_billing_addr'     => $billing_address,
 					'asp_product_collect_shipping_addr'    => $shipping_address,
 					'asp_product_button_class'             => $class,
-					'asp_product_upload'                   => base64_decode( $url ), //phpcs:ignore
+					'asp_product_upload'                   => base64_decode( $url ),
 					'asp_product_thumbnail'                => $item_logo,
-					'asp_product_thankyou_page'            => empty( $thankyou_page_url ) ? '' : base64_decode( $thankyou_page_url ), //phpcs:ignore
+					'asp_product_thankyou_page'            => empty( $thankyou_page_url ) ? '' : base64_decode( $thankyou_page_url ),
 					'asp_product_button_only'              => 1,
 					'asp_product_custom_field'             => 2,
 					'asp_product_customer_email_hardcoded' => $customer_email,
@@ -606,7 +606,7 @@ class ASP_Shortcode_NG {
 			'show_custom_amount_input' => false,
 		);
 
-		$data = apply_filters( 'asp-button-output-data-ready', $data, $atts ); //phpcs:ignore
+		$data = apply_filters( 'asp-button-output-data-ready', $data, $atts ); 
 
 		$output = '';
 

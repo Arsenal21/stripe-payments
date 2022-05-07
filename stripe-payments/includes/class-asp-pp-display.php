@@ -371,9 +371,9 @@ class ASP_PP_Display {
 
 		$data['addonHooks'] = array();
 
-		$data = apply_filters( 'asp-button-output-data-ready', $data, array( 'product_id' => $product_id ) ); //phpcs:ignore
+		$data = apply_filters( 'asp-button-output-data-ready', $data, array( 'product_id' => $product_id ) );
 
-		$data = apply_filters( 'asp_ng_pp_data_ready', $data, array( 'product_id' => $product_id ) ); //phpcs:ignore
+		$data = apply_filters( 'asp_ng_pp_data_ready', $data, array( 'product_id' => $product_id ) );
 
 		// Authorize Only
 		$auth_only = get_post_meta( $product_id, 'asp_product_authorize_only', true );
@@ -532,7 +532,7 @@ class ASP_PP_Display {
 			// translators: %s is not a placeholder
 			$pay_btn_text = __( 'Pay %s', 'stripe-payments' );
 		} else {
-			$pay_btn_text = __( $pay_btn_text, 'stripe-payments' ); //phpcs:ignore
+			$pay_btn_text = __( $pay_btn_text, 'stripe-payments' );
 		}
 
 		if ( $auth_only ) {

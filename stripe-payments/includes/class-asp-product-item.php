@@ -515,7 +515,7 @@ class ASP_Product_Item {
 			if ( ! $item_url ) {
 				return '';
 			}
-			$item_url = base64_encode( $item_url ); //phpcs:ignore
+			$item_url = base64_encode( $item_url );
 		}
 		$item_url = apply_filters(
 			'asp_item_url_process',
@@ -525,7 +525,7 @@ class ASP_Product_Item {
 				'product_id' => $this->post_id,
 			)
 		);
-		$item_url = base64_decode( $item_url ); //phpcs:ignore
+		$item_url = base64_decode( $item_url );
 		return $item_url;
 	}
 

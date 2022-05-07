@@ -155,6 +155,10 @@ None.
 
 == Changelog ==
 
+= WIP 2.0.61 =
+- Added escaping to the admin notice message.
+- Removed the phpcs related comments from the code.
+
 = 2.0.60 =
 - PHP Debug warning fix for view debug request parameter.
 
