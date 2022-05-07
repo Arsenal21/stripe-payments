@@ -1322,7 +1322,7 @@ class AcceptStripePayments_Admin {
 
 		$settings = (array) get_option( 'AcceptStripePayments-settings' );
 
-		$field = isset( $args['field'] ) ? $args['field'] : '';
+		$field = esc_attr( isset( $args['field'] ) ? $args['field'] : '' );
 
 		$field_value = esc_attr( isset( $settings[ $field ] ) ? $settings[ $field ] : '' );
 
@@ -1447,8 +1447,8 @@ class AcceptStripePayments_Admin {
 				$checked_text = empty( $field_value ) || ( 'text' === $field_value ) ? ' selected' : '';
 				$checked_html = 'html' === $field_value ? ' selected' : '';
 				echo '<select name="AcceptStripePayments-settings[' . $field . ']">';
-				echo sprintf( '<option value="text"%s>' . __( 'Plain Text', 'stripe-payments' ) . '</option>', $checked_text );
-				echo sprintf( '<option value="html"%s>' . __( 'HTML', 'stripe-payments' ) . '</option>', $checked_html );
+				echo wp_kses( sprintf( '<option value="text"%s>' . __( 'Plain Text', 'stripe-payments' ) . '</option>', $checked_text ), ASP_Utils::asp_allowed_tags() );
+				echo wp_kses( sprintf( '<option value="html"%s>' . __( 'HTML', 'stripe-payments' ) . '</option>', $checked_html ), ASP_Utils::asp_allowed_tags() );
 				echo '</select>';
 				echo "<p class=\"description\">" . wp_kses_post( $desc ) . "</p>";
 				break;
