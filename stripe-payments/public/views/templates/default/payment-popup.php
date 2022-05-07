@@ -277,7 +277,7 @@ echo '<style>' . $css . '</style>' . "\r\n"; //phpcs:ignore
 										isset( $pm['hide_title'] ) ? '' : $pm['title']
 									);
 								}
-									echo $out; //phpcs:ignore
+									echo $out;
 								?>
 							</fieldset>
 						</div>
