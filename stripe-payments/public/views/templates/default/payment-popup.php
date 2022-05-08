@@ -103,7 +103,7 @@ echo '<style>' . $css . '</style>' . "\r\n";
 								foreach ( $curr_arr as $code => $curr ) {
 									if ( '' !== $code ) {
 										$checked = $a['data']['currency'] === $code ? ' selected' : '';
-										$output .= sprintf( $tpl, $curr[1], $code, $checked, $curr[0] );
+										$output .= sprintf( $tpl, esc_attr($curr[1]), esc_attr($code), $checked, esc_attr($curr[0]) );
 									}
 								}
                                                                 echo $output;
