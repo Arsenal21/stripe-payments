@@ -106,7 +106,7 @@ echo '<style>' . $css . '</style>' . "\r\n";
 										$output .= sprintf( $tpl, $curr[1], $code, $checked, $curr[0] );
 									}
 								}
-                                                                echo wp_kses( $output, ASP_Utils::asp_allowed_tags_expanded() );
+                                                                echo $output;
 								?>
 							</select>
 						</div>
