@@ -155,7 +155,7 @@ None.
 
 == Changelog ==
 
-= WIP 2.0.61 =
+= 2.0.61 =
 - Tested on WP 6.0.
 - Added a new utility function for escaping SVG output.
 - Added escaping to the admin notice message.
