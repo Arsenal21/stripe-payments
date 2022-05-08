@@ -1081,4 +1081,36 @@ class ASP_Utils {
 
                 return $my_allowed;
         }
+
+        public static function asp_allowed_tags_for_svg() {
+            $kses_defaults = wp_kses_allowed_html( 'post' );
+
+            $svg_args = array(
+                'svg'   => array(
+                    'id' => true,
+                    'class' => true,
+                    'aria-hidden' => true,
+                    'aria-labelledby' => true,
+                    'role' => true,
+                    'xmlns' => true,
+                    'xmlns:xlink' => true,
+                    'width' => true,
+                    'height' => true,
+                    'viewbox' => true,
+                    'fill' => true,
+                    'stroke' => true,
+                    'stroke-linecap' => true,
+                    'stroke-linejoin' => true,
+                    'stroke-width' => true,
+                ),
+                'g'     => array( 'fill' => true ),
+                'title' => array( 'title' => true ),
+                'path'  => array(
+                    'd'    => true,
+                    'fill' => true,
+                ),
+            );
+            return array_merge( $kses_defaults, $svg_args );
+        }
+
 }

@@ -157,6 +157,7 @@ None.
 
 = WIP 2.0.61 =
 - Tested on WP 6.0.
+- Added a new utility function for escaping SVG output.
 - Added escaping to the admin notice message.
 - Removed the phpcs related comments from the code.
 

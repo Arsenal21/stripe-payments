@@ -266,18 +266,14 @@ echo '<style>' . $css . '</style>' . "\r\n";
 											$pm['img']
 										);
 									}
-									$out .= sprintf(
-										'<div class="pure-u-1 pure-u-md-1-3" data-cont-pm-id="%s"><label class="pure-radio"><input name="pm" class="pm-select-btn" type="radio"%s value="%s" data-pm-id="%s">%s%s %s</label></div>',
-										$pm['id'],
-										empty( $out ) ? ' checked' : '',
-										$pm['id'],
-										$pm['id'],
-										isset( $pm['before_title'] ) ? $pm['before_title'] : '',
-										! empty( $img ) ? $img : '',
-										isset( $pm['hide_title'] ) ? '' : $pm['title']
-									);
+
+                                                                        $pm_check_status = empty( $out ) ? ' checked' : '';
+                                                                        $pm_before_title = isset( $pm['before_title'] ) ? $pm['before_title'] : '';
+                                                                        $pm_img = ! empty( $img ) ? $img : '';
+                                                                        $pm_title = isset( $pm['hide_title'] ) ? '' : $pm['title'];
+                                                                        $out .= '<div class="pure-u-1 pure-u-md-1-3" data-cont-pm-id="'.esc_attr($pm['id']).'"><label class="pure-radio"><input name="pm" class="pm-select-btn" type="radio"'.esc_attr($pm_check_status).' value="'.esc_attr($pm['id']).'" data-pm-id="'.esc_attr($pm['id']).'">'.wp_kses($pm_before_title, ASP_Utils::asp_allowed_tags_for_svg()).''.esc_url($pm_img).' '.esc_attr($pm_title).'</label></div>';
 								}
-									echo $out;
+								echo $out;
 								?>
 							</fieldset>
 						</div>
