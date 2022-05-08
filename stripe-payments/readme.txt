@@ -3,9 +3,9 @@ Contributors: Tips and Tricks HQ, wptipsntricks, alexanderfoxc
 Donate link: https://s-plugins.com
 Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortcode, digital goods, payment gateway, instant payment, commerce, digital downloads, downloads, e-commerce, e-store, ecommerce, eshop, donation
 Requires at least: 5.0
-Tested up to: 5.9
+Tested up to: 6.0
 Requires PHP: 5.6
-Stable tag: 2.0.60
+Stable tag: 2.0.61
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -156,6 +156,7 @@ None.
 == Changelog ==
 
 = WIP 2.0.61 =
+- Tested on WP 6.0.
 - Added escaping to the admin notice message.
 - Removed the phpcs related comments from the code.
 
