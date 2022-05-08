@@ -106,7 +106,7 @@ echo '<style>' . $css . '</style>' . "\r\n";
 										$output .= sprintf( $tpl, $curr[1], $code, $checked, $curr[0] );
 									}
 								}
-							echo $output;
+                                                                echo wp_kses( $output, ASP_Utils::asp_allowed_tags_expanded() );
 								?>
 							</select>
 						</div>
@@ -424,7 +424,7 @@ echo '<style>' . $css . '</style>' . "\r\n";
 						<?php } ?>
 						<?php
 							$out = apply_filters( 'asp_ng_pp_output_before_buttons', '', $a['data'] );
-							echo $out;
+							echo wp_kses( $out, ASP_Utils::asp_allowed_tags_expanded() );
 						?>
 						<div id="buttons-container">
 							<div class="pure-u-5-5" style="position: relative;">
