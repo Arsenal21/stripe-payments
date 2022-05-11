@@ -9,7 +9,7 @@ if ( ! defined( 'WP_ASP_DEV_MODE' ) ) {
 } else {
 	$css = file_get_contents( WP_ASP_PLUGIN_PATH . 'public/views/templates/default/pp-inline-head.css' );
 }
-echo '<style>' . $css . '</style>' . "\r\n";
+echo wp_kses( '<style>' . $css . '</style>' . "\r\n", ASP_Utils::asp_allowed_tags() );
 ?>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta charset="utf-8">
