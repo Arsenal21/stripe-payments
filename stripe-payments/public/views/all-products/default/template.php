@@ -22,8 +22,8 @@ $strViewItem    = __( 'View Item', 'stripe-payments' );
 ?>
 <form id="wp-asp-search-form" method="GET">
 	<div class="wp-asp-listing-search-field">
-		<input type="text" class="wp-asp-search-input" name="asp_search" value="_%search_term%_" placeholder="<?php echo $strSearch; ?> ...">
-	<button type="submit" class="wp-asp-search-button" value="<?php echo $strSearch; ?>" title="<?php echo $strSearch; ?>"><span class="dashicons dashicons-search"></button>
+		<input type="text" class="wp-asp-search-input" name="asp_search" value="_%search_term%_" placeholder="<?php echo esc_attr($strSearch); ?> ...">
+	<button type="submit" class="wp-asp-search-button" value="<?php echo esc_attr($strSearch); ?>" title="<?php echo esc_attr($strSearch); ?>"><span class="dashicons dashicons-search"></button>
 	</div>
 </form>
 <div class="wp-asp-search-res-text">
