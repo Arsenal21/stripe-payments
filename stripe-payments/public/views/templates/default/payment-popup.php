@@ -147,7 +147,7 @@ echo wp_kses( '<style>' . $css . '</style>' . "\r\n", ASP_Utils::asp_allowed_tag
 									}
 									foreach ( $a['data']['variations']['names'][ $grp_id ] as $var_id => $name ) {
 										if ( '1' === $g_type ) {
-											$tpl = '<label class="pure-radio"><input class="variations-input" data-asp-variations-group-id="' . $grp_id . '" name="stripeVariations[' . $grp_id . '][]" type="radio" value="%d"' . ( 0 === $var_id ? 'checked' : '' ) . '> %s %s</label>';
+											$tpl = '<label class="pure-radio"><input class="variations-input" data-asp-variations-group-id="' . $grp_id . '" name="stripeVariations[' . $grp_id . '][]" type="radio" value="%d"' . ( 0 === $var_id ? ' checked' : '' ) . '> %s %s</label>';
 										} elseif ( '0' === $g_type ) {
 											$tpl = '<option value="%d">%s %s</option>';
 										} else {
@@ -172,7 +172,7 @@ echo wp_kses( '<style>' . $css . '</style>' . "\r\n", ASP_Utils::asp_allowed_tag
 							}
 							echo '<div id="variations-cont" class="pure-u-1">';
 							echo '<div class="pure-g">';
-							echo $variations_str;
+							echo wp_kses( $variations_str, ASP_Utils::asp_allowed_tags() );
 							echo '</div>';
 							echo '</div>';
 						}
