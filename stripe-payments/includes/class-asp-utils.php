@@ -1029,6 +1029,7 @@ class ASP_Utils {
                 $my_allowed['option'] = array(
                         'selected' => array(),
                         'value' => array(),
+                        'data-asp-curr-sym' => array(),
                 );
                 // button
                 $my_allowed['button'] = array(
