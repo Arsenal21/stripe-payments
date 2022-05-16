@@ -120,7 +120,7 @@ echo wp_kses( '<style>' . $css . '</style>' . "\r\n", ASP_Utils::asp_allowed_tag
 						<?php } ?>
 						<?php if ( isset( $a['custom_fields'] ) ) { ?>
 						<div id="custom-fields-cont" class="pure-u-1">
-                            <?php echo $a['custom_fields']; ?>
+                            <?php echo wp_kses( $a['custom_fields'], ASP_Utils::asp_allowed_tags() ); ?>
 						</div>
 						<?php } ?>
 						<?php

@@ -1016,6 +1016,7 @@ class ASP_Utils {
                         'size' => array(),
                         'readonly' => array(),
                         'style' => array(),
+                        'placeholder' => array(),
                 );
                 // select
                 $my_allowed['select'] = array(
@@ -1024,6 +1025,7 @@ class ASP_Utils {
                         'name'   => array(),
                         'value'  => array(),
                         'type'   => array(),
+                        'placeholder' => array(),
                 );
                 // select options
                 $my_allowed['option'] = array(
@@ -1058,14 +1060,6 @@ class ASP_Utils {
                         'data-hook-mode' => array(),
                     );
                     $my_allowed['button'] = array_merge( $my_allowed['button'] , $button_extra);
-                }
-
-                //Expanded allowed input tags
-                if( isset( $my_allowed['input'] ) && is_array( $my_allowed['input'] ) ){
-                    $input_extra = array(
-                        'placeholder' => array(),
-                    );
-                    $my_allowed['input'] = array_merge( $my_allowed['input'] , $input_extra);
                 }
 
                 // iframe
