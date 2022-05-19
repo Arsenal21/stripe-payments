@@ -155,6 +155,9 @@ None.
 
 == Changelog ==
 
+= 2.0.62 =
+- Fixed an issue with the quick edit option causing the product configuration to be lost.
+
 = 2.0.61 =
 - Tested on WP 6.0.
 - Added a new utility function for escaping SVG output.

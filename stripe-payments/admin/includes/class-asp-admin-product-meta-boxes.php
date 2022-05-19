@@ -909,6 +909,11 @@ jQuery(document).ready(function($) {
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
 			return;
 		}
+                if ( $action == 'inline-save' ){
+                    //This is a quick edit action. Don't try to save other product details for this action.
+                    //The default wordpress post_save action will handle the standard post data update (for example: the title, slug, date etc).
+                    return;
+                }
 		if ( isset( $post_id ) ) {
 			//regen ckey
 			ASP_Utils::get_ckey( true );
