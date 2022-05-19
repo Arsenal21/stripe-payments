@@ -155,7 +155,7 @@ None.
 
 == Changelog ==
 
-= 2.0.62 =
+= WIP 2.0.62 =
 - Fixed an issue with the quick edit option causing the product configuration to be lost.
 
 = 2.0.61 =
