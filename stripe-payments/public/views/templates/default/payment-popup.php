@@ -231,13 +231,13 @@ echo wp_kses( '<style>' . $css . '</style>' . "\r\n", ASP_Utils::asp_allowed_tag
 											$a['item']->get_tax(),
 											$tax_amount_str
 										);
-										echo $out;
+										echo wp_kses( $out, ASP_Utils::asp_allowed_tags() );
 
 							if ( $a['data']['shipping'] ) {
 								$ship_str        = apply_filters( 'asp_customize_text_msg', __( 'Shipping', 'stripe-payments' ), 'shipping_str' );
 								$ship_amount_str = AcceptStripePayments::formatted_price( $a['item']->get_shipping(), $this->item->get_currency() );
 								$out             = sprintf( '<tr><td>%s</td><td><span id="shipping">%s</span></td></tr>', $ship_str, $ship_amount_str );
-								echo $out;
+								echo wp_kses( $out, ASP_Utils::asp_allowed_tags() );
 							}
 							?>
 										<tr>

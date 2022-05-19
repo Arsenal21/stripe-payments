@@ -120,6 +120,9 @@ class AcceptStripePayments {
 
 		add_action( 'plugins_loaded', array( $this, 'plugins_loaded' ) );
 
+                //Can be used to override some of the safe styles allowed in wp_kses function.
+                add_filter( 'safe_style_css', array( $this, 'customize_safe_style_css' ) );
+
 		//handle self hooks
 		require_once WP_ASP_PLUGIN_PATH . 'includes/class-asp-self-hooks-handler.php';
 
@@ -157,6 +160,11 @@ class AcceptStripePayments {
 			add_action( 'wp_print_footer_scripts', array( $this, 'frontend_print_footer_scripts' ) );
 		}
 	}
+
+        public function customize_safe_style_css( $styles ) {
+                $styles[] = 'display';
+                return $styles;
+        }
 
 	public function send_scheduled_email( $to, $subj, $body, $headers ) {
 		ASP_Debug_Logger::log( sprintf( 'Sending scheduled email to %s.', $to ) );
