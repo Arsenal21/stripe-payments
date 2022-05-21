@@ -156,6 +156,7 @@ None.
 == Changelog ==
 
 = WIP 2.0.62 =
+- Added more filters so the "state" and "postcode" strings can be customized via the custom messages addon.
 - Fixed an issue with the quick edit option causing the product configuration to be lost.
 
 = 2.0.61 =

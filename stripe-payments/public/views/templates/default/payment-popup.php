@@ -348,13 +348,13 @@ echo wp_kses( '<style>' . $css . '</style>' . "\r\n", ASP_Utils::asp_allowed_tag
 										<?php if ( ! $a['hide_state_field'] ) { ?>
 										<div class="pure-u-md-1-24 baddr-hide"></div>
 										<div class="pure-u-1 pure-u-md-6-24 baddr-toggle" style="position: relative;">
-											<label for="state"><?php esc_html_e( 'State', 'stripe-payments' ); ?></label>
+											<label for="state"><?php echo esc_html( apply_filters( 'asp_customize_text_msg', __( 'State', 'stripe-payments' ), 'pp_billing_state' ) ); ?></label>
 											<input class="pure-input-1" type="text" id="state" name="state">
 										</div>
 										<?php } ?>
 										<div class="pure-u-md-1-24 baddr-hide"></div>
 										<div class="pure-u-1 pure-u-md-<?php echo $a['hide_state_field'] ? '9' : '6'; ?>-24 baddr-toggle">
-											<label for="postcode"><?php esc_html_e( 'Postcode', 'stripe-payments' ); ?></label>
+											<label for="postcode"><?php echo esc_html( apply_filters( 'asp_customize_text_msg', __( 'Postcode', 'stripe-payments' ), 'pp_billing_postcode' ) ); ?></label>
 											<input class="pure-u-1" type="text" name="postcode" id="postcode">
 										</div>
 									</fieldset>
@@ -392,12 +392,12 @@ echo wp_kses( '<style>' . $css . '</style>' . "\r\n", ASP_Utils::asp_allowed_tag
 										</div>
 										<?php if ( ! $a['hide_state_field'] ) { ?>
 										<div class="pure-u-1">
-											<label for="shipping_state"><?php esc_html_e( 'State', 'stripe-payments' ); ?></label>
+											<label for="shipping_state"><?php echo esc_html( apply_filters( 'asp_customize_text_msg', __( 'State', 'stripe-payments' ), 'pp_shipping_state' ) ); ?></label>
 											<input class="pure-u-1" type="text" name="shipping_state" id="shipping_state">
 										</div>
 										<?php } ?>
 										<div class="pure-u-1">
-											<label for="shipping_postcode"><?php esc_html_e( 'Postcode', 'stripe-payments' ); ?></label>
+											<label for="shipping_postcode"><?php echo esc_html( apply_filters( 'asp_customize_text_msg', __( 'Postcode', 'stripe-payments' ), 'pp_shipping_postcode' ) ); ?></label>
 											<input class="pure-u-1" type="text" name="shipping_postcode" id="shipping_postcode">
 										</div>
 									</fieldset>
