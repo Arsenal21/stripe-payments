@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 5.0
 Tested up to: 6.0
 Requires PHP: 5.6
-Stable tag: 2.0.61
+Stable tag: 2.0.62
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -155,9 +155,10 @@ None.
 
 == Changelog ==
 
-= WIP 2.0.62 =
+= 2.0.62 =
 - Added more filters so the "state" and "postcode" strings can be customized via the custom messages addon.
 - Fixed an issue with the quick edit option causing the product configuration to be lost.
+- Added a notice to enable captcha feature (if it is not already enabled).
 
 = 2.0.61 =
 - Tested on WP 6.0.

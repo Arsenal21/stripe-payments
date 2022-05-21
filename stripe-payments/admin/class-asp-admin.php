@@ -242,8 +242,23 @@ class AcceptStripePayments_Admin {
 			}
 			//check if required php modules are installed
 			$this->check_php_modules();
+
+                        //check if captcha is enabled
+                        $this->check_captcha_settings_and_show_msg();
 		}
 	}
+
+        private function check_captcha_settings_and_show_msg() {
+                $asp_main = AcceptStripePayments::get_instance();
+                $captcha_type = $asp_main->get_setting('captcha_type');
+
+                if ( empty( $captcha_type ) || $captcha_type == 'none' ) {
+                        //Captcha is not enabled. Show warning message.
+			$msg  = __( '<b>Accept Stripe Payments:</b> the captcha feature is not enabled. ', 'stripe-payments' );
+			$msg .= __( 'It is strongly recommended that you enable the captcha feature from the captcha settings tab to prevent bots trying to do card testing.', 'stripe-payments' );
+			self::add_admin_notice( 'error', $msg );
+                }
+        }
 
 	private function check_php_modules() {
 		$missing_modules = array();
