@@ -416,7 +416,10 @@ echo wp_kses( '<style>' . $css . '</style>' . "\r\n", ASP_Utils::asp_allowed_tag
 						<div id="tos-cont" class="pure-u-1">
 							<label for="tos" class="pure-checkbox">
 								<input id="tos" type="checkbox" value="1">
-                                <?php echo html_entity_decode( $a['tos_text'] ); ?>
+                                <?php
+                                $terms_text = html_entity_decode( $a['tos_text']);
+                                echo wp_kses( $terms_text, ASP_Utils::asp_allowed_tags() );
+                                ?>
 							</label>
 							<div id="tos-error" class="form-err" role="alert"></div>
 						</div>
