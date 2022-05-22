@@ -1354,7 +1354,7 @@ class AcceptStripePayments_Admin {
 
 		switch ( $field ) {
 			case 'checkbox':
-				echo "<input type='checkbox' name='AcceptStripePayments-settings[{$field_name}]' value='1' " . ( $field_value ? 'checked=checked' : '' ) . " /><p class=\"description\">" . wp_kses_post( $desc ) . "</p>";
+				echo "<input type='checkbox' name='AcceptStripePayments-settings[" . esc_attr($field_name) . "]' value='1' " . ( $field_value ? 'checked=checked' : '' ) . " /><p class=\"description\">" . wp_kses_post( $desc ) . "</p>";
 				break;
 			case 'custom':
 				echo wp_kses( $addon_field['field_data'], ASP_Utils::asp_allowed_tags_expanded() );
