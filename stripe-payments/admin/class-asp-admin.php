@@ -1461,7 +1461,7 @@ class AcceptStripePayments_Admin {
 			case 'seller_email_type':
 				$checked_text = empty( $field_value ) || ( 'text' === $field_value ) ? ' selected' : '';
 				$checked_html = 'html' === $field_value ? ' selected' : '';
-				echo '<select name="AcceptStripePayments-settings[' . $field . ']">';
+				echo '<select name="AcceptStripePayments-settings[' . esc_attr($field) . ']">';
 				echo wp_kses( sprintf( '<option value="text"%s>' . __( 'Plain Text', 'stripe-payments' ) . '</option>', $checked_text ), ASP_Utils::asp_allowed_tags() );
 				echo wp_kses( sprintf( '<option value="html"%s>' . __( 'HTML', 'stripe-payments' ) . '</option>', $checked_html ), ASP_Utils::asp_allowed_tags() );
 				echo '</select>';
@@ -1486,7 +1486,7 @@ class AcceptStripePayments_Admin {
 				$products_page_id  = $field_value;
 				$products_page_url = get_permalink( $products_page_id );
 				//show the URL in a text field for display purpose. This field's value can't be updated as we store the page ID internally.
-				echo "<input type='text' name='asp_products_page_url_value' value='{$products_page_url}' size='{$size}' /> <p class=\"description\">" . esc_attr( $desc ) . "</p>";
+				echo "<input type='text' name='asp_products_page_url_value' value='" . esc_url($products_page_url) . "' size='" . esc_attr( $size ) . "' /> <p class=\"description\">" . esc_attr( $desc ) . "</p>";
 				break;
 			case 'currency_code':
 				echo '<select name="AcceptStripePayments-settings[' . esc_attr( $field ) . ']" id="wp_asp_curr_code">';
