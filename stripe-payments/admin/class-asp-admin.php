@@ -1490,7 +1490,7 @@ class AcceptStripePayments_Admin {
 				break;
 			case 'currency_code':
 				echo '<select name="AcceptStripePayments-settings[' . esc_attr( $field ) . ']" id="wp_asp_curr_code">';
-				echo self::get_currency_options( $field_value, false );
+				echo wp_kses( self::get_currency_options( $field_value, false ), ASP_Utils::asp_allowed_tags() );
 				echo '</select>';
 				//echo "<p class=\"description\">" . esc_attr( $desc ) . "</p>";
 				break;
@@ -1522,7 +1522,7 @@ class AcceptStripePayments_Admin {
 					if ( isset( $allowed_curr[ $code ] ) ) {
 						$checked = ' checked';
 					}
-					echo sprintf( '<div><label><input type="checkbox" name="AcceptStripePayments-settings[allowed_currencies][%s]" value="1"%s> %s</label></div>', $code, $checked, $curr[0] );
+					echo sprintf( '<div><label><input type="checkbox" name="AcceptStripePayments-settings[allowed_currencies][%s]" value="1"%s> %s</label></div>', esc_attr($code), esc_attr($checked), esc_attr($curr[0]) );
 				}
 				echo '</div>';
 				echo '</div>';
@@ -1530,24 +1530,24 @@ class AcceptStripePayments_Admin {
 				echo '<p class="description">' . __( 'You can select currencies you want to be available for your customers for variable currencies products. Useful for donation type products.', 'stripe-payments' ) . '</p>';
 				break;
 			case 'price_decimals_num':
-				echo '<input type="number" min="0" step="1" max="5" name="AcceptStripePayments-settings[' . $field . ']" value="' . esc_attr( $field_value ) . '"';
+				echo '<input type="number" min="0" step="1" max="5" name="AcceptStripePayments-settings[' . esc_attr($field) . ']" value="' . esc_attr( $field_value ) . '"';
 				break;
 			case 'checkout_lang':
 				// list of supported languages can be found here: https://stripe.com/docs/checkout#supported-languages
 				echo '<select name="AcceptStripePayments-settings[' . esc_attr( $field ) . ']">';
-				echo $this->get_checkout_lang_options( $field_value );
+				echo wp_kses( $this->get_checkout_lang_options( $field_value ), ASP_Utils::asp_allowed_tags() );
 				echo '</select>';
 				echo "<p class=\"description\">" . wp_kses_post( $desc ) . "</p>";
 				break;
 			case 'popup_default_country':
 				echo '<select name="AcceptStripePayments-settings[' . esc_attr( $field ). ']">';
-				echo ASP_Utils::get_countries_opts( $field_value );
+				echo wp_kses( ASP_Utils::get_countries_opts( $field_value ), ASP_Utils::asp_allowed_tags() );
 				echo '</select>';
 				echo "<p class=\"description\">" . wp_kses_post( $desc ) . "</p>";
 				break;
 			case 'price_currency_pos':
 				?>
-<select name="AcceptStripePayments-settings[<?php echo $field; ?>]">
+<select name="AcceptStripePayments-settings[<?php echo esc_attr( $field ); ?>]">
 	<option value="left" <?php echo ( 'left' === $field_value ) ? ' selected' : ''; ?>><?php _ex( 'Left', 'Currency symbol position', 'stripe-payments' ); ?></option>
 	<option value="right" <?php echo ( 'right' === $field_value ) ? ' selected' : ''; ?>><?php _ex( 'Right', 'Currency symbol position', 'stripe-payments' ); ?></option>
 </select>
