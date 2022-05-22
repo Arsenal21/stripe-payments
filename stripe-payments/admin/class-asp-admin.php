@@ -1555,11 +1555,11 @@ class AcceptStripePayments_Admin {
 				<?php
 				break;
 			case 'pp_additional_css':
-				echo sprintf( '<textarea name="AcceptStripePayments-settings[%s]" rows="8" cols="70" style="resize:both;max-width:100%%;min-height:100px;">%s</textarea>', $field, $field_value );
+				echo sprintf( '<textarea name="AcceptStripePayments-settings[%s]" rows="8" cols="70" style="resize:both;max-width:100%%;min-height:100px;">%s</textarea>', esc_attr( $field ), esc_attr( $field_value ) );
 				echo '<p class="description">' . wp_kses_post( $desc ) . '</p>';
 				break;
 			case 'tos_text':
-				echo '<textarea name="AcceptStripePayments-settings[tos_text]" rows="4" cols="70">' . $field_value . '</textarea>';
+				echo '<textarea name="AcceptStripePayments-settings[tos_text]" rows="4" cols="70">' . esc_attr( $field_value ) . '</textarea>';
 				echo '<p class="description">' . wp_kses_post( $desc ) . '</p>';
 				break;
 			case 'debug_log_link_enable':
@@ -1583,21 +1583,21 @@ class AcceptStripePayments_Admin {
 				break;
 			case 'captcha_type':
 				?>
-				<input type='radio' data-captcha-type='none' id='captcha_type_none' name='AcceptStripePayments-settings[<?php echo $field; ?>]' value=''<?php echo ( empty( $field_value ) ? ' checked' : '' ); ?>>
+				<input type='radio' data-captcha-type='none' id='captcha_type_none' name='AcceptStripePayments-settings[<?php echo esc_attr( $field ); ?>]' value=''<?php echo ( empty( $field_value ) ? ' checked' : '' ); ?>>
 				<label for='captcha_type_none'><?php esc_html_e( 'None (not recommended)', 'stripe-payments' ); ?></label>
 				<p class="description"><?php esc_html_e( 'Disables captcha.', 'stripe-payments' ); ?></p>
 				<br>
-				<input type='radio' data-captcha-type='recaptcha' id='captcha_type_recaptcha' name='AcceptStripePayments-settings[<?php echo $field; ?>]' value='recaptcha'<?php echo ( $field_value === 'recaptcha' ? ' checked' : '' ); ?>>
+				<input type='radio' data-captcha-type='recaptcha' id='captcha_type_recaptcha' name='AcceptStripePayments-settings[<?php echo esc_attr( $field ); ?>]' value='recaptcha'<?php echo ( $field_value === 'recaptcha' ? ' checked' : '' ); ?>>
 				<label for='captcha_type_recaptcha'><?php esc_html_e( 'reCaptcha', 'stripe-payments' ); ?></label>
 				<p class="description"><?php esc_html_e( 'Use reCaptcha from Google.', 'stripe-payments' ); ?></p>
 				<br>
-				<input type='radio' data-captcha-type='hcaptcha' id='captcha_type_hcaptcha' name='AcceptStripePayments-settings[<?php echo $field; ?>]' value='hcaptcha'<?php echo ( $field_value === 'hcaptcha' ? ' checked' : '' ); ?>>
+				<input type='radio' data-captcha-type='hcaptcha' id='captcha_type_hcaptcha' name='AcceptStripePayments-settings[<?php echo esc_attr( $field ); ?>]' value='hcaptcha'<?php echo ( $field_value === 'hcaptcha' ? ' checked' : '' ); ?>>
 				<label for='captcha_type_hcaptcha'><?php esc_html_e( 'hCaptcha', 'stripe-payments' ); ?></label>
 				<p class="description"><?php esc_html_e( 'Use hCaptcha from Intuition Machines, Inc.', 'stripe-payments' ); ?></p>
 				<?php
 				break;
 			default:
-				echo "<input type='text' name='AcceptStripePayments-settings[" . esc_attr($field) . "]' value='{$field_value}' size='{$size}' /> <p class=\"description\">" . wp_kses_post( $desc ) . "</p>";
+				echo "<input type='text' name='AcceptStripePayments-settings[" . esc_attr($field) . "]' value='" . esc_attr($field_value) . "' size='" . esc_attr( $size ) . "' /> <p class=\"description\">" . wp_kses_post( $desc ) . "</p>";
 				break;
 		}
 	}
