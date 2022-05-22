@@ -341,7 +341,7 @@ echo wp_kses( '<style>' . $css . '</style>' . "\r\n", ASP_Utils::asp_allowed_tag
 										<div class="pure-u-1 pure-u-md-<?php echo $a['hide_state_field'] ? '14' : '10'; ?>-24 baddr-toggle" style="position: relative;">
 											<label for="country"><?php esc_html_e( 'Country', 'stripe-payments' ); ?></label>
 											<select class="pure-input-1" name="country" id="country" required>
-                                                <?php echo ASP_Utils::get_countries_opts($a['data']['customer_default_country']); ?>
+                                                <?php echo wp_kses( ASP_Utils::get_countries_opts($a['data']['customer_default_country']), ASP_Utils::asp_allowed_tags() ); ?>
 											</select>
 										</div>
 										<?php if ( ! $a['hide_state_field'] ) { ?>
@@ -386,7 +386,7 @@ echo wp_kses( '<style>' . $css . '</style>' . "\r\n", ASP_Utils::asp_allowed_tag
 										<div class="pure-u-1" style="position: relative;">
 											<label for="shipping_country"><?php esc_html_e( 'Country', 'stripe-payments' ); ?></label>
 											<select class="pure-input-1 saddr-required" name="shipping_country" id="shipping_country">
-                                                <?php echo ASP_Utils::get_countries_opts($a['data']['customer_default_country']); ?>
+                                                <?php echo wp_kses( ASP_Utils::get_countries_opts($a['data']['customer_default_country']), ASP_Utils::asp_allowed_tags() ); ?>
 											</select>
 										</div>
 										<?php if ( ! $a['hide_state_field'] ) { ?>
@@ -431,8 +431,7 @@ echo wp_kses( '<style>' . $css . '</style>' . "\r\n", ASP_Utils::asp_allowed_tag
 									<button type="submit" id="submit-btn" class="pure-button pure-button-primary" disabled><?php echo esc_html( $a['pay_btn_text'] ); ?></button>
 								</div>
 								<?php
-									$out = apply_filters( 'asp_ng_pp_after_button', '', $a['data'], '' );
-									echo $out;
+									echo apply_filters( 'asp_ng_pp_after_button', '', $a['data'], '' );
 								?>
 							</div>
 						</div>
