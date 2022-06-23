@@ -716,7 +716,7 @@ class ASP_Utils {
 
 			$currencies = self::get_currencies();
 			if ( isset( $currencies[ $curr ] ) ) {
-				$curr_sym = $currencies[ $curr ][1];
+				$curr_sym = sanitize_text_field( $currencies[ $curr ][1] );
 			} else {
 				//no currency code found, let's just use currency code instead of symbol
 				$curr_sym = $curr;

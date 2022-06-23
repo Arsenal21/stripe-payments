@@ -468,11 +468,11 @@ class AcceptStripePaymentsShortcode {
 
 		$product_tags = array(
 			'thumb_img'        => $thumb_img,
-			'quantity'         => $qntStr,
+			'quantity'         => esc_attr( $qntStr ),
 			'name'             => $post->post_title,
 			'description'      => $descr,
-			'price'            => $price_line,
-			'under_price_line' => $under_price_line,
+			'price'            => esc_attr( $price_line ),
+			'under_price_line' => esc_attr( $under_price_line ),
 			'buy_btn'          => $buy_btn,
 		);
 
