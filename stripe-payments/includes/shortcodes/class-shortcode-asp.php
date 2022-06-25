@@ -1005,11 +1005,11 @@ class AcceptStripePaymentsShortcode {
 			$output .= '<p class="asp-thank-you-page-msg2">' . __( "Here's what you purchased: ", 'stripe-payments' ) . '</p>';
 			$output .= '<div class="asp-thank-you-page-product-name">' . __( 'Product Name', 'stripe-payments' ) . ': {item_name}' . '</div>';
 			$output .= '<div class="asp-thank-you-page-qty">' . __( 'Quantity', 'stripe-payments' ) . ': {item_quantity}' . '</div>';
-			$output .= '<div class="asp-thank-you-page-qty">' . __( 'Item Price', 'stripe-payments' ) . ': {item_price_curr}' . '</div>';
+			$output .= '<div class="asp-thank-you-page-item-price">' . __( 'Item Price', 'stripe-payments' ) . ': {item_price_curr}' . '</div>';
 			//check if there are any additional items available like tax and shipping cost
 			$output .= AcceptStripePayments::gen_additional_items( $aspData, '<br />' );
 			$output .= '<hr />';
-			$output .= '<div class="asp-thank-you-page-qty">' . __( 'Total Amount', 'stripe-payments' ) . ': {paid_amount_curr}' . '</div>';
+			$output .= '<div class="asp-thank-you-page-total-amount">' . __( 'Total Amount', 'stripe-payments' ) . ': {paid_amount_curr}' . '</div>';
 			$output .= '<br />';
 			$output .= '<div class="asp-thank-you-page-txn-id">' . __( 'Transaction ID', 'stripe-payments' ) . ': {transaction_id}' . '</div>';
 

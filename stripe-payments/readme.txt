@@ -155,6 +155,9 @@ None.
 
 == Changelog ==
 
+= WIP =
+- Added CSS classes for "Item Price" and "Total Amount" on the thank you page. It can be used to target those items for CSS customization.
+
 = 2.0.64 =
 - Added escaping to the currency symbol output.
 
