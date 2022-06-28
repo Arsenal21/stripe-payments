@@ -94,6 +94,8 @@ class AcceptStripePayments {
 		if ( ! class_exists( 'ASP_RECAPTCHA_Main' ) ) {
 			require_once WP_ASP_PLUGIN_PATH . 'includes/recaptcha/asp-recaptcha-main.php';
 		}
+		
+		require_once WP_ASP_PLUGIN_PATH . 'includes/eprecaptcha/asp-eprecaptcha-main.php';
 
 		require_once WP_ASP_PLUGIN_PATH . 'includes/hcaptcha/asp-hcaptcha-main.php';
 

@@ -1591,6 +1591,10 @@ class AcceptStripePayments_Admin {
 				<label for='captcha_type_recaptcha'><?php esc_html_e( 'reCaptcha', 'stripe-payments' ); ?></label>
 				<p class="description"><?php esc_html_e( 'Use reCaptcha from Google.', 'stripe-payments' ); ?></p>
 				<br>
+				<input type='radio' data-captcha-type='eprecaptcha' id='captcha_type_eprecaptcha' name='AcceptStripePayments-settings[<?php echo esc_attr( $field ); ?>]' value='eprecaptcha'<?php echo ( $field_value === 'eprecaptcha' ? ' checked' : '' ); ?>>
+				<label for='captcha_type_eprecaptcha'><?php esc_html_e( 'Enterprise reCaptcha (Beta)', 'stripe-payments' ); ?></label>
+				<p class="description"><?php esc_html_e( 'Use Enterprise reCaptcha from Google.', 'stripe-payments' ); ?></p>
+				<br>
 				<input type='radio' data-captcha-type='hcaptcha' id='captcha_type_hcaptcha' name='AcceptStripePayments-settings[<?php echo esc_attr( $field ); ?>]' value='hcaptcha'<?php echo ( $field_value === 'hcaptcha' ? ' checked' : '' ); ?>>
 				<label for='captcha_type_hcaptcha'><?php esc_html_e( 'hCaptcha', 'stripe-payments' ); ?></label>
 				<p class="description"><?php esc_html_e( 'Use hCaptcha from Intuition Machines, Inc.', 'stripe-payments' ); ?></p>

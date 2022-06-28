@@ -63,6 +63,9 @@ if ( $_GET['page'] == 'stripe-payments-settings' ) {
 				<div data-captcha-section="recaptcha"<?php echo ( $captcha_type !== 'recaptcha' ? ' style="display:none;"' : '' ); ?>>
 					<?php do_settings_sections( $asp_admin->plugin_slug . '-recaptcha' ); ?>
 				</div>
+				<div data-captcha-section="eprecaptcha"<?php echo ( $captcha_type !== 'eprecaptcha' ? ' style="display:none;"' : '' ); ?>>
+					<?php do_settings_sections( $asp_admin->plugin_slug . '-eprecaptcha' ); ?>
+				</div>
 				<div data-captcha-section="hcaptcha"<?php echo ( $captcha_type !== 'hcaptcha' ? ' style="display:none;"' : '' ); ?>>
 					<?php do_settings_sections( $asp_admin->plugin_slug . '-hcaptcha' ); ?>
 				</div>
