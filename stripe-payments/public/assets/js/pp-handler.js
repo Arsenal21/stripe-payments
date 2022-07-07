@@ -609,7 +609,16 @@ function formatMoney(n) {
 		j = (j = i.length) > 3 ? j % 3 : 0;
 
 	var result = s + (j ? i.substr(0, j) + t : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, '$1' + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : '');
-	result = (vars.currencyFormat.pos !== 'right' ? vars.currencyFormat.s + result : result + vars.currencyFormat.s);
+        if (vars.currencyFormat.pos === 'left'){
+            result = vars.currencyFormat.s + result;
+        } else if (vars.currencyFormat.pos === 'right'){
+            result = result + vars.currencyFormat.s;
+        } else if (vars.currencyFormat.pos === 'left-with-space'){
+            result = vars.currencyFormat.s + " " + result;
+        } else if (vars.currencyFormat.pos === 'right-with-space'){
+            result = result + " " + vars.currencyFormat.s;
+        }
+        
 	return (negative ? '- ' + result : result);
 }
 

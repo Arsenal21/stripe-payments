@@ -1550,6 +1550,8 @@ class AcceptStripePayments_Admin {
 <select name="AcceptStripePayments-settings[<?php echo esc_attr( $field ); ?>]">
 	<option value="left" <?php echo ( 'left' === $field_value ) ? ' selected' : ''; ?>><?php _ex( 'Left', 'Currency symbol position', 'stripe-payments' ); ?></option>
 	<option value="right" <?php echo ( 'right' === $field_value ) ? ' selected' : ''; ?>><?php _ex( 'Right', 'Currency symbol position', 'stripe-payments' ); ?></option>
+        <option value="left-with-space" <?php echo ( 'left-with-space' === $field_value ) ? ' selected' : ''; ?>><?php _ex( 'Left with space', 'Currency symbol position', 'stripe-payments' ); ?></option>
+        <option value="right-with-space" <?php echo ( 'right-with-space' === $field_value ) ? ' selected' : ''; ?>><?php _ex( 'Right with space', 'Currency symbol position', 'stripe-payments' ); ?></option>
 </select>
 <p class="description"><?php echo wp_kses_post( $desc ); ?></p>
 				<?php

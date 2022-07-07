@@ -737,6 +737,12 @@ class ASP_Utils {
 			case 'right':
 				$out .= '' . $curr_sym;
 				break;
+			case 'left-with-space':
+				$out = $curr_sym . ' ' . $out;
+				break;
+			case 'right-with-space':
+				$out .= ' ' . $curr_sym;
+				break;
 			default:
 				$out .= '' . $curr_sym;
 				break;

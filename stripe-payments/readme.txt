@@ -155,8 +155,9 @@ None.
 
 == Changelog ==
 
-= WIP =
+= WIP 2.0.65 =
 - Added CSS classes for "Item Price" and "Total Amount" on the thank you page. It can be used to target those items for CSS customization.
+- Added additional currency position display options in the settings (left with space, right with space).
 
 = 2.0.64 =
 - Added escaping to the currency symbol output.
