@@ -472,7 +472,7 @@ class AcceptStripePaymentsShortcode {
 			'name'             => $post->post_title,
 			'description'      => $descr,
 			'price'            => esc_attr( $price_line ),
-			'under_price_line' => esc_attr( $under_price_line ),
+			'under_price_line' => wp_kses( $under_price_line, ASP_Utils::asp_allowed_tags() ),
 			'buy_btn'          => $buy_btn,
 		);
 
