@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 5.0
 Tested up to: 6.0
 Requires PHP: 5.6
-Stable tag: 2.0.64
+Stable tag: 2.0.65
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -155,11 +155,11 @@ None.
 
 == Changelog ==
 
-= WIP 2.0.65 =
-- [TODO Documentation] Added a new option in the settings for Enterprise reCAPTCHA of Google.
+= 2.0.65 =
 - Added CSS classes for "Item Price" and "Total Amount" on the thank you page. It can be used to target those items for CSS customization.
 - Added additional currency position display options in the settings (left with space, right with space).
 - Fixed a formatting issue with the shipping and tax string on the individual product post output.
+- Added a new option in the settings for Enterprise reCAPTCHA of Google.
 
 = 2.0.64 =
 - Added escaping to the currency symbol output.
