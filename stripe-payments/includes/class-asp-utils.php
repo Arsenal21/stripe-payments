@@ -1023,7 +1023,9 @@ class ASP_Utils {
                         'readonly' => array(),
                         'style' => array(),
                         'placeholder' => array(),
+                        'required' => array(),
                         'data-asp-variations-group-id' => array(),
+                        'data-asp-custom-mandatory' => array(),
                 );
                 // select
                 $my_allowed['select'] = array(
@@ -1033,7 +1035,9 @@ class ASP_Utils {
                         'value'  => array(),
                         'type'   => array(),
                         'placeholder' => array(),
+                        'required' => array(),
                         'data-asp-variations-group-id' => array(),
+                        'data-asp-custom-mandatory' => array(),
                 );
                 // select options
                 $my_allowed['option'] = array(
