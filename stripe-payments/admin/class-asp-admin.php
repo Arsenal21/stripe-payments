@@ -256,6 +256,7 @@ class AcceptStripePayments_Admin {
                         //Captcha is not enabled. Show warning message.
 			$msg  = __( '<b>Accept Stripe Payments:</b> the captcha feature is not enabled. ', 'stripe-payments' );
 			$msg .= __( 'It is strongly recommended that you enable the captcha feature from the captcha settings tab to prevent bots trying to do card testing.', 'stripe-payments' );
+                        $msg .= ' <a href="edit.php?post_type=asp-products&page=stripe-payments-settings#captcha" target="_blank">' . __( 'Go to captcha settings', 'stripe-payments' ) . '</a>';
 			self::add_admin_notice( 'error', $msg );
                 }
         }
