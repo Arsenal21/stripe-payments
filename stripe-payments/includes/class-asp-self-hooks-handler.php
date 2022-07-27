@@ -20,6 +20,8 @@ class ASP_Self_Hooks_Handler {
 		add_action( 'asp_ng_before_token_request', array( $this, 'tax_variations' ) );
 
 		add_filter( 'asp_ng_pp_data_ready', array( $this, 'tax_variations_addon' ), 100, 2 );
+
+		add_action( 'asp_stripe_payment_completed', array( $this, 'daily_txn_limit' ), 102, 2 );
 	}
 
 	public function plugins_loaded() {
@@ -472,6 +474,16 @@ class ASP_Self_Hooks_Handler {
 		$data['addons'][] = $addon;
 
 		return $data;
+	}
+
+	public function daily_txn_limit($data,$charge)
+	{
+		$captcha_type = $this->main->get_setting('captcha_type');
+
+		if (empty( $captcha_type ) || $captcha_type == 'none' ) {
+			$asp_daily_txn_counter_obj = new ASP_Daily_Txn_Counter();
+			$asp_daily_txn_counter_obj->asp_increment_daily_txn_counter();
+		}
 	}
 
 }

@@ -465,6 +465,7 @@ class AcceptStripePayments_Admin {
 
 		add_settings_section( 'AcceptStripePayments-email-section', __( 'Email Settings', 'stripe-payments' ), null, $this->plugin_slug . '-email' );
 		add_settings_section( 'AcceptStripePayments-error-email-section', __( 'Transaction Error Email Settings', 'stripe-payments' ), null, $this->plugin_slug . '-email' );
+		add_settings_section( 'AcceptStripePayments-daily-txn-rate-limit-email-section', __( 'Daily Transaction Rate Limit Email Settings', 'stripe-payments' ), null, $this->plugin_slug . '-email' );
 		add_settings_section( 'AcceptStripePayments-additional-email-section', __( 'Additional Email Settings', 'stripe-payments' ), null, $this->plugin_slug . '-email' );
 
 		add_settings_section( 'AcceptStripePayments-price-display', __( 'Price Display Settings', 'stripe-payments' ), null, $this->plugin_slug . '-advanced' );
@@ -905,6 +906,30 @@ class AcceptStripePayments_Admin {
 			array(
 				'field' => 'send_email_on_error_to',
 				'desc'  => __( 'Enter recipient address of error email.', 'stripe-payments' ),
+			)
+		);
+
+		//Daily Transaction Rate Limit Email
+		add_settings_field(
+			'send_email_on_daily_txn_rate_limit',
+			__( 'Send Email On Daily Transaction Rate Limit', 'stripe-payments' ),
+			array( &$this, 'settings_field_callback' ),
+			$this->plugin_slug . '-email',
+			'AcceptStripePayments-daily-txn-rate-limit-email-section',
+			array(
+				'field' => 'send_email_on_daily_txn_rate_limit',
+				'desc'  => __( 'If checked, plugin will send a notification email when daily transaction rate limit reached. The email will be sent to the email address specified below.', 'stripe-payments' ),
+			)
+		);
+		add_settings_field(
+			'send_email_on_daily_txn_rate_limit_to',
+			__( 'Send Daily Transaction Rate Limit Email To', 'stripe-payments' ),
+			array( &$this, 'settings_field_callback' ),
+			$this->plugin_slug . '-email',
+			'AcceptStripePayments-daily-txn-rate-limit-email-section',
+			array(
+				'field' => 'send_email_on_daily_txn_rate_limit_to',
+				'desc'  => __( 'Enter recipient address of rate limit email.', 'stripe-payments' ),
 			)
 		);
 
@@ -1425,6 +1450,7 @@ class AcceptStripePayments_Admin {
 			case 'send_emails_to_buyer':
 			case 'stripe_receipt_email':
 			case 'send_email_on_error':
+			case 'send_email_on_daily_txn_rate_limit':
 			case 'use_new_button_method':
 			case 'is_live':
 			case 'disable_remember_me':
@@ -1701,9 +1727,13 @@ class AcceptStripePayments_Admin {
 
 		$output['send_email_on_error'] = empty( $input['send_email_on_error'] ) ? 0 : 1;
 
+		$output['send_email_on_daily_txn_rate_limit'] = empty( $input['send_email_on_daily_txn_rate_limit'] ) ? 0 : 1;
+
 		$output['send_emails_to_seller'] = empty( $input['send_emails_to_seller'] ) ? 0 : 1;
 
 		$output['send_email_on_error_to'] = sanitize_text_field( $input['send_email_on_error_to'] );
+
+		$output['send_email_on_daily_txn_rate_limit_to'] = sanitize_text_field( $input['send_email_on_daily_txn_rate_limit_to'] );
 
 		$output['disable_3ds_iframe'] = empty( $input['disable_3ds_iframe'] ) ? 0 : 1;
 
