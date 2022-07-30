@@ -475,6 +475,7 @@ class AcceptStripePayments_Admin {
 		add_settings_section( 'AcceptStripePayments-experimental-settings', __( 'Experimental Settings', 'stripe-payments' ), array( $this, 'experemintal_section_description' ), $this->plugin_slug . '-advanced' );
 
 		add_settings_section( 'AcceptStripePayments-captcha', __( 'Captcha Settings', 'stripe-payments' ), array( $this, 'captcha_section_description' ), $this->plugin_slug . '-captcha' );
+		add_settings_section( 'AcceptStripePayments-txn-rate-limiting', __( 'Transaction Rate Limiting', 'stripe-payments' ), array( $this, 'txn_rate_limiting_section_description' ), $this->plugin_slug . '-captcha' );
 
 		// Global section
 		add_settings_field(
@@ -1286,6 +1287,18 @@ class AcceptStripePayments_Admin {
 				'desc'  => __( 'Select Captcha type you want to use.', 'stripe-payments' ),
 			)
 		);
+			
+		add_settings_field(
+			'daily_txn_limit_wihout_captcha',
+			__( 'Daily Transaction Limit without Captcha', 'stripe-payments' ),
+			array( &$this, 'settings_field_callback' ),
+			$this->plugin_slug . '-captcha',
+			'AcceptStripePayments-txn-rate-limiting',
+			array(
+				'field' => 'daily_txn_limit_wihout_captcha',
+				'desc'  => __( 'Daily Transaction Rate Limit without captcha. Cannot be greater than 50', 'stripe-payments' ),
+			)
+		);			
 
 	}
 
@@ -1298,7 +1311,14 @@ class AcceptStripePayments_Admin {
 	}
 
 	public function captcha_section_description() {
+		
+	}
 
+	public function txn_rate_limiting_section_description()
+	{		
+		
+		$email_settings_link = sprintf( '<a target="_blank" href="edit.php?post_type=%s&page=stripe-payments-settings#email">', ASPMain::$products_slug ) . __( 'Email Settings', 'stripe-payments' ) . '</a>';		
+		echo __('If you want to customize the daily transaction rate limiting email, please go to the '.$email_settings_link,'stripe-payments');
 	}
 
 	static function get_currency_options( $selected_value = '', $show_default = true ) {
@@ -1892,6 +1912,24 @@ class AcceptStripePayments_Admin {
 			$output['price_decimals_num'] = $price_decimals_num;
 		} else {
 			add_settings_error( 'AcceptStripePayments-settings', 'invalid-price-decimals-num', __( 'Price number of decimals can\'t be empty.', 'stripe-payments' ) );
+		}
+
+		//Daily transaction rate limiting
+		if ( isset( $input['daily_txn_limit_wihout_captcha'] ) ) {
+			$daily_txn_limit_wihout_captcha  = intval( $input['daily_txn_limit_wihout_captcha'] );
+						
+			
+			if($daily_txn_limit_wihout_captcha>50)
+			{
+				$output['daily_txn_limit_wihout_captcha'] = 20;
+				add_settings_error( 'AcceptStripePayments-settings', 'daily-txn-limit-wihout-captcha-error', __( 'Daily transaction rate limit without captcha cannot be greater than 50', 'stripe-payments' ) );	
+			}
+			else{
+				$daily_txn_limit_wihout_captcha = $daily_txn_limit_wihout_captcha <= 0 ? 20 : $daily_txn_limit_wihout_captcha;
+				$output['daily_txn_limit_wihout_captcha'] = $daily_txn_limit_wihout_captcha;
+			}
+		} else {
+			add_settings_error( 'AcceptStripePayments-settings', 'daily-txn-limit-wihout-captcha-error', __( 'Daily Transaction rate limit cannot be empty', 'stripe-payments' ) );	
 		}
 
 		$url_hash = filter_input( INPUT_POST, 'wp-asp-urlHash', FILTER_SANITIZE_STRING );
