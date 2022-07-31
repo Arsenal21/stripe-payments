@@ -667,12 +667,14 @@ class ASP_Utils {
 
 		$from    = get_option( 'admin_email' );
 		$headers = 'From: ' . $from . "\r\n";
-		$subj    = __( 'Stripe Daily Transaction Rate Limit', 'stripe-payments' );
+		$subj    = __( 'Daily transaction rate limit reached for the Accept Stripe Payments plugin', 'stripe-payments' );
 
 		//Add a general note to the error email adding more explanation to the site admin as to what this error email means.
-		$general_note_for_error_email  = __( 'Note: Some card tester hacker/bot goes crazy on your site. It creates a panic for you who wakes up in the morning and finds that there were loads of card testing transactions done.', 'stripe-payments' ) . "\r\n";
-		$general_note_for_error_email .= __( 'This daily transaction limit functionality is  there as a fallback to limit the potential damage.', 'stripe-payments' ) . "\r\n";				
-		$general_note_for_error_email .= __( 'You can remove this limit by enabling any captcha from Accept Stripe Payment\'s settings.', 'stripe-payments' ) . "\r\n";
+		$general_note_for_error_email  = __( 'Note: If you are not using any captcha option in the plugin then it uses a daily transaction limit functionality to limit the potential damage from a bot doing excessive card testing transactions on your site.', 'stripe-payments' ) . "\r\n";
+		$general_note_for_error_email .= __( 'You can adjust the daily transaction limit in the captcha settings menu of the plugin.', 'stripe-payments' ) . "\r\n";				
+		$general_note_for_error_email .= __( 'You can remove this daily transaction limit by enabling a captcha option from the Accept Stripe Payment\'s settings menu.', 'stripe-payments' ) . "\r\n";
+                $general_note_for_error_email .= __( 'If you need further help on this matter, please feel free to contact us using our website:', 'stripe-payments' ) . "\r\n";
+                $general_note_for_error_email .= 'https://s-plugins.com/contact-us/' . "\r\n";
 		$general_note_for_error_email .= '-----' . "\r\n\r\n";
 
 		$body = $general_note_for_error_email . $body;
