@@ -465,6 +465,7 @@ class AcceptStripePayments_Admin {
 
 		add_settings_section( 'AcceptStripePayments-email-section', __( 'Email Settings', 'stripe-payments' ), null, $this->plugin_slug . '-email' );
 		add_settings_section( 'AcceptStripePayments-error-email-section', __( 'Transaction Error Email Settings', 'stripe-payments' ), null, $this->plugin_slug . '-email' );
+		add_settings_section( 'AcceptStripePayments-daily-txn-rate-limit-email-section', __( 'Daily Transaction Rate Limit Email Settings', 'stripe-payments' ), null, $this->plugin_slug . '-email' );
 		add_settings_section( 'AcceptStripePayments-additional-email-section', __( 'Additional Email Settings', 'stripe-payments' ), null, $this->plugin_slug . '-email' );
 
 		add_settings_section( 'AcceptStripePayments-price-display', __( 'Price Display Settings', 'stripe-payments' ), null, $this->plugin_slug . '-advanced' );
@@ -474,6 +475,7 @@ class AcceptStripePayments_Admin {
 		add_settings_section( 'AcceptStripePayments-experimental-settings', __( 'Experimental Settings', 'stripe-payments' ), array( $this, 'experemintal_section_description' ), $this->plugin_slug . '-advanced' );
 
 		add_settings_section( 'AcceptStripePayments-captcha', __( 'Captcha Settings', 'stripe-payments' ), array( $this, 'captcha_section_description' ), $this->plugin_slug . '-captcha' );
+		add_settings_section( 'AcceptStripePayments-txn-rate-limiting', __( 'Transaction Rate Limiting', 'stripe-payments' ), array( $this, 'txn_rate_limiting_section_description' ), $this->plugin_slug . '-captcha' );
 
 		// Global section
 		add_settings_field(
@@ -908,6 +910,30 @@ class AcceptStripePayments_Admin {
 			)
 		);
 
+		//Daily Transaction Rate Limit Email
+		add_settings_field(
+			'send_email_on_daily_txn_rate_limit',
+			__( 'Send Email On Daily Transaction Rate Limit', 'stripe-payments' ),
+			array( &$this, 'settings_field_callback' ),
+			$this->plugin_slug . '-email',
+			'AcceptStripePayments-daily-txn-rate-limit-email-section',
+			array(
+				'field' => 'send_email_on_daily_txn_rate_limit',
+				'desc'  => __( 'If checked, plugin will send a notification email when daily transaction rate limit reached. The email will be sent to the email address specified below.', 'stripe-payments' ),
+			)
+		);
+		add_settings_field(
+			'send_email_on_daily_txn_rate_limit_to',
+			__( 'Send Daily Transaction Rate Limit Email To', 'stripe-payments' ),
+			array( &$this, 'settings_field_callback' ),
+			$this->plugin_slug . '-email',
+			'AcceptStripePayments-daily-txn-rate-limit-email-section',
+			array(
+				'field' => 'send_email_on_daily_txn_rate_limit_to',
+				'desc'  => __( 'Enter recipient address of rate limit email.', 'stripe-payments' ),
+			)
+		);
+
 		// Additional Email Settings
 		add_settings_field(
 			'enable_email_schedule',
@@ -1261,6 +1287,18 @@ class AcceptStripePayments_Admin {
 				'desc'  => __( 'Select Captcha type you want to use.', 'stripe-payments' ),
 			)
 		);
+			
+		add_settings_field(
+			'daily_txn_limit_wihout_captcha',
+			__( 'Daily Transaction Limit without Captcha', 'stripe-payments' ),
+			array( &$this, 'settings_field_callback' ),
+			$this->plugin_slug . '-captcha',
+			'AcceptStripePayments-txn-rate-limiting',
+			array(
+				'field' => 'daily_txn_limit_wihout_captcha',
+				'desc'  => __( 'Daily Transaction Rate Limit without captcha. Cannot be greater than 50', 'stripe-payments' ),
+			)
+		);			
 
 	}
 
@@ -1273,7 +1311,14 @@ class AcceptStripePayments_Admin {
 	}
 
 	public function captcha_section_description() {
+		
+	}
 
+	public function txn_rate_limiting_section_description()
+	{		
+		
+		$email_settings_link = sprintf( '<a target="_blank" href="edit.php?post_type=%s&page=stripe-payments-settings#email">', ASPMain::$products_slug ) . __( 'Email Settings', 'stripe-payments' ) . '</a>';		
+		echo __('If you want to customize the daily transaction rate limiting email, please go to the '.$email_settings_link,'stripe-payments');
 	}
 
 	static function get_currency_options( $selected_value = '', $show_default = true ) {
@@ -1425,6 +1470,7 @@ class AcceptStripePayments_Admin {
 			case 'send_emails_to_buyer':
 			case 'stripe_receipt_email':
 			case 'send_email_on_error':
+			case 'send_email_on_daily_txn_rate_limit':
 			case 'use_new_button_method':
 			case 'is_live':
 			case 'disable_remember_me':
@@ -1701,9 +1747,13 @@ class AcceptStripePayments_Admin {
 
 		$output['send_email_on_error'] = empty( $input['send_email_on_error'] ) ? 0 : 1;
 
+		$output['send_email_on_daily_txn_rate_limit'] = empty( $input['send_email_on_daily_txn_rate_limit'] ) ? 0 : 1;
+
 		$output['send_emails_to_seller'] = empty( $input['send_emails_to_seller'] ) ? 0 : 1;
 
 		$output['send_email_on_error_to'] = sanitize_text_field( $input['send_email_on_error_to'] );
+
+		$output['send_email_on_daily_txn_rate_limit_to'] = sanitize_text_field( $input['send_email_on_daily_txn_rate_limit_to'] );
 
 		$output['disable_3ds_iframe'] = empty( $input['disable_3ds_iframe'] ) ? 0 : 1;
 
@@ -1862,6 +1912,24 @@ class AcceptStripePayments_Admin {
 			$output['price_decimals_num'] = $price_decimals_num;
 		} else {
 			add_settings_error( 'AcceptStripePayments-settings', 'invalid-price-decimals-num', __( 'Price number of decimals can\'t be empty.', 'stripe-payments' ) );
+		}
+
+		//Daily transaction rate limiting
+		if ( isset( $input['daily_txn_limit_wihout_captcha'] ) ) {
+			$daily_txn_limit_wihout_captcha  = intval( $input['daily_txn_limit_wihout_captcha'] );
+						
+			
+			if($daily_txn_limit_wihout_captcha>50)
+			{
+				$output['daily_txn_limit_wihout_captcha'] = 20;
+				add_settings_error( 'AcceptStripePayments-settings', 'daily-txn-limit-wihout-captcha-error', __( 'Daily transaction rate limit without captcha cannot be greater than 50', 'stripe-payments' ) );	
+			}
+			else{
+				$daily_txn_limit_wihout_captcha = $daily_txn_limit_wihout_captcha <= 0 ? 20 : $daily_txn_limit_wihout_captcha;
+				$output['daily_txn_limit_wihout_captcha'] = $daily_txn_limit_wihout_captcha;
+			}
+		} else {
+			add_settings_error( 'AcceptStripePayments-settings', 'daily-txn-limit-wihout-captcha-error', __( 'Daily Transaction rate limit cannot be empty', 'stripe-payments' ) );	
 		}
 
 		$url_hash = filter_input( INPUT_POST, 'wp-asp-urlHash', FILTER_SANITIZE_STRING );

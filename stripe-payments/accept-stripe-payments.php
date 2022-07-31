@@ -53,7 +53,8 @@ class ASPMain {
 		require_once WP_ASP_PLUGIN_PATH . 'includes/class-asp-product-item.php';
 		require_once WP_ASP_PLUGIN_PATH . 'includes/class-asp-payment-data.php';
 		require_once WP_ASP_PLUGIN_PATH . 'includes/class-asp-order-item.php';
-		require_once WP_ASP_PLUGIN_PATH . 'admin/includes/class-variations.php';
+		require_once WP_ASP_PLUGIN_PATH . 'includes/class-asp-daily-txn-counter.php';
+		require_once WP_ASP_PLUGIN_PATH . 'admin/includes/class-variations.php';		
 
 		register_activation_hook( __FILE__, array( 'AcceptStripePayments', 'activate' ) );
 		register_deactivation_hook( __FILE__, array( 'AcceptStripePayments', 'deactivate' ) );
