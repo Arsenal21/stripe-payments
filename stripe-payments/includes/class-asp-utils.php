@@ -673,7 +673,7 @@ class ASP_Utils {
                 $general_note_for_error_email .= "\r\n\r\n" . '-----' . "\r\n\r\n";
 		$general_note_for_error_email .= __( 'Note: If you are not using any captcha option in the plugin then it uses a daily transaction limit functionality to limit a bot trying to do excessive card testing transactions on your site. This should allow you to look into the issue and make any necessary adjustments.', 'stripe-payments' ) . "\r\n\r\n";
 		$general_note_for_error_email .= __( 'You can adjust the daily transaction limit in the captcha settings menu of the plugin.', 'stripe-payments' ) . "\r\n";				
-		$general_note_for_error_email .= __( 'You can remove this daily transaction limit by enabling a captcha option from the Accept Stripe Payment\'s settings menu.', 'stripe-payments' ) . "\r\n";
+		$general_note_for_error_email .= __( 'You can remove this daily transaction limit by enabling a captcha option from the Accept Stripe Payment\'s settings menu.', 'stripe-payments' ) . "\r\n\r\n";
                 $general_note_for_error_email .= __( 'If you need further help on this matter, please feel free to contact us using our website:', 'stripe-payments' ) . "\r\n";
                 $general_note_for_error_email .= 'https://s-plugins.com/contact-us/' . "\r\n";
 

@@ -14,7 +14,7 @@ class ASP_Daily_Txn_Counter {
     }
 
     //Resets or get the current counter
-    public function asp_get_daily_txn_counter() {
+    public function asp_get_daily_txn_counter_args() {
         $txn_counter_args = get_option($this->txn_counter_option_name);
 
         if (!$txn_counter_args) {
@@ -31,7 +31,7 @@ class ASP_Daily_Txn_Counter {
     }
 
     public function asp_increment_daily_txn_counter() {
-        $txn_counter_args = $this->asp_get_daily_txn_counter();
+        $txn_counter_args = $this->asp_get_daily_txn_counter_args();
 
         $txn_counter_args["counter"]++;
         update_option($this->txn_counter_option_name, $txn_counter_args);
@@ -40,7 +40,7 @@ class ASP_Daily_Txn_Counter {
     }
 
     public function asp_is_daily_txn_limit_reached() {
-        $txn_counter_args = $this->asp_get_daily_txn_counter();
+        $txn_counter_args = $this->asp_get_daily_txn_counter_args();
         $txn_counter_limit = $this->asp_main->get_setting('daily_txn_limit_without_captcha');
 
         if (!$txn_counter_limit) {
