@@ -919,18 +919,18 @@ class AcceptStripePayments_Admin {
 			'AcceptStripePayments-daily-txn-rate-limit-email-section',
 			array(
 				'field' => 'send_email_on_daily_txn_rate_limit',
-				'desc'  => __( 'If checked, plugin will send a notification email when daily transaction rate limit reached. The email will be sent to the email address specified below.', 'stripe-payments' ),
+				'desc'  => __( 'If checked, the plugin will send a notification email if the daily transaction rate limit is reached. This is only applicable if you are not using any captcha option. The email will be sent to the email address specified below.', 'stripe-payments' ),
 			)
 		);
 		add_settings_field(
 			'send_email_on_daily_txn_rate_limit_to',
-			__( 'Send Daily Transaction Rate Limit Email To', 'stripe-payments' ),
+			__( 'Send Transaction Rate Limit Email To', 'stripe-payments' ),
 			array( &$this, 'settings_field_callback' ),
 			$this->plugin_slug . '-email',
 			'AcceptStripePayments-daily-txn-rate-limit-email-section',
 			array(
 				'field' => 'send_email_on_daily_txn_rate_limit_to',
-				'desc'  => __( 'Enter recipient address of rate limit email.', 'stripe-payments' ),
+				'desc'  => __( 'Enter the recipient address for the rate limit notification email.', 'stripe-payments' ),
 			)
 		);
 
