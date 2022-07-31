@@ -1289,13 +1289,13 @@ class AcceptStripePayments_Admin {
 		);
 			
 		add_settings_field(
-			'daily_txn_limit_wihout_captcha',
+			'daily_txn_limit_without_captcha',
 			__( 'Daily Transaction Limit without Captcha', 'stripe-payments' ),
 			array( &$this, 'settings_field_callback' ),
 			$this->plugin_slug . '-captcha',
 			'AcceptStripePayments-txn-rate-limiting',
 			array(
-				'field' => 'daily_txn_limit_wihout_captcha',
+				'field' => 'daily_txn_limit_without_captcha',
 				'desc'  => __( 'Maximum number of transactions allowed per day when captcha is disabled. This value cannot be greater than 50. You can enable and configure a captcha option to remove this limit.', 'stripe-payments' ),
 			)
 		);			
@@ -1917,18 +1917,18 @@ class AcceptStripePayments_Admin {
 		}
 
 		//Daily transaction rate limiting
-		if ( isset( $input['daily_txn_limit_wihout_captcha'] ) ) {
-			$daily_txn_limit_wihout_captcha  = intval( $input['daily_txn_limit_wihout_captcha'] );
+		if ( isset( $input['daily_txn_limit_without_captcha'] ) ) {
+			$daily_txn_limit_without_captcha  = intval( $input['daily_txn_limit_without_captcha'] );
 						
 			
-			if($daily_txn_limit_wihout_captcha>50)
+			if($daily_txn_limit_without_captcha>50)
 			{
-				$output['daily_txn_limit_wihout_captcha'] = 25;
+				$output['daily_txn_limit_without_captcha'] = 25;
 				add_settings_error( 'AcceptStripePayments-settings', 'daily-txn-limit-wihout-captcha-error', __( 'Daily transaction rate limit without captcha cannot be greater than 50', 'stripe-payments' ) );	
 			}
 			else{
-				$daily_txn_limit_wihout_captcha = $daily_txn_limit_wihout_captcha <= 0 ? 25 : $daily_txn_limit_wihout_captcha;
-				$output['daily_txn_limit_wihout_captcha'] = $daily_txn_limit_wihout_captcha;
+				$daily_txn_limit_without_captcha = $daily_txn_limit_without_captcha <= 0 ? 25 : $daily_txn_limit_without_captcha;
+				$output['daily_txn_limit_without_captcha'] = $daily_txn_limit_without_captcha;
 			}
 		} else {
 			add_settings_error( 'AcceptStripePayments-settings', 'daily-txn-limit-wihout-captcha-error', __( 'Daily Transaction rate limit cannot be empty', 'stripe-payments' ) );	
