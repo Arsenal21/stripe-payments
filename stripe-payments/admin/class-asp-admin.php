@@ -1296,7 +1296,7 @@ class AcceptStripePayments_Admin {
 			'AcceptStripePayments-txn-rate-limiting',
 			array(
 				'field' => 'daily_txn_limit_wihout_captcha',
-				'desc'  => __( 'Daily Transaction Rate Limit without captcha. Cannot be greater than 50', 'stripe-payments' ),
+				'desc'  => __( 'Maximum number of transactions allowed per day when captcha is disabled. This value cannot be greater than 50. You can enable and configure a captcha option to remove this limit.', 'stripe-payments' ),
 			)
 		);			
 
@@ -1316,9 +1316,11 @@ class AcceptStripePayments_Admin {
 
 	public function txn_rate_limiting_section_description()
 	{		
-		
+		echo __('When captcha is disabled, the plugin will apply a daily transaction rate limiting to prevent a bot doing excessive card testing transactions.', 'stripe-payments');
+                echo '<br /><br />';
+                
 		$email_settings_link = sprintf( '<a target="_blank" href="edit.php?post_type=%s&page=stripe-payments-settings#email">', ASPMain::$products_slug ) . __( 'Email Settings', 'stripe-payments' ) . '</a>';		
-		echo __('If you want to customize the daily transaction rate limiting email, please go to the '.$email_settings_link,'stripe-payments');
+		echo __('If you want to customize the daily transaction rate limiting email notification settings, go to the ' . wp_kses_post( $email_settings_link ) . ' menu tab and scroll down to the Rate Limit Email Settings section.', 'stripe-payments');
 	}
 
 	static function get_currency_options( $selected_value = '', $show_default = true ) {
@@ -1921,11 +1923,11 @@ class AcceptStripePayments_Admin {
 			
 			if($daily_txn_limit_wihout_captcha>50)
 			{
-				$output['daily_txn_limit_wihout_captcha'] = 20;
+				$output['daily_txn_limit_wihout_captcha'] = 25;
 				add_settings_error( 'AcceptStripePayments-settings', 'daily-txn-limit-wihout-captcha-error', __( 'Daily transaction rate limit without captcha cannot be greater than 50', 'stripe-payments' ) );	
 			}
 			else{
-				$daily_txn_limit_wihout_captcha = $daily_txn_limit_wihout_captcha <= 0 ? 20 : $daily_txn_limit_wihout_captcha;
+				$daily_txn_limit_wihout_captcha = $daily_txn_limit_wihout_captcha <= 0 ? 25 : $daily_txn_limit_wihout_captcha;
 				$output['daily_txn_limit_wihout_captcha'] = $daily_txn_limit_wihout_captcha;
 			}
 		} else {
