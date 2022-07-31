@@ -1314,13 +1314,12 @@ class AcceptStripePayments_Admin {
 		
 	}
 
-	public function txn_rate_limiting_section_description()
-	{		
-		echo __('When captcha is disabled, the plugin will apply a daily transaction rate limiting to prevent a bot doing excessive card testing transactions.', 'stripe-payments');
+	public function txn_rate_limiting_section_description() {		
+		echo __('When the captcha feature is disabled, the plugin will apply a daily transaction rate limiting to prevent a bot from doing excessive card testing transactions. This should allow you to look into the situation and make adjustments.', 'stripe-payments');
                 echo '<br /><br />';
                 
 		$email_settings_link = sprintf( '<a target="_blank" href="edit.php?post_type=%s&page=stripe-payments-settings#email">', ASPMain::$products_slug ) . __( 'Email Settings', 'stripe-payments' ) . '</a>';		
-		echo __('If you want to customize the daily transaction rate limiting email notification settings, go to the ' . wp_kses_post( $email_settings_link ) . ' menu tab and scroll down to the Rate Limit Email Settings section.', 'stripe-payments');
+		echo __('If you want to customize the daily transaction rate limiting email notification option, go to the ' . wp_kses_post( $email_settings_link ) . ' menu tab and scroll down to the Rate Limit Email Settings section.', 'stripe-payments');
 	}
 
 	static function get_currency_options( $selected_value = '', $show_default = true ) {
