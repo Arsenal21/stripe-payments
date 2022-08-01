@@ -1296,7 +1296,7 @@ class AcceptStripePayments_Admin {
 			'AcceptStripePayments-txn-rate-limiting',
 			array(
 				'field' => 'daily_txn_limit_without_captcha',
-				'desc'  => __( 'Maximum number of transactions allowed per day when captcha is disabled. This value cannot be greater than 50. You can enable and configure a captcha option to remove this limit.', 'stripe-payments' ),
+				'desc'  => __( 'Maximum number of transactions allowed per day when captcha is disabled (default value is 25). This value cannot be greater than 50 at the moment. You can enable and configure a captcha option to remove this limit.', 'stripe-payments' ),
 			)
 		);			
 
@@ -1311,11 +1311,15 @@ class AcceptStripePayments_Admin {
 	}
 
 	public function captcha_section_description() {
-		
+                $tutorial_link = '<a href="https://s-plugins.com/protect-yourself-from-card-testing/" target="_blank">protection from card testing</a>';
+                echo __('Please read this tutorial on ', 'stripe-payments') . wp_kses_post( $tutorial_link ). __(' to understand why Captcha is recommended.', 'stripe-payments');
+                echo '<br /><br />';		
 	}
 
-	public function txn_rate_limiting_section_description() {		
-		echo __('When the captcha feature is disabled, the plugin will apply a daily transaction rate limiting to prevent a bot from doing excessive card testing transactions. This should allow you to look into the situation and make adjustments.', 'stripe-payments');
+	public function txn_rate_limiting_section_description() {
+                $documentation_link = '<a href="https://s-plugins.com/protect-yourself-from-card-testing/" target="_blank">card testing</a>';
+		echo __('This is only applicable when the captcha feature is disabled. The plugin will apply a daily transaction rate limiting to prevent a bot from doing excessive ','stripe-payments');
+                echo wp_kses_post($documentation_link) . __(' transactions if captcha is disabled. This should allow you to look into the situation and make adjustments if rate limiting is reached.', 'stripe-payments');
                 echo '<br /><br />';
                 
 		$email_settings_link = sprintf( '<a target="_blank" href="edit.php?post_type=%s&page=stripe-payments-settings#email">', ASPMain::$products_slug ) . __( 'Email Settings', 'stripe-payments' ) . '</a>';		

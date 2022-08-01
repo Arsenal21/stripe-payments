@@ -39,6 +39,12 @@ class ASP_Daily_Txn_Counter {
         return $txn_counter_args;
     }
 
+    public function asp_set_txn_counter_value( $count ) {
+        $txn_counter_args = $this->asp_get_daily_txn_counter_args();
+        $txn_counter_args["counter"] = $count;
+        update_option($this->txn_counter_option_name, $txn_counter_args);
+    }
+    
     public function asp_is_daily_txn_limit_reached() {
         $txn_counter_args = $this->asp_get_daily_txn_counter_args();
         $txn_counter_limit = $this->asp_main->get_setting('daily_txn_limit_without_captcha');
