@@ -63,12 +63,12 @@ class ASP_PP_Ajax {
 			$out['err'] = __( 'Error occurred: Nonce verification failed.', 'stripe-payments' );
 			wp_send_json( $out );
                 }
-
+		
+		$asp_daily_txn_counter_obj = new ASP_Daily_Txn_Counter();
 		$captcha_type = $this->asp_main->get_setting('captcha_type');
 		if (empty( $captcha_type ) || $captcha_type == 'none' ) {
-                        //Captcha is not enabled. Lets check txn rate limiting.
-			$asp_daily_txn_counter_obj = new ASP_Daily_Txn_Counter();
-			
+            
+			//Captcha is not enabled. Lets check txn rate limiting.			
 			if($asp_daily_txn_counter_obj->asp_is_daily_txn_limit_reached()) {
 				$out['err'] = __( 'Error occurred: The transaction limit has been reached for the day.', 'stripe-payments' );
 				ASP_Debug_Logger::log($out['err'], false );
@@ -78,6 +78,19 @@ class ASP_PP_Ajax {
                                 }
                                 wp_send_json( $out );
 			}			
+		}
+		else if($asp_daily_txn_counter_obj->asp_is_daily_tnx_limit_with_captcha_enabled()){
+
+			//Captcha is enabled. Lets check txn rate limiting.
+			if ($asp_daily_txn_counter_obj->asp_is_daily_txn_limit_reached(true)) {
+				$out['err'] = __('Error occurred: The transaction limit has been reached for the day.', 'stripe-payments');
+				ASP_Debug_Logger::log($out['err'], false);
+
+				if ($this->asp_main->get_setting("send_email_on_daily_txn_rate_limit")) {
+					ASP_Utils::send_daily_txn_rate_limit_email($out['err']);
+				}
+				wp_send_json($out);
+			}	
 		}
 
 		$product_id = filter_input( INPUT_POST, 'product_id', FILTER_SANITIZE_NUMBER_INT );
@@ -206,21 +219,32 @@ class ASP_PP_Ajax {
 			$out['err'] = __( 'Error occurred: Nonce security verification failed.', 'stripe-payments' );
 			wp_send_json( $out );
                 }
-		
-	 	$captcha_type = $this->asp_main->get_setting('captcha_type');
-		if (empty( $captcha_type ) || $captcha_type == 'none' ) {
-                        //Captcha is not enabled. Lets check txn rate limiting.
-			$asp_daily_txn_counter_obj = new ASP_Daily_Txn_Counter();			
+		$asp_daily_txn_counter_obj = new ASP_Daily_Txn_Counter();
+		$captcha_type = $this->asp_main->get_setting('captcha_type');
+		if (empty($captcha_type) || $captcha_type == 'none') {
+			
+			//Captcha is not enabled. Lets check txn rate limiting.
+			if ($asp_daily_txn_counter_obj->asp_is_daily_txn_limit_reached()) {
+				$out['err'] = __('Error occurred: The transaction limit has been reached for the day.', 'stripe-payments');
+				ASP_Debug_Logger::log($out['err'], false);
 
-			if($asp_daily_txn_counter_obj->asp_is_daily_txn_limit_reached()) {
-				$out['err'] = __( 'Error occurred: The transaction limit has been reached for the day.', 'stripe-payments' );
-				ASP_Debug_Logger::log($out['err'], false );
-
-                                if($this->asp_main->get_setting("send_email_on_daily_txn_rate_limit")) {
+				if ($this->asp_main->get_setting("send_email_on_daily_txn_rate_limit")) {
 					ASP_Utils::send_daily_txn_rate_limit_email($out['err']);
 				}
-                                wp_send_json( $out );
-			}		
+				wp_send_json($out);
+			}
+		} else if ($asp_daily_txn_counter_obj->asp_is_daily_tnx_limit_with_captcha_enabled()) {
+
+			//Captcha is enabled. Lets check txn rate limiting.
+			if ($asp_daily_txn_counter_obj->asp_is_daily_txn_limit_reached(true)) {
+				$out['err'] = __('Error occurred: The transaction limit has been reached for the day.', 'stripe-payments');
+				ASP_Debug_Logger::log($out['err'], false);
+
+				if ($this->asp_main->get_setting("send_email_on_daily_txn_rate_limit")) {
+					ASP_Utils::send_daily_txn_rate_limit_email($out['err']);
+				}
+				wp_send_json($out);
+			}
 		}
 		
 		$item = new ASP_Product_Item( $product_id );

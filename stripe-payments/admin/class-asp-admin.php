@@ -1298,7 +1298,19 @@ class AcceptStripePayments_Admin {
 				'field' => 'daily_txn_limit_without_captcha',
 				'desc'  => __( 'Maximum number of transactions allowed per day when captcha is disabled (default value is 25). This value cannot be greater than 50 at the moment. You can enable and configure a captcha option to remove this limit.', 'stripe-payments' ),
 			)
-		);			
+		);	
+		
+		add_settings_field(
+			'daily_txn_limit_with_captcha',
+			__( ' Daily Transaction Limit with Captcha', 'stripe-payments' ),
+			array( &$this, 'settings_field_callback' ),
+			$this->plugin_slug . '-captcha',
+			'AcceptStripePayments-txn-rate-limiting',
+			array(
+				'field' => 'daily_txn_limit_with_captcha',
+				'desc'  => __( 'Maximum number of transactions allowed per day when captcha is enabled (default value is 100). This value can be any number. You can enter -1 to remove this limit.', 'stripe-payments' )
+			)
+		);
 
 	}
 
@@ -1935,6 +1947,16 @@ class AcceptStripePayments_Admin {
 			}
 		} else {
 			add_settings_error( 'AcceptStripePayments-settings', 'daily-txn-limit-wihout-captcha-error', __( 'Daily Transaction rate limit cannot be empty', 'stripe-payments' ) );	
+		}
+
+		//Daily transaction rate limiting with captcha
+		if (isset( $input['daily_txn_limit_with_captcha'] ) ) {			
+			$daily_txn_limit_with_captcha  = intval( $input['daily_txn_limit_with_captcha'] );	
+			$output['daily_txn_limit_with_captcha'] = $daily_txn_limit_with_captcha;									
+		} 
+		else{
+			$output['daily_txn_limit_with_captcha'] =100;
+			add_settings_error( 'AcceptStripePayments-settings', 'daily-txn-limit-with-captcha-error', __( 'Daily Transaction Limit with Captcha cannot be empty. If you wish to disable this setting. Please enter -1', 'stripe-payments' ) );				
 		}
 
 		$url_hash = filter_input( INPUT_POST, 'wp-asp-urlHash', FILTER_SANITIZE_STRING );

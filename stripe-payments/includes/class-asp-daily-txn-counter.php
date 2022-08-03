@@ -14,24 +14,29 @@ class ASP_Daily_Txn_Counter {
     }
 
     //Resets or get the current counter
-    public function asp_get_daily_txn_counter_args() {
+    public function asp_get_daily_txn_counter_args($is_captcha_enabled=false) {
+
         $txn_counter_args = get_option($this->txn_counter_option_name);
 
         if (!$txn_counter_args) {
             //If txn_counter don't exists , create and return new as zero
-            return $this->asp_reset_daily_txn_counter();
+            return $this->asp_reset_daily_txn_counter($is_captcha_enabled);
         } else {
 
-            if (isset($txn_counter_args["counter_date"]) == false || $this->today != $txn_counter_args["counter_date"]) {
-                return $this->asp_reset_daily_txn_counter();
+            if (isset($txn_counter_args["counter_date"]) == false 
+                || $this->today != $txn_counter_args["counter_date"] 
+                || isset($txn_counter_args["is_captcha_enabled"]) == false 
+                || $txn_counter_args["is_captcha_enabled"]!=$is_captcha_enabled) {
+
+                return $this->asp_reset_daily_txn_counter($is_captcha_enabled);
             }
         }
 
         return $txn_counter_args;
     }
 
-    public function asp_increment_daily_txn_counter() {
-        $txn_counter_args = $this->asp_get_daily_txn_counter_args();
+    public function asp_increment_daily_txn_counter($is_captcha_enabled=false) {
+        $txn_counter_args = $this->asp_get_daily_txn_counter_args($is_captcha_enabled);
 
         $txn_counter_args["counter"]++;
         update_option($this->txn_counter_option_name, $txn_counter_args);
@@ -45,9 +50,19 @@ class ASP_Daily_Txn_Counter {
         update_option($this->txn_counter_option_name, $txn_counter_args);
     }
     
-    public function asp_is_daily_txn_limit_reached() {
-        $txn_counter_args = $this->asp_get_daily_txn_counter_args();
-        $txn_counter_limit = $this->asp_main->get_setting('daily_txn_limit_without_captcha');
+    public function asp_is_daily_txn_limit_reached($is_captcha_enabled=false) {
+        $txn_counter_args = $this->asp_get_daily_txn_counter_args($is_captcha_enabled);
+
+        $txn_counter_limit =0;
+        
+        if($is_captcha_enabled==true)
+        {
+            $txn_counter_limit=$this->asp_main->get_setting('daily_txn_limit_with_captcha');
+        }
+        else{
+            $txn_counter_limit=$this->asp_main->get_setting('daily_txn_limit_without_captcha');
+        }
+        
 
         if (!$txn_counter_limit) {
             $txn_counter_limit = 25;
@@ -60,8 +75,18 @@ class ASP_Daily_Txn_Counter {
         return false;
     }
 
-    private function asp_reset_daily_txn_counter() {
-        $txn_counter_args = array('counter_date' => $this->today, 'counter' => 0);
+    public function asp_is_daily_tnx_limit_with_captcha_enabled()
+    {
+        $daily_txn_limit_with_captcha= $this->asp_main->get_setting('daily_txn_limit_with_captcha');
+        if($daily_txn_limit_with_captcha && $daily_txn_limit_with_captcha>=0)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    private function asp_reset_daily_txn_counter($is_captcha_enabled=false) {
+        $txn_counter_args = array('counter_date' => $this->today, 'counter' => 0,'is_captcha_enabled'=>$is_captcha_enabled);
         update_option($this->txn_counter_option_name, $txn_counter_args);
 
         return $txn_counter_args;

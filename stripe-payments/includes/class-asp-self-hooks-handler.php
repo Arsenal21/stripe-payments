@@ -479,10 +479,13 @@ class ASP_Self_Hooks_Handler {
 	public function daily_txn_limit($data,$charge)
 	{
 		$captcha_type = $this->main->get_setting('captcha_type');
+		$asp_daily_txn_counter_obj = new ASP_Daily_Txn_Counter();
 
-		if (empty( $captcha_type ) || $captcha_type == 'none' ) {
-			$asp_daily_txn_counter_obj = new ASP_Daily_Txn_Counter();
+		if (empty( $captcha_type ) || $captcha_type == 'none' ) {			
 			$asp_daily_txn_counter_obj->asp_increment_daily_txn_counter();
+		}
+		else if($asp_daily_txn_counter_obj->asp_is_daily_tnx_limit_with_captcha_enabled()){
+			$asp_daily_txn_counter_obj->asp_increment_daily_txn_counter(true);
 		}
 	}
 
