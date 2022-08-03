@@ -65,21 +65,18 @@ class ASP_PP_Ajax {
                 }
 
 		$captcha_type = $this->asp_main->get_setting('captcha_type');
-		if (empty( $captcha_type ) || $captcha_type == 'none' ) {						
+		if (empty( $captcha_type ) || $captcha_type == 'none' ) {
+                        //Captcha is not enabled. Lets check txn rate limiting.
 			$asp_daily_txn_counter_obj = new ASP_Daily_Txn_Counter();
 			
-			if($asp_daily_txn_counter_obj->asp_is_daily_txn_limit_reached())
-			{
+			if($asp_daily_txn_counter_obj->asp_is_daily_txn_limit_reached()) {
 				$out['err'] = __( 'Error occurred: The transaction limit has been reached for the day.', 'stripe-payments' );
-
 				ASP_Debug_Logger::log($out['err'], false );
 
-    			if($this->asp_main->get_setting("send_email_on_daily_txn_rate_limit"))
-				{
+                                if($this->asp_main->get_setting("send_email_on_daily_txn_rate_limit")) {
 					ASP_Utils::send_daily_txn_rate_limit_email($out['err']);
-				}
-				
-				wp_send_json( $out );
+                                }
+                                wp_send_json( $out );
 			}			
 		}
 
@@ -193,7 +190,6 @@ class ASP_PP_Ajax {
 	}
 
 	public function handle_create_pi() {
-
 		
 		$out            = array();
 		$out['success'] = false;
@@ -212,30 +208,20 @@ class ASP_PP_Ajax {
                 }
 		
 	 	$captcha_type = $this->asp_main->get_setting('captcha_type');
-
-		
-		if (empty( $captcha_type ) || $captcha_type == 'none' ) {						
-
+		if (empty( $captcha_type ) || $captcha_type == 'none' ) {
+                        //Captcha is not enabled. Lets check txn rate limiting.
 			$asp_daily_txn_counter_obj = new ASP_Daily_Txn_Counter();			
 
-			if($asp_daily_txn_counter_obj->asp_is_daily_txn_limit_reached())
-			{
+			if($asp_daily_txn_counter_obj->asp_is_daily_txn_limit_reached()) {
 				$out['err'] = __( 'Error occurred: The transaction limit has been reached for the day.', 'stripe-payments' );
-
 				ASP_Debug_Logger::log($out['err'], false );
 
-    			if($this->asp_main->get_setting("send_email_on_daily_txn_rate_limit"))
-				{
+                                if($this->asp_main->get_setting("send_email_on_daily_txn_rate_limit")) {
 					ASP_Utils::send_daily_txn_rate_limit_email($out['err']);
 				}
-				
-				wp_send_json( $out );
+                                wp_send_json( $out );
 			}		
 		}
-
-
-
-		
 		
 		$item = new ASP_Product_Item( $product_id );
 

@@ -155,8 +155,10 @@ None.
 
 == Changelog ==
 
-= WIP 2.0.66 =
+= 2.0.66 =
 - Custom Fields - fixed an issue with the "required" custom field configuration.
+- Added a new feature to apply a daily transaction limit to provide protection against card testing attack. This is applied when the captcha option is disabled on a site.
+- Explanation of the new feature is available in [this documentation page](https://s-plugins.com/protect-yourself-from-card-testing/).
 
 = 2.0.65 =
 - Added CSS classes for "Item Price" and "Total Amount" on the thank you page. It can be used to target those items for CSS customization.

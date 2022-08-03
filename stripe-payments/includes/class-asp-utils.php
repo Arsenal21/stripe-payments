@@ -635,9 +635,9 @@ class ASP_Utils {
 	}
 
 	public static function send_error_email( $body ) {
-		$opt     = get_option( 'AcceptStripePayments-settings' );
-		$to      = $opt['send_email_on_error_to'];
-		$from    = get_option( 'admin_email' );
+		$opt = get_option( 'AcceptStripePayments-settings' );
+		$to = $opt['send_email_on_error_to'];
+		$from = $opt['from_email_address'];
 		$headers = 'From: ' . $from . "\r\n";
 		$subj    = __( 'Stripe Payments Error Details', 'stripe-payments' );
 
@@ -655,28 +655,30 @@ class ASP_Utils {
 
 	public static function send_daily_txn_rate_limit_email($body) {
 		$admin_email = get_option( 'admin_email' );
-		$opt     = get_option( 'AcceptStripePayments-settings' );
+		$opt = get_option( 'AcceptStripePayments-settings' );
 
-		$to      =$admin_email;
-		if($opt['send_email_on_daily_txn_rate_limit_to']) 
-		{
-			$to=$opt['send_email_on_daily_txn_rate_limit_to'];
+		$to = $admin_email;
+		if($opt['send_email_on_daily_txn_rate_limit_to']) {
+                    $to = $opt['send_email_on_daily_txn_rate_limit_to'];
 		}
 
-		ASP_Debug_Logger::log("to email is: ".$to);
+		ASP_Debug_Logger::log("To email address is: ".$to);
 
-		$from    = get_option( 'admin_email' );
+                $from = $opt['from_email_address'];
 		$headers = 'From: ' . $from . "\r\n";
-		$subj    = __( 'Stripe Daily Transaction Rate Limit', 'stripe-payments' );
+		$subj    = __( 'Daily transaction rate limit reached for the Accept Stripe Payments plugin', 'stripe-payments' );
 
 		//Add a general note to the error email adding more explanation to the site admin as to what this error email means.
-		$general_note_for_error_email  = __( 'Note: Some card tester hacker/bot goes crazy on your site. It creates a panic for you who wakes up in the morning and finds that there were loads of card testing transactions done.', 'stripe-payments' ) . "\r\n";
-		$general_note_for_error_email .= __( 'This daily transaction limit functionality is  there as a fallback to limit the potential damage.', 'stripe-payments' ) . "\r\n";				
-		$general_note_for_error_email .= __( 'You can remove this limit by enabling any captcha from Accept Stripe Payment\'s settings.', 'stripe-payments' ) . "\r\n";
-		$general_note_for_error_email .= '-----' . "\r\n\r\n";
+                $general_note_for_error_email = "";
+                $general_note_for_error_email .= "\r\n\r\n" . '-----' . "\r\n\r\n";
+		$general_note_for_error_email .= __( 'Note: If you are not using any captcha option in the plugin then it uses a daily transaction limit functionality to limit a bot trying to do excessive card testing transactions on your site. This should allow you to look into the issue and make any necessary adjustments.', 'stripe-payments' ) . "\r\n\r\n";
+		$general_note_for_error_email .= __( 'You can adjust the daily transaction limit in the captcha settings menu of the plugin.', 'stripe-payments' ) . "\r\n";				
+		$general_note_for_error_email .= __( 'You can remove this daily transaction limit by enabling a captcha option from the Accept Stripe Payment\'s settings menu.', 'stripe-payments' ) . "\r\n\r\n";
+                $general_note_for_error_email .= __( 'If you need further help on this matter, please feel free to contact us using our website:', 'stripe-payments' ) . "\r\n";
+                $general_note_for_error_email .= 'https://s-plugins.com/contact-us/' . "\r\n";
 
-		$body = $general_note_for_error_email . $body;
-
+		$body = $body . $general_note_for_error_email;
+                
 		$schedule_result = ASP_Utils::mail( $to, $subj, $body, $headers, true );
 		ASP_Debug_Logger::log( 'Daily transaction rate limit email sent to ' . $to . ', from email address used: ' . $from );
 	}
