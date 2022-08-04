@@ -485,7 +485,7 @@ class ASP_Self_Hooks_Handler {
 			$asp_daily_txn_counter_obj->asp_increment_daily_txn_counter();
 		}
 		else if($asp_daily_txn_counter_obj->asp_is_daily_tnx_limit_with_captcha_enabled()){
-			$asp_daily_txn_counter_obj->asp_increment_daily_txn_counter(true);
+			$asp_daily_txn_counter_obj->asp_increment_daily_txn_counter();
 		}
 	}
 

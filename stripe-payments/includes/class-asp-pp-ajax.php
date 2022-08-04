@@ -67,10 +67,9 @@ class ASP_PP_Ajax {
 		$asp_daily_txn_counter_obj = new ASP_Daily_Txn_Counter();
 		$captcha_type = $this->asp_main->get_setting('captcha_type');
 		if (empty( $captcha_type ) || $captcha_type == 'none' ) {
-            
 			//Captcha is not enabled. Lets check txn rate limiting.			
 			if($asp_daily_txn_counter_obj->asp_is_daily_txn_limit_reached()) {
-				$out['err'] = __( 'Error occurred: The transaction limit has been reached for the day.', 'stripe-payments' );
+				$out['err'] = __( 'Error occurred: The transaction limit that you have set in settings has been reached for the day.', 'stripe-payments' );
 				ASP_Debug_Logger::log($out['err'], false );
 
                                 if($this->asp_main->get_setting("send_email_on_daily_txn_rate_limit")) {
@@ -80,10 +79,9 @@ class ASP_PP_Ajax {
 			}			
 		}
 		else if($asp_daily_txn_counter_obj->asp_is_daily_tnx_limit_with_captcha_enabled()){
-
 			//Captcha is enabled. Lets check txn rate limiting.
 			if ($asp_daily_txn_counter_obj->asp_is_daily_txn_limit_reached(true)) {
-				$out['err'] = __('Error occurred: The transaction limit has been reached for the day.', 'stripe-payments');
+				$out['err'] = __('Error occurred: The transaction limit that you have set in settings (with captcha) has been reached for the day.', 'stripe-payments');
 				ASP_Debug_Logger::log($out['err'], false);
 
 				if ($this->asp_main->get_setting("send_email_on_daily_txn_rate_limit")) {
@@ -222,10 +220,9 @@ class ASP_PP_Ajax {
 		$asp_daily_txn_counter_obj = new ASP_Daily_Txn_Counter();
 		$captcha_type = $this->asp_main->get_setting('captcha_type');
 		if (empty($captcha_type) || $captcha_type == 'none') {
-			
 			//Captcha is not enabled. Lets check txn rate limiting.
 			if ($asp_daily_txn_counter_obj->asp_is_daily_txn_limit_reached()) {
-				$out['err'] = __('Error occurred: The transaction limit has been reached for the day.', 'stripe-payments');
+				$out['err'] = __('Error occurred: The transaction limit that you have set in settings has been reached for the day.', 'stripe-payments');
 				ASP_Debug_Logger::log($out['err'], false);
 
 				if ($this->asp_main->get_setting("send_email_on_daily_txn_rate_limit")) {
@@ -234,10 +231,9 @@ class ASP_PP_Ajax {
 				wp_send_json($out);
 			}
 		} else if ($asp_daily_txn_counter_obj->asp_is_daily_tnx_limit_with_captcha_enabled()) {
-
 			//Captcha is enabled. Lets check txn rate limiting.
 			if ($asp_daily_txn_counter_obj->asp_is_daily_txn_limit_reached(true)) {
-				$out['err'] = __('Error occurred: The transaction limit has been reached for the day.', 'stripe-payments');
+				$out['err'] = __('Error occurred: The transaction limit that you have set in settings (with captcha) has been reached for the day.', 'stripe-payments');
 				ASP_Debug_Logger::log($out['err'], false);
 
 				if ($this->asp_main->get_setting("send_email_on_daily_txn_rate_limit")) {

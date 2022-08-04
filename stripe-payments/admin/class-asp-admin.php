@@ -1330,8 +1330,9 @@ class AcceptStripePayments_Admin {
 
 	public function txn_rate_limiting_section_description() {
                 $documentation_link = '<a href="https://s-plugins.com/protect-yourself-from-card-testing/" target="_blank">card testing</a>';
-		echo __('This is only applicable when the captcha feature is disabled. The plugin will apply a daily transaction rate limiting to prevent a bot from doing excessive ','stripe-payments');
-                echo wp_kses_post($documentation_link) . __(' transactions if captcha is disabled. This should allow you to look into the situation and make adjustments if rate limiting is reached.', 'stripe-payments');
+		echo __('The plugin will apply a daily transaction rate limiting to prevent a bot from doing excessive ','stripe-payments');
+                echo wp_kses_post($documentation_link) . __(' transactions. This should allow you to look into the situation and make adjustments if rate limiting is reached.', 'stripe-payments');
+                echo __(' It is recommended to start off by setting a low number based on the expected number of transactions. If you hit the limit then you can increase it.','stripe-payments');
                 echo '<br /><br />';
                 
 		$email_settings_link = sprintf( '<a target="_blank" href="edit.php?post_type=%s&page=stripe-payments-settings#email">', ASPMain::$products_slug ) . __( 'Email Settings', 'stripe-payments' ) . '</a>';		
