@@ -360,7 +360,8 @@ class AcceptStripePayments {
 			'use_old_checkout_api1'           => 0,
 			'disable_buttons_before_js_loads' => 0,
 			'tos_text'                        => __( 'I accept the <a href="https://example.com/terms-and-conditions/" target="_blank">Terms and Conditions</a>', 'stripe-payments' ),
-			'daily_txn_limit_without_captcha'  => 25
+			'daily_txn_limit_without_captcha'  => 25,
+			'daily_txn_limit_with_captcha'  => 100
 		);
 		$opt     = get_option( 'AcceptStripePayments-settings' );
 		// Check if its a first install
