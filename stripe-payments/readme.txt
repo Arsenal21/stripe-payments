@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 5.0
 Tested up to: 6.0
 Requires PHP: 5.6
-Stable tag: 2.0.66
+Stable tag: 2.0.67
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -154,6 +154,9 @@ Yes, please visit Stripe Payments > Settings screen for options.
 None.
 
 == Changelog ==
+
+= 2.0.67 =
+- Added a settings option to specify a limit with captcha. You can disable it by entering a value of -1 in the settings field.
 
 = 2.0.66 =
 - Custom Fields - fixed an issue with the "required" custom field configuration.

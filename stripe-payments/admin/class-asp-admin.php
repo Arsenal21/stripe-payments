@@ -1951,13 +1951,13 @@ class AcceptStripePayments_Admin {
 		}
 
 		//Daily transaction rate limiting with captcha
-		if (isset( $input['daily_txn_limit_with_captcha'] ) ) {			
-			$daily_txn_limit_with_captcha  = intval( $input['daily_txn_limit_with_captcha'] );	
+		if (isset( $input['daily_txn_limit_with_captcha'] ) && intval( $input['daily_txn_limit_with_captcha'] ) != 0 ) {
+			$daily_txn_limit_with_captcha = intval( $input['daily_txn_limit_with_captcha'] );	
 			$output['daily_txn_limit_with_captcha'] = $daily_txn_limit_with_captcha;									
 		} 
 		else{
 			$output['daily_txn_limit_with_captcha'] =100;
-			add_settings_error( 'AcceptStripePayments-settings', 'daily-txn-limit-with-captcha-error', __( 'Daily Transaction Limit with Captcha cannot be empty. If you wish to disable this setting. Please enter -1', 'stripe-payments' ) );				
+			add_settings_error( 'AcceptStripePayments-settings', 'daily-txn-limit-with-captcha-error', __( 'Daily Transaction Limit with Captcha cannot be empty or 0. If you wish to disable this setting, please enter -1', 'stripe-payments' ) );				
 		}
 
 		$url_hash = filter_input( INPUT_POST, 'wp-asp-urlHash', FILTER_SANITIZE_STRING );

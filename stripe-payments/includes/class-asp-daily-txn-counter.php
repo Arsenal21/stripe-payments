@@ -69,7 +69,11 @@ class ASP_Daily_Txn_Counter {
 
     public function asp_is_daily_tnx_limit_with_captcha_enabled()
     {
-        $daily_txn_limit_with_captcha= $this->asp_main->get_setting('daily_txn_limit_with_captcha');
+        $daily_txn_limit_with_captcha = $this->asp_main->get_setting('daily_txn_limit_with_captcha');
+        
+        if(empty($daily_txn_limit_with_captcha)){
+            return true;
+        }
         if($daily_txn_limit_with_captcha && $daily_txn_limit_with_captcha >= 0) {
             return true;
         }
