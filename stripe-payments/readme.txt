@@ -155,6 +155,9 @@ None.
 
 == Changelog ==
 
+= WIP 2.0.68 =
+- Japanese language translation file updated.
+
 = 2.0.67 =
 - Added a settings option to specify a limit with captcha. You can disable it by entering a value of -1 in the settings field.
 
