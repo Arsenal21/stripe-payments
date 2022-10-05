@@ -1149,5 +1149,21 @@ class ASP_Utils {
             );
             return array_merge( $kses_defaults, $svg_args );
         }
+        
+	public static function get_user_ip_address() {
+		$user_ip = '';
+		if ( isset( $_SERVER['HTTP_X_FORWARDED_FOR'] ) && ! empty( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) {
+			$user_ip = sanitize_text_field( $_SERVER['HTTP_X_FORWARDED_FOR'] );
+		} else {
+			$user_ip = sanitize_text_field( $_SERVER['REMOTE_ADDR'] );
+		}
+
+		if ( strstr( $user_ip, ',' ) ) {
+			$ip_values = explode( ',', $user_ip );
+			$user_ip = $ip_values['0'];
+		}
+
+		return apply_filters( 'asp_get_user_ip_address', $user_ip );
+	}        
 
 }

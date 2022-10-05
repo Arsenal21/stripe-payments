@@ -100,9 +100,18 @@ class ASP_PP_Ajax {
 			wp_send_json( $out );
 		}
 
+                //Log initial confirm_pi debug logging data (if debug feature is enabled).
+                $txn_counter_args = $asp_daily_txn_counter_obj->asp_get_daily_txn_counter_args();
+                $txn_counter_val = isset($txn_counter_args['counter'])? $txn_counter_args['counter'] : '-';
+                $request_ip = ASP_Utils::get_user_ip_address();
+                $confirm_pi_initial_debug = 'handle_confirm_pi() -  Product ID: ' . $product_id . ', Captcha Typ: ' . $captcha_type . ', Txn Counter: ' . $txn_counter_val . ', IP: ' . $request_ip;
+                ASP_Debug_Logger::log( $confirm_pi_initial_debug, true );
+                //End initial confirm_pi debug logging.
+                
 		$item = apply_filters( 'asp_ng_pp_product_item_override', $item );
 
 		do_action( 'asp_ng_before_token_request', $item );
+                ASP_Debug_Logger::log( 'handle_confirm_pi() - Captcha response checked', true );
 
 		do_action( 'asp_ng_product_mode_keys', $product_id );
 
@@ -243,6 +252,14 @@ class ASP_PP_Ajax {
 			}
 		}
 		
+                //Log initial create_pi debug logging data (if debug feature is enabled).
+                $txn_counter_args = $asp_daily_txn_counter_obj->asp_get_daily_txn_counter_args();
+                $txn_counter_val = isset($txn_counter_args['counter'])? $txn_counter_args['counter'] : '-';
+                $request_ip = ASP_Utils::get_user_ip_address();
+                $create_pi_initial_debug = 'handle_create_pi() -  Product ID: ' . $product_id . ', Captcha Typ: ' . $captcha_type . ', Txn Counter: ' . $txn_counter_val . ', IP: ' . $request_ip;
+                ASP_Debug_Logger::log( $create_pi_initial_debug, true );
+                //End initial create_pi debug logging.
+                
 		$item = new ASP_Product_Item( $product_id );
 
 		if ( $item->get_last_error() ) {
@@ -271,6 +288,7 @@ class ASP_PP_Ajax {
 		}
 
 		do_action( 'asp_ng_before_token_request', $item );
+                ASP_Debug_Logger::log( 'handle_create_pi() - Captcha response checked', true );
 
 		do_action( 'asp_ng_product_mode_keys', $product_id );
 

@@ -35,6 +35,8 @@ class ASP_Process_IPN_NG {
 	}
 
 	public function handle_next_action_results() {
+                ASP_Debug_Logger::log( 'handle_next_action_results() - processing.', true);
+                
 		$pi_id = filter_input( INPUT_GET, 'payment_intent', FILTER_SANITIZE_STRING );
 
 		$is_live = filter_input( INPUT_GET, 'is_live', FILTER_SANITIZE_STRING );
