@@ -1,8 +1,8 @@
 <?php
 
-if (isset($_REQUEST['test'])){
-    ASP_Utils_Bot_Mitigation::record_captcha_solve_ip_time_data();
-}
+//if (isset($_REQUEST['test'])){
+//    ASP_Utils_Bot_Mitigation::record_captcha_solve_ip_time_data();
+//}
 
 class ASP_Utils_Bot_Mitigation {
 
