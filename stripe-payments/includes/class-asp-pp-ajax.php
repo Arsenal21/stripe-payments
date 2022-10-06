@@ -111,7 +111,11 @@ class ASP_PP_Ajax {
 		$item = apply_filters( 'asp_ng_pp_product_item_override', $item );
 
 		do_action( 'asp_ng_before_token_request', $item );
-                ASP_Debug_Logger::log( 'handle_confirm_pi() - Captcha response checked', true );
+                //ASP_Debug_Logger::log( 'handle_confirm_pi() - Captcha response checked', true );
+                
+                //This hook will be used to do additional captcha (if enabled) parameter checks for bot mitigation.
+                $params = array();
+                do_action( 'asp_ng_do_additional_captcha_response_check', $item, $params );
 
 		do_action( 'asp_ng_product_mode_keys', $product_id );
 

@@ -29,8 +29,10 @@ class ASP_RECAPTCHA_Main {
 		}
 
 		if ( $this->enabled ) {
-				add_action( 'asp_ng_before_token_request', array( $this, 'ng_before_token_request' ) );
-				add_action( 'asp_ng_before_payment_processing', array( $this, 'ng_before_payment_processing' ) );
+			add_action( 'asp_ng_before_token_request', array( $this, 'ng_before_token_request' ) );
+			add_action( 'asp_ng_before_payment_processing', array( $this, 'ng_before_payment_processing' ) );
+                        add_action( 'asp_ng_do_additional_captcha_response_check', array( $this, 'ng_do_additional_captcha_response_check' ), 10, 2 );
+                        
 			if ( ! is_admin() ) {
 				add_filter( 'asp-button-output-data-ready', array( $this, 'data_ready' ), 10, 2 );
 				add_filter( 'asp-button-output-additional-styles', array( $this, 'output_styles' ) );
@@ -129,6 +131,19 @@ class ASP_RECAPTCHA_Main {
 		wp_send_json( $out );
 	}
 
+        public function ng_do_additional_captcha_response_check( $item, $params ) {
+
+                if ( !ASP_Utils_Bot_Mitigation::is_captcha_solve_ip_data_time_valid() ){
+                    ASP_Debug_Logger::log( 'Additional captcha response check failed!', false );
+                    //Exit out silently. Do not go ahead with the request processing. 
+                    //If some sites want more relaxed option, we can add an option to extend the expiry timer maybe.
+                    exit;
+                }
+                
+                ASP_Debug_Logger::log( 'Additional captcha response check done.', true );
+                return true;
+        }
+        
 	public function ng_before_token_request( $item ) {
 
 		$sess = ASP_Session::get_instance();
