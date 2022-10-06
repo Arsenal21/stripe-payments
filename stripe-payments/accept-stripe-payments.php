@@ -41,7 +41,7 @@ class ASPMain {
 
 		require_once WP_ASP_PLUGIN_PATH . 'includes/class-asp-utils.php';                
 		require_once WP_ASP_PLUGIN_PATH . 'includes/class-asp-debug-logger.php';
-                require_once WP_ASP_PLUGIN_PATH . 'includes/class-asp-utils-bot-mitigation.php';                
+                require_once WP_ASP_PLUGIN_PATH . 'includes/class-asp-utils-bot-mitigation.php';
 		require_once WP_ASP_PLUGIN_PATH . 'admin/class-asp-admin.php';
 		require_once WP_ASP_PLUGIN_PATH . 'includes/class-asp.php';
 		require_once WP_ASP_PLUGIN_PATH . 'includes/class-asp-stripe-api.php';
