@@ -120,6 +120,8 @@ class ASP_RECAPTCHA_Main {
 			$sess->set_transient_data( 'reCaptcha_checked', false );
 			$sess->set_transient_data( 'reCaptcha_error', $out['error'] );
 		} else {
+                        ASP_Utils_Bot_Mitigation::record_captcha_solve_ip_time();
+                        
 			$sess->set_transient_data( 'reCaptcha_checked', true );
 			$sess->set_transient_data( 'reCaptcha_tokens', $this->max_tokens );
 		}
