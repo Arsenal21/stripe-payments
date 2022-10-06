@@ -851,9 +851,13 @@ function handlePayment() {
 	var billingNameInput = document.getElementById('billing-name');
 	var emailInput = document.getElementById('email');
 	var billingDetails = {
-		name: billingNameInput.value,
+		name: encodeURIComponent(billingNameInput.value),
 		email: encodeURIComponent(emailInput.value),
 	};
+
+	
+	
+
 	if (vars.data.billing_address) {
 		var bAddr = document.getElementById('address');
 		var bCity = document.getElementById('city');
