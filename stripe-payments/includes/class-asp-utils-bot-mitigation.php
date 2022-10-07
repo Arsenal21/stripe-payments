@@ -101,5 +101,41 @@ class ASP_Utils_Bot_Mitigation {
         //Save the page load signature data with an expiry of 1 hour.
         set_transient('asp_page_load_signature', $page_load_signature_arr, 3600);
     }
+
+    public static function is_page_load_signature_data_valid($product_id) {
+        $page_load_signature_arr = get_transient('asp_page_load_signature');
+        if (!isset($page_load_signature_arr) || empty($page_load_signature_arr)) {
+            ASP_Debug_Logger::log( 'Page load signature check - currently there are no entries in the saved data for page load signature.', false );
+            return false;
+        }
+        
+        $ip_address_to_check = ASP_Utils::get_user_ip_address();
+        if (!isset($ip_address_to_check) || empty($ip_address_to_check)) {
+            ASP_Debug_Logger::log( 'Page load signature check - IP address value for this request is missing.', false );
+            return false;
+        }
+        
+        $index = $product_id. '_'.$ip_address_to_check;
+        
+        if (!isset($page_load_signature_arr[$index]) || empty ($page_load_signature_arr[$index])){
+            ASP_Debug_Logger::log( 'Page load signature check - cannot find this Product ID and IP address index ('.$index.') in the saved data.', false );
+            return false;
+        }
+        
+        $hp_key = ASP_Utils_Bot_Mitigation::get_asp_hash_private_key_one();
+        
+        $expected_signature = $page_load_signature_arr[$index];
+        $received = sha1($hp_key.$product_id.$ip_address_to_check);
+        if (!hash_equals($expected_signature, $received)){
+            //Mis-match
+            ASP_Debug_Logger::log( 'Page load signature check - the signature hash does not match.', false );
+            return false;            
+        }
+        
+        //Entry for the received signature exists
+        ASP_Debug_Logger::log( 'Page load signature check done!', true );
+        
+        return true;
+    }
     
 }

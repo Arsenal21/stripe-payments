@@ -265,6 +265,12 @@ class ASP_PP_Ajax {
                 ASP_Debug_Logger::log( $create_pi_initial_debug, true );
                 //End initial create_pi debug logging.
                 
+                //Check page load signature data
+                if( !ASP_Utils_Bot_Mitigation::is_page_load_signature_data_valid($product_id) ){
+                    //Signature invalid.
+                    //Exit out if feature is enabled 
+                }
+
 		$item = new ASP_Product_Item( $product_id );
 
 		if ( $item->get_last_error() ) {
