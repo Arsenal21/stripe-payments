@@ -104,7 +104,7 @@ class ASP_PP_Ajax {
                 $txn_counter_args = $asp_daily_txn_counter_obj->asp_get_daily_txn_counter_args();
                 $txn_counter_val = isset($txn_counter_args['counter'])? $txn_counter_args['counter'] : '-';
                 $request_ip = ASP_Utils::get_user_ip_address();
-                $confirm_pi_initial_debug = 'handle_confirm_pi() -  Product ID: ' . $product_id . ', Captcha Typ: ' . $captcha_type . ', Txn Counter: ' . $txn_counter_val . ', IP: ' . $request_ip;
+                $confirm_pi_initial_debug = 'handle_confirm_pi() -  Product ID: ' . $product_id . ', Captcha Type: ' . $captcha_type . ', Txn Counter: ' . $txn_counter_val . ', IP: ' . $request_ip;
                 ASP_Debug_Logger::log( $confirm_pi_initial_debug, true );
                 //End initial confirm_pi debug logging.
                 
@@ -261,7 +261,7 @@ class ASP_PP_Ajax {
                 $txn_counter_args = $asp_daily_txn_counter_obj->asp_get_daily_txn_counter_args();
                 $txn_counter_val = isset($txn_counter_args['counter'])? $txn_counter_args['counter'] : '-';
                 $request_ip = ASP_Utils::get_user_ip_address();
-                $create_pi_initial_debug = 'handle_create_pi() -  Product ID: ' . $product_id . ', Captcha Typ: ' . $captcha_type . ', Txn Counter: ' . $txn_counter_val . ', IP: ' . $request_ip;
+                $create_pi_initial_debug = 'handle_create_pi() -  Product ID: ' . $product_id . ', Captcha Type: ' . $captcha_type . ', Txn Counter: ' . $txn_counter_val . ', IP: ' . $request_ip;
                 ASP_Debug_Logger::log( $create_pi_initial_debug, true );
                 //End initial create_pi debug logging.
                 
