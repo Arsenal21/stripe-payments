@@ -877,7 +877,7 @@ function handlePayment() {
 	}
 	if (vars.data.shipping_address) {
 		var shippingDetails = {
-			name: billingNameInput.value
+			name: encodeURIComponent(billingNameInput.value)
 		};
 		var sAddr = document.getElementById('shipping_address');
 		var sCity = document.getElementById('shipping_city');
@@ -1136,7 +1136,7 @@ function handlePayment() {
 			opts.payment_method_data.card = { token: vars.data.token_id };
 			if (vars.data.dont_save_card) {
 				opts.payment_method_data.billing_details = {
-					name: billingNameInput.value,
+					name: encodeURIComponent(billingNameInput.value),
 					email: encodeURIComponent(emailInput.value)
 				};
 			}
