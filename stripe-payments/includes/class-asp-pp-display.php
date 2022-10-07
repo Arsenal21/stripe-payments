@@ -108,7 +108,7 @@ class ASP_PP_Display {
 		$a['stripe_key'] = $this->asp_main->is_live ? $this->asp_main->APIPubKey : $this->asp_main->APIPubKeyTest;
                 
                 //Save the payment popup load for this poduct in the temporary transient data (so it can be checked later).
-                //ASP_Utils_Bot_Mitigation::record_page_load_signature_data($product_id);
+                ASP_Utils_Bot_Mitigation::record_page_load_signature_data($product_id);
 
 		//Custom Field if needed
 		$custom_field = get_post_meta( $product_id, 'asp_product_custom_field', true );
