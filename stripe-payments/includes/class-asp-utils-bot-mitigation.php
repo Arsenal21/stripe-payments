@@ -68,8 +68,7 @@ class ASP_Utils_Bot_Mitigation {
         
         //Entry for the given IP address exists and time is valid.
         return true;
-    }    
-
+    }
     
     public static function get_page_load_signature_data() {
         $page_load_signature_arr = get_transient('asp_page_load_signature');

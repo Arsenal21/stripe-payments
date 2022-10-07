@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 5.0
 Tested up to: 6.0
 Requires PHP: 5.6
-Stable tag: 2.0.67
+Stable tag: 2.0.68
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -155,11 +155,11 @@ None.
 
 == Changelog ==
 
-= WIP 2.0.68 =
+= 2.0.68 =
 - Japanese language translation file updated.
 - Added Hungarian language translation file.
 - Fixed - Special characters in the Customer Name field causing a Stripe API error.
-- Added an additional captcha response check against saved data (when captcha is enabled) for bot mitigation. More to come in the future.
+- Added an additional captcha response check against saved data (when captcha is enabled) for bot mitigation.
 
 = 2.0.67 =
 - Added a settings option to specify a limit with captcha. You can disable it by entering a value of -1 in the settings field.
