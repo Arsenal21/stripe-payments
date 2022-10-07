@@ -333,6 +333,8 @@ class ASP_Shortcode_NG {
 	}
 
 	public function shortcode_accept_stripe_payment( $atts ) {
+                //Note: It will create a product dynamically using the (ASPMain::$temp_prod_slug) custom post type.
+            
 		extract(
 			shortcode_atts(
 				array(
