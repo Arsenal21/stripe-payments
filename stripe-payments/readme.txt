@@ -158,6 +158,7 @@ None.
 = WIP 2.0.68 =
 - Japanese language translation file updated.
 - Added Hungarian language translation file.
+- Fixed - Special characters in the Customer Name field causing a Stripe API error.
 - Added an additional captcha response check against saved data (when captcha is enabled) for bot mitigation. More to come in the future.
 
 = 2.0.67 =
