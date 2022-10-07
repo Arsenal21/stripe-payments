@@ -106,9 +106,11 @@ class ASP_PP_Display {
 		$a['plugin_url'] = WP_ASP_PLUGIN_URL;
 		$a['item_name']  = $this->item->get_name();
 		$a['stripe_key'] = $this->asp_main->is_live ? $this->asp_main->APIPubKey : $this->asp_main->APIPubKeyTest;
+                
+                //Save the payment popup load for this poduct in the temporary transient data (so it can be checked later).
+                ASP_Utils_Bot_Mitigation::record_page_load_signature_data($product_id);
 
 		//Custom Field if needed
-
 		$custom_field = get_post_meta( $product_id, 'asp_product_custom_field', true );
 		$cf_enabled   = $this->asp_main->get_setting( 'custom_field_enabled' );
 		if ( ( '' === $custom_field ) || '2' === $custom_field ) {

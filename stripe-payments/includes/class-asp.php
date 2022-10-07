@@ -319,7 +319,16 @@ class AcceptStripePayments {
 		$admin_email = get_option( 'admin_email' );
 		if ( ! $admin_email ) {
 			$admin_email = '';
-		}		
+		}
+                
+                //Generate (if one doesn't exist) and save a private key for hashing purpose
+                $hp_key = get_option( 'asp_hash_private_key_one' );
+                if ( empty( $hp_key ) ) {
+                    $hp_key = uniqid( '', true );
+                    update_option( 'asp_hash_private_key_one', $hp_key );
+                }
+        
+                //Default settings values
 		$default = array(
 			'is_live'                         => 0,
 			'debug_log_enable'                => 0,

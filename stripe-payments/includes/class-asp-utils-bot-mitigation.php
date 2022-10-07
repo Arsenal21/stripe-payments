@@ -2,6 +2,15 @@
 
 class ASP_Utils_Bot_Mitigation {
 
+    public static function get_asp_hash_private_key_one() {
+    	$hp_key = get_option( 'asp_hash_private_key_one' );
+	if ( empty( $hp_key ) ) {
+	    $hp_key = uniqid( '', true );
+	    update_option( 'asp_hash_private_key_one', $hp_key );
+	}
+        return $hp_key;
+    }
+        
     public static function get_captcha_solve_ip_time_data() {
         $solved_ip_time_arr = get_transient('asp_captcha_solve_ip_time');
         if (!isset($solved_ip_time_arr) || empty($solved_ip_time_arr)) {
@@ -61,4 +70,37 @@ class ASP_Utils_Bot_Mitigation {
         return true;
     }    
 
+    
+    public static function get_page_load_signature_data() {
+        $page_load_signature_arr = get_transient('asp_page_load_signature');
+        if (!isset($page_load_signature_arr) || empty($page_load_signature_arr)) {
+            $page_load_signature_arr = array();
+        }
+        return $page_load_signature_arr;
+    }
+    
+    public static function record_page_load_signature_data($product_id) {
+        $ip_address = ASP_Utils::get_user_ip_address();
+        //$current_wp_time = current_time('mysql');
+
+        if (!isset($ip_address) || empty($ip_address)) {
+            ASP_Debug_Logger::log('IP address value missing (could not read the IP address of the user). Cannot record this page load signature. The extra security check later may fail.', false);
+            return;
+        }
+
+        $page_load_signature_arr = ASP_Utils_Bot_Mitigation::get_page_load_signature_data();
+        //ASP_Debug_Logger::log_array_data($page_load_signature_arr);
+
+	$hp_key = ASP_Utils_Bot_Mitigation::get_asp_hash_private_key_one();
+        
+        $index = $product_id. '_'.$ip_address;
+        $signature = sha1($hp_key.$product_id.$ip_address);
+        $page_load_signature_arr[$index] = $signature;
+        //ASP_Debug_Logger::log('Index: ' . $index . ', Signature: ' . $signature . ', IP Address: ' . $ip_address, true);
+        //ASP_Debug_Logger::log_array_data($page_load_signature_arr);
+        
+        //Save the page load signature data with an expiry of 1 hour.
+        set_transient('asp_page_load_signature', $page_load_signature_arr, 3600);
+    }
+    
 }
