@@ -114,7 +114,7 @@ class ASP_Utils_Bot_Mitigation {
             ASP_Debug_Logger::log( 'Page load signature check - IP address value for this request is missing.', false );
             return false;
         }
-        
+
         $index = $product_id. '_'.$ip_address_to_check;
         
         if (!isset($page_load_signature_arr[$index]) || empty ($page_load_signature_arr[$index])){
@@ -126,6 +126,9 @@ class ASP_Utils_Bot_Mitigation {
         
         $expected_signature = $page_load_signature_arr[$index];
         $received = sha1($hp_key.$product_id.$ip_address_to_check);
+        //ASP_Debug_Logger::log('Index: ' . $index . ', Signature Received: ' . $received . ', Expected: ' . $expected_signature, true);
+        //ASP_Debug_Logger::log_array_data($page_load_signature_arr);
+        
         if (!hash_equals($expected_signature, $received)){
             //Mis-match
             ASP_Debug_Logger::log( 'Page load signature check - the signature hash does not match.', false );

@@ -108,6 +108,14 @@ class ASP_PP_Ajax {
                 ASP_Debug_Logger::log( $confirm_pi_initial_debug, true );
                 //End initial confirm_pi debug logging.
                 
+                //Check page load signature data
+                if( !ASP_Utils_Bot_Mitigation::is_page_load_signature_data_valid($product_id) ){
+                    //Signature invalid.
+                    //Exit out if feature is enabled
+                    //$out['err'] = __( 'Error! Page load signature check failed.', 'stripe-payments' );
+                    //wp_send_json( $out );
+                }
+                
 		$item = apply_filters( 'asp_ng_pp_product_item_override', $item );
 
                 //Trigger some action hooks (useful for other checks).
@@ -269,6 +277,8 @@ class ASP_PP_Ajax {
                 if( !ASP_Utils_Bot_Mitigation::is_page_load_signature_data_valid($product_id) ){
                     //Signature invalid.
                     //Exit out if feature is enabled 
+                    //$out['err'] = __( 'Error! Page load signature check failed.', 'stripe-payments' );
+                    //wp_send_json( $out );                    
                 }
 
 		$item = new ASP_Product_Item( $product_id );
