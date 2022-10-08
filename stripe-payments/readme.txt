@@ -156,7 +156,7 @@ None.
 == Changelog ==
 
 = WIP =
-- 
+- Added a page load signature check.
 - Note: we have added some extra checks in the plugin for bot mitigation. Some of these changes can create a conflict if your site is using page caching or database caching. 
   If you see an issue after the upgrade, please enable the debug logging feature and do a test transaction to verify that product checkout is working fine on your site.
   https://s-plugins.com/using-the-debug-log-to-solve-issues-on-a-site/

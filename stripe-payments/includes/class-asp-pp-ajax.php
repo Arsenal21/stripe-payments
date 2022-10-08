@@ -110,10 +110,16 @@ class ASP_PP_Ajax {
                 
                 //Check page load signature data
                 if( !ASP_Utils_Bot_Mitigation::is_page_load_signature_data_valid($product_id) ){
-                    //Signature invalid.
+                    //Signature is invalid.
                     //Exit out if feature is enabled
-                    //$out['err'] = __( 'Error! Page load signature check failed.', 'stripe-payments' );
-                    //wp_send_json( $out );
+                    $disable_signature_check = $this->asp_main->get_setting( 'disable_page_load_signature_check' );
+                    if ( $disable_signature_check ) {
+                        //The signature check feature is disabled. We will allow this request to go through.
+                        ASP_Debug_Logger::log( 'Notice! The page load signature check feature is disabled in the advanced settings menu so this request will not be blocked.', false );
+                    } else {
+                        $out['err'] = __( 'Error! Page load signature check failed.', 'stripe-payments' );
+                        wp_send_json( $out );
+                    }
                 }
                 
 		$item = apply_filters( 'asp_ng_pp_product_item_override', $item );
@@ -275,10 +281,16 @@ class ASP_PP_Ajax {
                 
                 //Check page load signature data
                 if( !ASP_Utils_Bot_Mitigation::is_page_load_signature_data_valid($product_id) ){
-                    //Signature invalid.
-                    //Exit out if feature is enabled 
-                    //$out['err'] = __( 'Error! Page load signature check failed.', 'stripe-payments' );
-                    //wp_send_json( $out );                    
+                    //Signature is invalid.
+                    //Exit out if feature is enabled
+                    $disable_signature_check = $this->asp_main->get_setting( 'disable_page_load_signature_check' );
+                    if ( $disable_signature_check ) {
+                        //The signature check feature is disabled. We will allow this request to go through.
+                        ASP_Debug_Logger::log( 'Notice! The page load signature check feature is disabled in the advanced settings menu so this request will not be blocked.', false );
+                    } else {
+                        $out['err'] = __( 'Error! Page load signature check failed.', 'stripe-payments' );
+                        wp_send_json( $out );
+                    }
                 }
 
 		$item = new ASP_Product_Item( $product_id );
