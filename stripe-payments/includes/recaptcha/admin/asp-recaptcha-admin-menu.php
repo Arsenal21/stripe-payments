@@ -25,7 +25,8 @@ class ASP_RECAPTCHA_Admin_Menu {
 	}
 
 	public function sanitize_settings( $output, $input ) {
-		$output['recaptcha_invisible'] = isset( $input['recaptcha_invisible'] ) ? 1 : 0;
+		//$output['recaptcha_invisible'] = isset( $input['recaptcha_invisible'] ) ? 1 : 0;
+		$output['recaptcha_invisible'] = 0;
 
 		$output['recaptcha_site_key'] = sanitize_text_field( $input['recaptcha_site_key'] );
 
@@ -62,18 +63,18 @@ class ASP_RECAPTCHA_Admin_Menu {
 	public function register_settings() {
 		add_settings_section( 'AcceptStripePayments-recaptcha-section', __( 'reCAPTCHA Settings', 'stripe-payments' ), array( $this, 'show_settings_description' ), $this->plugin_slug . '-recaptcha' );
 
-		add_settings_field(
-			'recaptcha_invisible',
-			__( 'Use Invisible reCAPTCHA Badge', 'stripe-payments' ),
-			array( $this->asp_admin, 'settings_field_callback' ),
-			$this->plugin_slug . '-recaptcha',
-			'AcceptStripePayments-recaptcha-section',
-			array(
-				'field' => 'recaptcha_invisible',
-				'size'  => 10,
-				'desc'  => __( 'It is recommended to use the "I am not a robot" checkbox captcha option for better payment button protection. However, if you want to enable this option then you must enter reCAPTCHA v2 Invisible badge API Keys below.', 'stripe-payments' ),
-			)
-		);
+		// add_settings_field(
+		// 	'recaptcha_invisible',
+		// 	__( 'Use Invisible reCAPTCHA Badge', 'stripe-payments' ),
+		// 	array( $this->asp_admin, 'settings_field_callback' ),
+		// 	$this->plugin_slug . '-recaptcha',
+		// 	'AcceptStripePayments-recaptcha-section',
+		// 	array(
+		// 		'field' => 'recaptcha_invisible',
+		// 		'size'  => 10,
+		// 		'desc'  => __( 'It is recommended to use the "I am not a robot" checkbox captcha option for better payment button protection. However, if you want to enable this option then you must enter reCAPTCHA v2 Invisible badge API Keys below.', 'stripe-payments' ),
+		// 	)
+		// );
 
 		add_settings_field(
 			'recaptcha_site_key',

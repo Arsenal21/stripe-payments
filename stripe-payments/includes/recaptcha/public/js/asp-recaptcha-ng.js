@@ -17,7 +17,8 @@ var reCaptchaHandlerNG = function (data) {
 			parent.recaptchaID = grecaptcha.render('asp-recaptcha-container', {
 				'sitekey': vars.data.recaptchaSiteKey,
 				'badge': 'inline',
-				'size': (vars.data.recaptchaInvisible) ? 'invisible' : null,
+				//'size': (vars.data.recaptchaInvisible) ? 'invisible' : null,
+				'size':  null,
 				'callback': function (resp) {
 					if (resp !== '' && !parent.data.recaptchaChecked) {
 						smokeScreen(true);
@@ -37,17 +38,17 @@ var reCaptchaHandlerNG = function (data) {
 									console.log('success');
 									parent.errCont.hide();
 									parent.data.recaptchaChecked = true;
-									if (vars.data.recaptchaInvisible) {
-										if (vars.data.reConfirmToken) {
-											vars.data.reConfirmToken = false;
-											vars.data.canProceed = true;
-											handlePayment();
-											return;
-										}
-										smokeScreen(false);
-										triggerEvent(form, 'submit');
-										return;
-									}
+									// if (vars.data.recaptchaInvisible) {
+									// 	if (vars.data.reConfirmToken) {
+									// 		vars.data.reConfirmToken = false;
+									// 		vars.data.canProceed = true;
+									// 		handlePayment();
+									// 		return;
+									// 	}
+									// 	smokeScreen(false);
+									// 	triggerEvent(form, 'submit');
+									// 	return;
+									// }
 									smokeScreen(false);
 								}
 							},
@@ -92,15 +93,18 @@ var reCaptchaHandlerNG = function (data) {
 		if (parent.data.recaptchaChecked === false) {
 			vars.data.canProceed = false;
 			if (vars.data.isEvent && vars.data.recaptchaInvisible) {
-				vars.data.canProceed = true;
+				//vars.data.canProceed = true;
+				vars.data.canProceed =false;
 				return;
 			}
-			if (vars.data.recaptchaInvisible) {
-				smokeScreen(true);
-				grecaptcha.execute();
-			} else {
-				parent.errCont.html(vars.str.strPleaseCheckCheckbox).hide().fadeIn();
-			}
+			// if (vars.data.recaptchaInvisible) {
+			// 	smokeScreen(true);
+			// 	grecaptcha.execute();
+			// } else {
+			// 	parent.errCont.html(vars.str.strPleaseCheckCheckbox).hide().fadeIn();
+			// }
+
+			parent.errCont.html(vars.str.strPleaseCheckCheckbox).hide().fadeIn();
 		}
 	}
 }
