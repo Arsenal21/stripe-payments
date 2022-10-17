@@ -38,6 +38,7 @@ class ASP_EPRECAPTCHA_Admin_Menu {
 
 	public function field_display( $field, $field_value ) {
 		$ret = array();
+		
 		switch ( $field ) {
 			case 'recaptcha_invisible':
 				$ret['field']      = 'checkbox';

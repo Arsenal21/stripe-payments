@@ -187,7 +187,8 @@ class ASP_RECAPTCHA_Main {
 	}
 
 	public function ng_before_buttons( $out, $data ) {
-		$invisible = $this->asp_main->get_setting( 'recaptcha_invisible' );
+		//$invisible = $this->asp_main->get_setting( 'recaptcha_invisible' );
+		$invisible=false;
 		ob_start();
 		?>
 <style>
@@ -239,7 +240,7 @@ class ASP_RECAPTCHA_Main {
 		array_push( $data['addonHooks'], 'recaptcha' );
 
 		$data['recaptchaSiteKey']   = $this->asp_main->get_setting( 'recaptcha_site_key' );
-		$data['recaptchaInvisible'] = $this->asp_main->get_setting( 'recaptcha_invisible' );
+		//$data['recaptchaInvisible'] = $this->asp_main->get_setting( 'recaptcha_invisible' );
 		return $data;
 	}
 
