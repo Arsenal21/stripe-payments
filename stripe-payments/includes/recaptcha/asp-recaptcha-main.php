@@ -188,7 +188,7 @@ class ASP_RECAPTCHA_Main {
 
 	public function ng_before_buttons( $out, $data ) {
 		//$invisible = $this->asp_main->get_setting( 'recaptcha_invisible' );
-		$invisible=false;
+		$invisible = false;
 		ob_start();
 		?>
 <style>
@@ -198,21 +198,13 @@ class ASP_RECAPTCHA_Main {
 	width: auto;
 	padding: 0 5px;
 }
-
-.asp-recaptcha-invisible {
-	height: 0;
-	margin: 0 auto;
-}
-
 .asp-recaptcha-container div {
 	margin: 0 auto;
 	height: 78px;
 }
-
 #recaptcha-error {
 	text-align: center;
 }
-
 #asp-recaptcha-google-notice {
 	font-size: 75%;
 	color: gray;
@@ -220,14 +212,8 @@ class ASP_RECAPTCHA_Main {
 	margin: 5px 0;
 	opacity: 0.75;
 }
-		<?php echo $invisible ? '.grecaptcha-badge {visibility: hidden;}' : ''; ?>
 </style>
-<div id="asp-recaptcha-container" class="asp-recaptcha-container<?php echo $invisible ? ' asp-recaptcha-invisible' : ''; ?>"></div>
-		<?php if ( $invisible ) { ?>
-<div id="asp-recaptcha-google-notice">This site is protected by reCAPTCHA and the Google
-	<a href="https://policies.google.com/privacy" target="_blank">Privacy Policy</a> and
-	<a href="https://policies.google.com/terms" target="_blank">Terms of Service</a> apply.</div>
-<?php } ?>
+<div id="asp-recaptcha-container" class="asp-recaptcha-container"></div>
 <div id="recaptcha-error" class="form-err" role="alert">
 </div>
 		<?php
