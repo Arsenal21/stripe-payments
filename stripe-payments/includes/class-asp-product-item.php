@@ -23,7 +23,6 @@ class ASP_Product_Item {
 		$this->asp_main = AcceptStripePayments::get_instance();
 		if ( false !== $post_id ) {
 			//let's try to load item from product
-                        ASP_Debug_Logger::log( 'Lets try to load item from product.', true );
 			$this->post_id = $post_id;
 			$this->load_from_product();
 
@@ -545,6 +544,7 @@ class ASP_Product_Item {
 		if ( ! $this->post || ( get_post_type( $post_id ) !== ASPMain::$products_slug && get_post_type( $post_id ) !== ASPMain::$temp_prod_slug ) ) {
 			// translators: %d is product id
 			$this->last_error = sprintf( __( "Can't find product with ID %d", 'stripe-payments' ), $post_id );
+                        ASP_Debug_Logger::log( "Can't find product with ID: " . $post_id, false );
 			return false;
 		}
 		$this->zero_cent = AcceptStripePayments::is_zero_cents( $this->get_currency() );
