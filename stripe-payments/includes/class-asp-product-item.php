@@ -23,18 +23,13 @@ class ASP_Product_Item {
 		$this->asp_main = AcceptStripePayments::get_instance();
 		if ( false !== $post_id ) {
 			//let's try to load item from product
+                        ASP_Debug_Logger::log( 'Lets try to load item from product.', true );
 			$this->post_id = $post_id;
 			$this->load_from_product();
-			if ( class_exists( 'ASP_Process_IPN_NG' ) ) {
-				$p_ipn_ng    = ASP_Process_IPN_NG::get_instance();
-				$btn_uniq_id = $p_ipn_ng->get_post_var( 'asp_btn_uniq_id', FILTER_SANITIZE_STRING );
-			} else {
-				$btn_uniq_id = filter_input( INPUT_POST, 'asp_btn_uniq_id', FILTER_SANITIZE_STRING );
-			}
-			if ( empty( $btn_uniq_id ) ) {
-				$btn_uniq_id = filter_input( INPUT_GET, 'btn_uniq_id', FILTER_SANITIZE_STRING );
-			}
+
+			$btn_uniq_id = filter_input( INPUT_GET, 'btn_uniq_id', FILTER_SANITIZE_STRING );
 			if ( ! empty( $btn_uniq_id ) ) {
+                                ASP_Debug_Logger::log( 'Using the btn_uniq_id parameter. Value of btn_uniq_id: ' . $btn_uniq_id, true );
 				$this->sess           = ASP_Session::get_instance();
 				$this->overriden_data = $this->sess->get_transient_data( 'overriden_data_' . $btn_uniq_id );
 			}
