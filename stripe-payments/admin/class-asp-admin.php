@@ -1252,6 +1252,18 @@ class AcceptStripePayments_Admin {
 		);
                 
 		add_settings_field(
+			'disable_request_limit_per_ip_check',
+			__( 'Disable Transaction Limit per IP Address Check', 'stripe-payments' ),
+			array( $this, 'settings_field_callback' ),
+			$this->plugin_slug . '-advanced',
+			'AcceptStripePayments-experimental-settings',
+			array(
+				'field' => 'disable_request_limit_per_ip_check',
+				'desc'  => __( 'It is not recommended to disable the transaction request limit per IP address check. This check helps to prevent some bots from abusing your payment buttons.', 'stripe-payments' ),
+			)
+		);
+                
+		add_settings_field(
 			'show_incomplete_orders',
 			__( 'Show Incomplete Orders', 'stripe-payments' ),
 			array( $this, 'settings_field_callback' ),
@@ -1511,6 +1523,7 @@ class AcceptStripePayments_Admin {
 			case 'show_incomplete_orders':
 			case 'disable_security_token_check':
                         case 'disable_page_load_signature_check':
+                        case 'disable_request_limit_per_ip_check':
 			case 'dont_save_card':
 			case 'custom_field_mandatory':
 			case 'enable_zip_validation':
@@ -1795,6 +1808,8 @@ class AcceptStripePayments_Admin {
 		$output['disable_security_token_check'] = empty( $input['disable_security_token_check'] ) ? 0 : 1;
                 
                 $output['disable_page_load_signature_check'] = empty( $input['disable_page_load_signature_check'] ) ? 0 : 1;
+                
+                $output['disable_request_limit_per_ip_check'] = empty( $input['disable_request_limit_per_ip_check'] ) ? 0 : 1;
 
 		$output['dont_use_stripe_php_sdk'] = empty( $input['dont_use_stripe_php_sdk'] ) ? 0 : 1;
 

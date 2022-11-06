@@ -122,12 +122,18 @@ class ASP_PP_Ajax {
                     }
                 }
                 
-                //Check request usage count per IP address
+                //Check request limit count per IP address
                 if( !ASP_Utils_Bot_Mitigation::is_request_limit_reached_for_ip() ){
                     //Request limit reached for this IP.
-                    //TODO - maybe add an option in the settings to customize this.
-                    $out['err'] = __( 'Error! Transaction request limit reached for this IP address.', 'stripe-payments' );
-                    wp_send_json( $out );
+                    //Exit out if feature is enabled
+                    $disable_request_limit_check = $this->asp_main->get_setting( 'disable_request_limit_per_ip_check' );
+                    if ( $disable_request_limit_check ) {
+                        //The request limit check feature is disabled. We will allow this request to go through.
+                        ASP_Debug_Logger::log( 'Notice! The transaction request limit per IP address feature is disabled in the advanced settings menu so this request will not be blocked.', false );
+                    } else {
+                        $out['err'] = __( 'Error! Transaction request limit reached for this IP address.', 'stripe-payments' );
+                        wp_send_json( $out );
+                    }
                 }                
                 
 		$item = apply_filters( 'asp_ng_pp_product_item_override', $item );
@@ -304,9 +310,15 @@ class ASP_PP_Ajax {
                 //Check request usage count per IP address
                 if( !ASP_Utils_Bot_Mitigation::is_request_limit_reached_for_ip() ){
                     //Request limit reached for this IP.
-                    //TODO - maybe addon an option in the settings to customize this.
-                    $out['err'] = __( 'Error! Transaction request limit reached for this IP address.', 'stripe-payments' );
-                    wp_send_json( $out );
+                    //Exit out if feature is enabled
+                    $disable_request_limit_check = $this->asp_main->get_setting( 'disable_request_limit_per_ip_check' );
+                    if ( $disable_request_limit_check ) {
+                        //The request limit check feature is disabled. We will allow this request to go through.
+                        ASP_Debug_Logger::log( 'Notice! The transaction request limit per IP address feature is disabled in the advanced settings menu so this request will not be blocked.', false );
+                    } else {
+                        $out['err'] = __( 'Error! Transaction request limit reached for this IP address.', 'stripe-payments' );
+                        wp_send_json( $out );
+                    }
                 }
                 
 		$item = new ASP_Product_Item( $product_id );
