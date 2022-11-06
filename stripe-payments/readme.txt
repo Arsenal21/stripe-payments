@@ -155,10 +155,8 @@ None.
 
 == Changelog ==
 
-= WIP 2.0.71 =
-//TODO - maybe add an option in the settings to disable this new option.
-
-- Added a request usage count check on a per IP address basis.
+= 2.0.71 =
+- Added a transaction request limit check on a per IP address basis. This will provide additional protection against card testing bot.
 
 = 2.0.70 =
 - Removed the "Invisible captcha" option as it doesn't provide the maximum protection against card testing bot.

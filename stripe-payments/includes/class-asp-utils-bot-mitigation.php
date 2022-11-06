@@ -173,11 +173,11 @@ class ASP_Utils_Bot_Mitigation {
         $limit = apply_filters('asp_request_usage_count_by_ip_limit', 20);//Trigger a filter so this can be customized.
         if ($asp_request_usage_count[$index] > $limit){
             //Limit reached/exceeded. Reject this.
-            ASP_Debug_Logger::log( 'Request usage count limit reached for this IP address. IP: ' . $index . ', Count: ' . $asp_request_usage_count[$index], false );
+            ASP_Debug_Logger::log( 'Request usage count limit reached for this IP address. IP: ' . $index . ', Request Count: ' . $asp_request_usage_count[$index], false );
             return false;
         }
         
-        ASP_Debug_Logger::log( 'Request usage count is valid for this IP addresss. IP: ' . $index . ', Count: ' . $asp_request_usage_count[$index], true );
+        ASP_Debug_Logger::log( 'Request usage count is valid for this IP addresss. IP: ' . $index . ', Request Count: ' . $asp_request_usage_count[$index], true );
         return true;
     }
     
