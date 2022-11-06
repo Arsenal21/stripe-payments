@@ -141,7 +141,7 @@ class ASP_Utils_Bot_Mitigation {
         return true;
     }
     
-    public static function get_request_usage_count_data() {
+    public static function get_request_limit_count_data() {
         $asp_request_usage_count = get_transient('asp_request_usage_count');
         if (!isset($asp_request_usage_count) || empty($asp_request_usage_count)) {
             $asp_request_usage_count = array();
@@ -149,7 +149,7 @@ class ASP_Utils_Bot_Mitigation {
         return $asp_request_usage_count;
     }
     
-    public static function is_request_usage_count_valid_for_ip(){
+    public static function is_request_limit_reached_for_ip(){
         $ip_address_to_check = ASP_Utils::get_user_ip_address();
         if (!isset($ip_address_to_check) || empty($ip_address_to_check)) {
             ASP_Debug_Logger::log( 'Request usage count check - IP address value for this request is missing.', false );
@@ -157,7 +157,7 @@ class ASP_Utils_Bot_Mitigation {
         }        
 
         //Count and check usage.
-        $asp_request_usage_count = ASP_Utils_Bot_Mitigation::get_request_usage_count_data();
+        $asp_request_usage_count = ASP_Utils_Bot_Mitigation::get_request_limit_count_data();
         $index = $ip_address_to_check;
         if( !isset($asp_request_usage_count[$index]) ){
             //Index not set so initialize with 0 count.

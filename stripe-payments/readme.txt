@@ -156,6 +156,7 @@ None.
 == Changelog ==
 
 = WIP 2.0.71 =
+//TODO - maybe add an option in the settings to disable this new option.
 
 - Added a request usage count check on a per IP address basis.
 

@@ -123,10 +123,10 @@ class ASP_PP_Ajax {
                 }
                 
                 //Check request usage count per IP address
-                if( !ASP_Utils_Bot_Mitigation::is_request_usage_count_valid_for_ip() ){
+                if( !ASP_Utils_Bot_Mitigation::is_request_limit_reached_for_ip() ){
                     //Request limit reached for this IP.
                     //TODO - maybe add an option in the settings to customize this.
-                    $out['err'] = __( 'Error! Request limit reached for this IP address.', 'stripe-payments' );
+                    $out['err'] = __( 'Error! Transaction request limit reached for this IP address.', 'stripe-payments' );
                     wp_send_json( $out );
                 }                
                 
@@ -302,10 +302,10 @@ class ASP_PP_Ajax {
                 }
                 
                 //Check request usage count per IP address
-                if( !ASP_Utils_Bot_Mitigation::is_request_usage_count_valid_for_ip() ){
+                if( !ASP_Utils_Bot_Mitigation::is_request_limit_reached_for_ip() ){
                     //Request limit reached for this IP.
                     //TODO - maybe addon an option in the settings to customize this.
-                    $out['err'] = __( 'Error! Request limit reached for this IP address.', 'stripe-payments' );
+                    $out['err'] = __( 'Error! Transaction request limit reached for this IP address.', 'stripe-payments' );
                     wp_send_json( $out );
                 }
                 
