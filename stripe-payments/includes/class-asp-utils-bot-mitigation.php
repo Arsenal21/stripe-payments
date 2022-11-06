@@ -141,4 +141,44 @@ class ASP_Utils_Bot_Mitigation {
         return true;
     }
     
+    public static function get_request_usage_count_data() {
+        $asp_request_usage_count = get_transient('asp_request_usage_count');
+        if (!isset($asp_request_usage_count) || empty($asp_request_usage_count)) {
+            $asp_request_usage_count = array();
+        }
+        return $asp_request_usage_count;
+    }
+    
+    public static function is_request_usage_count_valid_for_ip(){
+        $ip_address_to_check = ASP_Utils::get_user_ip_address();
+        if (!isset($ip_address_to_check) || empty($ip_address_to_check)) {
+            ASP_Debug_Logger::log( 'Request usage count check - IP address value for this request is missing.', false );
+            return false;
+        }        
+
+        //Count and check usage.
+        $asp_request_usage_count = ASP_Utils_Bot_Mitigation::get_request_usage_count_data();
+        $index = $ip_address_to_check;
+        if( !isset($asp_request_usage_count[$index]) ){
+            //Index not set so initialize with 0 count.
+            $asp_request_usage_count[$index] = 0;
+        }
+        $asp_request_usage_count[$index] = $asp_request_usage_count[$index] + 1;
+        //ASP_Debug_Logger::log('Index: ' . $index . ', Count: ' . $asp_request_usage_count[$index], true);
+        
+        //Save the request usage count data with an expiry of 12 hours.
+        set_transient('asp_request_usage_count', $asp_request_usage_count, 43200);
+        
+        //Check limit
+        $limit = apply_filters('asp_request_usage_count_by_ip_limit', 20);//Trigger a filter so this can be customized.
+        if ($asp_request_usage_count[$index] > $limit){
+            //Limit reached/exceeded. Reject this.
+            ASP_Debug_Logger::log( 'Request usage count limit reached for this IP address. IP: ' . $index . ', Count: ' . $asp_request_usage_count[$index], false );
+            return false;
+        }
+        
+        ASP_Debug_Logger::log( 'Request usage count is valid for this IP addresss. IP: ' . $index . ', Count: ' . $asp_request_usage_count[$index], true );
+        return true;
+    }
+    
 }

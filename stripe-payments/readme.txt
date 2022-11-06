@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 5.0
 Tested up to: 6.1
 Requires PHP: 5.6
-Stable tag: 2.0.70
+Stable tag: 2.0.71
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -154,6 +154,10 @@ Yes, please visit Stripe Payments > Settings screen for options.
 None.
 
 == Changelog ==
+
+= WIP 2.0.71 =
+
+- Added a request usage count check on a per IP address basis.
 
 = 2.0.70 =
 - Removed the "Invisible captcha" option as it doesn't provide the maximum protection against card testing bot.

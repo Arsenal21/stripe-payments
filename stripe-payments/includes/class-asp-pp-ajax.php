@@ -122,6 +122,14 @@ class ASP_PP_Ajax {
                     }
                 }
                 
+                //Check request usage count per IP address
+                if( !ASP_Utils_Bot_Mitigation::is_request_usage_count_valid_for_ip() ){
+                    //Request limit reached for this IP.
+                    //TODO - maybe add an option in the settings to customize this.
+                    $out['err'] = __( 'Error! Request limit reached for this IP address.', 'stripe-payments' );
+                    wp_send_json( $out );
+                }                
+                
 		$item = apply_filters( 'asp_ng_pp_product_item_override', $item );
 
                 //Trigger some action hooks (useful for other checks).
@@ -292,7 +300,15 @@ class ASP_PP_Ajax {
                         wp_send_json( $out );
                     }
                 }
-
+                
+                //Check request usage count per IP address
+                if( !ASP_Utils_Bot_Mitigation::is_request_usage_count_valid_for_ip() ){
+                    //Request limit reached for this IP.
+                    //TODO - maybe addon an option in the settings to customize this.
+                    $out['err'] = __( 'Error! Request limit reached for this IP address.', 'stripe-payments' );
+                    wp_send_json( $out );
+                }
+                
 		$item = new ASP_Product_Item( $product_id );
 
 		if ( $item->get_last_error() ) {
