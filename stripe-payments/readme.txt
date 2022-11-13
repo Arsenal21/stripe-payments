@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 5.0
 Tested up to: 6.1
 Requires PHP: 5.6
-Stable tag: 2.0.71
+Stable tag: 2.0.72
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -154,6 +154,9 @@ Yes, please visit Stripe Payments > Settings screen for options.
 None.
 
 == Changelog ==
+
+= 2.0.72 =
+- Removed the Legacy/Old API checkbox option from the settings. It will now always fallback to use the new API. 
 
 = 2.0.71 =
 - Added a transaction request limit check on a per IP address basis. This will provide additional protection against card testing bot.
