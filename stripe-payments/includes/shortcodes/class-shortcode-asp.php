@@ -25,7 +25,7 @@ class AcceptStripePaymentsShortcode {
 		$this->AcceptStripePayments = AcceptStripePayments::get_instance();
 
 		$use_old_api = $this->AcceptStripePayments->get_setting( 'use_old_checkout_api1' );
-		$use_old_api=0;
+		$use_old_api = 0;
 
 		if ( $use_old_api ) {
 			add_shortcode( 'asp_product', array( &$this, 'shortcode_asp_product' ) );

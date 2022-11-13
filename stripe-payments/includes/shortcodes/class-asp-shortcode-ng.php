@@ -22,7 +22,7 @@ class ASP_Shortcode_NG {
 		$this->asp_main = AcceptStripePayments::get_instance();
 
 		$use_old_api = $this->asp_main->get_setting( 'use_old_checkout_api1' );
-		$use_old_api=0;
+		$use_old_api = 0;
 
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 

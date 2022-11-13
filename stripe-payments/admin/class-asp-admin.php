@@ -173,7 +173,7 @@ class AcceptStripePayments_Admin {
 			}
 		}
 
-		//show new API notice
+		// Show new API notice
 		// $opt = get_option( 'AcceptStripePayments-settings' );
 		// if ( isset( $opt['use_old_checkout_api1'] ) && $opt['use_old_checkout_api1'] ) {
 		// 	$notice_dismissed = get_option( 'asp_new_api_notice_dismissed1' );
