@@ -24,6 +24,13 @@ class AcceptStripePayments_Process_IPN {
 			if ( 'process_ipn' === $_POST['asp_action'] ) {
 				//check if Legacy API is enabled
 				$opt = get_option( 'AcceptStripePayments-settings' );
+				//if ( isset( $opt['use_old_checkout_api1'] ) && $opt['use_old_checkout_api1'] ) {
+
+				if(isset($opt['use_old_checkout_api1']))
+				{
+					$opt['use_old_checkout_api1'] = 0;
+				}					
+
 				if ( isset( $opt['use_old_checkout_api1'] ) && $opt['use_old_checkout_api1'] ) {
 					$this->sess = ASP_Session::get_instance();
 					$this->process_ipn();
