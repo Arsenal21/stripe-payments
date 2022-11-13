@@ -174,21 +174,21 @@ class AcceptStripePayments_Admin {
 		}
 
 		//show new API notice
-		$opt = get_option( 'AcceptStripePayments-settings' );
-		if ( isset( $opt['use_old_checkout_api1'] ) && $opt['use_old_checkout_api1'] ) {
-			$notice_dismissed = get_option( 'asp_new_api_notice_dismissed1' );
-			if ( ! $notice_dismissed ) {
-				$tpl = '<div class="notice notice-%1$s%3$s">%2$s</div>';
-				$msg = '<p>The new version of the Stripe Payments plugin has the SCA compliant API support. However, you\'re still using the legacy API.<br/><br/>' .
-				'<a href="https://stripe.com/docs/strong-customer-authentication/doineed" target="_blank">Click here</a> to check whether your business needs to support Strong Customer Authentication (SCA). If it does, disable legacy API by  unchecking the "Enable Legacy Checkout API" checkbox in the <a href="edit.php?post_type=asp-products&page=stripe-payments-settings#advanced">Advanced Settings tab</a> of the plugin.</p>';
-				//here's link to advanced settings tab you can use in the message:
-				// <a href="edit.php?post_type=asp-products&page=stripe-payments-settings#advanced">advanced settings</a>
-				$admin_url   = get_admin_url();
-				$dismiss_url = add_query_arg( 'asp_dismiss_new_api_msg', '1', $admin_url );
-				$msg        .= '<p><a style="text-decoration: none; border-bottom: 1px dashed;" href="' . $dismiss_url . '">Don\'t show this message again</a></p>';
-				echo wp_kses( sprintf( $tpl, 'warning', $msg, '' ), ASP_Utils::asp_allowed_tags() );
-			}
-		}
+		// $opt = get_option( 'AcceptStripePayments-settings' );
+		// if ( isset( $opt['use_old_checkout_api1'] ) && $opt['use_old_checkout_api1'] ) {
+		// 	$notice_dismissed = get_option( 'asp_new_api_notice_dismissed1' );
+		// 	if ( ! $notice_dismissed ) {
+		// 		$tpl = '<div class="notice notice-%1$s%3$s">%2$s</div>';
+		// 		$msg = '<p>The new version of the Stripe Payments plugin has the SCA compliant API support. However, you\'re still using the legacy API.<br/><br/>' .
+		// 		'<a href="https://stripe.com/docs/strong-customer-authentication/doineed" target="_blank">Click here</a> to check whether your business needs to support Strong Customer Authentication (SCA). If it does, disable legacy API by  unchecking the "Enable Legacy Checkout API" checkbox in the <a href="edit.php?post_type=asp-products&page=stripe-payments-settings#advanced">Advanced Settings tab</a> of the plugin.</p>';
+		// 		//here's link to advanced settings tab you can use in the message:
+		// 		// <a href="edit.php?post_type=asp-products&page=stripe-payments-settings#advanced">advanced settings</a>
+		// 		$admin_url   = get_admin_url();
+		// 		$dismiss_url = add_query_arg( 'asp_dismiss_new_api_msg', '1', $admin_url );
+		// 		$msg        .= '<p><a style="text-decoration: none; border-bottom: 1px dashed;" href="' . $dismiss_url . '">Don\'t show this message again</a></p>';
+		// 		echo wp_kses( sprintf( $tpl, 'warning', $msg, '' ), ASP_Utils::asp_allowed_tags() );
+		// 	}
+		// }
 	}
 
 
@@ -453,8 +453,6 @@ class AcceptStripePayments_Admin {
 	 */
 	public function register_settings( $value = '' ) {
 
-		$new_api_str = '<br><sub class="asp-new-api-only">' . __( 'New API only', 'stripe-payments' ) . '</sub>';
-
 		register_setting( 'AcceptStripePayments-settings-group', 'AcceptStripePayments-settings', array( &$this, 'settings_sanitize_field_callback' ) );
 
 		// Add/define the various section/groups (the fields will go under these sections).
@@ -543,7 +541,7 @@ class AcceptStripePayments_Admin {
 		);
 		add_settings_field(
 			'popup_button_text',
-			__( 'Payment Popup Button Text', 'stripe-payments' ) . $new_api_str,
+			__( 'Payment Popup Button Text', 'stripe-payments' ),
 			array( &$this, 'settings_field_callback' ),
 			$this->plugin_slug,
 			'AcceptStripePayments-global-section',
@@ -627,7 +625,7 @@ class AcceptStripePayments_Admin {
 		}
 		add_settings_field(
 			'popup_default_country',
-			__( 'Popup Default Country', 'stripe-payments' ) . $new_api_str,
+			__( 'Popup Default Country', 'stripe-payments' ) ,
 			array( &$this, 'settings_field_callback' ),
 			$this->plugin_slug,
 			'AcceptStripePayments-global-section',
@@ -642,7 +640,7 @@ class AcceptStripePayments_Admin {
 
 		add_settings_field(
 			'hide_state_field',
-			__( 'Hide the State Field', 'stripe-payments' ) . $new_api_str,
+			__( 'Hide the State Field', 'stripe-payments' ) ,
 			array( &$this, 'settings_field_callback' ),
 			$this->plugin_slug,
 			'AcceptStripePayments-global-section',
@@ -657,7 +655,7 @@ class AcceptStripePayments_Admin {
 
 		add_settings_field(
 			'prefill_wp_user_details',
-			__( 'Prefill Logged In User Name and Email', 'stripe-payments' ) . $new_api_str,
+			__( 'Prefill Logged In User Name and Email', 'stripe-payments' ) ,
 			array( &$this, 'settings_field_callback' ),
 			$this->plugin_slug,
 			'AcceptStripePayments-global-section',
@@ -937,7 +935,7 @@ class AcceptStripePayments_Admin {
 		// Additional Email Settings
 		add_settings_field(
 			'enable_email_schedule',
-			__( 'Send Emails in Parallel', 'stripe-payments' ) . $new_api_str,
+			__( 'Send Emails in Parallel', 'stripe-payments' ) ,
 			array( &$this, 'settings_field_callback' ),
 			$this->plugin_slug . '-email',
 			'AcceptStripePayments-additional-email-section',
@@ -1144,17 +1142,17 @@ class AcceptStripePayments_Admin {
 		);
 
 		// Additional Settings
-		add_settings_field(
-			'use_old_checkout_api1',
-			__( 'Enable Legacy Checkout API', 'stripe-payments' ),
-			array( $this, 'settings_field_callback' ),
-			$this->plugin_slug . '-advanced',
-			'AcceptStripePayments-additional-settings',
-			array(
-				'field' => 'use_old_checkout_api1',
-				'desc'  => __( "Use the legacy API to process payments. Note that the legacy API is not compatible with 3-D Secure and EU's Strong Customer Authentication (SCA) requirements. Stripe may disable this legacy API in the future. If there is a bug in the new API, then continue to use the legacy API while we fix the bug.", 'stripe-payments' ),
-			)
-		);
+		// add_settings_field(
+		// 	'use_old_checkout_api1',
+		// 	__( 'Enable Legacy Checkout API', 'stripe-payments' ),
+		// 	array( $this, 'settings_field_callback' ),
+		// 	$this->plugin_slug . '-advanced',
+		// 	'AcceptStripePayments-additional-settings',
+		// 	array(
+		// 		'field' => 'use_old_checkout_api1',
+		// 		'desc'  => __( "Use the legacy API to process payments. Note that the legacy API is not compatible with 3-D Secure and EU's Strong Customer Authentication (SCA) requirements. Stripe may disable this legacy API in the future. If there is a bug in the new API, then continue to use the legacy API while we fix the bug.", 'stripe-payments' ),
+		// 	)
+		// );
 		add_settings_field(
 			'new_product_edit_interface',
 			__( 'Enable Compact Product Edit Interface', 'stripe-payments' ),
@@ -1168,7 +1166,7 @@ class AcceptStripePayments_Admin {
 		);
 		add_settings_field(
 			'frontend_prefetch_scripts',
-			__( 'Prefetch Payment Popup Scripts', 'stripe-payments' ) . $new_api_str,
+			__( 'Prefetch Payment Popup Scripts', 'stripe-payments' ) ,
 			array( $this, 'settings_field_callback' ),
 			$this->plugin_slug . '-advanced',
 			'AcceptStripePayments-additional-settings',
@@ -1813,7 +1811,8 @@ class AcceptStripePayments_Admin {
 
 		$output['dont_use_stripe_php_sdk'] = empty( $input['dont_use_stripe_php_sdk'] ) ? 0 : 1;
 
-		$output['use_old_checkout_api1'] = empty( $input['use_old_checkout_api1'] ) ? 0 : 1;
+		//$output['use_old_checkout_api1'] = empty( $input['use_old_checkout_api1'] ) ? 0 : 1;
+		$output['use_old_checkout_api1']=0;
 
 		$output['new_product_edit_interface'] = empty( $input['new_product_edit_interface'] ) ? 0 : 1;
 
