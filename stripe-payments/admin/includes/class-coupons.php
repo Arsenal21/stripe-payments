@@ -200,7 +200,7 @@ class AcceptStripePayments_CouponsAdmin {
 
 	public function add_menu() {
                 //Trigger filter hook to allow overriding of the add-ons menu capability.
-                $asp_coupons_menu_capability = apply_filters( 'asp_coupons_menu_capability', 'manage_options' );            
+                $asp_coupons_menu_capability = apply_filters( 'asp_coupons_menu_capability', ASP_MANAGEMENT_PERMISSION );            
 		add_submenu_page( 'edit.php?post_type=' . ASPMain::$products_slug, __( 'Coupons', 'stripe-payments' ), __( 'Coupons', 'stripe-payments' ), $asp_coupons_menu_capability, 'stripe-payments-coupons', array( $this, 'display_coupons_menu_page' ) );
 	}
 

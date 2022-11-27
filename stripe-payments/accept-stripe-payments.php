@@ -39,6 +39,12 @@ class ASPMain {
 		self::$temp_prod_slug = 'asp-products-temp';
 		self::$file           = __FILE__;
 
+                if ( !defined( 'ASP_MANAGEMENT_PERMISSION' ) ){ //This will allow the user to define custom capability for this constant in wp-config file
+                    //Trigger filter hook to allow overriding of the management permission.
+                    $asp_management_permission = apply_filters( 'asp_management_permission', 'manage_options' );
+                    define('ASP_MANAGEMENT_PERMISSION', $asp_management_permission);
+                }
+
 		require_once WP_ASP_PLUGIN_PATH . 'includes/class-asp-utils.php';                
 		require_once WP_ASP_PLUGIN_PATH . 'includes/class-asp-debug-logger.php';
                 require_once WP_ASP_PLUGIN_PATH . 'includes/class-asp-utils-bot-mitigation.php';

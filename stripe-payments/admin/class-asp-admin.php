@@ -431,9 +431,9 @@ class AcceptStripePayments_Admin {
 		*   For reference: http://codex.wordpress.org/Roles_and_Capabilities
 		*/
 		//Products submenu
-		//  add_submenu_page( 'edit.php?post_type=stripe_order', __( 'Products', 'stripe-payments' ), __( 'Products', 'stripe-payments' ), 'manage_options', 'edit.php?post_type=stripe_order', array( $this, 'display_plugin_admin_page' ) );
+		//  add_submenu_page( 'edit.php?post_type=stripe_order', __( 'Products', 'stripe-payments' ), __( 'Products', 'stripe-payments' ), ASP_MANAGEMENT_PERMISSION, 'edit.php?post_type=stripe_order', array( $this, 'display_plugin_admin_page' ) );
                 //Trigger filter hook to allow overriding of the settings menu capability.
-                $asp_settings_menu_capability = apply_filters( 'asp_settings_menu_capability', 'manage_options' );
+                $asp_settings_menu_capability = apply_filters( 'asp_settings_menu_capability', ASP_MANAGEMENT_PERMISSION );
                 $this->plugin_screen_hook_suffix = add_submenu_page(
 			'edit.php?post_type=' . ASPMain::$products_slug,
 			__( 'Settings', 'stripe-payments' ),
@@ -444,7 +444,7 @@ class AcceptStripePayments_Admin {
 		);
 
                 //Trigger filter hook to allow overriding of the add-ons menu capability.
-                $asp_addons_menu_capability = apply_filters( 'asp_addons_menu_capability', 'manage_options' );
+                $asp_addons_menu_capability = apply_filters( 'asp_addons_menu_capability', ASP_MANAGEMENT_PERMISSION );
 		add_submenu_page( 'edit.php?post_type=' . ASPMain::$products_slug, __( 'Add-ons', 'stripe-payments' ), __( 'Add-ons', 'stripe-payments' ), $asp_addons_menu_capability, 'stripe-payments-addons', array( $this, 'display_addons_menu_page' ) );
 
 		add_action( 'admin_init', array( &$this, 'register_settings' ) );

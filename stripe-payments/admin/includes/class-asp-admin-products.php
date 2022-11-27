@@ -44,7 +44,7 @@ class ASP_Admin_Products {
 		$asp_slug  = untrailingslashit( ASPMain::$products_slug );
 
                 //Trigger filter hook to allow overriding of the default ASP Products Post Type capability.
-                $asp_post_capability = apply_filters( 'asp_post_type_capability', 'manage_options' );
+                $asp_post_capability = apply_filters( 'asp_post_type_capability', ASP_MANAGEMENT_PERMISSION );
                 $capabilities = array(
                         'edit_post'          => $asp_post_capability,
                         'delete_post'        => $asp_post_capability,

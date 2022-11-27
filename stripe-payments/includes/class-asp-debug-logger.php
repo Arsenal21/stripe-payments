@@ -100,7 +100,7 @@ class ASP_Debug_Logger {
 	}
 
 	public static function clear_log() {
-                if ( ! current_user_can( 'manage_options' ) ) {
+                if ( ! current_user_can( ASP_MANAGEMENT_PERMISSION ) ) {
                         //No permission for the current user to do this operation.
                         wp_die( 0 );
                 }

@@ -122,7 +122,7 @@ class ASPOrder {
 	}
 
 	public function remove_views( $views ) {
-		if ( ! current_user_can( 'manage_options' ) ) {
+		if ( ! current_user_can( ASP_MANAGEMENT_PERMISSION ) ) {
 			return $views;
 		}
 

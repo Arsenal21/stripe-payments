@@ -2,7 +2,7 @@
 /**
  * Represents the view for the addons listing page.
  */
-if ( ! current_user_can( 'manage_options' ) ) {
+if ( ! current_user_can( ASP_MANAGEMENT_PERMISSION ) ) {
 	wp_die( 'You do not have permission to access this menu page.' );
 }
 

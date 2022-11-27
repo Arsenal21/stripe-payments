@@ -5,7 +5,7 @@
  * This includes the header, options, and other information that should provide
  * The User Interface to the end user.
  */
-if ( ! current_user_can( 'manage_options' ) ) {
+if ( ! current_user_can( ASP_MANAGEMENT_PERMISSION ) ) {
 	wp_die( 'You do not have permission to access this settings page.' );
 }
 
