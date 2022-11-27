@@ -40,9 +40,7 @@ class ASPMain {
 		self::$file           = __FILE__;
 
                 if ( !defined( 'ASP_MANAGEMENT_PERMISSION' ) ){ //This will allow the user to define custom capability for this constant in wp-config file
-                    //Trigger filter hook to allow overriding of the management permission.
-                    $asp_management_permission = apply_filters( 'asp_management_permission', 'manage_options' );
-                    define('ASP_MANAGEMENT_PERMISSION', $asp_management_permission);
+                    define('ASP_MANAGEMENT_PERMISSION', 'manage_options');
                 }
 
 		require_once WP_ASP_PLUGIN_PATH . 'includes/class-asp-utils.php';                

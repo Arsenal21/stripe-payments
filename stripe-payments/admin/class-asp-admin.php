@@ -222,7 +222,7 @@ class AcceptStripePayments_Admin {
 	}
 
 	function admin_init() {
-		if ( current_user_can( 'manage_options' ) ) {
+		if ( current_user_can( ASP_MANAGEMENT_PERMISSION ) ) {
 			add_action( 'wp_ajax_asp_clear_log', array( 'ASP_Debug_Logger', 'clear_log' ) );
 			//view log file
                         $asp_action = isset( $_GET['asp_action'] ) ? sanitize_text_field( $_GET['asp_action'] ) : '';
