@@ -155,6 +155,9 @@ None.
 
 == Changelog ==
 
+= WIP 2.0.73 =
+- Added filter hooks to allow customization of the admin menu item capability.
+
 = 2.0.72 =
 - Removed the Legacy/Old API checkbox option from the settings. It will now always fallback to use the new API. 
 
