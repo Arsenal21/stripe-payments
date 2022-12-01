@@ -157,6 +157,7 @@ None.
 
 = WIP 2.0.73 =
 - Added filter hooks to allow customization of the admin menu item capability.
+- Added a new email merge tag {product_variations} that will include the selected variations of the order.
 
 = 2.0.72 =
 - Removed the Legacy/Old API checkbox option from the settings. It will now always fallback to use the new API. 

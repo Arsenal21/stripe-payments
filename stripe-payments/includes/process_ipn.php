@@ -712,6 +712,7 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post, $seller_email = fal
 	$product_details .= AcceptStripePayments::gen_additional_items( $post );
 	$product_details .= '--------------------------------' . "\n";
 	$product_details .= __( 'Total Amount', 'stripe-payments' ) . ': {purchase_amt_curr}' . "\n";
+                
 	$varUrls          = array();
 	// check if we have variations applied with download links
 	if ( ! empty( $post['var_applied'] ) ) {
@@ -747,6 +748,9 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post, $seller_email = fal
 
 	$post['product_details'] = $product_details;
 
+        //Get the product variations (if any)
+        $product_variations = AcceptStripePayments::gen_additional_items( $post );
+        
 	$custom_field = '';
 	if ( isset( $post['custom_fields'] ) ) {
 		foreach ( $post['custom_fields'] as $cf ) {
@@ -852,6 +856,7 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post, $seller_email = fal
 		'{card_brand}',
 		'{card_last_4}',
 		'{payment_method}',
+                '{product_variations}',
 	);
 	$vals = array(
 		$post['item_name'],
@@ -880,6 +885,7 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post, $seller_email = fal
 		$card_brand,
 		$card_last4,
 		$pm_type,
+                $product_variations,
 	);
 
 	//let's combine tags and vals into one array so we can apply filters on it
