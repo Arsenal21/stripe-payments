@@ -856,6 +856,7 @@ class ASP_Utils {
 	}
 
 	public static function load_stripe_lib() {
+	
 		if ( ! class_exists( '\Stripe\Stripe' ) ) {
 			require_once WP_ASP_PLUGIN_PATH . 'includes/stripe/init.php';
 			\Stripe\Stripe::setAppInfo( 'Stripe Payments', WP_ASP_PLUGIN_VERSION, 'https://wordpress.org/plugins/stripe-payments/', 'pp_partner_Fvas9OJ0jQ2oNQ' );
@@ -981,6 +982,7 @@ class ASP_Utils {
 		$key = $asp_main->is_live ? $asp_main->APISecKey : $asp_main->APISecKeyTest;
 
 		try {
+			
 			if ( self::use_internal_api() ) {
 				$api = ASP_Stripe_API::get_instance();
 				$api->set_api_key( $key );
@@ -988,6 +990,7 @@ class ASP_Utils {
 
 				$acc_info = $api->get( 'account' );
 			} else {
+				
 				ASP_Utils::load_stripe_lib();
 				\Stripe\Stripe::setApiKey( $key );
 
@@ -998,6 +1001,19 @@ class ASP_Utils {
 		}
 
 		return $acc_info;
+	}
+
+	//fix for incomplete_class when unserializing the charge object saved in order_data
+	//if dont_use_stripe_php_sdk (Advance -> Experimental section) checkbox is unchecked.
+	public static function load_stripe_php_sdk() {		
+		try {
+			
+			if ( self::use_internal_api() ==false) {
+				ASP_Utils::load_stripe_lib();				
+			}
+		} catch ( \Throwable $e ) {
+			// handle error if needed
+		}
 	}
 
 	public static function get_tax_variations_tax( $tax_var, $country, $state, $city ) {
