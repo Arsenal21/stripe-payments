@@ -65,9 +65,6 @@ class ASPMain {
 
 		add_action( 'plugins_loaded', array( 'AcceptStripePayments', 'get_instance' ) );
                 
-                //Load the Stripe PHP SDK (if "dont_use_stripe_php_sdk" option is unchecked).
-		add_action( 'plugins_loaded', array( 'ASP_Utils', 'load_stripe_php_sdk_if_enabled' ) );
-
 		if ( is_admin() ) {
 			add_action( 'plugins_loaded', array( 'AcceptStripePayments_Admin', 'get_instance' ) );
 		}
@@ -91,6 +88,7 @@ class ASPMain {
 	public function init_handler() {
 		// hook to change product slug
 		self::$products_slug = apply_filters( 'asp_change_products_slug', self::$products_slug );
+                
 	}
 
 	/**
