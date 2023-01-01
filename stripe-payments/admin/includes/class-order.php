@@ -230,6 +230,7 @@ class ASPOrder {
 		$order = new ASP_Order_Item();
 		$order->set_id( $post_id );
 
+                ASP_Utils::load_stripe_php_sdk_if_enabled();//Load the Stripe SDK (if enabled) so it can read the Stripe classes in the order object.
 		$data = get_post_meta( $post_id, 'order_data', true );
 
 		$asp_main = AcceptStripePayments::get_instance();
@@ -321,6 +322,7 @@ class ASPOrder {
 		$order = new ASP_Order_Item();
 		$order->set_id( $post_id );
 
+                ASP_Utils::load_stripe_php_sdk_if_enabled();//Load the Stripe SDK (if enabled) so it can read the Stripe classes in the order object.
 		$data = get_post_meta( $post_id, 'order_data', true );
 
 		$asp_main = AcceptStripePayments::get_instance();

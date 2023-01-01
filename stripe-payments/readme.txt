@@ -156,12 +156,9 @@ None.
 == Changelog ==
 
 = WIP 2.0.73 =
-
-- [TODO] Tentative 'Incomplete Class Object' fix using the new load_stripe_php_sdk_if_enabled() function. Need to re-work it to see if it can be called only when the order object is being retrieved.
-
 - Added filter hooks to allow customization of the admin menu item capability.
 - Added a new email merge tag {product_variations} that will include the selected variations of the order.
-
+- Fixed an issue with the "authorize" and "capture" later feature (when the Stripe PHP SDK option is used).
 
 = 2.0.72 =
 - Removed the Legacy/Old API checkbox option from the settings. It will now always fallback to use the new API. 
