@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 5.0
 Tested up to: 6.1
 Requires PHP: 5.6
-Stable tag: 2.0.72
+Stable tag: 2.0.73
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -155,7 +155,7 @@ None.
 
 == Changelog ==
 
-= WIP 2.0.73 =
+= 2.0.73 =
 - Added filter hooks to allow customization of the admin menu item capability.
 - Added a new email merge tag {product_variations} that will include the selected variations of the order.
 - Fixed an issue with the "authorize" and "capture" later feature (when the Stripe PHP SDK option is used).
