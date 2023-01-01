@@ -64,8 +64,9 @@ class ASPMain {
 		register_deactivation_hook( __FILE__, array( 'AcceptStripePayments', 'deactivate' ) );
 
 		add_action( 'plugins_loaded', array( 'AcceptStripePayments', 'get_instance' ) );
-		
-		add_action("plugins_loaded",array("ASP_Utils","load_stripe_php_sdk"));
+                
+                //Load the Stripe PHP SDK (if "dont_use_stripe_php_sdk" option is unchecked).
+		add_action( 'plugins_loaded', array( 'ASP_Utils', 'load_stripe_php_sdk_if_enabled' ) );
 
 		if ( is_admin() ) {
 			add_action( 'plugins_loaded', array( 'AcceptStripePayments_Admin', 'get_instance' ) );
