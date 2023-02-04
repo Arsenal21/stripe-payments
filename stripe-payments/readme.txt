@@ -155,6 +155,9 @@ None.
 
 == Changelog ==
 
+= WIP 2.0.74 =
+- iDEAL addon fix (this payment method option was getting selected by default when enabled).
+
 = 2.0.73 =
 - Added filter hooks to allow customization of the admin menu item capability.
 - Added a new email merge tag {product_variations} that will include the selected variations of the order.

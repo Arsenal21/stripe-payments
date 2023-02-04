@@ -254,7 +254,8 @@ echo wp_kses( '<style>' . $css . '</style>' . "\r\n", ASP_Utils::asp_allowed_tag
 							<fieldset>
 								<legend><?php esc_html_e( 'Select payment method', 'stripe-payments' ); ?></legend>
 								<?php
-										$out = '';
+								$out = '';
+                                                                $pm_displayed = '';
 								foreach ( $a['data']['payment_methods'] as $pm ) {
 									$img = '';
 									if ( isset( $pm['img'] ) ) {
@@ -267,11 +268,12 @@ echo wp_kses( '<style>' . $css . '</style>' . "\r\n", ASP_Utils::asp_allowed_tag
 										);
 									}
 
-                                                                        $pm_check_status = empty( $out ) ? ' checked' : '';
+                                                                        $pm_check_status = empty( $pm_displayed ) ? ' checked' : '';
                                                                         $pm_before_title = isset( $pm['before_title'] ) ? $pm['before_title'] : '';
                                                                         $pm_img = ! empty( $img ) ? $img : '';
                                                                         $pm_title = isset( $pm['hide_title'] ) ? '' : $pm['title'];
-                                                                        echo '<div class="pure-u-1 pure-u-md-1-3" data-cont-pm-id="'.esc_attr($pm['id']).'"><label class="pure-radio"><input name="pm" class="pm-select-btn" type="radio"'.esc_attr($pm_check_status).' value="'.esc_attr($pm['id']).'" data-pm-id="'.esc_attr($pm['id']).'">'.wp_kses($pm_before_title, ASP_Utils::asp_allowed_tags_for_svg()).''.esc_url($pm_img).' '.esc_attr($pm_title).'</label></div>';
+                                                                        echo '<div class="pure-u-1 pure-u-md-1-3" data-cont-pm-id="'.esc_attr($pm['id']).'"><label class="pure-radio"><input name="pm" class="pm-select-btn" type="radio"'.esc_attr($pm_check_status).' value="'.esc_attr($pm['id']).'" data-pm-id="'.esc_attr($pm['id']).'">'.wp_kses($pm_before_title, ASP_Utils::asp_allowed_tags_for_svg()).''.wp_kses($pm_img, ASP_Utils::asp_allowed_tags()).' '.esc_attr($pm_title).'</label></div>';
+                                                                        $pm_displayed = 'yes';//Flag to see if one payment method has been rendered. Used for the radio button option.
 								}
 								?>
 							</fieldset>
