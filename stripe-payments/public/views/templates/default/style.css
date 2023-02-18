@@ -16,6 +16,7 @@ CSS class names should use dashes. Example: asp-product-description
     height: 75px;
     float: left;
     margin-right: 10px;
+    object-fit: cover;
 }
 
 .asp_product_name {

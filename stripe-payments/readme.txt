@@ -157,6 +157,7 @@ None.
 
 = WIP 2.0.74 =
 - iDEAL addon fix (this payment method option was getting selected by default when enabled).
+- Better thumbnail positioning within the product template display.
 
 = 2.0.73 =
 - Added filter hooks to allow customization of the admin menu item capability.
