@@ -70,6 +70,7 @@ CSS class names should use dashes. Example: asp-product-description
     min-width: 128px;
     width: 100%;
     max-width: 100%;
+    object-fit: cover;
 }
 .wp-asp-product-price {
     text-align: center;
