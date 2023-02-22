@@ -158,6 +158,7 @@ None.
 = 2.0.74 =
 - iDEAL addon fix (this payment method option was getting selected by default when enabled).
 - Better thumbnail positioning within the product template display.
+- The shop page is wrapped using a div element for better display in block themes.
 
 = 2.0.73 =
 - Added filter hooks to allow customization of the admin menu item capability.
