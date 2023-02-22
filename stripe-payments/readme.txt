@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 5.0
 Tested up to: 6.1
 Requires PHP: 5.6
-Stable tag: 2.0.73
+Stable tag: 2.0.74
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -155,7 +155,7 @@ None.
 
 == Changelog ==
 
-= WIP 2.0.74 =
+= 2.0.74 =
 - iDEAL addon fix (this payment method option was getting selected by default when enabled).
 - Better thumbnail positioning within the product template display.
 
