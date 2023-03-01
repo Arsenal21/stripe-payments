@@ -1144,16 +1144,13 @@ class AcceptStripePaymentsShortcode {
 			$q['s'] = $search;
 		}
 
-		if($q["orderby"]=="price")
-		{
+		if( $q["orderby"] == "price" ) {
 			add_filter( 'posts_orderby', array(__CLASS__,'asp_orderby_price_callback' ));		
 		}
-		
 
 		$products = new WP_Query( $q );
 
-		if($q["orderby"]=="price")
-		{
+		if( $q["orderby"] == "price" ) {
 			remove_filter( 'posts_orderby',array(__CLASS__,'asp_orderby_price_callback')  );
 		}
 
@@ -1301,13 +1298,12 @@ class AcceptStripePaymentsShortcode {
 	public static  function asp_orderby_price_callback( $orderby ) {
 		global $wpdb;
 		$order = "";				
-		if(stripos($orderby,"desc")!==false)
-		{
+		if(stripos( $orderby, "desc" ) !== false) {
 			$order="desc";
 		}
 		else{
 			$order="asc";
-		}		
+		}
 		
 		$orderby = "
 		CASE 
@@ -1317,8 +1313,6 @@ class AcceptStripePaymentsShortcode {
 			else 0 
 		END ".$order."
 			";
-			
-			
 
 		return $orderby;
 	}
