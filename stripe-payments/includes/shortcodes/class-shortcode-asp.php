@@ -1102,19 +1102,36 @@ class AcceptStripePaymentsShortcode {
 			'asp_show_all_products'
 		);
 
+		//if user has changed sort by from UI
+		$sort_by = isset( $_GET['asp-sortby'] ) ? sanitize_text_field( stripslashes ( $_GET['asp-sortby'] ) ) : '';
+
 		include_once WP_ASP_PLUGIN_PATH . 'public/views/all-products/default/template.php';
 
 		$page = filter_input( INPUT_GET, 'asp_page', FILTER_SANITIZE_NUMBER_INT );
 
 		$page = empty( $page ) ? 1 : $page;
 
+		$order_by = isset( $params['sort_by'] ) ? ( $params['sort_by'] ) : 'none';
+
+		$sort_direction = isset( $params['sort_order'] ) ? strtoupper( $params['sort_order'] ) : 'DESC';
+
+		if($sort_by)
+		{
+			$order_by=explode("-",$sort_by)[0];
+			$sort_direction=isset(explode("-",$sort_by)[1])?explode("-",$sort_by)[1]:"asc";
+		}
+		else{
+			//set default to latest sort
+			$order_by="id";			
+		}
+
 		$q = array(
 			'post_type'      => ASPMain::$products_slug,
 			'post_status'    => 'publish',
 			'posts_per_page' => isset( $params['items_per_page'] ) ? $params['items_per_page'] : 30,
 			'paged'          => $page,
-			'orderby'        => isset( $params['sort_by'] ) ? ( $params['sort_by'] ) : 'none',
-			'order'          => isset( $params['sort_order'] ) ? strtoupper( $params['sort_order'] ) : 'DESC',
+			'orderby'        => $order_by,
+			'order'          => $sort_direction,
 		);
 
 		//handle search
@@ -1127,7 +1144,18 @@ class AcceptStripePaymentsShortcode {
 			$q['s'] = $search;
 		}
 
+		if($q["orderby"]=="price")
+		{
+			add_filter( 'posts_orderby', array(__CLASS__,'asp_orderby_price_callback' ));		
+		}
+		
+
 		$products = new WP_Query( $q );
+
+		if($q["orderby"]=="price")
+		{
+			remove_filter( 'posts_orderby',array(__CLASS__,'asp_orderby_price_callback')  );
+		}
 
 		if ( ! $products->have_posts() ) {
 			//query returned no results. Let's see if that was a search query
@@ -1167,7 +1195,7 @@ class AcceptStripePaymentsShortcode {
 				$i                     = $tpl['products_per_row'] - 1;
 			}
 
-			$id = get_the_ID();
+			$id = get_the_ID();			
 
 			$thumb_url = get_post_meta( $id, 'asp_product_thumbnail', true );
 			if ( ! $thumb_url ) {
@@ -1267,6 +1295,32 @@ class AcceptStripePaymentsShortcode {
 
 		$output = '<div class="wpec_shop_products">'.$tpl['page'].'</div>';
 		return $output;
+	}
+
+
+	public static  function asp_orderby_price_callback( $orderby ) {
+		global $wpdb;
+		$order = "";				
+		if(stripos($orderby,"desc")!==false)
+		{
+			$order="desc";
+		}
+		else{
+			$order="asc";
+		}		
+		
+		$orderby = "
+		CASE 
+			WHEN  (select wp.meta_value from ".$wpdb->prefix."postmeta wp where wp.meta_key='asp_product_type' and wp.post_id=wp_posts.ID limit 1) ='one_time' THEN cast((select wp.meta_value from ".$wpdb->prefix."postmeta wp where wp.meta_key='asp_product_price' and wp.post_id=wp_posts.ID limit 1) as decimal) 
+			WHEN  (select wp.meta_value from ".$wpdb->prefix."postmeta wp where wp.meta_key='asp_product_type' and wp.post_id=wp_posts.ID limit 1) ='donation' THEN cast(0 as decimal) 									
+			WHEN  (select wp.meta_value from ".$wpdb->prefix."postmeta wp where wp.meta_key='asp_product_type' and wp.post_id=wp_posts.ID limit 1) ='subscription' THEN cast((select (select plan.meta_value from ".$wpdb->prefix."postmeta plan where plan.post_id=wp.meta_value and plan.meta_key='asp_sub_plan_price' limit 1) from ".$wpdb->prefix."postmeta wp where wp.meta_key='asp_sub_plan_id' and wp.post_id=wp_posts.ID limit 1) as decimal) 						
+			else 0 
+		END ".$order."
+			";
+			
+			
+
+		return $orderby;
 	}
 
 	function apply_content_tags( $content, $data ) {

@@ -97,6 +97,32 @@ CSS class names should use dashes. Example: asp-product-description
     line-height: 1em;
 }
 
+/* SORT */
+#asp-sort-by-form{    
+    width:30%
+}
+
+#asp-sort-by-form select{
+vertical-align: middle;
+height: auto;
+padding: 5px;
+box-sizing: border-box;
+width: 100%;
+display: inline-block;
+line-height: normal;
+}
+#asp-sort-wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+#asp-search-wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 /* Search */
 
 #wp-asp-search-form{
