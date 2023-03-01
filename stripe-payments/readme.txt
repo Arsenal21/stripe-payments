@@ -155,6 +155,9 @@ None.
 
 == Changelog ==
 
+= WIP 2.0.75 =
+- Sorting option added in the shop/products page.
+
 = 2.0.74 =
 - iDEAL addon fix (this payment method option was getting selected by default when enabled).
 - Better thumbnail positioning within the product template display.
