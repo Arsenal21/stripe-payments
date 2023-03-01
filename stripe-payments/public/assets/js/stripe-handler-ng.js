@@ -243,4 +243,9 @@ WPASPDocReady(function () {
 		WPASPAttachToAElement(el);
 	});
 
+	//shortcode_asp_show_all_products
+	jQuery("#asp-sort-by").change(function(){
+		jQuery("#asp-sort-by-form").submit();
+	});
+
 });

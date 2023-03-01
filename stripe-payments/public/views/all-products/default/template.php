@@ -20,6 +20,19 @@ $strClearSearch = __( 'Clear search', 'stripe-payments' );
 $strViewItem    = __( 'View Item', 'stripe-payments' );
 //Search box
 ?>
+
+<div id="asp-sort-wrapper">	
+<form method="GET" id="asp-sort-by-form">
+<select id="asp-sort-by" name="asp-sortby">
+	<option <?php echo ("id-desc"==$sort_by?"selected='selected'":"")?> value="id-desc">Sort by latest</option>
+	<option <?php echo "title-asc"==$sort_by?"selected='selected'":""?> value="title-asc">Sort by title</option>
+	<option <?php echo ("price-asc"==$sort_by?"selected='selected'":"")?> value="price-asc">Sort by price (low to high)</option>
+	<option <?php echo ("price-desc"==$sort_by?"selected='selected'":"")?> value="price-desc">Sort by price(high to low)</option>
+</select>
+</form>
+</div>
+
+
 <form id="wp-asp-search-form" method="GET">
 	<div class="wp-asp-listing-search-field">
 		<input type="text" class="wp-asp-search-input" name="asp_search" value="_%search_term%_" placeholder="<?php echo esc_attr($strSearch); ?> ...">
