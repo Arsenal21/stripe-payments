@@ -155,6 +155,9 @@ None.
 
 == Changelog ==
 
+= WIP 2.0.76 =
+- Improved the sorting by price option in the shop/products page.
+
 = 2.0.75 =
 - Sorting option added in the shop/products page via shortcode parameter.
 - Visitors can also sort the products in the shop page by latest, sort by title, sort by price.
