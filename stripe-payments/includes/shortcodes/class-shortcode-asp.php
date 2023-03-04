@@ -1308,8 +1308,10 @@ class AcceptStripePaymentsShortcode {
 		$orderby = "
 		CASE 
 			WHEN  (select wp.meta_value from ".$wpdb->prefix."postmeta wp where wp.meta_key='asp_product_type' and wp.post_id=wp_posts.ID limit 1) ='one_time' THEN cast((select wp.meta_value from ".$wpdb->prefix."postmeta wp where wp.meta_key='asp_product_price' and wp.post_id=wp_posts.ID limit 1) as decimal) 
+			WHEN  ((select wp.meta_value from ".$wpdb->prefix."postmeta wp where wp.meta_key='asp_product_price' and wp.post_id=wp_posts.ID limit 1) is not null and (select wp.meta_value from ".$wpdb->prefix."postmeta wp where wp.meta_key='asp_product_price' and wp.post_id=wp_posts.ID limit 1)>0) THEN cast((select wp.meta_value from ".$wpdb->prefix."postmeta wp where wp.meta_key='asp_product_price' and wp.post_id=wp_posts.ID limit 1) as decimal) 
 			WHEN  (select wp.meta_value from ".$wpdb->prefix."postmeta wp where wp.meta_key='asp_product_type' and wp.post_id=wp_posts.ID limit 1) ='donation' THEN cast(0 as decimal) 									
-			WHEN  (select wp.meta_value from ".$wpdb->prefix."postmeta wp where wp.meta_key='asp_product_type' and wp.post_id=wp_posts.ID limit 1) ='subscription' THEN cast((select (select plan.meta_value from ".$wpdb->prefix."postmeta plan where plan.post_id=wp.meta_value and plan.meta_key='asp_sub_plan_price' limit 1) from ".$wpdb->prefix."postmeta wp where wp.meta_key='asp_sub_plan_id' and wp.post_id=wp_posts.ID limit 1) as decimal) 						
+			WHEN  (select wp.meta_value from ".$wpdb->prefix."postmeta wp where wp.meta_key='asp_product_min_amount' and wp.post_id=wp_posts.ID limit 1) is not null THEN cast(0 as decimal) 									
+			WHEN  (select wp.meta_value from ".$wpdb->prefix."postmeta wp where wp.meta_key='asp_sub_plan_id' and wp.post_id=wp_posts.ID limit 1) is not null THEN cast((select (select plan.meta_value from ".$wpdb->prefix."postmeta plan where plan.post_id=wp.meta_value and plan.meta_key='asp_sub_plan_price' limit 1) from ".$wpdb->prefix."postmeta wp where wp.meta_key='asp_sub_plan_id' and wp.post_id=wp_posts.ID limit 1) as decimal) 						
 			else 0 
 		END ".$order."
 			";
