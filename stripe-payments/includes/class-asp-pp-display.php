@@ -199,16 +199,16 @@ class ASP_PP_Display {
 			$a['tos_text'] = $this->asp_main->get_setting( 'tos_text' );
 		}
 
+                //Is coupon option enabled?              
 		$coupons_enabled = get_post_meta( $product_id, 'asp_product_coupons_setting', true );
 		if ( ( '' === $coupons_enabled ) || '2' === $coupons_enabled ) {
 			$coupons_enabled = $this->asp_main->get_setting( 'coupons_enabled' );
 		}
-
 		if ( $a['amount_variable'] ) {
-                        //Enabling coupon for variable amount as well (in the past it was disabled). It can be disabled via the product specific settings.
-			$coupons_enabled = true;
+                        //Allow the coupon option for variable amount as well (in the past it was always disabled for variable amount). 
+                        //Commenting it out means it can be disabled via the product specific settings (see the above section of the code).
+			//$coupons_enabled = false;
 		}
-
 		$coupons_enabled = empty( $coupons_enabled ) ? false : true;
 
 		$item_logo = '';
