@@ -203,6 +203,8 @@ class AcceptStripePaymentsShortcode {
 			'</div>';
 			$this->tplCF = $tplCF;
 		}
+                
+                //This custom field position option is used only for the legacy API which has been deprecated. It's here for backwards compatibility.
 		$cfPos = $this->AcceptStripePayments->get_setting( 'custom_field_position' );
 		if ( $cfPos !== 'below' ) {
 			$output     .= $this->tplCF;
@@ -210,6 +212,7 @@ class AcceptStripePaymentsShortcode {
 		} else {
 			add_filter( 'asp_button_output_after_button', array( $this, 'after_button_add_сf_filter' ), 990, 3 );
 		}
+                
 		return $output;
 	}
 

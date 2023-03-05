@@ -157,6 +157,7 @@ None.
 
 = WIP 2.0.76 =
 - Improved the sorting by price option in the shop/products page.
+- The custom field position for the legacy API option has been removed as it is no longer used.
 
 = 2.0.75 =
 - Sorting option added in the shop/products page via shortcode parameter.
