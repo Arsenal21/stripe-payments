@@ -205,7 +205,8 @@ class ASP_PP_Display {
 		}
 
 		if ( $a['amount_variable'] ) {
-			$coupons_enabled = false;
+                        //Enabling coupon for variable amount as well (in the past it was disabled). It can be disabled via the product specific settings.
+			$coupons_enabled = true;
 		}
 
 		$coupons_enabled = empty( $coupons_enabled ) ? false : true;

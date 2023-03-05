@@ -157,6 +157,7 @@ None.
 
 = WIP 2.0.76 =
 - Improved the sorting by price option in the shop/products page.
+- The coupon code option will be enabled by default for variable amount product as well. It can be disabled via the product specific coupon configuration.
 - The custom field position for the legacy API option has been removed as it is no longer used.
 
 = 2.0.75 =
