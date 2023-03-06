@@ -1374,6 +1374,7 @@ class AcceptStripePayments_Admin {
 	public function get_checkout_lang_options( $selected_value = '' ) {
 		$languages_arr = array(
 			'ar' => __( 'Arabic', 'stripe-payments' ),
+                        'bg' => __( 'Bulgarian', 'stripe-payments' ),
 			'he' => __( 'Hebrew', 'stripe-payments' ),
 			'lv' => __( 'Latvian', 'stripe-payments' ),
 			'lt' => __( 'Lithuanian', 'stripe-payments' ),
