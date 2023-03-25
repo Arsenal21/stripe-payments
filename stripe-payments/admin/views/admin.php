@@ -69,6 +69,9 @@ if ( $_GET['page'] == 'stripe-payments-settings' ) {
 				<div data-captcha-section="hcaptcha"<?php echo ( $captcha_type !== 'hcaptcha' ? ' style="display:none;"' : '' ); ?>>
 					<?php do_settings_sections( $asp_admin->plugin_slug . '-hcaptcha' ); ?>
 				</div>
+                                <div class="asp-render-txn-rate-limit-settings-section">
+                                <?php do_settings_sections( $asp_admin->plugin_slug . '-txn-rate-limit' ); ?>
+                                </div>
 			</div>
 			<?php
 			do_action( 'asp-settings-page-after-tabs' );

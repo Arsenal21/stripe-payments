@@ -155,6 +155,9 @@ None.
 
 == Changelog ==
 
+= WIP 2.0.77 =
+- Settings UI improvement: the individual captcha configuration fields are now displayed above the transaction rate limiting section.
+
 = 2.0.76 =
 - Improved the sorting by price option in the shop/products page.
 - The coupon code option will be enabled by default for variable amount product as well. It can be disabled via the product specific coupon configuration.

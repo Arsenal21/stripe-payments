@@ -477,7 +477,7 @@ class AcceptStripePayments_Admin {
 		add_settings_section( 'AcceptStripePayments-experimental-settings', __( 'Experimental Settings', 'stripe-payments' ), array( $this, 'experemintal_section_description' ), $this->plugin_slug . '-advanced' );
 
 		add_settings_section( 'AcceptStripePayments-captcha', __( 'Captcha Settings', 'stripe-payments' ), array( $this, 'captcha_section_description' ), $this->plugin_slug . '-captcha' );
-		add_settings_section( 'AcceptStripePayments-txn-rate-limiting', __( 'Transaction Rate Limiting', 'stripe-payments' ), array( $this, 'txn_rate_limiting_section_description' ), $this->plugin_slug . '-captcha' );
+		add_settings_section( 'AcceptStripePayments-txn-rate-limiting', __( 'Transaction Rate Limiting', 'stripe-payments' ), array( $this, 'txn_rate_limiting_section_description' ), $this->plugin_slug . '-txn-rate-limit' );
 
 		// Global section
 		add_settings_field(
@@ -1307,7 +1307,7 @@ class AcceptStripePayments_Admin {
 			'daily_txn_limit_without_captcha',
 			__( 'Daily Transaction Limit without Captcha', 'stripe-payments' ),
 			array( &$this, 'settings_field_callback' ),
-			$this->plugin_slug . '-captcha',
+			$this->plugin_slug . '-txn-rate-limit',
 			'AcceptStripePayments-txn-rate-limiting',
 			array(
 				'field' => 'daily_txn_limit_without_captcha',
@@ -1319,7 +1319,7 @@ class AcceptStripePayments_Admin {
 			'daily_txn_limit_with_captcha',
 			__( ' Daily Transaction Limit with Captcha', 'stripe-payments' ),
 			array( &$this, 'settings_field_callback' ),
-			$this->plugin_slug . '-captcha',
+			$this->plugin_slug . '-txn-rate-limit',
 			'AcceptStripePayments-txn-rate-limiting',
 			array(
 				'field' => 'daily_txn_limit_with_captcha',
