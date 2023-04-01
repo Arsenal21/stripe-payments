@@ -1172,6 +1172,17 @@ class AcceptStripePayments_Admin {
 			)
 		);
 		add_settings_field(
+			'dont_use_cookie',
+			__( 'Don\'t Use Cookie', 'stripe-payments' ),
+			array( &$this, 'settings_field_callback' ),
+			$this->plugin_slug . '-advanced',
+			'AcceptStripePayments-additional-settings',
+			array(
+				'field' => 'dont_use_cookie',
+				'desc'  => __( 'If enabled, cookie will not be used by the plugin.', 'stripe-payments' ),
+			)
+		);
+		add_settings_field(
 			'dont_create_order',
 			__( 'Don\'t Create Order', 'stripe-payments' ),
 			array( &$this, 'settings_field_callback' ),
@@ -1518,6 +1529,7 @@ class AcceptStripePayments_Admin {
 			case 'dont_save_card':
 			case 'custom_field_mandatory':
 			case 'enable_zip_validation':
+			case 'dont_use_cookie':                            
 			case 'dont_create_order':
 			case 'enable_email_schedule':
 			case 'frontend_prefetch_scripts':
@@ -1807,6 +1819,8 @@ class AcceptStripePayments_Admin {
 
 		$output['new_product_edit_interface'] = empty( $input['new_product_edit_interface'] ) ? 0 : 1;
 
+                $output['dont_use_cookie'] = empty( $input['dont_use_cookie'] ) ? 0 : 1;
+                
 		$output['dont_create_order'] = empty( $input['dont_create_order'] ) ? 0 : 1;
 
 		$output['enable_zip_validation'] = empty( $input['enable_zip_validation'] ) ? 0 : 1;

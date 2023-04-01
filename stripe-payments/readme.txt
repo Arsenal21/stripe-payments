@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 5.0
 Tested up to: 6.2
 Requires PHP: 5.6
-Stable tag: 2.0.76
+Stable tag: 2.0.77
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -155,8 +155,9 @@ None.
 
 == Changelog ==
 
-= WIP 2.0.77 =
+= 2.0.77 =
 - Settings UI improvement: the individual captcha configuration fields are now displayed above the transaction rate limiting section.
+- New option (Don't Use Cookie) in the advanced settings menu to disable the use of cookie.
 
 = 2.0.76 =
 - Improved the sorting by price option in the shop/products page.
