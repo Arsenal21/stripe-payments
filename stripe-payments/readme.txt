@@ -155,6 +155,9 @@ None.
 
 == Changelog ==
 
+= WIP 2.0.78 =
+- Refactored some lines of code to remove the use of deprecated FILTER_SANITIZE_STRING filter.
+
 = 2.0.77 =
 - Settings UI improvement: the individual captcha configuration fields are now displayed above the transaction rate limiting section.
 - New option (Don't Use Cookie) in the advanced settings menu to disable the use of cookie.

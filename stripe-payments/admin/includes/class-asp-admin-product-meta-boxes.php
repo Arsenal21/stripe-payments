@@ -924,14 +924,14 @@ jQuery(document).ready(function($) {
 				$text = __( 'Please specify product name.', 'stripe-payments' );
 				AcceptStripePayments_Admin::add_admin_notice( 'error', $text, false );
 			}
-			$currency = filter_input( INPUT_POST, 'asp_product_currency', FILTER_SANITIZE_STRING );
+			$currency = isset( $_POST['asp_product_currency'] ) ? sanitize_text_field( stripslashes ( $_POST['asp_product_currency'] ) ) : '';
 			update_post_meta( $post_id, 'asp_product_currency', sanitize_text_field( $currency ) );
 
-			$shipping = filter_input( INPUT_POST, 'asp_product_shipping', FILTER_SANITIZE_STRING );
+			$shipping = isset( $_POST['asp_product_shipping'] ) ? sanitize_text_field( stripslashes ( $_POST['asp_product_shipping'] ) ) : '';
 			$shipping = ! empty( $shipping ) ? AcceptStripePayments::tofloat( $shipping ) : $shipping;
 			update_post_meta( $post_id, 'asp_product_shipping', $shipping );
 
-			$tax = filter_input( INPUT_POST, 'asp_product_tax', FILTER_SANITIZE_STRING );
+			$tax = isset( $_POST['asp_product_tax'] ) ? sanitize_text_field( stripslashes ( $_POST['asp_product_tax'] ) ) : '';
 			$tax = floatval( $tax );
 			$tax = empty( $tax ) ? '' : $tax;
 			update_post_meta( $post_id, 'asp_product_tax', $tax );
@@ -944,8 +944,8 @@ jQuery(document).ready(function($) {
 
 			if ( ! empty( $tax_variations_base ) && ! empty( $tax_variations_l ) && ! empty( $tax_variations_a ) ) {
 				foreach ( $tax_variations_base as $i => $type ) {
-					$l                    = filter_var( $tax_variations_l[ $i ], FILTER_SANITIZE_STRING );
-					$tax                  = floatval( filter_var( $tax_variations_a[ $i ], FILTER_SANITIZE_STRING ) );
+					$l                    = filter_var( $tax_variations_l[ $i ], FILTER_DEFAULT );
+					$tax                  = floatval( filter_var( $tax_variations_a[ $i ], FILTER_DEFAULT ) );
 					$tax_variations_arr[] = array(
 						'type'   => $type,
 						'loc'    => $l,
@@ -956,7 +956,7 @@ jQuery(document).ready(function($) {
 
 			update_post_meta( $post_id, 'asp_product_tax_variations', $tax_variations_arr );
 
-			$tax_variations_type = filter_input( INPUT_POST, 'asp_product_tax_variations_type', FILTER_SANITIZE_STRING );
+			$tax_variations_type = isset( $_POST['asp_product_tax_variations_type'] ) ? sanitize_text_field( stripslashes ( $_POST['asp_product_tax_variations_type'] ) ) : '';
 			update_post_meta( $post_id, 'asp_product_tax_variations_type', $tax_variations_type );
 
 			$quantity = filter_input( INPUT_POST, 'asp_product_quantity', FILTER_SANITIZE_NUMBER_INT );
@@ -971,25 +971,25 @@ jQuery(document).ready(function($) {
 			$show_remaining = ! empty( $show_remaining ) ? true : false;
 			update_post_meta( $post_id, 'asp_product_show_remaining_items', $show_remaining );
 
-			$force_test_mode = filter_input( INPUT_POST, 'asp_product_force_test_mode', FILTER_SANITIZE_STRING );
+			$force_test_mode = isset( $_POST['asp_product_force_test_mode'] ) ? sanitize_text_field( stripslashes ( $_POST['asp_product_force_test_mode'] ) ) : '';
 			$force_test_mode = ! empty( $force_test_mode ) ? true : false;
 			update_post_meta( $post_id, 'asp_product_force_test_mode', $force_test_mode );
 
-			$auth_only = filter_input( INPUT_POST, 'asp_product_authorize_only', FILTER_SANITIZE_STRING );
+			$auth_only = isset( $_POST['asp_product_authorize_only'] ) ? sanitize_text_field( stripslashes ( $_POST['asp_product_authorize_only'] ) ) : '';
 			$auth_only = ! empty( $auth_only ) ? true : false;
 			update_post_meta( $post_id, 'asp_product_authorize_only', $auth_only );
 
-			$use_other_stripe_acc = filter_input( INPUT_POST, 'asp_use_other_stripe_acc', FILTER_SANITIZE_STRING );
+			$use_other_stripe_acc = isset( $_POST['asp_use_other_stripe_acc'] ) ? sanitize_text_field( stripslashes ( $_POST['asp_use_other_stripe_acc'] ) ) : '';
 			$use_other_stripe_acc = ! empty( $use_other_stripe_acc ) ? true : false;
 			update_post_meta( $post_id, 'asp_use_other_stripe_acc', $use_other_stripe_acc );
 
-			$live_pub_key = filter_input( INPUT_POST, 'asp_stripe_live_pub_key', FILTER_SANITIZE_STRING );
+			$live_pub_key = isset( $_POST['asp_stripe_live_pub_key'] ) ? sanitize_text_field( stripslashes ( $_POST['asp_stripe_live_pub_key'] ) ) : '';
 			update_post_meta( $post_id, 'asp_stripe_live_pub_key', $live_pub_key );
-			$live_sec_key = filter_input( INPUT_POST, 'asp_stripe_live_sec_key', FILTER_SANITIZE_STRING );
+			$live_sec_key = isset( $_POST['asp_stripe_live_sec_key'] ) ? sanitize_text_field( stripslashes ( $_POST['asp_stripe_live_sec_key'] ) ) : '';
 			update_post_meta( $post_id, 'asp_stripe_live_sec_key', $live_sec_key );
-			$test_pub_key = filter_input( INPUT_POST, 'asp_stripe_test_pub_key', FILTER_SANITIZE_STRING );
+			$test_pub_key = isset( $_POST['asp_stripe_test_pub_key'] ) ? sanitize_text_field( stripslashes ( $_POST['asp_stripe_test_pub_key'] ) ) : '';
 			update_post_meta( $post_id, 'asp_stripe_test_pub_key', $test_pub_key );
-			$test_sec_key = filter_input( INPUT_POST, 'asp_stripe_test_sec_key', FILTER_SANITIZE_STRING );
+			$test_sec_key = isset( $_POST['asp_stripe_test_sec_key'] ) ? sanitize_text_field( stripslashes ( $_POST['asp_stripe_test_sec_key'] ) ) : '';
 			update_post_meta( $post_id, 'asp_stripe_test_sec_key', $test_sec_key );
 
 			if ( $use_other_stripe_acc && ( empty( $live_pub_key ) || empty( $live_sec_key ) || empty( $test_pub_key ) || empty( $test_sec_key ) ) ) {
@@ -997,7 +997,7 @@ jQuery(document).ready(function($) {
 				AcceptStripePayments_Admin::add_admin_notice( 'error', $text, false );
 			}
 
-			$pdf_stamper_enabled = filter_input( INPUT_POST, 'asp_product_pdf_stamper_enabled', FILTER_SANITIZE_STRING );
+			$pdf_stamper_enabled = isset( $_POST['asp_product_pdf_stamper_enabled'] ) ? sanitize_text_field( stripslashes ( $_POST['asp_product_pdf_stamper_enabled'] ) ) : '';
 			$pdf_stamper_enabled = ! empty( $pdf_stamper_enabled ) ? true : false;
 			update_post_meta( $post_id, 'asp_product_pdf_stamper_enabled', $pdf_stamper_enabled );
 
@@ -1043,7 +1043,7 @@ jQuery(document).ready(function($) {
 			//check if this is not subscription product
 			$asp_plan_id = get_post_meta( $post_id, 'asp_sub_plan_id', true );
 
-			$product_type = filter_input( INPUT_POST, 'asp_product_type_radio', FILTER_SANITIZE_STRING );
+			$product_type = isset( $_POST['asp_product_type_radio'] ) ? sanitize_text_field( stripslashes ( $_POST['asp_product_type_radio'] ) ) : '';
 
 			if ( empty( $asp_plan_id ) || ( ! empty( $product_type ) && 'subscription' !== $product_type ) ) {
 				update_post_meta( $post_id, 'asp_sub_plan_id', 0 );
@@ -1082,17 +1082,17 @@ jQuery(document).ready(function($) {
 				if ( ! empty( $product_type ) ) {
 					update_post_meta( $post_id, 'asp_product_type', $product_type );
 					if ( 'donation' === $product_type ) {
-						$min_amount = filter_input( INPUT_POST, 'asp_product_min_amount', FILTER_SANITIZE_STRING );
+						$min_amount = isset( $_POST['asp_product_min_amount'] ) ? sanitize_text_field( stripslashes ( $_POST['asp_product_min_amount'] ) ) : '';
 						$min_amount = abs( floatval( $min_amount ) );
 						update_post_meta( $post_id, 'asp_product_min_amount', $min_amount );
 						update_post_meta( $post_id, 'asp_product_price', 0 );
-						$currency_variable = filter_input( INPUT_POST, 'asp_product_currency_variable', FILTER_SANITIZE_STRING );
+						$currency_variable = isset( $_POST['asp_product_currency_variable'] ) ? sanitize_text_field( stripslashes ( $_POST['asp_product_currency_variable'] ) ) : '';
 						$currency_variable = ! empty( $currency_variable ) ? true : false;
 						update_post_meta( $post_id, 'asp_product_currency_variable', $currency_variable );
 						return true;
 					}
 				} else {
-					$currency_variable = filter_input( INPUT_POST, 'asp_product_currency_variable', FILTER_SANITIZE_STRING );
+					$currency_variable = isset( $_POST['asp_product_currency_variable'] ) ? sanitize_text_field( stripslashes ( $_POST['asp_product_currency_variable'] ) ) : '';
 					$currency_variable = ! empty( $currency_variable ) ? true : false;
 					update_post_meta( $post_id, 'asp_product_currency_variable', $currency_variable );
 				}

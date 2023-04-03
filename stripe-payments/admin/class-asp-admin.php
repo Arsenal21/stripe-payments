@@ -1994,7 +1994,7 @@ class AcceptStripePayments_Admin {
 			add_settings_error( 'AcceptStripePayments-settings', 'daily-txn-limit-with-captcha-error', __( 'Daily Transaction Limit with Captcha cannot be empty or 0. If you wish to disable this setting, please enter -1', 'stripe-payments' ) );				
 		}
 
-		$url_hash = filter_input( INPUT_POST, 'wp-asp-urlHash', FILTER_SANITIZE_STRING );
+		$url_hash = isset( $_POST['wp-asp-urlHash'] ) ? sanitize_text_field( stripslashes ( $_POST['wp-asp-urlHash'] ) ) : '';
 
 		if ( ! empty( $url_hash ) ) {
 			set_transient( 'wp-asp-urlHash', $url_hash, 300 );
