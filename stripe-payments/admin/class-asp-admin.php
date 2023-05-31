@@ -246,6 +246,12 @@ class AcceptStripePayments_Admin {
                         //check if captcha is enabled
                         $this->check_captcha_settings_and_show_msg();
 		}
+
+		//Handle feedback in the admin area.
+		include_once WP_ASP_PLUGIN_PATH . 'admin/includes/class-asp-admin-user-feedback.php';
+		$user_feedback = new ASP_Admin_User_Feedback();
+		$user_feedback->init(); 
+
 	}
 
         private function check_captcha_settings_and_show_msg() {
