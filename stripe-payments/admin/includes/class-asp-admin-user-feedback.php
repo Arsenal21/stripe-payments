@@ -87,7 +87,7 @@ class ASP_Admin_User_Feedback {
 				<p>
 					<?php
 					printf(
-						'<a href="https://support.tipsandtricks-hq.com/contact" class="asp-plugin-dismiss-review-notice asp-plugin-review-out" target="_blank" rel="noopener noreferrer">%s</a>',
+						'<a href="https://s-plugins.com/contact-us/" class="asp-plugin-dismiss-review-notice asp-plugin-review-out" target="_blank" rel="noopener noreferrer">%s</a>',
 						esc_html__( 'Give Feedback', 'stripe-payments' )
 					);
 					?>
