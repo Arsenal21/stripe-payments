@@ -87,7 +87,7 @@ class AcceptStripePayments_CouponsAdmin {
 	public function frontend_check_coupon() {
 		$out = array();
 
-		$coupon_code = filter_input( INPUT_POST, 'coupon_code', FILTER_SANITIZE_STRING );
+		$coupon_code = isset( $_POST['coupon_code'] ) ? sanitize_text_field( stripslashes ( $_POST['coupon_code'] ) ) : '';
 
 		if ( empty( $coupon_code ) ) {
 			$out['success'] = false;
@@ -123,8 +123,7 @@ class AcceptStripePayments_CouponsAdmin {
 			wp_send_json( $out );
 		}
 
-		$curr = filter_input( INPUT_POST, 'curr', FILTER_SANITIZE_STRING );
-
+		$curr = isset( $_POST['curr'] ) ? sanitize_text_field( stripslashes ( $_POST['curr'] ) ) : '';
 		$curr = isset( $curr ) ? $curr : '';
 
 		$discount      = $coupon['discount'];
@@ -176,7 +175,7 @@ class AcceptStripePayments_CouponsAdmin {
 			return;
 		}
 
-		$post_action = filter_input( INPUT_POST, 'asp_coupon_action', FILTER_SANITIZE_STRING );
+		$post_action = isset( $_POST['asp_coupon_action'] ) ? sanitize_text_field( stripslashes ( $_POST['asp_coupon_action'] ) ) : '';
 		$post_action = empty( $post_action ) ? '0' : $post_action;
 
 		switch ( $post_action ) {
@@ -190,7 +189,7 @@ class AcceptStripePayments_CouponsAdmin {
 				break;
 		}
 
-		$action = filter_input( INPUT_GET, 'action', FILTER_SANITIZE_STRING );
+		$action = isset( $_POST['action'] ) ? sanitize_text_field( stripslashes ( $_POST['action'] ) ) : '';
 		$action = empty( $action ) ? '' : $action;
 
 		if ( $action === 'asp_delete_coupon' ) {
@@ -220,7 +219,7 @@ class AcceptStripePayments_CouponsAdmin {
 
 	public function display_coupons_menu_page() {
 
-		$action = filter_input( INPUT_GET, 'action', FILTER_SANITIZE_STRING );
+		$action = isset( $_GET['action'] ) ? sanitize_text_field( stripslashes ( $_GET['action'] ) ) : '';
 
 		if ( ! empty( $action ) ) {
 			if ( $action === 'asp_add_edit_coupon' ) {

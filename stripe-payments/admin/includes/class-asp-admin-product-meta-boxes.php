@@ -1070,7 +1070,7 @@ jQuery(document).ready(function($) {
 					update_post_meta( $post_id, 'asp_variations_opts', false );
 				}
 
-				$hide_amount_input = filter_input( INPUT_POST, 'asp_product_hide_amount_input', FILTER_SANITIZE_STRING );
+				$hide_amount_input = isset( $_POST['asp_product_hide_amount_input'] ) ? sanitize_text_field( stripslashes ( $_POST['asp_product_hide_amount_input'] ) ) : '';
 				$hide_amount_input = ! empty( $hide_amount_input ) ? true : false;
 				update_post_meta( $post_id, 'asp_product_hide_amount_input', $hide_amount_input );
 

@@ -35,11 +35,11 @@ class ASP_Process_IPN_NG {
 	}
 
 	public function handle_next_action_results() {
-                ASP_Debug_Logger::log( 'handle_next_action_results() - processing.', true);
+        ASP_Debug_Logger::log( 'handle_next_action_results() - processing.', true);
                 
-		$pi_id = filter_input( INPUT_GET, 'payment_intent', FILTER_SANITIZE_STRING );
+		$pi_id = isset( $_GET['payment_intent'] ) ? sanitize_text_field( stripslashes ( $_GET['payment_intent'] ) ) : '';
 
-		$is_live = filter_input( INPUT_GET, 'is_live', FILTER_SANITIZE_STRING );
+		$is_live = isset( $_GET['is_live'] ) ? sanitize_text_field( stripslashes ( $_GET['is_live'] ) ) : '';
 		$is_live = 'false' === $is_live ? 0 : 1;
 
 		$sess      = ASP_Session::get_instance();
@@ -111,8 +111,11 @@ class ASP_Process_IPN_NG {
 				$body .= __( 'Following error occurred during payment processing:', 'stripe-payments' ) . "\r\n\r\n";
 				$body .= $err_msg . "\r\n\r\n";
 				$body .= __( 'Debug data:', 'stripe-payments' ) . "\r\n";
-                                $post  = filter_var( $_POST, FILTER_SANITIZE_STRING, FILTER_REQUIRE_ARRAY );
+                $post  = filter_var( $_POST, FILTER_UNSAFE_RAW, FILTER_REQUIRE_ARRAY );
 				foreach ( $post as $key => $value ) {
+					$key = sanitize_text_field( stripslashes( $key ));
+					$value = sanitize_text_field( stripslashes( $value ));
+
 					$value = is_array( $value ) ? wp_json_encode( $value ) : $value;
 					$body .= $key . ': ' . $value . "\r\n";
 				}
@@ -144,7 +147,7 @@ class ASP_Process_IPN_NG {
 		exit;
 	}
 
-	public function get_post_var( $var, $filter, $opts = null ) {
+	public function get_post_var( $var, $filter = FILTER_UNSAFE_RAW, $opts = null ) {
 		if ( isset( $this->post_data ) ) {
 			if ( isset( $this->post_data[ $var ] ) ) {
 				return filter_var( $this->post_data[ $var ], $filter, $opts );
@@ -175,13 +178,13 @@ class ASP_Process_IPN_NG {
 		ASP_Debug_Logger::log( 'Payment processing started.' );
 
 		if ( ! empty( $post_data ) ) {
-                        $post_data = filter_var( $post_data, FILTER_SANITIZE_STRING, FILTER_REQUIRE_ARRAY );
-                        $post_data_str = http_build_query( $post_data, '', '; ' );
+			$post_data = filter_var( $post_data, FILTER_UNSAFE_RAW, FILTER_REQUIRE_ARRAY );
+			$post_data_str = http_build_query( $post_data, '', '; ' );
 			ASP_Debug_Logger::log( 'Custom $_POST data: ' . $post_data_str );
 			$this->post_data = $post_data;
 		} else {
-                        $post_data = filter_var( $_POST, FILTER_SANITIZE_STRING, FILTER_REQUIRE_ARRAY );
-                        $post_data_str = http_build_query( $post_data, '', '; ' );
+			$post_data = filter_var( $_POST, FILTER_UNSAFE_RAW, FILTER_REQUIRE_ARRAY );
+			$post_data_str = http_build_query( $post_data, '', '; ' );
 			//ASP_Debug_Logger::log( 'Original $_POST data: ' . $post_data_str );
 		}
 
@@ -189,8 +192,8 @@ class ASP_Process_IPN_NG {
 
 		$this->sess = ASP_Session::get_instance();
 
-		$post_thankyou_page_url = $this->get_post_var( 'asp_thankyou_page_url', FILTER_SANITIZE_STRING );
-
+		$post_thankyou_page_url = $this->get_post_var( 'asp_thankyou_page_url' );
+		$post_thankyou_page_url = sanitize_text_field( stripslashes( $post_thankyou_page_url ) );
 		$this->asp_redirect_url = empty( $post_thankyou_page_url ) ? $this->asp_class->get_setting( 'checkout_url' ) : base64_decode( $post_thankyou_page_url );
 
 		$prod_id = $this->get_post_var( 'asp_product_id', FILTER_SANITIZE_NUMBER_INT );
@@ -221,7 +224,8 @@ class ASP_Process_IPN_NG {
 			$this->ipn_completed( $this->err );
 		}
 
-		$pi = $this->get_post_var( 'asp_payment_intent', FILTER_SANITIZE_STRING );
+		$pi = $this->get_post_var( 'asp_payment_intent' );
+		$pi = sanitize_text_field( stripslashes( $pi ) );
 
 		$completed_order = get_posts(
 			array(
@@ -375,7 +379,8 @@ class ASP_Process_IPN_NG {
 		}
 
 		//Coupon
-		$coupon_code = $this->get_post_var( 'asp_coupon-code', FILTER_SANITIZE_STRING );
+		$coupon_code = $this->get_post_var( 'asp_coupon-code' );
+		$coupon_code = sanitize_text_field( stripslashes( $coupon_code ));
 		if ( $coupon_code ) {
 			ASP_Debug_Logger::log( sprintf( 'Coupon code provided: %s', $coupon_code ) );
 		}
@@ -424,7 +429,8 @@ class ASP_Process_IPN_NG {
 		}
 
 		if ( empty( $p_billing_details->name ) ) {
-			$name = $this->get_post_var( 'asp_billing_name', FILTER_SANITIZE_STRING );
+			$name = $this->get_post_var( 'asp_billing_name' );
+			$name = sanitize_text_field( stripslashes( $name ));
 			if ( ! empty( $name ) ) {
 				$p_billing_details->name = $name;
 			}
@@ -470,9 +476,11 @@ class ASP_Process_IPN_NG {
 		$item_price    = $item->get_price( AcceptStripePayments::is_zero_cents( $currency_code ) );
 
 		$custom_fields = array();
-		$cf_name       = $this->get_post_var( 'asp_stripeCustomFieldName', FILTER_SANITIZE_STRING );
+		$cf_name = $this->get_post_var( 'asp_stripeCustomFieldName' );
+		$cf_name = sanitize_text_field( stripslashes( $cf_name ));
 		if ( $cf_name ) {
-			$cf_value        = $this->get_post_var( 'asp_stripeCustomField', FILTER_SANITIZE_STRING );
+			$cf_value = $this->get_post_var( 'asp_stripeCustomField' );
+			$cf_value = sanitize_text_field( stripslashes( $cf_value ));
 			$custom_fields[] = array(
 				'name'  => $cf_name,
 				'value' => $cf_value,
@@ -756,7 +764,8 @@ class ASP_Process_IPN_NG {
 		//check if this is zero-value transaction
 		if ( 'free' === substr( $pi, 0, 4 ) ) {
 			//this is zero-value transaction
-			$coupon_code = $this->get_post_var( 'asp_coupon-code', FILTER_SANITIZE_STRING );
+			$coupon_code = $this->get_post_var( 'asp_coupon-code' );
+			$coupon_code = sanitize_text_field( stripslashes( $coupon_code ));
 			if ( empty( $coupon_code ) ) {
 				return $p_data;
 			}

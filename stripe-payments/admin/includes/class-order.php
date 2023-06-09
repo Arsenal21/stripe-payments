@@ -217,7 +217,7 @@ class ASPOrder {
 			);
 		}
 
-		$nonce = filter_input( INPUT_POST, 'nonce', FILTER_SANITIZE_STRING );
+		$nonce = isset( $_POST['nonce'] ) ? sanitize_text_field( stripslashes ( $_POST['nonce'] ) ) : '';
 		if ( empty( $nonce ) || false === wp_verify_nonce( $nonce, 'asp-order-actions-' . $post_id ) ) {
 			wp_send_json(
 				array(
@@ -309,7 +309,7 @@ class ASPOrder {
 			);
 		}
 
-		$nonce = filter_input( INPUT_POST, 'nonce', FILTER_SANITIZE_STRING );
+		$nonce = isset( $_POST['nonce'] ) ? sanitize_text_field( stripslashes ( $_POST['nonce'] ) ) : '';
 		if ( empty( $nonce ) || false === wp_verify_nonce( $nonce, 'asp-order-actions-' . $post_id ) ) {
 			wp_send_json(
 				array(

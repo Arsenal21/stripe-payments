@@ -187,53 +187,53 @@ class ASP_Payment_Data {
 		$bd = new stdClass();
 
 		//Billing details
-		$b_name   = $ipn_ng_class->get_post_var( 'asp_billing_name', FILTER_SANITIZE_STRING );
-		$bd->name = empty( $b_name ) ? '' : $b_name;
+		$b_name   = $ipn_ng_class->get_post_var( 'asp_billing_name' );
+		$bd->name = empty( $b_name ) ? '' : sanitize_text_field( stripslashes ( $b_name ));
 
-		$b_email   = $ipn_ng_class->get_post_var( 'asp_email', FILTER_SANITIZE_STRING );
-		$bd->email = empty( $b_email ) ? '' : $b_email;
+		$b_email   = $ipn_ng_class->get_post_var( 'asp_email' );
+		$bd->email = empty( $b_email ) ? '' : sanitize_text_field( stripslashes($b_email));
 
-		$b_addr    = $ipn_ng_class->get_post_var( 'asp_address', FILTER_SANITIZE_STRING );
-		$bd->line1 = empty( $b_addr ) ? '' : $b_addr;
+		$b_addr    = $ipn_ng_class->get_post_var( 'asp_address' );
+		$bd->line1 = empty( $b_addr ) ? '' : sanitize_text_field( stripslashes($b_addr));
 		$bd->line2 = '';
 
-		$b_postal_code   = $ipn_ng_class->get_post_var( 'asp_postcode', FILTER_SANITIZE_STRING );
-		$bd->postal_code = empty( $b_postal_code ) ? '' : $b_postal_code;
+		$b_postal_code   = $ipn_ng_class->get_post_var( 'asp_postcode' );
+		$bd->postal_code = empty( $b_postal_code ) ? '' : sanitize_text_field( stripslashes($b_postal_code));
 
-		$b_city   = $ipn_ng_class->get_post_var( 'asp_city', FILTER_SANITIZE_STRING );
-		$bd->city = empty( $b_city ) ? '' : $b_city;
+		$b_city   = $ipn_ng_class->get_post_var( 'asp_city' );
+		$bd->city = empty( $b_city ) ? '' : sanitize_text_field( stripslashes($b_city));
 		
-		$b_state   = $ipn_ng_class->get_post_var( 'asp_state', FILTER_SANITIZE_STRING );
-		$bd->state = empty( $b_state ) ? '' : $b_state;
+		$b_state   = $ipn_ng_class->get_post_var( 'asp_state' );
+		$bd->state = empty( $b_state ) ? '' : sanitize_text_field( stripslashes($b_state));
 
-		$b_country   = $ipn_ng_class->get_post_var( 'asp_country', FILTER_SANITIZE_STRING );
-		$bd->country = empty( $b_country ) ? '' : $b_country;
+		$b_country   = $ipn_ng_class->get_post_var( 'asp_country' );
+		$bd->country = empty( $b_country ) ? '' : sanitize_text_field( stripslashes($b_country));
 
 		$this->billing_details_obj = $bd;
 
 		//Shipping details
-		$same_addr = $ipn_ng_class->get_post_var( 'asp_same-bill-ship-addr', FILTER_SANITIZE_STRING );
+		$same_addr = $ipn_ng_class->get_post_var( 'asp_same-bill-ship-addr' );
 
 		if ( ! empty( $same_addr ) ) {
 			$this->shipping_details_obj = $this->billing_details_obj;
 		} else {
 			$sd = new stdClass();
 
-			$s_addr    = $ipn_ng_class->get_post_var( 'asp_shipping_address', FILTER_SANITIZE_STRING );
-			$sd->line1 = empty( $s_addr ) ? '' : $s_addr;
+			$s_addr    = $ipn_ng_class->get_post_var( 'asp_shipping_address' );
+			$sd->line1 = empty( $s_addr ) ? '' : sanitize_text_field( stripslashes($s_addr));
 			$sd->line2 = '';
 
-			$s_postal_code   = $ipn_ng_class->get_post_var( 'asp_shipping_postcode', FILTER_SANITIZE_STRING );
-			$sd->postal_code = empty( $s_postal_code ) ? '' : $s_postal_code;
+			$s_postal_code   = $ipn_ng_class->get_post_var( 'asp_shipping_postcode' );
+			$sd->postal_code = empty( $s_postal_code ) ? '' : sanitize_text_field( stripslashes($s_postal_code));
 
-			$s_city   = $ipn_ng_class->get_post_var( 'asp_shipping_city', FILTER_SANITIZE_STRING );
-			$sd->city = empty( $s_city ) ? '' : $s_city;
+			$s_city   = $ipn_ng_class->get_post_var( 'asp_shipping_city' );
+			$sd->city = empty( $s_city ) ? '' : sanitize_text_field( stripslashes($s_city));
 			
-			$s_state   = $ipn_ng_class->get_post_var( 'asp_shipping_state', FILTER_SANITIZE_STRING );
-			$sd->state = empty( $s_state ) ? '' : $s_state;
+			$s_state   = $ipn_ng_class->get_post_var( 'asp_shipping_state' );
+			$sd->state = empty( $s_state ) ? '' : sanitize_text_field( stripslashes($s_state));
 
-			$s_country   = $ipn_ng_class->get_post_var( 'asp_shipping_country', FILTER_SANITIZE_STRING );
-			$sd->country = empty( $s_country ) ? '' : $s_country;
+			$s_country   = $ipn_ng_class->get_post_var( 'asp_shipping_country' );
+			$sd->country = empty( $s_country ) ? '' : sanitize_text_field( stripslashes($s_country));
 
 			$this->shipping_details_obj = $sd;
 		}
