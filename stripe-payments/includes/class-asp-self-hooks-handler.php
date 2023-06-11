@@ -382,7 +382,7 @@ class ASP_Self_Hooks_Handler {
 		}
 
 		$button_key = $item->get_button_key();
-		$token      = filter_input( INPUT_POST, 'token', FILTER_SANITIZE_STRING );
+		$token = isset( $_POST['token'] ) ? sanitize_text_field( stripslashes ( $_POST['token'] ) ) : '';
 		$g_token    = ASP_Utils::get_visitor_token( $button_key );
 		if ( empty( $token ) || $g_token !== $token ) {
 			$out            = array();

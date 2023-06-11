@@ -26,10 +26,10 @@ class ASP_Product_Item {
 			$this->post_id = $post_id;
 			$this->load_from_product();
 
-			$btn_uniq_id = filter_input( INPUT_GET, 'btn_uniq_id', FILTER_SANITIZE_STRING );
+			$btn_uniq_id = isset( $_GET['btn_uniq_id'] ) ? sanitize_text_field( stripslashes ( $_GET['btn_uniq_id'] ) ) : '';
 			if ( ! empty( $btn_uniq_id ) ) {
-                                ASP_Debug_Logger::log( 'Using the btn_uniq_id parameter. Value of btn_uniq_id: ' . $btn_uniq_id, true );
-				$this->sess           = ASP_Session::get_instance();
+                ASP_Debug_Logger::log( 'Using the btn_uniq_id parameter. Value of btn_uniq_id: ' . $btn_uniq_id, true );
+				$this->sess = ASP_Session::get_instance();
 				$this->overriden_data = $this->sess->get_transient_data( 'overriden_data_' . $btn_uniq_id );
 			}
 		}
@@ -499,7 +499,7 @@ class ASP_Product_Item {
 	}
 
 	public function get_download_url() {
-		$post_url = filter_input( INPUT_POST, 'asp_item_url', FILTER_SANITIZE_STRING );
+		$post_url = isset( $_GET['asp_item_url'] ) ? sanitize_text_field( stripslashes ( $_GET['asp_item_url'] ) ) : '';
 		if ( $post_url ) {
 			$item_url = $post_url;
 		} else {

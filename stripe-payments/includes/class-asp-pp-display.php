@@ -8,7 +8,7 @@ class ASP_PP_Display {
 	private $auth_not_supported = array( 'FPX', 'ALIPAY', 'IDEAL', 'SOFORT' );
 
 	public function __construct() {
-		$action = filter_input( INPUT_GET, 'asp_action', FILTER_SANITIZE_STRING );
+		$action = isset( $_GET['asp_action'] ) ? sanitize_text_field( stripslashes ( $_GET['asp_action'] ) ) : '';
 		if ( 'show_pp' === $action ) {
 			//          ASP_Utils::set_custom_lang_if_needed();
 			$process_ipn = filter_input( INPUT_POST, 'asp_process_ipn', FILTER_SANITIZE_NUMBER_INT );
@@ -168,7 +168,7 @@ class ASP_PP_Display {
 
 		if ( $this->item->get_price() === 0 ) {
 			//let's check to see if he have item_price passed via URL parameter
-			$passed_item_price = filter_input( INPUT_GET, 'price', FILTER_SANITIZE_STRING );
+			$passed_item_price = isset( $_GET['price'] ) ? sanitize_text_field( stripslashes ( $_GET['price'] ) ) : '';
 			$passed_item_price = abs( floatval( $passed_item_price ) );
 			if ( ! empty( $passed_item_price ) ) {
 				$this->item->set_price( $passed_item_price );
@@ -558,7 +558,7 @@ class ASP_PP_Display {
 
 		$a['item'] = $this->item;
 
-		$btn_uniq_id = filter_input( INPUT_GET, 'btn_uniq_id', FILTER_SANITIZE_STRING );
+		$btn_uniq_id = isset( $_GET['btn_uniq_id'] ) ? sanitize_text_field( stripslashes ( $_GET['btn_uniq_id'] ) ) : '';
 		if ( ! empty( $btn_uniq_id ) ) {
 			$a['btn_uniq_id'] = $btn_uniq_id;
 		}

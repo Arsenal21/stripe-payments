@@ -33,7 +33,7 @@ class ASP_PP_Ajax {
 	}
 
 	public function handle_3ds_result() {
-		$pi_cs = filter_input( INPUT_GET, 'payment_intent_client_secret', FILTER_SANITIZE_STRING );
+		$pi_cs = isset( $_GET['payment_intent_client_secret'] ) ? sanitize_text_field( stripslashes ( $_GET['payment_intent_client_secret'] ) ) : '';
 		$pi_cs = empty( $pi_cs ) ? '' : $pi_cs;
 		?>
 <!DOCTYPE html>
@@ -148,8 +148,8 @@ class ASP_PP_Ajax {
 
 		do_action( 'asp_ng_product_mode_keys', $product_id );
 
-		$pi_id = filter_input( INPUT_POST, 'pi_id', FILTER_SANITIZE_STRING );
-		$opts  = filter_input( INPUT_POST, 'opts', FILTER_SANITIZE_STRING );
+		$pi_id = isset( $_POST['pi_id'] ) ? sanitize_text_field( stripslashes ( $_POST['pi_id'] ) ) : '';
+		$opts = isset( $_POST['opts'] ) ? sanitize_text_field( stripslashes ( $_POST['opts'] ) ) : '';
 
 		if ( ! empty( $opts ) ) {
 			$opts = html_entity_decode( $opts );
@@ -222,9 +222,9 @@ class ASP_PP_Ajax {
 			$body  = __( 'Following error occurred during payment processing:', 'stripe-payments' ) . "\r\n\r\n";
 			$body .= $out['err'] . "\r\n\r\n";
 			$body .= __( 'Debug data:', 'stripe-payments' ) . "\r\n";
-                        $post_data = filter_var( $_POST, FILTER_SANITIZE_STRING, FILTER_REQUIRE_ARRAY );
-                        $post_data_str = http_build_query( $post_data, '', '; ' );
-			$body .= $post_data_str;
+			$post_data = filter_var( $_POST, FILTER_UNSAFE_RAW, FILTER_REQUIRE_ARRAY );
+			$post_data_str = http_build_query( $post_data, '', '; ' );
+			$body .= sanitize_text_field( stripslashes($post_data_str));
 			ASP_Debug_Logger::log( __( 'Following error occurred during payment processing:', 'stripe-payments' ) . ' ' . $out['err'], false );
 			ASP_Utils::send_error_email( $body );
 			wp_send_json( $out );
@@ -244,21 +244,21 @@ class ASP_PP_Ajax {
 
 	public function handle_create_pi() {
 		
-		$out            = array();
+		$out = array();
 		$out['success'] = false;
-		$product_id     = filter_input( INPUT_POST, 'product_id', FILTER_SANITIZE_NUMBER_INT );
-		$amount         = filter_input( INPUT_POST, 'amount', FILTER_SANITIZE_NUMBER_FLOAT );
-		$curr           = filter_input( INPUT_POST, 'curr', FILTER_SANITIZE_STRING );
-		$pi_id          = filter_input( INPUT_POST, 'pi', FILTER_SANITIZE_STRING );
-		$cust_id        = filter_input( INPUT_POST, 'cust_id', FILTER_SANITIZE_STRING );
-		$quantity       = filter_input( INPUT_POST, 'quantity', FILTER_SANITIZE_NUMBER_INT );
-                $nonce          = filter_input( INPUT_POST, 'nonce', FILTER_SANITIZE_STRING );
+		$product_id = filter_input( INPUT_POST, 'product_id', FILTER_SANITIZE_NUMBER_INT );
+		$amount = filter_input( INPUT_POST, 'amount', FILTER_SANITIZE_NUMBER_FLOAT );
+		$curr = isset( $_POST['curr'] ) ? sanitize_text_field( stripslashes ( $_POST['curr'] ) ) : '';
+		$pi_id = isset( $_POST['pi'] ) ? sanitize_text_field( stripslashes ( $_POST['pi'] ) ) : '';
+		$cust_id = isset( $_POST['cust_id'] ) ? sanitize_text_field( stripslashes ( $_POST['cust_id'] ) ) : '';
+		$quantity = isset( $_POST['quantity'] ) ? sanitize_text_field( stripslashes ( $_POST['quantity'] ) ) : '';
+		$nonce = isset( $_POST['nonce'] ) ? sanitize_text_field( stripslashes ( $_POST['nonce'] ) ) : '';
 
-                //Check create_pi nonce
-                if ( ! wp_verify_nonce( $nonce, 'asp_pp_ajax_create_pi_nonce' ) ) {
+		//Check create_pi nonce
+		if ( ! wp_verify_nonce( $nonce, 'asp_pp_ajax_create_pi_nonce' ) ) {
 			$out['err'] = __( 'Error occurred: Nonce security verification failed.', 'stripe-payments' );
 			wp_send_json( $out );
-                }
+        }
 		$asp_daily_txn_counter_obj = new ASP_Daily_Txn_Counter();
 		$captcha_type = $this->asp_main->get_setting('captcha_type');
 		if (empty($captcha_type) || $captcha_type == 'none') {
@@ -385,9 +385,9 @@ class ASP_PP_Ajax {
 				'confirmation_method' => 'manual',
 			);
 
-			$post_billing_details = filter_input( INPUT_POST, 'billing_details', FILTER_SANITIZE_STRING );
+			$post_billing_details = isset( $_POST['billing_details'] ) ? sanitize_text_field( stripslashes ( $_POST['billing_details'] ) ) : '';
 
-			$post_shipping_details = filter_input( INPUT_POST, 'shipping_details', FILTER_SANITIZE_STRING );
+			$post_shipping_details = isset( $_POST['shipping_details'] ) ? sanitize_text_field( stripslashes ( $_POST['shipping_details'] ) ) : '';
 
 			if ( isset( $post_billing_details ) ) {
 				$post_billing_details = html_entity_decode( $post_billing_details );
@@ -589,7 +589,7 @@ class ASP_PP_Ajax {
 			wp_send_json( $out );
 		}
 
-		$coupon_code = filter_input( INPUT_POST, 'coupon_code', FILTER_SANITIZE_STRING );
+		$coupon_code = isset( $_POST['coupon_code'] ) ? sanitize_text_field( stripslashes ( $_POST['coupon_code'] ) ) : '';
 
 		$coupon_valid = $item->check_coupon( $coupon_code );
 		if ( ! $coupon_valid ) {
