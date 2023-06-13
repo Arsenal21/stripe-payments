@@ -285,9 +285,11 @@ class AcceptStripePayments_Process_IPN {
 			$v = new ASPVariations( $prod_id );
 			if ( ! empty( $v->variations ) ) {
 				//there are variations configured for the product
-				$posted_v = $_POST['stripeVariations'];
-                                $posted_v = filter_var( $_POST['stripeVariations'], FILTER_SANITIZE_STRING, FILTER_REQUIRE_ARRAY );
+                $posted_v = filter_var( $_POST['stripeVariations'], FILTER_UNSAFE_RAW, FILTER_REQUIRE_ARRAY );
 				foreach ( $posted_v as $grp_id => $var_id ) {
+					$grp_id = sanitize_text_field( stripslashes( $grp_id ));
+					$var_id = sanitize_text_field( stripslashes( $var_id ));
+
 					$var = $v->get_variation( $grp_id, $var_id[0] );
 					if ( ! empty( $var ) ) {
 						$item_price   = $item_price + $var['price'];

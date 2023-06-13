@@ -100,8 +100,8 @@ class ASP_HCAPTCHA_Main {
 	}
 
 	public function ajax_hcaptcha_check() {
-		$out     = array();
-		$payload = filter_input( INPUT_POST, 'hcaptcha_response', FILTER_SANITIZE_STRING );
+		$out = array();
+		$payload = isset( $_POST['hcaptcha_response'] ) ? sanitize_text_field( stripslashes ( $_POST['hcaptcha_response'] ) ) : '';
 		if ( empty( $payload ) ) {
 			$out['error'] = __( 'Empty hCaptcha response received.', 'stripe-payments' );
 			wp_send_json( $out );

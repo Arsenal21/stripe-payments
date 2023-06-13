@@ -107,8 +107,8 @@ class ASP_RECAPTCHA_Main {
 	}
 
 	public function ajax_recaptcha_check() {
-		$out     = array();
-		$payload = filter_input( INPUT_POST, 'recaptcha_response', FILTER_SANITIZE_STRING );
+		$out = array();
+		$payload = isset( $_POST['recaptcha_response'] ) ? sanitize_text_field( stripslashes ( $_POST['recaptcha_response'] ) ) : '';
 		if ( empty( $payload ) ) {
 			$out['error'] = __( 'Empty reCaptcha response received.', 'stripe-payments' );
 			wp_send_json( $out );

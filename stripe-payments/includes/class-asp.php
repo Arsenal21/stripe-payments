@@ -149,8 +149,8 @@ class AcceptStripePayments {
 
 	public function plugins_loaded() {
 		//check if we have view_log request with token
-		$action = filter_input( INPUT_GET, 'asp_action', FILTER_SANITIZE_STRING );
-		$token  = filter_input( INPUT_GET, 'token', FILTER_SANITIZE_STRING );
+		$action = isset( $_GET['asp_action'] ) ? sanitize_text_field( stripslashes ( $_GET['asp_action'] ) ) : '';
+		$token = isset( $_GET['token'] ) ? sanitize_text_field( stripslashes ( $_GET['token'] ) ) : '';
 		if ( isset( $action ) && 'view_log' === $action && isset( $token ) ) {
 			//let's check token
 			if ( $this->get_setting( 'debug_log_link_enable', false ) && $this->get_setting( 'debug_log_access_token' ) === $token ) {

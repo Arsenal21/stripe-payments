@@ -50,11 +50,11 @@ class ASP_Session {
                 $asp_class = AcceptStripePayments::get_instance();
             	$dont_use_cookie = $asp_class->get_setting( 'dont_use_cookie' );
 		if ( $dont_use_cookie ) {
-                    //Don't use cookie option is enabled.
-                    return;
-                }
+			//Don't use cookie option is enabled.
+			return;
+		}
                 
-		$cookie_transient_id = filter_input( INPUT_COOKIE, 'asp_transient_id', FILTER_SANITIZE_STRING );
+		$cookie_transient_id = isset( $_COOKIE['asp_transient_id'] ) ? sanitize_text_field( stripslashes ( $_COOKIE['asp_transient_id'] ) ) : '';
 		if ( empty( $cookie_transient_id ) ) {
 			if ( ! headers_sent() ) {
 				$cookiepath    = ! defined( 'COOKIEPATH' ) ? '/' : COOKIEPATH;

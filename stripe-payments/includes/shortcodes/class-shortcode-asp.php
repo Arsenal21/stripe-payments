@@ -1139,7 +1139,7 @@ class AcceptStripePaymentsShortcode {
 
 		//handle search
 
-		$search = filter_input( INPUT_GET, 'asp_search', FILTER_SANITIZE_STRING );
+		$search = isset( $_GET['asp_search'] ) ? sanitize_text_field( stripslashes ( $_GET['asp_search'] ) ) : '';
 
 		$search = empty( $search ) ? false : $search;
 
