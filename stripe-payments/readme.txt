@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 5.0
 Tested up to: 6.2
 Requires PHP: 5.6
-Stable tag: 2.0.78t1
+Stable tag: 2.0.78
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -155,8 +155,9 @@ None.
 
 == Changelog ==
 
-= WIP 2.0.78 =
+= 2.0.78 =
 - Refactored some lines of code to remove the use of deprecated FILTER_SANITIZE_STRING filter.
+- PHP 8.2 compatibility.
 
 = 2.0.77 =
 - Settings UI improvement: the individual captcha configuration fields are now displayed above the transaction rate limiting section.
