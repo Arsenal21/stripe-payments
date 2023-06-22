@@ -147,7 +147,7 @@ class ASP_Process_IPN_NG {
 		exit;
 	}
 
-	public function get_post_var( $var, $filter = FILTER_UNSAFE_RAW, $opts = null ) {
+	public function get_post_var( $var, $filter = FILTER_UNSAFE_RAW, $opts = 0 ) {
 		if ( isset( $this->post_data ) ) {
 			if ( isset( $this->post_data[ $var ] ) ) {
 				return filter_var( $this->post_data[ $var ], $filter, $opts );
@@ -477,8 +477,9 @@ class ASP_Process_IPN_NG {
 
 		$custom_fields = array();
 		$cf_name = $this->get_post_var( 'asp_stripeCustomFieldName' );
-		$cf_name = sanitize_text_field( stripslashes( $cf_name ));
 		if ( $cf_name ) {
+			$cf_name = sanitize_text_field( stripslashes( $cf_name ));
+
 			$cf_value = $this->get_post_var( 'asp_stripeCustomField' );
 			$cf_value = sanitize_text_field( stripslashes( $cf_value ));
 			$custom_fields[] = array(
