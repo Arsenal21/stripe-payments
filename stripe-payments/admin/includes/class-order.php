@@ -11,6 +11,7 @@ class ASPOrder {
 	 */
 	protected static $instance = null;
 	private $order_status_tpl  = '<span class="asp-order-status%s">%s</span>';
+	public $AcceptStripePayments;
 
 
 	public function __construct() {

@@ -4,6 +4,8 @@ class ASP_Process_IPN_NG {
 	public $asp_redirect_url = '';
 	public $item;
 	public $err = '';
+	public $asp_class;
+	public $sess;
 
 	protected static $instance = null;
 

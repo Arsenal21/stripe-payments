@@ -156,7 +156,7 @@ None.
 == Changelog ==
 
 = WIP =
-- Fixed a PHP 8.2 waring.
+- Fixed a PHP 8.2 related warning.
 
 = 2.0.78 =
 - Refactored some lines of code to remove the use of deprecated FILTER_SANITIZE_STRING filter.

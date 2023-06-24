@@ -11,6 +11,8 @@ class AcceptStripePayments_Admin {
 	 */
 	protected static $instance     = null;
 	private $requiered_php_modules = array( 'curl', 'zlib', 'json', 'mbstring' );
+	public $asp_main;
+	public $plugin_slug;
 
 	/**
 	 * Slug of the plugin screen.
