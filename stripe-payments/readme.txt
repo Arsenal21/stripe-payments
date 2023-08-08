@@ -3,7 +3,7 @@ Contributors: Tips and Tricks HQ, wptipsntricks, alexanderfoxc
 Donate link: https://s-plugins.com
 Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortcode, digital goods, payment gateway, instant payment, commerce, digital downloads, downloads, e-commerce, e-store, ecommerce, eshop, donation
 Requires at least: 5.0
-Tested up to: 6.2
+Tested up to: 6.3
 Requires PHP: 5.6
 Stable tag: 2.0.78
 License: GPLv2 or later
@@ -157,6 +157,7 @@ None.
 
 = WIP =
 - Fixed a PHP 8.2 related warning.
+- Better handling for zip/postal code containing empty space character.
 
 = 2.0.78 =
 - Refactored some lines of code to remove the use of deprecated FILTER_SANITIZE_STRING filter.
