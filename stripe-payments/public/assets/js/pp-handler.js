@@ -996,7 +996,7 @@ function handlePayment() {
 			opts.address_state = bState === null ? '' : bState.value;
 			opts.address_country = bCountry.value || bCountry.options[bCountry.selectedIndex].value;
 			if (postal_code) {
-				opts.address_zip = postal_code;
+				opts.address_zip = decodeURIComponent(postal_code);
 			}
 		}
 
@@ -1108,7 +1108,7 @@ function handlePayment() {
 		c_opts.address_state = bState === null ? '' : bState.value;
 		c_opts.address_country = bCountry.value || bCountry.options[bCountry.selectedIndex].value;
 		if (postal_code) {
-			c_opts.address_zip = postal_code;
+			c_opts.address_zip = decodeURIComponent(postal_code);
 		}
 	}
 
