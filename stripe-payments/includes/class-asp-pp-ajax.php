@@ -434,7 +434,7 @@ class ASP_PP_Ajax {
 
 					$shipping = array();
 
-					if ( $shipping_details->name ) {
+					if ( isset($shipping_details->name) && $shipping_details->name ) {
 						$shipping['name'] = $shipping_details->name;
 					} elseif ( ! empty( $customer_opts['name'] ) ) {
 						$shipping['name'] = $customer_opts['name'];
