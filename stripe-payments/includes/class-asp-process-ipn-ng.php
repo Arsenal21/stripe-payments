@@ -6,7 +6,7 @@ class ASP_Process_IPN_NG {
 	public $err = '';
 	public $asp_class;
 	public $sess;
-
+	public $p_data;
 	protected static $instance = null;
 
 	public function __construct() {
@@ -382,13 +382,12 @@ class ASP_Process_IPN_NG {
 
 		//Coupon
 		$coupon_code = $this->get_post_var( 'asp_coupon-code' );
-		$coupon_code = sanitize_text_field( stripslashes( $coupon_code ));
-		if ( $coupon_code ) {
+		$coupon_valid = false;
+		if ( isset($coupon_code) && !empty($coupon_code)) {
+			$coupon_code = sanitize_text_field( stripslashes( $coupon_code ));
 			ASP_Debug_Logger::log( sprintf( 'Coupon code provided: %s', $coupon_code ) );
-		}
-		$coupon_valid = $item->check_coupon( $coupon_code );
-
-		if ( ! empty( $coupon_code ) ) {
+			$coupon_valid = $item->check_coupon( $coupon_code );
+			
 			if ( $coupon_valid ) {
 				ASP_Debug_Logger::log( 'Coupon is valid for the product.' );
 			} else {
