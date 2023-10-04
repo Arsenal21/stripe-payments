@@ -158,6 +158,7 @@ None.
 = WIP =
 - Fixed a PHP 8.2 related warning.
 - Better handling for zip/postal code containing empty space character.
+- Some php deprecated warnings has fixed.
 
 = 2.0.78 =
 - Refactored some lines of code to remove the use of deprecated FILTER_SANITIZE_STRING filter.

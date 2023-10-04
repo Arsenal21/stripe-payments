@@ -1,7 +1,11 @@
 <?php
 
 class ASP_Product_Item {
-
+	public $currency;
+	public $name;
+	public $quantity;
+	public $description;
+	public $tax_amount;
 
 	protected $post_id = false;
 	protected $post;

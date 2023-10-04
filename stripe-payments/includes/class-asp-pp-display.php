@@ -4,6 +4,9 @@ class ASP_PP_Display {
 	protected $tpl_cf;
 	protected $uniq_id;
 	protected $asp_main;
+	public $custom_field;
+	public $prod_id;
+	public $variations;
 
 	private $auth_not_supported = array( 'FPX', 'ALIPAY', 'IDEAL', 'SOFORT' );
 
