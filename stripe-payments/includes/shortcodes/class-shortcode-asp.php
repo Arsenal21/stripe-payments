@@ -42,6 +42,7 @@ class AcceptStripePaymentsShortcode {
 		if ( ! is_admin() ) {
 			add_filter( 'widget_text', 'do_shortcode' );
 		}
+		add_shortcode( 'asp_available_quantity', array( $this, 'show_available_quantity' ) );
 	}
 
 	public static function filter_post_type_content( $content ) {
@@ -231,6 +232,38 @@ class AcceptStripePaymentsShortcode {
 		return $scClass->process_shortcode( $atts );
 	}
 
+	/**
+	 * Displays available stock quantity of a product. 
+	 * If stock control is turned of, It shows 'Unlimited'.
+	 * 
+	 * @param Array $atts Shortcode attributes.
+	 * @return String HTML
+	 */
+	function show_available_quantity( $atts ) {
+		if ( ! isset( $atts['id'] ) || ! is_numeric( $atts['id'] ) ) {
+			$error_msg  = '<div class="stripe_payments_error_msg" style="color: red;">';
+			$error_msg .= 'Error: product ID is invalid.';
+			$error_msg .= '</div>';
+			return $error_msg;
+		}
+		$id   = $atts['id'];
+		$post = get_post( $id );
+		if ( ! $post || get_post_type( $id ) != ASPMain::$products_slug ) {
+			$error_msg  = '<div class="stripe_payments_error_msg" style="color: red;">';
+			$error_msg .= "Error: invalid product ID " . $id;
+			$error_msg .= '</div>';
+			return $error_msg;
+		}
+		
+		$available_quantity = esc_attr(get_post_meta( $id, 'asp_product_stock_items', true ));
+		$stock_enable = esc_attr(get_post_meta( $id, 'asp_product_enable_stock', true ));
+
+		$output  = '<div class="stripe_payments_available_quantity">';
+		$output  .= $stock_enable ? $available_quantity : 'Unlimited';
+		$output  .= '</div>';
+		return $output;
+	}
+	
 	function shortcode_asp_product( $atts ) {
 		if ( ! isset( $atts['id'] ) || ! is_numeric( $atts['id'] ) ) {
 			$error_msg  = '<div class="stripe_payments_error_msg" style="color: red;">';
