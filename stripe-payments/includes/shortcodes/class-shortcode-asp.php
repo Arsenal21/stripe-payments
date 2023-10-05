@@ -258,9 +258,9 @@ class AcceptStripePaymentsShortcode {
 		$available_quantity = esc_attr(get_post_meta( $id, 'asp_product_stock_items', true ));
 		$stock_enable = esc_attr(get_post_meta( $id, 'asp_product_enable_stock', true ));
 
-		$output  = '<div class="stripe_payments_available_quantity">';
+		$output  = '<span class="stripe_payments_available_quantity">';
 		$output  .= $stock_enable ? $available_quantity : 'Unlimited';
-		$output  .= '</div>';
+		$output  .= '</span>';
 		return $output;
 	}
 	
