@@ -241,7 +241,7 @@ class AcceptStripePaymentsShortcode {
 	 */
 	function show_available_quantity( $atts ) {
 		if ( ! isset( $atts['id'] ) || ! is_numeric( $atts['id'] ) ) {
-			$error_msg  = '<div class="stripe_payments_error_msg" style="color: red;">';
+			$error_msg  = '<div class="asp_error_msg" style="color: red;">';
 			$error_msg .= 'Error: product ID is invalid.';
 			$error_msg .= '</div>';
 			return $error_msg;
@@ -249,7 +249,7 @@ class AcceptStripePaymentsShortcode {
 		$id   = $atts['id'];
 		$post = get_post( $id );
 		if ( ! $post || get_post_type( $id ) != ASPMain::$products_slug ) {
-			$error_msg  = '<div class="stripe_payments_error_msg" style="color: red;">';
+			$error_msg  = '<div class="asp_error_msg" style="color: red;">';
 			$error_msg .= "Error: invalid product ID " . $id;
 			$error_msg .= '</div>';
 			return $error_msg;
@@ -258,7 +258,7 @@ class AcceptStripePaymentsShortcode {
 		$available_quantity = esc_attr(get_post_meta( $id, 'asp_product_stock_items', true ));
 		$stock_enable = esc_attr(get_post_meta( $id, 'asp_product_enable_stock', true ));
 
-		$output  = '<span class="stripe_payments_available_quantity">';
+		$output  = '<span class="asp_available_quantity">';
 		$output  .= $stock_enable ? $available_quantity : 'Unlimited';
 		$output  .= '</span>';
 		return $output;
