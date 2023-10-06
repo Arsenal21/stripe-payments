@@ -4,8 +4,8 @@ Donate link: https://s-plugins.com
 Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortcode, digital goods, payment gateway, instant payment, commerce, digital downloads, downloads, e-commerce, e-store, ecommerce, eshop, donation
 Requires at least: 5.0
 Tested up to: 6.3
-Requires PHP: 5.6
-Stable tag: 2.0.78
+Requires PHP: 7.0
+Stable tag: 2.0.79
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -155,11 +155,11 @@ None.
 
 == Changelog ==
 
-= WIP =
+= 2.0.79 =
+- New shortcode to show available quantity of a product: [asp_available_quantity id="123"]
+- Better handling for zip/postal code (when it contains empty space character).
+- Some php deprecated warnings has been fixed.
 - Fixed a PHP 8.2 related warning.
-- Better handling for zip/postal code containing empty space character.
-- Some php deprecated warnings has fixed.
-- New shortcode to show available product quantity.
 - Updated the language translation POT file.
 
 = 2.0.78 =
