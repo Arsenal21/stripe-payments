@@ -160,6 +160,7 @@ None.
 - Better handling for zip/postal code containing empty space character.
 - Some php deprecated warnings has fixed.
 - New shortcode to show available product quantity.
+- Updated the language translation POT file.
 
 = 2.0.78 =
 - Refactored some lines of code to remove the use of deprecated FILTER_SANITIZE_STRING filter.
