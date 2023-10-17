@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * Class ASP_PP_Ajax
+ * Hanldes various Ajax request for the payment popup.
+ * 1) The following two files are relevant (these files render hte HTML and handles hte JS code for sending the Ajax request):
+ * - public/views/templates/payment-popup.php
+ * - public/js/payment-popup.js
+ * 2) After the payment intent is confirmed, the "ASP_Process_IPN_NG->process_ipn()" is called which does the post payment processing on our end.
+ */
+
 class ASP_PP_Ajax {
 
 	protected $asp_main;
@@ -59,10 +68,10 @@ class ASP_PP_Ajax {
 
 	public function handle_confirm_pi() {
 
-                if ( ! check_ajax_referer( 'asp_pp_ajax_nonce', 'nonce', false ) ) {
+		if ( ! check_ajax_referer( 'asp_pp_ajax_nonce', 'nonce', false ) ) {
 			$out['err'] = __( 'Error occurred: Nonce verification failed.', 'stripe-payments' );
 			wp_send_json( $out );
-                }
+		}
 		
 		$asp_daily_txn_counter_obj = new ASP_Daily_Txn_Counter();
 		$captcha_type = $this->asp_main->get_setting('captcha_type');
