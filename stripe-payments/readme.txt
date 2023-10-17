@@ -155,6 +155,9 @@ None.
 
 == Changelog ==
 
+= WIP 2.0.80 =
+- Added a currency check when the create payment intent request is made.
+
 = 2.0.79 =
 - New shortcode to show available quantity of a product: [asp_available_quantity id="123"]
 - Better handling for zip/postal code (when it contains empty space character).

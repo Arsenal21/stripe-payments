@@ -340,21 +340,35 @@ class ASP_PP_Ajax {
 		}
 
 		$min_amount = $item->get_min_amount( true );
-		$prod_type  = $item->get_type();
+		$prod_type = $item->get_type();
+		$configured_currency = $item->get_currency();
 
+		//Check configured currency matches with the request currency.
+		//Trigger filter that can be used to check this from the subscription addon (if needed).
+		$configured_currency = apply_filters( 'asp_create_pi_check_currency_configured', $configured_currency, $curr, $item );
+		if ( $configured_currency !== $curr ) {
+			ASP_Debug_Logger::log( 'Currency mismatch. The expected currency is: '.$configured_currency.', Received: '.$curr, false );
+
+			$msg = apply_filters( 'asp_customize_text_msg', __( 'Currency mismatch. The product is configured to use', 'stripe-payments' ), 'currency_mismatch' );
+			$out['err'] = $msg . ' ' . $configured_currency;
+			wp_send_json( $out );
+		}
+
+		//Check minimum amount.
 		if ( 'donation' === $prod_type && 0 !== $min_amount && $min_amount > $amount ) {
-			$msg        = apply_filters( 'asp_customize_text_msg', __( 'Minimum amount is', 'stripe-payments' ), 'min_amount_is' );
+			ASP_Debug_Logger::log( 'Minimum amount is: ' . $min_amount . ' ' . $curr, false );
+			$msg = apply_filters( 'asp_customize_text_msg', __( 'Minimum amount is', 'stripe-payments' ), 'min_amount_is' );
 			$out['err'] = $msg . ' ' . ASP_Utils::formatted_price( $min_amount, $curr, true );
 			wp_send_json( $out );
 		}
 
-                //Trigger some action hooks (useful for other checks).
+		//Trigger some action hooks (useful for other checks).
 		do_action( 'asp_ng_before_token_request', $item );
-                //ASP_Debug_Logger::log( 'handle_create_pi() - Captcha response checked.', true );
-                
-                //This hook will be used to do additional captcha (if enabled) parameter checks for bot mitigation.
-                $params = array();
-                do_action( 'asp_ng_do_additional_captcha_response_check', $item, $params );                
+		//ASP_Debug_Logger::log( 'handle_create_pi() - Captcha response checked.', true );
+
+		//This hook will be used to do additional captcha (if enabled) parameter checks for bot mitigation.
+		$params = array();
+		do_action( 'asp_ng_do_additional_captcha_response_check', $item, $params );                
 
 		do_action( 'asp_ng_product_mode_keys', $product_id );
 

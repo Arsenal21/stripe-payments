@@ -115,10 +115,12 @@ class ASP_Process_IPN_NG {
 				$body .= __( 'Debug data:', 'stripe-payments' ) . "\r\n";
                 $post  = filter_var( $_POST, FILTER_UNSAFE_RAW, FILTER_REQUIRE_ARRAY );
 				foreach ( $post as $key => $value ) {
+					//Make sure the value is not an array.
+					$value = is_array( $value ) ? wp_json_encode( $value ) : $value;
+
 					$key = sanitize_text_field( stripslashes( $key ));
 					$value = sanitize_text_field( stripslashes( $value ));
 
-					$value = is_array( $value ) ? wp_json_encode( $value ) : $value;
 					$body .= $key . ': ' . $value . "\r\n";
 				}
 				ASP_Utils::send_error_email( $body );
@@ -171,6 +173,17 @@ class ASP_Process_IPN_NG {
 					return true;
 				}
 			}
+			return false;
+		}
+		return true;
+	}
+
+	private function paid_currency_valid( $p_curr, $configured_currency, $item ){
+		//$item object can be used to retreive the product details.
+		//Trigger filter that can be used to check this from the subscription addon (if needed).
+		$configured_currency = apply_filters( 'asp_ipn_check_currency_configured', $configured_currency, $p_curr, $item );
+		
+		if ( strtolower($p_curr) !== strtolower($configured_currency) ) {
 			return false;
 		}
 		return true;
@@ -398,16 +411,32 @@ class ASP_Process_IPN_NG {
 		$amount_in_cents = intval( $item->get_total( true ) );
 		$amount_paid     = intval( $p_data->get_amount() );
 
-		$paid_amount_valid = $this->paid_amount_valid( $amount_in_cents, $amount_paid, $item );
+		$configured_currency = $item->get_currency();//Currency configured in product/general settings
+		$p_curr = $p_data->get_currency();//Currency from payment data
 
+		//Check currency
+		$paid_currency_valid = $this->paid_currency_valid( $p_curr, $configured_currency, $item );
+		if ( !$paid_currency_valid ) {
+			$err = sprintf(
+				// translators: placeholders are expected and received currencies
+				__( 'Invalid currency received. Expected %1$s, got %2$s.', 'stripe-payments' ),
+				$configured_currency,
+				$p_curr
+			);
+			//The following function will also log the error to the debug log.
+			$this->ipn_completed( $err );
+		}
+
+		//Check paid amount
+		$paid_amount_valid = $this->paid_amount_valid( $amount_in_cents, $amount_paid, $item );
 		if ( ! $paid_amount_valid ) {
-			$curr = $p_data->get_currency();
 			$err  = sprintf(
 				// translators: placeholders are expected and received amounts
 				__( 'Invalid payment amount received. Expected %1$s, got %2$s.', 'stripe-payments' ),
-				AcceptStripePayments::formatted_price( $amount_in_cents, $curr, true ),
-				AcceptStripePayments::formatted_price( $amount_paid, $curr, true )
+				AcceptStripePayments::formatted_price( $amount_in_cents, $p_curr, true ),
+				AcceptStripePayments::formatted_price( $amount_paid, $p_curr, true )
 			);
+			//The following function will also log the error to the debug log.
 			$this->ipn_completed( $err );
 		}
 
