@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 5.0
 Tested up to: 6.3
 Requires PHP: 7.0
-Stable tag: 2.0.79
+Stable tag: 2.0.80
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -155,7 +155,7 @@ None.
 
 == Changelog ==
 
-= WIP 2.0.80 =
+= 2.0.80 =
 - Added a currency check when the create payment intent request is made.
 - Added more sanitization to the billing_details object data.
 
