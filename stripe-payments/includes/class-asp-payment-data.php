@@ -104,13 +104,13 @@ class ASP_Payment_Data {
 			}
 		}
 
-		$shipping_addr->name        = isset( $sd->name ) ? $sd->name : '';
-		$shipping_addr->line1       = isset( $sd->address->line1 ) ? $sd->address->line1 : '';
-		$shipping_addr->line2       = isset( $sd->address->line2 ) ? $sd->address->line2 : '';
-		$shipping_addr->postal_code = isset( $sd->address->postal_code ) ? $sd->address->postal_code : '';
-		$shipping_addr->city        = isset( $sd->address->city ) ? $sd->address->city : '';
-		$shipping_addr->state       = isset( $sd->address->state ) ? $sd->address->state : '';
-		$shipping_addr->country     = isset( $sd->address->country ) ? $sd->address->country : '';
+		$shipping_addr->name        = isset( $sd->name ) ? sanitize_text_field($sd->name) : '';
+		$shipping_addr->line1       = isset( $sd->address->line1 ) ? sanitize_text_field($sd->address->line1) : '';
+		$shipping_addr->line2       = isset( $sd->address->line2 ) ? sanitize_text_field($sd->address->line2) : '';
+		$shipping_addr->postal_code = isset( $sd->address->postal_code ) ? sanitize_text_field($sd->address->postal_code) : '';
+		$shipping_addr->city        = isset( $sd->address->city ) ? sanitize_text_field($sd->address->city) : '';
+		$shipping_addr->state       = isset( $sd->address->state ) ? sanitize_text_field($sd->address->state) : '';
+		$shipping_addr->country     = isset( $sd->address->country ) ? sanitize_text_field($sd->address->country) : '';
 
 		$this->shipping_details_obj = $shipping_addr;
 		return $this->shipping_details_obj;

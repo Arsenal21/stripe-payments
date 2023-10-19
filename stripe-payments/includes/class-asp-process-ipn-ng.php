@@ -275,6 +275,8 @@ class ASP_Process_IPN_NG {
 		$p_data = apply_filters( 'asp_ng_process_ipn_payment_data_item_override', false, $pi );
 
 		if ( false === $p_data ) {
+			//Payment data override filter did not return any data. Let's get the data from the payment intent object.
+			//The billing details [example: ASP_Payment_Data->get_billing_details()] and some other transaction data are read from the payment intent object within the ASP_Payment_Data class.
 			$p_data = new ASP_Payment_Data( $pi );
 		}
 
