@@ -414,19 +414,29 @@ class ASP_Process_IPN_NG {
 		$amount_paid     = intval( $p_data->get_amount() );
 
 		$configured_currency = $item->get_currency();//Currency configured in product/general settings
+		$is_currency_variable = $item->is_currency_variable();
 		$p_curr = $p_data->get_currency();//Currency from payment data
 
 		//Check currency
 		$paid_currency_valid = $this->paid_currency_valid( $p_curr, $configured_currency, $item );
+		//Trigger filter that can be used to check this from the subscription addon (if needed).
+		$paid_currency_valid = apply_filters( 'asp_process_ipn_paid_currency_valid', $paid_currency_valid, $item );
 		if ( !$paid_currency_valid ) {
-			$err = sprintf(
-				// translators: placeholders are expected and received currencies
-				__( 'Invalid currency received. Expected %1$s, got %2$s.', 'stripe-payments' ),
-				$configured_currency,
-				$p_curr
-			);
-			//The following function will also log the error to the debug log.
-			$this->ipn_completed( $err );
+			//Check if the currency variable option is enabled.
+			$is_currency_variable = apply_filters( 'asp_process_ipn_is_currency_variable', $is_currency_variable, $item );
+			if ( $is_currency_variable ){
+				//The currency variable option is enabled. We will allow this request to go through.
+				//ASP_Debug_Logger::log( 'Note! The currency variable option is enabled in the product settings', true );
+			} else {
+				$err = sprintf(
+					// translators: placeholders are expected and received currencies
+					__( 'Invalid currency received. Expected %1$s, got %2$s.', 'stripe-payments' ),
+					$configured_currency,
+					$p_curr
+				);
+				//The following function will also log the error to the debug log.
+				$this->ipn_completed( $err );
+			}
 		}
 
 		//Check paid amount

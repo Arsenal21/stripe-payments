@@ -351,16 +351,25 @@ class ASP_PP_Ajax {
 		$min_amount = $item->get_min_amount( true );
 		$prod_type = $item->get_type();
 		$configured_currency = $item->get_currency();
+		$is_currency_variable = $item->is_currency_variable();
 
 		//Check configured currency matches with the request currency.
 		//Trigger filter that can be used to check this from the subscription addon (if needed).
 		$configured_currency = apply_filters( 'asp_create_pi_check_currency_configured', $configured_currency, $curr, $item );
 		if ( $configured_currency !== $curr ) {
-			ASP_Debug_Logger::log( 'Currency mismatch. The expected currency is: '.$configured_currency.', Received: '.$curr, false );
-
-			$msg = apply_filters( 'asp_customize_text_msg', __( 'Currency mismatch. The product is configured to use', 'stripe-payments' ), 'currency_mismatch' );
-			$out['err'] = $msg . ' ' . $configured_currency;
-			wp_send_json( $out );
+			//Check if the currency variable option is enabled.
+			//Trigger filter that can be used to check this from the subscription addon (if needed).
+			$is_currency_variable = apply_filters( 'asp_create_pi_is_currency_variable', $is_currency_variable, $item );
+			if ( $is_currency_variable ){
+				//The currency variable option is enabled. We will allow this request to go through.
+				ASP_Debug_Logger::log( 'Note: The currency variable option is enabled in the product settings for this product.', true );
+			} else {
+				//Error condition
+				ASP_Debug_Logger::log( 'Currency mismatch. The expected currency is: '.$configured_currency.', Received: '.$curr, false );
+				$msg = apply_filters( 'asp_customize_text_msg', __( 'Currency mismatch. The product is configured to use', 'stripe-payments' ), 'currency_mismatch' );
+				$out['err'] = $msg . ' ' . $configured_currency;
+				wp_send_json( $out );
+			}
 		}
 
 		//Check minimum amount.
