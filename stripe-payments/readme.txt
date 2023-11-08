@@ -154,6 +154,8 @@ Yes, please visit Stripe Payments > Settings screen for options.
 None.
 
 == Changelog ==
+= WIP = 
+- Coupon deleting issue fixed.
 
 = 2.0.81 =
 - The currency mismatch error message won't be displayed when the product is configured to use a variable currency.
