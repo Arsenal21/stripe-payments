@@ -189,7 +189,7 @@ class AcceptStripePayments_CouponsAdmin {
 				break;
 		}
 
-		$action = isset( $_POST['action'] ) ? sanitize_text_field( stripslashes ( $_POST['action'] ) ) : '';
+		$action = isset( $_GET['action'] ) ? sanitize_text_field( stripslashes ( $_GET['action'] ) ) : '';
 		$action = empty( $action ) ? '' : $action;
 
 		if ( $action === 'asp_delete_coupon' ) {
