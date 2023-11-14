@@ -154,10 +154,9 @@ Yes, please visit Stripe Payments > Settings screen for options.
 None.
 
 == Changelog ==
-= WIP = 
-- Coupon deleting issue fixed.
 
-= WIP =
+= WIP 2.0.82 =
+- Fixed an issue with the coupon code delete function.
 - Added a new utility function to retrieve the current page URL.
 
 = 2.0.81 =
