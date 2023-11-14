@@ -154,6 +154,8 @@ Yes, please visit Stripe Payments > Settings screen for options.
 None.
 
 == Changelog ==
+= WIP = 
+- Coupon deleting issue fixed.
 
 = WIP =
 - Added a new utility function to retrieve the current page URL.
