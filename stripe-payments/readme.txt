@@ -155,6 +155,9 @@ None.
 
 == Changelog ==
 
+= WIP =
+- Added a new utility function to retrieve the current page URL.
+
 = 2.0.81 =
 - The currency mismatch error message won't be displayed when the product is configured to use a variable currency.
 
