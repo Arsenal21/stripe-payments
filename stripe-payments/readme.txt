@@ -3,9 +3,9 @@ Contributors: Tips and Tricks HQ, wptipsntricks, alexanderfoxc
 Donate link: https://s-plugins.com
 Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortcode, digital goods, payment gateway, instant payment, commerce, digital downloads, downloads, e-commerce, e-store, ecommerce, eshop, donation
 Requires at least: 5.0
-Tested up to: 6.3
+Tested up to: 6.4
 Requires PHP: 7.0
-Stable tag: 2.0.81
+Stable tag: 2.0.82
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -155,7 +155,7 @@ None.
 
 == Changelog ==
 
-= WIP 2.0.82 =
+= 2.0.82 =
 - Fixed an issue with the coupon code delete function.
 - Added a new utility function to retrieve the current page URL.
 - New action hook in the payment popup window.
