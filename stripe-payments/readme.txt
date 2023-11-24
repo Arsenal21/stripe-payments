@@ -158,6 +158,7 @@ None.
 = WIP 2.0.82 =
 - Fixed an issue with the coupon code delete function.
 - Added a new utility function to retrieve the current page URL.
+- New action hook in the payment popup window.
 
 = 2.0.81 =
 - The currency mismatch error message won't be displayed when the product is configured to use a variable currency.

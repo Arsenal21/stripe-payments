@@ -36,12 +36,9 @@ echo wp_kses( '<style>' . $css . '</style>' . "\r\n", ASP_Utils::asp_allowed_tag
 
 	$a['data']['customer_default_country'] = apply_filters( 'asp_ng_pp_default_country_override', $a['data']['customer_default_country'] );
 
-	?>
-	<?php
-	// Define custom action to output additional data to payment popup before closing <head> tag
+	// Trigger action hook. Can be used to output additional data to payment popup before closing <head> tag.
 	do_action( 'asp_ng_pp_output_before_closing_head' );
 	?>
-
 </head>
 
 <body<?php echo isset( $a['prod_id'] ) ? sprintf( ' id="product-%d"', esc_attr( $a['prod_id'] ) ) : ''; ?>>
