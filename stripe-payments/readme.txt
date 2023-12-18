@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 5.0
 Tested up to: 6.4
 Requires PHP: 7.0
-Stable tag: 2.0.82
+Stable tag: 2.0.83
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -155,7 +155,7 @@ None.
 
 == Changelog ==
 
-= WIP - 2.0.83 =
+= 2.0.83 =
 - Fixed a recent PHP8 related change that caused an issue in the download URL function.
 
 = 2.0.82 =
