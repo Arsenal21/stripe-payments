@@ -155,6 +155,9 @@ None.
 
 == Changelog ==
 
+= WIP - 2.0.83 =
+- Fixed a recent PHP8 related change that caused an issue in the download URL function.
+
 = 2.0.82 =
 - Fixed an issue with the coupon code delete function.
 - Added a new utility function to retrieve the current page URL.

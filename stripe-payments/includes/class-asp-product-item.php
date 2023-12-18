@@ -503,7 +503,7 @@ class ASP_Product_Item {
 	}
 
 	public function get_download_url() {
-		$post_url = isset( $_GET['asp_item_url'] ) ? sanitize_text_field( stripslashes ( $_GET['asp_item_url'] ) ) : '';
+		$post_url = isset( $_POST['asp_item_url'] ) ? sanitize_text_field( stripslashes ( $_POST['asp_item_url'] ) ) : '';
 		if ( $post_url ) {
 			$item_url = $post_url;
 		} else {
