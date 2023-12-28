@@ -7,6 +7,7 @@ class ASP_PP_Display {
 	public $custom_field;
 	public $prod_id;
 	public $variations;
+	public $item;
 
 	private $auth_not_supported = array( 'FPX', 'ALIPAY', 'IDEAL', 'SOFORT' );
 

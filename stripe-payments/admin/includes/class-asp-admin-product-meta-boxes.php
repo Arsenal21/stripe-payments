@@ -772,7 +772,7 @@ jQuery(document).ready(function($) {
 	<label><?php _e( 'Button Text', 'stripe-payments' ); ?></label>
 	<br />
 	<input type="text" name="asp_product_button_text" size="50" value="<?php echo esc_attr( $button_txt ); ?>">
-	<p class="description"><?php _e( 'Specify text to be displayed on the button. Leave it blank to use button text specified on settings page.', 'stripe-payments' ); ?></p>
+	<p class="description"><?php _e( 'Specify text to be displayed on the button. Leave it blank to use the button text specified on the settings page.', 'stripe-payments' ); ?></p>
 	<label><?php _e( 'Button CSS Class', 'stripe-payments' ); ?></label>
 	<br />
 	<input type="text" name="asp_product_button_class" size="50" value="<?php echo esc_attr( $button_class ); ?>">
@@ -785,9 +785,9 @@ jQuery(document).ready(function($) {
 	<label for="asp_product_popup_button_text"><?php _e( 'Payment Popup Button Text', 'stripe-payments' ); ?></label>
 	<br />
 	<input type="text" name="asp_product_popup_button_text" id="asp_product_popup_button_text" size="50" value="<?php echo esc_attr( $popup_button_txt ); ?>">
-	<p class="description"><?php _e( 'Specify text to be displayed on the payment button of the popup window. You can use %s and it will be replaced by formatted payment amount (example: Pay $29.90). Leave it blank to use global settings."', 'stripe-payments' ); ?></p>
-	<label><input type="checkbox" name="asp_product_show_your_order" value="1" <?php echo $show_your_order ? ' checked' : ''; ?>> <?php esc_html_e( 'Show Order Total On Payment Popup', 'stripe-payments' ); ?></label>
-	<p class="description"><?php _e( 'If enabled, an additional "Your order" section with itemized product info (shipping, tax amount, variations etc) will be displayed on payment popup.', 'stripe-payments' ); ?></p>
+	<p class="description"><?php _e( 'Specify the button text for the payment popup window. Leave blank for global settings.', 'stripe-payments' ); ?></p>
+	<label><input type="checkbox" name="asp_product_show_your_order" value="1" <?php echo $show_your_order ? ' checked' : ''; ?>> <?php esc_html_e( 'Display Order Total in Payment Popup', 'stripe-payments' ); ?></label>
+	<p class="description"><?php _e( 'If enabled, an additional "Your order" section with itemized product info (shipping, tax amount, variations etc) will be displayed in the payment popup window.', 'stripe-payments' ); ?></p>
 </fieldset>
 
 		<?php
