@@ -555,6 +555,12 @@ class ASP_PP_Display {
 			}
 			$pay_btn_text = apply_filters( 'asp_customize_text_msg', __( 'Start Free Trial', 'stripe-payments' ), 'start_free_trial' );
 		}
+		
+		// Check user has specified any popup-payment button text for individual product. 
+		$per_product_pay_btn_text = $this->item->get_meta( 'asp_product_popup_button_text' );
+		if (!empty($per_product_pay_btn_text)) {
+			$pay_btn_text = __( $per_product_pay_btn_text, 'stripe-payments' );
+		}
 
 		//filter to change pay button text
 		$pay_btn_text = apply_filters( 'asp_ng_pp_pay_button_text', $pay_btn_text );

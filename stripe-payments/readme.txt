@@ -154,6 +154,8 @@ Yes, please visit Stripe Payments > Settings screen for options.
 None.
 
 == Changelog ==
+= WIP =
+- New option to customize payment button text in the popup window for individual product.
 
 = 2.0.83 =
 - Fixed a recent PHP8 related change that caused an issue in the download URL function.

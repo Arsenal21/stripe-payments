@@ -764,6 +764,7 @@ jQuery(document).ready(function($) {
 		$button_class = get_post_meta( $post->ID, 'asp_product_button_class', true );
 		$button_only  = get_post_meta( $post->ID, 'asp_product_button_only', true );
 
+		$popup_button_txt  = get_post_meta( $post->ID, 'asp_product_popup_button_text', true );
 		$show_your_order = get_post_meta( $post->ID, 'asp_product_show_your_order', true );
 		?>
 <fieldset>
@@ -781,6 +782,10 @@ jQuery(document).ready(function($) {
 </fieldset>
 <fieldset>
 	<legend><?php esc_html_e( 'Payment Popup Options', 'stripe-payments' ); ?></legend>
+	<label for="asp_product_popup_button_text"><?php _e( 'Payment Popup Button Text', 'stripe-payments' ); ?></label>
+	<br />
+	<input type="text" name="asp_product_popup_button_text" id="asp_product_popup_button_text" size="50" value="<?php echo esc_attr( $popup_button_txt ); ?>">
+	<p class="description"><?php _e( 'Specify text to be displayed on the payment button of the popup window. You can use %s and it will be replaced by formatted payment amount (example: Pay $29.90). Leave it blank to use global settings."', 'stripe-payments' ); ?></p>
 	<label><input type="checkbox" name="asp_product_show_your_order" value="1" <?php echo $show_your_order ? ' checked' : ''; ?>> <?php esc_html_e( 'Show Order Total On Payment Popup', 'stripe-payments' ); ?></label>
 	<p class="description"><?php _e( 'If enabled, an additional "Your order" section with itemized product info (shipping, tax amount, variations etc) will be displayed on payment popup.', 'stripe-payments' ); ?></p>
 </fieldset>
@@ -1006,6 +1011,7 @@ jQuery(document).ready(function($) {
 			update_post_meta( $post_id, 'asp_product_button_text', sanitize_text_field( $_POST['asp_product_button_text'] ) );
 			update_post_meta( $post_id, 'asp_product_button_class', sanitize_text_field( $_POST['asp_product_button_class'] ) );
 			update_post_meta( $post_id, 'asp_product_button_only', isset( $_POST['asp_product_button_only'] ) ? 1 : 0 );
+			update_post_meta( $post_id, 'asp_product_popup_button_text', sanitize_text_field( $_POST['asp_product_popup_button_text'] ) );
 			update_post_meta( $post_id, 'asp_product_show_your_order', isset( $_POST['asp_product_show_your_order'] ) ? 1 : 0 );
 			update_post_meta( $post_id, 'asp_product_description', sanitize_text_field( $_POST['asp_product_description'] ) );
 			update_post_meta( $post_id, 'asp_product_upload', sanitize_url( $_POST['asp_product_upload'], array( 'http', 'https', 'dropbox' ) ) );
