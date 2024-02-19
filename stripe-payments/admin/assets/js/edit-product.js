@@ -230,7 +230,13 @@ jQuery(document).ready(function ($) {
 	jQuery('#wp-asp-tax-variations-tbl').on('click', 'button.wp-asp-tax-variations-del-btn', function (e) {
 		e.preventDefault();
 		if (confirm(aspTaxVarData.str.delConfirm)) {
-			jQuery(this).closest('tr').fadeOut(300, function () { this.remove });
+			jQuery(this).closest('tr').fadeOut(300, function () { jQuery(this).remove(); });
+			
+			// Check if the variation table gets empty. If so, hide the table.
+			const tableBody = jQuery('#wp-asp-tax-variations-tbl tbody tr');
+			if(tableBody.length < 2){
+				jQuery('#wp-asp-tax-variations-tbl').fadeOut(300);
+			}
 		}
 	});
 
