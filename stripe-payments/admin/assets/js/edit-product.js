@@ -88,7 +88,15 @@ jQuery(document).ready(function ($) {
 		if (!confirm(aspEditProdData.str.varDeleteConfirm)) {
 			return false;
 		}
+		
+		const variationTable = $(this).closest('table');
+
 		$(this).closest('tr').remove();
+		
+		// Check if it was the last variation item. If so, remove the variation group as well.
+		if (variationTable.children('tr').length < 1) {
+			variationTable.closest('.asp-variations-group-cont').remove();
+		}
 	});
 	$(document).on('click', 'button.asp-variations-add-variation-btn', function (e) {
 		e.preventDefault();
