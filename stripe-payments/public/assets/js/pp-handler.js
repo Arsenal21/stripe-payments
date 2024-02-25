@@ -1459,3 +1459,25 @@ jQuery('#threeds-iframe-close-btn').on('click', function () {
 		smokeScreen(false);
 	}
 });
+
+/**
+ * Check and apply the coupon code if it is provided in the url.
+ */
+jQuery(document).ready(function(){
+	const urlParams = new URLSearchParams(window.location.search);
+	const couponQueryParam = 'coupon_code';
+
+	if (!urlParams.has(couponQueryParam) || !urlParams.get(couponQueryParam)) {
+		// No coupon code found!
+		return;
+	}
+
+	const couponCode = urlParams.get(couponQueryParam).trim();
+	const couponCodeInput = jQuery("#coupon-code");
+
+	couponCodeInput.val(couponCode);
+	
+	if(couponCodeInput.length && couponCodeInput.val() !== ''){
+		jQuery("#apply-coupon-btn").trigger("click");
+	}
+});
