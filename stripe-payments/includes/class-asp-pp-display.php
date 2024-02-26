@@ -133,7 +133,13 @@ class ASP_PP_Display {
 		$cf_validation_err_msg = '';
 
 		if ( $custom_field ) {
-			$a['custom_fields'] = $this->tpl_get_cf();
+
+			$show_custom_fields_below = $this->asp_main->get_setting( 'acf_show_fields_below' );
+			if ($show_custom_fields_below){
+				$a['custom_fields_below'] = $this->tpl_get_cf();
+			}else{
+				$a['custom_fields'] = $this->tpl_get_cf();
+			}
 			//check if we have custom field validation enabled
 			$custom_validation = $this->asp_main->get_setting( 'custom_field_validation' );
 			if ( ! empty( $custom_validation ) ) {

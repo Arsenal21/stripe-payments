@@ -160,6 +160,7 @@ None.
 - Regional tax variation deletion issue fixed.
 - Added support for 'coupon_code' query param to apply coupons directly in the product link url. 
 - Fixed the error that triggers when creating/updating a product leaving a variation group empty.
+- Added support for Custom Fields Addon's new fields position feature.
 
 = 2.0.83 =
 - Fixed a recent PHP8 related change that caused an issue in the download URL function.

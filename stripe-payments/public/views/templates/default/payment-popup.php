@@ -416,6 +416,13 @@ echo wp_kses( '<style>' . $css . '</style>' . "\r\n", ASP_Utils::asp_allowed_tag
 							</div>
 							<div id="card-errors" class="form-err" role="alert"></div>
 						</div>
+
+						<?php if ( isset( $a['custom_fields_below'] ) ) { ?>
+                            <div id="custom-fields-cont" class="pure-u-1">
+	                            <?php echo wp_kses( $a['custom_fields_below'], ASP_Utils::asp_allowed_tags() ); ?>
+                            </div>
+						<?php } ?>
+
 						<?php if ( isset( $a['tos'] ) && $a['tos'] ) { ?>
 						<div id="tos-cont" class="pure-u-1">
 							<label for="tos" class="pure-checkbox">
