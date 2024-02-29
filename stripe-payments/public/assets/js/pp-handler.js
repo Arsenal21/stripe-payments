@@ -932,6 +932,11 @@ function handlePayment() {
 			reqStr = reqStr + '&shipping_details=' + JSON.stringify(shippingDetails);
 		}
 		reqStr += '&token=' + vars.data.visitor_token;
+
+		if (vars.data.coupon) {
+			reqStr += '&coupon=' + vars.data.coupon.code;
+		}
+
 		vars.data.csRegenParams = reqStr;
 		doAddonAction('csBeforeRegenParams');
 		console.log('Doing asp_pp_create_pi');
