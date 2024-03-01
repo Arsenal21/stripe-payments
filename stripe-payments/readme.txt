@@ -155,12 +155,13 @@ None.
 
 == Changelog ==
 
-= WIP =
+= 2.0.84.WIP =
 - Added a new option to customize payment button text (in the popup window) on a per product basis.
+- Added support for 'coupon_code' query param to apply coupon directly in the product link url feature. 
+- Corrected the issue causing an error when a product is created or updated with an empty variation group.
 - Regional tax variation deletion issue fixed.
-- Added support for 'coupon_code' query param to apply coupons directly in the product link url. 
-- Fixed the error that triggers when creating/updating a product leaving a variation group empty.
 - Added support for Custom Fields Addon's new fields position feature.
+- Added an API pre-submission price validation.
 
 = 2.0.83 =
 - Fixed a recent PHP8 related change that caused an issue in the download URL function.

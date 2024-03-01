@@ -295,53 +295,60 @@ class ASP_PP_Ajax {
 			}
 		}
 		
-                //Log initial create_pi debug logging data (if debug feature is enabled).
-                $txn_counter_args = $asp_daily_txn_counter_obj->asp_get_daily_txn_counter_args();
-                $txn_counter_val = isset($txn_counter_args['counter'])? $txn_counter_args['counter'] : '-';
-                $request_ip = ASP_Utils::get_user_ip_address();
-                $create_pi_initial_debug = 'handle_create_pi() -  Product ID: ' . $product_id . ', Captcha Type: ' . $captcha_type . ', Txn Counter: ' . $txn_counter_val . ', IP: ' . $request_ip;
-                ASP_Debug_Logger::log( $create_pi_initial_debug, true );
-                //End initial create_pi debug logging.
-                
-                //Check page load signature data
-                if( !ASP_Utils_Bot_Mitigation::is_page_load_signature_data_valid($product_id) ){
-                    //Signature is invalid.
-                    //Exit out if feature is enabled
-                    $disable_signature_check = $this->asp_main->get_setting( 'disable_page_load_signature_check' );
-                    if ( $disable_signature_check ) {
-                        //The signature check feature is disabled. We will allow this request to go through.
-                        ASP_Debug_Logger::log( 'Notice! The page load signature check feature is disabled in the advanced settings menu so this request will not be blocked.', false );
-                    } else {
-                        $out['err'] = __( 'Error! Page load signature check failed.', 'stripe-payments' );
-                        wp_send_json( $out );
-                    }
-                }
-                
-                //Check request usage count per IP address
-                if( !ASP_Utils_Bot_Mitigation::is_request_limit_reached_for_ip() ){
-                    //Request limit reached for this IP.
-                    //Exit out if feature is enabled
-                    $disable_request_limit_check = $this->asp_main->get_setting( 'disable_request_limit_per_ip_check' );
-                    if ( $disable_request_limit_check ) {
-                        //The request limit check feature is disabled. We will allow this request to go through.
-                        ASP_Debug_Logger::log( 'Notice! The transaction request limit per IP address feature is disabled in the advanced settings menu so this request will not be blocked.', false );
-                    } else {
-                        $out['err'] = __( 'Error! Transaction request limit reached for this IP address.', 'stripe-payments' );
-                        wp_send_json( $out );
-                    }
-                }
+		//Log initial create_pi debug logging data (if debug feature is enabled).
+		$txn_counter_args = $asp_daily_txn_counter_obj->asp_get_daily_txn_counter_args();
+		$txn_counter_val = isset($txn_counter_args['counter'])? $txn_counter_args['counter'] : '-';
+		$request_ip = ASP_Utils::get_user_ip_address();
+		$create_pi_initial_debug = 'handle_create_pi() -  Product ID: ' . $product_id . ', Captcha Type: ' . $captcha_type . ', Txn Counter: ' . $txn_counter_val . ', IP: ' . $request_ip;
+		ASP_Debug_Logger::log( $create_pi_initial_debug, true );
+		//End initial create_pi debug logging.
+		
+		//Check page load signature data
+		if( !ASP_Utils_Bot_Mitigation::is_page_load_signature_data_valid($product_id) ){
+			//Signature is invalid.
+			//Exit out if feature is enabled
+			$disable_signature_check = $this->asp_main->get_setting( 'disable_page_load_signature_check' );
+			if ( $disable_signature_check ) {
+				//The signature check feature is disabled. We will allow this request to go through.
+				ASP_Debug_Logger::log( 'Notice! The page load signature check feature is disabled in the advanced settings menu so this request will not be blocked.', false );
+			} else {
+				$out['err'] = __( 'Error! Page load signature check failed.', 'stripe-payments' );
+				wp_send_json( $out );
+			}
+		}
+		
+		//Check request usage count per IP address
+		if( !ASP_Utils_Bot_Mitigation::is_request_limit_reached_for_ip() ){
+			//Request limit reached for this IP.
+			//Exit out if feature is enabled
+			$disable_request_limit_check = $this->asp_main->get_setting( 'disable_request_limit_per_ip_check' );
+			if ( $disable_request_limit_check ) {
+				//The request limit check feature is disabled. We will allow this request to go through.
+				ASP_Debug_Logger::log( 'Notice! The transaction request limit per IP address feature is disabled in the advanced settings menu so this request will not be blocked.', false );
+			} else {
+				$out['err'] = __( 'Error! Transaction request limit reached for this IP address.', 'stripe-payments' );
+				wp_send_json( $out );
+			}
+		}
                 
 		$item = new ASP_Product_Item( $product_id );
 
-		// Check if its a one-time payment product and its price is not tampered!
-		if ($item->get_type() === 'one_time') {
-			ASP_Debug_Logger::log( "Validating one-time payment product price...", true );
-			if(!$item->validate_total_amount($amount, $coupon_code)){
-				ASP_Debug_Logger::log( "Validation failed! Price amount has been tampered somewhere!", true );
+		//Do the API pre-submission price/amount validation.
+		if ( $item->get_type() === 'one_time' ) {
+			//It's a one-time payment product.
+			if( ! $item->validate_total_amount( $amount, $coupon_code ) ){
+				//Error condition. The validation function will set the error message which we will use to send back to the client in the next stage of the code.
+				ASP_Debug_Logger::log( "API pre-submission validation failed. The amount appears to have been altered.", false );
 			}else{
-				ASP_Debug_Logger::log( "Validation successful!", true );
+				ASP_Debug_Logger::log( "API pre-submission validation successful.", true );
 			}
+		} else if ( $item->get_type() === 'donation' ) {
+			//It's a donation product. Don't need to validate the amount since the user can enter any amount to donate.
+			ASP_Debug_Logger::log( "This is a donation type product. API pre-submission validation is not required.", true );
 		}
+		//Trigger action hook that can be used to do additional API pre-submission validation from an addon.
+		do_action( 'asp_ng_before_api_pre_submission_validation', $item );
+		//End API pre-submission price/amount validation.
 
 		if ( $item->get_last_error() ) {
 			$out['err'] = __( 'Error occurred:', 'stripe-payments' ) . ' ' . $item->get_last_error();

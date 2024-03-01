@@ -276,6 +276,11 @@ class ASP_Product_Item {
 		return $discount_amount;
 	}
 
+	/*
+	 * Returns the total amount for the product (including tax, shipping, item quantity, and discount if any)
+	 *
+	 * @param bool $in_cents Return amount in cents if set to `true`
+	 */
 	public function get_total( $in_cents = false ) {
 		$total = $this->get_price( $in_cents );
 
@@ -560,24 +565,30 @@ class ASP_Product_Item {
 	}
 
 	/**
-	 * Validates total checkout amount against a given amount.
+	 * Validates the total checkout amount for a product against a given amount.
 	 *
 	 * @param int $amount The price to validate.
-	 * @param string $coupon_code Coupon code to evaluate if theres any.
+	 * @param string $coupon_code Coupon code to evaluate (if any)
 	 * 
 	 * @return bool TRUE if validation is successful, FALSE otherwise.
 	 */
 	public function validate_total_amount( $amount , $coupon_code = '' ) {
 
-		if (!empty($coupon_code)) {
-			// Get the coupon and take it into count if provided.
-			if (!$this->load_coupon( $coupon_code )) {
+		if ( !empty( $coupon_code ) ) {
+			// Get the coupon and take it into account (if provided).
+			if ( !$this->load_coupon( $coupon_code ) ) {
+				// Coupon is not valid. Return false.
 				return false;
 			};
 		}
 
-		if ($this->get_total(true) != $amount) {
-			$this->last_error = __( "Price amount has been tampered somewhere!", 'stripe-payments' );
+		// Calculate the expected total amount.
+		$expected_total_amount = $this->get_total(true);
+
+		// Check if the expected total amount matches the given amount.
+		if ( $expected_total_amount != $amount ) {
+			// Set the last error message that will be displayed to the user.
+			$this->last_error = __( "Price validation failed. The submitted amount does not match the product's configured price. Please refresh the page and try again.", 'stripe-payments' );
 			return false;
 		}
 
