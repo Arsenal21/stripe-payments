@@ -558,4 +558,29 @@ class ASP_Product_Item {
 	public function get_meta( $meta, $single = true ) {
 		return get_post_meta( $this->post_id, $meta, $single );
 	}
+
+	/**
+	 * Validates total checkout amount against a given amount.
+	 *
+	 * @param int $amount The price to validate.
+	 * @param string $coupon_code Coupon code to evaluate if theres any.
+	 * 
+	 * @return bool TRUE if validation is successful, FALSE otherwise.
+	 */
+	public function validate_total_amount( $amount , $coupon_code = '' ) {
+
+		if (!empty($coupon_code)) {
+			// Get the coupon and take it into count if provided.
+			if (!$this->load_coupon( $coupon_code )) {
+				return false;
+			};
+		}
+
+		if ($this->get_total(true) != $amount) {
+			$this->last_error = __( "Price amount has been tampered somewhere!", 'stripe-payments' );
+			return false;
+		}
+
+		return true;
+	}
 }

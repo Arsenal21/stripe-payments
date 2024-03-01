@@ -262,6 +262,7 @@ class ASP_PP_Ajax {
 		$cust_id = isset( $_POST['cust_id'] ) ? sanitize_text_field( stripslashes ( $_POST['cust_id'] ) ) : '';
 		$quantity = isset( $_POST['quantity'] ) ? sanitize_text_field( stripslashes ( $_POST['quantity'] ) ) : '';
 		$nonce = isset( $_POST['nonce'] ) ? sanitize_text_field( stripslashes ( $_POST['nonce'] ) ) : '';
+		$coupon_code = isset( $_POST['coupon'] ) ? sanitize_text_field( stripslashes ( $_POST['coupon'] ) ) : '';
 
 		//Check create_pi nonce
 		if ( ! wp_verify_nonce( $nonce, 'asp_pp_ajax_create_pi_nonce' ) ) {
@@ -331,6 +332,16 @@ class ASP_PP_Ajax {
                 }
                 
 		$item = new ASP_Product_Item( $product_id );
+
+		// Check if its a one-time payment product and its price is not tampered!
+		if ($item->get_type() === 'one_time') {
+			ASP_Debug_Logger::log( "Validating one-time payment product price...", true );
+			if(!$item->validate_total_amount($amount, $coupon_code)){
+				ASP_Debug_Logger::log( "Validation failed! Price amount has been tampered somewhere!", true );
+			}else{
+				ASP_Debug_Logger::log( "Validation successful!", true );
+			}
+		}
 
 		if ( $item->get_last_error() ) {
 			$out['err'] = __( 'Error occurred:', 'stripe-payments' ) . ' ' . $item->get_last_error();
