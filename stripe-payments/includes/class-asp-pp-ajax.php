@@ -338,13 +338,13 @@ class ASP_PP_Ajax {
 			//It's a one-time payment product.
 			if( ! $item->validate_total_amount( $amount, $coupon_code ) ){
 				//Error condition. The validation function will set the error message which we will use to send back to the client in the next stage of the code.
-				ASP_Debug_Logger::log( "API pre-submission validation failed. The amount appears to have been altered.", false );
+				ASP_Debug_Logger::log( "API pre-submission amount validation failed. The amount appears to have been altered.", false );
 			}else{
-				ASP_Debug_Logger::log( "API pre-submission validation successful.", true );
+				ASP_Debug_Logger::log( "API pre-submission amount validation successful.", true );
 			}
 		} else if ( $item->get_type() === 'donation' ) {
 			//It's a donation product. Don't need to validate the amount since the user can enter any amount to donate.
-			ASP_Debug_Logger::log( "This is a donation type product. API pre-submission validation is not required.", true );
+			ASP_Debug_Logger::log( "This is a donation type product. API pre-submission amount validation is not required.", true );
 		}
 		//Trigger action hook that can be used to do additional API pre-submission validation from an addon.
 		do_action( 'asp_ng_before_api_pre_submission_validation', $item );
