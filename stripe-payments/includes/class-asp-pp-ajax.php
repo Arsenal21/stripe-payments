@@ -263,6 +263,9 @@ class ASP_PP_Ajax {
 		$quantity = isset( $_POST['quantity'] ) ? sanitize_text_field( stripslashes ( $_POST['quantity'] ) ) : '';
 		$nonce = isset( $_POST['nonce'] ) ? sanitize_text_field( stripslashes ( $_POST['nonce'] ) ) : '';
 		$coupon_code = isset( $_POST['coupon'] ) ? sanitize_text_field( stripslashes ( $_POST['coupon'] ) ) : '';
+		$price_variation = isset( $_POST['pvar'] ) ? sanitize_text_field( stripslashes ( $_POST['pvar'] ) ) : '';
+		$post_billing_details = isset( $_POST['billing_details'] ) ? sanitize_text_field( stripslashes ( $_POST['billing_details'] ) ) : '';
+		$post_shipping_details = isset( $_POST['shipping_details'] ) ? sanitize_text_field( stripslashes ( $_POST['shipping_details'] ) ) : '';
 
 		//Check create_pi nonce
 		if ( ! wp_verify_nonce( $nonce, 'asp_pp_ajax_create_pi_nonce' ) ) {
@@ -330,24 +333,36 @@ class ASP_PP_Ajax {
 				wp_send_json( $out );
 			}
 		}
-                
-		$item = new ASP_Product_Item( $product_id );
 
+		// >>>> Start of pre API submission validation.
+		$item_for_validation = new ASP_Product_Item( $product_id );
 		//Do the API pre-submission price/amount validation.
-		if ( $item->get_type() === 'one_time' ) {
+		if ( $item_for_validation->get_type() === 'one_time' ) {
 			//It's a one-time payment product.
-			if( ! $item->validate_total_amount( $amount, $coupon_code ) ){
+
+			$custom_inputs = array(
+				'coupon_code' 		=> $coupon_code,
+				'price_variation' 	=> $price_variation,
+				'billing_details' 	=> json_decode( html_entity_decode( $post_billing_details ) , true),
+				'shipping_details' 	=> json_decode( html_entity_decode( $post_shipping_details ) , true),
+			);
+
+			if( ! $item_for_validation->validate_total_amount( $amount, $quantity, $custom_inputs) ){
 				//Error condition. The validation function will set the error message which we will use to send back to the client in the next stage of the code.
 				ASP_Debug_Logger::log( "API pre-submission amount validation failed. The amount appears to have been altered.", false );
 			}else{
 				ASP_Debug_Logger::log( "API pre-submission amount validation successful.", true );
 			}
-		} else if ( $item->get_type() === 'donation' ) {
+		} else if ( $item_for_validation->get_type() === 'donation' ) {
 			//It's a donation product. Don't need to validate the amount since the user can enter any amount to donate.
 			ASP_Debug_Logger::log( "This is a donation type product. API pre-submission amount validation is not required.", true );
 		}
 		//Trigger action hook that can be used to do additional API pre-submission validation from an addon.
-		do_action( 'asp_ng_before_api_pre_submission_validation', $item );
+		do_action( 'asp_ng_before_api_pre_submission_validation', $item_for_validation );
+		// <<<< End of pre API submission validation.
+
+		$item = new ASP_Product_Item( $product_id );
+		
 		//End API pre-submission price/amount validation.
 
 		if ( $item->get_last_error() ) {
@@ -434,10 +449,6 @@ class ASP_PP_Ajax {
 				'currency'            => $curr,
 				'confirmation_method' => 'manual',
 			);
-
-			$post_billing_details = isset( $_POST['billing_details'] ) ? sanitize_text_field( stripslashes ( $_POST['billing_details'] ) ) : '';
-
-			$post_shipping_details = isset( $_POST['shipping_details'] ) ? sanitize_text_field( stripslashes ( $_POST['shipping_details'] ) ) : '';
 
 			if ( isset( $post_billing_details ) ) {
 				$post_billing_details = html_entity_decode( $post_billing_details );

@@ -937,6 +937,34 @@ function handlePayment() {
 			reqStr += '&coupon=' + vars.data.coupon.code;
 		}
 
+		// Check if price variation is set, if so, then process it to add this in query param.
+		if (vars.data.variations.constructor === Object && Object.keys(vars.data.variations).length !== 0) {			
+			variation_counts = vars.data.variations.groups.length
+			
+			let variations = [];
+			for (let i = 0; i < variation_counts; i++) {
+
+				if(typeof vars.data.variations.applied[i] === 'undefined') continue;
+
+				// Check if it is not a checkbox type input.
+				if (vars.data.variations.opts[i]['type'] != '2') { 
+					let variation_str = vars.data.variations.groups[i] + '_' + vars.data.variations.applied[i];
+					variations.push(variation_str);
+				}else{
+					// It is a checkbox type input.
+					for (let j = 0; j < vars.data.variations.applied[i].length; j++) {
+						if (vars.data.variations.applied[i][j] === 1) {
+							let variation_str = vars.data.variations.groups[i] + '_' + j;
+							variations.push(variation_str);
+						}
+					}
+				}
+			}
+
+			const encodedPriceVariations = variations.map(item => encodeURIComponent(item)).join(',');
+			reqStr += '&pvar=' + encodedPriceVariations;
+		}
+		
 		vars.data.csRegenParams = reqStr;
 		doAddonAction('csBeforeRegenParams');
 		console.log('Doing asp_pp_create_pi');

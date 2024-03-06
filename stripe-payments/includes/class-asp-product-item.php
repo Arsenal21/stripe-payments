@@ -534,6 +534,7 @@ class ASP_Product_Item {
 
 	public function get_button_key() {
 		if ( ! $this->button_key ) {
+			// ASP_Debug_Logger::log("Get Button Key - Name:".  $this->get_name() . ", Price:",  $this->get_price(true));
 			$this->button_key = md5( htmlspecialchars_decode( $this->get_name() ) . $this->get_price( true ) );
 		}
 		return $this->button_key;
@@ -568,22 +569,110 @@ class ASP_Product_Item {
 	 * Validates the total checkout amount for a product against a given amount.
 	 *
 	 * @param int $amount The price to validate.
-	 * @param string $coupon_code Coupon code to evaluate (if any)
+	 * @param int $quantity Product quantity.
+	 * @param array $custom_inputs Custom input from customer such as applied coupon code, billing/shipping details, price variation etc.
 	 * 
 	 * @return bool TRUE if validation is successful, FALSE otherwise.
 	 */
-	public function validate_total_amount( $amount , $coupon_code = '' ) {
+	public function validate_total_amount( $amount, $quantity, $custom_inputs = array() ) {
+		$product_price = $this->get_meta('asp_product_price');
+
+		ASP_Debug_Logger::log("Amount submitted by customer: ". $amount, true);
+		// ASP_Debug_Logger::log("Amount current total (before anything apply): ". $this->get_total(true), true);
+		// ASP_Debug_Logger::log("Amount raw product price: ". $this->in_cents($product_price), true);
+		
+		$this->set_quantity( $quantity );
+
+		$price_variation = $custom_inputs['price_variation'];
+		if ( isset($price_variation) && !empty( $price_variation ) ) {
+			$variations_groups = $this->get_meta('asp_variations_groups');
+			$variations_prices = $this->get_meta('asp_variations_prices');
+			
+			$construct_final_price = ! empty( $this->get_meta('asp_product_hide_amount_input') );
+
+			$pvars = explode(',', $price_variation ); // Hold data like this: ['<group_name>-<applied_option>', ....]
+			
+			$variation_price = 0;
+			foreach ($pvars as $pvar_str) {
+				$separator = '_';
+				// Use the last index of the separator to explode the $pvar_str. This is to avoid collision if $pvar_str contains (from the group name) more than one $separator. 
+				$last_separator_index = strrpos($pvar_str, $separator); 
+				
+				$option_group = substr($pvar_str, 0, $last_separator_index); // Group name;
+				$applied_option = (int) substr($pvar_str, $last_separator_index + strlen($separator));// Applied option
+				
+				$group_index = array_search($option_group, $variations_groups);
+				$applied_price = $variations_prices[$group_index][$applied_option];
+				$variation_price += $applied_price;
+			}
+			
+			$price_with_applied_variation = 0;
+			if ($construct_final_price) {
+				$price_with_applied_variation = $variation_price;
+			}else{
+				$price_with_applied_variation = $variation_price + $product_price; 	
+			}
+			$this->set_price($price_with_applied_variation);
+			
+			// ASP_Debug_Logger::log("Applied variation price : ". $price_with_applied_variation, true);
+		}
+
+		// ASP_Debug_Logger::log("Amount current total (after price variation): ". $this->get_total(true), true);
+		
+		$tax_variations_type 			= $this->get_meta('asp_product_tax_variations_type');
+		$tax_variations_arr  			= $this->get_meta('asp_product_tax_variations');
+		$collect_billing_addr_enabled 	= $this->get_meta('asp_product_collect_billing_addr');
+		$collect_shipping_addr_enabled 	= $this->get_meta('asp_product_collect_shipping_addr');
+		
+		// ASP_Debug_Logger::log("Applied tax amount (before tax variation apply): ". $this->get_tax_amount(true), true);
+
+		// Evaluate variable tax if enabled.
+		if (count($tax_variations_arr) && $collect_billing_addr_enabled === '1') {
+			$applied_tax_percentage = 0;
+			$tax_region = ($tax_variations_type === 's' && $collect_shipping_addr_enabled === '1') ? $custom_inputs['shipping_details']['address'] : $custom_inputs['billing_details']['address'];
+
+			// Iterate through the available tax variation option to find if there is amy matching.
+			foreach ($tax_variations_arr as $tax_variation) {
+				switch ($tax_variation['loc']) {
+					case $tax_region['city']:
+						// Matched by city, get tax amount for this location.
+						$applied_tax_percentage += $tax_variation['amount'];
+						break;
+					case $tax_region['state']:
+						// Matched by state, get tax amount for this location.
+						$applied_tax_percentage += $tax_variation['amount'];
+						break;
+					case $tax_region['country']:
+						// Matched by country, get tax amount for this location.
+						$applied_tax_percentage += $tax_variation['amount'];
+						break;
+				}
+			}
+			
+			if ($applied_tax_percentage > 0) {
+				$this->set_tax($applied_tax_percentage);
+			}
+
+		}
+
+		// ASP_Debug_Logger::log("Amount current total (after tax variation apply): ". $this->get_total(true), true);
+		
+		$coupon_code = $custom_inputs['coupon_code'];
 
 		if ( !empty( $coupon_code ) ) {
-			// Get the coupon and take it into account (if provided).
+			// Get the coupon and evaluate it (if submitted).
 			if ( !$this->load_coupon( $coupon_code ) ) {
-				// Coupon is not valid. Return false.
+				// Invalid coupon.
 				return false;
 			};
 		}
+		
+		// ASP_Debug_Logger::log("Amount current total (after coupon apply): ". $this->get_total(true), true);
 
 		// Calculate the expected total amount.
 		$expected_total_amount = $this->get_total(true);
+		
+		ASP_Debug_Logger::log("Amount expected from customer: ". $expected_total_amount, true);
 
 		// Check if the expected total amount matches the given amount.
 		if ( $expected_total_amount != $amount ) {
