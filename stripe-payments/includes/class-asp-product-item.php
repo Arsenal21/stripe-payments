@@ -687,7 +687,7 @@ class ASP_Product_Item {
 		// Calculate the expected total amount.
 		$expected_total_amount = $this->get_total(true);
 
-		// ASP_Debug_Logger::log("Amount expected from customer (in cents): ". $expected_total_amount, true);
+		ASP_Debug_Logger::log("Amount expected from customer (in cents): ". $expected_total_amount, true);
 		
 		// Trigger a filter so addons can override it. 
 		$expected_total_amount = apply_filters('asp_pre_api_submission_expected_amount', $expected_total_amount, $amount, $this->post_id);
