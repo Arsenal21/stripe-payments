@@ -346,10 +346,15 @@ class ASP_PP_Ajax {
 				'billing_details' 	=> json_decode( html_entity_decode( $post_billing_details ) , true),
 				'shipping_details' 	=> json_decode( html_entity_decode( $post_shipping_details ) , true),
 			);
-
-			if( ! $item_for_validation->validate_total_amount( $amount, $quantity, $custom_inputs) ){
+			
+			$item_for_validation->validate_total_amount( $amount, $quantity, $custom_inputs);
+			
+			if( $item_for_validation->get_last_error() ){
 				//Error condition. The validation function will set the error message which we will use to send back to the client in the next stage of the code.
 				ASP_Debug_Logger::log( "API pre-submission amount validation failed. The amount appears to have been altered.", false );
+
+				$out['err'] = __( 'Error occurred:', 'stripe-payments' ) . ' ' . $item_for_validation->get_last_error();
+				wp_send_json( $out );
 			}else{
 				ASP_Debug_Logger::log( "API pre-submission amount validation successful.", true );
 			}
@@ -363,8 +368,6 @@ class ASP_PP_Ajax {
 
 		$item = new ASP_Product_Item( $product_id );
 		
-		//End API pre-submission price/amount validation.
-
 		if ( $item->get_last_error() ) {
 			$out['err'] = __( 'Error occurred:', 'stripe-payments' ) . ' ' . $item->get_last_error();
 			wp_send_json( $out );
