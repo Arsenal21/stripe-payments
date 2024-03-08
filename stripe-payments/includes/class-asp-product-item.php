@@ -575,17 +575,12 @@ class ASP_Product_Item {
 	 * @return bool TRUE if validation is successful, FALSE otherwise.
 	 */
 	public function validate_total_amount( $amount, $quantity, $custom_inputs) {		
-		ASP_Debug_Logger::log("Amount submitted by customer (in cents): ". $amount, true);
-
-		// ASP_Debug_Logger::log("Amount calculation using the currency: ". $this->get_currency(), true);
-		
+		//ASP_Debug_Logger::log("Amount submitted by customer (in cents): ". $amount, true);
 		$product_price =  $this->get_meta('asp_product_price');
 		$product_price_in_cents =  $this->in_cents($product_price);
-		// ASP_Debug_Logger::log("Raw product price: ". $product_price_in_cents , true);
+		//ASP_Debug_Logger::log("Raw product price: ". $product_price_in_cents , true);
 
 		$this->set_price($product_price_in_cents, true);
-		// ASP_Debug_Logger::log("Amount current total product price (after product price set): ". $this->get_price(true) , true);
-		// ASP_Debug_Logger::log("Amount current total (before anything apply): ". $this->get_total(true), true);
 		
 		$this->set_quantity( $quantity );
 
@@ -613,7 +608,6 @@ class ASP_Product_Item {
 				$variation_price += $applied_price;
 				// ASP_Debug_Logger::log("Applied variation price for ". $variations_names[$group_index][$applied_option]. ' : ' .$applied_price, true);
 			}
-
 			// ASP_Debug_Logger::log("Applied total variation price : ". $variation_price, true);
 			
 			$price_with_applied_variation = 0;
@@ -623,17 +617,14 @@ class ASP_Product_Item {
 				$price_with_applied_variation = $variation_price + $product_price_in_cents; 	
 			}
 			$this->set_price($price_with_applied_variation, true);
-			
 			// ASP_Debug_Logger::log("Applied total variation price with base price : ". $price_with_applied_variation, true);
 		}
-
 		// ASP_Debug_Logger::log("Amount current total (after price variation): ". $this->get_total(true), true);
 		
 		$tax_variations_type 			= $this->get_meta('asp_product_tax_variations_type');
 		$tax_variations_arr  			= $this->get_meta('asp_product_tax_variations');
 		$collect_billing_addr_enabled 	= $this->get_meta('asp_product_collect_billing_addr');
 		$collect_shipping_addr_enabled 	= $this->get_meta('asp_product_collect_shipping_addr');
-				
 		// ASP_Debug_Logger::log("Applied tax amount (before tax variation apply): ". $this->get_tax_amount(true), true);
 
 		// Evaluate variable tax if enabled.
@@ -664,16 +655,14 @@ class ASP_Product_Item {
 			}
 
 		}
-
-		// ASP_Debug_Logger::log("Applied tax amount (after tax variation apply): ". $this->get_tax_amount(true), true);
-		// ASP_Debug_Logger::log("Amount current total (after tax variation apply): ". $this->get_total(true), true);
+		//ASP_Debug_Logger::log("Applied tax amount (after tax variation): ". $this->get_tax_amount(true), true);
+		//ASP_Debug_Logger::log("Amount current total (after tax variation): ". $this->get_total(true), true);
 		
 		$base_shipping_amount = $this->get_shipping(true);
 		$this->set_shipping( $base_shipping_amount, true );
-		// ASP_Debug_Logger::log("Amount current total (after base shipping apply): ". $this->get_total(true), true);
+		//ASP_Debug_Logger::log("Amount current total (after base shipping): ". $this->get_total(true), true);
 
 		$coupon_code = $custom_inputs['coupon_code'];
-
 		if ( !empty( $coupon_code ) ) {
 			// Get the coupon and evaluate it (if submitted).
 			if ( !$this->load_coupon( $coupon_code ) ) {
@@ -681,21 +670,20 @@ class ASP_Product_Item {
 				return false;
 			};
 		}
-		
-		// ASP_Debug_Logger::log("Amount current total (after coupon apply): ". $this->get_total(true), true);
 
 		// Calculate the expected total amount.
 		$expected_total_amount = $this->get_total(true);
-
-		ASP_Debug_Logger::log("Amount expected from customer (in cents): ". $expected_total_amount, true);
 		
 		// Trigger a filter so addons can override it. 
 		$expected_total_amount = apply_filters('asp_pre_api_submission_expected_amount', $expected_total_amount, $amount, $this->post_id);
 		
 		// Check if the expected total amount matches the given amount.
 		if ( $expected_total_amount < $amount ) {
+			ASP_Debug_Logger::log("Pre-API Submission validation amount mismatch. Expected amount (in cents): ". $expected_total_amount . ", Submitted amount (in cents): " . $amount, true);
 			// Set the last error message that will be displayed to the user.
-			$this->last_error = __( "Price validation failed. The submitted amount does not match the product's configured price. Please refresh the page and try again.", 'stripe-payments' );
+			$mismatch_err_msg = __( "Price validation failed. The submitted amount does not match the product's configured price. ", 'stripe-payments' );
+			$mismatch_err_msg .= "Expected: " . $this->from_cents($expected_total_amount) . ", Submitted: " . $this->from_cents($amount);
+			$this->last_error = $mismatch_err_msg;
 			return false;
 		}
 
