@@ -347,9 +347,7 @@ class ASP_PP_Ajax {
 				'shipping_details' 	=> json_decode( html_entity_decode( $post_shipping_details ) , true),
 			);
 			
-			$item_for_validation->validate_total_amount( $amount, $quantity, $custom_inputs);
-			
-			if( $item_for_validation->get_last_error() ){
+			if( ! $item_for_validation->validate_total_amount( $amount, $quantity, $custom_inputs) ){
 				//Error condition. The validation function will set the error message which we will use to send back to the client in the next stage of the code.
 				ASP_Debug_Logger::log( "API pre-submission amount validation failed. The amount appears to have been altered.", false );
 
