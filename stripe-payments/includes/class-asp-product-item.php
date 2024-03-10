@@ -628,7 +628,7 @@ class ASP_Product_Item {
 		// ASP_Debug_Logger::log("Applied tax amount (before tax variation apply): ". $this->get_tax_amount(true), true);
 
 		// Evaluate variable tax if enabled.
-		if (count($tax_variations_arr) && $collect_billing_addr_enabled === '1') {
+		if (is_array($tax_variations_arr) && count($tax_variations_arr) && $collect_billing_addr_enabled === '1') {
 			$applied_tax_percentage = 0;
 			$tax_region = ($tax_variations_type === 's' && $collect_shipping_addr_enabled === '1') ? $custom_inputs['shipping_details']['address'] : $custom_inputs['billing_details']['address'];
 

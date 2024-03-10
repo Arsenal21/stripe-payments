@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 5.0
 Tested up to: 6.4
 Requires PHP: 7.0
-Stable tag: 2.0.83
+Stable tag: 2.0.84
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -155,13 +155,13 @@ None.
 
 == Changelog ==
 
-= 2.0.84.WIP =
-- Added a new option to customize payment button text (in the popup window) on a per product basis.
+= 2.0.84 =
+- Added a new option to customize the payment button text (in the popup window) on a per product basis.
 - Added support for 'coupon_code' query param to apply coupon directly in the product link url feature. 
 - Corrected the issue causing an error when a product is created or updated with an empty variation group.
 - Regional tax variation deletion issue fixed.
 - Added support for Custom Fields Addon's new fields position feature.
-- Added an API pre-submission price validation.
+- Added an API pre-submission amount validation function.
 
 = 2.0.83 =
 - Fixed a recent PHP8 related change that caused an issue in the download URL function.
@@ -203,138 +203,5 @@ None.
 - Sorting option added in the shop/products page via shortcode parameter.
 - Visitors can also sort the products in the shop page by latest, sort by title, sort by price.
 - Updated the integration with Simple Membership plugin.
-
-= 2.0.74 =
-- iDEAL addon fix (this payment method option was getting selected by default when enabled).
-- Better thumbnail positioning within the product template display.
-- The shop page is wrapped using a div element for better display in block themes.
-
-= 2.0.73 =
-- Added filter hooks to allow customization of the admin menu item capability.
-- Added a new email merge tag {product_variations} that will include the selected variations of the order.
-- Fixed an issue with the "authorize" and "capture" later feature (when the Stripe PHP SDK option is used).
-
-= 2.0.72 =
-- Removed the Legacy/Old API checkbox option from the settings. It will now always fallback to use the new API. 
-
-= 2.0.71 =
-- Added a transaction request limit check on a per IP address basis. This will provide additional protection against card testing bot.
-
-= 2.0.70 =
-- Removed the "Invisible captcha" option as it doesn't provide the maximum protection against card testing bot.
-- If you were using the Invisible captcha option, it will fallback to the standard reCAPTCHA option.
-
-= 2.0.69 =
-- Added a page load signature check on payment form submission.
-
-= 2.0.68 =
-- Japanese language translation file updated.
-- Added Hungarian language translation file.
-- Fixed - Special characters in the Customer Name field causing a Stripe API error.
-- Added an additional captcha response check against saved data (when captcha is enabled) for bot mitigation.
-
-= 2.0.67 =
-- Added a settings option to specify a limit with captcha. You can disable it by entering a value of -1 in the settings field.
-
-= 2.0.66 =
-- Custom Fields - fixed an issue with the "required" custom field configuration.
-- Added a new feature to apply a daily transaction limit to provide protection against card testing attack. This is applied when the captcha option is disabled on a site.
-- Explanation of the new feature is available in [this documentation page](https://s-plugins.com/protect-yourself-from-card-testing/).
-
-= 2.0.65 =
-- Added CSS classes for "Item Price" and "Total Amount" on the thank you page. It can be used to target those items for CSS customization.
-- Added additional currency position display options in the settings (left with space, right with space).
-- Fixed a formatting issue with the shipping and tax string on the individual product post output.
-- Added a new option in the settings for Enterprise reCAPTCHA of Google.
-
-= 2.0.64 =
-- Added escaping to the currency symbol output.
-
-= 2.0.63 =
-- Added output escaping in the settings interface.
-
-= 2.0.62 =
-- Added more filters so the "state" and "postcode" strings can be customized via the custom messages addon.
-- Fixed an issue with the quick edit option causing the product configuration to be lost.
-- Added a notice to enable captcha feature (if it is not already enabled).
-
-= 2.0.61 =
-- Tested on WP 6.0.
-- Added a new utility function for escaping SVG output.
-- Added escaping to the admin notice message.
-- Removed the phpcs related comments from the code.
-
-= 2.0.60 =
-- PHP Debug warning fix for view debug request parameter.
-
-= 2.0.59 =
-- Added escaping to the extension/addon settings output.
-
-= 2.0.58 =
-- Fixed a typo in the "Experimental Settings" heading in the settings menu.
-- Added escaping to "Additional CSS" description field in the settings menu.
-- Added a utility function to help with output escaping.
-- Removed two unused PHP files.
-
-= 2.0.57 =
-- Updated the captcha settings menu interface to mention that the "I am not a robot" checkbox captcha option should be used for better protection against bot. 
-- Added escaping to $data variable in the [Accept Stripe Payments] shortcode.
-
-= 2.0.56 =
-- Fixed the additional payments settings menu (it correctly renders the description field)
-- Changed parse_str() call to using wp_parse_str()
-- Removed the Advanced Custom Field addon's input processing code from the core plugin. This task is now done inside the ACF addon
-- Minor code improvements (replaced the PHP buffer output with a direct require_once call)
-
-= 2.0.55 =
-- Added sanitization to inputs that were missing sanitization.
-- Commented out the post data writing to the log file.
-- Added escaping to description output of settings fields.
-- Added nonce verification check to the payment intent handling code.
-- Added nonce verification check to the 3D secure handling code.
-
-= 2.0.54 = 
-- Added a capabilities check and a nonce check before the log file is cleared.
-- Regenerated the translation POT file.
-- Spanish Language translation file updated.
-
-= 2.0.53 =
-- Updated Stripe PHP SDK library to 7.110.0. This should resolve most issues related to PHP 8.0.X.
-- Added hCaptcha support.
-- Addressed improper validation of `Specific Products Only` option on coupon edit page.
-- Better error handling for internal Stripe API.
-
-= 2.0.52 =
-- Added a checkbox to enable or disable the `Debug Log Shareable Link` option (disabled by default).
-- The word `Variable` is displayed (in the store page) instead of zero as price for products that are constructed via variations.
-- Fixed PHP warning on Widgets admin page.
-
-= 2.0.51 =
-- Improved the `Use variations only to construct final product price` option's reaction to product price change.
-- Improvements to coupons edit page.
-- Internal API improvements.
-
-= 2.0.50 =
-- Invisible reCaptcha option no longer causes an issue on some Apple devices.
-- Minor improvements and optimizations to the debug logging feature.
-
-= 2.0.49 =
-- Addressed the `Class not found` error related issue on some configurations.
-- Minor CSS update to improve the admin-side layout.
-
-= 2.0.48 =
-- Added a new feature to configure per-region tax variations option.
-- Added checkbox variation type in the product variations feature.
-- Only users with admin capabilities (administrator role) can add/edit products now.
-- Improved layout and functionality of some admin-side pages.
-- Added United Arab Emirates Dirham (AED) currency support.
-- Minor improvements and bugfixes.
-- Updated the Italian language translation file.
-
-= 2.0.47 =
-- Fixed all-off coupons issue in Firefox when payment popup is integrated via link URL.
-- Added `{first_name}` and `{last_name}` email merge tags.
-- Addressed rare PHP warnings issue when debug mode is enabled.
-- More text messages can now be customized via Custom Messages add-on.
 
 Full changelog available [at changelog.txt](https://plugins.svn.wordpress.org/stripe-payments/trunk/changelog.txt)
