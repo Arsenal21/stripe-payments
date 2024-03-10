@@ -348,14 +348,13 @@ class ASP_PP_Ajax {
 			);
 			
 			if( ! $item_for_validation->validate_total_amount( $amount, $quantity, $custom_inputs) ){
-				//Error condition. The validation function will set the error message which we will use to send back to the client in the next stage of the code.
-				ASP_Debug_Logger::log( "API pre-submission amount validation failed. The amount appears to have been altered.", false );
-
+				//Error condition. The validation function already set the error message which we will send back to the client.
 				$out['err'] = __( 'Error occurred:', 'stripe-payments' ) . ' ' . $item_for_validation->get_last_error();
 				wp_send_json( $out );
-			}else{
-				ASP_Debug_Logger::log( "API pre-submission amount validation successful.", true );
 			}
+			
+			//Validation passed.
+
 		} else if ( $item_for_validation->get_type() === 'donation' ) {
 			//It's a donation product. Don't need to validate the amount since the user can enter any amount to donate.
 			ASP_Debug_Logger::log( "This is a donation type product. API pre-submission amount validation is not required.", true );

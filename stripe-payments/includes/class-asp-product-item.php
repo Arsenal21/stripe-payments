@@ -678,8 +678,8 @@ class ASP_Product_Item {
 		$expected_total_amount = apply_filters('asp_pre_api_submission_expected_amount', $expected_total_amount, $amount, $this->post_id);
 		
 		// Check if the expected total amount matches the given amount.
-		if ( $expected_total_amount < $amount ) {
-			ASP_Debug_Logger::log("Pre-API Submission validation amount mismatch. Expected amount (in cents): ". $expected_total_amount . ", Submitted amount (in cents): " . $amount, true);
+		if ( $amount != $expected_total_amount ){
+			ASP_Debug_Logger::log("Pre-API Submission validation amount mismatch. Expected amount (in cents): ". $expected_total_amount . ", Submitted amount (in cents): " . $amount, false);
 			// Set the last error message that will be displayed to the user.
 			$mismatch_err_msg = __( "Price validation failed. The submitted amount does not match the product's configured price. ", 'stripe-payments' );
 			$mismatch_err_msg .= "Expected: " . $this->from_cents($expected_total_amount) . ", Submitted: " . $this->from_cents($amount);
@@ -687,6 +687,7 @@ class ASP_Product_Item {
 			return false;
 		}
 
+		ASP_Debug_Logger::log("Pre-API Submission validation successful. Expected: " . $this->from_cents($expected_total_amount) . ", Submitted: " . $this->from_cents($amount), true);
 		return true;
 	}
 }
