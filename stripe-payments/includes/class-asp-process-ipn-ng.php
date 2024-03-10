@@ -163,11 +163,14 @@ class ASP_Process_IPN_NG {
 		return $val;
 	}
 
-	private function paid_amount_valid( $amount_in_cents, $amount_paid, $item ) {
-		if ( $amount_in_cents > $amount_paid ) {
-			//check if this is a subs product
+	private function paid_amount_valid( $expected_amount_in_cents, $amount_paid, $item ) {
+		//Check if paid amount is less than expected amount.
+		if ( $amount_paid < $expected_amount_in_cents ) {
+			//Incorrect amount paid. Flag the transaction.
+
+			//Check if this is a subs product
 			if ( method_exists( $item, 'get_plan_id' ) ) {
-				//this is subs product. Let's check if subs addon version is prior to 2.0.1.
+				//This is a subsription product. Let's check if subs addon version is prior to 2.0.1.
 				if ( version_compare( ASPSUB_main::ADDON_VER, '2.0.1' ) < 0 ) {
 					//subs addon version is prior to 2.0.1. This means error is most likely not legit.
 					return true;
@@ -175,6 +178,7 @@ class ASP_Process_IPN_NG {
 			}
 			return false;
 		}
+		//Paid amount looks good.
 		return true;
 	}
 
