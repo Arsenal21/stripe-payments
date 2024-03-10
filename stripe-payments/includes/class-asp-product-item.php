@@ -666,7 +666,7 @@ class ASP_Product_Item {
 		if ( !empty( $coupon_code ) ) {
 			// Get the coupon and evaluate it (if submitted).
 			if ( !$this->load_coupon( $coupon_code ) ) {
-				// Invalid coupon.
+				// Invalid coupon. The 'load_coupon' method will handle appending appropriate error message.
 				return false;
 			};
 		}

@@ -164,7 +164,7 @@ class ASP_Process_IPN_NG {
 	}
 
 	private function paid_amount_valid( $amount_in_cents, $amount_paid, $item ) {
-		if ( $amount_in_cents !== $amount_paid ) {
+		if ( $amount_in_cents > $amount_paid ) {
 			//check if this is a subs product
 			if ( method_exists( $item, 'get_plan_id' ) ) {
 				//this is subs product. Let's check if subs addon version is prior to 2.0.1.
