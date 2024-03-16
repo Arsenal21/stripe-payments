@@ -155,6 +155,9 @@ None.
 
 == Changelog ==
 
+= WIP =
+- Scale down the reCAPTCHA badge size using CSS for better mobile screen compatibility.
+
 = 2.0.84 =
 - Added a new option to customize the payment button text (in the popup window) on a per product basis.
 - Added support for 'coupon_code' query param to apply coupon directly in the product link url feature. 

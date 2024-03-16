@@ -294,7 +294,14 @@ class ASP_EPRECAPTCHA_Main {
 	width: auto;
 	padding: 0 5px;
 }
-
+@media (max-width: 600px) {
+	/* Scale down the captcha size for mobile devices */
+	.asp-recaptcha-container {
+		transform: scale(0.77);
+		/* if the theme has overflow:auto on body, then the captcha will be cut off, so we need to set overflow to visible */
+		overflow: visible !important;
+	}
+}
 .asp-recaptcha-container div {
 	margin: 0 auto;
 	height: 78px;
