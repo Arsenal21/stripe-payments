@@ -576,7 +576,8 @@ class ASP_Product_Item {
 	 */
 	public function validate_total_amount( $amount, $quantity, $custom_inputs) {		
 		//ASP_Debug_Logger::log("Amount submitted by customer (in cents): ". $amount, true);
-		$product_price =  $this->get_meta('asp_product_price');
+		$product_price = (float) $this->get_meta('asp_product_price');
+		$quantity = (int) $quantity;
 		$product_price_in_cents =  $this->in_cents($product_price);
 		//ASP_Debug_Logger::log("Raw product price: ". $product_price_in_cents , true);
 
@@ -604,7 +605,8 @@ class ASP_Product_Item {
 				$applied_option = (int) substr($pvar_str, $last_separator_index + strlen($separator));// Applied option
 				
 				$group_index = array_search($option_group, $variations_groups);
-				$applied_price = $this->in_cents($variations_prices[$group_index][$applied_option]);
+				$applied_price = (float) $variations_prices[$group_index][$applied_option];
+				$applied_price = $this->in_cents( $applied_price );
 				$variation_price += $applied_price;
 				// ASP_Debug_Logger::log("Applied variation price for ". $variations_names[$group_index][$applied_option]. ' : ' .$applied_price, true);
 			}
@@ -634,6 +636,7 @@ class ASP_Product_Item {
 
 			// Iterate through the available tax variation option to find if there is amy matching.
 			foreach ($tax_variations_arr as $tax_variation) {
+				$tax_variation['amount'] = (float) $tax_variation['amount'];
 				switch ($tax_variation['loc']) {
 					case $tax_region['city']:
 						// Matched by city, get tax amount for this location.
