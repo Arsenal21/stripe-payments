@@ -1056,7 +1056,7 @@ jQuery(document).ready(function($) {
 
 				//handle variations
 				$variations_groups = filter_input( INPUT_POST, 'asp-variations-group-names', FILTER_UNSAFE_RAW, FILTER_REQUIRE_ARRAY );
-				if ( ! empty( $variations_groups ) && is_array( $variations_groups ) ) {
+				if ( is_array( $variations_groups ) && ! empty( $variations_groups ) ) {
 					//we got variations groups. Let's process them
 					update_post_meta( $post_id, 'asp_variations_groups', array_values( $variations_groups ) );
 					$variations_names = filter_input( INPUT_POST, 'asp-variation-names', FILTER_UNSAFE_RAW, FILTER_REQUIRE_ARRAY );
