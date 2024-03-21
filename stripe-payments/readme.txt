@@ -157,6 +157,7 @@ None.
 
 = WIP =
 - Scale down the reCAPTCHA badge size using CSS for better mobile screen compatibility.
+- Updated the language translation POT file.
 
 = 2.0.84 =
 - Added a new option to customize the payment button text (in the popup window) on a per product basis.
