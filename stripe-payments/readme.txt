@@ -3,7 +3,7 @@ Contributors: Tips and Tricks HQ, wptipsntricks, alexanderfoxc
 Donate link: https://s-plugins.com
 Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortcode, digital goods, payment gateway, instant payment, commerce, digital downloads, downloads, e-commerce, e-store, ecommerce, eshop, donation
 Requires at least: 5.0
-Tested up to: 6.4
+Tested up to: 6.5
 Requires PHP: 7.0
 Stable tag: 2.0.84
 License: GPLv2 or later
@@ -75,15 +75,11 @@ You can run it in test mode by specifying test API keys in the plugin settings.
 
 = Shortcode Parameters/Attributes =
 
-There are two ways you can use this plugin to create a "Buy Now" or "Pay" button to accept payment.
+This plugin offers a shortcode and a block that allows you to create a 'Buy Now' or 'Pay' button for accepting payments.
 
-Option 1) Create a product in the admin dashboard of this plugin then use a shortcode to put a buy button for that product.
+First, create a product in the plugin's admin dashboard. Then, use the provided shortcode or block to embed a buy button for that specific product.
 
 [Check this tutorial](https://s-plugins.com/creating-product-stripe-payments-plugin/) for step by step instructions.
-
-Option 2) You can specify the item details in a shortcode to dynamically create a Stripe payment button.
-
-[Check this tutorial](https://s-plugins.com/creating-payment-button-dynamically-adding-details-shortcode/) for step by step instructions.
 
 = Detailed Documentation =
 
