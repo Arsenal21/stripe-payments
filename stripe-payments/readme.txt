@@ -155,6 +155,7 @@ None.
 - Scale down the reCAPTCHA badge size using CSS for better mobile screen compatibility.
 - Updated the language translation POT file.
 - Fixed a price validation bug for checkbox type variation.
+- Added new email merge tags ('logged_in_user_name' and 'logged_in_user_id') to capture logged in user info.
 
 = 2.0.84 =
 - Added a new option to customize the payment button text (in the popup window) on a per product basis.

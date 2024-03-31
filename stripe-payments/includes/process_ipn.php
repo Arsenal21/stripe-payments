@@ -831,6 +831,9 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post, $seller_email = fal
 		$last_name  = ! empty( $parts[1] ) ? $parts[1] : '';
 	}
 
+	$logged_in_user_id = isset($post['logged_in_user_id']) && ! empty( $post['logged_in_user_id'] ) ? $post['logged_in_user_id'] : '';
+	$logged_in_user_name = isset($post['logged_in_user_name']) && ! empty( $post['logged_in_user_name'] ) ? $post['logged_in_user_name'] : '';
+
 	$tags = array(
 		'{item_name}',
 		'{item_short_desc}',
@@ -859,6 +862,8 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post, $seller_email = fal
 		'{card_last_4}',
 		'{payment_method}',
                 '{product_variations}',
+		'{logged_in_user_name}',
+		'{logged_in_user_id}',
 	);
 	$vals = array(
 		$post['item_name'],
@@ -888,6 +893,8 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post, $seller_email = fal
 		$card_last4,
 		$pm_type,
                 $product_variations,
+		$logged_in_user_name,
+		$logged_in_user_id,
 	);
 
 	//let's combine tags and vals into one array so we can apply filters on it
