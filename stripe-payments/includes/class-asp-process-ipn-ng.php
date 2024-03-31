@@ -512,10 +512,12 @@ class ASP_Process_IPN_NG {
 
 		$data['shipping_address'] = $p_data->get_shipping_addr_str();
 
+		//Check if there is a logged in user who is making the purchase.
 		$logged_in_user_info = ASP_Utils::get_logged_in_user_info();
 		if ( !empty($logged_in_user_info) ) {
-			$data['logged_in_user_id'] = $logged_in_user_info['id'];
-			$data['logged_in_user_name'] = $logged_in_user_info['username'];
+			$data['logged_in_user_id'] = isset($logged_in_user_info['id']) ? $logged_in_user_info['id'] : '';
+			$data['logged_in_user_name'] = isset($logged_in_user_info['username']) ? $logged_in_user_info['username'] : '';
+			$data['logged_in_user_type'] = isset($logged_in_user_info['type']) ? $logged_in_user_info['type'] : '';
 		}
 
 		$data['additional_items'] = array();

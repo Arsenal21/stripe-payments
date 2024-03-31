@@ -155,7 +155,9 @@ None.
 - Scale down the reCAPTCHA badge size using CSS for better mobile screen compatibility.
 - Updated the language translation POT file.
 - Fixed a price validation bug for checkbox type variation.
-- Added new email merge tags ('logged_in_user_name' and 'logged_in_user_id') to capture logged in user info.
+- The order item will display the username of the logged-in user, provided the user is logged in at the time of purchase..
+- Added new email merge tag {logged_in_user_name} to capture logged in user's username (if available).
+- Added new filter 'asp_get_logged_in_user_info' to allow customization of the logged in user info.
 
 = 2.0.84 =
 - Added a new option to customize the payment button text (in the popup window) on a per product basis.

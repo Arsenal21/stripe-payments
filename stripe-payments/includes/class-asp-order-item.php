@@ -143,11 +143,12 @@ class ASP_Order_Item {
 
 		if (isset($order_details['logged_in_user_id']) && !empty($order_details['logged_in_user_id'])) {
 			// translators: %s is ID
-			$output .= __( 'Logged In User\'s ID: ', 'stripe-payments' ) . $order_details['logged_in_user_id'] . "\n";
+			$output .= __( 'Logged-in User\'s Type: ', 'stripe-payments' ) . $order_details['logged_in_user_type'] . "\n";
+			$output .= __( 'Logged-in User\'s User ID: ', 'stripe-payments' ) . $order_details['logged_in_user_id'] . "\n";
 		}
 		if (isset($order_details['logged_in_user_name']) && !empty($order_details['logged_in_user_name'])) {
 			// translators: %s is username
-			$output .= __( 'Logged In User\'s name: ', 'stripe-payments' ) . $order_details['logged_in_user_name'] . "\n";
+			$output .= __( 'Logged-in User\'s Username: ', 'stripe-payments' ) . $order_details['logged_in_user_name'] . "\n";
 		}
 
 		//Custom Fields (if set)

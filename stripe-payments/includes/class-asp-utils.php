@@ -1183,49 +1183,48 @@ class ASP_Utils {
 	}        
 	
 	/**
-	 * Get the currently logged in user/member info.
-	 * First it checks if member's associated to other plugins such as simple-membership or eMember etc. are logged in or not.
-	 * Otherwise take the info of wp user if logged in.
+	 * Get the currently logged in user/member basic info.
+	 * First it checks if WP user is logged in.
+	 * Otherwise take the info of SWPM or WP eMember plugins (if logged-in).
 	 * 
 	 * @return array Returns user info if available, empty array otherwise.
 	 */
 	public static function get_logged_in_user_info(){
+		$user_info = array();
 
-		// Check if logged in as swpm member
-		if (class_exists('SwpmAuth')) {
+		// Check if logged in as a WP user.
+		if( is_user_logged_in() ){
+			$wp_user = wp_get_current_user();
+			if( $wp_user->exists() ){
+				$user_info = array(
+					'id' =>  $wp_user->get('ID'),
+					'username' => $wp_user->get('user_login'),
+					'type' => 'wp-user'
+				);
+			}
+		} else if (class_exists('SwpmAuth')) {
+			// Check if logged in as SWPM member
 			$swpm_auth = SwpmAuth::get_instance();
 			if ( $swpm_auth->is_logged_in() ) {
-				return array(
+				$user_info = array(
 					'id' =>  $swpm_auth->get( 'member_id' ),
 					'username' => $swpm_auth->get( 'user_name' ),
 					'type' => 'simple-membership'
 				);
 			}
-		}
-
-		// Check if logged in as eMember member
-		if (class_exists('Emember_Auth') ) {
-			$eMember_auth = Emember_Auth::getInstance();
-			if ( $eMember_auth->isLoggedIn() ) {
-				return array(
-					'id' => $eMember_auth->getUserInfo('member_id'),
-					'username' => $eMember_auth->getUserInfo('user_name'),
+		} else if (class_exists('Emember_Auth') ) {
+			// Check if logged in as WP eMember member
+			$emember_auth = Emember_Auth::getInstance();
+			if ( $emember_auth->isLoggedIn() ) {
+				$user_info = array(
+					'id' => $emember_auth->getUserInfo('member_id'),
+					'username' => $emember_auth->getUserInfo('user_name'),
 					'type' => 'wp-emember'
 				);
 			}
 		}
 
-		// Check if logged in a wp user.
-		$wp_user = wp_get_current_user();
-		if($wp_user->exists()){
-			return array(
-				'id' =>  $wp_user->get('ID'),
-				'username' => $wp_user->get('user_login'),
-				'type' => 'wp'
-			);			
-		}
-
-		// No logged in user/member found;
-		return array();
+		$user_info = apply_filters( 'asp_get_logged_in_user_info', $user_info );
+		return $user_info;
 	}
 }

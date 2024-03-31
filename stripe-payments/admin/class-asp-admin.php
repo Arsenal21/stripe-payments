@@ -2076,8 +2076,8 @@ class AcceptStripePayments_Admin {
 				'{payment_method}'    => __( 'Paymend method used to make the payment. Example: card, alipay' ),
 				'{card_brand}'        => __( 'Brand of the card used to make the payment. Example: visa, mastercard, amex' ),
 				'{card_last_4}'       => __( 'Last 4 digits of the card. Example: 4242' ),
-				'{logged_in_user_id}' => __( 'ID of logged in user/member. Empty if there no logged in user/member.' ),
-				'{logged_in_user_name}' => __( 'Username of logged in user/member. Empty if there no logged in user/member.' ),
+				'{logged_in_user_id}' => __( 'User/Member ID of the currently logged in user. This field will be empty if the user is not logged in while doing the transaction.' ),
+				'{logged_in_user_name}' => __( 'Username of the currently logged in user. This field will be empty if the user is not logged in while doing the transaction.' ),
 			);
 		}
 

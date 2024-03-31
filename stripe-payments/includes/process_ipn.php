@@ -861,7 +861,7 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post, $seller_email = fal
 		'{card_brand}',
 		'{card_last_4}',
 		'{payment_method}',
-                '{product_variations}',
+        '{product_variations}',
 		'{logged_in_user_name}',
 		'{logged_in_user_id}',
 	);
@@ -892,7 +892,7 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post, $seller_email = fal
 		$card_brand,
 		$card_last4,
 		$pm_type,
-                $product_variations,
+        $product_variations,
 		$logged_in_user_name,
 		$logged_in_user_id,
 	);
