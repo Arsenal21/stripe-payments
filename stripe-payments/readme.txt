@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 5.0
 Tested up to: 6.5
 Requires PHP: 7.0
-Stable tag: 2.0.84
+Stable tag: 2.0.85
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -151,13 +151,13 @@ None.
 
 == Changelog ==
 
-= WIP =
-- Scale down the reCAPTCHA badge size using CSS for better mobile screen compatibility.
-- Updated the language translation POT file.
-- Fixed a price validation bug for checkbox type variation.
-- The order item will display the username of the logged-in user, provided the user is logged in at the time of purchase..
+= 2.0.85 =
+- The order item will capture and display the username of the logged-in user, provided the user is logged in at the time of the purchase.
 - Added new email merge tag {logged_in_user_name} to capture logged in user's username (if available).
 - Added new filter 'asp_get_logged_in_user_info' to allow customization of the logged in user info.
+- Scaled down the reCAPTCHA badge size using CSS for better mobile screen compatibility.
+- Updated the language translation POT file.
+- Fixed a price validation bug for checkbox type variation.
 
 = 2.0.84 =
 - Added a new option to customize the payment button text (in the popup window) on a per product basis.
