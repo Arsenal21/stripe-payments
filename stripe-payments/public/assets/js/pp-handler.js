@@ -938,7 +938,7 @@ function handlePayment() {
 		}
 
 		// Check if price variation is set, if so, then process it to add this in query param.
-		if (vars.data.variations.constructor === Object && Object.keys(vars.data.variations).length !== 0) {			
+		if (vars.data.variations.constructor === Object && vars.data.variations.hasOwnProperty('applied')) {			
 			variation_counts = vars.data.variations.groups.length
 			
 			let variations = [];
