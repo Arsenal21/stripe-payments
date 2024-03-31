@@ -1187,7 +1187,7 @@ class ASP_Utils {
 	 * First it checks if member's associated to other plugins such as simple-membership or eMember etc. are logged in or not.
 	 * Otherwise take the info of wp user if logged in.
 	 * 
-	 * @return array|null Returns user info if available, NULL otherwise.
+	 * @return array Returns user info if available, empty array otherwise.
 	 */
 	public static function get_logged_in_user_info(){
 
@@ -1226,6 +1226,6 @@ class ASP_Utils {
 		}
 
 		// No logged in user/member found;
-		return null;
+		return array();
 	}
 }
