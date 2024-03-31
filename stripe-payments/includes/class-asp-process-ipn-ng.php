@@ -514,10 +514,11 @@ class ASP_Process_IPN_NG {
 
 		//Check if there is a logged in user who is making the purchase.
 		$logged_in_user_info = ASP_Utils::get_logged_in_user_info();
-		if ( !empty($logged_in_user_info) ) {
+		if ( is_array($logged_in_user_info) && !empty($logged_in_user_info) ) {
+			$data['logged_in_user_type'] = isset($logged_in_user_info['type']) ? $logged_in_user_info['type'] : '';
 			$data['logged_in_user_id'] = isset($logged_in_user_info['id']) ? $logged_in_user_info['id'] : '';
 			$data['logged_in_user_name'] = isset($logged_in_user_info['username']) ? $logged_in_user_info['username'] : '';
-			$data['logged_in_user_type'] = isset($logged_in_user_info['type']) ? $logged_in_user_info['type'] : '';
+			ASP_Debug_Logger::log( 'Logged-in user\'s Username: ' . $data['logged_in_user_name'] );
 		}
 
 		$data['additional_items'] = array();
