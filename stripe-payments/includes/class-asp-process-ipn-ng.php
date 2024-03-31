@@ -512,6 +512,12 @@ class ASP_Process_IPN_NG {
 
 		$data['shipping_address'] = $p_data->get_shipping_addr_str();
 
+		$logged_in_user_info = ASP_Utils::get_logged_in_user_info();
+		if (!empty($logged_in_user_info) && is_array($logged_in_user_info)) {
+			$data['logged_in_user_id'] = $logged_in_user_info['id'];
+			$data['logged_in_user_name'] = $logged_in_user_info['username'];
+		}
+
 		$data['additional_items'] = array();
 
 		ASP_Debug_Logger::log( 'Firing asp_ng_payment_completed filter.' );
