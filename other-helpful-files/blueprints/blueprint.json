@@ -18,7 +18,7 @@
             "step": "installPlugin",
             "pluginZipFile": {
                 "resource": "wordpress.org\/plugins",
-                "slug": "accept-stripe-payments"
+                "slug": "stripe-payments"
             },
             "options": {
                 "activate": true
