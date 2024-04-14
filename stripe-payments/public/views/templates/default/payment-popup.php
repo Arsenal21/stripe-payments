@@ -497,7 +497,10 @@ echo wp_kses( '<style>' . $css . '</style>' . "\r\n", ASP_Utils::asp_allowed_tag
 		}
 	}
 
-	//fire action to output additional data to payment popup before closing <body> tag
+	//Trigger a filter hook to allow other plugins to output additional data to payment popup before closing <body> tag
+	echo apply_filters( 'asp_ng_pp_extra_output_before_closing_body', '');
+
+	//Trigger action to output additional data to payment popup before closing <body> tag
 	do_action( 'asp_ng_pp_output_before_closing_body', $a );
 	?>
 	</body>

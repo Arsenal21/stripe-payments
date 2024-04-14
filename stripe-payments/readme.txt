@@ -151,6 +151,9 @@ None.
 
 == Changelog ==
 
+= WIP =
+- Added a new filter hook (asp_ng_pp_extra_output_before_closing_body) in the payment popup window to allow adding custom HTML content before the closing body tag.
+
 = 2.0.85 =
 - The order item will capture and display the username of the logged-in user, provided the user is logged in at the time of the purchase.
 - Added new email merge tag {logged_in_user_name} to capture logged in user's username (if available).
