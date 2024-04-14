@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 5.0
 Tested up to: 6.5
 Requires PHP: 7.0
-Stable tag: 2.0.85
+Stable tag: 2.0.86t1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -151,7 +151,7 @@ None.
 
 == Changelog ==
 
-= WIP =
+= 2.0.86t1 WIP =
 - Added a new filter hook (asp_ng_pp_extra_output_before_closing_body) in the payment popup window to allow adding custom HTML content before the closing body tag.
 
 = 2.0.85 =
