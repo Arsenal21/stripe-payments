@@ -207,6 +207,51 @@ class ASP_Product_Item {
 		}
 		return $this->price;
 	}
+
+    public function get_surcharge()
+    {
+        $surcharge_amount = get_post_meta( $this->post_id, 'asp_surcharge_amount', true );
+
+        return !empty($surcharge_amount) && is_numeric($surcharge_amount) ? $surcharge_amount : 0;
+    }
+
+    public function get_surcharge_label()
+    {
+        $surcharge_label = get_post_meta( $this->post_id, 'asp_surcharge_label', true );
+
+        return !empty($surcharge_label) ? $surcharge_label : __("Surcharge", 'stripe-payments');
+    }
+
+    public function get_surcharge_type()
+    {
+        $surcharge_type = get_post_meta( $this->post_id, 'asp_surcharge_type', true );
+
+        return empty($surcharge_type) ? 'flat' : $surcharge_type;
+    }
+
+    /**
+     * Calculate the surcharge amount specified in product edit page.
+     *
+     * @param bool $in_cents Whether to retrieve result in cents.
+     *
+     * @return float|int
+     */
+    public function get_calculated_surcharge(bool $in_cents = false)
+    {
+        $surcharge_amount = $this->get_surcharge();
+        $surcharge_type = $this->get_surcharge_type();
+
+        if ( $surcharge_type == 'perc' ){
+            $calculate_from_amount = $this->get_total();
+            $percentage = floatval($surcharge_amount);
+            $amount = ( $calculate_from_amount / 100 ) * $percentage;
+        } else {
+            $amount = floatval($surcharge_amount);
+        }
+
+        return $in_cents ? $this->in_cents( $amount ) : $amount;
+    }
+
 	/**
 	* Returns min amount for donation product
 	*
@@ -674,9 +719,12 @@ class ASP_Product_Item {
 			};
 		}
 
+        $total_without_surcharge = $this->get_total(true);
+        $surcharge_amount = $this->get_calculated_surcharge(true);
+
 		// Calculate the expected total amount.
-		$expected_total_amount = $this->get_total(true);
-		
+		$expected_total_amount = $total_without_surcharge + $surcharge_amount;
+
 		// Trigger a filter so addons can override it. 
 		$expected_total_amount = apply_filters('asp_pre_api_submission_expected_amount', $expected_total_amount, $amount, $this->post_id);
 		

@@ -5,6 +5,7 @@ class ASP_Payment_Data {
 	protected $obj;
 	protected $trans_id             = false;
 	protected $amount               = false;
+	protected $surcharge_data       = array();
 	protected $currency             = false;
 	protected $charge_created       = false;
 	protected $charge_data          = false;
@@ -42,6 +43,27 @@ class ASP_Payment_Data {
 		}
 		return $this->amount;
 	}
+
+    /**
+     * Get the surcharge data from payment intent metadata.
+     *
+     * @param $key string The key to get the value of.
+     *
+     * @return string Get the value as string if found. Otherwise, empty string.
+     */
+    public function get_surcharge_data( string $key )
+    {
+        if ( empty($this->surcharge_data) ) {
+            $metadata = $this->obj->charges->data[0]->metadata;
+            if (isset($metadata['Surcharge Amount'])){
+                $this->surcharge_data['amount'] = $metadata['Surcharge Amount'];
+            }
+            if (isset($metadata['Surcharge Label'])){
+                $this->surcharge_data['label'] = $metadata['Surcharge Label'];
+            }
+        }
+        return isset($this->surcharge_data[$key]) ? (string) $this->surcharge_data[$key] : '';
+    }
 
 	public function get_currency() {
 		if ( false === $this->currency ) {
