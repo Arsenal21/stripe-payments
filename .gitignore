@@ -5,3 +5,5 @@ node_modules
 package.json
 stripe-payments_*.zip
 .idea/
+
+/other-helpful-files/tmp/*

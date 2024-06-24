@@ -7,7 +7,7 @@
  * And the data of this is prepared in /includes/class-asp-pp-display.php:583
 */
 
-console.log('vars.data' , vars.data);
+// console.log('vars.data' , vars.data); // Debug purpose only.
 
 var closeBtn = document.getElementById('modal-close-btn');
 closeBtn.addEventListener('click', function () {

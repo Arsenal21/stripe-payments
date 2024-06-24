@@ -719,11 +719,14 @@ class ASP_Product_Item {
 			};
 		}
 
-        $total_without_surcharge = $this->get_total(true);
-        $surcharge_amount = $this->get_calculated_surcharge(true);
-
 		// Calculate the expected total amount.
-		$expected_total_amount = $total_without_surcharge + $surcharge_amount;
+		$expected_total_amount = $this->get_total(true);
+
+        // Check if surcharge available.
+        if (!empty($this->get_surcharge())){
+            $surcharge_amount = round($this->get_calculated_surcharge(true));
+            $expected_total_amount += $surcharge_amount;
+        }
 
 		// Trigger a filter so addons can override it. 
 		$expected_total_amount = apply_filters('asp_pre_api_submission_expected_amount', $expected_total_amount, $amount, $this->post_id);
