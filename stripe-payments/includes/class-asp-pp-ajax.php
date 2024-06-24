@@ -257,6 +257,7 @@ class ASP_PP_Ajax {
 		$out['success'] = false;
 		$product_id = filter_input( INPUT_POST, 'product_id', FILTER_SANITIZE_NUMBER_INT );
 		$amount = filter_input( INPUT_POST, 'amount', FILTER_SANITIZE_NUMBER_FLOAT );
+        $surcharge_amount = filter_input( INPUT_POST, 'surcharge_amount', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION  );
 		$curr = isset( $_POST['curr'] ) ? sanitize_text_field( stripslashes ( $_POST['curr'] ) ) : '';
 		$pi_id = isset( $_POST['pi'] ) ? sanitize_text_field( stripslashes ( $_POST['pi'] ) ) : '';
 		$cust_id = isset( $_POST['cust_id'] ) ? sanitize_text_field( stripslashes ( $_POST['cust_id'] ) ) : '';
@@ -553,6 +554,9 @@ class ASP_PP_Ajax {
 
 			$metadata['Product Name'] = $item->get_name();
 			$metadata['Product ID']   = $product_id;
+
+            $metadata['Surcharge Amount']   = $surcharge_amount;
+            $metadata['Surcharge Label']   = $item->get_surcharge_label();
 
 			if ( isset( $metadata ) && ! empty( $metadata ) ) {
 				$pi_params['metadata'] = $metadata;

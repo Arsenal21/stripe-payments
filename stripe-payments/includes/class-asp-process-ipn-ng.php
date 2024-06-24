@@ -602,6 +602,12 @@ class ASP_Process_IPN_NG {
 			$data['shipping']                                 = $item->get_shipping();
 		}
 
+        $surcharge_amount = $p_data->get_surcharge_data('amount');
+        if ( !empty($surcharge_amount) ){
+            $surcharge_label = $p_data->get_surcharge_data('label');
+            $data['additional_items'][$surcharge_label] = $surcharge_amount;
+        }
+
 		//custom fields
 		$custom_fields = $this->sess->get_transient_data( 'custom_fields' );
 		if ( ! empty( $custom_fields ) ) {

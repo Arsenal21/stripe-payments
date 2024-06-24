@@ -1,4 +1,14 @@
 /* eslint-disable no-undef */
+
+/**
+ * Note: These are the external data coming from outside this script file.
+ *
+ * @var vars object This is available by inline scripting at /public/views/templates/default/payment-popup.php:21
+ * And the data of this is prepared in /includes/class-asp-pp-display.php:583
+*/
+
+console.log('vars.data' , vars.data);
+
 var closeBtn = document.getElementById('modal-close-btn');
 closeBtn.addEventListener('click', function () {
 	if (typeof checkAgeInterval !== "undefined") {
@@ -537,7 +547,36 @@ function calcTotal() {
 	if (vars.data.shipping) {
 		tAmount = tAmount + vars.data.shipping;
 	}
+
+	if (vars.data.surcharge){
+		let surcharge_amount = calc_surcharge(tAmount);
+		vars.data.surcharge_amount = surcharge_amount;
+		tAmount = tAmount + surcharge_amount;
+	}
+
 	vars.data.amount = PHP_round(tAmount, 0);
+}
+
+/**
+ * Calculate the surcharge amount.
+ *
+ * @param tAmount Grand total amount without surcharge (in cents).
+ *
+ * @returns {number} The surcharge amount in cents.
+ */
+function calc_surcharge(tAmount){
+	const amount = parseFloat(vars.data.surcharge);
+	const type = vars.data.surcharge_type;
+	// console.log("Calculating surcharge on :", cents_to_amount(tAmount, vars.data.currency));
+	let surcharge = 0;
+
+	if (type == 'perc') {
+		surcharge = (tAmount / 100) * amount;
+	} else {
+		surcharge = amount_to_cents(amount, vars.data.currency);
+	}
+
+	return surcharge;
 }
 
 function PHP_round(num, dec) {
@@ -855,9 +894,6 @@ function handlePayment() {
 		email: encodeURIComponent(emailInput.value),
 	};
 
-	
-	
-
 	if (vars.data.billing_address) {
 		var bAddr =  document.getElementById('address');
 		var bCity = document.getElementById('city');
@@ -935,6 +971,11 @@ function handlePayment() {
 
 		if (vars.data.coupon) {
 			reqStr += '&coupon=' + vars.data.coupon.code;
+		}
+
+		if (vars.data.surcharge) {
+			let surcharge_amount = cents_to_amount(vars.data.surcharge_amount, vars.data.currency);
+			reqStr += '&surcharge_amount=' + surcharge_amount;
 		}
 
 		// Check if price variation is set, if so, then process it to add this in query param.

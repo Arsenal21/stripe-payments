@@ -134,6 +134,8 @@ class ASP_Shortcode_NG {
 
 		$price    = $item->get_price();
 		$shipping = $item->get_shipping();
+        $surcharge_amount = $item->get_calculated_surcharge();
+        $surcharge_label = $item->get_surcharge_label();
 
 		//let's apply filter so addons can change price, currency and shipping if needed
 		$price_arr = array(
@@ -209,6 +211,16 @@ class ASP_Shortcode_NG {
 				$under_price_line = '<span class="asp_price_shipping_section">' . $shipping_line . '</span>';
 			}
 		}
+
+        if (!empty($surcharge_amount)){
+            $tot_price += $surcharge_amount;
+
+			$surcharge_line = '<div class="asp_price_surcharge_section">'. $surcharge_label . ': ';
+            $surcharge_line .= '<span class="asp_price_surcharge_amount">' . AcceptStripePayments::formatted_price( $surcharge_amount, $currency ) . '</span>';
+            $surcharge_line .= '</div>';
+
+            $under_price_line .= $surcharge_line;
+        }
 
 		if ( ! empty( $price ) && ! empty( $under_price_line ) ) {
 			$under_price_line .= '<div class="asp_price_full_total">' . __( 'Total:', 'stripe-payments' ) . ' <span class="asp_tot_current_price">' . AcceptStripePayments::formatted_price( $tot_price, $currency ) . '</span> <span class="asp_tot_new_price"></span></div>';

@@ -333,6 +333,11 @@ class ASP_PP_Display {
 
 		$data['tax']      = $this->item->get_tax();
 		$data['shipping'] = $this->item->get_shipping( true );
+
+		$data['surcharge'] = $this->item->get_surcharge();
+		$data['surcharge_type'] = $this->item->get_surcharge_type();
+		$data['surcharge_amount'] = $this->item->get_calculated_surcharge( true );
+
 		$data['descr']    = $this->item->get_description();
 
 		$data['tax_variations'] = $this->item->get_meta( 'asp_product_tax_variations' );
