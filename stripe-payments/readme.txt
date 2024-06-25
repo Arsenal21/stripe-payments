@@ -153,7 +153,7 @@ None.
 
 = 2.0.86t1 WIP =
 - Added a new filter hook (asp_ng_pp_extra_output_before_closing_body) in the payment popup window to allow adding custom HTML content before the closing body tag.
-- Added new surcharge feature.
+- Added a new surcharge feature that you can use to collect a transaction surcharge. [documentation for transaction surcharge](https://s-plugins.com/transaction-surcharge-feature-collect-processing-fees-for-products/)
 
 = 2.0.85 =
 - The order item will capture and display the username of the logged-in user, provided the user is logged in at the time of the purchase.
