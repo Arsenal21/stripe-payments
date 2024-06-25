@@ -243,8 +243,8 @@ class ASP_Product_Item {
 
         if ( $surcharge_type == 'perc' ){
             $calculate_from_amount = $this->get_total();
-            $percentage = floatval($surcharge_amount);
-            $amount = ( $calculate_from_amount / 100 ) * $percentage;
+            $surcharge_percentage = floatval($surcharge_amount);
+            $amount = ( $calculate_from_amount / 100 ) * $surcharge_percentage;
         } else {
             $amount = floatval($surcharge_amount);
         }
@@ -721,7 +721,8 @@ class ASP_Product_Item {
         // Check if surcharge feature is enabled.
         if ( !empty($this->get_surcharge()) ){
 			// Surcharge is enabled. Calculate the surcharge amount then adjust the expected total.
-            $surcharge_amount = round($this->calculate_total_surcharge(true));
+            $surcharge_amount = round($this->calculate_total_surcharge(true));//This is in cents so round it to 0 decimal place.
+			
 			ASP_Debug_Logger::log("The surcharge feature is enabled. Applied surcharge amount (in cents): ". $surcharge_amount, true);
             $expected_total_amount += $surcharge_amount;
         }
