@@ -316,7 +316,7 @@ jQuery(form).on('submit', function (event) {
 
 	// Check if the form can proceed.
 	if (!canProceed()) {
-		console.log('The canProceed() function returned fals. Can not proceed.');
+		console.log('The canProceed() function returned false.');
 		return false;
 	}
 
