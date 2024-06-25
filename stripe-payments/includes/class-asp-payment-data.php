@@ -54,7 +54,7 @@ class ASP_Payment_Data {
     public function get_surcharge_data( string $key )
     {
         if ( empty($this->surcharge_data) ) {
-            $metadata = $this->obj->charges->data[0]->metadata;
+            $metadata = isset($this->obj->charges->data[0]->metadata) ? $this->obj->charges->data[0]->metadata : array();
             if (isset($metadata['Surcharge Amount'])){
                 $this->surcharge_data['amount'] = $metadata['Surcharge Amount'];
             }
