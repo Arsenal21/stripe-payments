@@ -2078,6 +2078,8 @@ class AcceptStripePayments_Admin {
 				'{card_last_4}'       => __( 'Last 4 digits of the card. Example: 4242' ),
 				'{logged_in_user_id}' => __( 'User/Member ID of the currently logged in user. This field will be empty if the user is not logged in while doing the transaction.' ),
 				'{logged_in_user_name}' => __( 'Username of the currently logged in user. This field will be empty if the user is not logged in while doing the transaction.' ),
+				'{surcharge_amount}' => __( 'The applied surcharge amount in addition to total amount. This field will be available for one time or donation type product.' ),
+				'{surcharge_label}' => __( 'The applied surcharge label. This field will be available for one time or donation type product.' ),
 			);
 		}
 
