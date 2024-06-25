@@ -310,25 +310,34 @@ card.addEventListener('change', function (event) {
 });
 
 jQuery(form).on('submit', function (event) {
+	// Payment popup form submitted.
+	console.log('Payment form submitted.');
 	event.preventDefault();
 
+	// Check if the form can proceed.
 	if (!canProceed()) {
+		console.log('The canProceed() function returned fals. Can not proceed.');
 		return false;
 	}
 
 	if (!is_full_discount() && ('def' === vars.data.currentPM || !vars.data.currentPM) && !vars.data.cardComplete) {
+		// If not full discount and the current payment method is default or not set then focus on the card element.
 		card.focus();
 		return false;
 	}
 
+	//Reset the error container.
 	errorCont.style.display = 'none';
+
+	// Disable the submit button.
 	submitBtn.disabled = true;
 
+	//Calculate and update the total amount.
 	updateAllAmounts();
 
-	smokeScreen(true);
+	smokeScreen(true);// Show the smoke screen.
 
-	doAddonAction('readyToProceed');
+	doAddonAction('readyToProceed');// Trigger the readyToProceed event.
 
 	handlePayment();
 
@@ -477,6 +486,7 @@ function updateAllAmounts() {
 			}
 		}
 	}
+	//Trigger the allAmountsUpdated event.
 	doAddonAction('allAmountsUpdated');
 }
 
@@ -884,6 +894,8 @@ function canProceed() {
 }
 
 function handlePayment() {
+	console.log('Entering handlePayment()');
+
 	var billingNameInput = document.getElementById('billing-name');
 	var emailInput = document.getElementById('email');
 	var billingDetails = {
@@ -1005,7 +1017,7 @@ function handlePayment() {
 		
 		vars.data.csRegenParams = reqStr;
 		doAddonAction('csBeforeRegenParams');
-		console.log('Doing asp_pp_create_pi');
+		console.log('Doing asp_pp_create_pi ajax request.');
 		new ajaxRequest(vars.ajaxURL, vars.data.csRegenParams,
 			function (res) {
 				try {
@@ -1056,7 +1068,9 @@ function handlePayment() {
 		return false;
 	}
 
+	//If not full discount transaction, create and confirm token.
 	if (!is_full_discount() && vars.data.create_token) {
+		//Create token for the payment intent then confirm the token.
 		console.log('Creating token');
 		opts = {
 			name: billingNameInput.value
@@ -1097,17 +1111,20 @@ function handlePayment() {
 
 		vars.confirmToken_reqStr = ct_reqStr;
 
+		console.log('The confirm token request string before preConfirmToken event: ' + ct_reqStr);
 		doAddonAction('preConfirmToken');
 
 		ct_reqStr = vars.confirmToken_reqStr;
 
 		if (vars.data.pm_id) {
 			ct_reqStr = 'action=asp_pp_confirm_token&asp_pm_id=' + vars.data.pm_id + ct_reqStr;
+			console.log('Confirming token for payment method ID: ' + vars.data.pm_id);
 			confirmToken(ct_reqStr);
 			return true;
 		}
 
 		stripe.createToken(card, opts).then(function (result) {
+			console.log('stripe.createToken() - token created');
 			//console.log(result);
 			if (result.error) {
 				submitBtn.disabled = false;
@@ -1326,10 +1343,14 @@ function handleCardPaymentResult(result) {
 }
 
 function confirmToken(reqStr) {
+	//This function is used to confirm the token.
+	//Primarily used for subscriptions type products.
 	vars.data.confirmTokenStr = reqStr;
 	vars.data.canProceed = true;
 	console.log('Doing action asp_pp_confirm_token');
+	//console.log('The confirm token request string: ' + reqStr);//Debug purpose.
 	doAddonAction('confirmToken');
+
 	if (!vars.data.canProceed) {
 		return false;
 	}
