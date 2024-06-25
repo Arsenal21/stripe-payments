@@ -30,7 +30,7 @@ class ASP_Admin_Product_Meta_Boxes {
 		add_meta_box( 'asp_variations_meta_box', esc_html( __( 'Variations', 'stripe-payments' ) ), array( $this, 'display_variations_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 		add_meta_box( 'asp_quantity_meta_box', esc_html( __( 'Quantity & Stock', 'stripe-payments' ) ), array( $this, 'display_quantity_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 		add_meta_box( 'asp_shipping_tax_meta_box', esc_html( __( 'Shipping & Tax', 'stripe-payments' ) ), array( $this, 'display_shipping_tax_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
-		add_meta_box( 'asp_surcharge_meta_box', esc_html( __( 'Surcharge', 'stripe-payments' ) ), array( $this, 'display_surcharge_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
+		add_meta_box( 'asp_surcharge_meta_box', esc_html( __( 'Transaction Surcharge (Beta)', 'stripe-payments' ) ), array( $this, 'display_surcharge_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 		add_meta_box( 'asp_address_meta_box', __( 'Collect Address', 'stripe-payments' ), array( $this, 'display_address_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 		add_meta_box( 'asp_upload_meta_box', __( 'Download URL', 'stripe-payments' ), array( $this, 'display_upload_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
 		add_meta_box( 'asp_thumbnail_meta_box', __( 'Product Thumbnail', 'stripe-payments' ), array( $this, 'display_thumbnail_meta_box' ), ASPMain::$products_slug, 'normal', 'default' );
@@ -580,10 +580,13 @@ input[type=checkbox][disabled] + label {
         $surcharge_type = get_post_meta( $post->ID, 'asp_surcharge_type', true );;
         $surcharge_amount = get_post_meta( $post->ID, 'asp_surcharge_amount', true );;
         $surcharge_label = get_post_meta( $post->ID, 'asp_surcharge_label', true );;
-    ?>
+    	?>
         <div id="wp-asp-surcharge-cont">
+			<p>
+				<?php _e('If you want to charge your customers an additional amount for transaction or processing fees, you can use this transaction surcharge feature.', 'stripe-payments'); ?>
+			</p>
             <div>
-                <label><?php _e( 'Surcharge amount type:', 'stripe-payments' ); ?></label>
+                <label><?php _e( 'Transaction Surcharge Amount Type: ', 'stripe-payments' ); ?></label>
                 <br>
                 <label>
                     <input type="radio" name="asp_surcharge_type" value="flat"<?php echo $surcharge_type == 'flat' || empty( $surcharge_type ) ? ' checked' : ''; ?>>
@@ -597,24 +600,24 @@ input[type=checkbox][disabled] + label {
 
             <div>
                 <div>
-                    <label><?php _e( 'Surcharge amount', 'stripe-payments' ); ?></label>
+                    <label><?php _e( 'Surcharge Amount', 'stripe-payments' ); ?></label>
                     <br />
                     <input type="number" step="any" min="0" name="asp_surcharge_amount" value="<?php echo esc_attr( $surcharge_amount ); ?>">
                     <p class="description">
-                        <?php _e( 'Numbers only, do not put currency symbol. Example: 5', 'stripe-payments' ); ?>
+                        <?php _e( 'Numbers only, do not enter any currency symbol. Example: 5', 'stripe-payments' ); ?>
                     </p>
                 </div>
                 <div>
-                    <label><?php _e( 'Surcharge label', 'stripe-payments' ); ?></label>
+                    <label><?php _e( 'Surcharge Label', 'stripe-payments' ); ?></label>
                     <br />
                     <input type="text" name="asp_surcharge_label" value="<?php echo esc_attr( $surcharge_label ); ?>">
                     <p class="description">
-                        <?php _e( 'Specify the label for surcharge. Example: Fee', 'stripe-payments' ); ?>
+                        <?php _e( 'Specify the label to use for the surcharge. Example: Processing Fee.', 'stripe-payments' ); ?>
                     </p>
                 </div>
             </div>
         </div>
-    <?php
+    	<?php
     }
 
 	public function display_quantity_meta_box( $post ) {

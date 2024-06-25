@@ -722,7 +722,7 @@ class ASP_Product_Item {
         if ( !empty($this->get_surcharge()) ){
 			// Surcharge is enabled. Calculate the surcharge amount then adjust the expected total.
             $surcharge_amount = round($this->calculate_total_surcharge(true));
-			ASP_Debug_Logger::log("The surcharge feature is enabled. Applied surcharge amount: ". $surcharge_amount, true);
+			ASP_Debug_Logger::log("The surcharge feature is enabled. Applied surcharge amount (in cents): ". $surcharge_amount, true);
             $expected_total_amount += $surcharge_amount;
         }
 
