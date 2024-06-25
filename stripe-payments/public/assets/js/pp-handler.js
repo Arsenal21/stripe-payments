@@ -1,12 +1,9 @@
-/* eslint-disable no-undef */
-
 /**
- * Note: These are the external data coming from outside this script file.
+ * Note: the 'vars.data' is an external variable that is available in the current context.
  *
- * @var vars object This is available by inline scripting at /public/views/templates/default/payment-popup.php:21
- * And the data of this is prepared in /includes/class-asp-pp-display.php:583
+ * @var vars object is available here because of the inline scripting at - /public/views/templates/default/payment-popup.php:21
+ * The data for it ($a['vars']['vars']) is prepared at - /includes/class-asp-pp-display.php:587
 */
-
 // console.log('vars.data' , vars.data); // Debug purpose only.
 
 var closeBtn = document.getElementById('modal-close-btn');

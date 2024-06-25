@@ -230,13 +230,13 @@ class ASP_Product_Item {
     }
 
     /**
-     * Calculate the surcharge amount specified in product edit page.
+     * Calculate the total surcharge amount based on the surcharge type and amount.
      *
-     * @param bool $in_cents Whether to retrieve result in cents.
+     * @param bool $in_cents Whether to return the result in cents.
      *
      * @return float|int
      */
-    public function get_calculated_surcharge(bool $in_cents = false)
+    public function calculate_total_surcharge(bool $in_cents = false)
     {
         $surcharge_amount = $this->get_surcharge();
         $surcharge_type = $this->get_surcharge_type();
@@ -258,8 +258,6 @@ class ASP_Product_Item {
 	* @param bool $in_cents Return amount in cents if set to `true`
 	*
 	* @return integer|float
-	*
-	* @since 2.0.31
 	*/
 	public function get_min_amount( $in_cents = false ) {
 		$min_amount = get_post_meta( $this->post_id, 'asp_product_min_amount', true );
@@ -271,8 +269,6 @@ class ASP_Product_Item {
 	* Returns product type
 	*
 	* @return string
-	*
-	* @since 2.0.31
 	*/
 	public function get_type() {
 		$type = get_post_meta( $this->post_id, 'asp_product_type', true );
@@ -722,9 +718,11 @@ class ASP_Product_Item {
 		// Calculate the expected total amount.
 		$expected_total_amount = $this->get_total(true);
 
-        // Check if surcharge available.
-        if (!empty($this->get_surcharge())){
-            $surcharge_amount = round($this->get_calculated_surcharge(true));
+        // Check if surcharge feature is enabled.
+        if ( !empty($this->get_surcharge()) ){
+			// Surcharge is enabled. Calculate the surcharge amount then adjust the expected total.
+            $surcharge_amount = round($this->calculate_total_surcharge(true));
+			ASP_Debug_Logger::log("The surcharge feature is enabled. Applied surcharge amount: ". $surcharge_amount, true);
             $expected_total_amount += $surcharge_amount;
         }
 

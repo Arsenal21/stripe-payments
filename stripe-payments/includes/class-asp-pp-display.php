@@ -336,7 +336,7 @@ class ASP_PP_Display {
 
 		$data['surcharge'] = $this->item->get_surcharge();
 		$data['surcharge_type'] = $this->item->get_surcharge_type();
-		$data['surcharge_amount'] = $this->item->get_calculated_surcharge( true );
+		$data['surcharge_amount'] = $this->item->calculate_total_surcharge( true );
 
 		$data['descr']    = $this->item->get_description();
 

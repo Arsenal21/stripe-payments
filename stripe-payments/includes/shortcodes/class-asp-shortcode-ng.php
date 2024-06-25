@@ -134,7 +134,7 @@ class ASP_Shortcode_NG {
 
 		$price    = $item->get_price();
 		$shipping = $item->get_shipping();
-        $surcharge_amount = $item->get_calculated_surcharge();
+        $surcharge_amount = $item->calculate_total_surcharge();
         $surcharge_label = $item->get_surcharge_label();
 
 		//let's apply filter so addons can change price, currency and shipping if needed
