@@ -584,6 +584,9 @@ input[type=checkbox][disabled] + label {
         <div id="wp-asp-surcharge-cont">
 			<p>
 				<?php _e('If you want to charge your customers an additional amount for transaction or processing fees, you can use this transaction surcharge feature.', 'stripe-payments'); ?>
+				<?php
+				echo sprintf( __( ' You can get additional information <a href="%s" target="_blank">in this tutorial</a>.', 'stripe-payments' ), 'https://s-plugins.com/transaction-surcharge-feature-collect-processing-fees-for-products/' );
+				?>
 			</p>
             <div>
                 <label><?php _e( 'Transaction Surcharge Amount Type: ', 'stripe-payments' ); ?></label>
