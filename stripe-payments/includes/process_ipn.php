@@ -834,7 +834,7 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post, $seller_email = fal
 	$logged_in_user_id = isset($post['logged_in_user_id']) && ! empty( $post['logged_in_user_id'] ) ? $post['logged_in_user_id'] : '';
 	$logged_in_user_name = isset($post['logged_in_user_name']) && ! empty( $post['logged_in_user_name'] ) ? $post['logged_in_user_name'] : '';
 
-    $surcharge_amount = '';
+    $surcharge_total_amt = '';
     $surcharge_label = '';
     if ( isset( $post['product_id'] ) ){
         // Retrieve product item from product id.
@@ -843,7 +843,7 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post, $seller_email = fal
         if ( in_array($product_type, array('one_time', 'donation')) ) {
             $surcharge_label = $product_item->get_surcharge_label();
             if (isset($post['additional_items'][$surcharge_label])) {
-                $surcharge_amount = AcceptStripePayments::formatted_price($post['additional_items'][$surcharge_label], $post['currency_code']);
+                $surcharge_total_amt = AcceptStripePayments::formatted_price($post['additional_items'][$surcharge_label], $post['currency_code']);
             }
         }
     }
@@ -878,7 +878,7 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post, $seller_email = fal
         '{product_variations}',
 		'{logged_in_user_name}',
 		'{logged_in_user_id}',
-		'{surcharge_amount}',
+		'{surcharge_total_amt}',
 		'{surcharge_label}',
 	);
 	$vals = array(
@@ -911,7 +911,7 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post, $seller_email = fal
         $product_variations,
 		$logged_in_user_name,
 		$logged_in_user_id,
-        $surcharge_amount,
+        $surcharge_total_amt,
         $surcharge_label,
 	);
 
@@ -921,17 +921,16 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post, $seller_email = fal
 		'vals' => $vals,
 	);
 	$tags_vals = apply_filters( 'asp_email_body_tags_vals_before_replace', $tags_vals, $post );
-	$tags      = $tags_vals['tags'];
-	$vals      = $tags_vals['vals'];
+	$tags = $tags_vals['tags'];
+	$vals = $tags_vals['vals'];
 
 	$product_details = str_replace( $tags, $vals, $product_details );
-	$tags[]          = '{product_details}';
-	$vals[]          = $product_details;
+	$tags[] = '{product_details}';
+	$vals[] = $product_details;
 
 	$body = stripslashes( str_replace( $tags, $vals, $body ) );
 
-	//let's apply filters for email body
-
+	//let's apply a filter for the email body.
 	$body = apply_filters( 'asp_email_body_after_replace', $body );
 
 	//make tags and vals available for checkout results page by storing those in inner session
