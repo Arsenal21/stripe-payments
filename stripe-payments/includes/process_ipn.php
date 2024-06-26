@@ -834,6 +834,20 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post, $seller_email = fal
 	$logged_in_user_id = isset($post['logged_in_user_id']) && ! empty( $post['logged_in_user_id'] ) ? $post['logged_in_user_id'] : '';
 	$logged_in_user_name = isset($post['logged_in_user_name']) && ! empty( $post['logged_in_user_name'] ) ? $post['logged_in_user_name'] : '';
 
+    $surcharge_amount = '';
+    $surcharge_label = '';
+    if ( isset( $post['product_id'] ) ){
+        // Retrieve product item from product id.
+        $product_item = new ASP_Product_Item( $post['product_id'] );
+        $product_type = $product_item->get_type();
+        if ( in_array($product_type, array('one_time', 'donation')) ) {
+            $surcharge_label = $product_item->get_surcharge_label();
+            if (isset($post['additional_items'][$surcharge_label])) {
+                $surcharge_amount = AcceptStripePayments::formatted_price($post['additional_items'][$surcharge_label], $post['currency_code']);
+            }
+        }
+    }
+
 	$tags = array(
 		'{item_name}',
 		'{item_short_desc}',
@@ -864,6 +878,8 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post, $seller_email = fal
         '{product_variations}',
 		'{logged_in_user_name}',
 		'{logged_in_user_id}',
+		'{surcharge_amount}',
+		'{surcharge_label}',
 	);
 	$vals = array(
 		$post['item_name'],
@@ -895,6 +911,8 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post, $seller_email = fal
         $product_variations,
 		$logged_in_user_name,
 		$logged_in_user_id,
+        $surcharge_amount,
+        $surcharge_label,
 	);
 
 	//let's combine tags and vals into one array so we can apply filters on it
