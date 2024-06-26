@@ -132,11 +132,13 @@ class ASP_Shortcode_NG {
 		$template_name = 'default'; //this could be made configurable
 		$button_color  = 'blue'; //this could be made configurable
 
-		$price    = $item->get_price();
+		$price = $item->get_price();
 		$shipping = $item->get_shipping();
-        $surcharge_amount = apply_filters('asp_ng_modify_surcharge_currency', $item->calculate_total_surcharge(), $currency);
-
-        $surcharge_label = $item->get_surcharge_label();
+		
+		$surcharge_label = $item->get_surcharge_label();
+		$surcharge_total = $item->calculate_total_surcharge();
+		//Trigger filter so addons can modify surcharge total
+        $surcharge_total = apply_filters('asp_ng_modify_surcharge_total', $surcharge_total, $currency);
 
 		//let's apply filter so addons can change price, currency and shipping if needed
 		$price_arr = array(
@@ -183,14 +185,14 @@ class ASP_Shortcode_NG {
 		if ( isset( $atts['tax'] ) ) {
 			//save tax overidden data to session
 			$uniq_id = uniqid( 'asp_button', true );
-			$sess    = ASP_Session::get_instance();
+			$sess = ASP_Session::get_instance();
 			$sess->set_transient_data( 'overriden_data_' . $uniq_id, array( 'tax' => $tax ) );
 		}
 
 		$quantity = $item->get_quantity();
 
 		$under_price_line = '';
-		$tot_price        = ! empty( $quantity ) ? $price * $quantity : $price;
+		$tot_price = ! empty( $quantity ) ? $price * $quantity : $price;
 
 		if ( 0 !== $tax ) {
 			$tax_str = apply_filters( 'asp_customize_text_msg', __( 'Tax', 'stripe-payments' ), 'tax_str' );
@@ -203,8 +205,8 @@ class ASP_Shortcode_NG {
 			}
 		}
 		if ( 0 !== $shipping ) {
-			$ship_str      = apply_filters( 'asp_customize_text_msg', __( 'Shipping', 'stripe-payments' ), 'shipping_str' );
-			$tot_price    += $shipping;
+			$ship_str = apply_filters( 'asp_customize_text_msg', __( 'Shipping', 'stripe-payments' ), 'shipping_str' );
+			$tot_price += $shipping;
 			$shipping_line = AcceptStripePayments::formatted_price( $shipping, $currency ) . ' (' . strtolower( $ship_str ) . ')';
 			if ( ! empty( $under_price_line ) ) {
 				$under_price_line .= '<span class="asp_price_shipping_section"> + ' . $shipping_line . '</span>';
@@ -213,11 +215,11 @@ class ASP_Shortcode_NG {
 			}
 		}
 
-        if (!empty($surcharge_amount)){
-            $tot_price += $surcharge_amount;
+        if ( !empty( $surcharge_total ) ){
+            $tot_price += $surcharge_total;
 
 			$surcharge_line = '<div class="asp_price_surcharge_section">'. $surcharge_label . ': ';
-            $surcharge_line .= '<span class="asp_price_surcharge_amount">' . AcceptStripePayments::formatted_price( $surcharge_amount, $currency ) . '</span>';
+            $surcharge_line .= '<span class="asp_price_surcharge_amount">' . AcceptStripePayments::formatted_price( $surcharge_total, $currency ) . '</span>';
             $surcharge_line .= '</div>';
 
             $under_price_line .= $surcharge_line;
