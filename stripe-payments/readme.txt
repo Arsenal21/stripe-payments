@@ -4,8 +4,8 @@ Donate link: https://s-plugins.com
 Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortcode, digital goods, payment gateway, instant payment, commerce, digital downloads, downloads, e-commerce, e-store, ecommerce, eshop, donation
 Requires at least: 5.0
 Tested up to: 6.5
-Requires PHP: 7.0
-Stable tag: 2.0.86t1
+Requires PHP: 7.4
+Stable tag: 2.0.86
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -151,10 +151,10 @@ None.
 
 == Changelog ==
 
-= 2.0.86t1 WIP =
-- Added a new filter hook (asp_ng_pp_extra_output_before_closing_body) in the payment popup window to allow adding custom HTML content before the closing body tag.
+= 2.0.86 =
 - Added a new surcharge feature that you can use to collect a transaction surcharge. [documentation for transaction surcharge](https://s-plugins.com/transaction-surcharge-feature-collect-processing-fees-for-products/)
-- Added new email merge tags 'surcharge_amount' and 'surcharge_label' to show surcharge data in the email body.
+- Added new email merge tags {surcharge_total_amt} and {surcharge_label} to show surcharge data in the email body.
+- Added a new filter hook (asp_ng_pp_extra_output_before_closing_body) in the payment popup window to allow adding custom HTML content before the closing body tag.
 
 = 2.0.85 =
 - The order item will capture and display the username of the logged-in user, provided the user is logged in at the time of the purchase.
