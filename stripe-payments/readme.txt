@@ -151,6 +151,9 @@ None.
 
 == Changelog ==
 
+= WIP =
+- Updated the help text of the "Send Emails in Parallel" feature to explain that this feature is not recommended for most sites as it can have conflict with some server environments.
+
 = 2.0.86 =
 - Added a new surcharge feature that you can use to collect a transaction surcharge. [documentation for transaction surcharge](https://s-plugins.com/transaction-surcharge-feature-collect-processing-fees-for-products/)
 - Added new email merge tags {surcharge_total_amt} and {surcharge_label} to show surcharge data in the email body.

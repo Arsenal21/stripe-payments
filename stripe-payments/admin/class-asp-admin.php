@@ -953,7 +953,7 @@ class AcceptStripePayments_Admin {
 			'AcceptStripePayments-additional-email-section',
 			array(
 				'field' => 'enable_email_schedule',
-				'desc'  => __( 'Enabling this option should speed up checkout process for customers. Test this before enabling on production as it may not work properly on some setups.', 'stripe-payments' ),
+				'desc'  => __( 'This option is not recommended for most sites. Enabling this option can speed up the checkout process for customers. Test this before enabling on production as it may not work properly on some servers.', 'stripe-payments' ),
 			)
 		);
 
