@@ -898,9 +898,21 @@ function handlePayment() {
 
 	var billingNameInput = document.getElementById('billing-name');
 	var emailInput = document.getElementById('email');
+	var raw_email_input_value = emailInput.value;
+	var maybe_encoded_email_input_value = encodeURIComponent(raw_email_input_value);
+	//Check if the 'is_trial' var exists then check it's value to see if this is a trial subscription product.
+	console.log('vars.data.is_trial value: ' + vars.data.is_trial);
+	if( typeof vars.data.is_trial !== 'undefined' && vars.data.is_trial ) {
+		//This is a trial subscription product. We don't want to encode the email input value as it has some issues with European users.
+		console.log('This is a trial subscription product. Not encoding the email input value');
+		//alert('This is a trial subscription product. Not encoding the email input value. Value: ' + maybe_encoded_email_input_value);
+		maybe_encoded_email_input_value = raw_email_input_value;
+	}
+
+	//Create the billing details object.
 	var billingDetails = {
 		name: encodeURIComponent(billingNameInput.value),
-		email: encodeURIComponent(emailInput.value),
+		email: maybe_encoded_email_input_value,
 	};
 
 	if (vars.data.billing_address) {
@@ -1179,7 +1191,7 @@ function handlePayment() {
 		opts.setup_future_usage = 'off_session';
 	}
 	if (vars.data.stripe_receipt_email) {
-		opts.receipt_email = encodeURIComponent(emailInput.value);
+		opts.receipt_email = maybe_encoded_email_input_value;
 	}
 
 	if (vars.data.pm_id || vars.data.token_id) {
@@ -1225,7 +1237,7 @@ function handlePayment() {
 			if (vars.data.dont_save_card) {
 				opts.payment_method_data.billing_details = {
 					name: encodeURIComponent(billingNameInput.value),
-					email: encodeURIComponent(emailInput.value)
+					email: maybe_encoded_email_input_value
 				};
 			}
 		} else {
