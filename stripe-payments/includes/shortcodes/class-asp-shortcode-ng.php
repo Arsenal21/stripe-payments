@@ -349,36 +349,56 @@ class ASP_Shortcode_NG {
 	}
 
 	public function shortcode_accept_stripe_payment( $atts ) {
-                //Note: It will create a product dynamically using the (ASPMain::$temp_prod_slug) custom post type.
-            
-		extract(
-			shortcode_atts(
-				array(
-					'product_id'        => 0,
-					'name'              => '',
-					'class'             => 'stripe-button-el', //default Stripe button class
-					'price'             => '0',
-					'shipping'          => 0,
-					'tax'               => 0,
-					'quantity'          => '',
-					'custom_quantity'   => false,
-					'description'       => '',
-					'url'               => '',
-					'thankyou_page_url' => '',
-					'item_logo'         => '',
-					'billing_address'   => '',
-					'shipping_address'  => '',
-					'customer_email'    => '',
-					'customer_name'     => '',
-					'currency'          => $this->asp_main->get_setting( 'currency_code' ),
-					'currency_variable' => false,
-					'checkout_lang'     => $this->asp_main->get_setting( 'checkout_lang' ),
-					'button_text'       => $this->asp_main->get_setting( 'button_text' ),
-					'compat_mode'       => 0,
-				),
-				$atts
-			)
+		//Note: It will create a product dynamically using the (ASPMain::$temp_prod_slug) custom post type.
+
+		$sc_attrs = shortcode_atts(
+			array(
+				'product_id'        => 0,
+				'name'              => '',
+				'class'             => 'stripe-button-el', //default Stripe button class
+				'price'             => '0',
+				'shipping'          => 0,
+				'tax'               => 0,
+				'quantity'          => '',
+				'custom_quantity'   => false,
+				'description'       => '',
+				'url'               => '',
+				'thankyou_page_url' => '',
+				'item_logo'         => '',
+				'billing_address'   => '',
+				'shipping_address'  => '',
+				'customer_email'    => '',
+				'customer_name'     => '',
+				'currency'          => $this->asp_main->get_setting( 'currency_code' ),
+				'currency_variable' => false,
+				'checkout_lang'     => $this->asp_main->get_setting( 'checkout_lang' ),
+				'button_text'       => $this->asp_main->get_setting( 'button_text' ),
+				'compat_mode'       => 0,
+			),
+			$atts
 		);
+
+		$product_id        = absint(sanitize_text_field( $sc_attrs['product_id'] ));
+		$name              = sanitize_text_field( $sc_attrs['name'] );
+		$class             = sanitize_text_field( $sc_attrs['class'] );
+		$price             = floatval(sanitize_text_field( $sc_attrs['price'] ));
+		$shipping          = floatval(sanitize_text_field( $sc_attrs['shipping'] ));
+		$tax               = floatval(sanitize_text_field( $sc_attrs['tax'] ));
+		$quantity          = absint(sanitize_text_field( $sc_attrs['quantity'] ));
+		$custom_quantity   = sanitize_text_field( $sc_attrs['custom_quantity'] );
+		$description       = sanitize_text_field( $sc_attrs['description'] );
+		$url               = sanitize_url( $sc_attrs['url'] );
+		$thankyou_page_url = sanitize_url( $sc_attrs['thankyou_page_url'] );
+		$item_logo         = sanitize_url( $sc_attrs['item_logo'] );
+		$billing_address   = sanitize_text_field( $sc_attrs['billing_address'] );
+		$shipping_address  = sanitize_text_field( $sc_attrs['shipping_address'] );
+		$customer_email    = sanitize_email( $sc_attrs['customer_email'] );
+		$customer_name     = sanitize_email( $sc_attrs['customer_name'] );
+		$currency          = sanitize_text_field( $sc_attrs['currency'] );
+		$currency_variable = sanitize_text_field( $sc_attrs['currency_variable'] );
+		$checkout_lang     = sanitize_text_field( $sc_attrs['checkout_lang'] );
+		$button_text       = sanitize_text_field( $sc_attrs['button_text'] );
+		$compat_mode       = sanitize_text_field( $sc_attrs['compat_mode'] );
 
 		$this->compat_mode = ( $compat_mode ) ? true : false;
 
