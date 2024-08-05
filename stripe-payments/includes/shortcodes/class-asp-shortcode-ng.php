@@ -541,7 +541,9 @@ class ASP_Shortcode_NG {
 			$is_disabled = ' disabled';
 		}
 
-		$button = sprintf( '<div class="asp_product_buy_btn_container"><button id="%s" type="submit" class="%s"%s><span>%s</span></button></div>', esc_attr( $button_id ), esc_attr( $class ), $is_disabled, sanitize_text_field( $button_text ) );
+		$button = '<div class="asp_product_buy_btn_container">';
+		$button .= '<button id="'.esc_attr( $button_id ).'" type="submit" class="'.esc_attr( $class ).'" '.$is_disabled.'><span>'.sanitize_text_field( $button_text ).'</span></button>';
+        $button .= '</div>';
 
 		$out_of_stock          = false;
 		$stock_control_enabled = false;
@@ -656,7 +658,7 @@ class ASP_Shortcode_NG {
 
 		$output .= $this->get_styles();
 
-		$output .= "<form id = 'asp_ng_form_{$uniq_id}' class='asp-stripe-form' action = '' METHOD = 'POST'> ";
+		$output .= '<form id="asp_ng_form_'.$uniq_id.'" class="asp-stripe-form" action=""  method="POST"> ';
 
 		$output .= $this->get_button_code_new_method( $data );
 
@@ -731,8 +733,8 @@ class ASP_Shortcode_NG {
 		$output = '';
 
 		if ( $data ) {
-			if ( 0 !== $data['product_id'] ) {
-				$output .= "<input type='hidden' name='asp_product_id' value='{$data['product_id']}' />";
+			if ( $data['product_id'] !== 0 ) {
+				$output .= '<input type="hidden" name="asp_product_id" value="' . $data['product_id'] .'" />';
 			}
 		}
 
@@ -740,13 +742,13 @@ class ASP_Shortcode_NG {
 
 			if ( $data['amount'] == 0 ) { //price not specified, let's add an input box for user to specify the amount
 				$str_enter_amount = apply_filters( 'asp_customize_text_msg', __( 'Enter amount', 'stripe-payments' ), 'enter_amount' );
-				$output          .= "<div class='asp_product_item_amount_input_container'>"
-				. "<input type='number' min='0.01' step='0.01' size='10' class='asp_product_item_amount_input' id='stripeAmount_{$data[ 'uniq_id' ]}' value='' name='stripeAmount' placeholder='" . $str_enter_amount . "' required/>";
+				$output          .= '<div class="asp_product_item_amount_input_container">';
+				$output          .= '<input type="number" min="0.01" step="0.01" size="10" class="asp_product_item_amount_input" id="stripeAmount_'.$data[ 'uniq_id' ].'" value="" name="stripeAmount" placeholder="' . $str_enter_amount . '" required />';
 				if ( ! $data['currency_variable'] ) {
-					$output .= "<span class='asp_product_item_amount_currency_label' style='margin-left: 5px; display: inline-block'> {$data[ 'currency' ]}</span>";
+					$output .= '<span class="asp_product_item_amount_currency_label" style="margin-left: 5px; display: inline-block">'. $data[ 'currency' ] .'</span>';
 				}
-				$output .= "<span style='display: block;' id='error_explanation_{$data[ 'uniq_id' ]}'></span>"
-				. '</div>';
+				$output .= '<span style="display: block;" id="error_explanation_'.$data[ 'uniq_id' ].'"></span>';
+				$output .= '</div>';
 			}
 			// if ( $data['currency_variable'] ) {
 			// 	//let's add a box where user can select currency
