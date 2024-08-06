@@ -542,7 +542,7 @@ class ASP_Shortcode_NG {
 		}
 
 		$button = '<div class="asp_product_buy_btn_container">';
-		$button .= '<button id="'.esc_attr( $button_id ).'" type="submit" class="'.esc_attr( $class ).'" '.$is_disabled.'><span>'.sanitize_text_field( $button_text ).'</span></button>';
+		$button .= '<button id="'.esc_attr( $button_id ).'" type="submit" class="'.esc_attr( $class ).'" '.$is_disabled.'><span>'.esc_attr( $button_text ).'</span></button>';
         $button .= '</div>';
 
 		$out_of_stock          = false;
@@ -734,7 +734,7 @@ class ASP_Shortcode_NG {
 
 		if ( $data ) {
 			if ( $data['product_id'] !== 0 ) {
-				$output .= '<input type="hidden" name="asp_product_id" value="' . $data['product_id'] .'" />';
+				$output .= '<input type="hidden" name="asp_product_id" value="' . absint($data['product_id']) .'" />';
 			}
 		}
 
