@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 5.0
 Tested up to: 6.6
 Requires PHP: 7.4
-Stable tag: 2.0.86
+Stable tag: 2.0.87
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -151,10 +151,10 @@ None.
 
 == Changelog ==
 
-= WIP =
+= 2.0.87 =
 - Updated the help text of the "Send Emails in Parallel" feature to explain that this feature is not recommended for most sites as it can have conflict with some server environments.
 - Minor adjustment - for trial subscriptions product, the encode function is not used on the email input field.
-- Sanitization functions added to accept_stripe_payment_ng shortcode params.
+- Sanitization added to accept_stripe_payment_ng shortcode params.
 
 = 2.0.86 =
 - Added a new surcharge feature that you can use to collect a transaction surcharge. [documentation for transaction surcharge](https://s-plugins.com/transaction-surcharge-feature-collect-processing-fees-for-products/)
