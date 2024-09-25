@@ -106,6 +106,10 @@ class ASP_Process_IPN_NG {
 
 			$this->sess->set_transient_data( 'asp_data', $asp_data );
 
+			//Trigger an action hook for this error condition.
+			//The $_POST data is available in the global $_POST variable which may contain additional details.
+			do_action( 'asp_stripe_process_ipn_error', $err_msg );		
+
 			//send email to notify site admin (if option enabled)
 			$opt = get_option( 'AcceptStripePayments-settings' );
 			if ( isset( $opt['send_email_on_error'] ) && $opt['send_email_on_error'] ) {

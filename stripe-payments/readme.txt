@@ -151,6 +151,9 @@ None.
 
 == Changelog ==
 
+= WIP =
+- Added a new action hook 'asp_stripe_process_ipn_error' to allow custom handling of IPN error.
+
 = 2.0.87 =
 - Updated the help text of the "Send Emails in Parallel" feature to explain that this feature is not recommended for most sites as it can have conflict with some server environments.
 - Minor adjustment - for trial subscriptions product, the encode function is not used on the email input field.
