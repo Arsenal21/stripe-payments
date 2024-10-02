@@ -6,6 +6,7 @@ class ASP_Addons_Helper {
 	public $section;
 	public $asp_admin;
 	private $auc_plugin_path = 'stripe-payments-addons-update-checker/class-asp-addons-update-checker.php';
+	private $item_hash = '';
 
 	protected $addons = array(
 		array( 'stripe-payments-country-autodetect', 'stripe-payments-country-autodetect/asp-country-autodetect-main.php', 'stripe-payments-country-autodetect', '' ),

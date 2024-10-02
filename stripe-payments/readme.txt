@@ -153,6 +153,7 @@ None.
 
 = WIP =
 - Added a new action hook 'asp_stripe_process_ipn_error' to allow custom handling of IPN error.
+- Updated the update checker addon to be PHP 8.3 compatible.
 
 = 2.0.87 =
 - Updated the help text of the "Send Emails in Parallel" feature to explain that this feature is not recommended for most sites as it can have conflict with some server environments.
