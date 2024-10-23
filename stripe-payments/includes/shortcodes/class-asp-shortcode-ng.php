@@ -375,7 +375,8 @@ class ASP_Shortcode_NG {
 				'button_text'       => $this->asp_main->get_setting( 'button_text' ),
 				'compat_mode'       => 0,
 			),
-			$atts
+			$atts,
+			'asp_accept_stripe_payment_atts', /* Provided for context to enable filtering */
 		);
 
 		$product_id        = absint(sanitize_text_field( $sc_attrs['product_id'] ));
@@ -393,7 +394,7 @@ class ASP_Shortcode_NG {
 		$billing_address   = sanitize_text_field( $sc_attrs['billing_address'] );
 		$shipping_address  = sanitize_text_field( $sc_attrs['shipping_address'] );
 		$customer_email    = sanitize_email( $sc_attrs['customer_email'] );
-		$customer_name     = sanitize_email( $sc_attrs['customer_name'] );
+		$customer_name     = sanitize_text_field( $sc_attrs['customer_name'] );
 		$currency          = sanitize_text_field( $sc_attrs['currency'] );
 		$currency_variable = sanitize_text_field( $sc_attrs['currency_variable'] );
 		$checkout_lang     = sanitize_text_field( $sc_attrs['checkout_lang'] );
