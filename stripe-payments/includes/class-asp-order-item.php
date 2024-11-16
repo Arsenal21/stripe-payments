@@ -138,6 +138,11 @@ class ASP_Order_Item {
 		$output .= '<h2>' . __( 'Customer Details', 'stripe-payments' ) . "</h2>\n";
 		// translators: %s is email address
 		$output .= sprintf( __( 'E-Mail Address: %s', 'stripe-payments' ), $order_details['stripeEmail'] ) . "\n";
+
+		if (isset($order_details['customer_name']) && !empty($order_details['customer_name'])){
+			$output .= sprintf( __( 'Customer\'s Name: %s', 'stripe-payments' ), $order_details['customer_name'] ) . "\n";
+		}
+
 		// translators: %s is payment source (e.g. 'card' etc)
 		$output .= sprintf( __( 'Payment Source: %s', 'stripe-payments' ), $order_details['stripeTokenType'] ) . "\n";
 
