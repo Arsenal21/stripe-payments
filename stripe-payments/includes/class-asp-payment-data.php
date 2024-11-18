@@ -166,6 +166,13 @@ class ASP_Payment_Data {
 		return $shipping_address;
 	}
 
+	public function get_customer_details() {
+		if ( false === $this->customer_obj ) {
+			$this->customer_obj = $this->obj->customer;
+		}
+		return $this->customer_obj;
+	}
+
 	protected function load_from_obj() {
 		try {
 			if ( ASP_Utils::use_internal_api() ) {

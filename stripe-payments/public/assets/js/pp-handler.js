@@ -897,6 +897,15 @@ function handlePayment() {
 	console.log('Entering handlePayment()');
 
 	var billingNameInput = document.getElementById('billing-name');
+	// If individual first name last name enabled
+	var billingFirstNameInput = document.getElementById('billing-name');
+	var billingLastNameInput = document.getElementById('billing-last-name');
+
+	let billingFirstName = billingFirstNameInput?.value.trim() || '';
+	let billingLastName = billingLastNameInput?.value.trim() || '';
+
+	let billingFullName = billingFirstName + ' ' + billingLastName;
+
 	var emailInput = document.getElementById('email');
 	var raw_email_input_value = emailInput.value;
 	var maybe_encoded_email_input_value = encodeURIComponent(raw_email_input_value);
@@ -911,9 +920,16 @@ function handlePayment() {
 
 	//Create the billing details object.
 	var billingDetails = {
-		name: encodeURIComponent(billingNameInput.value),
+		name: encodeURIComponent(billingFullName),
 		email: maybe_encoded_email_input_value,
 	};
+
+	const customerDetails = {
+		name: encodeURIComponent(billingFullName),
+		firstName: encodeURIComponent(billingFirstName),
+		lastName: encodeURIComponent(billingLastName),
+		email: maybe_encoded_email_input_value,
+	}
 
 	if (vars.data.billing_address) {
 		var bAddr =  document.getElementById('address');
@@ -993,6 +1009,8 @@ function handlePayment() {
 		if (vars.data.coupon) {
 			reqStr += '&coupon=' + vars.data.coupon.code;
 		}
+
+		reqStr = reqStr + '&customer_details=' + JSON.stringify(customerDetails);
 
 		if (vars.data.surcharge) {
 			let surcharge_amount = cents_to_amount(vars.data.surcharge_amount, vars.data.currency);

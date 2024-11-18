@@ -1212,6 +1212,17 @@ class AcceptStripePayments_Admin {
 			)
 		);
 		add_settings_field(
+			'use_separate_name_fields_enable',
+			__( 'Use Separate Name Fields', 'stripe-payments' ),
+			array( &$this, 'settings_field_callback' ),
+			$this->plugin_slug . '-advanced',
+			'AcceptStripePayments-additional-settings',
+			array(
+				'field' => 'use_separate_name_fields_enable',
+				'desc'  => __( 'When enabled, the checkout form will display separate fields for first and last names instead of a single full name field.', 'stripe-payments' ),
+			)
+		);
+		add_settings_field(
 			'pp_additional_css',
 			__( 'Payment Popup Additional CSS', 'stripe-payments' ),
 			array( &$this, 'settings_field_callback' ),
@@ -1539,6 +1550,7 @@ class AcceptStripePayments_Admin {
 			case 'enable_zip_validation':
 			case 'dont_use_cookie':                            
 			case 'dont_create_order':
+			case 'use_separate_name_fields_enable':
 			case 'enable_email_schedule':
 			case 'frontend_prefetch_scripts':
 			case 'hide_state_field':
@@ -1830,6 +1842,8 @@ class AcceptStripePayments_Admin {
                 $output['dont_use_cookie'] = empty( $input['dont_use_cookie'] ) ? 0 : 1;
                 
 		$output['dont_create_order'] = empty( $input['dont_create_order'] ) ? 0 : 1;
+
+		$output['use_separate_name_fields_enable'] = empty( $input['use_separate_name_fields_enable'] ) ? 0 : 1;
 
 		$output['enable_zip_validation'] = empty( $input['enable_zip_validation'] ) ? 0 : 1;
 

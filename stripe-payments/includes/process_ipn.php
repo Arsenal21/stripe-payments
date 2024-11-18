@@ -822,13 +822,16 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post, $seller_email = fal
 		}
 	}
 
-	$first_name = '';
-	$last_name  = '';
+	$first_name = isset($post['customer_first_name']) && !empty($post['customer_first_name']) ? $post['customer_first_name'] : '';
+	$last_name = isset($post['customer_last_name']) && !empty($post['customer_last_name']) ? $post['customer_last_name'] : '';
 
-	if ( ! empty( $post['customer_name'] ) ) {
-		$parts      = explode( ' ', $post['customer_name'], 2 );
-		$first_name = ! empty( $parts[0] ) ? $parts[0] : '';
-		$last_name  = ! empty( $parts[1] ) ? $parts[1] : '';
+	if (empty($first_name) && empty($last_name)){
+		// First name, last name explicitly not set. Try to get them from full name.
+		if ( ! empty( $post['customer_name'] ) ) {
+			$parts      = explode( ' ', $post['customer_name'], 2 );
+			$first_name = ! empty( $parts[0] ) ? $parts[0] : '';
+			$last_name  = ! empty( $parts[1] ) ? $parts[1] : '';
+		}
 	}
 
 	$logged_in_user_id = isset($post['logged_in_user_id']) && ! empty( $post['logged_in_user_id'] ) ? $post['logged_in_user_id'] : '';
