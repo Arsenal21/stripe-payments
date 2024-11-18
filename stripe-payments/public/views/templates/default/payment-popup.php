@@ -290,7 +290,7 @@ echo wp_kses( '<style>' . $css . '</style>' . "\r\n", ASP_Utils::asp_allowed_tag
 									<div class="pure-u-1 pure-u-md-11-24">
 										<label for="billing_name"><?php echo esc_html( apply_filters( 'asp_customize_text_msg', _x( 'Name', 'Customer name', 'stripe-payments' ), 'pp_billing_name' ) ); ?></label>
 										<?php
-                                        $is_use_separate_name_fields_enabled = \AcceptStripePayments::get_instance()->get_setting('use_separate_name_fields_enable', false);
+                                        $is_use_separate_name_fields_enabled = \AcceptStripePayments::get_instance()->get_setting('use_separate_name_fields_enabled', false);
                                         if ($is_use_separate_name_fields_enabled == 1) { ?>
                                             <div class="pure-g"  style="position: relative;">
                                                 <div class="pure-u-1-2 pure-md-1">

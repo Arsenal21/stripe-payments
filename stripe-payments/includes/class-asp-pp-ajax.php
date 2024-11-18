@@ -530,7 +530,7 @@ class ASP_PP_Ajax {
 					}
 				}
 
-				$is_use_separate_name_fields_enabled = \AcceptStripePayments::get_instance()->get_setting('use_separate_name_fields_enable', false);
+				$is_use_separate_name_fields_enabled = \AcceptStripePayments::get_instance()->get_setting('use_separate_name_fields_enabled', false);
                 if ($is_use_separate_name_fields_enabled){
                     $customer_opts['metadata'] = array(
                         'First Name' => isset($customer_details->firstName) ? sanitize_text_field($customer_details->firstName) : '',
