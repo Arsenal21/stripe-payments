@@ -950,7 +950,7 @@ function handlePayment() {
 	}
 	if (vars.data.shipping_address) {
 		var shippingDetails = {
-			name: encodeURIComponent(billingNameInput.value)
+			name: encodeURIComponent(billingFullName)
 		};
 		var sAddr = document.getElementById('shipping_address');
 		var sCity = document.getElementById('shipping_city');
@@ -1103,7 +1103,7 @@ function handlePayment() {
 		//Create token for the payment intent then confirm the token.
 		console.log('Creating token');
 		opts = {
-			name: billingNameInput.value
+			name: billingFullName
 		};
 		if (vars.data.billing_address) {
 			opts.address_line1 = bAddr.value;
@@ -1218,7 +1218,7 @@ function handlePayment() {
 	}
 
 	var c_opts = {
-		name: billingNameInput.value
+		name: billingFullName
 	};
 	if (vars.data.billing_address) {
 		c_opts.address_line1 = bAddr.value;
@@ -1254,7 +1254,7 @@ function handlePayment() {
 			opts.payment_method_data.card = { token: vars.data.token_id };
 			if (vars.data.dont_save_card) {
 				opts.payment_method_data.billing_details = {
-					name: encodeURIComponent(billingNameInput.value),
+					name: encodeURIComponent(billingFullName),
 					email: maybe_encoded_email_input_value
 				};
 			}
