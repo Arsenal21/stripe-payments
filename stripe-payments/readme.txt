@@ -150,11 +150,11 @@ Yes, please visit Stripe Payments > Settings screen for options.
 None.
 
 == Changelog ==
-= WIP =
-- Customer's first and last name collection feature added.
-- Now tax amount can be seen from transaction details in stripe admin dashboard.
 
-= 2.0.87.1t1 WIP =
+= WIP =
+- Introduced a new option in the Advanced Settings menu to display the "First Name" and "Last Name" fields as separate entries on the checkout/payment form.
+- The Orders menu in the plugin now displays the customer's name within the "Customer Details" section of each order.
+- The tax amount for a transaction is now passed to Stripe via the metadata field.
 - Added a new action hook 'asp_stripe_process_ipn_error' to allow custom handling of IPN error.
 - Updated the update checker addon to be PHP 8.3 compatible.
 - Fixed the incorrect use of a sanitization function for the customer name in the dynamic product shortcode.
