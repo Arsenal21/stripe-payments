@@ -538,7 +538,6 @@ class ASP_PP_Ajax {
                     );
                 }
 				$customer_opts = apply_filters( 'asp_ng_before_customer_create_update', $customer_opts, empty( $cust_id ) ? false : $cust_id );
-				ASP_Debug_Logger::log_array_data($customer_opts);
 
 				if ( empty( $cust_id ) ) {
 					if ( ASP_Utils::use_internal_api() ) {
@@ -572,6 +571,11 @@ class ASP_PP_Ajax {
 
             $metadata['Surcharge Amount']   = $surcharge_amount;
             $metadata['Surcharge Label']   = $item->get_surcharge_label();
+
+            $tax_amount = $item->get_tax_amount();
+            if (!empty($tax_amount)){
+                $metadata['Tax Amount']   = \ASP_Utils::formatted_price( $tax_amount, $curr );
+            }
 
 			if ( isset( $metadata ) && ! empty( $metadata ) ) {
 				$pi_params['metadata'] = $metadata;
