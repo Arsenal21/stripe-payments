@@ -573,6 +573,11 @@ ASP_Debug_Logger::log_array_data($customer_opts);
             $metadata['Surcharge Amount']   = $surcharge_amount;
             $metadata['Surcharge Label']   = $item->get_surcharge_label();
 
+            $tax_amount = $item->get_tax_amount();
+            if (!empty($tax_amount)){
+                $metadata['Tax Amount']   = \ASP_Utils::formatted_price( $tax_amount, $curr );
+            }
+
 			if ( isset( $metadata ) && ! empty( $metadata ) ) {
 				$pi_params['metadata'] = $metadata;
 			}

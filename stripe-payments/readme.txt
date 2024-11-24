@@ -152,6 +152,7 @@ None.
 == Changelog ==
 = WIP =
 - Customer's first and last name collection feature added.
+- Now tax amount can be seen from transaction details in stripe admin dashboard.
 
 = 2.0.87.1t1 WIP =
 - Added a new action hook 'asp_stripe_process_ipn_error' to allow custom handling of IPN error.
