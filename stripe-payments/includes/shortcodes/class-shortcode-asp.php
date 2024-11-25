@@ -1159,7 +1159,11 @@ class AcceptStripePaymentsShortcode {
                     </div>
 				<?php } ?>
 
-				<?php if ( isset($aspData['billing_address']) && ! empty( $aspData['billing_address'] ) ) { ?>
+	            <?php if (
+                        isset($aspData['charge']['billing_details']['address'])
+                        && is_array($aspData['charge']['billing_details']['address'])
+                        && !empty(array_filter($aspData['charge']['billing_details']['address'])) // Check if all address fields are empty.
+                ) { ?>
                     <div class="asp-order-additional-data-box asp-order-additional-data-box-billing-address">
                         <h4><?php _e( "Billing Address", "stripe-payments" ); ?></h4>
                         <div class="asp-order-billing-address">{billing_address}</div>
