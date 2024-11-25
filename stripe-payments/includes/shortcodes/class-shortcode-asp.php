@@ -1043,59 +1043,6 @@ class AcceptStripePaymentsShortcode {
 
 			ob_start();
 			?>
-            <style>
-                /* Thank you page shortcode related */
-                .asp-order-data-box {
-                    display: flex;
-                    justify-content: space-between;
-                    align-content: center;
-                    width: 100%;
-                }
-
-                .asp-order-data-box-col {
-                    margin-bottom: 10px;
-                    margin-right: 10px;
-                }
-
-                .asp-order-data-box-col :nth-child(1) {
-                    font-weight: bold;
-                    margin-bottom: 10px;
-                    margin-right: 10px;
-                }
-
-                @media screen and (max-width: 768px) {
-                    .asp-order-data-box {
-                        display: block;
-                    }
-                    .asp-order-product-name-label{
-                        display: none;
-                    }
-                }
-
-                .asp-order-details-table,
-                .asp-order-downloads-table {
-                    width: 100%;
-                    border-collapse: collapse;
-                    border: 1px solid lightgray;
-                }
-
-                .asp-order-details-table td,
-                .asp-order-details-table th,
-                .asp-order-downloads-table td,
-                .asp-order-downloads-table th {
-                    padding: 15px;
-                    border-top: 1px solid lightgray;
-                    border-bottom: 1px solid lightgray;
-                }
-
-                .asp-order-shipping-address,
-                .asp-order-billing-address {
-                    padding: 15px;
-                    border: 1px solid lightgray;
-                    white-space: pre-line;
-                }
-            </style>
-
             <div>
                 <h4><?php _e( 'Thank you for your payment.', 'stripe-payments' ); ?></h4>
                 <div class="asp-order-data-box">
