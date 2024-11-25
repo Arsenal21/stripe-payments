@@ -1043,32 +1043,32 @@ class AcceptStripePaymentsShortcode {
 
 			ob_start();
 			?>
-            <div>
+            <div class="asp-order-details-wrap">
                 <h4><?php _e( 'Thank you for your payment.', 'stripe-payments' ); ?></h4>
                 <div class="asp-order-data-box">
-                    <div class="asp-order-data-box-col">
-                        <div><?php _e( "Order ID", "stripe-payments" ); ?></div>
-                        <div>{order_post_id}</div>
+                    <div class="asp-order-data-box-col asp-order-data-box-col-order-id">
+                        <div class="asp-order-data-box-col-label"><?php _e( "Order ID", "stripe-payments" ); ?></div>
+                        <div class="asp-order-data-box-col-value">{order_post_id}</div>
                     </div>
-                    <div class="asp-order-data-box-col">
-                        <div><?php _e( "Date", "stripe-payments" ); ?></div>
-                        <div>{purchase_date}</div>
+                    <div class="asp-order-data-box-col asp-order-data-box-col-date">
+                        <div class="asp-order-data-box-col-label"><?php _e( "Date", "stripe-payments" ); ?></div>
+                        <div class="asp-order-data-box-col-value">{purchase_date}</div>
                     </div>
-                    <div class="asp-order-data-box-col">
-                        <div><?php _e( "Total", "stripe-payments" ); ?></div>
-                        <div>{paid_amount_curr}</div>
+                    <div class="asp-order-data-box-col asp-order-data-box-col-total">
+                        <div class="asp-order-data-box-col-label"><?php _e( "Total", "stripe-payments" ); ?></div>
+                        <div class="asp-order-data-box-col-value">{paid_amount_curr}</div>
                     </div>
-                    <div class="asp-order-data-box-col">
-                        <div><?php _e( "Email", "stripe-payments" ); ?></div>
-                        <div>{payer_email}</div>
+                    <div class="asp-order-data-box-col asp-order-data-box-col-email">
+                        <div class="asp-order-data-box-col-label"><?php _e( "Email", "stripe-payments" ); ?></div>
+                        <div class="asp-order-data-box-col-value">{payer_email}</div>
                     </div>
-                    <div class="asp-order-data-box-col">
-                        <div><?php _e( "Transaction ID", "stripe-payments" ); ?></div>
-                        <div>{transaction_id}</div>
+                    <div class="asp-order-data-box-col asp-order-data-box-col-txn-id">
+                        <div class="asp-order-data-box-col-label"><?php _e( "Transaction ID", "stripe-payments" ); ?></div>
+                        <div class="asp-order-data-box-col-value">{transaction_id}</div>
                     </div>
                 </div>
 
-                <h4><?php _e( "Order Details", "stripe-payments" ); ?></h4>
+                <h4 class="asp-order-details-heading"><?php _e( "Order Details", "stripe-payments" ); ?></h4>
 
                 <table class="asp-order-details-table">
                     <thead>
@@ -1123,7 +1123,7 @@ class AcceptStripePaymentsShortcode {
 						<?php if ( isset($aspData['item_url']) && ! empty( $aspData['item_url'] ) ) { ?>
                             <tr>
                                 <td>{item_name}</td>
-                                <td><a href="{item_url}"
+                                <td><a class="asp-order-downloadable-item-link" href="{item_url}"
                                        target="_blank"><?php _e( "Download", "stripe-payments" ) ?></a>
                                 </td>
                             </tr>
@@ -1138,7 +1138,7 @@ class AcceptStripePaymentsShortcode {
 									?>
                                     <tr>
                                         <td><?php echo esc_attr( $dl_item_str ) ?></td>
-                                        <td><a href="<?php echo esc_url( $var['url'] ) ?>"
+                                        <td><a class="asp-order-downloadable-item-link" href="<?php echo esc_url( $var['url'] ) ?>"
                                                target="_blank"><?php _e( "Download", "stripe-payments" ) ?></a>
                                         </td>
                                     </tr>
@@ -1152,14 +1152,14 @@ class AcceptStripePaymentsShortcode {
 				<?php } ?>
 
 				<?php if ( isset($aspData['shipping_address']) && ! empty( $aspData['shipping_address'] ) ) { ?>
-                    <div>
+                    <div class="asp-order-additional-data-box asp-order-additional-data-box-shipping-address">
                         <h4><?php _e( "Shipping Address", "stripe-payments" ); ?></h4>
                         <div class="asp-order-shipping-address">{shipping_address}</div>
                     </div>
 				<?php } ?>
 
 				<?php if ( isset($aspData['billing_address']) && ! empty( $aspData['billing_address'] ) ) { ?>
-                    <div>
+                    <div class="asp-order-additional-data-box asp-order-additional-data-box-billing-address">
                         <h4><?php _e( "Billing Address", "stripe-payments" ); ?></h4>
                         <div class="asp-order-billing-address">{billing_address}</div>
                     </div>
