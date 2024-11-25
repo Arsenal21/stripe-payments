@@ -1031,65 +1031,199 @@ class AcceptStripePaymentsShortcode {
 			// no session data, let's display nothing for now
 			return;
 		}
+
+        // Check if 'content' is empty or not. If not, that means that the shortcode is not split into opening and closing shortcode.
 		if ( empty( $content ) ) {
-			//this is old shortcode. Let's display the default output for backward compatability
+			// Let's display the default output.
+
 			if ( isset( $aspData['error_msg'] ) && ! empty( $aspData['error_msg'] ) ) {
 				//some error occurred, let's display it
 				return __( 'System was not able to complete the payment.', 'stripe-payments' ) . ' ' . $aspData['error_msg'];
 			}
-			$output  = '';
-			$output .= '<p class="asp-thank-you-page-msg1">' . __( 'Thank you for your payment.', 'stripe-payments' ) . '</p>';
-			$output .= '<p class="asp-thank-you-page-msg2">' . __( "Here's what you purchased: ", 'stripe-payments' ) . '</p>';
-			$output .= '<div class="asp-thank-you-page-product-name">' . __( 'Product Name', 'stripe-payments' ) . ': {item_name}' . '</div>';
-			$output .= '<div class="asp-thank-you-page-qty">' . __( 'Quantity', 'stripe-payments' ) . ': {item_quantity}' . '</div>';
-			$output .= '<div class="asp-thank-you-page-item-price">' . __( 'Item Price', 'stripe-payments' ) . ': {item_price_curr}' . '</div>';
-			//check if there are any additional items available like tax and shipping cost
-			$output .= AcceptStripePayments::gen_additional_items( $aspData, '<br />' );
-			$output .= '<hr />';
-			$output .= '<div class="asp-thank-you-page-total-amount">' . __( 'Total Amount', 'stripe-payments' ) . ': {paid_amount_curr}' . '</div>';
-			$output .= '<br />';
-			$output .= '<div class="asp-thank-you-page-txn-id">' . __( 'Transaction ID', 'stripe-payments' ) . ': {transaction_id}' . '</div>';
 
-			$download_str = '';
-			if ( ! empty( $aspData['item_url'] ) ) {
-				$download_str .= "<br /><div class='asp-thank-you-page-download-link'>";
-				$download_str .= _x( 'Please ', "Is a part of 'Please click here to download'", 'stripe-payments' ) . "<a href='{item_url}'>" . _x( 'click here', "Is a part of 'Please click here to download'", 'stripe-payments' ) . '</a>' . _x( ' to download.', "Is a part of 'Please click here to download'", 'stripe-payments' );
-				$download_str .= '</div>';
-			}
+			ob_start();
+			?>
+            <style>
+                /* Thank you page shortcode related */
+                .asp-order-data-box {
+                    display: flex;
+                    justify-content: space-between;
+                    align-content: center;
+                    width: 100%;
+                }
 
-			//variations download links if needed
-			if ( ! empty( $aspData['var_applied'] ) ) {
-				$download_var_str  = '';
-				$has_download_link = false;
-				$download_var_str .= "<br /><div class='asp-thank-you-page-download-link'>";
-				$download_var_str .= '<span>' . __( 'Download links', 'stripe-payments' ) . ':</span><br/>';
-				$download_txt      = __( 'Click here to download', 'stripe-payments' );
-				$link_tpl          = '<a href="%s">%s</a><br/>';
-				foreach ( $aspData['var_applied'] as $var ) {
-					if ( ! empty( $var['url'] ) ) {
-						$has_download_link = true;
-						$download_var_str .= sprintf( $link_tpl, $var['url'], $download_txt );
-					}
-				}
-				$download_var_str .= '</div>';
-				if ( $has_download_link ) {
-					$download_str .= $download_var_str;
-				}
-			}
-			$output .= $download_str;
+                .asp-order-data-box-col {
+                    margin-bottom: 10px;
+                    margin-right: 10px;
+                }
+
+                .asp-order-data-box-col :nth-child(1) {
+                    font-weight: bold;
+                    margin-bottom: 10px;
+                    margin-right: 10px;
+                }
+
+                @media screen and (max-width: 768px) {
+                    .asp-order-data-box {
+                        display: block;
+                    }
+                    .asp-order-product-name-label{
+                        display: none;
+                    }
+                }
+
+                .asp-order-details-table,
+                .asp-order-downloads-table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    border: 1px solid lightgray;
+                }
+
+                .asp-order-details-table td,
+                .asp-order-details-table th,
+                .asp-order-downloads-table td,
+                .asp-order-downloads-table th {
+                    padding: 15px;
+                    border-top: 1px solid lightgray;
+                    border-bottom: 1px solid lightgray;
+                }
+
+                .asp-order-shipping-address,
+                .asp-order-billing-address {
+                    padding: 15px;
+                    border: 1px solid lightgray;
+                    white-space: pre-line;
+                }
+            </style>
+
+            <div>
+                <h4><?php _e( 'Thank you for your payment.', 'stripe-payments' ); ?></h4>
+                <div class="asp-order-data-box">
+                    <div class="asp-order-data-box-col">
+                        <div><?php _e( "Order ID", "stripe-payments" ); ?></div>
+                        <div>{order_post_id}</div>
+                    </div>
+                    <div class="asp-order-data-box-col">
+                        <div><?php _e( "Date", "stripe-payments" ); ?></div>
+                        <div>{purchase_date}</div>
+                    </div>
+                    <div class="asp-order-data-box-col">
+                        <div><?php _e( "Total", "stripe-payments" ); ?></div>
+                        <div>{paid_amount_curr}</div>
+                    </div>
+                    <div class="asp-order-data-box-col">
+                        <div><?php _e( "Email", "stripe-payments" ); ?></div>
+                        <div>{payer_email}</div>
+                    </div>
+                    <div class="asp-order-data-box-col">
+                        <div><?php _e( "Transaction ID", "stripe-payments" ); ?></div>
+                        <div>{transaction_id}</div>
+                    </div>
+                </div>
+
+                <h4><?php _e( "Order Details", "stripe-payments" ); ?></h4>
+
+                <table class="asp-order-details-table">
+                    <thead>
+                        <tr>
+                            <th style="text-align: start"><?php _e( "Item", "stripe-payments" ); ?></th>
+                            <th style="text-align: end"><?php _e( "Total", "stripe-payments" ); ?></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong class="asp-order-product-name-label"><?php _e('Product Name:', 'stripe-payments') ?> </strong>{item_name}</td>
+                            <td style="text-align: end">{item_price_curr}</td>
+                        </tr>
+                        <tr>
+                            <th style="text-align: start">
+                                <?php _e('Quantity', 'stripe-payments') ?>
+                            </th>
+                            <td style="text-align: end">x{item_quantity}</td>
+                        </tr>
+
+                        <?php if ( ! empty( $aspData['additional_items'] ) ) {
+                            foreach ( $aspData['additional_items'] as $item => $price ) {
+                                if ( $price < 0 ) {
+                                    $amnt_str = '-' . AcceptStripePayments::formatted_price( abs( $price ), $aspData['currency_code'] );
+                                } else {
+                                    $amnt_str = AcceptStripePayments::formatted_price( $price, $aspData['currency_code'] );
+                                }
+                                echo '<tr><th style="text-align: start">' . $item . '</th><td style="text-align: end">' . $amnt_str. '</td></tr>';
+                            }
+                        }
+                        ?>
+
+                        <?php if ( isset( $aspData['paid_amount'] )) { ?>
+                        <tr>
+                            <th style="text-align: start"><?php _e( "Total Amount: ", "stripe-payments" ); ?></th>
+                            <td style="text-align: end">{paid_amount_curr}</td>
+                        </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
+
+				<?php if ( ! empty( $aspData['item_url'] ) ) { ?>
+                    <h4><?php _e( "Downloads", "stripe-payments" ); ?></h4>
+                    <table class="asp-order-downloads-table">
+                        <thead>
+                        <tr>
+                            <th style="text-align: start"><?php _e( "Product", "stripe-payments" ); ?></th>
+                            <th style="text-align: start"><?php _e( "Download Link", "stripe-payments" ); ?></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+						<?php if ( isset($aspData['item_url']) && ! empty( $aspData['item_url'] ) ) { ?>
+                            <tr>
+                                <td>{item_name}</td>
+                                <td><a href="{item_url}"
+                                       target="_blank"><?php _e( "Download", "stripe-payments" ) ?></a>
+                                </td>
+                            </tr>
+						<?php } ?>
+
+						<?php
+						// variations download links if needed
+						if ( isset($aspData['var_applied']) && ! empty( $aspData['var_applied'] ) ) {
+							foreach ( $aspData['var_applied'] as $var ) {
+								if ( ! empty( $var['url'] ) ) {
+									$dl_item_str = implode(':', array_filter(array( $var['group_name'],$var['name'] )))
+									?>
+                                    <tr>
+                                        <td><?php echo esc_attr( $dl_item_str ) ?></td>
+                                        <td><a href="<?php echo esc_url( $var['url'] ) ?>"
+                                               target="_blank"><?php _e( "Download", "stripe-payments" ) ?></a>
+                                        </td>
+                                    </tr>
+									<?php
+								}
+							}
+						}
+						?>
+                        </tbody>
+                    </table>
+				<?php } ?>
+
+				<?php if ( isset($aspData['shipping_address']) && ! empty( $aspData['shipping_address'] ) ) { ?>
+                    <div>
+                        <h4><?php _e( "Shipping Address", "stripe-payments" ); ?></h4>
+                        <div class="asp-order-shipping-address">{shipping_address}</div>
+                    </div>
+				<?php } ?>
+
+				<?php if ( isset($aspData['billing_address']) && ! empty( $aspData['billing_address'] ) ) { ?>
+                    <div>
+                        <h4><?php _e( "Billing Address", "stripe-payments" ); ?></h4>
+                        <div class="asp-order-billing-address">{billing_address}</div>
+                    </div>
+				<?php } ?>
+            </div>
+			<?php
+			$output = ob_get_clean();
 
 			$output = apply_filters( 'asp_stripe_payments_checkout_page_result', $output, $aspData ); //Filter that allows you to modify the output data on the checkout result page
 
-			$output = $this->apply_content_tags( $output, $aspData );
-
-			$output .= '<style>.asp-thank-you-page-msg-wrap {background: #dff0d8; border: 1px solid #C9DEC1; margin: 10px 0px; padding: 15px;}</style>';
-			$wrap    = "<div class='asp-thank-you-page-wrap'>";
-			$wrap   .= "<div class='asp-thank-you-page-msg-wrap'>";
-			$output  = $wrap . $output;
-			$output .= '</div>'; //end of .asp-thank-you-page-msg-wrap
-			$output .= '</div>'; //end of .asp-thank-you-page-wrap
-
-			return $output;
+			return $this->apply_content_tags( $output, $aspData );
 		}
 		if ( isset( $aspData['error_msg'] ) && ! empty( $aspData['error_msg'] ) ) {
 			//some error occurred. Let's check if we have [accept_stripe_payment_checkout_error] shortcode on page
