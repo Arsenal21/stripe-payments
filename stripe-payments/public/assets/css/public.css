@@ -240,9 +240,16 @@ CSS class names should use dashes. Example: asp-product-description
      width: 100%;
  }
 
-.asp-order-data-box-col {
-    margin-bottom: 10px;
-    margin-right: 10px;
+.asp-order-data-box-col{
+    border-top: 1px solid lightgray;
+    border-right: 1px solid lightgray;
+    border-bottom: 1px solid lightgray;
+    flex-grow: 1;
+    padding: 15px;
+}
+
+.asp-order-data-box-col:first-child{
+    border-left: 1px solid lightgray;
 }
 
 .asp-order-data-box-col :nth-child(1) {
@@ -255,6 +262,18 @@ CSS class names should use dashes. Example: asp-product-description
     .asp-order-data-box {
         display: block;
     }
+
+    .asp-order-data-box-col{
+        border: none;
+        border-right: 1px solid lightgray;
+        border-bottom: 1px solid lightgray;
+        border-left: 1px solid lightgray;
+    }
+
+    .asp-order-data-box-col:first-child{
+        border-top: 1px solid lightgray;
+    }
+
     .asp-order-product-name-label{
         display: none;
     }
