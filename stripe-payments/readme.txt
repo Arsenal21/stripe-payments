@@ -159,6 +159,7 @@ None.
 - Updated the update checker addon to be PHP 8.3 compatible.
 - Fixed the incorrect use of a sanitization function for the customer name in the dynamic product shortcode.
 - Added a 3rd parameter to the 'shortcode_atts' function of the 'accept_stripe_payment_ng' shortcode to allow further customization.
+- Thank you page shortcode display output updated.
 
 = 2.0.87 =
 - Updated the help text of the "Send Emails in Parallel" feature to explain that this feature is not recommended for most sites as it can have conflict with some server environments.
