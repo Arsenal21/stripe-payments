@@ -1032,9 +1032,10 @@ class AcceptStripePaymentsShortcode {
 			return;
 		}
 
-        // Check if 'content' is empty or not. If not, that means that the shortcode is not split into opening and closing shortcode.
+        // Check if $content is empty or not. If $content is empty, it means that it is using the standard thank you page shortcode (no customization using the shortcode opening and ending tags).
 		if ( empty( $content ) ) {
-			// Let's display the default output.
+			// Let's display the default/standard thank you page output.
+			// This scenario is not using the shortcode opening and ending tags for customization.
 
 			if ( isset( $aspData['error_msg'] ) && ! empty( $aspData['error_msg'] ) ) {
 				//some error occurred, let's display it
@@ -1172,6 +1173,8 @@ class AcceptStripePaymentsShortcode {
 
 			return $this->apply_content_tags( $output, $aspData );
 		}
+
+		// Fallback to the customized thank you page output (where the shortcode opening and ending tags are used for customization).
 		if ( isset( $aspData['error_msg'] ) && ! empty( $aspData['error_msg'] ) ) {
 			//some error occurred. Let's check if we have [accept_stripe_payment_checkout_error] shortcode on page
 			$page_content = get_the_content();

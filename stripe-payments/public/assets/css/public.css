@@ -1,14 +1,13 @@
 /* 
-This CSS file is used to apply styles to the output of the various shortcodes.
+This CSS file is used to apply front-end styles for the Stripe Payments plugin.
 
-This file is enqueued in the front-end using the 'stripe-handler-ng-style' handler. So will be available to every section in the front end.
+This CSS file is enqueued from the front-end using the 'stripe-handler-ng-style' handler. So it will be available on every page of the front end.
 
 Used in the [asp_product] shortcode also.
 CSS class names should use dashes. Example: asp-product-description
 */
 
 /* Small Spinner */
-
 .asp-spinner {
     text-indent: -9999px;
     vertical-align: middle;
@@ -31,7 +30,6 @@ CSS class names should use dashes. Example: asp-product-description
 }
 
 /* Button Spinner */
-
 .asp-btn-spinner-container {
     width: 100%;
     text-align: center;
