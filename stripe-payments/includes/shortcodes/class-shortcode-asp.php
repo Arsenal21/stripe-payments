@@ -1491,7 +1491,7 @@ class AcceptStripePaymentsShortcode {
 		}
 
         if (isset($data['charge']['created'])){
-		    $data['purchase_date_only'] = get_date_from_gmt( date( 'Y-m-d H:i:s', $data['charge']->created ), get_option( 'date_format' ));
+		    $data['purchase_date_only'] = get_date_from_gmt( date( 'Y-m-d H:i:s', $data['charge']['created'] ), get_option( 'date_format' ));
         }
 
 		// we should unset as it's not a string and it would produce following fatal error if not unset:
