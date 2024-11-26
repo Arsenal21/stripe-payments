@@ -1047,17 +1047,9 @@ class AcceptStripePaymentsShortcode {
             <div class="asp-order-details-wrap">
                 <h4><?php _e( 'Thank you for your payment.', 'stripe-payments' ); ?></h4>
                 <div class="asp-order-data-box">
-                    <div class="asp-order-data-box-col asp-order-data-box-col-order-id">
-                        <div class="asp-order-data-box-col-label"><?php _e( "Order ID", "stripe-payments" ); ?></div>
-                        <div class="asp-order-data-box-col-value">{order_post_id}</div>
-                    </div>
                     <div class="asp-order-data-box-col asp-order-data-box-col-date">
                         <div class="asp-order-data-box-col-label"><?php _e( "Date", "stripe-payments" ); ?></div>
-                        <div class="asp-order-data-box-col-value">{purchase_date}</div>
-                    </div>
-                    <div class="asp-order-data-box-col asp-order-data-box-col-total">
-                        <div class="asp-order-data-box-col-label"><?php _e( "Total", "stripe-payments" ); ?></div>
-                        <div class="asp-order-data-box-col-value">{paid_amount_curr}</div>
+                        <div class="asp-order-data-box-col-value">{purchase_date_only}</div>
                     </div>
                     <div class="asp-order-data-box-col asp-order-data-box-col-email">
                         <div class="asp-order-data-box-col-label"><?php _e( "Email", "stripe-payments" ); ?></div>
@@ -1497,6 +1489,10 @@ class AcceptStripePaymentsShortcode {
 		if ( isset( $data['shipping'] ) && ! empty( $data['shipping'] ) ) {
 			$data['shipping_amt'] = AcceptStripePayments::formatted_price( $data['shipping'], $data['currency_code'] );
 		}
+
+        if (isset($data['charge']['created'])){
+		    $data['purchase_date_only'] = get_date_from_gmt( date( 'Y-m-d H:i:s', $data['charge']->created ), get_option( 'date_format' ));
+        }
 
 		// we should unset as it's not a string and it would produce following fatal error if not unset:
 		// Object of class __PHP_Incomplete_Class could not be converted to string
