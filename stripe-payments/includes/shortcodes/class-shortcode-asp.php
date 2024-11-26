@@ -1078,7 +1078,7 @@ class AcceptStripePaymentsShortcode {
                         </tr>
                         <tr>
                             <th style="text-align: start">
-                                <?php _e('Quantity: ', 'stripe-payments') ?>
+                                <?php _e('Quantity', 'stripe-payments') ?>
                             </th>
                             <td style="text-align: end">x {item_quantity}</td>
                         </tr>
