@@ -1042,6 +1042,7 @@ class AcceptStripePaymentsShortcode {
 				return __( 'System was not able to complete the payment.', 'stripe-payments' ) . ' ' . $aspData['error_msg'];
 			}
 
+			//Create the default thank you page output template. Later we will replace the placeholders with actual data.
 			ob_start();
 			?>
             <div class="asp-order-details-wrap">
@@ -1072,14 +1073,14 @@ class AcceptStripePaymentsShortcode {
                     </thead>
                     <tbody>
                         <tr>
-                            <td><strong class="asp-order-product-name-label"><?php _e('Product Name:', 'stripe-payments') ?> </strong>{item_name}</td>
+                            <th style="text-align: start" class="asp-order-product-name-label">{item_name}</th>
                             <td style="text-align: end">{item_price_curr}</td>
                         </tr>
                         <tr>
                             <th style="text-align: start">
-                                <?php _e('Quantity', 'stripe-payments') ?>
+                                <?php _e('Quantity: ', 'stripe-payments') ?>
                             </th>
-                            <td style="text-align: end">x{item_quantity}</td>
+                            <td style="text-align: end">x {item_quantity}</td>
                         </tr>
 
                         <?php if ( ! empty( $aspData['additional_items'] ) ) {
@@ -1108,7 +1109,7 @@ class AcceptStripePaymentsShortcode {
                     <table class="asp-order-downloads-table">
                         <thead>
                         <tr>
-                            <th style="text-align: start"><?php _e( "Product", "stripe-payments" ); ?></th>
+                            <th style="text-align: start"><?php _e( "Item", "stripe-payments" ); ?></th>
                             <th style="text-align: start"><?php _e( "Download Link", "stripe-payments" ); ?></th>
                         </tr>
                         </thead>
@@ -1123,7 +1124,7 @@ class AcceptStripePaymentsShortcode {
 						<?php } ?>
 
 						<?php
-						// variations download links if needed
+						// Variation download link(s) if needed
 						if ( isset($aspData['var_applied']) && ! empty( $aspData['var_applied'] ) ) {
 							foreach ( $aspData['var_applied'] as $var ) {
 								if ( ! empty( $var['url'] ) ) {

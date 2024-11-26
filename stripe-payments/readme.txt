@@ -2,10 +2,10 @@
 Contributors: Tips and Tricks HQ, wptipsntricks, alexanderfoxc
 Donate link: https://s-plugins.com
 Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortcode, digital goods, payment gateway, instant payment, commerce, digital downloads, downloads, e-commerce, e-store, ecommerce, eshop, donation
-Requires at least: 5.0
-Tested up to: 6.6
+Requires at least: 6.0
+Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 2.0.87.1t1
+Stable tag: 2.0.88
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -151,7 +151,7 @@ None.
 
 == Changelog ==
 
-= WIP =
+= 2.0.88 =
 - Introduced a new option in the Advanced Settings menu to display the "First Name" and "Last Name" fields as separate entries on the checkout/payment form.
 - The Orders menu in the plugin now displays the customer's name within the "Customer Details" section of each order.
 - The tax amount for a transaction is now passed to Stripe via the metadata field.
@@ -159,7 +159,7 @@ None.
 - Updated the update checker addon to be PHP 8.3 compatible.
 - Fixed the incorrect use of a sanitization function for the customer name in the dynamic product shortcode.
 - Added a 3rd parameter to the 'shortcode_atts' function of the 'accept_stripe_payment_ng' shortcode to allow further customization.
-- Thank you page shortcode display output updated.
+- The default 'Thank You' page shortcode has been enhanced to display additional checkout details.
 
 = 2.0.87 =
 - Updated the help text of the "Send Emails in Parallel" feature to explain that this feature is not recommended for most sites as it can have conflict with some server environments.
