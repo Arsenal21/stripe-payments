@@ -7,3 +7,5 @@ stripe-payments_*.zip
 .idea/
 
 /other-helpful-files/tmp/*
+
+stripe-payments.zip
