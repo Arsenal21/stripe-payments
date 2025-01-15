@@ -150,6 +150,8 @@ Yes, please visit Stripe Payments > Settings screen for options.
 None.
 
 == Changelog ==
+= WIP =
+- Stripe API version updated to 2024-12-18.acacia.
 
 = 2.0.88 =
 - Introduced a new option in the Advanced Settings menu to display the "First Name" and "Last Name" fields as separate entries on the checkout/payment form.
