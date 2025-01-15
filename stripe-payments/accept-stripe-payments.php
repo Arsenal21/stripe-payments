@@ -32,7 +32,7 @@ class ASPMain {
 	public static $temp_prod_slug;
 	public static $posts_processed = array();
 	public static $file;
-	public static $stripe_api_ver = '2020-03-02';
+	public static $stripe_api_ver = '2024-12-18.acacia';
 
 	public function __construct() {
 		self::$products_slug  = 'asp-products';
