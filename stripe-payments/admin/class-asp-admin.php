@@ -482,6 +482,7 @@ class AcceptStripePayments_Admin {
 		add_settings_section( 'AcceptStripePayments-custom-field', __( 'Custom Field Settings', 'stripe-payments' ), null, $this->plugin_slug . '-advanced' );
 		add_settings_section( 'AcceptStripePayments-tos', __( 'Terms and Conditions', 'stripe-payments' ), array( $this, 'tos_description' ), $this->plugin_slug . '-advanced' );
 		add_settings_section( 'AcceptStripePayments-additional-settings', __( 'Additional Settings', 'stripe-payments' ), null, $this->plugin_slug . '-advanced' );
+		add_settings_section( 'AcceptStripePayments-payment-popup-related', __( 'Payment Popup Related', 'stripe-payments' ), null, $this->plugin_slug . '-advanced' );
 		add_settings_section( 'AcceptStripePayments-experimental-settings', __( 'Experimental Settings', 'stripe-payments' ), array( $this, 'experemintal_section_description' ), $this->plugin_slug . '-advanced' );
 
 		add_settings_section( 'AcceptStripePayments-captcha', __( 'Captcha Settings', 'stripe-payments' ), array( $this, 'captcha_section_description' ), $this->plugin_slug . '-captcha' );
@@ -1216,7 +1217,7 @@ class AcceptStripePayments_Admin {
 			__( 'Use Separate Name Fields', 'stripe-payments' ),
 			array( &$this, 'settings_field_callback' ),
 			$this->plugin_slug . '-advanced',
-			'AcceptStripePayments-additional-settings',
+			'AcceptStripePayments-payment-popup-related',
 			array(
 				'field' => 'use_separate_name_fields_enabled',
 				'desc'  => __( 'When enabled, the checkout form will display separate fields for first and last names instead of a single full name field.', 'stripe-payments' ),
@@ -1227,10 +1228,32 @@ class AcceptStripePayments_Admin {
 			__( 'Payment Popup Additional CSS', 'stripe-payments' ),
 			array( &$this, 'settings_field_callback' ),
 			$this->plugin_slug . '-advanced',
-			'AcceptStripePayments-additional-settings',
+			'AcceptStripePayments-payment-popup-related',
 			array(
 				'field' => 'pp_additional_css',
 				'desc'  => __( 'Enter additional CSS code that would be added to payment popup page.', 'stripe-payments' ),
+			)
+		);
+        add_settings_field(
+			'display_security_badge',
+			__( 'Display Security Badge and Message', 'stripe-payments' ),
+			array( &$this, 'settings_field_callback' ),
+			$this->plugin_slug . '-advanced',
+			'AcceptStripePayments-payment-popup-related',
+			array(
+				'field' => 'display_security_badge',
+				'desc'  => __( 'When enabled, the checkout form will display below the payment button.', 'stripe-payments' ),
+			)
+		);
+        add_settings_field(
+			'security_badge_and_message_content',
+			__( 'Security Badge and Message Content', 'stripe-payments' ),
+			array( &$this, 'settings_field_callback' ),
+			$this->plugin_slug . '-advanced',
+			'AcceptStripePayments-payment-popup-related',
+			array(
+				'field' => 'security_badge_and_message_content',
+				'desc'  => __( 'Enter the security badge content', 'stripe-payments' ),
 			)
 		);
 
@@ -1551,6 +1574,7 @@ class AcceptStripePayments_Admin {
 			case 'dont_use_cookie':                            
 			case 'dont_create_order':
 			case 'use_separate_name_fields_enabled':
+			case 'display_security_badge':
 			case 'enable_email_schedule':
 			case 'frontend_prefetch_scripts':
 			case 'hide_state_field':
@@ -1671,6 +1695,7 @@ class AcceptStripePayments_Admin {
 				<?php
 				break;
 			case 'pp_additional_css':
+			case 'security_badge_and_message_content':
 				echo sprintf( '<textarea name="AcceptStripePayments-settings[%s]" rows="8" cols="70" style="resize:both;max-width:100%%;min-height:100px;">%s</textarea>', esc_attr( $field ), esc_attr( $field_value ) );
 				echo '<p class="description">' . wp_kses_post( $desc ) . '</p>';
 				break;
@@ -1751,6 +1776,8 @@ class AcceptStripePayments_Admin {
 		$output ['frontend_prefetch_scripts'] = empty( $input['frontend_prefetch_scripts'] ) ? 0 : 1;
 
 		$output['pp_additional_css'] = ! empty( $input['pp_additional_css'] ) ? $input['pp_additional_css'] : '';
+
+		$output['security_badge_and_message_content'] = isset( $input['security_badge_and_message_content'] ) && !empty( $input['security_badge_and_message_content'] ) ? wp_kses($input['security_badge_and_message_content'], ASP_Utils_Misc::secure_badge_allowed_tags() ) : '';
 
 		$output['tos_text'] = ! empty( $input['tos_text'] ) ? $input['tos_text'] : '';
 
@@ -1844,6 +1871,8 @@ class AcceptStripePayments_Admin {
 		$output['dont_create_order'] = empty( $input['dont_create_order'] ) ? 0 : 1;
 
 		$output['use_separate_name_fields_enabled'] = empty( $input['use_separate_name_fields_enabled'] ) ? 0 : 1;
+
+		$output['display_security_badge'] = isset($input['display_security_badge']) && !empty( $input['display_security_badge'] ) ? 1 : 0;
 
 		$output['enable_zip_validation'] = empty( $input['enable_zip_validation'] ) ? 0 : 1;
 

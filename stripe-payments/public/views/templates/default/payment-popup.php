@@ -468,6 +468,65 @@ echo wp_kses( '<style>' . $css . '</style>' . "\r\n", ASP_Utils::asp_allowed_tag
 								?>
 							</div>
 						</div>
+
+                        <?php
+                        $is_display_security_badge = \AcceptStripePayments::get_instance()->get_setting('display_security_badge', false);
+                        if ($is_display_security_badge){
+                            $security_badge_content = \AcceptStripePayments::get_instance()->get_setting('security_badge_and_message_content', false);
+                        ?>
+                        <style>
+                            .asp-secure-badge-container{
+                                display: flex;
+                                justify-content: center;
+                                flex-direction: column;
+                                align-items: center;
+                            }
+
+                            .asp-secure-badge-container > * {
+                                margin-top: 8px;
+                                margin-bottom: 0;
+                            }
+
+                            .asp-secure-badge-container img{
+                                max-height: 34px;
+                                width: auto;
+                            }
+
+                            .asp-secure-badge-container ul{
+                                list-style-type: none;
+                                padding: 0;
+                            }
+
+                            .asp-secure-badge-container ul li {
+                                position: relative;
+                                padding-left: 22px;
+                                margin-bottom: 8px;
+                            }
+
+                            .asp-secure-badge-container ul li::before {
+                                content: "";
+                                position: absolute;
+                                top: 1px;
+                                left: 0;
+                                height: 14px;
+                                width: 14px;
+                                background-image: url('<?php echo WP_ASP_PLUGIN_URL . '/public/assets/icons/circle-check-solid.svg?ver=' . WP_ASP_PLUGIN_VERSION ?>'); /* Replace with your icon URL */
+                                background-size: cover;
+                                background-repeat: no-repeat;
+                            }
+                        </style>
+                        <div class="asp-secure-badge-container">
+                            <?php if( empty($security_badge_content) ) { ?>
+                                <ul>
+                                    <li>100% Secure Checkout</li>
+                                    <li>All transactions are encrypted using SSL/TLS technology.</li>
+                                </ul>
+                            <?php } else {
+                                echo wp_kses($security_badge_content, ASP_Utils_Misc::secure_badge_allowed_tags());
+                            } ?>
+                        </div>
+                        <?php } ?>
+
 						<input type="hidden" id="payment-intent" name="payment_intent" value="">
 						<input type="hidden" id="btn-uniq-id" name="btn_uniq_id" value="<?php echo ! empty( $a['btn_uniq_id'] ) ? esc_attr( $a['btn_uniq_id'] ) : ''; ?>">
 						<input type="hidden" id="product-id" name="product_id" value="<?php echo esc_attr( $a['prod_id'] ); ?>">
