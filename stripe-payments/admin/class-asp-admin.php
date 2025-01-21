@@ -1253,7 +1253,7 @@ class AcceptStripePayments_Admin {
 			'AcceptStripePayments-payment-popup-related',
 			array(
 				'field' => 'security_badge_and_message_content',
-				'desc'  => __( 'This content will appear below the Pay button in the payment popup window.', 'stripe-payments' ),
+				'desc'  => __( 'This content will appear below the Pay button in the payment popup window. Allowed HTML tags are p, img, ul, li, and br.', 'stripe-payments' ),
 			)
 		);
 

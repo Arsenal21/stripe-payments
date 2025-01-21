@@ -473,10 +473,10 @@ echo wp_kses( '<style>' . $css . '</style>' . "\r\n", ASP_Utils::asp_allowed_tag
                         $is_display_security_badge = \AcceptStripePayments::get_instance()->get_setting('display_security_badge', false);
                         if ($is_display_security_badge){
                             $security_badge_content = \AcceptStripePayments::get_instance()->get_setting('security_badge_and_message_content', '');
-                        ?>
-                        <div class="asp-secure-badge-container">
-                            <?php echo wp_kses($security_badge_content, ASP_Utils_Misc::secure_badge_allowed_tags()); ?>
-                        </div>
+                        	?>
+							<div class="asp-secure-badge-container">
+								<?php echo apply_filters('asp_ng_pp_security_message_content',wp_kses($security_badge_content, ASP_Utils_Misc::secure_badge_allowed_tags())); ?>
+							</div>
                         <?php } ?>
 
 						<input type="hidden" id="payment-intent" name="payment_intent" value="">
