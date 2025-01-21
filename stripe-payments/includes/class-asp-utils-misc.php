@@ -66,4 +66,13 @@ class ASP_Utils_Misc {
 			'br' => array()
 		);
 	}
+
+	public static function secure_badge_default_content() {
+		$output = '<ul>'.PHP_EOL;
+		$output .= ' <li>100% Secure Checkout</li>'.PHP_EOL;
+		$output .= ' <li>All transactions are encrypted using SSL/TLS technology.</li>'.PHP_EOL;
+		$output .= '</ul>';
+
+		return $output;
+	}
 }
