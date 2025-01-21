@@ -1472,7 +1472,7 @@ msgid "English"
 msgstr ""
 
 #: admin/class-asp-admin.php:1212
-msgid "Enter additional CSS code that would be added to payment popup page."
+msgid "Enter additional CSS code to be applied to the payment popup page."
 msgstr "お支払いポップアップに追加する CSSコードを入力してください"
 
 #: includes/shortcodes/class-asp-shortcode-ng.php:704
