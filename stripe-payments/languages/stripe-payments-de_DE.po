@@ -604,7 +604,7 @@ msgid "Payment Popup Additional CSS"
 msgstr ""
 
 #: admin/class-asp-admin.php:1112
-msgid "Enter additional CSS code that would be added to payment popup page."
+msgid "Enter additional CSS code to be applied to the payment popup page."
 msgstr ""
 
 #: admin/class-asp-admin.php:1119

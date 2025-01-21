@@ -1231,7 +1231,7 @@ class AcceptStripePayments_Admin {
 			'AcceptStripePayments-payment-popup-related',
 			array(
 				'field' => 'pp_additional_css',
-				'desc'  => __( 'Enter additional CSS code that would be added to payment popup page.', 'stripe-payments' ),
+				'desc'  => __( 'Enter additional CSS code to be applied to the payment popup page.', 'stripe-payments' ),
 			)
 		);
         add_settings_field(
@@ -1242,7 +1242,7 @@ class AcceptStripePayments_Admin {
 			'AcceptStripePayments-payment-popup-related',
 			array(
 				'field' => 'display_security_badge',
-				'desc'  => __( 'When enabled, the checkout form will display below the payment button.', 'stripe-payments' ),
+				'desc'  => __( 'When enabled, the Security Badge and Message Content are displayed below the Pay button in the payment popup window.', 'stripe-payments' ),
 			)
 		);
         add_settings_field(
@@ -1253,7 +1253,7 @@ class AcceptStripePayments_Admin {
 			'AcceptStripePayments-payment-popup-related',
 			array(
 				'field' => 'security_badge_and_message_content',
-				'desc'  => __( 'Enter the security badge content', 'stripe-payments' ),
+				'desc'  => __( 'This content will appear below the Pay button in the payment popup window.', 'stripe-payments' ),
 			)
 		);
 

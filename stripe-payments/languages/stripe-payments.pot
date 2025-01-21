@@ -619,7 +619,7 @@ msgid "Payment Popup Additional CSS"
 msgstr ""
 
 #: stripe-payments/admin/class-asp-admin.php:1222
-msgid "Enter additional CSS code that would be added to payment popup page."
+msgid "Enter additional CSS code to be applied to the payment popup page."
 msgstr ""
 
 #: stripe-payments/admin/class-asp-admin.php:1229
