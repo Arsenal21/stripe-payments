@@ -1474,6 +1474,11 @@ class AcceptStripePayments_Admin {
 
 		$field_value = esc_attr( isset( $settings[ $field ] ) ? $settings[ $field ] : '' );
 
+        // Show default content for security badge.
+        if ($field == 'security_badge_and_message_content' && empty(trim($field_value))){
+	        $field_value = ASP_Utils_Misc::secure_badge_default_content();
+        }
+
 		$desc = isset( $args['desc'] ) ? $args['desc'] : '';
 
 		$size = esc_attr( isset( $args['size'] ) ? $args['size'] : 40 );
@@ -1777,7 +1782,7 @@ class AcceptStripePayments_Admin {
 
 		$output['pp_additional_css'] = ! empty( $input['pp_additional_css'] ) ? $input['pp_additional_css'] : '';
 
-		$output['security_badge_and_message_content'] = isset( $input['security_badge_and_message_content'] ) && !empty( $input['security_badge_and_message_content'] ) ? wp_kses($input['security_badge_and_message_content'], ASP_Utils_Misc::secure_badge_allowed_tags() ) : '';
+		$output['security_badge_and_message_content'] = isset( $input['security_badge_and_message_content'] ) && !empty( trim($input['security_badge_and_message_content']) ) ? wp_kses($input['security_badge_and_message_content'], ASP_Utils_Misc::secure_badge_allowed_tags() ) : ASP_Utils_Misc::secure_badge_default_content();
 
 		$output['tos_text'] = ! empty( $input['tos_text'] ) ? $input['tos_text'] : '';
 

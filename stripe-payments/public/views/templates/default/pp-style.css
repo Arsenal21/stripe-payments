@@ -445,3 +445,44 @@ input.pure-input-1.has-icon, select.pure-input-1.has-icon {
 		position: fixed;
 	}
 }
+
+/* Secure badge related */
+.asp-secure-badge-container{
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	align-items: center;
+}
+
+.asp-secure-badge-container > * {
+	margin-top: 8px;
+	margin-bottom: 0;
+}
+
+.asp-secure-badge-container img{
+	max-height: 34px;
+	width: auto;
+}
+
+.asp-secure-badge-container ul{
+	list-style-type: none;
+	padding: 0;
+}
+
+.asp-secure-badge-container ul li {
+	position: relative;
+	padding-left: 22px;
+	margin-bottom: 8px;
+}
+.asp-secure-badge-container ul li::before {
+	content: "";
+	position: absolute;
+	top: 1px;
+	left: 0;
+	height: 14px;
+	width: 14px;
+	background-image: url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20512%20512%22%3E%0A%20%20%3Cpath%20fill%3D%22green%22%20d%3D%22M256%20512A256%20256%200%201%200%20256%200a256%20256%200%201%200%200%20512zM369%20209L241%20337c-9.4%209.4-24.6%209.4-33.9%200l-64-64c-9.4-9.4-9.4-24.6%200-33.9s24.6-9.4%2033.9%200l47%2047L335%20175c9.4-9.4%2024.6-9.4%2033.9%200s9.4%2024.6%200%2033.9z%22/%3E%0A%3C/svg%3E');
+	background-size: cover;
+	background-repeat: no-repeat;
+}
+/* End of Secure badge related */
