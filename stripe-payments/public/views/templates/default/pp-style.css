@@ -485,5 +485,6 @@ input.pure-input-1.has-icon, select.pure-input-1.has-icon {
 	background-image: url('../../../../assets/circle-check-solid.svg');
 	background-size: cover;
 	background-repeat: no-repeat;
+	margin-top: 10px;
 }
 /* End of Secure badge related */
