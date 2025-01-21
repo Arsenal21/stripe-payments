@@ -43,4 +43,27 @@ class ASP_Utils_Misc {
 		return $pageURL;
 	}
 
+	public static function secure_badge_allowed_tags() {
+		return array(
+			'img' => array(
+				'src'	=> array(),
+				'alt'	=> array(),
+				'class' => array(),
+				'id' => array(),
+			),
+			'ul' => array(
+				'class' => array(),
+				'id' => array(),
+			),
+			'li' => array(
+				'class' => array(),
+				'id' => array(),
+			),
+			'p' => array(
+				'class' => array(),
+				'id' => array(),
+			),
+			'br' => array()
+		);
+	}
 }
