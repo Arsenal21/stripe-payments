@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 6.0
 Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 2.0.88
+Stable tag: 2.0.89
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -66,6 +66,7 @@ https://www.youtube.com/watch?v=b6owgRBTUwA
 * Option to enable Terms and Conditions that your customers have to accept before they can make a purchase.
 * Ability to configure variable products. You can charge different amount for different options of the product.
 * Ability to create "Authorize Only" products. You can hold funds on a card then capture it later.
+* Option to display a security badge and message on the payment form.
 * 3D Secure payments compatible.
 * Strong Customer Authentication (SCA) Compliant.
 
@@ -151,8 +152,8 @@ None.
 
 == Changelog ==
 
-= WIP =
-- Stripe API version updated to 2024-12-18.acacia.
+= 2.0.89 =
+- Stripe API version updated to the latest version (2024-12-18.acacia).
 - Added a new option to display security badge and message on the payment popup window.
 - Added a new filter hook 'asp_ng_pp_security_message_content' to allow customization of the secure badge content.
 
