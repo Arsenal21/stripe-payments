@@ -1171,6 +1171,21 @@ class AcceptStripePayments_Admin {
 
 		// Payment Popup Related section
 		add_settings_field(
+			'popup_default_country',
+			__( 'Popup Default Country', 'stripe-payments' ),
+			array( &$this, 'settings_field_callback' ),
+			$this->plugin_slug . '-advanced',
+			'AcceptStripePayments-payment-popup-related',
+			array(
+				'field' => 'popup_default_country',
+				'desc'  => __(
+                       'Select the default country that should be set on the payment popup window for billing and shipping address.',
+                       'stripe-payments'
+                   ) . $country_autodetect_addon_txt,
+			)
+		);
+
+		add_settings_field(
 			'prefill_wp_user_details',
 			__( 'Prefill Logged In User Name and Email', 'stripe-payments' ),
 			array( &$this, 'settings_field_callback' ),
@@ -1201,21 +1216,6 @@ class AcceptStripePayments_Admin {
 		);
 
 		add_settings_field(
-			'popup_default_country',
-			__( 'Popup Default Country', 'stripe-payments' ),
-			array( &$this, 'settings_field_callback' ),
-			$this->plugin_slug . '-advanced',
-			'AcceptStripePayments-payment-popup-related',
-			array(
-				'field' => 'popup_default_country',
-				'desc'  => __(
-                       'Select the default country that should be set on the payment popup window for billing and shipping address.',
-                       'stripe-payments'
-                   ) . $country_autodetect_addon_txt,
-			)
-		);
-
-		add_settings_field(
 			'use_separate_name_fields_enabled',
 			__( 'Use Separate Name Fields', 'stripe-payments' ),
 			array( &$this, 'settings_field_callback' ),
@@ -1224,17 +1224,6 @@ class AcceptStripePayments_Admin {
 			array(
 				'field' => 'use_separate_name_fields_enabled',
 				'desc'  => __( 'When enabled, the checkout form will display separate fields for first and last names instead of a single full name field.', 'stripe-payments' ),
-			)
-		);
-		add_settings_field(
-			'pp_additional_css',
-			__( 'Payment Popup Additional CSS', 'stripe-payments' ),
-			array( &$this, 'settings_field_callback' ),
-			$this->plugin_slug . '-advanced',
-			'AcceptStripePayments-payment-popup-related',
-			array(
-				'field' => 'pp_additional_css',
-				'desc'  => __( 'Enter additional CSS code to be applied to the payment popup page.', 'stripe-payments' ),
 			)
 		);
         add_settings_field(
@@ -1259,6 +1248,17 @@ class AcceptStripePayments_Admin {
 				'desc'  => __( 'This content will appear below the Pay button in the payment popup window. Allowed HTML tags are p, img, ul, li, and br.', 'stripe-payments' ),
 			)
 		);
+		add_settings_field(
+			'pp_additional_css',
+			__( 'Payment Popup Additional CSS', 'stripe-payments' ),
+			array( &$this, 'settings_field_callback' ),
+			$this->plugin_slug . '-advanced',
+			'AcceptStripePayments-payment-popup-related',
+			array(
+				'field' => 'pp_additional_css',
+				'desc'  => __( 'Enter additional CSS code to be applied to the payment popup page.', 'stripe-payments' ),
+			)
+		);		
 
 		//Experimental Settings
 		add_settings_field(
