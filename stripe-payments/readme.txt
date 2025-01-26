@@ -151,6 +151,8 @@ Yes, please visit Stripe Payments > Settings screen for options.
 None.
 
 == Changelog ==
+= WIP =
+- Prefilled customer name issue fixed.
 
 = 2.0.89 =
 - Stripe API version updated to the latest version (2024-12-18.acacia).
