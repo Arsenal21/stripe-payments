@@ -1,7 +1,7 @@
 === Accept Stripe Payments ===
 Contributors: Tips and Tricks HQ, wptipsntricks, alexanderfoxc
 Donate link: https://s-plugins.com
-Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortcode, digital goods, payment gateway, instant payment, commerce, digital downloads, downloads, e-commerce, e-store, ecommerce, eshop, donation
+Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortcode, digital goods, payment gateway, commerce, digital downloads, downloads, e-commerce, e-store, ecommerce, eshop, donation
 Requires at least: 6.0
 Tested up to: 6.7
 Requires PHP: 7.4
@@ -15,21 +15,23 @@ Easily accept payments on your WordPress site via Stripe payment gateway.
 
 The Stripe Payments plugin allows you to accept credit card payments via Stripe payment gateway on your WordPress site easily.
 
-It has a simple shortcode that lets you put Stripe "Buy Now" buttons anywhere on your site for a product or service. You can accept donation via Stripe also.
+Easily add Stripe 'Buy Now' buttons anywhere on your site using a simple shortcode or block. The plugin also supports accepting donations via Stripe.
 
-One click payment via Stripe with a remember me feature. Responsive design so it is compatible with all devices and browsers.
+Enable seamless one-click payments via Stripe with a built-in "Remember Me" feature for faster repeat transactions. The plugin is designed with a fully responsive layout, ensuring compatibility across all devices and browsers.
 
-Your customers will be redirected to the "Checkout Result" page after the credit card payment. This page shows them the details of the transaction (the item that they just paid for).
+After completing a payment, customers are automatically redirected to a "Thank You/Checkout Result" page, where they can view detailed information about their transaction, including the purchased item.
 
-The transaction info is also captured in the orders menu of the plugin. You can view all the payments you received from your WordPress admin dashboard.
+All transaction details are securely recorded in the plugin's "Orders" menu. You can conveniently review and manage your payments and orders directly from your WordPress admin dashboard.
+
+For enhanced security, credit card details are never stored by the plugin or your site. All payments are processed directly by Stripe and securely stored in your Stripe account, utilizing their state-of-the-art security measures for credit card handling.
+
+= Checkout Demonstration Video =
+
+https://www.youtube.com/watch?v=b6owgRBTUwA
 
 = Setup and Usage Video =
 
 https://www.youtube.com/watch?v=L0n_jlEhmoA
-
-= Checkout Demo Video =
-
-https://www.youtube.com/watch?v=b6owgRBTUwA
 
 = Features =
 
@@ -69,6 +71,7 @@ https://www.youtube.com/watch?v=b6owgRBTUwA
 * Option to display a security badge and message on the payment form.
 * 3D Secure payments compatible.
 * Strong Customer Authentication (SCA) Compliant.
+* Browse the [plugin documentation](https://s-plugins.com/stripe-payments-plugin-tutorials/) to learn more about the features of this plugin.
 
 The setup is very easy. Once you have installed the plugin, all you need to do is enter your Stripe API credentials in the plugin settings and your website will be ready to accept credit card payments.
 
