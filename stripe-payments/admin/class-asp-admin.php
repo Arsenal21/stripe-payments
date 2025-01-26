@@ -479,10 +479,10 @@ class AcceptStripePayments_Admin {
 		add_settings_section( 'AcceptStripePayments-additional-email-section', __( 'Additional Email Settings', 'stripe-payments' ), null, $this->plugin_slug . '-email' );
 
 		add_settings_section( 'AcceptStripePayments-price-display', __( 'Price Display Settings', 'stripe-payments' ), null, $this->plugin_slug . '-advanced' );
-		add_settings_section( 'AcceptStripePayments-custom-field', __( 'Custom Field Settings', 'stripe-payments' ), null, $this->plugin_slug . '-advanced' );
-		add_settings_section( 'AcceptStripePayments-tos', __( 'Terms and Conditions', 'stripe-payments' ), array( $this, 'tos_description' ), $this->plugin_slug . '-advanced' );
-		add_settings_section( 'AcceptStripePayments-additional-settings', __( 'Additional Settings', 'stripe-payments' ), null, $this->plugin_slug . '-advanced' );
 		add_settings_section( 'AcceptStripePayments-payment-popup-related', __( 'Payment Popup Related', 'stripe-payments' ), null, $this->plugin_slug . '-advanced' );
+		add_settings_section( 'AcceptStripePayments-tos', __( 'Terms and Conditions', 'stripe-payments' ), array( $this, 'tos_description' ), $this->plugin_slug . '-advanced' );
+		add_settings_section( 'AcceptStripePayments-custom-field', __( 'Custom Field Settings', 'stripe-payments' ), null, $this->plugin_slug . '-advanced' );
+		add_settings_section( 'AcceptStripePayments-additional-settings', __( 'Additional Settings', 'stripe-payments' ), null, $this->plugin_slug . '-advanced' );
 		add_settings_section( 'AcceptStripePayments-experimental-settings', __( 'Experimental Settings', 'stripe-payments' ), array( $this, 'experemintal_section_description' ), $this->plugin_slug . '-advanced' );
 
 		add_settings_section( 'AcceptStripePayments-captcha', __( 'Captcha Settings', 'stripe-payments' ), array( $this, 'captcha_section_description' ), $this->plugin_slug . '-captcha' );
@@ -636,50 +636,6 @@ class AcceptStripePayments_Admin {
 				'https://s-plugins.com/stripe-country-autodetect-addon/'
 			);
 		}
-		add_settings_field(
-			'popup_default_country',
-			__( 'Popup Default Country', 'stripe-payments' ) ,
-			array( &$this, 'settings_field_callback' ),
-			$this->plugin_slug,
-			'AcceptStripePayments-global-section',
-			array(
-				'field' => 'popup_default_country',
-				'desc'  => __(
-					'Select the default country that should be set on the payment popup window for billing and shipping address.',
-					'stripe-payments'
-				) . $country_autodetect_addon_txt,
-			)
-		);
-
-		add_settings_field(
-			'hide_state_field',
-			__( 'Hide the State Field', 'stripe-payments' ) ,
-			array( &$this, 'settings_field_callback' ),
-			$this->plugin_slug,
-			'AcceptStripePayments-global-section',
-			array(
-				'field' => 'hide_state_field',
-				'desc'  => __(
-					'Hide the State field on the payment popup window. The State field for the address is an optional field.',
-					'stripe-payments'
-				),
-			)
-		);
-
-		add_settings_field(
-			'prefill_wp_user_details',
-			__( 'Prefill Logged In User Name and Email', 'stripe-payments' ) ,
-			array( &$this, 'settings_field_callback' ),
-			$this->plugin_slug,
-			'AcceptStripePayments-global-section',
-			array(
-				'field' => 'prefill_wp_user_details',
-				'desc'  => __(
-					'When payment is made by logged in WordPress user, his\her name and email are prefilled to corresponding payment popup fields.',
-					'stripe-payments'
-				),
-			)
-		);
 
 		// Credentials section
 		add_settings_field(
@@ -1212,6 +1168,53 @@ class AcceptStripePayments_Admin {
 				'field' => 'allowed_currencies',
 			)
 		);
+
+		// Payment Popup Related section
+		add_settings_field(
+			'prefill_wp_user_details',
+			__( 'Prefill Logged In User Name and Email', 'stripe-payments' ),
+			array( &$this, 'settings_field_callback' ),
+			$this->plugin_slug . '-advanced',
+			'AcceptStripePayments-payment-popup-related',
+			array(
+				'field' => 'prefill_wp_user_details',
+				'desc'  => __(
+					'When payment is made by logged in WordPress user, his\her name and email are prefilled to corresponding payment popup fields.',
+					'stripe-payments'
+				),
+			)
+		);
+
+		add_settings_field(
+			'hide_state_field',
+			__( 'Hide the State Field', 'stripe-payments' ),
+			array( &$this, 'settings_field_callback' ),
+			$this->plugin_slug . '-advanced',
+			'AcceptStripePayments-payment-popup-related',
+			array(
+				'field' => 'hide_state_field',
+				'desc'  => __(
+					'Hide the State field on the payment popup window. The State field for the address is an optional field.',
+					'stripe-payments'
+				),
+			)
+		);
+
+		add_settings_field(
+			'popup_default_country',
+			__( 'Popup Default Country', 'stripe-payments' ),
+			array( &$this, 'settings_field_callback' ),
+			$this->plugin_slug . '-advanced',
+			'AcceptStripePayments-payment-popup-related',
+			array(
+				'field' => 'popup_default_country',
+				'desc'  => __(
+                       'Select the default country that should be set on the payment popup window for billing and shipping address.',
+                       'stripe-payments'
+                   ) . $country_autodetect_addon_txt,
+			)
+		);
+
 		add_settings_field(
 			'use_separate_name_fields_enabled',
 			__( 'Use Separate Name Fields', 'stripe-payments' ),

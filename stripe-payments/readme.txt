@@ -153,6 +153,7 @@ None.
 == Changelog ==
 = WIP =
 - Prefilled customer name issue fixed.
+- Some settings fields and section's position refactored.
 
 = 2.0.89 =
 - Stripe API version updated to the latest version (2024-12-18.acacia).
