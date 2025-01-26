@@ -2100,8 +2100,8 @@ class AcceptStripePayments_Admin {
 		if ( empty( $email_tags ) ) {
 			$email_tags = array(
 				'{item_name}'         => __( 'Name of the purchased item', 'stripe-payments' ),
-				'{item_description}'   => __( 'Description of item', 'stripe-payments' ),
-				'{item_short_desc}'   => __( 'Short description of item', 'stripe-payments' ),
+				'{item_short_desc}'   => __( 'Short description of the item', 'stripe-payments' ),
+				'{item_description}'  => __( 'The product description field\'s content.', 'stripe-payments' ),				
 				'{item_quantity}'     => __( 'Number of items purchased', 'stripe-payments' ),
 				'{item_price}'        => __( 'Item price. Example: 1000,00', 'stripe-payments' ),
 				'{item_price_curr}'   => __( 'Item price with currency symbol. Example: $1,000.00', 'stripe-payments' ),
@@ -2110,10 +2110,10 @@ class AcceptStripePayments_Admin {
 				'{tax}'               => __( 'Tax in percent. Example: 10%', 'stripe-payments' ),
 				'{tax_amt}'           => __( 'Formatted tax amount for single item. Example: $0.25', 'stripe-payments' ),
 				'{shipping_amt}'      => __( 'Formatted shipping amount. Example: $2.50', 'stripe-payments' ),
-				'{download_url}'      => __( 'Item download URL (if it\'s set)', 'stripe-payments' ),
+				'{download_url}'      => __( 'The download URL of the item (if configured)', 'stripe-payments' ),
 				'{product_details}'   => __( 'The item details of the purchased product (this will include the download link for digital items)', 'stripe-payments' ),
 				'{product_variations}' => __( 'The selected product variations (if any) of the purchased product.', 'stripe-payments' ),
-				'{product_url}' => __( 'The single page URL of purchased product.', 'stripe-payments' ),
+				'{product_url}' 	  => __( 'The permalink to the product\'s single page', 'stripe-payments' ),
                 '{transaction_id}'    => __( 'The unique transaction ID of the purchase', 'stripe-payments' ),
 				'{shipping_address}'  => __( 'Shipping address of the buyer', 'stripe-payments' ),
 				'{billing_address}'   => __( 'Billing address of the buyer', 'stripe-payments' ),

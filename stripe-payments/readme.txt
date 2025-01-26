@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 6.0
 Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 2.0.89
+Stable tag: 2.0.90
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -151,10 +151,12 @@ Yes, please visit Stripe Payments > Settings screen for options.
 None.
 
 == Changelog ==
-= WIP =
-- Prefilled customer name issue fixed.
-- Some settings fields and section's position refactored.
-- New email merge tags (item_description, download_url, product_url) added.
+
+= 2.0.90 =
+- Resolved an issue with the newly added 'Use Separate Name Fields' option when used alongside the 'Prefill Logged In User Name and Email' settings.
+- Moved the payment popup related options to the Advanced settings menu of the plugin.
+- Added the following new email merge tags:
+{item_description}, {download_url}, {product_url}
 
 = 2.0.89 =
 - Stripe API version updated to the latest version (2024-12-18.acacia).
