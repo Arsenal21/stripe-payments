@@ -706,8 +706,6 @@ class AcceptStripePayments_Process_IPN {
 AcceptStripePayments_Process_IPN::get_instance();
 
 function asp_apply_dynamic_tags_on_email_body( $body, $post, $seller_email = false ) {
-	ASP_Debug_Logger::log(">>>>> Post data");
-	ASP_Debug_Logger::log_array_data($post);
 	$product_details  = __( 'Product Name', 'stripe-payments' ) . ': {item_name}' . "\n";
 	$product_details .= __( 'Quantity', 'stripe-payments' ) . ': {item_quantity}' . "\n";
 	$product_details .= __( 'Item Price', 'stripe-payments' ) . ': {item_price_curr}' . "\n";
