@@ -154,6 +154,7 @@ None.
 = WIP =
 - Prefilled customer name issue fixed.
 - Some settings fields and section's position refactored.
+- New email merge tags (item_description, download_url, product_url) added.
 
 = 2.0.89 =
 - Stripe API version updated to the latest version (2024-12-18.acacia).

@@ -706,7 +706,6 @@ class AcceptStripePayments_Process_IPN {
 AcceptStripePayments_Process_IPN::get_instance();
 
 function asp_apply_dynamic_tags_on_email_body( $body, $post, $seller_email = false ) {
-
 	$product_details  = __( 'Product Name', 'stripe-payments' ) . ': {item_name}' . "\n";
 	$product_details .= __( 'Quantity', 'stripe-payments' ) . ': {item_quantity}' . "\n";
 	$product_details .= __( 'Item Price', 'stripe-payments' ) . ': {item_price_curr}' . "\n";
@@ -837,6 +836,8 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post, $seller_email = fal
 	$logged_in_user_id = isset($post['logged_in_user_id']) && ! empty( $post['logged_in_user_id'] ) ? $post['logged_in_user_id'] : '';
 	$logged_in_user_name = isset($post['logged_in_user_name']) && ! empty( $post['logged_in_user_name'] ) ? $post['logged_in_user_name'] : '';
 
+	$item_description = '';
+	$product_url = '';
     $surcharge_total_amt = '';
     $surcharge_label = '';
     if ( isset( $post['product_id'] ) ){
@@ -849,13 +850,18 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post, $seller_email = fal
                 $surcharge_total_amt = AcceptStripePayments::formatted_price($post['additional_items'][$surcharge_label], $post['currency_code']);
             }
         }
+
+	    $item_description = get_post_field('post_content', $post['product_id']);
+		$product_url = get_permalink( $post['product_id'] );
     }
 
 	$tags = array(
 		'{item_name}',
 		'{item_short_desc}',
+		'{item_description}',
 		'{item_quantity}',
 		'{item_url}',
+		'{download_url}',
 		'{payer_email}',
 		'{customer_name}',
 		'{first_name}',
@@ -879,6 +885,7 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post, $seller_email = fal
 		'{card_last_4}',
 		'{payment_method}',
         '{product_variations}',
+		'{product_url}',
 		'{logged_in_user_name}',
 		'{logged_in_user_id}',
 		'{surcharge_total_amt}',
@@ -887,7 +894,9 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post, $seller_email = fal
 	$vals = array(
 		$post['item_name'],
 		$post['charge_description'],
+		$item_description,
 		$post['item_quantity'],
+		! empty( $post['item_url'] ) ? $post['item_url'] : '',
 		! empty( $post['item_url'] ) ? $post['item_url'] : '',
 		$post['stripeEmail'],
 		$post['customer_name'],
@@ -912,6 +921,7 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post, $seller_email = fal
 		$card_last4,
 		$pm_type,
         $product_variations,
+		$product_url,
 		$logged_in_user_name,
 		$logged_in_user_id,
         $surcharge_total_amt,
