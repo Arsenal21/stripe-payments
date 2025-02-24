@@ -1,3 +1,5 @@
+/* global aspEditProdData */
+
 jQuery(document).ready(function ($) {
 	var aspVariationsGroups = aspEditProdData.varGroups;
 	var aspVariationsNames = aspEditProdData.varNames;
