@@ -16,7 +16,13 @@ class ASP_Admin_Product_Meta_Boxes {
 	}
 
 	public function admin_footer() {
-		wp_enqueue_script( 'asp-admin-edit-product-js' );
+		$screen = get_current_screen();
+		$is_post_edit_page = !is_null($screen) && $screen->base == 'post';
+
+		if (is_admin() && $is_post_edit_page) {
+			// Do something only on post edit pages
+		    wp_enqueue_script( 'asp-admin-edit-product-js' );
+		}
 	}
 
 	public function add_meta_boxes() {
