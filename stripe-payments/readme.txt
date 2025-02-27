@@ -156,6 +156,7 @@ None.
 == Changelog ==
 = WIP =
 - Small javascript issue fixed in product lists page.
+- New filter hooks added of control email sending.
 
 = 2.0.90 =
 - Resolved an issue with the newly added 'Use Separate Name Fields' option when used alongside the 'Prefill Logged In User Name and Email' settings.

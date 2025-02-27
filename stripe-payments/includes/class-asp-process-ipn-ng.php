@@ -743,7 +743,8 @@ class ASP_Process_IPN_NG {
 		do_action( 'asp_stripe_payment_completed', $data, $data['charge'] );
 
 		//Let's handle email sending stuff
-		if ( ! empty( $opt['send_emails_to_buyer'] ) ) {
+		$send_emails_to_buyer = apply_filters( 'asp_allow_send_emails_to_buyer', $opt['send_emails_to_buyer'], $prod_id);
+		if ( ! empty( $send_emails_to_buyer ) ) {
 			$from = $opt['from_email_address'];
 			$to   = $data['stripeEmail'];
 			$subj = $opt['buyer_email_subject'];
@@ -786,7 +787,8 @@ class ASP_Process_IPN_NG {
 			}
 		}
 
-		if ( ! empty( $opt['send_emails_to_seller'] ) ) {
+		$send_emails_to_seller = apply_filters( 'asp_allow_send_emails_to_seller', $opt['send_emails_to_seller'], $prod_id);
+		if ( ! empty( $send_emails_to_seller ) ) {
 			$from = $opt['from_email_address'];
 			$to   = $opt['seller_notification_email'];
 			$subj = $opt['seller_email_subject'];
