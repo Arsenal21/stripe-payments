@@ -35,14 +35,14 @@ class AcceptStripePaymentsShortcode {
 
 		add_action( 'wp_enqueue_scripts', array( $this, 'register_stripe_script' ) );
 
-		add_shortcode( 'asp_show_all_products', array( &$this, 'shortcode_show_all_products' ) );
-		add_shortcode( 'accept_stripe_payment_checkout', array( &$this, 'shortcode_accept_stripe_payment_checkout' ) );
-		add_shortcode( 'accept_stripe_payment_checkout_error', array( &$this, 'shortcode_accept_stripe_payment_checkout_error' ) );
-		add_shortcode( 'asp_show_my_transactions', array( $this, 'show_user_transactions' ) );
 		if ( ! is_admin() ) {
+            add_shortcode( 'asp_show_all_products', array( &$this, 'shortcode_show_all_products' ) );
+            add_shortcode( 'accept_stripe_payment_checkout', array( &$this, 'shortcode_accept_stripe_payment_checkout' ) );
+            add_shortcode( 'accept_stripe_payment_checkout_error', array( &$this, 'shortcode_accept_stripe_payment_checkout_error' ) );
+            add_shortcode( 'asp_show_my_transactions', array( $this, 'show_user_transactions' ) );
 			add_filter( 'widget_text', 'do_shortcode' );
+		    add_shortcode( 'asp_available_quantity', array( $this, 'show_available_quantity' ) );
 		}
-		add_shortcode( 'asp_available_quantity', array( $this, 'show_available_quantity' ) );
 	}
 
 	public static function filter_post_type_content( $content ) {
@@ -1222,6 +1222,7 @@ class AcceptStripePaymentsShortcode {
 		//if user has changed sort by from UI
 		$sort_by = isset( $_GET['asp-sortby'] ) ? sanitize_text_field( stripslashes ( $_GET['asp-sortby'] ) ) : '';
 
+        $tpl = array();
 		include_once WP_ASP_PLUGIN_PATH . 'public/views/all-products/default/template.php';
 
 		$page = filter_input( INPUT_GET, 'asp_page', FILTER_SANITIZE_NUMBER_INT );
@@ -1297,16 +1298,19 @@ class AcceptStripePaymentsShortcode {
 			$tpl['search_box'] = '';
 		}
 
-		$tpl['products_list'] .= $tpl['products_row_start'];
-		$i                     = $tpl['products_per_row']; //items per row
+        if (!isset($tpl['products_list'])){
+	        $tpl['products_list'] = '';
+        }
+		$tpl['products_list'] .= isset($tpl['products_row_start']) ? $tpl['products_row_start'] : '';
+		$i                     = isset($tpl['products_per_row']) ? $tpl['products_per_row'] : 3; //items per row
 
 		while ( $products->have_posts() ) {
 			$products->the_post();
 			$i --;
 			if ( $i < 0 ) { //new row
-				$tpl['products_list'] .= $tpl['products_row_end'];
-				$tpl['products_list'] .= $tpl['products_row_start'];
-				$i                     = $tpl['products_per_row'] - 1;
+				$tpl['products_list'] .= isset($tpl['products_row_end']) ? $tpl['products_row_end'] : '';
+				$tpl['products_list'] .= isset($tpl['products_row_start']) ? $tpl['products_row_start'] : '';
+				$i                     = (isset($tpl['products_per_row']) ? $tpl['products_per_row'] : 3) - 1;
 			}
 
 			$id = get_the_ID();			
@@ -1316,7 +1320,7 @@ class AcceptStripePaymentsShortcode {
 				$thumb_url = WP_ASP_PLUGIN_URL . '/assets/product-thumb-placeholder.png';
 			}
 
-			$view_btn = str_replace( '%[product_url]%', get_permalink(), $tpl['view_product_btn'] );
+			$view_btn = str_replace( '%[product_url]%', get_permalink(), (isset($tpl['view_product_btn']) ? $tpl['view_product_btn'] : '') );
 
 			$price = get_post_meta( $id, 'asp_product_price', true );
 			$curr  = get_post_meta( $id, 'asp_product_currency', true );
@@ -1367,13 +1371,13 @@ class AcceptStripePaymentsShortcode {
 					$view_btn,
 					$price,
 				),
-				$tpl['products_item']
+				( isset($tpl['products_item']) ? $tpl['products_item'] : '')
 			);
 
 			$tpl['products_list'] .= $item;
 		}
 
-		$tpl['products_list'] .= $tpl['products_row_end'];
+		$tpl['products_list'] .= isset($tpl['products_row_end']) ? $tpl['products_row_end'] : '';
 
 		//pagination
 
@@ -1404,7 +1408,7 @@ class AcceptStripePaymentsShortcode {
 
 		//Build template
 		foreach ( $tpl as $key => $value ) {
-			$tpl['page'] = str_replace( '_%' . $key . '%_', $value, $tpl['page'] );
+			$tpl['page'] = str_replace( '_%' . $key . '%_', $value, ( isset( $tpl['page'] ) ? $tpl['page'] : '') );
 		}
 
 		$output = '<div class="wpec_shop_products">'.$tpl['page'].'</div>';
