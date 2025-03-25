@@ -227,6 +227,9 @@ class AcceptStripePaymentsShortcode {
 			$atts,
 			'asp_show_my_transactions'
 		);
+
+        $atts = array_map('sanitize_text_field', $atts);
+
 		require_once WP_ASP_PLUGIN_PATH . 'includes/shortcodes/show-user-transactions.php';
 		$scClass = new AcceptStripePayments_scUserTransactions();
 		return $scClass->process_shortcode( $atts );
