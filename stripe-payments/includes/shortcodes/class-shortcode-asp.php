@@ -28,6 +28,7 @@ class AcceptStripePaymentsShortcode {
 		$use_old_api = 0;
 
 		if ( $use_old_api ) {
+			//Note: the old API has been deprecated and the checkbox has been removed from the settings interface.
 			add_shortcode( 'asp_product', array( &$this, 'shortcode_asp_product' ) );
 			add_shortcode( 'accept_stripe_payment', array( &$this, 'shortcode_accept_stripe_payment' ) );
 			add_filter( 'the_content', array( $this, 'filter_post_type_content' ) );
@@ -36,12 +37,14 @@ class AcceptStripePaymentsShortcode {
 		add_action( 'wp_enqueue_scripts', array( $this, 'register_stripe_script' ) );
 
 		if ( ! is_admin() ) {
+			//Frontend only.
             add_shortcode( 'asp_show_all_products', array( &$this, 'shortcode_show_all_products' ) );
             add_shortcode( 'accept_stripe_payment_checkout', array( &$this, 'shortcode_accept_stripe_payment_checkout' ) );
             add_shortcode( 'accept_stripe_payment_checkout_error', array( &$this, 'shortcode_accept_stripe_payment_checkout_error' ) );
             add_shortcode( 'asp_show_my_transactions', array( $this, 'show_user_transactions' ) );
-			add_filter( 'widget_text', 'do_shortcode' );
 		    add_shortcode( 'asp_available_quantity', array( $this, 'show_available_quantity' ) );
+
+			add_filter( 'widget_text', 'do_shortcode' );
 		}
 	}
 
