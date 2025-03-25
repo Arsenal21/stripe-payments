@@ -154,12 +154,14 @@ Yes, please visit Stripe Payments > Settings screen for options.
 None.
 
 == Changelog ==
+
 = WIP =
 - Small javascript issue fixed in product lists page.
 - New filter hooks added of control email sending.
 - Some PHP 'isset' check added.
 - Added support for 'default_quantity' query param to apply custom quantity directly in the product link url feature.
 - A php issue fixed for 'asp_show_my_transactions' shortcode.
+- Reorganized the shortcode registration code for the 'asp_product' shortcode. This is just optimization and should not affect any functionality.
 
 = 2.0.90 =
 - Resolved an issue with the newly added 'Use Separate Name Fields' option when used alongside the 'Prefill Logged In User Name and Email' settings.
