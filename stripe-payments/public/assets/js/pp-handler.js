@@ -1603,3 +1603,29 @@ jQuery(document).ready(function(){
 		jQuery("#apply-coupon-btn").trigger("click");
 	}
 });
+
+
+/**
+ * Check and apply custom quantity if it is provided in the url.
+ */
+document.addEventListener('DOMContentLoaded', function(){
+	const urlParams = new URLSearchParams(window.location.search);
+	const quantityParam = 'default_quantity';
+
+	if (!urlParams.has(quantityParam) || !urlParams.get(quantityParam)) {
+		// No default quantity found!
+		return;
+	}
+
+	const quantity = parseInt(urlParams.get(quantityParam).trim());
+	const quantityInput = document.getElementById("quantity");
+
+	if (quantityInput){
+		quantityInput.value = quantity;
+
+		const event = new Event("change", { bubbles: true });
+
+		quantityInput.dispatchEvent(event);
+	}
+
+})
