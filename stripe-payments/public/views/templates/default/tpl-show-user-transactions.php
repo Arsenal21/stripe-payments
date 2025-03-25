@@ -118,6 +118,7 @@ class AcceptStripePayments_tplUserTransactions {
 	    <a href="%_url_%">%_page_num_%</a>
 	</li>
 	<?php
+    $this->pagination_tpl = array();
 	$this->pagination_tpl[ 'default' ]	 = ob_get_clean();
 	//current page tpl
 	ob_start();
