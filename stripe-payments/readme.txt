@@ -158,6 +158,7 @@ None.
 - Small javascript issue fixed in product lists page.
 - New filter hooks added of control email sending.
 - Some PHP 'isset' check added.
+- Added support for 'default_quantity' query param to apply custom quantity directly in the product link url feature.
 
 = 2.0.90 =
 - Resolved an issue with the newly added 'Use Separate Name Fields' option when used alongside the 'Prefill Logged In User Name and Email' settings.
