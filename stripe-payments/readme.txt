@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 6.0
 Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 2.0.90
+Stable tag: 2.0.91
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -155,13 +155,13 @@ None.
 
 == Changelog ==
 
-= WIP =
-- Small javascript issue fixed in product lists page.
-- New filter hooks added of control email sending.
-- Some PHP 'isset' check added.
-- Added support for 'default_quantity' query param to apply custom quantity directly in the product link url feature.
-- A php issue fixed for 'asp_show_my_transactions' shortcode.
-- Reorganized the shortcode registration code for the 'asp_product' shortcode. This is just optimization and should not affect any functionality.
+= 2.0.91 =
+- Added support for the default_quantity query parameter, allowing custom quantity to be applied directly via the product link URL.
+- Reorganized the shortcode registration logic for the asp_product shortcode (internal optimization; no functional changes).
+- Fixed a minor JavaScript warning on the product listing page.
+- Introduced new filter hooks to extend email-sending capabilities.
+- Added several PHP isset checks to prevent warnings.
+- Fixed a minor PHP warning in the asp_show_my_transactions shortcode.
 
 = 2.0.90 =
 - Resolved an issue with the newly added 'Use Separate Name Fields' option when used alongside the 'Prefill Logged In User Name and Email' settings.
