@@ -461,17 +461,17 @@ class AcceptStripePaymentsShortcode {
 
                 <table class="asp-order-details-table">
                     <thead>
-                        <tr>
+                        <tr class="asp-order-details-table-header">
                             <th style="text-align: start"><?php _e( "Item", "stripe-payments" ); ?></th>
                             <th style="text-align: end"><?php _e( "Total", "stripe-payments" ); ?></th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
+                        <tr class="asp-order-details-product-row">
                             <th style="text-align: start" class="asp-order-product-name-label">{item_name}</th>
                             <td style="text-align: end">{item_price_curr}</td>
                         </tr>
-                        <tr>
+                        <tr class="asp-order-details-quantity-row">
                             <th style="text-align: start">
                                 <?php _e('Quantity', 'stripe-payments') ?>
                             </th>
@@ -485,13 +485,13 @@ class AcceptStripePaymentsShortcode {
                                 } else {
                                     $amnt_str = AcceptStripePayments::formatted_price( $price, $aspData['currency_code'] );
                                 }
-                                echo '<tr><th style="text-align: start">' . $item . '</th><td style="text-align: end">' . $amnt_str. '</td></tr>';
+                                echo '<tr class="asp-order-details-additional-items-row"><th style="text-align: start">' . $item . '</th><td style="text-align: end">' . $amnt_str. '</td></tr>';
                             }
                         }
                         ?>
 
                         <?php if ( isset( $aspData['paid_amount'] )) { ?>
-                        <tr>
+                        <tr class="asp-order-details-total-amount-row">
                             <th style="text-align: start"><?php _e( "Total Amount: ", "stripe-payments" ); ?></th>
                             <td style="text-align: end">{paid_amount_curr}</td>
                         </tr>
@@ -503,14 +503,14 @@ class AcceptStripePaymentsShortcode {
                     <h4><?php _e( "Downloads", "stripe-payments" ); ?></h4>
                     <table class="asp-order-downloads-table">
                         <thead>
-                        <tr>
+                        <tr class="asp-order-downloads-table-header">
                             <th style="text-align: start"><?php _e( "Item", "stripe-payments" ); ?></th>
                             <th style="text-align: start"><?php _e( "Download Link", "stripe-payments" ); ?></th>
                         </tr>
                         </thead>
                         <tbody>
 						<?php if ( isset($aspData['item_url']) && ! empty( $aspData['item_url'] ) ) { ?>
-                            <tr>
+                            <tr class="asp-order-downloads-downloadable-item-row">
                                 <td>{item_name}</td>
                                 <td><a class="asp-order-downloadable-item-link" href="{item_url}"
                                        target="_blank"><?php _e( "Download", "stripe-payments" ) ?></a>
@@ -525,7 +525,7 @@ class AcceptStripePaymentsShortcode {
 								if ( ! empty( $var['url'] ) ) {
 									$dl_item_str = implode(':', array_filter(array( $var['group_name'],$var['name'] )))
 									?>
-                                    <tr>
+                                    <tr class="asp-order-downloads-variations-download-row">
                                         <td><?php echo esc_attr( $dl_item_str ) ?></td>
                                         <td><a class="asp-order-downloadable-item-link" href="<?php echo esc_url( $var['url'] ) ?>"
                                                target="_blank"><?php _e( "Download", "stripe-payments" ) ?></a>

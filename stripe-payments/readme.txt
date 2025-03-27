@@ -155,6 +155,9 @@ None.
 
 == Changelog ==
 
+= WIP =
+- Added a CSS class to all table rows in the order summary table on the Thank You page.
+
 = 2.0.91 =
 - Added support for the default_quantity query parameter, allowing custom quantity to be applied directly via the product link URL.
 - Reorganized the shortcode registration logic for the asp_product shortcode (internal optimization; no functional changes).
