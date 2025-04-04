@@ -641,7 +641,9 @@ class ASP_Process_IPN_NG {
 			}
 			$cf_str = rtrim( $cf_str, ' | ' );
 			//trim the string as metadata value cannot exceed 500 chars
-			$cf_str                    = substr( $cf_str, 0, 499 );
+			$cf_str = substr( $cf_str, 0, 499 );
+			//add custom fields string to metadata
+			ASP_Debug_Logger::log( 'Adding custom fields string to metadata - ' . $cf_str );
 			$metadata['Custom Fields'] = $cf_str;
 		}
 
@@ -653,7 +655,7 @@ class ASP_Process_IPN_NG {
 			}
 			$var_str = rtrim( $var_str, ', ' );
 			//trim the string as metadata value cannot exceed 500 chars
-			$var_str                = substr( $var_str, 0, 499 );
+			$var_str = substr( $var_str, 0, 499 );
 			$metadata['Variations'] = $var_str;
 		}
 
