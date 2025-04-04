@@ -1,5 +1,7 @@
 <?php
-
+/*
+* Note: For the new API, we use thbe ASP_Process_IPN_NG class.
+*/
 class AcceptStripePayments_Process_IPN {
 
 
@@ -21,8 +23,9 @@ class AcceptStripePayments_Process_IPN {
 
 	function init() {
 		if ( isset( $_POST['asp_action'] ) ) {
+			//Note: For the new API, we use ASP_Process_IPN_NG::process_ipn( $post_data )
 			if ( 'process_ipn' === $_POST['asp_action'] ) {
-				//check if Legacy API is enabled
+				//Check if Legacy API is enabled.
 				$opt = get_option( 'AcceptStripePayments-settings' );
 				//if ( isset( $opt['use_old_checkout_api1'] ) && $opt['use_old_checkout_api1'] ) {
 
