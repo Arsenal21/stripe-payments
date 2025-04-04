@@ -505,6 +505,10 @@ echo wp_kses( '<style>' . $css . '</style>' . "\r\n", ASP_Utils::asp_allowed_tag
 						<input type="hidden" value="1" name="create_token">
 						<input type="hidden" value="" id="sub_id" name="sub_id">
 						<?php } ?>
+						<?php 
+						//Trigger action to output additional data to the payment form before closing </form> tag
+						do_action( 'asp_ng_pp_output_before_closing_form', $a );
+						?>
 					</form>
 				</div>
 			</div>
