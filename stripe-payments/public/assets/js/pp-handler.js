@@ -1477,7 +1477,29 @@ function toggleRequiredElements(els, hide) {
 }
 
 function saveFormData(success_cb, error_cb) {
-	var reqStr = 'action=asp_pp_save_form_data&nonce=' + vars.asp_pp_ajax_nonce + '&form_data=' + encodeURIComponent(jQuery(form).serialize());
+	// Grab all the form data as an array.
+	let form_data_array = jQuery(form).serializeArray();
+
+	// covert the form data array to object where the field name will be the key, and field value will be the value.
+	let form_data_obj = {};
+	form_data_array.forEach(function(field) {
+		form_data_obj[field.name] = field.value;
+	});
+
+	let applied_coupon_code = '';
+
+	// Check if any coupon code was applied.
+	if (vars.data.coupon) {
+		 applied_coupon_code = vars.data.coupon.code;
+	}
+
+	if (form_data_obj['coupon-code']){
+		// Take only applied coupon code, don't just take the value from the input field.
+		// Because the 'form_data_array' grabs all the form input values, but we need to make sure the coupon was actually applied.
+		form_data_obj['coupon-code'] = applied_coupon_code;
+	}
+
+	var reqStr = 'action=asp_pp_save_form_data&nonce=' + vars.asp_pp_ajax_nonce + '&form_data=' + encodeURIComponent(jQuery.param(form_data_obj));
 	new ajaxRequest(vars.ajaxURL, reqStr, success_cb, error_cb);
 }
 

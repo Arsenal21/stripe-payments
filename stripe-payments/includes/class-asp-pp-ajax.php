@@ -651,18 +651,32 @@ class ASP_PP_Ajax {
 	}
 
 	public function save_form_data() {
-                if ( ! check_ajax_referer( 'asp_pp_ajax_nonce', 'nonce', false ) ) {
-			$out['err'] = __( 'Error occurred: Nonce verification failed on save_form_data().', 'stripe-payments' );
-			wp_send_json( $out );
-                }
+        if ( ! check_ajax_referer( 'asp_pp_ajax_nonce', 'nonce', false ) ) {
+            $out['err'] = __( 'Error occurred: Nonce verification failed on save_form_data().', 'stripe-payments' );
+            wp_send_json( $out );
+        }
 		$out['success'] = true;
 		$sess = ASP_Session::get_instance();
-		wp_parse_str( $_POST['form_data'], $form_data );
-                $filtered_form_data = array_map( 'sanitize_text_field', $form_data );
+
+        wp_parse_str( $_POST['form_data'], $form_data );
+        $filtered_form_data = $this->sanitize_nested_form_data($form_data);
+
 		$sess->set_transient_data( 'asp_pp_form_data', $filtered_form_data );
 		//ASP_Debug_Logger::log( 'Saved form data: ' . json_encode( $filtered_form_data ) );
 		wp_send_json( $out );
 	}
+
+    public function sanitize_nested_form_data($data) {
+	    foreach ($data as $key => $value) {
+		    if (is_array($value)) {
+			    $data[$key] = $this->sanitize_nested_form_data($value);
+		    } else {
+			    $data[$key] = sanitize_text_field($value);
+		    }
+	    }
+	    return $data;
+    }
+
 
 	public function handle_check_coupon() {
 		$product_id = filter_input( INPUT_POST, 'product_id', FILTER_SANITIZE_NUMBER_INT );
