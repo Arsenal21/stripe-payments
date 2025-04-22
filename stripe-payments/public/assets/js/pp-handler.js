@@ -1483,14 +1483,14 @@ function saveFormData(success_cb, error_cb) {
 	// covert the form data array to object where the field name will be the key, and field value will be the value.
 	let form_data_obj = {};
 	form_data_array.forEach(function(field) {
-		form_data_obj[field.name] = field.value;
+		form_data_obj[field.name] = field.value || '';
 	});
 
 	let applied_coupon_code = '';
 
 	// Check if any coupon code was applied.
 	if (vars.data.coupon) {
-		 applied_coupon_code = vars.data.coupon.code;
+		 applied_coupon_code = vars.data?.coupon?.code;
 	}
 
 	if (form_data_obj['coupon-code']){
