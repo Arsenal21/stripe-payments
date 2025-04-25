@@ -7,6 +7,7 @@ class ASP_Process_IPN_NG {
 	public $asp_class;
 	public $sess;
 	public $p_data;
+	public $post_data = array();
 	protected static $instance = null;
 
 	public function __construct() {
