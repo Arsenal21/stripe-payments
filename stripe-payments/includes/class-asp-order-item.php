@@ -122,7 +122,6 @@ class ASP_Order_Item {
 		$output .= '<h2>' . __( 'Order Details', 'stripe-payments' ) . "</h2>\n";
 		$output .= __( 'Order Time', 'stripe-payments' ) . ': ' . $order_date . "\n";
 		$output .= __( 'Transaction ID', 'stripe-payments' ) . ': ' . $charge_details->id . "\n";
-		$output .= __( 'Stripe Token', 'stripe-payments' ) . ': ' . $order_details['stripeToken'] . "\n";
 		$output .= __( 'Description', 'stripe-payments' ) . ': ' . $order_details['charge_description'] . "\n";
 		$output .= '--------------------------------' . "\n";
 		$output .= __( 'Product Name', 'stripe-payments' ) . ': ' . $order_details['item_name'] . "\n";

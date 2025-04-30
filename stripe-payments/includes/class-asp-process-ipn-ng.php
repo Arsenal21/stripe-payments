@@ -7,7 +7,8 @@ class ASP_Process_IPN_NG {
 	public $asp_class;
 	public $sess;
 	public $p_data;
-	public $post_data = array();
+	public $post_data;
+
 	protected static $instance = null;
 
 	public function __construct() {
@@ -494,7 +495,7 @@ class ASP_Process_IPN_NG {
 		$data['currency_code']      = strtoupper( $p_curr );
 		$data['item_quantity']      = $item->get_quantity();
 		$data['charge']             = $p_charge_data;
-		$data['stripeToken']        = '';
+		// $data['stripeToken']        = '';
 		$data['stripeTokenType']    = 'card';
 		$data['is_live']            = $is_live;
 		$data['charge_description'] = $item->get_description();
