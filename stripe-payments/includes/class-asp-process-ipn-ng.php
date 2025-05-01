@@ -7,6 +7,8 @@ class ASP_Process_IPN_NG {
 	public $asp_class;
 	public $sess;
 	public $p_data;
+
+	//Important Note: This $post_data variable need to be unset so that it does not interfere with the "isset" logic in the get_post_var function.
 	public $post_data;
 
 	protected static $instance = null;

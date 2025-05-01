@@ -159,7 +159,7 @@ None.
 - Added a CSS class to all table rows in the order summary table on the Thank You page.
 - Added a new action hook 'asp_ng_pp_output_before_closing_form' to allow adding custom HTML content before the closing form tag in the payment window.
 - iDEAL payment addon compatibility issue fixed.
-- Stripe token data removed from orders menu.
+- Removed the unused Stripe token field from orders menu.
 
 = 2.0.91 =
 - Added support for the default_quantity query parameter, allowing custom quantity to be applied directly via the product link URL.
