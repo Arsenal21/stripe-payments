@@ -160,6 +160,7 @@ None.
 - Added a new action hook 'asp_ng_pp_output_before_closing_form' to allow adding custom HTML content before the closing form tag in the payment window.
 - iDEAL payment addon compatibility issue fixed.
 - Removed the unused Stripe token field from orders menu.
+- Klarna payment method added to the Additional Payment Methods addon.
 
 = 2.0.91 =
 - Added support for the default_quantity query parameter, allowing custom quantity to be applied directly via the product link URL.
