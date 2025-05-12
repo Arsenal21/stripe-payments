@@ -161,6 +161,7 @@ None.
 - iDEAL payment addon compatibility issue fixed.
 - Removed the unused Stripe token field from orders menu.
 - Klarna payment method added to the Additional Payment Methods addon.
+- Added example code to show how to collect custom data via query string in the payment popup window and send it to Stripe as metadata.
 
 = 2.0.91 =
 - Added support for the default_quantity query parameter, allowing custom quantity to be applied directly via the product link URL.
