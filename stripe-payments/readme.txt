@@ -155,6 +155,9 @@ None.
 
 == Changelog ==
 
+= WIP =
+- Updated the help text of the 'Thank You' page field.
+
 = 2.0.92 =
 - Added a CSS class to all table rows in the order summary table on the Thank You page.
 - Added a new action hook 'asp_ng_pp_output_before_closing_form' to allow adding custom HTML content before the closing form tag in the payment window.
