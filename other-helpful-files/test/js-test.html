@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h2>JS Test: </h2>
+    <br>
+    <script>
+        var BPCftHandlerNG2 = function (params) {
+            
+        }
+
+        class BPCftHandlerNG {
+
+            constructor(data) {
+                console.log(">>>>>>>>>>>> code came here")
+                console.log(data)
+                this.data = data;
+            }
+
+            // This callback triggers before the 'asp_pp_create_pi' ajax request executes.
+            csBeforeRegenParams() {
+                console.log('[BPCFT]: Adding response token to csBeforeRegenParams');
+                // Adding the response token to asp_pp_create_pi ajax payload.
+                // if (this.data){
+                const token = this.data.bpcft_token_response || '';
+                this.data.csRegenParams += '&bpcft_token_response=' + token;
+                // }
+            }
+        }
+        window.BPCftHandlerNG = BPCftHandlerNG;
+        
+        var vars = {
+            data: {
+                addons: [
+                    {
+                        handler: 'BPCftHandlerNG',
+                    }
+                ]
+            }
+        }
+
+        function doAddonAction(action) {
+            vars.data.doNotProceed = false;
+            if (vars.data.addons) {
+                vars.data.addons.forEach(function (addon) {
+                    console.log('Type: ', typeof addon.obj);
+                    console.log('Type: ', typeof window[addon.handler]);
+                    
+                    if (typeof addon.obj === 'undefined' && typeof window[addon.handler] !== 'undefined') {
+                        addon.obj = new window[addon.handler](vars.data);
+                    }
+                    if (typeof addon.obj !== 'undefined' && typeof addon.obj[action] === 'function') {
+                        console.log(addon.name + ': ' + action);
+                        addon.obj[action]();
+                    }
+                });
+            }
+        }
+
+        doAddonAction('csBeforeRegenParams')
+
+        // vars.data.addons.forEach(function (addon) {
+        //     console.log(addon)
+        // })
+    </script>
+</body>
+
+</html>

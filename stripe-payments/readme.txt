@@ -157,6 +157,7 @@ None.
 
 = WIP =
 - Updated the help text of the 'Thank You' page field.
+- New filter hook 'asp_hide_captcha_disabled_warning_notice_in_admin' added to hide captcha disabled warning msg.
 
 = 2.0.92 =
 - Added a CSS class to all table rows in the order summary table on the Thank You page.

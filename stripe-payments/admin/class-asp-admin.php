@@ -245,8 +245,8 @@ class AcceptStripePayments_Admin {
 			//check if required php modules are installed
 			$this->check_php_modules();
 
-                        //check if captcha is enabled
-                        $this->check_captcha_settings_and_show_msg();
+            //check if captcha is enabled
+            $this->check_captcha_settings_and_show_msg();
 		}
 
 		//Handle feedback in the admin area.
@@ -256,9 +256,14 @@ class AcceptStripePayments_Admin {
 
 	}
 
-        private function check_captcha_settings_and_show_msg() {
-                $asp_main = AcceptStripePayments::get_instance();
-                $captcha_type = $asp_main->get_setting('captcha_type');
+    private function check_captcha_settings_and_show_msg() {
+        $hide_captcha_disabled_warning = apply_filters('asp_hide_captcha_disabled_warning_notice_in_admin', false);
+        if ($hide_captcha_disabled_warning){
+            return;
+        }
+
+        $asp_main = AcceptStripePayments::get_instance();
+        $captcha_type = $asp_main->get_setting('captcha_type');
 
                 if ( empty( $captcha_type ) || $captcha_type == 'none' ) {
                         //Captcha is not enabled. Show warning message.
