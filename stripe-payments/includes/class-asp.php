@@ -575,8 +575,25 @@ class AcceptStripePayments {
 		return $res;
 	}
 
+	/*
+	 * Generates additional items string for the email body.
+	 * It can be used to display variation data, shipping, tax etc.
+	 */
 	public static function gen_additional_items( $data, $sep = "\n" ) {
 		$out = '';
+		//Debug logging purposes only.
+		//ASP_Debug_Logger::log_array_data($data['additional_items'], true);
+		/* 
+		Example of $data['additional_items'] array:
+		Array
+		(
+			[Size - Medium] => 5
+			[Download Link - High Res] => 0
+			[Gift Wrapping - Yes] => 5
+			[Tax] => 3
+			[Shipping] => 15			
+		)
+		*/
 		if ( ! empty( $data['additional_items'] ) ) {
 			foreach ( $data['additional_items'] as $item => $price ) {
 				if ( $price < 0 ) {
@@ -584,7 +601,14 @@ class AcceptStripePayments {
 				} else {
 					$amnt_str = self::formatted_price( $price, $data['currency_code'] );
 				}
-				$out .= $item . ': ' . $amnt_str . $sep;
+				//Debug logging purposes only
+				//ASP_Debug_Logger::log( sprintf( 'Additional item: %s, amount: %s', $item, $amnt_str ) );
+				//Example output: Additional item: Size - Medium, amount: $5.00
+
+				//Apply filter to allow changing the additional items data line.
+				$additional_items_data_line = apply_filters( 'asp_additional_items_individual_item', $item) . ': ' . $amnt_str . $sep;
+				$filtered_additional_items_data_line = apply_filters( 'asp_additional_items_data_line', $additional_items_data_line, $data );
+				$out .= $filtered_additional_items_data_line;
 			}
 		}
 		return $out;
