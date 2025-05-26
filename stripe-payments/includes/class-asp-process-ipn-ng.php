@@ -513,7 +513,8 @@ class ASP_Process_IPN_NG {
 		$data['txn_id']             = $p_trans_id;
 		$data['button_key']         = $button_key;
 
-		$customer_metadata = isset($p_customer_details->metadata) ? $p_customer_details->metadata : array();
+		//Type casting to an array to prevent any potential PHP warnings.
+		$customer_metadata = isset($p_customer_details->metadata) ? (array)$p_customer_details->metadata : array();
 		if ( !empty($customer_metadata) ){
 			$data['customer_first_name'] = isset($customer_metadata['First Name']) ? sanitize_text_field($customer_metadata['First Name']) : '';
 			$data['customer_last_name'] = isset($customer_metadata['Last Name']) ? sanitize_text_field($customer_metadata['Last Name']) : '';

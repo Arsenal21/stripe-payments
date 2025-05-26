@@ -159,6 +159,7 @@ None.
 - Updated the help text of the 'Thank You' page field.
 - New filter hook 'asp_hide_captcha_disabled_warning_notice_in_admin' added to hide captcha disabled warning msg.
 - New filter hook 'asp_additional_items_data_line' added, which allows you to modify additional item data (such as variation details) via custom code.
+- Type casting `$p_customer_details->metadata` to an array to prevent any potential PHP warnings.
 
 = 2.0.92 =
 - Added a CSS class to all table rows in the order summary table on the Thank You page.
