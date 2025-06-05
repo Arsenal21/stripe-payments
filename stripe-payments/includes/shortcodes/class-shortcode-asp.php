@@ -614,30 +614,35 @@ class AcceptStripePaymentsShortcode {
 			'asp_show_all_products'
 		);
 
-		//if user has changed sort by from UI
+		//Handle the 'sort by' and 'sort order' options.
+		//Check if the user has changed/selected a 'sort by' option from the UI.
 		$sort_by = isset( $_GET['asp-sortby'] ) ? sanitize_text_field( stripslashes ( $_GET['asp-sortby'] ) ) : '';
+		//Value of 'sort_by' from the shortcode parameters.
+		$sc_sort_by = isset( $params['sort_by'] ) ? $params['sort_by'] : 'id';
+		//Value of 'sort_order' from the shortcode parameters.
+		$sc_sort_direction = isset( $params['sort_order'] ) ? strtoupper( $params['sort_order'] ) : 'desc';
 
+		if( !empty($sort_by) ) {
+			//User has selected a 'sort by' option from the UI.
+			$order_by = explode("-",$sort_by)[0];
+			$sort_direction = isset(explode("-",$sort_by)[1]) ? explode("-",$sort_by)[1] : "asc";
+		}
+		else{
+			//Set default sorting option on page load.
+			//If shortcode has sorting parameters specified then it will use those otherwise, it will use the default value of 'id'.
+			$order_by = $sc_sort_by;
+			$sort_direction = $sc_sort_direction;			
+		}
+
+		//Include the template file for displaying all products.
         $tpl = array();
 		include_once WP_ASP_PLUGIN_PATH . 'public/views/all-products/default/template.php';
 
+		//Pagination related variables.
 		$page = filter_input( INPUT_GET, 'asp_page', FILTER_SANITIZE_NUMBER_INT );
-
 		$page = empty( $page ) ? 1 : $page;
 
-		$order_by = isset( $params['sort_by'] ) ? ( $params['sort_by'] ) : 'none';
-
-		$sort_direction = isset( $params['sort_order'] ) ? strtoupper( $params['sort_order'] ) : 'DESC';
-
-		if($sort_by)
-		{
-			$order_by=explode("-",$sort_by)[0];
-			$sort_direction=isset(explode("-",$sort_by)[1])?explode("-",$sort_by)[1]:"asc";
-		}
-		else{
-			//set default to latest sort
-			$order_by="id";			
-		}
-
+		//Query arguments for fetching products.
 		$q = array(
 			'post_type'      => ASPMain::$products_slug,
 			'post_status'    => 'publish',
@@ -647,12 +652,9 @@ class AcceptStripePaymentsShortcode {
 			'order'          => $sort_direction,
 		);
 
-		//handle search
-
+		//Handle search
 		$search = isset( $_GET['asp_search'] ) ? sanitize_text_field( stripslashes ( $_GET['asp_search'] ) ) : '';
-
 		$search = empty( $search ) ? false : $search;
-
 		if ( $search !== false ) {
 			$q['s'] = $search;
 		}

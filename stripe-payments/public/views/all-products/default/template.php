@@ -24,10 +24,11 @@ $strViewItem    = __( 'View Item', 'stripe-payments' );
 <div id="asp-sort-wrapper">	
 <form method="GET" id="asp-sort-by-form">
 <select id="asp-sort-by" name="asp-sortby">
-	<option <?php echo ("id-desc"==$sort_by?"selected='selected'":"")?> value="id-desc">Sort by latest</option>
-	<option <?php echo "title-asc"==$sort_by?"selected='selected'":""?> value="title-asc">Sort by title</option>
-	<option <?php echo ("price-asc"==$sort_by?"selected='selected'":"")?> value="price-asc">Sort by price (low to high)</option>
-	<option <?php echo ("price-desc"==$sort_by?"selected='selected'":"")?> value="price-desc">Sort by price(high to low)</option>
+	<option value=""><?php echo esc_html__( 'Select sorting option', 'stripe-payments' ); ?></option>
+	<option <?php echo ("id-desc"==$sort_by?"selected='selected'":"") ?> value="id-desc"><?php echo esc_html__( 'Sort by latest', 'stripe-payments' ); ?></option>
+	<option <?php echo ("title-asc"==$sort_by?"selected='selected'":"") ?> value="title-asc"><?php echo esc_html__( 'Sort by title', 'stripe-payments' ); ?></option>
+	<option <?php echo ("price-asc"==$sort_by?"selected='selected'":"") ?> value="price-asc"><?php echo esc_html__( 'Sort by price (low to high)', 'stripe-payments' ); ?></option>
+	<option <?php echo ("price-desc"==$sort_by?"selected='selected'":"") ?> value="price-desc"><?php echo esc_html__( 'Sort by price(high to low)', 'stripe-payments' ); ?></option>
 </select>
 </form>
 </div>
