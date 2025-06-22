@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 6.0
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 2.0.93.t1
+Stable tag: 2.0.93
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -155,12 +155,14 @@ None.
 
 == Changelog ==
 
-= WIP - Testing 2.0.93.t1 =
+= 2.0.93 =
 - Updated the help text of the 'Thank You' page field.
 - New filter hook 'asp_hide_captcha_disabled_warning_notice_in_admin' added to hide captcha disabled warning msg.
 - New filter hook 'asp_additional_items_data_line' added, which allows you to modify additional item data (such as variation details) via custom code.
 - Type casting `$p_customer_details->metadata` to an array to prevent any potential PHP warnings.
 - Option to specify default sorting option on the shop/products page.
+- Added new filteer hooks 'asp_buyer_email_headers' and 'asp_seller_email_headers' to allow customization of the email headers.
+- The seller notification email now sets the buyers email as the reply-to email address.
 
 = 2.0.92 =
 - Added a CSS class to all table rows in the order summary table on the Thank You page.

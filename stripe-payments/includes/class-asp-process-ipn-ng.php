@@ -784,6 +784,8 @@ class ASP_Process_IPN_NG {
 				$body      = nl2br( $body );
 			}
 			$headers[] = 'From: ' . $from;
+			//Trigger filter to allow modification of the buyer email headers.
+			$headers = apply_filters( 'asp_buyer_email_headers', $headers, $email_data, $data );
 
 			$schedule_result = ASP_Utils::mail( $to, $subj, $body, $headers );
 
@@ -828,7 +830,11 @@ class ASP_Process_IPN_NG {
 				$body      = nl2br( $body );
 			}
 			$headers[] = 'From: ' . $from;
+			$headers[] = 'Reply-To: ' . $data['stripeEmail'];//For admin notification emails, we set the reply-to header to the buyer's email address.
+			//Trigger filter to allow modification of the seller email headers.
+			$headers = apply_filters( 'asp_seller_email_headers', $headers, $email_data, $data );
 
+			//Send the email to the seller
 			$schedule_result = ASP_Utils::mail( $to, $subj, $body, $headers );
 			if ( ! $schedule_result ) {
 				ASP_Debug_Logger::log( 'Notification email sent to seller: ' . $to . ', from email address used: ' . $from );

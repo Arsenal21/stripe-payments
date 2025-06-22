@@ -622,7 +622,7 @@ class ASP_Utils {
 	}
 
 	public static function mail( $to, $subj, $body, $headers, $do_not_schedule = false ) {
-		$opts            = get_option( 'AcceptStripePayments-settings' );
+		$opts = get_option( 'AcceptStripePayments-settings' );
 		$schedule_result = false;
 		if ( ! $do_not_schedule && isset( $opts['enable_email_schedule'] ) && $opts['enable_email_schedule'] ) {
 			$schedule_result = wp_schedule_single_event( time() - 10, 'asp_send_scheduled_email', array( $to, $subj, $body, $headers ) );
