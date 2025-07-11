@@ -588,16 +588,31 @@ class ASP_Process_IPN_NG {
 			$coupon = $item->get_coupon();
 		}
 		if ( isset( $coupon ) ) {
+			// Get subtotal amount
+			$subtotal = $item->get_price( false, false ) + $item->get_items_total( false, false );
+			$subtotal = $subtotal < 0 ? 0 : $subtotal;
+
+			// Get total coupon discount amount
+			$coupon_discount_amount = $item->get_coupon_discount_amount();
+
+			if(!empty($item->get_quantity()) && is_numeric($item->get_quantity())){
+				$subtotal = $subtotal * $item->get_quantity();
+
+				if (isset($coupon['discount_type']) && $coupon['discount_type'] ===  'perc' ){ // NOTE: Flat discount doesn't need to multiply with quantity
+					$coupon_discount_amount = $coupon_discount_amount * $item->get_quantity();
+				}
+			}
+
+			// Append subtotal info
+			$data['additional_items'][ __( 'Subtotal', 'stripe-payments' ) ] = $subtotal;
+
+			// Append coupon info
 			$data['coupon']      = $coupon;
 			$data['coupon_code'] = $coupon['code'];
-
-			$coupon_discount_str = apply_filters( 'asp_ng_coupon_discount_str', floatval( '-' . $item->get_coupon_discount_amount() ), $coupon );
+			$coupon_discount_str = apply_filters( 'asp_ng_coupon_discount_str', floatval( '-' . $coupon_discount_amount ), $coupon );
 			// translators: %s is coupon code
 			$data['additional_items'][ sprintf( __( 'Coupon "%s"', 'stripe-payments' ), $coupon['code'] ) ] = $coupon_discount_str;
 
-			$subtotal = $item->get_price( false, true ) + $item->get_items_total( false, true );
-			$subtotal = $subtotal < 0 ? 0 : $subtotal;
-			$data['additional_items'][ __( 'Subtotal', 'stripe-payments' ) ] = $subtotal;
 			//increase coupon redeem count
 			$curr_redeem_cnt = get_post_meta( $coupon['id'], 'asp_coupon_red_count', true );
 			$curr_redeem_cnt++;
