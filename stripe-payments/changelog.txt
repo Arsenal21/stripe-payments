@@ -1,5 +1,4 @@
-= WIP =
-* Order details cost calculation layout updated.
+
 
 = 2.0.74 =
 - iDEAL addon fix (this payment method option was getting selected by default when enabled).
