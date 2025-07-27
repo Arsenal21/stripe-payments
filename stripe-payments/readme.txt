@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 6.0
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 2.0.94.t1
+Stable tag: 2.0.94.t2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -67,7 +67,8 @@ https://www.youtube.com/watch?v=L0n_jlEhmoA
 * Option to enable Alipay payments. So your customers can pay using their Alipay accounts.
 * Option to enable Terms and Conditions that your customers have to accept before they can make a purchase.
 * Ability to configure variable products. You can charge different amount for different options of the product.
-* Ability to create "Authorize Only" products. You can hold funds on a card then capture it later.
+* Ability to create "Authorize Only" products. Authorize and place a hold on the customer's card, then capture the funds at a later time.
+* Option to enable extended authorization for Stripe payments (if supported by your Stripe account).
 * Option to display a security badge and message on the payment form.
 * 3D Secure payments compatible.
 * Strong Customer Authentication (SCA) Compliant.
@@ -155,9 +156,10 @@ None.
 
 == Changelog ==
 
-= WIP 2.0.94.t1 =
-* Order details cost calculation layout updated.
-- New option to enabled extended authorization for stripe payment.
+= WIP 2.0.94.t2 =
+- Order details cost calculation layout updated.
+- New option to enable extended authorization for Stripe payment (if your Stripe account supports it).
+- The extended authorization option is added to the [authorize and capture product type] (https://s-plugins.com/authorize-only-transaction-stripe-payments/).
 
 = 2.0.93 =
 - Updated the help text of the 'Thank You' page field.
