@@ -211,8 +211,6 @@ class ASP_Payment_Data {
 
 				// Add the charges to the payment intent object.
 				$obj->charges = $charges;
-				ASP_Debug_Logger::log('>>>>>>>>>>>>>>>>> Charge object', true);
-				ASP_Debug_Logger::log_array_data($charges, true);
 			} catch (\Stripe\Exception\ApiErrorException $e) {
 				// Handle the error
 				ASP_Debug_Logger::log( 'Stripe error occurred trying to retrieve the associated charges for the payment intent. ' . $e->getMessage(), false );
