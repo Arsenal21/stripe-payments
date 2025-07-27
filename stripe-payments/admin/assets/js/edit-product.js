@@ -90,11 +90,11 @@ jQuery(document).ready(function ($) {
 		if (!confirm(aspEditProdData.str.varDeleteConfirm)) {
 			return false;
 		}
-		
+
 		const variationTable = $(this).closest('table');
 
 		$(this).closest('tr').remove();
-		
+
 		// Check if it was the last variation item. If so, remove the variation group as well.
 		if (variationTable.children('tr').length < 1) {
 			variationTable.closest('.asp-variations-group-cont').remove();
@@ -241,7 +241,7 @@ jQuery(document).ready(function ($) {
 		e.preventDefault();
 		if (confirm(aspTaxVarData.str.delConfirm)) {
 			jQuery(this).closest('tr').fadeOut(300, function () { jQuery(this).remove(); });
-			
+
 			// Check if the variation table gets empty. If so, hide the table.
 			const tableBody = jQuery('#wp-asp-tax-variations-tbl tbody tr');
 			if(tableBody.length < 2){
@@ -259,3 +259,19 @@ jQuery(document).ready(function ($) {
 	});
 
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+	const auth_only_checkbox = document.getElementById('asp_product_authorize_only_checkbox');
+	const extended_authorization_checkbox = document.getElementById('asp_product_extended_authorization_checkbox');
+	if (!auth_only_checkbox || !extended_authorization_checkbox){
+		return;
+	}
+
+	auth_only_checkbox.addEventListener('change', function () {
+		if (auth_only_checkbox.checked){
+			extended_authorization_checkbox.disabled = false;
+		} else {
+			extended_authorization_checkbox.disabled = true;
+		}
+	})
+})
