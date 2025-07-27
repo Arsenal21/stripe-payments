@@ -211,6 +211,8 @@ class ASP_Payment_Data {
 
 				// Add the charges to the payment intent object.
 				$obj->charges = $charges;
+				ASP_Debug_Logger::log('>>>>>>>>>>>>>>>>> Charge object', true);
+				ASP_Debug_Logger::log_array_data($charges, true);
 			} catch (\Stripe\Exception\ApiErrorException $e) {
 				// Handle the error
 				ASP_Debug_Logger::log( 'Stripe error occurred trying to retrieve the associated charges for the payment intent. ' . $e->getMessage(), false );
@@ -251,7 +253,7 @@ class ASP_Payment_Data {
 
 		$b_city   = $ipn_ng_class->get_post_var( 'asp_city' );
 		$bd->city = empty( $b_city ) ? '' : sanitize_text_field( stripslashes($b_city));
-		
+
 		$b_state   = $ipn_ng_class->get_post_var( 'asp_state' );
 		$bd->state = empty( $b_state ) ? '' : sanitize_text_field( stripslashes($b_state));
 
@@ -277,7 +279,7 @@ class ASP_Payment_Data {
 
 			$s_city   = $ipn_ng_class->get_post_var( 'asp_shipping_city' );
 			$sd->city = empty( $s_city ) ? '' : sanitize_text_field( stripslashes($s_city));
-			
+
 			$s_state   = $ipn_ng_class->get_post_var( 'asp_shipping_state' );
 			$sd->state = empty( $s_state ) ? '' : sanitize_text_field( stripslashes($s_state));
 

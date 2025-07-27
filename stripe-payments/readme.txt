@@ -157,6 +157,7 @@ None.
 
 = WIP 2.0.94.t1 =
 * Order details cost calculation layout updated.
+- New option to enabled extended authorization for stripe payment.
 
 = 2.0.93 =
 - Updated the help text of the 'Thank You' page field.
@@ -225,7 +226,7 @@ None.
 
 = 2.0.84 =
 - Added a new option to customize the payment button text (in the popup window) on a per product basis.
-- Added support for 'coupon_code' query param to apply coupon directly in the product link url feature. 
+- Added support for 'coupon_code' query param to apply coupon directly in the product link url feature.
 - Corrected the issue causing an error when a product is created or updated with an empty variation group.
 - Regional tax variation deletion issue fixed.
 - Added support for Custom Fields Addon's new fields position feature.

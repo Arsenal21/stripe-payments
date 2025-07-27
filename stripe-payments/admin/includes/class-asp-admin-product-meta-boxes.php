@@ -885,6 +885,7 @@ jQuery(document).ready(function($) {
 		$current_val = get_post_meta( $post->ID, 'asp_product_force_test_mode', true );
 		$plan_id     = get_post_meta( $post->ID, 'asp_sub_plan_id', true );
 		$auth_only   = get_post_meta( $post->ID, 'asp_product_authorize_only', true );
+		$extended_authorization   = get_post_meta( $post->ID, 'asp_product_extended_authorization', true );
 
 		$use_other_stripe_acc = get_post_meta( $post->ID, 'asp_use_other_stripe_acc', true );
 
@@ -894,20 +895,37 @@ jQuery(document).ready(function($) {
 		$test_sec_key = get_post_meta( $post->ID, 'asp_stripe_test_sec_key', true );
 		?>
 		<fieldset>
-		<label><input type="checkbox" name="asp_product_authorize_only" value="1"
-		<?php
-		echo $auth_only ? ' checked' : '';
-		echo ! empty( $plan_id ) ? ' disabled' : '';
-		?>
-		> <?php echo esc_html_e( 'Authorize Only', 'stripe-payments' ); ?></label>
-		<p class="description">
-		<?php echo esc_html_e( 'Place a hold on a card to reserve the funds now and capture it later manually.', 'stripe-payments' ); ?>
-		<br>
-		<?php echo esc_html_e( 'Note: this option is not supported by Subscription products, Alipay, SOFORT, iDEAL and FPX payment methods. If enabled, those won\'t be offered as payment option for this product.', 'stripe-payments' ); ?>
-		</p>
-		<label><input type="checkbox" name="asp_product_force_test_mode" value="1"<?php echo $current_val ? ' checked' : ''; ?>> <?php echo esc_html_e( 'Force Test Mode', 'stripe-payments' ); ?></label>
-		<p class="description"><?php echo esc_html_e( 'When enabled, this product will stay in test mode regardless of the value set in the global "Live Mode" settings option. Can be useful to create a test product.', 'stripe-payments' ); ?></p>
-		</fieldset>
+            <label><input type="checkbox" name="asp_product_authorize_only" value="1" id="asp_product_authorize_only_checkbox"
+					<?php
+					echo $auth_only ? ' checked' : '';
+					echo ! empty( $plan_id ) ? ' disabled' : '';
+					?>
+                > <?php echo esc_html_e( 'Authorize Only', 'stripe-payments' ); ?></label>
+            <p class="description">
+				<?php echo esc_html_e( 'Place a hold on a card to reserve the funds now and capture it later manually.', 'stripe-payments' ); ?>
+                <br>
+				<?php echo esc_html_e( 'Note: this option is not supported by Subscription products, Alipay, SOFORT, iDEAL and FPX payment methods. If enabled, those won\'t be offered as payment option for this product.', 'stripe-payments' ); ?>
+            </p>
+
+            <label>
+                <input type="checkbox" name="asp_product_extended_authorization" value="1" id="asp_product_extended_authorization_checkbox"
+					<?php
+					echo $extended_authorization ? ' checked' : '';
+					echo ! empty( $plan_id ) || empty($auth_only) ? ' disabled' : '';
+					?>
+                > <?php echo esc_html_e( 'Extended Authorization', 'stripe-payments' ); ?>
+            </label>
+            <p class="description">
+				<?php echo esc_html_e( 'Extended authorizations allow you to capture a confirmed payment intent up to 30 days later, depending on the card brand and whether your business is in an eligible category.', 'stripe-payments' ); ?>
+                <br>
+				<?php echo esc_html_e( 'Note: this option only works if Authorize Only option is enabled.', 'stripe-payments' ); ?>
+            </p>
+
+            <label><input type="checkbox" name="asp_product_force_test_mode"
+                          value="1"<?php echo $current_val ? ' checked' : ''; ?>> <?php echo esc_html_e( 'Force Test Mode', 'stripe-payments' ); ?>
+            </label>
+            <p class="description"><?php echo esc_html_e( 'When enabled, this product will stay in test mode regardless of the value set in the global "Live Mode" settings option. Can be useful to create a test product.', 'stripe-payments' ); ?></p>
+        </fieldset>
 		<fieldset class="asp-other-stripe-acc">
 			<legend><?php esc_html_e( 'Other Stripe Account', 'stripe-payments' ); ?></legend>
 			<p class="description"><i><?php echo __( 'Note: this functionality is currently being tested and is not supported by Subscription products, APM, Alipay, SOFORT and iDEAL add-ons. Please do not enable it if you are using one of these add-ons.', 'stripe-payments' ); ?></i></p>
@@ -1045,6 +1063,10 @@ jQuery(document).ready(function($) {
 			$auth_only = isset( $_POST['asp_product_authorize_only'] ) ? sanitize_text_field( stripslashes ( $_POST['asp_product_authorize_only'] ) ) : '';
 			$auth_only = ! empty( $auth_only ) ? true : false;
 			update_post_meta( $post_id, 'asp_product_authorize_only', $auth_only );
+
+			$extended_autorization = isset( $_POST['asp_product_extended_authorization'] ) ? sanitize_text_field($_POST['asp_product_extended_authorization']) : '';
+			$extended_autorization = ! empty( $extended_autorization ) ? true : false;
+			update_post_meta( $post_id, 'asp_product_extended_authorization', $extended_autorization );
 
 			$use_other_stripe_acc = isset( $_POST['asp_use_other_stripe_acc'] ) ? sanitize_text_field( stripslashes ( $_POST['asp_use_other_stripe_acc'] ) ) : '';
 			$use_other_stripe_acc = ! empty( $use_other_stripe_acc ) ? true : false;
