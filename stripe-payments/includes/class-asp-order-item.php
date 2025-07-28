@@ -161,7 +161,7 @@ class ASP_Order_Item {
 			foreach ( $order_details['custom_fields'] as $cf ) {
 				$custom_fields .= $cf['name'] . ': ' . $cf['value'] . "\r\n";
 			}
-			$custom_fields = rtrim( $custom_fields, "\r\n" );
+			// $custom_fields = rtrim( $custom_fields, "\r\n" );
 			$output       .= $custom_fields;
 		}
 
