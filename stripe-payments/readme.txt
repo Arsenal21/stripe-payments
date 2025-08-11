@@ -161,6 +161,7 @@ None.
 - New option to enable extended authorization for Stripe payment (if your Stripe account supports it).
 - The extended authorization option is added to the [authorize and capture product type] (https://s-plugins.com/authorize-only-transaction-stripe-payments/).
 - IP Address formatting issue in order details fixed.
+- [TODO] Testing
 
 = 2.0.93 =
 - Updated the help text of the 'Thank You' page field.
