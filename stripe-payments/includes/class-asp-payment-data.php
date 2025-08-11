@@ -113,6 +113,10 @@ class ASP_Payment_Data {
 		return $this->billing_details_obj;
 	}
 
+	public function set_billing_details(object $billing_addr) {
+		return $this->billing_details_obj = $billing_addr;
+	}
+
 	public function get_shipping_details() {
 		if ( ! empty( $this->shipping_details_obj ) ) {
 			return $this->shipping_details_obj;

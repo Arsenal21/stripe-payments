@@ -230,6 +230,11 @@ if (!jQuery.isEmptyObject(vars.data.variations)) {
 	updateAllAmounts();
 }
 
+// Initiate regional shipping calculation handler.
+if (vars.data && vars.data.shipping_variations?.length > 0 && vars.data.shipping_address){
+	(new ASPShippingVariationHandler()).init();
+}
+
 if (vars.data.billing_address && vars.data.shipping_address) {
 	var billshipSwitch = document.getElementById('same-bill-ship-addr');
 	var billaddrCont = document.getElementById('billing-addr-cont');
@@ -555,7 +560,7 @@ function calcTotal() {
 		tAmount = tAmount + vars.data.shipping;
 	}
 
-	if (vars.data.surcharge){
+	if (vars.data.surcharge && !vars.data.is_trial){
 		let surcharge_amount = calc_surcharge(tAmount);
 		vars.data.surcharge_amount = surcharge_amount;
 		tAmount = tAmount + surcharge_amount;
@@ -664,7 +669,7 @@ function formatMoney(n) {
         } else if (vars.currencyFormat.pos === 'right-with-space'){
             result = result + " " + vars.currencyFormat.s;
         }
-        
+
 	return (negative ? '- ' + result : result);
 }
 
@@ -1018,16 +1023,16 @@ function handlePayment() {
 		}
 
 		// Check if price variation is set, if so, then process it to add this in query param.
-		if (vars.data.variations.constructor === Object && vars.data.variations.hasOwnProperty('applied')) {			
+		if (vars.data.variations.constructor === Object && vars.data.variations.hasOwnProperty('applied')) {
 			variation_counts = vars.data.variations.groups.length
-			
+
 			let variations = [];
 			for (let i = 0; i < variation_counts; i++) {
 
 				if(typeof vars.data.variations.applied[i] === 'undefined') continue;
 
 				// Check if it is not a checkbox type input.
-				if (vars.data.variations.opts[i]['type'] != '2') { 
+				if (vars.data.variations.opts[i]['type'] != '2') {
 					let variation_str = vars.data.variations.groups[i] + '_' + vars.data.variations.applied[i];
 					variations.push(variation_str);
 				}else{
@@ -1044,7 +1049,7 @@ function handlePayment() {
 			const encodedPriceVariations = variations.map(item => encodeURIComponent(item)).join(',');
 			reqStr += '&pvar=' + encodedPriceVariations;
 		}
-		
+
 		vars.data.csRegenParams = reqStr;
 		doAddonAction('csBeforeRegenParams');
 		console.log('Doing asp_pp_create_pi ajax request.');
@@ -1620,7 +1625,7 @@ jQuery(document).ready(function(){
 	const couponCodeInput = jQuery("#coupon-code");
 
 	couponCodeInput.val(couponCode);
-	
+
 	if(couponCodeInput.length && couponCodeInput.val() !== ''){
 		jQuery("#apply-coupon-btn").trigger("click");
 	}
@@ -1651,3 +1656,130 @@ document.addEventListener('DOMContentLoaded', function(){
 	}
 
 })
+
+function ASPShippingVariationHandler () {
+	let parent = this;
+
+	parent.billingAddrContainer = document.getElementById('billing-addr-cont');
+	parent.bCountry = document.getElementById('country');
+	parent.bState = document.getElementById('state');
+	parent.bCity = document.getElementById('city');
+	parent.bAddress = document.getElementById('address');
+	parent.bPostCode = document.getElementById('postcode');
+
+	parent.shippingAddrContainer = document.getElementById('shipping-addr-cont');
+	parent.sCountry = document.getElementById('shipping_country');
+	parent.sState = document.getElementById('shipping_state');
+	parent.sCity = document.getElementById('shipping_city');
+	parent.sAddress = document.getElementById('shipping_address');
+	parent.sPostCode = document.getElementById('shipping_postcode');
+
+	parent.sameBillingShippingCheckbox = document.getElementById('same-bill-ship-addr');
+
+	parent.init = function () {
+		if( typeof vars.data.is_trial !== 'undefined' && vars.data.is_trial ) {
+			// We don't do shipping amount calculation if it's a subscription trial period.
+			return;
+		}
+
+		// Collect and store the base shipping before calculating regional shipping.
+		vars.data.base_shipping = vars.data.shipping;
+
+		if (parent.billingAddrContainer){
+			// By default, the sameBillingShippingCheckbox checkbox is checked,
+			// So initially we have to listen to billing address fields change events.
+			parent.onBillingAddressChange();
+			parent.billingAddrContainer.addEventListener('change',  parent.onBillingAddressChange);
+		}
+
+		// Listen to sameBillingShippingCheckbox changes.
+		if (parent.sameBillingShippingCheckbox) {
+			parent.sameBillingShippingCheckbox.addEventListener('change', parent.onSameBillingShippingChange);
+		}
+	}
+
+	parent.onSameBillingShippingChange = function (e){
+		// Check if same billing shipping checkbox is checked or not.
+		if (e.target.checked){
+			// If same billing shipping enabled, then only listen to billing address changes.
+
+			// Initially evaluate the current billing address
+			parent.onBillingAddressChange();
+
+			parent.billingAddrContainer.addEventListener('change', parent.onBillingAddressChange);
+			parent.shippingAddrContainer.removeEventListener('change', parent.onShippingAddressChange);
+		} else {
+			// If same billing shipping not enabled, then only listen to shipping address changes.
+
+			// Initially evaluate the current shipping address
+			parent.onShippingAddressChange();
+
+			parent.shippingAddrContainer.addEventListener('change', parent.onShippingAddressChange);
+			parent.billingAddrContainer.removeEventListener('change', parent.onBillingAddressChange);
+		}
+	}
+
+	parent.onBillingAddressChange = function (){
+		parent.applyRegionalShippingCost({
+			cCode: parent.bCountry.value,
+			state: parent.bState.value,
+			city: parent.bCity.value,
+		});
+	}
+
+	parent.onShippingAddressChange = function (){
+		parent.applyRegionalShippingCost({
+			cCode: parent.sCountry.value,
+			state: parent.sState.value,
+			city: parent.sCity.value,
+		});
+	}
+
+	parent.applyRegionalShippingCost = function ({cCode, state, city}) {
+		if (vars.data.is_trial){
+			return; // Currently we don't use shipping in trial sub payment.
+		}
+
+		if (!vars.data.shipping_variations?.length){
+			return;
+		}
+
+		let regionalShippingAmount = 0;
+		let appliedVariationCount = 0;
+
+		let baseShippingAmount = vars.data.base_shipping || 0;
+
+		vars.data.shipping_variations.forEach(function (v) {
+			switch (v.type) {
+				case '0':
+					if (cCode && v.loc === cCode) {
+						regionalShippingAmount += v.amount;
+						appliedVariationCount++;
+					}
+					break;
+				case '1':
+					if (state && v.loc.toLowerCase() === state.toLowerCase()) {
+						regionalShippingAmount += v.amount;
+						appliedVariationCount++;
+					}
+					break;
+				case '2':
+					if (city && v.loc.toLowerCase() === city.toLowerCase()) {
+						regionalShippingAmount += v.amount;
+						appliedVariationCount++;
+					}
+					break;
+				default:
+					break;
+			}
+		});
+
+		if (appliedVariationCount > 0) {
+			vars.data.shipping = baseShippingAmount + amount_to_cents(regionalShippingAmount, vars.data.currency);
+			updateAllAmounts();
+		} else if (vars.data.shipping !== baseShippingAmount) {
+			vars.data.shipping = baseShippingAmount;
+			updateAllAmounts();
+		}
+	}
+}

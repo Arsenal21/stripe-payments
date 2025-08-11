@@ -452,33 +452,110 @@ input[type=checkbox][disabled] + label {
 		$current_tax         = get_post_meta( $post->ID, 'asp_product_tax', true );
 		$tax_variations_type = get_post_meta( $post->ID, 'asp_product_tax_variations_type', true );
 		$tax_variations_arr  = get_post_meta( $post->ID, 'asp_product_tax_variations', true );
+		$shipping_variations_arr  = get_post_meta( $post->ID, 'asp_product_shipping_variations', true );
 
-		$t_var_line_tpl = '<tr>
-		<td>
-		<select class="wp-asp-tax-variation-base wp-asp-tax-variations-input" name="asp_product_tax_variations_base[]">
-			<option value="0" %11$s>' . esc_html__( 'Country', 'stripe-payments' ) . '</option>
-			<option value="1" %12$s>' . esc_html__( 'State', 'stripe-payments' ) . '</option>
-			<option value="2" %13$s>' . esc_html__( 'City', 'stripe-payments' ) . '</option>
-		</select>
-		</td>
-		<td>
-		<div class="wp-asp-tax-variation-cont-type-0" style="%3$s"><select class="wp-asp-tax-variations-input" name="asp_product_tax_variations_l[]" %6$s>%1$s</select></div>
-		<div class="wp-asp-tax-variation-cont-type-1" style="%4$s">
-		<input class="wp-asp-tax-variations-input" name="asp_product_tax_variations_l[]" type="text" %7$s value="%9$s">
-		</div>
-		<div class="wp-asp-tax-variation-cont-type-2" style="%5$s">
-		<input class="wp-asp-tax-variations-input" name="asp_product_tax_variations_l[]" type="text" %8$s value="%10$s">
-		</div>
-		</td>
-		<td><input type="number" class="wp-asp-tax-variations-input" step="any" min="0" name="asp_product_tax_variations_a[]" value="%2$s"></td>
-		<td><button type="button" class="button wp-asp-tax-variations-del-btn asp-btn-small"><span class="dashicons dashicons-trash" title="' . __( 'Delete variation', 'stripe-payments' ) . '"></span></button></td>
+		$s_var_line_tpl = '
+        <tr>
+            <td>
+                <select class="wp-asp-shipping-variation-base wp-asp-shipping-variations-input" name="asp_product_shipping_variations_base[]">
+                    <option value="0" %11$s>' . esc_html__( 'Country', 'stripe-payments' ) . '</option>
+                    <option value="1" %12$s>' . esc_html__( 'State', 'stripe-payments' ) . '</option>
+                    <option value="2" %13$s>' . esc_html__( 'City', 'stripe-payments' ) . '</option>
+                </select>
+            </td>
+            <td>
+                <div class="wp-asp-shipping-variation-cont-type-0" style="%3$s">
+                    <select class="wp-asp-shipping-variations-input" name="asp_product_shipping_variations_l[]" %6$s>%1$s</select>
+                </div>
+                <div class="wp-asp-shipping-variation-cont-type-1" style="%4$s">
+                    <input class="wp-asp-shipping-variations-input" name="asp_product_shipping_variations_l[]" type="text" %7$s value="%9$s">
+                </div>
+                <div class="wp-asp-shipping-variation-cont-type-2" style="%5$s">
+                    <input class="wp-asp-shipping-variations-input" name="asp_product_shipping_variations_l[]" type="text" %8$s value="%10$s">
+                </div>
+            </td>
+            <td>
+                <input type="number" class="wp-asp-shipping-variations-input" step="any" min="0" name="asp_product_shipping_variations_a[]" value="%2$s">
+            </td>
+            <td>
+                <button type="button" class="button wp-asp-shipping-variations-del-btn asp-btn-small">
+                    <span class="dashicons dashicons-trash" title="' . __( 'Delete variation', 'stripe-payments' ) . '"></span>
+                </button>
+            </td>
 		</tr>';
 
-		$out = '';
+		$shipping_out = '';
+		if ( ! empty( $shipping_variations_arr ) ) {
+			foreach ( $shipping_variations_arr as $v ) {
+				$c_code = '0' === $v['type'] ? $c_code = $v['loc'] : $c_code = '';
+				$shipping_out    .= sprintf(
+					$s_var_line_tpl,
+					ASP_Utils::get_countries_opts( $c_code ),
+					$v['amount'],
+					'0' === $v['type'] ? '' : 'display:none',
+					'1' === $v['type'] ? '' : 'display:none',
+					'2' === $v['type'] ? '' : 'display:none',
+					'0' === $v['type'] ? '' : 'disabled',
+					'1' === $v['type'] ? '' : 'disabled',
+					'2' === $v['type'] ? '' : 'disabled',
+					'1' === $v['type'] ? $v['loc'] : '',
+					'2' === $v['type'] ? $v['loc'] : '',
+					'0' === $v['type'] ? 'selected' : '',
+					'1' === $v['type'] ? 'selected' : '',
+					'2' === $v['type'] ? 'selected' : ''
+				);
+			}
+		}
+
+		wp_localize_script(
+			'asp-admin-edit-product-js',
+			'aspShippingVarData',
+			array(
+				'tplLine'        => $s_var_line_tpl,
+				'cOpts'          => ASP_Utils::get_countries_opts(),
+				'disabledForSub' => false,
+				'str'            => array(
+					'delConfirm' => __( 'Are you sure you want to delete this variation?', 'stripe-payments' ),
+				),
+			)
+		);
+
+		$t_var_line_tpl = '
+        <tr>
+            <td>
+                <select class="wp-asp-tax-variation-base wp-asp-tax-variations-input" name="asp_product_tax_variations_base[]">
+                    <option value="0" %11$s>' . esc_html__( 'Country', 'stripe-payments' ) . '</option>
+                    <option value="1" %12$s>' . esc_html__( 'State', 'stripe-payments' ) . '</option>
+                    <option value="2" %13$s>' . esc_html__( 'City', 'stripe-payments' ) . '</option>
+                </select>
+            </td>
+            <td>
+                <div class="wp-asp-tax-variation-cont-type-0" style="%3$s">
+                    <select class="wp-asp-tax-variations-input" name="asp_product_tax_variations_l[]" %6$s>%1$s</select>
+                </div>
+                <div class="wp-asp-tax-variation-cont-type-1" style="%4$s">
+                    <input class="wp-asp-tax-variations-input" name="asp_product_tax_variations_l[]" type="text" %7$s value="%9$s">
+                </div>
+                <div class="wp-asp-tax-variation-cont-type-2" style="%5$s">
+                    <input class="wp-asp-tax-variations-input" name="asp_product_tax_variations_l[]" type="text" %8$s value="%10$s">
+                </div>
+            </td>
+            <td>
+                <input type="number" class="wp-asp-tax-variations-input" step="any" min="0" name="asp_product_tax_variations_a[]" value="%2$s">
+            </td>
+            <td>
+                <button type="button" class="button wp-asp-tax-variations-del-btn asp-btn-small">
+                    <span class="dashicons dashicons-trash" title="' . __( 'Delete variation', 'stripe-payments' ) . '"></span>
+                </button>
+            </td>
+		</tr>
+		';
+
+		$tax_out = '';
 		if ( ! empty( $tax_variations_arr ) ) {
 			foreach ( $tax_variations_arr as $v ) {
 				$c_code = '0' === $v['type'] ? $c_code = $v['loc'] : $c_code = '';
-				$out   .= sprintf(
+				$tax_out    .= sprintf(
 					$t_var_line_tpl,
 					ASP_Utils::get_countries_opts( $c_code ),
 					$v['amount'],
@@ -502,8 +579,8 @@ input[type=checkbox][disabled] + label {
 		$prod_type = get_post_meta( $post->ID, 'asp_product_type', true );
 		$prod_type = apply_filters( 'asp_product_edit_product_type_selected', $prod_type, $post );
 		if ( 'subscription' === $prod_type
-		&& class_exists( 'ASPSUB_main' )
-		&& version_compare( ASPSUB_main::ADDON_VER, '2.0.35', '<' ) ) {
+		     && class_exists( 'ASPSUB_main' )
+		     && version_compare( ASPSUB_main::ADDON_VER, '2.0.35', '<' ) ) {
 			$tax_variations_disabled = true;
 		}
 
@@ -521,63 +598,115 @@ input[type=checkbox][disabled] + label {
 		);
 
 		?>
-<div id="asp_shipping_cost_container">
-	<label><?php esc_html_e( 'Shipping Cost', 'stripe-payments' ); ?></label>
-	<br />
-	<input type="number" step="any" min="0" name="asp_product_shipping" value="<?php echo esc_attr( $current_shipping ); ?>">
-	<p class="description">
-		<?php
-		esc_html_e( 'Numbers only, no need to put currency symbol. Example: 5.90', 'stripe-payments' );
-		echo '<br>';
-		esc_html_e( 'Leave it blank if you are not shipping your product or not charging additional shipping costs.', 'stripe-payments' );
-		?>
-	</p>
-<hr />
-</div>
-<label><?php esc_html_e( 'Tax (%)', 'stripe-payments' ); ?></label>
-<br />
-<input type="number" step="any" min="0" name="asp_product_tax" value="<?php echo esc_attr( $current_tax ); ?>"><span>%</span>
-<p class="description">
-		<?php
-		esc_html_e( 'Enter tax (in percent) which should be added to product price during purchase.', 'stripe-payments' );
-		echo '<br>';
-		esc_html_e( 'Leave it blank if you don\'t want to apply tax.', 'stripe-payments' );
-		?>
-</p>
-<fieldset>
-	<legend><?php esc_html_e( 'Tax Variations', 'stripe-payments' ); ?></legend>
-		<div id="wp-asp-tax-variations-disabled-msg" style="color:red;<?php echo ! empty( $tax_variations_disabled ) ? '' : 'display:none;'; ?>">
-			<?php
-			// translators: %s is add-on version number
+        <fieldset>
+            <div id="asp_shipping_cost_container">
+                <div>
+                    <label>
+                        <?php esc_html_e( 'Base Shipping Cost', 'stripe-payments' ); ?>
+                    </label>
+                </div>
+                <input type="number" step="any" min="0" name="asp_product_shipping" value="<?php echo esc_attr( $current_shipping ); ?>">
+                <p class="description">
+			        <?php
+			        esc_html_e( 'Numbers only, no need to put currency symbol. Example: 5.90', 'stripe-payments' );
+			        echo '<br>';
+			        esc_html_e( 'Leave it blank if you are not shipping your product or not charging additional shipping costs.', 'stripe-payments' );
+			        ?>
+                </p>
+            </div>
+
+            <div id="wp-asp-shipping-variations-cont">
+                <div>
+                <label><?php esc_html_e( 'Regional Shipping Variations', 'stripe-payments' ); ?></label>
+                </div>
+
+                <p class="description">
+					<?php esc_html_e( 'Use this to configure shipping variations on a per-region basis.', 'stripe-payments' ); ?>
+                </p>
+                <table class="" id="wp-asp-shipping-variations-tbl" <?php echo empty( $shipping_out ) ? 'style="display:none;"' : ''; ?>>
+                    <thead>
+                    <tr>
+                        <th style="width: 20%;"><?php esc_html_e( 'Type', 'stripe-payments' ); ?></th>
+                        <th style="width: 50%;"><?php esc_html_e( 'Location', 'stripe-payments' ); ?></th>
+                        <th style="width: 20%;"><?php esc_html_e( 'Shipping Cost', 'stripe-payments' ); ?></th>
+                        <th style="width: 10%;"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+					<?php echo $shipping_out; ?>
+                    </tbody>
+                </table>
+                <p>
+                    <button type="button" id="wp-asp-shipping-variations-add-btn" class="button">
+                        <span class="dashicons dashicons-plus"></span> <?php _e( 'Add Shipping Variation', 'stripe-payments' ); ?>
+                    </button>
+                </p>
+                <p class="description">
+                    <strong><?php esc_html_e('NOTE:', 'stripe-payments'); ?></strong> <?php esc_html_e('Shipping address collection needs to be enabled for the functioning of regional shipping amount.', 'stripe-payments'); ?>
+                </p>
+            </div>
+        </fieldset>
+
+        <hr>
+
+        <fieldset>
+            <div>
+                <label><?php esc_html_e( 'Tax (%)', 'stripe-payments' ); ?></label>
+            </div>
+            <input type="number" step="any" min="0" name="asp_product_tax" value="<?php echo esc_attr( $current_tax ); ?>">
+
+            <p class="description">
+		        <?php
+		        esc_html_e( 'Enter tax (in percent) which should be added to product price during purchase.', 'stripe-payments' );
+		        echo '<br>';
+		        esc_html_e( 'Leave it blank if you don\'t want to apply tax.', 'stripe-payments' );
+		        ?>
+            </p>
+
+            <div>
+                <label><?php esc_html_e( 'Tax Variations', 'stripe-payments' ); ?></label>
+            </div>
+            <div id="wp-asp-tax-variations-disabled-msg" style="color:red;<?php echo ! empty( $tax_variations_disabled ) ? '' : 'display:none;'; ?>">
+				<?php
+				// translators: %s is add-on version number
 				echo sprintf( __( 'Update Stripe Payments Subscriptions add-on to version %s to enable this functionailty.', 'stripe-payments' ), '2.0.35+' );
-			?>
-</div>
-<div id="wp-asp-tax-variations-cont"<?php echo ! empty( $tax_variations_disabled ) ? ' style="display:none;"' : ''; ?>>
-<p class="description">
-			<?php
-			esc_html_e( 'Use this to configure tax variations on a per-region basis.', 'stripe-payments' );
-			?>
-</p>
-<table class="fixed" id="wp-asp-tax-variations-tbl"<?php echo empty( $out ) ? 'style="display:none;"' : ''; ?>>
-<thead>
-	<tr>
-		<th style="width: 20%;"><?php esc_html_e( 'Type', 'stripe-payments' ); ?></th>
-		<th style="width: 50%;"><?php esc_html_e( 'Location', 'stripe-payments' ); ?></th>
-		<th style="width: 20%;"><?php esc_html_e( 'Tax', 'stripe-payments' ); ?></th>
-		<th style="width: 10%;"></th>
-	</tr>
-</thead>
-<tbody>
-		<?php echo $out; ?>
-</tbody>
-</table>
-<p><button type="button" id="wp-asp-tax-variations-add-btn" class="button"><span class="dashicons dashicons-plus"></span> <?php _e( 'Add Tax Variation', 'stripe-payments' ); ?></button></p>
-<label><?php esc_html_e( 'Apply the tax variation based on:', 'stripe-payments' ); ?></label>
-<br>
-<label><input type="radio" name="asp_product_tax_variations_type" value="b"<?php echo 'b' === $tax_variations_type || empty( $tax_variations_type ) ? ' checked' : ''; ?>><?php _e( 'Billing address', 'stripe-payments' ); ?></label>
-<label><input type="radio" name="asp_product_tax_variations_type" value="s"<?php echo 's' === $tax_variations_type ? ' checked' : ''; ?>><?php _e( 'Shipping address', 'stripe-payments' ); ?></label>
-</div>
-</fieldset>
+				?>
+            </div>
+            <div id="wp-asp-tax-variations-cont"<?php echo ! empty( $tax_variations_disabled ) ? ' style="display:none;"' : ''; ?>>
+                <p class="description">
+					<?php
+					esc_html_e( 'Use this to configure tax variations on a per-region basis.', 'stripe-payments' );
+					?>
+                </p>
+                <table class="fixed" id="wp-asp-tax-variations-tbl" <?php echo empty( $tax_out ) ? 'style="display:none;"' : ''; ?>>
+                    <thead>
+                    <tr>
+                        <th style="width: 20%;"><?php esc_html_e( 'Type', 'stripe-payments' ); ?></th>
+                        <th style="width: 50%;"><?php esc_html_e( 'Location', 'stripe-payments' ); ?></th>
+                        <th style="width: 20%;"><?php esc_html_e( 'Tax', 'stripe-payments' ); ?></th>
+                        <th style="width: 10%;"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+					<?php echo $tax_out; ?>
+                    </tbody>
+                </table>
+                <p>
+                    <button type="button" id="wp-asp-tax-variations-add-btn" class="button">
+                        <span class="dashicons dashicons-plus"></span> <?php _e( 'Add Tax Variation', 'stripe-payments' ); ?>
+                    </button>
+                </p>
+
+                <label><?php esc_html_e( 'Apply the tax variation based on:', 'stripe-payments' ); ?></label>
+                <br>
+                <label>
+                    <input type="radio" name="asp_product_tax_variations_type" value="b"<?php echo 'b' === $tax_variations_type || empty( $tax_variations_type ) ? ' checked' : ''; ?>><?php _e( 'Billing address', 'stripe-payments' ); ?>
+                </label>
+                <label>
+                    <input type="radio" name="asp_product_tax_variations_type" value="s"<?php echo 's' === $tax_variations_type ? ' checked' : ''; ?>><?php _e( 'Shipping address', 'stripe-payments' ); ?>
+                </label>
+            </div>
+        </fieldset>
 		<?php
 	}
 
@@ -978,7 +1107,7 @@ jQuery(document).ready(function($) {
 	}
 
 	public function save_product_handler( $post_id, $post, $update ) {
-                $action = isset( $_POST['action'] ) ? sanitize_text_field( $_POST['action'] ) : '';
+        $action = isset( $_POST['action'] ) ? sanitize_text_field( $_POST['action'] ) : '';
 
 		if ( empty( $action ) ) {
 			//this is probably not edit or new post creation event
@@ -987,11 +1116,11 @@ jQuery(document).ready(function($) {
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
 			return;
 		}
-                if ( $action == 'inline-save' ){
-                    //This is a quick edit action. Don't try to save other product details for this action.
-                    //The default wordpress post_save action will handle the standard post data update (for example: the title, slug, date etc).
-                    return;
-                }
+        if ( $action == 'inline-save' ){
+            //This is a quick edit action. Don't try to save other product details for this action.
+            //The default wordpress post_save action will handle the standard post data update (for example: the title, slug, date etc).
+            return;
+        }
 		if ( isset( $post_id ) ) {
 			//regen ckey
 			ASP_Utils::get_ckey( true );
@@ -1008,6 +1137,28 @@ jQuery(document).ready(function($) {
 			$shipping = isset( $_POST['asp_product_shipping'] ) ? sanitize_text_field( stripslashes ( $_POST['asp_product_shipping'] ) ) : '';
 			$shipping = ! empty( $shipping ) ? AcceptStripePayments::tofloat( $shipping ) : $shipping;
 			update_post_meta( $post_id, 'asp_product_shipping', $shipping );
+
+			$enable_regional_shipping = isset( $_POST['asp_product_regional_shipping_enable'] ) ? sanitize_text_field( $_POST['asp_product_regional_shipping_enable'] ) : '';
+			update_post_meta( $post_id, 'asp_product_regional_shipping_enable', $enable_regional_shipping );
+
+			$shipping_variations_base = filter_input( INPUT_POST, 'asp_product_shipping_variations_base', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
+			$shipping_variations_l    = filter_input( INPUT_POST, 'asp_product_shipping_variations_l', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
+			$shipping_variations_a    = filter_input( INPUT_POST, 'asp_product_shipping_variations_a', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
+
+			$shipping_variations_arr = array();
+			if ( ! empty( $shipping_variations_base ) && ! empty( $shipping_variations_l ) && ! empty( $shipping_variations_a ) ) {
+				foreach ( $shipping_variations_base as $i => $type ) {
+					$l                    = filter_var( $shipping_variations_l[ $i ], FILTER_DEFAULT );
+					$shipping                  = floatval( filter_var( $shipping_variations_a[ $i ], FILTER_DEFAULT ) );
+					$shipping_variations_arr[] = array(
+						'type'   => $type,
+						'loc'    => $l,
+						'amount' => $shipping,
+					);
+				}
+			}
+
+			update_post_meta( $post_id, 'asp_product_shipping_variations', $shipping_variations_arr );
 
 			$tax = isset( $_POST['asp_product_tax'] ) ? sanitize_text_field( stripslashes ( $_POST['asp_product_tax'] ) ) : '';
 			$tax = floatval( $tax );

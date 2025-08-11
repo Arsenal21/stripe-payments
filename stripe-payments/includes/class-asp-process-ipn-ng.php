@@ -42,7 +42,7 @@ class ASP_Process_IPN_NG {
 
 	public function handle_next_action_results() {
         ASP_Debug_Logger::log( 'handle_next_action_results() - processing.', true);
-                
+
 		$pi_id = isset( $_GET['payment_intent'] ) ? sanitize_text_field( stripslashes ( $_GET['payment_intent'] ) ) : '';
 
 		$is_live = isset( $_GET['is_live'] ) ? sanitize_text_field( stripslashes ( $_GET['is_live'] ) ) : '';
@@ -112,7 +112,7 @@ class ASP_Process_IPN_NG {
 
 			//Trigger an action hook for this error condition.
 			//The $_POST data is available in the global $_POST variable which may contain additional details.
-			do_action( 'asp_stripe_process_ipn_error', $err_msg );		
+			do_action( 'asp_stripe_process_ipn_error', $err_msg );
 
 			//send email to notify site admin (if option enabled)
 			$opt = get_option( 'AcceptStripePayments-settings' );
@@ -194,7 +194,7 @@ class ASP_Process_IPN_NG {
 		//$item object can be used to retreive the product details.
 		//Trigger filter that can be used to check this from the subscription addon (if needed).
 		$configured_currency = apply_filters( 'asp_ipn_check_currency_configured', $configured_currency, $p_curr, $item );
-		
+
 		if ( strtolower($p_curr) !== strtolower($configured_currency) ) {
 			return false;
 		}
@@ -366,6 +366,24 @@ class ASP_Process_IPN_NG {
 			}
 		}
 
+		// Check and calculate regional shipping amount if available.
+		$calculate_shipping_amount = apply_filters('asp_calculate_shipping_amount_on_ipn_process', true, $prod_id); // Useful for subscription addon.
+		if ($calculate_shipping_amount){
+			$base_shipping_amount = $item->get_shipping(true);
+			$total_shipping_amount = $base_shipping_amount;
+
+			$collect_shipping_addr_enabled 	= $item->get_meta('asp_product_collect_shipping_addr');
+
+			if ($collect_shipping_addr_enabled == '1' ){
+				// ASP_Debug_Logger::log('Calculation regional shipping amount.', true);
+				$shipping_region  = get_object_vars($p_data->get_shipping_details());
+				$regional_shipping_amount = $item->calculate_regional_shipping_amount($shipping_region, true);
+				$total_shipping_amount += $regional_shipping_amount;
+			}
+
+			$item->set_shipping( $total_shipping_amount, true );
+		}
+
 		if ( empty( $price ) ) {
 			$post_price = $this->get_post_var( 'asp_amount', FILTER_SANITIZE_NUMBER_FLOAT );
 			if ( $post_price ) {
@@ -414,7 +432,7 @@ class ASP_Process_IPN_NG {
 			$coupon_code = sanitize_text_field( stripslashes( $coupon_code ));
 			ASP_Debug_Logger::log( sprintf( 'Coupon code provided: %s', $coupon_code ) );
 			$coupon_valid = $item->check_coupon( $coupon_code );
-			
+
 			if ( $coupon_valid ) {
 				ASP_Debug_Logger::log( 'Coupon is valid for the product.' );
 			} else {
