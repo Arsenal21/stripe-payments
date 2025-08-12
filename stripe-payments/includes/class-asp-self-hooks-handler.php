@@ -22,6 +22,10 @@ class ASP_Self_Hooks_Handler {
 		add_filter( 'asp_ng_pp_data_ready', array( $this, 'tax_variations_addon' ), 100, 2 );
 
 		add_action( 'asp_stripe_payment_completed', array( $this, 'daily_txn_limit' ), 102, 2 );
+
+		// TODO: There two are for addon's backward compatability, need to remove this later.
+		add_filter( 'asp_ng_pp_data_ready', array($this, 'handle_backward_compatible_pp_data_ready') , 10, 2 );
+		add_filter( 'asp_calculate_regional_shipping_amount_enabled' , array($this, 'handle_backward_compatible_calculate_regional_shipping_amount_enabled'));
 	}
 
 	public function plugins_loaded() {
@@ -517,6 +521,61 @@ class ASP_Self_Hooks_Handler {
 		else if($asp_daily_txn_counter_obj->asp_is_daily_tnx_limit_with_captcha_enabled()){
 			$asp_daily_txn_counter_obj->asp_increment_daily_txn_counter();
 		}
+	}
+
+
+	public function handle_backward_compatible_pp_data_ready($data, $atts){
+		require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		$plugins = get_plugins();
+
+		$prod_id = $atts['product_id'];
+		$plan_id = get_post_meta( $prod_id, 'asp_sub_plan_id', true );
+		if ( ! $plan_id ) {
+			return $data;
+		}
+		$sub_addon_slug = 'stripe-payments-subscriptions/asp-sub-main.php';
+		$sub_addon_required_version = '2.0.49';
+		if ( isset( $plugins[$sub_addon_slug] ) && is_plugin_active($sub_addon_slug)){
+			$sub_addon_installed_version  = class_exists('ASPSUB_main') && !empty(ASPSUB_main::ADDON_VER) ? ASPSUB_main::ADDON_VER : $plugins[$sub_addon_slug]['Version'];
+			if ( version_compare( $sub_addon_installed_version, $sub_addon_required_version, '<' ) ) {
+				$data['disable_regional_shipping_calculation'] = true;
+			}
+		}
+
+		return $data;
+	}
+
+	public function handle_backward_compatible_calculate_regional_shipping_amount_enabled($is_enabled){
+		require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		$plugins = get_plugins();
+
+		$apm_addon_slug = 'stripe-additional-payment-methods/asp-apm-main.php';
+		$apm_addon_required_version  = '2.1.3';
+		if ( isset( $plugins[$apm_addon_slug] ) && is_plugin_active($apm_addon_slug)){
+			$apm_installed_version  = defined('WP_ASP_APM_PLUGIN_VERSION') ? WP_ASP_APM_PLUGIN_VERSION : $plugins[$apm_addon_slug]['Version'];
+
+			if ( version_compare( $apm_installed_version, $apm_addon_required_version, '<' ) && isset($_POST['ev_data']) ) {
+				ASP_Debug_Logger::log('WARNING: ASP APM addon needs to be updated!', true);
+
+				return false;
+			}
+		}
+
+		$sub_addon_slug = 'stripe-payments-subscriptions/asp-sub-main.php';
+		$sub_addon_required_version = '2.0.49';
+		if ( isset( $plugins[$sub_addon_slug] ) && is_plugin_active($sub_addon_slug)){
+			$sub_addon_installed_version  = class_exists('ASPSUB_main') && !empty(ASPSUB_main::ADDON_VER) ? ASPSUB_main::ADDON_VER : $plugins[$sub_addon_slug]['Version'];
+			if ( version_compare( $sub_addon_installed_version, $sub_addon_required_version, '<' ) && isset($_POST['asp_sub_id']) ) {
+				ASP_Debug_Logger::log('WARNING: ASP subscription addon needs to be updated!', true);
+
+				add_filter( 'asp_calculate_shipping_amount_on_ipn_process', function (){return false;});
+
+				return false;
+			}
+		}
+
+		// Default
+		return true;
 	}
 
 }
