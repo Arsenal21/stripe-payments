@@ -1677,7 +1677,7 @@ function ASPShippingVariationHandler () {
 	parent.sameBillingShippingCheckbox = document.getElementById('same-bill-ship-addr');
 
 	parent.init = function () {
-		if(Boolean(vars.data.disable_regional_shipping_calculation)){
+		if(Boolean(vars.data.disable_regional_shipping_calculation)){ // TODO: For addons backward compatability, need to remove this later.
 			return;
 		}
 
