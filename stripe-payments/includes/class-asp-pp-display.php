@@ -334,6 +334,9 @@ class ASP_PP_Display {
 		$data['tax']      = $this->item->get_tax();
 		$data['shipping'] = $this->item->get_shipping( true );
 
+		$data['is_physical_product'] = $this->item->is_physical_product();
+
+
 		$data['surcharge'] = $this->item->get_surcharge();
 		$data['surcharge_type'] = $this->item->get_surcharge_type();
 		$data['surcharge_amount'] = $this->item->calculate_total_surcharge( true );

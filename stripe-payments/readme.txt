@@ -163,6 +163,7 @@ None.
 - IP Address formatting issue in order details fixed.
 - [TODO] Testing
 - New regional shipping variation feature added.
+- New feature added to mark a product as physical product.
 
 = 2.0.93 =
 - Updated the help text of the 'Thank You' page field.
