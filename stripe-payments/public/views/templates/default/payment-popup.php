@@ -42,7 +42,7 @@ echo wp_kses( '<style>' . $css . '</style>' . "\r\n", ASP_Utils::asp_allowed_tag
         ((isset($a['data']['shipping_variations']) && !empty($a['data']['shipping_variations'])) || !empty($a['data']['shipping'])) &&
         empty($shipping_address_enabled)
     ){
-        $a['fatal_error'] = __('Shipping is enabled for this product, but customer shipping address collection is disabled.', 'stripe-payments');
+        $a['fatal_error'] = __('Configuration Error: Shipping is enabled for this product, but customer shipping address collection is disabled. You need to enable shipping address collection for physical product.', 'stripe-payments');
     }
 
 	// Show error message if tax variation enabled, but address collection is not enabled.
@@ -51,7 +51,7 @@ echo wp_kses( '<style>' . $css . '</style>' . "\r\n", ASP_Utils::asp_allowed_tag
 	    (isset($a['data']['tax_variations']) && !empty($a['data']['tax_variations'])) &&
         empty($billing_address_enabled)
     ){
-        $a['fatal_error'] = __('Regional tax variation is enabled for this product, but customer address collection is disabled.', 'stripe-payments');
+        $a['fatal_error'] = __('Configuration Error: Regional tax variation is enabled for this product, but customer address collection is disabled. You need to enable address collection for this product.', 'stripe-payments');
     }
 
 	// Trigger action hook. Can be used to output additional data to payment popup before closing <head> tag.

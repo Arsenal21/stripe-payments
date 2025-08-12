@@ -336,7 +336,7 @@ class ASP_Admin_Product_Meta_Boxes {
 <p>
 		<?php
 		// translators: %s is a link to documentation page
-		echo sprintf( __( 'You can find documentation on variations <a href="%s" target="_blank">here</a>.', 'stripe-payments' ), 'https://s-plugins.com/creating-variable-products-using-the-stripe-payments-plugin' );
+		echo sprintf( __( 'View the product variations documentation <a href="%s" target="_blank">here</a>.', 'stripe-payments' ), 'https://s-plugins.com/creating-variable-products-using-the-stripe-payments-plugin' );
 		?>
 </p>
 		<?php
@@ -599,11 +599,16 @@ input[type=checkbox][disabled] + label {
 
 		?>
         <fieldset>
+			<p>
+				<?php
+				// translators: %s is a link to documentation page
+				echo sprintf( __( 'You can find the shipping and tax documentation <a href="%s" target="_blank">here</a>.', 'stripe-payments' ), 'https://s-plugins.com/use-shipping-tax-stripe-payments/' );
+				?>
+			</p>
+
             <div id="asp_shipping_cost_container">
-                <div>
-                    <label>
-                        <?php esc_html_e( 'Base Shipping Cost', 'stripe-payments' ); ?>
-                    </label>
+                <div class="asp-admin-metabox-subhead">
+                	<?php esc_html_e( 'Base Shipping Cost', 'stripe-payments' ); ?>
                 </div>
                 <input type="number" step="any" min="0" name="asp_product_shipping" value="<?php echo esc_attr( $current_shipping ); ?>">
                 <p class="description">
@@ -616,12 +621,12 @@ input[type=checkbox][disabled] + label {
             </div>
 
             <div id="wp-asp-shipping-variations-cont">
-                <div>
-                <label><?php esc_html_e( 'Regional Shipping Variations', 'stripe-payments' ); ?></label>
+                <div class="asp-admin-metabox-subhead">
+                	<?php esc_html_e( 'Regional Shipping Variations', 'stripe-payments' ); ?>
                 </div>
 
                 <p class="description">
-					<?php esc_html_e( 'Use this to configure shipping variations on a per-region basis.', 'stripe-payments' ); ?>
+					<?php esc_html_e( 'Configure shipping rates or variations for each region.', 'stripe-payments' ); ?>
                 </p>
                 <table class="" id="wp-asp-shipping-variations-tbl" <?php echo empty( $shipping_out ) ? 'style="display:none;"' : ''; ?>>
                     <thead>
@@ -642,7 +647,7 @@ input[type=checkbox][disabled] + label {
                     </button>
                 </p>
                 <p class="description">
-                    <strong><?php esc_html_e('NOTE:', 'stripe-payments'); ?></strong> <?php esc_html_e('Shipping address collection needs to be enabled for the functioning of regional shipping amount.', 'stripe-payments'); ?>
+                    <strong><?php esc_html_e('Note:', 'stripe-payments'); ?></strong> <?php esc_html_e('Shipping address collection must be enabled for regional shipping charges to work correctly.', 'stripe-payments'); ?>
                 </p>
             </div>
         </fieldset>
@@ -650,8 +655,8 @@ input[type=checkbox][disabled] + label {
         <hr>
 
         <fieldset>
-            <div>
-                <label><?php esc_html_e( 'Tax (%)', 'stripe-payments' ); ?></label>
+            <div class="asp-admin-metabox-subhead">
+                <?php esc_html_e( 'Tax (%)', 'stripe-payments' ); ?>
             </div>
             <input type="number" step="any" min="0" name="asp_product_tax" value="<?php echo esc_attr( $current_tax ); ?>">
 
@@ -663,8 +668,8 @@ input[type=checkbox][disabled] + label {
 		        ?>
             </p>
 
-            <div>
-                <label><?php esc_html_e( 'Tax Variations', 'stripe-payments' ); ?></label>
+            <div class="asp-admin-metabox-subhead">
+                <?php esc_html_e( 'Tax Variations', 'stripe-payments' ); ?>
             </div>
             <div id="wp-asp-tax-variations-disabled-msg" style="color:red;<?php echo ! empty( $tax_variations_disabled ) ? '' : 'display:none;'; ?>">
 				<?php
@@ -779,6 +784,8 @@ input[type=checkbox][disabled] + label {
 	<p class="description"><?php esc_html_e( 'If you want to use a set quantity for this item then enter the value in this field.', 'stripe-payments' ); ?></p>
 
 <hr />
+
+<div class="asp-admin-metabox-subhead"><?php esc_html_e( 'Stock Control', 'stripe-payments' ); ?></div>
 
 <label>
 	<input type="checkbox" name="asp_product_enable_stock" value="1" <?php echo esc_attr( ( '1' === $enable_stock ) ? ' checked' : '' ); ?>>

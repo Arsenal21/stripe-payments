@@ -1,5 +1,5 @@
-/*----- Shortcode Inserter ----- */
 
+/*=== Shortcode Inserter === */
 i.mce-i-asp-shortcode-icon {
 	background-image: url(img/asp_shortcode.png);
 }
@@ -31,11 +31,9 @@ table.asp-shortcode-options-table th, table.asp-shortcode-options-table td {
 	height: auto;
 	width: auto;
 }
+/*--- END Shortcode Inserter --- */
 
-/*----- END Shortcode Inserter ----- */
-
-/*----- Product Settings ----- */
-
+/*=== Product Settings === */
 #asp_product_metaboxes_meta_box div.inside {
 	margin: 0;
 	padding: 0;
@@ -231,11 +229,9 @@ a.wp-asp-product-menu-nav-item.nav-tab-active:focus {
 		width: 100%;
 	}
 }
+/*--- END Product Settings --- */
 
-/*----- END Product Settings ----- */
-
-/*----- Variations ----- */
-
+/*=== Product Variations === */
 .asp-html-tpl {
 	display: none;
 }
@@ -305,10 +301,9 @@ a.wp-asp-product-menu-nav-item.nav-tab-active:focus {
 	}
 }
 
-/*----- END Variations ----- */
+/*--- END Variations --- */
 
-/*----- Addons Listing ----- */
-
+/*=== Addons Listing === */
 .stripe_addon_item_canvas {
 	font-family: sans-serif, arial;
 	font-size: 12px;
@@ -395,9 +390,18 @@ a.wp-asp-product-menu-nav-item.nav-tab-active:focus {
 	color: #FFF;
 }
 
-/*----- END Addons Listing ----- */
+/*--- END Addons Listing --- */
 
-/*----- Admin Products Table ----- */
+/*=== Admin Inside Metabox === */
+/* These can be used to style the metaboxes in admin dashboard to improve usability and appearance */
+.asp-admin-metabox-subhead {
+	font-size: 1.1em;
+	font-weight: 600;
+	margin: 15px 0 10px 0;
+}
+/*--- END Admin Inside Metabox --- */
+
+/*=== Admin Products Table === */
 
 th.column-thumbnail {
 	max-width: 110px;
@@ -446,9 +450,9 @@ th.column-shortcode {
 	}
 }
 
-/*----- END Admin Products Table ----- */
+/*--- END Admin Products Table --- */
 
-/*----- Settings Page ----- */
+/*=== Settings Page === */
 
 div.wp-asp-settings-cont {
 	display: none;
@@ -577,8 +581,7 @@ div.postbox.yellowish {
 	}
 }
 
-/* Hover over help hint */
-
+/* === Hover over help hint === */
 .wp-asp-help {
 	position: relative;
 	display: inline-block;
@@ -669,9 +672,9 @@ div.postbox.yellowish {
 
 /* END Hover over help hint */
 
-/*----- END Settings Page ----- */
+/*--- END Settings Page --- */
 
-/*----- Email tags hint ----- */
+/*=== Email tags hint === */
 
 .wp-asp-tags-table-cont {
 	margin-top: 10px;
@@ -711,7 +714,7 @@ table.wp-asp-tags-hint td.wp-asp-tag-descr {
 
 /*----- END Email tags hint ----- */
 
-/*----- Allowed Currencies ----- */
+/*=== Allowed Currencies === */
 
 #wp-asp-allowed-currencies-cont .wp-asp-allowed-currencies {
 	margin-top: 10px;
