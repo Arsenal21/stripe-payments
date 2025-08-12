@@ -468,12 +468,23 @@ class ASP_Self_Hooks_Handler {
 			return $cust_opts;
 		}
 
-		$new_tax = ASP_Utils::get_tax_variations_tax(
-			$this->tax_variations_arr,
-			empty( $cust_opts['address']['country'] ) ? '' : $cust_opts['address']['country'],
-			empty( $cust_opts['address']['state'] ) ? '' : $cust_opts['address']['state'],
-			empty( $cust_opts['address']['city'] ) ? '' : $cust_opts['address']['city']
-		);
+		$tax_variations_type = $this->item->get_meta('asp_product_tax_variations_type');
+
+		if ($tax_variations_type == 's'){
+			$new_tax = ASP_Utils::get_tax_variations_tax(
+				$this->tax_variations_arr,
+				empty( $cust_opts['shipping']['address']['country'] ) ? '' : $cust_opts['shipping']['address']['country'],
+				empty( $cust_opts['shipping']['address']['state'] ) ? '' : $cust_opts['shipping']['address']['state'],
+				empty( $cust_opts['shipping']['address']['city'] ) ? '' : $cust_opts['shipping']['address']['city']
+			);
+		} else {
+			$new_tax = ASP_Utils::get_tax_variations_tax(
+				$this->tax_variations_arr,
+				empty( $cust_opts['address']['country'] ) ? '' : $cust_opts['address']['country'],
+				empty( $cust_opts['address']['state'] ) ? '' : $cust_opts['address']['state'],
+				empty( $cust_opts['address']['city'] ) ? '' : $cust_opts['address']['city']
+			);
+		}
 
 		if ( false !== $new_tax ) {
 			$this->item->set_tax( $new_tax );

@@ -195,32 +195,39 @@ a.wp-asp-product-menu-nav-item.nav-tab-active:focus {
 	}
 }
 
+#wp-asp-shipping-variations-tbl,
 #wp-asp-tax-variations-tbl {
 	width: 75%;
 }
 
+#wp-asp-shipping-variations-tbl tr,
 #wp-asp-tax-variations-tbl tr {
 	text-align: center;
 }
 
+.wp-asp-shipping-variations-input,
 .wp-asp-tax-variations-input {
 	width: 100%;
 }
 
+.wp-asp-shipping-variations-del-btn span,
 .wp-asp-tax-variations-del-btn span {
 	vertical-align: sub;
 }
 
+#wp-asp-shipping-variations-add-btn span,
 #wp-asp-tax-variations-add-btn span {
 	vertical-align: middle;
 }
 
 @media screen and (max-width: 960px) {
+	#wp-asp-shipping-variations-tbl,
 	#wp-asp-tax-variations-tbl {
 		width: 100%;
 	}
 
-	#wp-asp-tax-variations-tbl .wp-asp-tax-variations-input {
+	#wp-asp-shipping-variations-tbl .wp-asp-shipping-variations-input,
+	#wp-asp-tax-variations-tbl .wp-asp-tax-variations-input{
 		width: 100%;
 	}
 }

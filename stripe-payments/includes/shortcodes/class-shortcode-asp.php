@@ -80,6 +80,7 @@ class AcceptStripePaymentsShortcode {
 			'strStockNotAvailable'        => apply_filters( 'asp_customize_text_msg', __( 'You cannot order more items than available: %d', 'stripe-payments' ), 'stock_not_available' ),
 			'strTax'                      => apply_filters( 'asp_customize_text_msg', __( 'Tax', 'stripe-payments' ), 'tax_str' ),
 			'strShipping'                 => apply_filters( 'asp_customize_text_msg', __( 'Shipping', 'stripe-payments' ), 'shipping_str' ),
+			'strSurcharge'                => apply_filters( 'asp_customize_text_msg', __( 'Surcharge', 'stripe-payments' ), 'surcharge_str' ),
 			'strTotal'                    => __( 'Total:', 'stripe-payments' ),
 			'strPleaseFillIn'             => apply_filters( 'asp_customize_text_msg', __( 'Please fill in this field.', 'stripe-payments' ), 'fill_in_field' ),
 			'strPleaseCheckCheckbox'      => __( 'Please check this checkbox.', 'stripe-payments' ),
@@ -180,7 +181,7 @@ class AcceptStripePaymentsShortcode {
 			'</div>';
 			$this->tplCF = $tplCF;
 		}
-                
+
                 //This custom field position option is used only for the legacy API which has been deprecated. It's here for backwards compatibility.
 		$cfPos = $this->AcceptStripePayments->get_setting( 'custom_field_position' );
 		if ( $cfPos !== 'below' ) {
@@ -189,7 +190,7 @@ class AcceptStripePaymentsShortcode {
 		} else {
 			add_filter( 'asp_button_output_after_button', array( $this, 'after_button_add_сf_filter' ), 990, 3 );
 		}
-                
+
 		return $output;
 	}
 
@@ -212,9 +213,9 @@ class AcceptStripePaymentsShortcode {
 	}
 
 	/**
-	 * Displays available stock quantity of a product. 
+	 * Displays available stock quantity of a product.
 	 * If stock control is turned of, It shows 'Unlimited'.
-	 * 
+	 *
 	 * @param Array $atts Shortcode attributes.
 	 * @return String HTML
 	 */
@@ -233,7 +234,7 @@ class AcceptStripePaymentsShortcode {
 			$error_msg .= '</div>';
 			return $error_msg;
 		}
-		
+
 		$available_quantity = esc_attr(get_post_meta( $id, 'asp_product_stock_items', true ));
 		$stock_enable = esc_attr(get_post_meta( $id, 'asp_product_enable_stock', true ));
 
@@ -631,7 +632,7 @@ class AcceptStripePaymentsShortcode {
 			//Set default sorting option on page load.
 			//If shortcode has sorting parameters specified then it will use those otherwise, it will use the default value of 'id'.
 			$order_by = $sc_sort_by;
-			$sort_direction = $sc_sort_direction;			
+			$sort_direction = $sc_sort_direction;
 		}
 
 		//Include the template file for displaying all products.
@@ -660,7 +661,7 @@ class AcceptStripePaymentsShortcode {
 		}
 
 		if( $q["orderby"] == "price" ) {
-			add_filter( 'posts_orderby', array(__CLASS__,'asp_orderby_price_callback' ));		
+			add_filter( 'posts_orderby', array(__CLASS__,'asp_orderby_price_callback' ));
 		}
 
 		$products = new WP_Query( $q );
@@ -710,7 +711,7 @@ class AcceptStripePaymentsShortcode {
 				$i                     = (isset($tpl['products_per_row']) ? $tpl['products_per_row'] : 3) - 1;
 			}
 
-			$id = get_the_ID();			
+			$id = get_the_ID();
 
 			$thumb_url = get_post_meta( $id, 'asp_product_thumbnail', true );
 			if ( ! $thumb_url ) {
@@ -815,14 +816,14 @@ class AcceptStripePaymentsShortcode {
 
 	public static  function asp_orderby_price_callback( $orderby ) {
 		global $wpdb;
-		$order = "";				
+		$order = "";
 		if(stripos( $orderby, "desc" ) !== false) {
 			$order="desc";
 		}
 		else{
 			$order="asc";
 		}
-		
+
 		$orderby = "
 		CASE 
 			WHEN  (select wp.meta_value from ".$wpdb->prefix."postmeta wp where wp.meta_key='asp_product_type' and wp.post_id=wp_posts.ID limit 1) ='one_time' THEN cast((select wp.meta_value from ".$wpdb->prefix."postmeta wp where wp.meta_key='asp_product_price' and wp.post_id=wp_posts.ID limit 1) as decimal) 

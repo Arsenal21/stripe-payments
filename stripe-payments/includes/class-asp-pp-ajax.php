@@ -72,11 +72,11 @@ class ASP_PP_Ajax {
 			$out['err'] = __( 'Error occurred: Nonce verification failed.', 'stripe-payments' );
 			wp_send_json( $out );
 		}
-		
+
 		$asp_daily_txn_counter_obj = new ASP_Daily_Txn_Counter();
 		$captcha_type = $this->asp_main->get_setting('captcha_type');
 		if (empty( $captcha_type ) || $captcha_type == 'none' ) {
-			//Captcha is not enabled. Lets check txn rate limiting.			
+			//Captcha is not enabled. Lets check txn rate limiting.
 			if($asp_daily_txn_counter_obj->asp_is_daily_txn_limit_reached()) {
 				$out['err'] = __( 'Error occurred: The transaction limit that you have set in settings has been reached for the day.', 'stripe-payments' );
 				ASP_Debug_Logger::log($out['err'], false );
@@ -85,7 +85,7 @@ class ASP_PP_Ajax {
 					ASP_Utils::send_daily_txn_rate_limit_email($out['err']);
                                 }
                                 wp_send_json( $out );
-			}			
+			}
 		}
 		else if($asp_daily_txn_counter_obj->asp_is_daily_tnx_limit_with_captcha_enabled()){
 			//Captcha is enabled. Lets check txn rate limiting.
@@ -97,7 +97,7 @@ class ASP_PP_Ajax {
 					ASP_Utils::send_daily_txn_rate_limit_email($out['err']);
 				}
 				wp_send_json($out);
-			}	
+			}
 		}
 
 		$product_id = filter_input( INPUT_POST, 'product_id', FILTER_SANITIZE_NUMBER_INT );
@@ -116,7 +116,7 @@ class ASP_PP_Ajax {
                 $confirm_pi_initial_debug = 'handle_confirm_pi() -  Product ID: ' . $product_id . ', Captcha Type: ' . $captcha_type . ', Txn Counter: ' . $txn_counter_val . ', IP: ' . $request_ip;
                 ASP_Debug_Logger::log( $confirm_pi_initial_debug, true );
                 //End initial confirm_pi debug logging.
-                
+
                 //Check page load signature data
                 if( !ASP_Utils_Bot_Mitigation::is_page_load_signature_data_valid($product_id) ){
                     //Signature is invalid.
@@ -130,7 +130,7 @@ class ASP_PP_Ajax {
                         wp_send_json( $out );
                     }
                 }
-                
+
                 //Check request limit count per IP address
                 if( !ASP_Utils_Bot_Mitigation::is_request_limit_reached_for_ip() ){
                     //Request limit reached for this IP.
@@ -144,13 +144,13 @@ class ASP_PP_Ajax {
                         wp_send_json( $out );
                     }
                 }
-                
+
 		$item = apply_filters( 'asp_ng_pp_product_item_override', $item );
 
                 //Trigger some action hooks (useful for other checks).
 		do_action( 'asp_ng_before_token_request', $item );
                 //ASP_Debug_Logger::log( 'handle_confirm_pi() - Captcha response checked.', true );
-                
+
                 //This hook will be used to do additional captcha (if enabled) parameter checks for bot mitigation.
                 $params = array();
                 do_action( 'asp_ng_do_additional_captcha_response_check', $item, $params );
@@ -252,7 +252,7 @@ class ASP_PP_Ajax {
 	}
 
 	public function handle_create_pi() {
-		
+
 		$out = array();
 		$out['success'] = false;
 		$product_id = filter_input( INPUT_POST, 'product_id', FILTER_SANITIZE_NUMBER_INT );
@@ -299,7 +299,7 @@ class ASP_PP_Ajax {
 				wp_send_json($out);
 			}
 		}
-		
+
 		//Log initial create_pi debug logging data (if debug feature is enabled).
 		$txn_counter_args = $asp_daily_txn_counter_obj->asp_get_daily_txn_counter_args();
 		$txn_counter_val = isset($txn_counter_args['counter'])? $txn_counter_args['counter'] : '-';
@@ -307,7 +307,7 @@ class ASP_PP_Ajax {
 		$create_pi_initial_debug = 'handle_create_pi() -  Product ID: ' . $product_id . ', Captcha Type: ' . $captcha_type . ', Txn Counter: ' . $txn_counter_val . ', IP: ' . $request_ip;
 		ASP_Debug_Logger::log( $create_pi_initial_debug, true );
 		//End initial create_pi debug logging.
-		
+
 		//Check page load signature data
 		if( !ASP_Utils_Bot_Mitigation::is_page_load_signature_data_valid($product_id) ){
 			//Signature is invalid.
@@ -321,7 +321,7 @@ class ASP_PP_Ajax {
 				wp_send_json( $out );
 			}
 		}
-		
+
 		//Check request usage count per IP address
 		if( !ASP_Utils_Bot_Mitigation::is_request_limit_reached_for_ip() ){
 			//Request limit reached for this IP.
@@ -348,13 +348,13 @@ class ASP_PP_Ajax {
 				'billing_details' 	=> json_decode( html_entity_decode( $post_billing_details ) , true),
 				'shipping_details' 	=> json_decode( html_entity_decode( $post_shipping_details ) , true),
 			);
-			
+
 			if( ! $item_for_validation->validate_total_amount( $amount, $quantity, $custom_inputs) ){
 				//Error condition. The validation function already set the error message which we will send back to the client.
 				$out['err'] = __( 'Error occurred:', 'stripe-payments' ) . ' ' . $item_for_validation->get_last_error();
 				wp_send_json( $out );
 			}
-			
+
 			//Validation passed.
 
 		} else if ( $item_for_validation->get_type() === 'donation' ) {
@@ -366,7 +366,7 @@ class ASP_PP_Ajax {
 		// <<<< End of pre API submission validation.
 
 		$item = new ASP_Product_Item( $product_id );
-		
+
 		if ( $item->get_last_error() ) {
 			$out['err'] = __( 'Error occurred:', 'stripe-payments' ) . ' ' . $item->get_last_error();
 			wp_send_json( $out );
@@ -421,7 +421,7 @@ class ASP_PP_Ajax {
 
 		//This hook will be used to do additional captcha (if enabled) parameter checks for bot mitigation.
 		$params = array();
-		do_action( 'asp_ng_do_additional_captcha_response_check', $item, $params );                
+		do_action( 'asp_ng_do_additional_captcha_response_check', $item, $params );
 
 		do_action( 'asp_ng_product_mode_keys', $product_id );
 

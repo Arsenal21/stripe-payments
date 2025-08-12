@@ -110,7 +110,7 @@ class ASP_PP_Display {
 		$a['plugin_url'] = WP_ASP_PLUGIN_URL;
 		$a['item_name']  = $this->item->get_name();
 		$a['stripe_key'] = $this->asp_main->is_live ? $this->asp_main->APIPubKey : $this->asp_main->APIPubKeyTest;
-                
+
                 //Save the payment popup load for this poduct in the temporary transient data (so it can be checked later).
                 ASP_Utils_Bot_Mitigation::record_page_load_signature_data($product_id);
 
@@ -209,13 +209,13 @@ class ASP_PP_Display {
 			$a['tos_text'] = $this->asp_main->get_setting( 'tos_text' );
 		}
 
-                //Is coupon option enabled?              
+                //Is coupon option enabled?
 		$coupons_enabled = get_post_meta( $product_id, 'asp_product_coupons_setting', true );
 		if ( ( '' === $coupons_enabled ) || '2' === $coupons_enabled ) {
 			$coupons_enabled = $this->asp_main->get_setting( 'coupons_enabled' );
 		}
 		if ( $a['amount_variable'] ) {
-                        //Allow the coupon option for variable amount as well (in the past it was always disabled for variable amount). 
+                        //Allow the coupon option for variable amount as well (in the past it was always disabled for variable amount).
                         //Commenting it out means it can be disabled via the product specific settings (see the above section of the code).
 			//$coupons_enabled = false;
 		}
@@ -337,10 +337,12 @@ class ASP_PP_Display {
 		$data['surcharge'] = $this->item->get_surcharge();
 		$data['surcharge_type'] = $this->item->get_surcharge_type();
 		$data['surcharge_amount'] = $this->item->calculate_total_surcharge( true );
+		$data['surcharge_label'] = $this->item->get_meta( 'asp_surcharge_label' );
 
 		$data['descr']    = $this->item->get_description();
 
 		$data['tax_variations'] = $this->item->get_meta( 'asp_product_tax_variations' );
+		$data['shipping_variations'] = $this->item->get_meta( 'asp_product_shipping_variations' );
 
 		$tax_variations_type = $this->item->get_meta( 'asp_product_tax_variations_type' );
 
@@ -567,8 +569,8 @@ class ASP_PP_Display {
 			}
 			$pay_btn_text = apply_filters( 'asp_customize_text_msg', __( 'Start Free Trial', 'stripe-payments' ), 'start_free_trial' );
 		}
-		
-		// Check user has specified any popup-payment button text for individual product. 
+
+		// Check user has specified any popup-payment button text for individual product.
 		$per_product_pay_btn_text = $this->item->get_meta( 'asp_product_popup_button_text' );
 		if (!empty($per_product_pay_btn_text)) {
 			$pay_btn_text = __( $per_product_pay_btn_text, 'stripe-payments' );
@@ -610,6 +612,7 @@ class ASP_PP_Display {
 				'strStockNotAvailable'        => apply_filters( 'asp_customize_text_msg', __( 'You cannot order more items than available: %d', 'stripe-payments' ), 'stock_not_available' ),
 				'strTax'                      => apply_filters( 'asp_customize_text_msg', __( 'Tax', 'stripe-payments' ), 'tax_str' ),
 				'strShipping'                 => apply_filters( 'asp_customize_text_msg', __( 'Shipping', 'stripe-payments' ), 'shipping_str' ),
+				'strSurcharge'                => apply_filters( 'asp_customize_text_msg', __( 'Surcharge', 'stripe-payments' ), 'surcharge_str' ),
 				'strTotal'                    => __( 'Total:', 'stripe-payments' ),
 				'strPleaseFillIn'             => apply_filters( 'asp_customize_text_msg', __( 'Please fill in this field.', 'stripe-payments' ), 'fill_in_field' ),
 				'strPleaseCheckCheckbox'      => __( 'Please check this checkbox.', 'stripe-payments' ),

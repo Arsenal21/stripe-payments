@@ -1,4 +1,4 @@
-/* global aspEditProdData */
+/* global jQuery, aspEditProdData, aspTaxVarData, aspShippingVarData */
 
 jQuery(document).ready(function ($) {
 	var aspVariationsGroups = aspEditProdData.varGroups;
@@ -258,6 +258,42 @@ jQuery(document).ready(function ($) {
 		jQuery(this).closest('tr').find('.wp-asp-tax-variation-cont-type-' + selBase).find('input,select').prop('disabled', false);
 	});
 
+	jQuery('#wp-asp-shipping-variations-add-btn').click(function (e) {
+		e.preventDefault();
+		var tplLine = aspShippingVarData.tplLine;
+		tplLine = tplLine.replaceAll('%1$s', aspShippingVarData.cOpts);
+		tplLine = tplLine.replaceAll('%2$s', 0);
+		tplLine = tplLine.replaceAll('%4$s', 'display:none;');
+		tplLine = tplLine.replaceAll('%5$s', 'display:none;');
+		tplLine = tplLine.replaceAll('%7$s', 'disabled');
+		tplLine = tplLine.replaceAll('%8$s', 'disabled');
+		tplLine = tplLine.replaceAll(/%[0-9]*\$s/g, '');
+		var tplLineHide = jQuery(tplLine).css('display', 'none');
+		jQuery('#wp-asp-shipping-variations-tbl').find('tbody').append(tplLineHide);
+		jQuery('#wp-asp-shipping-variations-tbl').show();
+		tplLineHide.fadeIn(200);
+	});
+
+	jQuery('#wp-asp-shipping-variations-tbl').on('click', 'button.wp-asp-shipping-variations-del-btn', function (e) {
+		e.preventDefault();
+		if (confirm(aspShippingVarData.str.delConfirm)) {
+			jQuery(this).closest('tr').fadeOut(300, function () { jQuery(this).remove(); });
+
+			// Check if the variation table gets empty. If so, hide the table.
+			const tableBody = jQuery('#wp-asp-shipping-variations-tbl tbody tr');
+			if(tableBody.length < 2){
+				jQuery('#wp-asp-shipping-variations-tbl').fadeOut(300);
+			}
+		}
+	});
+
+	jQuery('#wp-asp-shipping-variations-tbl').on('change', 'select.wp-asp-shipping-variation-base', function (e) {
+		var selBase = jQuery(this).val();
+		jQuery(this).closest('tr').find('div').hide();
+		jQuery(this).closest('tr').find('div').find('input,select').prop('disabled', true);
+		jQuery(this).closest('tr').find('.wp-asp-shipping-variation-cont-type-' + selBase).show();
+		jQuery(this).closest('tr').find('.wp-asp-shipping-variation-cont-type-' + selBase).find('input,select').prop('disabled', false);
+	});
 });
 
 document.addEventListener('DOMContentLoaded', function () {

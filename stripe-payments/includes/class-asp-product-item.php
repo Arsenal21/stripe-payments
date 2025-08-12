@@ -607,15 +607,58 @@ class ASP_Product_Item {
 	}
 
 	/**
+	 * Calculate regional shipping amount by the provided region.
+	 *
+	 * @param $shipping_region array
+	 * @param $in_cents bool
+	 *
+	 * @return float|int
+	 */
+	public function calculate_regional_shipping_amount($shipping_region, $in_cents = false) {
+		$regional_shipping_amount = 0;
+		$configured_variations = $this->get_meta('asp_product_shipping_variations');
+		// Evaluate variable shipping if enabled.
+		if (is_array($configured_variations) && count($configured_variations)) {
+			// Iterate through the available shipping variation option to find if there is amy matching.
+			foreach ($configured_variations as $variation) {
+				$variation['amount'] = (float) $variation['amount'];
+				$location = strtolower($variation['loc']);
+				switch ($variation['type']) {
+					case '0':
+						if (!empty($shipping_region['country']) && $location == strtolower($shipping_region['country']) )
+							// Matched by country, get shipping amount for this location.
+							$regional_shipping_amount += $variation['amount'];
+						break;
+					case '1':
+						if (!empty($shipping_region['state']) && $location == strtolower($shipping_region['state']) )
+							// Matched by state, get shipping amount for this location.
+							$regional_shipping_amount += $variation['amount'];
+						break;
+					case '2':
+						if (!empty($shipping_region['city']) && $location == strtolower($shipping_region['city']) )
+							// Matched by city, get shipping amount for this location.
+							$regional_shipping_amount += $variation['amount'];
+						break;
+					default:
+						break;
+
+				}
+			}
+		}
+
+		return $in_cents ? $this->in_cents($regional_shipping_amount) : $regional_shipping_amount;
+	}
+
+	/**
 	 * Validates the total checkout amount for a product against amounts from ajax.
-	 *  
+	 *
 	 * @param int $amount The price to validate.
 	 * @param int $quantity Product quantity.
 	 * @param array $custom_inputs Custom input from customer such as applied coupon code, billing/shipping details, price variation etc.
-	 * 
+	 *
 	 * @return bool TRUE if validation is successful, FALSE otherwise.
 	 */
-	public function validate_total_amount( $amount, $quantity, $custom_inputs) {		
+	public function validate_total_amount( $amount, $quantity, $custom_inputs) {
 		//ASP_Debug_Logger::log("Amount submitted by customer (in cents): ". $amount, true);
 		$product_price = (float) $this->get_meta('asp_product_price');
 		$quantity = (int) $quantity;
@@ -623,7 +666,7 @@ class ASP_Product_Item {
 		//ASP_Debug_Logger::log("Raw product price: ". $product_price_in_cents , true);
 
 		$this->set_price($product_price_in_cents, true);
-		
+
 		$this->set_quantity( $quantity );
 
 		$price_variation = $custom_inputs['price_variation'];
@@ -631,20 +674,20 @@ class ASP_Product_Item {
 			$variations_groups = $this->get_meta('asp_variations_groups');
 			$variations_names = $this->get_meta('asp_variations_names');
 			$variations_prices = $this->get_meta('asp_variations_prices');
-			
+
 			$construct_final_price = ! empty( $this->get_meta('asp_product_hide_amount_input') );
 
 			$pvars = explode(',', $price_variation ); // Hold data like this: ['<group_name>-<applied_option>', ....]
-			
+
 			$variation_price = 0;
 			foreach ($pvars as $pvar_str) {
 				$separator = '_';
-				// Use the last index of the separator to explode the $pvar_str. This is to avoid collision if $pvar_str contains (from the group name) more than one $separator. 
-				$last_separator_index = strrpos($pvar_str, $separator); 
-				
+				// Use the last index of the separator to explode the $pvar_str. This is to avoid collision if $pvar_str contains (from the group name) more than one $separator.
+				$last_separator_index = strrpos($pvar_str, $separator);
+
 				$option_group = substr($pvar_str, 0, $last_separator_index); // Group name;
 				$applied_option = (int) substr($pvar_str, $last_separator_index + strlen($separator));// Applied option
-				
+
 				$group_index = array_search($option_group, $variations_groups);
 				$applied_price = (float) $variations_prices[$group_index][$applied_option];
 				$applied_price = $this->in_cents( $applied_price );
@@ -652,18 +695,18 @@ class ASP_Product_Item {
 				// ASP_Debug_Logger::log("Applied variation price for ". $variations_names[$group_index][$applied_option]. ' : ' .$applied_price, true);
 			}
 			// ASP_Debug_Logger::log("Applied total variation price : ". $variation_price, true);
-			
+
 			$price_with_applied_variation = 0;
 			if ($construct_final_price) {
 				$price_with_applied_variation = $variation_price;
 			}else{
-				$price_with_applied_variation = $variation_price + $product_price_in_cents; 	
+				$price_with_applied_variation = $variation_price + $product_price_in_cents;
 			}
 			$this->set_price($price_with_applied_variation, true);
 			// ASP_Debug_Logger::log("Applied total variation price with base price : ". $price_with_applied_variation, true);
 		}
 		// ASP_Debug_Logger::log("Amount current total (after price variation): ". $this->get_total(true), true);
-		
+
 		$tax_variations_type 			= $this->get_meta('asp_product_tax_variations_type');
 		$tax_variations_arr  			= $this->get_meta('asp_product_tax_variations');
 		$collect_billing_addr_enabled 	= $this->get_meta('asp_product_collect_billing_addr');
@@ -693,7 +736,7 @@ class ASP_Product_Item {
 						break;
 				}
 			}
-			
+
 			if ($applied_tax_percentage > 0) {
 				$this->set_tax($applied_tax_percentage);
 			}
@@ -701,9 +744,18 @@ class ASP_Product_Item {
 		}
 		//ASP_Debug_Logger::log("Applied tax amount (after tax variation): ". $this->get_tax_amount(true), true);
 		//ASP_Debug_Logger::log("Amount current total (after tax variation): ". $this->get_total(true), true);
-		
-		$base_shipping_amount = $this->get_shipping(true);
-		$this->set_shipping( $base_shipping_amount, true );
+
+		$base_shipping_amount = $this->in_cents(get_post_meta( $this->post_id, 'asp_product_shipping', true ));
+		$shipping_amount = $base_shipping_amount;
+
+		$collect_shipping_addr_enabled 	= $this->get_meta('asp_product_collect_shipping_addr');
+		if ( $collect_shipping_addr_enabled == '1'){
+			$regional_shipping_amount = $this->calculate_regional_shipping_amount($custom_inputs['shipping_details']['address'], true);
+			$shipping_amount += $regional_shipping_amount;
+		}
+
+		$this->set_shipping( $shipping_amount, true );
+
 		//ASP_Debug_Logger::log("Amount current total (after base shipping): ". $this->get_total(true), true);
 
 		$coupon_code = $custom_inputs['coupon_code'];
@@ -722,14 +774,14 @@ class ASP_Product_Item {
         if ( !empty($this->get_surcharge()) ){
 			// Surcharge is enabled. Calculate the surcharge amount then adjust the expected total.
             $surcharge_amount = round($this->calculate_total_surcharge(true));//This is in cents so round it to 0 decimal place.
-			
+
 			ASP_Debug_Logger::log("The surcharge feature is enabled. Applied surcharge amount (in cents): ". $surcharge_amount, true);
             $expected_total_amount += $surcharge_amount;
         }
 
-		// Trigger a filter so addons can override it. 
+		// Trigger a filter so addons can override it.
 		$expected_total_amount = apply_filters('asp_pre_api_submission_expected_amount', $expected_total_amount, $amount, $this->post_id);
-		
+
 		// Check if the expected total amount matches the given amount.
 		if ( $amount != $expected_total_amount ){
 			ASP_Debug_Logger::log("Pre-API Submission validation amount mismatch. Expected amount (in cents): ". $expected_total_amount . ", Submitted amount (in cents): " . $amount, false);

@@ -162,6 +162,7 @@ None.
 - The extended authorization option is added to the [authorize and capture product type] (https://s-plugins.com/authorize-only-transaction-stripe-payments/).
 - IP Address formatting issue in order details fixed.
 - [TODO] Testing
+- New regional shipping variation feature added.
 
 = 2.0.93 =
 - Updated the help text of the 'Thank You' page field.

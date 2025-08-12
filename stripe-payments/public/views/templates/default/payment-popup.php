@@ -36,6 +36,24 @@ echo wp_kses( '<style>' . $css . '</style>' . "\r\n", ASP_Utils::asp_allowed_tag
 
 	$a['data']['customer_default_country'] = apply_filters( 'asp_ng_pp_default_country_override', $a['data']['customer_default_country'] );
 
+    // Show error message if shipping enabled, but shipping address collection is not enabled.
+	$shipping_address_enabled = get_post_meta( $a['data']['product_id'], 'asp_product_collect_shipping_addr', true );
+    if (
+        ((isset($a['data']['shipping_variations']) && !empty($a['data']['shipping_variations'])) || !empty($a['data']['shipping'])) &&
+        empty($shipping_address_enabled)
+    ){
+        $a['fatal_error'] = __('Shipping is enabled for this product, but customer shipping address collection is disabled.', 'stripe-payments');
+    }
+
+	// Show error message if tax variation enabled, but address collection is not enabled.
+	$billing_address_enabled  = get_post_meta( $a['data']['product_id'], 'asp_product_collect_billing_addr', true );
+    if (
+	    (isset($a['data']['tax_variations']) && !empty($a['data']['tax_variations'])) &&
+        empty($billing_address_enabled)
+    ){
+        $a['fatal_error'] = __('Regional tax variation is enabled for this product, but customer address collection is disabled.', 'stripe-payments');
+    }
+
 	// Trigger action hook. Can be used to output additional data to payment popup before closing <head> tag.
 	do_action( 'asp_ng_pp_output_before_closing_head' );
 	?>
@@ -345,7 +363,7 @@ echo wp_kses( '<style>' . $css . '</style>' . "\r\n", ASP_Utils::asp_allowed_tag
 						<div id="addr-cont" class="pure-g">
 							<?php } ?>
 							<?php if ( $a['data']['billing_address'] && $a['data']['shipping_address'] ) { ?>
-							<div class="pure-u-1">
+							<div id="addr-switch-cont" class="pure-u-1">
 								<label class="pure-checkbox">
 									<input type="checkbox" id="same-bill-ship-addr" name="same-bill-ship-addr" checked>
 									<?php echo esc_html( __( 'Same billing and shipping info', 'stripe-payments' ) ); ?>
@@ -505,7 +523,7 @@ echo wp_kses( '<style>' . $css . '</style>' . "\r\n", ASP_Utils::asp_allowed_tag
 						<input type="hidden" value="1" name="create_token">
 						<input type="hidden" value="" id="sub_id" name="sub_id">
 						<?php } ?>
-						<?php 
+						<?php
 						//Trigger action to output additional data to the payment form before closing </form> tag
 						do_action( 'asp_ng_pp_output_before_closing_form', $a );
 						?>
