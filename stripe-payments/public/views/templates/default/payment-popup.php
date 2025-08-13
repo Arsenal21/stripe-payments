@@ -39,8 +39,7 @@ echo wp_kses( '<style>' . $css . '</style>' . "\r\n", ASP_Utils::asp_allowed_tag
     // Show error message if shipping enabled, but shipping address collection is not enabled.
 	$shipping_address_enabled = get_post_meta( $a['data']['product_id'], 'asp_product_collect_shipping_addr', true );
     if (
-        ((isset($a['data']['shipping_variations']) && !empty($a['data']['shipping_variations'])) || !empty($a['data']['shipping'])) &&
-        empty($shipping_address_enabled)
+        isset($a['data']['is_physical_product']) && !empty($a['data']['is_physical_product']) && empty($shipping_address_enabled)
     ){
         $a['fatal_error'] = __('Configuration Error: Shipping is enabled for this product, but customer shipping address collection is disabled. You need to enable shipping address collection for physical product.', 'stripe-payments');
     }

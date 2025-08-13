@@ -449,6 +449,7 @@ input[type=checkbox][disabled] + label {
 
 	public function display_shipping_tax_meta_box( $post ) {
 		$current_shipping    = get_post_meta( $post->ID, 'asp_product_shipping', true );
+		$is_physical_product    = get_post_meta( $post->ID, 'asp_is_physical_product', true );
 		$current_tax         = get_post_meta( $post->ID, 'asp_product_tax', true );
 		$tax_variations_type = get_post_meta( $post->ID, 'asp_product_tax_variations_type', true );
 		$tax_variations_arr  = get_post_meta( $post->ID, 'asp_product_tax_variations', true );
@@ -605,6 +606,13 @@ input[type=checkbox][disabled] + label {
 				echo sprintf( __( 'You can find the shipping and tax documentation <a href="%s" target="_blank">here</a>.', 'stripe-payments' ), 'https://s-plugins.com/use-shipping-tax-stripe-payments/' );
 				?>
 			</p>
+
+            <div>
+                <label>
+                    <input type="checkbox" name="asp_is_physical_product" value="1" <?php echo ( !empty($is_physical_product) ? ' checked' : ''); ?>>
+                    <?php echo __( 'This is a physical product', 'stripe-payments' ); ?>
+                </label>
+            </div>
 
             <div id="asp_shipping_cost_container">
                 <div class="asp-admin-metabox-subhead">
@@ -1141,12 +1149,12 @@ jQuery(document).ready(function($) {
 			$currency = isset( $_POST['asp_product_currency'] ) ? sanitize_text_field( stripslashes ( $_POST['asp_product_currency'] ) ) : '';
 			update_post_meta( $post_id, 'asp_product_currency', sanitize_text_field( $currency ) );
 
+			$is_physical_product = isset( $_POST['asp_is_physical_product'] ) ? sanitize_text_field( stripslashes ( $_POST['asp_is_physical_product'] ) ) : '';
+            update_post_meta($post_id, 'asp_is_physical_product', $is_physical_product);
+
 			$shipping = isset( $_POST['asp_product_shipping'] ) ? sanitize_text_field( stripslashes ( $_POST['asp_product_shipping'] ) ) : '';
 			$shipping = ! empty( $shipping ) ? AcceptStripePayments::tofloat( $shipping ) : $shipping;
 			update_post_meta( $post_id, 'asp_product_shipping', $shipping );
-
-			$enable_regional_shipping = isset( $_POST['asp_product_regional_shipping_enable'] ) ? sanitize_text_field( $_POST['asp_product_regional_shipping_enable'] ) : '';
-			update_post_meta( $post_id, 'asp_product_regional_shipping_enable', $enable_regional_shipping );
 
 			$shipping_variations_base = filter_input( INPUT_POST, 'asp_product_shipping_variations_base', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
 			$shipping_variations_l    = filter_input( INPUT_POST, 'asp_product_shipping_variations_l', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );

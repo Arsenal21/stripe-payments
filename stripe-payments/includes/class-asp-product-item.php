@@ -581,6 +581,18 @@ class ASP_Product_Item {
 		return $this->button_key;
 	}
 
+	public function is_physical_product() {
+		if(!empty($this->get_meta('asp_is_physical_product'))) {
+			return true;
+		} else if (!empty($this->get_meta('asp_product_shipping'))) {
+			return true;
+		} else if (!empty($this->get_meta('asp_product_shipping_variations'))) {
+			return true;
+		}
+
+		return false;
+	}
+
 	public function load_from_product( $post_id = false ) {
 		if ( false === $post_id ) {
 			$post_id = $this->post_id;
