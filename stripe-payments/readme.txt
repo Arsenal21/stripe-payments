@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 6.0
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 2.0.94.t2
+Stable tag: 2.0.94
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -56,6 +56,7 @@ https://www.youtube.com/watch?v=L0n_jlEhmoA
 * Option to accept custom donation amount via Stripe payment gateway.
 * Option to collect tax for your products (if applicable).
 * Option to collect shipping for your tangible products.
+* Option to configure region based shipping additions for physical products.
 * Option to save the card data on Stripe.
 * Ability to have custom thank you page on a per product basis.
 * Ability to customize the message on the thank you page using tags.
@@ -156,14 +157,15 @@ None.
 
 == Changelog ==
 
-= WIP 2.0.94.t2 =
+= 2.0.94 =
+- Added a new feature that allows configuration of [region based shipping additions](https://s-plugins.com/configuring-region-based-shipping-additions/).
 - Order details cost calculation layout updated.
 - New option to enable extended authorization for Stripe payment (if your Stripe account supports it).
 - The extended authorization option is added to the [authorize and capture product type] (https://s-plugins.com/authorize-only-transaction-stripe-payments/).
 - IP Address formatting issue in order details fixed.
-- [TODO] Testing
-- New regional shipping variation feature added.
-- New feature added to mark a product as physical product.
+- Added a new option to flag a product as physical product.
+- Updated the language translation POT file.
+- Note: if you are using the Subscriptions or Additional Payment Methods addon, please update those addons to the latest version as well.
 
 = 2.0.93 =
 - Updated the help text of the 'Thank You' page field.

@@ -630,11 +630,11 @@ input[type=checkbox][disabled] + label {
 
             <div id="wp-asp-shipping-variations-cont">
                 <div class="asp-admin-metabox-subhead">
-                	<?php esc_html_e( 'Regional Shipping Variations', 'stripe-payments' ); ?>
+                	<?php esc_html_e( 'Region-Based Shipping Additions', 'stripe-payments' ); ?>
                 </div>
 
                 <p class="description">
-					<?php esc_html_e( 'Configure shipping rates or variations for each region.', 'stripe-payments' ); ?>
+					<?php esc_html_e( 'Set up shipping rates or additional costs for each region where you want to apply extra costs.', 'stripe-payments' ); ?>
                 </p>
                 <table class="" id="wp-asp-shipping-variations-tbl" <?php echo empty( $shipping_out ) ? 'style="display:none;"' : ''; ?>>
                     <thead>
@@ -655,7 +655,7 @@ input[type=checkbox][disabled] + label {
                     </button>
                 </p>
                 <p class="description">
-                    <strong><?php esc_html_e('Note:', 'stripe-payments'); ?></strong> <?php esc_html_e('Shipping address collection must be enabled for regional shipping charges to work correctly.', 'stripe-payments'); ?>
+                    <strong><?php esc_html_e('Note:', 'stripe-payments'); ?></strong> <?php esc_html_e('Shipping address collection must be enabled for region-based shipping charges to work correctly.', 'stripe-payments'); ?>
                 </p>
             </div>
         </fieldset>
