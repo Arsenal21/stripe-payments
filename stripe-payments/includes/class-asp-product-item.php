@@ -765,7 +765,12 @@ class ASP_Product_Item {
 		//ASP_Debug_Logger::log("Applied tax amount (after tax variation): ". $this->get_tax_amount(true), true);
 		//ASP_Debug_Logger::log("Amount current total (after tax variation): ". $this->get_total(true), true);
 
-		$base_shipping_amount = $this->in_cents(get_post_meta( $this->post_id, 'asp_product_shipping', true ));
+		$base_shipping_amount = get_post_meta( $this->post_id, 'asp_product_shipping', true );
+		if (empty($base_shipping_amount)){
+			$base_shipping_amount = 0;
+		} else {
+			$base_shipping_amount = $this->in_cents(floatval($base_shipping_amount));
+		}
 		$shipping_amount = $base_shipping_amount;
 
 		$collect_shipping_addr_enabled 	= $this->get_meta('asp_product_collect_shipping_addr');
