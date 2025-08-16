@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 6.0
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 2.0.94
+Stable tag: 2.0.95
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -157,7 +157,7 @@ None.
 
 == Changelog ==
 
-= 2.0.94 =
+= 2.0.94 and 2.0.95 =
 - Added a new feature that allows configuration of [region based shipping additions](https://s-plugins.com/configuring-region-based-shipping-additions/).
 - Order details cost calculation layout updated.
 - New option to enable extended authorization for Stripe payment (if your Stripe account supports it).
@@ -165,6 +165,7 @@ None.
 - IP Address formatting issue in order details fixed.
 - Added a new option to flag a product as physical product.
 - Updated the language translation POT file.
+- Updated the version number to 2.0.95 to the main file.
 - Note: if you are using the Subscriptions or Additional Payment Methods addon, please update those addons to the latest version as well.
 
 = 2.0.93 =
