@@ -157,6 +157,9 @@ None.
 
 == Changelog ==
 
+= WIP =
+- Updated the help text of the "Send Email On Payment Failure" option to clarify that bots can trigger this also.
+
 = 2.0.94 and 2.0.95 =
 - Added a new feature that allows configuration of [region based shipping additions](https://s-plugins.com/configuring-region-based-shipping-additions/).
 - Order details cost calculation layout updated.
