@@ -67,6 +67,7 @@ jobs:
         run: |
           # Run WordPress Init Action
           wp eval "do_action('init'); echo '✅ init action ran successfully';" --allow-root
+          echo ''
           # Run Shortcodes
           wp eval "do_shortcode('[asp_product_ng]'); echo '✅ asp_product_ng shortcode ran successfully';" --allow-root
           echo ''
