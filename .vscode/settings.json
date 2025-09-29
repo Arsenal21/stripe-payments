@@ -1,3 +1,4 @@
 {
-    "phpSniffer.standard": "./phpcs.xml"
+    "phpSniffer.standard": "./phpcs.xml",
+    "files.eol": "\n"
 }
