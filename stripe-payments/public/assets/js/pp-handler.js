@@ -1677,10 +1677,6 @@ function ASPShippingVariationHandler () {
 	parent.sameBillingShippingCheckbox = document.getElementById('same-bill-ship-addr');
 
 	parent.init = function () {
-		if(Boolean(vars.data.disable_regional_shipping_calculation)){ // TODO: For addons backward compatability, need to remove this later.
-			return;
-		}
-
 		if( typeof vars.data.is_trial !== 'undefined' && vars.data.is_trial ) {
 			// We don't do shipping amount calculation if it's a subscription trial period.
 			return;

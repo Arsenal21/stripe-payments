@@ -628,13 +628,6 @@ class ASP_Product_Item {
 	 */
 	public function calculate_regional_shipping_amount($shipping_region, $in_cents = false) {
 
-		// TODO: This is a temporary filter hook for addons backward compatibility. Need to remove this later.
-		$calc_regional_shipping_amount_enabled = apply_filters('asp_calculate_regional_shipping_amount_enabled', false);
-		if (!$calc_regional_shipping_amount_enabled){
-			ASP_Debug_Logger::log("WARNING: Skipping regional shipping amount calculation for addon's backward compatibility", true);
-			return 0;
-		}
-
 		$regional_shipping_amount = 0;
 		$configured_variations = $this->get_meta('asp_product_shipping_variations');
 		// Evaluate variable shipping if enabled.
