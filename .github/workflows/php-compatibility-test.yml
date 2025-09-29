@@ -1,0 +1,76 @@
+name: PHP Compatibility Test
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php: ['7.4', '8.0' , '8.3']
+
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: wp_test
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -uroot -proot"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: mbstring, mysqli
+          coverage: none
+
+      - name: Install WP-CLI
+        run: |
+          curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+          chmod +x wp-cli.phar
+          sudo mv wp-cli.phar /usr/local/bin/wp
+
+      - name: Setup WordPress
+        run: |
+          wp core download --allow-root
+          wp config create --dbname=wp_test --dbuser=root --dbpass=password --dbhost=127.0.0.1 --allow-root
+          wp core install --url=example.com --title="Test" --admin_user=admin --admin_password=pass --admin_email=test@example.com --skip-email --allow-root
+          # Copy your plugin into WordPress plugins directory
+          rsync -a ./stripe-payments wp-content/plugins/ --exclude=.git --exclude=.github
+
+      - name: Test Plugin Activation
+        run: |
+          set +e
+          wp plugin activate stripe-payments --allow-root
+          result=$?
+          set -e
+          if [ $result -ne 0 ]; then
+            echo "❌ Plugin failed to activate on PHP ${{ matrix.php }}"
+            exit 1
+          else
+            echo "✅ Plugin activated successfully on PHP ${{ matrix.php }}"
+          fi
+
+      - name: Plugin code test
+        run: |
+          # Run WordPress Init Action
+          wp eval "do_action('init'); echo '✅ init action ran successfully';" --allow-root
+      #     # Run Shortcodes
+      #     wp eval "do_shortcode('[swpm_registration_form]'); echo '✅ swpm_registration_form shortcode ran successfully';" --allow-root
+      #     echo ''
+      #     wp eval "do_shortcode('[swpm_login_form]'); echo '✅ swpm_login_form shortcode ran successfully';" --allow-root
+      #     echo ''
+      #     wp eval "do_shortcode('[swpm_profile_form]'); echo '✅ swpm_profile_form shortcode ran successfully';" --allow-root
+
