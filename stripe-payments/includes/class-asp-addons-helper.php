@@ -46,7 +46,10 @@ class ASP_Addons_Helper {
 	}
 
 	public function check_updates() {
+		//Note: This function can get called from an addon before init. So we don't do any translation strings here.
+
 		if ( ! is_admin() ) {
+			//We are not in admin-dashboard area so just return (We only need to check updates in admin area).
 			return;
 		}
 		if ( class_exists( 'ASP_Addons_Update_Checker' ) ) {
@@ -71,12 +74,12 @@ class ASP_Addons_Helper {
 			$admin_url   = get_admin_url();
 			$dismiss_url = add_query_arg( 'asp_dismiss_auc_msg', '1', $admin_url );
 			$dismiss_url = wp_nonce_url( $dismiss_url, 'asp_dismiss_auc_msg' );
-			$dismiss_msg = '<span class="asp_dismiss_notice_update_checker" style="text-align: right;display:block;"><a style="text-decoration: none; border-bottom: 1px dashed;font-size:0.9em;" href="' . $dismiss_url . '">' . __( 'Don\'t show this message again', 'stripe-payments' ) . '</a></span>';
+			$dismiss_msg = '<span class="asp_dismiss_notice_update_checker" style="text-align: right;display:block;"><a style="text-decoration: none; border-bottom: 1px dashed;font-size:0.9em;" href="' . $dismiss_url . '">' . 'Don\'t show this message again' . '</a></span>';
 
+			//This function can get called from an addon before init. So we don't do any translation strings here.
 			$this->item_hash = AcceptStripePayments_Admin::add_admin_notice(
 				'warning',
-				// translators: %1$s is plugin name, %2$s is a link to plugin page
-				sprintf( __( '<span><strong>%1$s</strong></span><br>Please install the <a target="_blank" href="%2$s">Stripe Payments Addons Update Checker</a> plugin to keep your addons upto date.', 'stripe-payments' ), __( 'Accept Stripe Payments', 'stripe-payments' ), 'https://s-plugins.com/update-checker-plugin-for-the-addons/' ) .
+				'<span><strong>Accept Stripe Payments</strong></span><br>Please install the <a target="_blank" href="https://s-plugins.com/update-checker-plugin-for-the-addons/">Stripe Payments Addons Update Checker</a> plugin to keep your addons upto date.' .
 				$dismiss_msg,
 				false
 			);
