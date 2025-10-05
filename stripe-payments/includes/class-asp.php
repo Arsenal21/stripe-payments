@@ -137,7 +137,10 @@ class AcceptStripePayments {
 
 		//handle payment popup ajax
 		require_once WP_ASP_PLUGIN_PATH . 'includes/class-asp-pp-ajax.php';
-
+		
+		// SWPM integration
+		require_once WP_ASP_PLUGIN_PATH . 'includes/integrations/class-asp-swpm-integrations.php';
+		
 		// Activate plugin when new blog is added
 		add_action( 'wpmu_new_blog', array( $this, 'activate_new_site' ) );
 
