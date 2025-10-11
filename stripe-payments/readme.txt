@@ -161,7 +161,7 @@ None.
 - Updated the help text of the "Send Email On Payment Failure" option to clarify that bots can trigger this also.
 - Removed some of the backward compatibility related code that is no longer needed.
 - Translation string updated addon update checker helper class.
-- SWPM account integration added.
+- Added a new shortcode that can show the purchase history of a member (if the member makes purchases while logged in).
 
 = 2.0.94 and 2.0.95 =
 - Added a new feature that allows configuration of [region based shipping additions](https://s-plugins.com/configuring-region-based-shipping-additions/).

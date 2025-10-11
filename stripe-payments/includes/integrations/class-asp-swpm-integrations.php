@@ -198,8 +198,8 @@ class ASP_SWPM_Integrations {
             $date_format = get_option('date_format');
             $formatted_date = date($date_format, strtotime($order->post_date));
 
-            $product_name = isset($order_data['item_name']) ? sanitize_text_field($order_data['item_name']) : 'N/A';
-            $txn_id = isset($order_data['txn_id']) ? sanitize_text_field($order_data['txn_id']) : 'N/A';
+            $product_name = isset($order_data['item_name']) ? sanitize_text_field($order_data['item_name']) : '-';
+            $txn_id = isset($order_data['txn_id']) ? sanitize_text_field($order_data['txn_id']) : '-';
             $item_url = isset($order_data['item_url']) ? sanitize_url($order_data['item_url']) : '';
             $quantity = isset($order_data['item_quantity']) ? intval($order_data['item_quantity']) : 0;
             $paid_amount = isset($order_data['paid_amount']) ? $order_data['paid_amount'] : 0;
@@ -279,7 +279,7 @@ class ASP_SWPM_Integrations {
                             <?php if (!empty($txn['item_url'])) { ?>
                                 <a href="<?php echo esc_url($txn['item_url']) ?>"><?php esc_html_e('Download', 'stripe-payments') ?></a>
                             <?php } else { ?>
-                                <?php esc_html_e('N/A', 'stripe-payments') ?>
+                                <?php esc_html_e('-', 'stripe-payments') ?>
                             <?php } ?>
                         </td>
                         <?php } ?>
