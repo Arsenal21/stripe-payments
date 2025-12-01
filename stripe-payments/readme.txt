@@ -162,6 +162,7 @@ None.
 - Removed some of the backward compatibility related code that is no longer needed.
 - Translation string updated addon update checker helper class.
 - Added a new shortcode that can show the purchase history of a member (if the member makes purchases while logged in).
+- An issue has fixed regarding email body field type in email settings page.
 
 = 2.0.94 and 2.0.95 =
 - Added a new feature that allows configuration of [region based shipping additions](https://s-plugins.com/configuring-region-based-shipping-additions/).

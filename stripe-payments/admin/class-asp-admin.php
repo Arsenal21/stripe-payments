@@ -1586,8 +1586,8 @@ class AcceptStripePayments_Admin {
 			case 'disable_buttons_before_js_loads':
 			case 'show_incomplete_orders':
 			case 'disable_security_token_check':
-                        case 'disable_page_load_signature_check':
-                        case 'disable_request_limit_per_ip_check':
+            case 'disable_page_load_signature_check':
+            case 'disable_request_limit_per_ip_check':
 			case 'dont_save_card':
 			case 'custom_field_mandatory':
 			case 'enable_zip_validation':
@@ -1627,16 +1627,22 @@ class AcceptStripePayments_Admin {
 				break;
 			case 'buyer_email_body':
 			case 'seller_email_body':
-				add_filter( 'wp_default_editor', array( $this, 'set_default_editor' ) );
-				wp_editor(
-					html_entity_decode( $field_value ),
-					$field,
-					array(
-						'textarea_name' => 'AcceptStripePayments-settings[' . $field . ']',
-						'teeny'         => true,
-					)
-				);
-				remove_filter( 'wp_default_editor', array( $this, 'set_default_editor' ) );
+                $email_type_field_key = rtrim($field, 'body') . 'type'; // results to buyer_email_type or seller_email_type
+			    $email_body_type = isset($settings[$email_type_field_key]) ? sanitize_text_field($settings[$email_type_field_key]) : '';
+                if ($email_body_type == 'html'){
+                    add_filter( 'wp_default_editor', array( $this, 'set_default_editor' ) );
+                    wp_editor(
+                        html_entity_decode( $field_value ),
+                        $field,
+                        array(
+                            'textarea_name' => 'AcceptStripePayments-settings[' . $field . ']',
+                            'teeny'         => true,
+                        )
+                    );
+                    remove_filter( 'wp_default_editor', array( $this, 'set_default_editor' ) );
+                } else {
+                    echo '<textarea name="AcceptStripePayments-settings[' . $field . ']" rows="10" cols="70">'.html_entity_decode( $field_value ).'</textarea>';
+                }
 				echo "<p class=\"description\">" . wp_kses_post( $desc ) . "</p>";
 				break;
 			case 'products_page_id':
