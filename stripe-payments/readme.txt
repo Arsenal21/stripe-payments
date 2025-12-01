@@ -3,9 +3,9 @@ Contributors: Tips and Tricks HQ, wptipsntricks, alexanderfoxc
 Donate link: https://s-plugins.com
 Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortcode, digital goods, payment gateway, commerce, digital downloads, downloads, e-commerce, e-store, ecommerce, eshop, donation
 Requires at least: 6.0
-Tested up to: 6.8
+Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 2.0.95
+Stable tag: 2.0.96
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -157,12 +157,12 @@ None.
 
 == Changelog ==
 
-= WIP =
+= 2.0.96 =
 - Updated the help text of the "Send Email On Payment Failure" option to clarify that bots can trigger this also.
 - Removed some of the backward compatibility related code that is no longer needed.
 - Translation string updated addon update checker helper class.
-- Added a new shortcode that can show the purchase history of a member (if the member makes purchases while logged in).
-- An issue has fixed regarding email body field type in email settings page.
+- Added a new shortcode that can show the purchase history of a member.
+- When the email content type is updated, the email body type will also update accordingly in email settings page.
 
 = 2.0.94 and 2.0.95 =
 - Added a new feature that allows configuration of [region based shipping additions](https://s-plugins.com/configuring-region-based-shipping-additions/).
