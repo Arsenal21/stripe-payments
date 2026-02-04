@@ -293,5 +293,7 @@ class ASP_SWPM_Integrations {
         return $output;
     }
 }
-
-new ASP_SWPM_Integrations();
+    
+if(ASP_Utils::is_plugin_active('simple-membership/simple-wp-membership.php')){
+    new ASP_SWPM_Integrations();
+}

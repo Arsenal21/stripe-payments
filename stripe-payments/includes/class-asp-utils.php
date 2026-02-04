@@ -1227,4 +1227,12 @@ class ASP_Utils {
 		$user_info = apply_filters( 'asp_get_logged_in_user_info', $user_info );
 		return $user_info;
 	}
+
+	public static function is_plugin_active($plugin){
+		if ( ! function_exists( 'is_plugin_active' ) ) {
+			require_once ABSPATH . '/wp-admin/includes/plugin.php';
+		}
+		
+		return is_plugin_active( $plugin );
+	}
 }
