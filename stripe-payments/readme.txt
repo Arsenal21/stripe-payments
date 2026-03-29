@@ -158,6 +158,7 @@ None.
 == Changelog ==
 = WIP =
 - A Simple Membership plugin activation check is now performed before the SWPM integration class is initialized.
+- Product block console warning issue fixed.
 
 = 2.0.96 =
 - Updated the help text of the "Send Email On Payment Failure" option to clarify that bots can trigger this also.
