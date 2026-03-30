@@ -1408,7 +1408,13 @@ class AcceptStripePayments_Admin {
 	public function captcha_section_description() {
                 $tutorial_link = '<a href="https://s-plugins.com/protect-yourself-from-card-testing/" target="_blank">protection from card testing</a>';
                 echo __('Please read this tutorial on ', 'stripe-payments') . wp_kses_post( $tutorial_link ). __(' to understand why Captcha is recommended.', 'stripe-payments');
-                echo '<br /><br />';		
+                echo '<br /><br />';
+                $turnstile_link = '<a href="https://s-plugins.com/using-cloudflare-turnstile-captcha-with-the-stripe-payments-plugin/" target="_blank">Cloudflare Turnstile Captcha</a>';
+                echo '<div class="asp-grey-box">';
+				echo '<b>' . __( 'Cloudflare Turnstile Captcha Option:', 'stripe-payments' ) . '</b> ';
+                echo sprintf( __( 'You can also use %s with this plugin via our Bot Protection plugin.', 'stripe-payments' ), wp_kses_post( $turnstile_link ) );
+                echo '</div>';
+				echo '<br />';
 	}
 
 	public function txn_rate_limiting_section_description() {
