@@ -3,9 +3,9 @@ Contributors: Tips and Tricks HQ, wptipsntricks, alexanderfoxc
 Donate link: https://s-plugins.com
 Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortcode, digital goods, payment gateway, commerce, digital downloads, downloads, e-commerce, e-store, ecommerce, eshop, donation
 Requires at least: 6.0
-Tested up to: 6.9
+Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 2.0.96
+Stable tag: 2.0.97
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -156,9 +156,13 @@ Yes, please visit Stripe Payments > Settings screen for options.
 None.
 
 == Changelog ==
-= WIP =
-- A Simple Membership plugin activation check is now performed before the SWPM integration class is initialized.
+
+= 2.0.97 =
+- WordPress 7.0 compatibility.
+- Gutenberg API v3 compatibility for product block.
 - Product block console warning issue fixed.
+- Minor improvements to the Stripe SDK loading code to prevent potential conflicts with the 'WP Express Checkout' plugin.
+- A plugin activation check is now performed before the SWPM integration class is initialized.
 
 = 2.0.96 =
 - Updated the help text of the "Send Email On Payment Failure" option to clarify that bots can trigger this also.

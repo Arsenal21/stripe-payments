@@ -1,4 +1,66 @@
 
+/* Pre-made CSS boxes */
+/* Wrap directly with this class (not to be used with a paragraph tag) */
+.asp-white-box{
+    margin: 10px 0px;
+    padding: 15px 10px;
+    background-color: #FFFFFF;
+    border-color: #CCCCCC;
+    border-radius: 3px 3px 3px 3px;
+    border-style: solid;
+    border-width: 1px;
+}
+.asp-grey-box{
+    margin: 10px 0px;
+    padding: 15px 10px;
+    background-color: #DDDDDD;
+    border-color: #CCCCCC;
+    border-radius: 3px 3px 3px 3px;
+    border-style: solid;
+    border-width: 1px;
+}
+.asp-green-box {
+    margin: 10px 0px;
+    padding: 15px 10px;
+    background-color: #CCF4D6;
+    border-color: #059B53;
+    color: #043B14;
+    border-radius: 3px 3px 3px 3px;
+    border-style: solid;
+    border-width: 1px;
+}
+.asp-yellow-box{
+    margin: 10px 0px;
+    padding: 10px;
+    background-color: #FFFFE0;
+    border-color: #E6DB55;
+    border-radius: 3px 3px 3px 3px;
+    border-style: solid;
+    border-width: 1px;
+}
+.asp-orange-box{
+    margin: 10px 0px;
+    padding: 15px 10px;
+    color: #3F2502;
+    text-shadow: 1px 1px #FFFFFF;
+    background-color: #FFF6D5;
+    border-color: #D1B655;
+    border-radius: 3px 3px 3px 3px;
+    border-style: solid;
+    border-width: 1px;
+}
+.asp-red-box {
+    margin: 10px 0px;
+    padding: 10px;
+    background-color: #FFEBE8;
+    border-color: #CC0000;
+    color: #333333;
+    border-radius: 3px 3px 3px 3px;
+    border-style: solid;
+    border-width: 1px;
+}
+/* End CSS boxes */
+
 /*=== Shortcode Inserter === */
 i.mce-i-asp-shortcode-icon {
 	background-image: url(img/asp_shortcode.png);
