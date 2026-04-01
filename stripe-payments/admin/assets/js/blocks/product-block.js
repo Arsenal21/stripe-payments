@@ -2,36 +2,36 @@
  * @global wp, aspBlockProdStr
  */
 
-var el = wp.element.createElement,
-	registerBlockType = wp.blocks.registerBlockType,
-	ServerSideRender = wp.serverSideRender,
-	SelectControl = wp.components.SelectControl,
-	ToggleControl = wp.components.ToggleControl,
-	InspectorControls = wp.blockEditor.InspectorControls,
-	PanelBody = wp.components.PanelBody,
-	useBlockProps = wp.blockEditor.useBlockProps
+var asp_element = wp.element.createElement,
+	asp_registerBlockType = wp.blocks.registerBlockType,
+	asp_serverSideRender = wp.serverSideRender,
+	asp_selectControl = wp.components.SelectControl,
+	asp_toggleControl = wp.components.ToggleControl,
+	asp_inspectorControls = wp.blockEditor.InspectorControls,
+	asp_panelBody = wp.components.PanelBody,
+	asp_useBlockProps = wp.blockEditor.useBlockProps
 	;
 
-registerBlockType('stripe-payments/product-block', {
+asp_registerBlockType('stripe-payments/product-block', {
 	apiVersion: 3,
 	title: aspBlockProdStr.title,
 	icon: 'products',
 	category: 'widget',
 
 	edit: function (props) {
-		var blockProps = useBlockProps();
+		var blockProps = asp_useBlockProps();
 
 		return [
-			el('div', blockProps,
-				el(ServerSideRender, {
+			asp_element('div', blockProps,
+				asp_element(asp_serverSideRender, {
 					block: 'stripe-payments/product-block',
 					attributes: props.attributes,
 				})
 			),
 
-			el(InspectorControls, {},
-				el(PanelBody, { title: '', initialOpen: true },
-					el(SelectControl, {
+			asp_element(asp_inspectorControls, {},
+				asp_element(asp_panelBody, { title: '', initialOpen: true },
+					asp_element(asp_selectControl, {
 						label: aspBlockProdStr.product,
 						value: props.attributes.prodId,
 						options: aspProdOpts,
@@ -42,7 +42,7 @@ registerBlockType('stripe-payments/product-block', {
 						},
 					}),
 
-					el(ToggleControl, {
+					asp_element(asp_toggleControl, {
 						label: aspBlockProdStr.button_only,
 						help: aspBlockProdStr.button_only_help,
 						checked: props.attributes.btnOnly,
