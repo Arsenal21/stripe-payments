@@ -157,6 +157,9 @@ None.
 
 == Changelog ==
 
+= WIP =
+- Added prefixes to the Gutenberg block variables to prevent potential conflicts with other plugins.
+
 = 2.0.97 =
 - WordPress 7.0 compatibility.
 - Gutenberg API v3 compatibility for product block.
