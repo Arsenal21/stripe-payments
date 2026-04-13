@@ -756,10 +756,13 @@ class ASP_Process_IPN_NG {
 
 			$intent = $p_data->get_obj();
 			if ( isset( $intent ) && isset( $intent->status ) && 'requires_capture' === $intent->status ) {
-				$order->change_status( 'authorized' );
+				$new_status = 'authorized';
 			} else {
-				$order->change_status( 'paid' );
+				$new_status = 'paid';
 			}
+			//Trigger filter to allow modification of the order status before changing the order status.
+			$new_status = apply_filters( 'asp_process_ipn_order_status', $new_status, $order_post_id, $data );
+			$order->change_status( $new_status );
 
 			$data['order_post_id'] = $order_post_id;
 			update_post_meta( $order_post_id, 'order_data', $data );

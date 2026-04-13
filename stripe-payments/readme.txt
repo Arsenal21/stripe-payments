@@ -159,6 +159,7 @@ None.
 
 = WIP =
 - Added prefixes to the Gutenberg block variables to prevent potential conflicts with other plugins.
+- Added new filter hook 'asp_process_ipn_order_status' to allow modification of the order status before changing the order status in the IPN processing code.
 
 = 2.0.97 =
 - WordPress 7.0 compatibility.
