@@ -2136,6 +2136,7 @@ class AcceptStripePayments_Admin {
 				'{shipping_amt}'      => __( 'Formatted shipping amount. Example: $2.50', 'stripe-payments' ),
 				'{download_url}'      => __( 'The download URL of the item (if configured)', 'stripe-payments' ),
 				'{product_details}'   => __( 'The item details of the purchased product (this will include the download link for digital items)', 'stripe-payments' ),
+				'{product_details_without_dl}' => __( 'The item details of the purchased product', 'stripe-payments' ),
 				'{product_variations}' => __( 'The selected product variations (if any) of the purchased product.', 'stripe-payments' ),
 				'{product_url}' 	  => __( 'The permalink to the product\'s single page', 'stripe-payments' ),
                 '{transaction_id}'    => __( 'The unique transaction ID of the purchase', 'stripe-payments' ),

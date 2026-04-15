@@ -423,6 +423,8 @@ class AcceptStripePaymentsShortcode {
 		$aspData = array();
 		$sess    = ASP_Session::get_instance();
 		$aspData = $sess->get_transient_data( 'asp_data' );
+		$aspData = apply_filters('asp_ty_page_order_data', $aspData);
+
 		if ( empty( $aspData ) ) {
 			// no session data, let's display nothing for now
 			return;

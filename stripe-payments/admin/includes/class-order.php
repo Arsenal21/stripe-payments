@@ -394,6 +394,7 @@ class ASPOrder {
 	public static function get_status_str( $status ) {
 		$status_str = array(
 			'incomplete' => __( 'Incomplete', 'stripe-payments' ),
+			'processing' => __( 'Processing', 'stripe-payments' ),
 			'paid'       => __( 'Paid', 'stripe-payments' ),
 			'authorized' => __( 'Authorized', 'stripe-payments' ),
 			'canceled'   => __( 'Canceled', 'stripe-payments' ),
