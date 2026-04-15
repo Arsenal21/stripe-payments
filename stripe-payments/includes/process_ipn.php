@@ -716,7 +716,9 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post, $seller_email = fal
 	$product_details .= AcceptStripePayments::gen_additional_items( $post );
 	$product_details .= '--------------------------------' . "\n";
 	$product_details .= __( 'Total Amount', 'stripe-payments' ) . ': {purchase_amt_curr}' . "\n";
-                
+
+	$product_details_without_dl = $product_details;
+
 	$varUrls          = array();
 	// check if we have variations applied with download links
 	if ( ! empty( $post['var_applied'] ) ) {
@@ -747,13 +749,16 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post, $seller_email = fal
 
 	//Add link to order info if this is email to the seller
 	if ( $seller_email && isset( $post['order_post_id'] ) ) {
-		$product_details .= "\n\n" . __( 'Order Info: ', 'stripe-payments' ) . admin_url( 'post.php?post=' . $post['order_post_id'] . '&action=edit' );
+		$seller_order_info_link = "\n\n" . __( 'Order Info: ', 'stripe-payments' ) . admin_url( 'post.php?post=' . $post['order_post_id'] . '&action=edit' );
+		$product_details .= $seller_order_info_link;
+		$product_details_without_dl .= $seller_order_info_link;
 	}
 
 	$post['product_details'] = $product_details;
+	$post['product_details_without_dl'] = $product_details_without_dl;
 
-        //Get the product variations (if any)
-        $product_variations = AcceptStripePayments::gen_additional_items( $post );
+    //Get the product variations (if any)
+    $product_variations = AcceptStripePayments::gen_additional_items( $post );
         
 	$custom_field = '';
 	if ( isset( $post['custom_fields'] ) ) {
@@ -943,6 +948,10 @@ function asp_apply_dynamic_tags_on_email_body( $body, $post, $seller_email = fal
 	$product_details = str_replace( $tags, $vals, $product_details );
 	$tags[] = '{product_details}';
 	$vals[] = $product_details;
+
+	$product_details_without_dl = str_replace( $tags, $vals, $product_details_without_dl );
+	$tags[] = '{product_details_without_dl}';
+	$vals[] = $product_details_without_dl;
 
 	$body = stripslashes( str_replace( $tags, $vals, $body ) );
 

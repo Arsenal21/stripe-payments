@@ -25,6 +25,9 @@ class ASP_Admin_Order_Meta_Boxes {
 				if ( 1 === $i && empty( $event['comment'] ) ) {
 					$event['comment'] = __( 'Order created.', 'stripe-payments' );
 				}
+				if ( 'processing' === $event['status'] && empty( $event['comment'] ) ) {
+					$event['comment'] = __( 'The order is being processed.', 'stripe-payments' );
+				}
 				if ( 'paid' === $event['status'] && empty( $event['comment'] ) ) {
 					$event['comment'] = __( 'Payment completed.', 'stripe-payments' );
 				}

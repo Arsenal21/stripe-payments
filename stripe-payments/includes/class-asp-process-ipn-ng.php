@@ -762,7 +762,9 @@ class ASP_Process_IPN_NG {
 			}
 			//Trigger filter to allow modification of the order status before changing the order status.
 			$new_status = apply_filters( 'asp_process_ipn_order_status', $new_status, $order_post_id, $data );
-			$order->change_status( $new_status );
+			if (!empty($new_status)){
+				$order->change_status( $new_status );
+			}
 
 			$data['order_post_id'] = $order_post_id;
 			update_post_meta( $order_post_id, 'order_data', $data );
@@ -785,99 +787,14 @@ class ASP_Process_IPN_NG {
 		ASP_Debug_Logger::log( 'Firing asp_stripe_payment_completed action.' );
 		do_action( 'asp_stripe_payment_completed', $data, $data['charge'] );
 
-		//Let's handle email sending stuff
-		$send_emails_to_buyer = apply_filters( 'asp_allow_send_emails_to_buyer', $opt['send_emails_to_buyer'], $prod_id);
-		if ( ! empty( $send_emails_to_buyer ) ) {
-			$from = $opt['from_email_address'];
-			$to   = $data['stripeEmail'];
-			$subj = $opt['buyer_email_subject'];
-			$body = $opt['buyer_email_body'];
+		/*
+		 * Let's handle email sending stuff
+		 */
+		// Send buyer notification email
+		self::send_buyer_notification_email($data);
 
-			// * since 2.0.47
-			$email_data = array(
-				'from' => $from,
-				'to'   => $to,
-				'subj' => $subj,
-				'body' => $body,
-			);
-			$email_data = apply_filters( 'asp_buyer_email_data', $email_data, $data );
-
-			$from = $email_data['from'];
-			$to   = $email_data['to'];
-			$subj = $email_data['subj'];
-			$body = $email_data['body'];
-			// * end since
-
-			$body = asp_apply_dynamic_tags_on_email_body( $body, $data );
-
-			$subj = apply_filters( 'asp_buyer_email_subject', $subj, $data );
-			$body = apply_filters( 'asp_buyer_email_body', $body, $data );
-			$from = apply_filters( 'asp_buyer_email_from', $from, $data );
-
-			$headers = array();
-			if ( ! empty( $opt['buyer_email_type'] ) && 'html' === $opt['buyer_email_type'] ) {
-				$headers[] = 'Content-Type: text/html; charset=UTF-8';
-				$body      = nl2br( $body );
-			}
-			$headers[] = 'From: ' . $from;
-			//Trigger filter to allow modification of the buyer email headers.
-			$headers = apply_filters( 'asp_buyer_email_headers', $headers, $email_data, $data );
-
-			$schedule_result = ASP_Utils::mail( $to, $subj, $body, $headers );
-
-			if ( ! $schedule_result ) {
-				ASP_Debug_Logger::log( 'Notification email sent to buyer: ' . $to . ', from email address used: ' . $from );
-			} else {
-				ASP_Debug_Logger::log( 'Notification email to buyer scheduled: ' . $to . ', from email address used: ' . $from );
-			}
-		}
-
-		$send_emails_to_seller = apply_filters( 'asp_allow_send_emails_to_seller', $opt['send_emails_to_seller'], $prod_id);
-		if ( ! empty( $send_emails_to_seller ) ) {
-			$from = $opt['from_email_address'];
-			$to   = $opt['seller_notification_email'];
-			$subj = $opt['seller_email_subject'];
-			$body = $opt['seller_email_body'];
-
-			// * since 2.0.47
-			$email_data = array(
-				'from' => $from,
-				'to'   => $to,
-				'subj' => $subj,
-				'body' => $body,
-			);
-			$email_data = apply_filters( 'asp_seller_email_data', $email_data, $data );
-
-			$from = $email_data['from'];
-			$to   = $email_data['to'];
-			$subj = $email_data['subj'];
-			$body = $email_data['body'];
-			// * end since
-
-			$body = asp_apply_dynamic_tags_on_email_body( $body, $data, true );
-
-			$subj = apply_filters( 'asp_seller_email_subject', $subj, $data );
-			$body = apply_filters( 'asp_seller_email_body', $body, $data );
-			$from = apply_filters( 'asp_seller_email_from', $from, $data );
-
-			$headers = array();
-			if ( ! empty( $opt['seller_email_type'] ) && 'html' === $opt['seller_email_type'] ) {
-				$headers[] = 'Content-Type: text/html; charset=UTF-8';
-				$body      = nl2br( $body );
-			}
-			$headers[] = 'From: ' . $from;
-			$headers[] = 'Reply-To: ' . $data['stripeEmail'];//For admin notification emails, we set the reply-to header to the buyer's email address.
-			//Trigger filter to allow modification of the seller email headers.
-			$headers = apply_filters( 'asp_seller_email_headers', $headers, $email_data, $data );
-
-			//Send the email to the seller
-			$schedule_result = ASP_Utils::mail( $to, $subj, $body, $headers );
-			if ( ! $schedule_result ) {
-				ASP_Debug_Logger::log( 'Notification email sent to seller: ' . $to . ', from email address used: ' . $from );
-			} else {
-				ASP_Debug_Logger::log( 'Notification email to seller scheduled: ' . $to . ', from email address used: ' . $from );
-			}
-		}
+		// Send seller notification email
+		self::send_seller_notification_email($data);
 
 		$this->sess->set_transient_data( 'asp_data', $data );
 
@@ -923,6 +840,111 @@ class ASP_Process_IPN_NG {
 			$p_data = new ASP_Payment_Data( $pi, true );
 		}
 		return $p_data;
+	}
+
+	public static function send_buyer_notification_email($data){
+		$asp = AcceptStripePayments::get_instance();
+
+		$prod_id = isset($data['product_id']) ? $data['product_id'] : '';
+
+		$send_emails_to_buyer = apply_filters( 'asp_allow_send_emails_to_buyer', $asp->get_setting('send_emails_to_buyer'), $prod_id );
+		if ( ! empty( $send_emails_to_buyer ) ) {
+			$from = $asp->get_setting('from_email_address');
+			$to   = isset($data['stripeEmail']) ? $data['stripeEmail'] : '';
+			$subj = $asp->get_setting('buyer_email_subject');
+			$body = $asp->get_setting('buyer_email_body');
+
+			// * since 2.0.47
+			$email_data = array(
+				'from' => $from,
+				'to'   => $to,
+				'subj' => $subj,
+				'body' => $body,
+			);
+			$email_data = apply_filters( 'asp_buyer_email_data', $email_data, $data );
+
+			$from = $email_data['from'];
+			$to   = $email_data['to'];
+			$subj = $email_data['subj'];
+			$body = $email_data['body'];
+			// * end since
+
+			$body = asp_apply_dynamic_tags_on_email_body( $body, $data );
+
+			$subj = apply_filters( 'asp_buyer_email_subject', $subj, $data );
+			$body = apply_filters( 'asp_buyer_email_body', $body, $data );
+			$from = apply_filters( 'asp_buyer_email_from', $from, $data );
+
+			$headers = array();
+			if ( ! empty( $asp->get_setting('buyer_email_type') ) && 'html' === $asp->get_setting('buyer_email_type') ) {
+				$headers[] = 'Content-Type: text/html; charset=UTF-8';
+				$body      = nl2br( $body );
+			}
+			$headers[] = 'From: ' . $from;
+			//Trigger filter to allow modification of the buyer email headers.
+			$headers = apply_filters( 'asp_buyer_email_headers', $headers, $email_data, $data );
+
+			$schedule_result = ASP_Utils::mail( $to, $subj, $body, $headers );
+
+			if ( ! $schedule_result ) {
+				ASP_Debug_Logger::log( 'Notification email sent to buyer: ' . $to . ', from email address used: ' . $from );
+			} else {
+				ASP_Debug_Logger::log( 'Notification email to buyer scheduled: ' . $to . ', from email address used: ' . $from );
+			}
+		}
+	}
+
+	public static function send_seller_notification_email($data) {
+		$asp = AcceptStripePayments::get_instance();
+
+		$prod_id = isset($data['product_id']) ? $data['product_id'] : '';
+
+		$send_emails_to_seller = apply_filters( 'asp_allow_send_emails_to_seller', $asp->get_setting('send_emails_to_seller'), $prod_id );
+		if ( ! empty( $send_emails_to_seller ) ) {
+			$from = $asp->get_setting('from_email_address');
+			$to   = $asp->get_setting('seller_notification_email');
+			$subj = $asp->get_setting('seller_email_subject');
+			$body = $asp->get_setting('seller_email_body');
+
+			// * since 2.0.47
+			$email_data = array(
+				'from' => $from,
+				'to'   => $to,
+				'subj' => $subj,
+				'body' => $body,
+			);
+			$email_data = apply_filters( 'asp_seller_email_data', $email_data, $data );
+
+			$from = $email_data['from'];
+			$to   = $email_data['to'];
+			$subj = $email_data['subj'];
+			$body = $email_data['body'];
+			// * end since
+
+			$body = asp_apply_dynamic_tags_on_email_body( $body, $data, true );
+
+			$subj = apply_filters( 'asp_seller_email_subject', $subj, $data );
+			$body = apply_filters( 'asp_seller_email_body', $body, $data );
+			$from = apply_filters( 'asp_seller_email_from', $from, $data );
+
+			$headers = array();
+			if ( ! empty( $asp->get_setting('seller_email_type') ) && 'html' === $asp->get_setting('seller_email_type') ) {
+				$headers[] = 'Content-Type: text/html; charset=UTF-8';
+				$body      = nl2br( $body );
+			}
+			$headers[] = 'From: ' . $from;
+			$headers[] = 'Reply-To: ' . (isset($data['stripeEmail']) ? $data['stripeEmail'] : '');//For admin notification emails, we set the reply-to header to the buyer's email address.
+			//Trigger filter to allow modification of the seller email headers.
+			$headers = apply_filters( 'asp_seller_email_headers', $headers, $email_data, $data );
+
+			//Send the email to the seller
+			$schedule_result = ASP_Utils::mail( $to, $subj, $body, $headers );
+			if ( ! $schedule_result ) {
+				ASP_Debug_Logger::log( 'Notification email sent to seller: ' . $to . ', from email address used: ' . $from );
+			} else {
+				ASP_Debug_Logger::log( 'Notification email to seller scheduled: ' . $to . ', from email address used: ' . $from );
+			}
+		}
 	}
 }
 

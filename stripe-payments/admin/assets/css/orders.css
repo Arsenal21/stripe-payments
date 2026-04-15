@@ -25,6 +25,10 @@ th.column-title {
     background-color: #b6dee4;
 }
 
+.asp-order-status.processing, .os-processing {
+    background-color: #d9edf7;
+}
+
 .asp-order-status.canceled, .os-canceled {
     background-color: #e4d4b6;
 }
