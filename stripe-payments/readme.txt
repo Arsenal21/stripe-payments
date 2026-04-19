@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 2.0.97
+Stable tag: 2.0.98
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -157,12 +157,12 @@ None.
 
 == Changelog ==
 
-= WIP =
+= 2.0.98 =
 - Added prefixes to the Gutenberg block variables to prevent potential conflicts with other plugins.
 - Added new filter hook 'asp_process_ipn_order_status' to allow modification of the order status before changing the order status in the IPN processing code.
-- New 'product_details_without_dl' email merge tag added.
+- Added a new email merge tag {product_details_without_dl} for the notification email.
 - Added new filter hook 'asp_ty_page_order_data' to control the order data shown in the Thank You page.
-
+- Updated the translation POT file.
 
 = 2.0.97 =
 - WordPress 7.0 compatibility.
