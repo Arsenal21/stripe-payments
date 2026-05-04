@@ -287,6 +287,7 @@ class ASP_Process_IPN_NG {
 		$p_data = apply_filters( 'asp_ng_process_ipn_payment_data_item_override', false, $pi );
 
 		if ( false === $p_data ) {
+			ASP_Debug_Logger::log(">>> Code should not came here for free payment", false); // TODO: Need to remove this.
 			//Payment data override filter did not return any data. Let's get the data from the payment intent object.
 			//The billing details [example: ASP_Payment_Data->get_billing_details()] and some other transaction data are read from the payment intent object within the ASP_Payment_Data class.
 			$p_data = new ASP_Payment_Data( $pi );
@@ -812,6 +813,14 @@ class ASP_Process_IPN_NG {
 			//this is zero-value transaction
 			$coupon_code = $this->get_post_var( 'asp_coupon-code' );
 			$coupon_code = sanitize_text_field( stripslashes( $coupon_code ));
+			$prod_id = $this->item->get_product_id();
+
+			// Check coupon signature data
+			if( empty(ASP_Utils_Bot_Mitigation::is_coupon_check_signature_data_valid($prod_id, $coupon_code)) ){
+				// Signature is invalid.
+				wp_die(__( 'Full Discount signature check failed.', 'stripe-payments' ));
+			}
+
 			if ( empty( $coupon_code ) ) {
 				return $p_data;
 			}
@@ -828,8 +837,6 @@ class ASP_Process_IPN_NG {
 			if ( $coupon_discount_amount < $price_no_discount ) {
 				return $p_data;
 			}
-
-			$prod_id = $this->item->get_product_id();
 
 			$order = new ASP_Order_Item();
 

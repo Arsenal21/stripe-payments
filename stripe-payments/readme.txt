@@ -156,6 +156,8 @@ Yes, please visit Stripe Payments > Settings screen for options.
 None.
 
 == Changelog ==
+= WIP =
+- Coupon signature check protection added.
 
 = 2.0.98 =
 - Added prefixes to the Gutenberg block variables to prevent potential conflicts with other plugins.
