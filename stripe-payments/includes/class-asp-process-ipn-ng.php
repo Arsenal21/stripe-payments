@@ -815,9 +815,9 @@ class ASP_Process_IPN_NG {
 			$prod_id = $this->item->get_product_id();
 
 			// Check coupon signature data
-			if( empty(ASP_Utils_Bot_Mitigation::is_coupon_check_signature_data_valid($prod_id, $coupon_code)) ){
+			if( empty(ASP_Utils_Bot_Mitigation::is_full_discount_signature_data_valid($prod_id, $coupon_code, $pi)) ){
 				// Signature is invalid.
-				wp_die(__( 'Full Discount signature check failed.', 'stripe-payments' ));
+				wp_die(sprintf(__( "Error! Invalid transaction ID: %s", 'stripe-payments' ), $pi));
 			}
 
 			if ( empty( $coupon_code ) ) {

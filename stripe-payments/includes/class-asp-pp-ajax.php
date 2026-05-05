@@ -701,7 +701,7 @@ class ASP_PP_Ajax {
 		$coupon['zero_value_id'] = $zero_value_id;
 
         // Saving applied coupon signature data so that it can be verified later.
-		ASP_Utils_Bot_Mitigation::record_coupon_check_signature_data($product_id, $coupon_code);
+		ASP_Utils_Bot_Mitigation::record_full_discount_signature_data($product_id, $coupon_code, $zero_value_id);
 
 		wp_send_json( $coupon );
 
