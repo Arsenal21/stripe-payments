@@ -140,7 +140,73 @@ class ASP_Utils_Bot_Mitigation {
         
         return true;
     }
-    
+
+	public static function get_coupon_check_signature_data() {
+		$coupon_check_signature_arr = get_transient('asp_coupon_check_signature');
+		if (!isset($coupon_check_signature_arr) || empty($coupon_check_signature_arr)) {
+			$coupon_check_signature_arr = array();
+		}
+		return $coupon_check_signature_arr;
+	}
+
+	public static function record_coupon_check_signature_data($product_id, $coupon_code) {
+		$ip_address = ASP_Utils::get_user_ip_address();
+		//$current_wp_time = current_time('mysql');
+
+		if (!isset($ip_address) || empty($ip_address)) {
+			ASP_Debug_Logger::log('IP address value missing (could not read the IP address of the user). Cannot record this coupon check signature. The extra security check later may fail.', false);
+			return;
+		}
+
+		$coupon_check_signature_arr = ASP_Utils_Bot_Mitigation::get_coupon_check_signature_data();
+
+		$hp_key = ASP_Utils_Bot_Mitigation::get_asp_hash_private_key_one();
+
+		$index = $product_id. '_'.$ip_address;
+		$signature = sha1($hp_key.$product_id.$coupon_code.$ip_address);
+		$coupon_check_signature_arr[$index] = $signature;
+
+		//Save the page load signature data with an expiry of 1 hour.
+		set_transient('asp_coupon_check_signature', $coupon_check_signature_arr, 3600);
+	}
+
+	public static function is_coupon_check_signature_data_valid($product_id, $coupon_code) {
+		$coupon_check_signature_arr = get_transient('asp_coupon_check_signature');
+		if (!isset($coupon_check_signature_arr) || empty($coupon_check_signature_arr)) {
+			ASP_Debug_Logger::log( 'Coupon signature check - currently there are no entries in the saved data for coupon check signature.', false );
+			return false;
+		}
+
+		$ip_address_to_check = ASP_Utils::get_user_ip_address();
+		if (!isset($ip_address_to_check) || empty($ip_address_to_check)) {
+			ASP_Debug_Logger::log( 'Coupon signature check - IP address value for this request is missing.', false );
+			return false;
+		}
+
+		$index = $product_id. '_'.$ip_address_to_check;
+
+		if (!isset($coupon_check_signature_arr[$index]) || empty ($coupon_check_signature_arr[$index])){
+			ASP_Debug_Logger::log( 'Coupon signature check - cannot find this Product ID and IP address index ('.$index.') in the saved data.', false );
+			return false;
+		}
+
+		$hp_key = ASP_Utils_Bot_Mitigation::get_asp_hash_private_key_one();
+
+		$expected_signature = $coupon_check_signature_arr[$index];
+		$received = sha1($hp_key.$product_id.$coupon_code.$ip_address_to_check);
+
+		if (!hash_equals($expected_signature, $received)){
+			//Mis-match
+			ASP_Debug_Logger::log( 'Coupon signature check - the signature hash does not match.', false );
+			return false;
+		}
+
+		//Entry for the received signature exists
+		ASP_Debug_Logger::log( 'Coupon signature check done!', true );
+
+		return true;
+	}
+
     public static function get_request_limit_count_data() {
         $asp_request_usage_count = get_transient('asp_request_usage_count');
         if (!isset($asp_request_usage_count) || empty($asp_request_usage_count)) {
