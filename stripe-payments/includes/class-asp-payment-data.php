@@ -264,6 +264,11 @@ class ASP_Payment_Data {
 
 		$this->billing_details_obj = $bd;
 
+		$cd = new stdClass;
+		$cd->name = $b_name;
+		$cd->email = $b_email;
+		$this->customer_obj = $cd;
+
 		//Shipping details
 		$same_addr = $ipn_ng_class->get_post_var( 'asp_same-bill-ship-addr' );
 

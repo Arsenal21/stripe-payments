@@ -158,6 +158,9 @@ None.
 == Changelog ==
 = WIP =
 - Coupon signature check protection added.
+- Nonce verification added in payment form.
+- Coupon enabled/disabled for product check added in server side.
+- A PHP warning fixed in checkout result page for full discount checkout.
 
 = 2.0.98 =
 - Added prefixes to the Gutenberg block variables to prevent potential conflicts with other plugins.

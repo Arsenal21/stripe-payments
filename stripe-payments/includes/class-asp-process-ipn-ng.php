@@ -215,6 +215,12 @@ class ASP_Process_IPN_NG {
 			//ASP_Debug_Logger::log( 'Original $_POST data: ' . $post_data_str );
 		}
 
+		$nonce = $this->get_post_var( 'asp_payment_form_nonce' );
+		if (empty($nonce) || !wp_verify_nonce($nonce, 'asp_payment_form_nonce')){
+			// ASP_Debug_Logger::log( 'Nonce verification failed!', false);
+			wp_die( __('Nonce verification failed!', 'stripe-payments') );
+		}
+
 		do_action( 'asp_ng_before_payment_processing', $post_data );
 
 		$this->sess = ASP_Session::get_instance();
