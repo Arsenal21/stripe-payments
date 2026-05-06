@@ -535,6 +535,18 @@ class ASP_Product_Item {
 		if ( ! $this->coupon ) {
 			return false;
 		}
+
+		// First check if coupon option is enabled for this product. (the settings in edit product page)
+		$coupons_enabled_for_product = get_post_meta( $this->post_id, 'asp_product_coupons_setting', true );
+		if ( $coupons_enabled_for_product === '' || $coupons_enabled_for_product == '2') {
+			$coupons_enabled_for_product = $this->asp_main->get_setting( 'coupons_enabled' );
+		}
+		if ( empty( $coupons_enabled_for_product ) ){
+			$this->last_error = __( 'Applying coupon is not allowed for this product.', 'stripe-payments' );
+			$this->coupon = false;
+			return false;
+		}
+
 		//check if coupon is allowed for the product
 		$only_for_allowed_products = get_post_meta( $this->coupon['id'], 'asp_coupon_only_for_allowed_products', true );
 		if ( $only_for_allowed_products ) {

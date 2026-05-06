@@ -513,6 +513,7 @@ echo wp_kses( '<style>' . $css . '</style>' . "\r\n", ASP_Utils::asp_allowed_tag
 						<input type="hidden" id="btn-uniq-id" name="btn_uniq_id" value="<?php echo ! empty( $a['btn_uniq_id'] ) ? esc_attr( $a['btn_uniq_id'] ) : ''; ?>">
 						<input type="hidden" id="product-id" name="product_id" value="<?php echo esc_attr( $a['prod_id'] ); ?>">
 						<input type="hidden" name="process_ipn" value="1">
+                        <input type="hidden" value="<?php echo esc_attr(wp_create_nonce('asp_payment_form_nonce')) ?>" name="payment_form_nonce">
 						<input type="hidden" name="is_live" value="<?php echo $a['is_live'] ? '1' : '0'; ?>">
 						<?php if ( $a['data']['url'] ) { ?>
 						<input type="hidden" name="item_url" value="<?php echo esc_attr( $a['data']['url'] ); ?>">
