@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 2.0.98
+Stable tag: 2.0.99
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -156,11 +156,12 @@ Yes, please visit Stripe Payments > Settings screen for options.
 None.
 
 == Changelog ==
-= WIP =
-- Coupon signature check protection added.
-- Nonce verification added in payment form.
-- Coupon enabled/disabled for product check added in server side.
-- A PHP warning fixed in checkout result page for full discount checkout.
+
+= 2.0.99 =
+- Added a server-side check to verify that the coupon feature is enabled before attempting to apply a coupon code.
+- Added an additional verification check for 100% discount coupons.
+- Added nonce verification to the form submission process.
+- Fixed a minor PHP warning on the checkout result page during 100% discount checkout scenarios.
 
 = 2.0.98 =
 - Added prefixes to the Gutenberg block variables to prevent potential conflicts with other plugins.
