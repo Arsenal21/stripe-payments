@@ -75,6 +75,7 @@ class ASP_PP_Ajax {
 
 		$asp_daily_txn_counter_obj = new ASP_Daily_Txn_Counter();
 		$captcha_type = $this->asp_main->get_setting('captcha_type');
+        $captcha_type = apply_filters( 'asp_enabled_captcha_type', $captcha_type );
 		if (empty( $captcha_type ) || $captcha_type == 'none' ) {
 			//Captcha is not enabled. Lets check txn rate limiting.
 			if($asp_daily_txn_counter_obj->asp_is_daily_txn_limit_reached()) {
@@ -276,6 +277,7 @@ class ASP_PP_Ajax {
         }
 		$asp_daily_txn_counter_obj = new ASP_Daily_Txn_Counter();
 		$captcha_type = $this->asp_main->get_setting('captcha_type');
+        $captcha_type = apply_filters( 'asp_enabled_captcha_type', $captcha_type );
 		if (empty($captcha_type) || $captcha_type == 'none') {
 			//Captcha is not enabled. Lets check txn rate limiting.
 			if ($asp_daily_txn_counter_obj->asp_is_daily_txn_limit_reached()) {
