@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 2.0.99
+Stable tag: 2.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -156,8 +156,9 @@ Yes, please visit Stripe Payments > Settings screen for options.
 None.
 
 == Changelog ==
-= WIP =
-- Fixed and integration issue with Bot Protection Turnstile plugin.
+
+= 2.1.0 =
+- Fixed an integration issue with the Bot Protection Turnstile plugin.
 
 = 2.0.99 =
 - Added a server-side check to verify that the coupon feature is enabled before attempting to apply a coupon code.
