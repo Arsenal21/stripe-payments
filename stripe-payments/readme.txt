@@ -156,6 +156,8 @@ Yes, please visit Stripe Payments > Settings screen for options.
 None.
 
 == Changelog ==
+= WIP =
+- Fixed and integration issue with Bot Protection Turnstile plugin.
 
 = 2.0.99 =
 - Added a server-side check to verify that the coupon feature is enabled before attempting to apply a coupon code.
