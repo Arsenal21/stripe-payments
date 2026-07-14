@@ -158,7 +158,7 @@ None.
 == Changelog ==
 
 = 2.1.0 =
-- Fixed an integration issue with the Bot Protection Turnstile plugin.
+- Fixed an integration issue with the [Bot Protection with Turnstile plugin](https://wordpress.org/plugins/bot-protection-turnstile/).
 
 = 2.0.99 =
 - Added a server-side check to verify that the coupon feature is enabled before attempting to apply a coupon code.
