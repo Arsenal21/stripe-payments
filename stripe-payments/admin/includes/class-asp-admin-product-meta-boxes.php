@@ -649,11 +649,11 @@ input[type=checkbox][disabled] + label {
 					<?php echo $shipping_out; ?>
                     </tbody>
                 </table>
-                <p>
+                <div class="asp-shipping-variations-add-btn-wrap">
                     <button type="button" id="wp-asp-shipping-variations-add-btn" class="button">
                         <span class="dashicons dashicons-plus"></span> <?php _e( 'Add Shipping Variation', 'stripe-payments' ); ?>
                     </button>
-                </p>
+                </div>
                 <p class="description">
                     <strong><?php esc_html_e('Note:', 'stripe-payments'); ?></strong> <?php esc_html_e('Shipping address collection must be enabled for region-based shipping charges to work correctly.', 'stripe-payments'); ?>
                 </p>
@@ -704,11 +704,11 @@ input[type=checkbox][disabled] + label {
 					<?php echo $tax_out; ?>
                     </tbody>
                 </table>
-                <p>
+                <div class="asp-tax-variations-add-btn-wrap">
                     <button type="button" id="wp-asp-tax-variations-add-btn" class="button">
                         <span class="dashicons dashicons-plus"></span> <?php _e( 'Add Tax Variation', 'stripe-payments' ); ?>
                     </button>
-                </p>
+                </div>
 
                 <label><?php esc_html_e( 'Apply the tax variation based on:', 'stripe-payments' ); ?></label>
                 <br>

@@ -270,14 +270,21 @@ a.wp-asp-product-menu-nav-item.nav-tab-active:focus {
 	width: 100%;
 }
 
+.asp-shipping-variations-add-btn-wrap,
+.asp-tax-variations-add-btn-wrap{
+	margin: 8px 0;
+}
+
 .wp-asp-shipping-variations-del-btn span,
 .wp-asp-tax-variations-del-btn span {
-	vertical-align: sub;
+	vertical-align: middle !important;
+	line-height: normal !important;
 }
 
 #wp-asp-shipping-variations-add-btn span,
 #wp-asp-tax-variations-add-btn span {
 	vertical-align: middle;
+	line-height: normal;
 }
 
 @media screen and (max-width: 960px) {
@@ -317,12 +324,16 @@ a.wp-asp-product-menu-nav-item.nav-tab-active:focus {
 	margin-bottom: 5px;
 }
 
-.asp-variations-buttons-cont {
-	text-align: right;
+.asp-variations-delete-group-btn .dashicons,
+.asp-variations-add-variation-btn .dashicons,
+.asp-variations-delete-variation-btn .dashicons,
+.asp-variations-select-from-ml-btn .dashicons{
+	vertical-align: middle !important;
+	line-height: normal !important;
 }
 
-#asp-variations-cont-main button span.dashicons {
-	vertical-align: middle !important;
+.asp-variations-buttons-cont {
+	text-align: right;
 }
 
 #asp-variations-cont {

@@ -156,6 +156,9 @@ Yes, please visit Stripe Payments > Settings screen for options.
 None.
 
 == Changelog ==
+= WIP =
+- Fixed order summary display issue in checkout form popup.
+- WordPress v7 related ui issue fixed in product page.
 
 = 2.1.0 =
 - Fixed an integration issue with the [Bot Protection with Turnstile plugin](https://wordpress.org/plugins/bot-protection-turnstile/).
