@@ -229,15 +229,15 @@ echo wp_kses( '<style>' . $css . '</style>' . "\r\n", ASP_Utils::asp_allowed_tag
 											<td><span id="order-item-price"><?php echo esc_html( AcceptStripePayments::formatted_price( $this->item->get_price(), $this->item->get_currency() ) ); ?></span></td>
 										</tr>
 										<?php
-											$items = $this->item->get_items();
+                                        $items = $this->item->get_items();
 										if ( ! empty( $items ) ) {
 											foreach ( $items as $item ) {
-												?>
-										<tr>
-											<td><?php echo esc_html( sprintf( '%s', $item['name'] ) ); ?></td>
-											<td><span id="order-item-price"><?php echo esc_html( AcceptStripePayments::formatted_price( $item['price'], $this->item->get_currency() ) ); ?></span></td>
-										</tr>
-												<?php
+                                                ?>
+                                                <tr>
+                                                    <td><?php echo esc_html( sprintf( '%s', $item['name'] ) ); ?></td>
+                                                    <td><span id="order-item-price"><?php echo esc_html( AcceptStripePayments::formatted_price( $item['price'], $this->item->get_currency() ) ); ?></span></td>
+                                                </tr>
+                                                <?php
 											}
 										}
 										$tax_str        = apply_filters( 'asp_customize_text_msg', __( 'Tax', 'stripe-payments' ), 'tax_str' );
@@ -252,13 +252,28 @@ echo wp_kses( '<style>' . $css . '</style>' . "\r\n", ASP_Utils::asp_allowed_tag
 										);
 										echo wp_kses( $out, ASP_Utils::asp_allowed_tags() );
 
-							if ( $a['data']['shipping'] ) {
-								$ship_str        = apply_filters( 'asp_customize_text_msg', __( 'Shipping', 'stripe-payments' ), 'shipping_str' );
-								$ship_amount_str = AcceptStripePayments::formatted_price( $a['item']->get_shipping(), $this->item->get_currency() );
-								$out             = sprintf( '<tr><td>%s</td><td><span id="shipping">%s</span></td></tr>', $ship_str, $ship_amount_str );
-								echo wp_kses( $out, ASP_Utils::asp_allowed_tags() );
-							}
-							?>
+                                        if ( $a['data']['shipping'] || isset($a['data']['shipping_variations']) ) {
+                                            $ship_str        = apply_filters( 'asp_customize_text_msg', __( 'Shipping', 'stripe-payments' ), 'shipping_str' );
+                                            $ship_amount_str = AcceptStripePayments::formatted_price( $a['item']->get_shipping(), $this->item->get_currency() );
+                                            $out             = sprintf( '<tr id="order-shipping-line"><td>%s</td><td><span id="shipping">%s</span></td></tr>', $ship_str, $ship_amount_str );
+                                            echo wp_kses( $out, ASP_Utils::asp_allowed_tags() );
+                                        }
+
+                                        if ( isset($a['data']['surcharge']) && !empty($a['data']['surcharge']) ) {
+                                            $surcharge_label = isset( $a['data']['surcharge_label'] ) && !empty($a['data']['surcharge_label']) ? sanitize_text_field($a['data']['surcharge_label']) : __( 'Surcharge', 'stripe-payments' );
+                                            $surcharge_str        = apply_filters( 'asp_customize_text_msg', $surcharge_label, 'surcharge_str' );
+
+                                            $surcharge_type = isset( $a['data']['surcharge_type']) && !empty($a['data']['surcharge_type']) ? sanitize_text_field($a['data']['surcharge_type']) : 'flat';
+                                            if ( $surcharge_type != 'flat' ) {
+                                                $surcharge_perc_str = sprintf('(<span id="order-tax-perc">%s</span>%%)', $a['data']['surcharge']);
+                                                $surcharge_str .= ' ' . $surcharge_perc_str;
+                                            }
+
+                                            $surcharge_amount_str = AcceptStripePayments::formatted_price( $a['item']->calculate_total_surcharge(), $this->item->get_currency() );
+                                            $out             = sprintf( '<tr id="order-surcharge-line"><td>%s</td><td><span id="order-surcharge">%s</span></td></tr>', $surcharge_str, $surcharge_amount_str );
+                                            echo wp_kses( $out, ASP_Utils::asp_allowed_tags() );
+                                        }
+                                        ?>
 										<tr>
 											<td><strong><?php esc_html_e( 'Total', 'stripe-payments' ); ?>:</strong></td>
 											<td><span id="order-total"><?php echo esc_html( AcceptStripePayments::formatted_price( $this->item->get_total(), $this->item->get_currency() ) ); ?></span></td>

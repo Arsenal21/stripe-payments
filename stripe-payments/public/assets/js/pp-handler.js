@@ -439,12 +439,29 @@ function updateAllAmounts() {
 		jQuery('#order-total').html(formatMoney(totalAmount));
 		jQuery('#order-item-price').html(formatMoney(vars.data.item_price * vars.data.quantity));
 		jQuery('#order-quantity').html(vars.data.quantity);
+
 		jQuery('#order-tax').html(formatMoney(vars.data.taxAmount));
 		jQuery('#order-tax-perc').html(vars.data.tax);
 		if (vars.data.tax > 0) {
 			jQuery('#order-tax-line').show();
+		} else {
+			jQuery('#order-tax-line').hide();
 		}
+
 		jQuery('#shipping').html(formatMoney(vars.data.shipping));
+		if (vars.data.shipping > 0){
+			jQuery('#order-shipping-line').show();
+		} else {
+			jQuery('#order-shipping-line').hide();
+		}
+
+		jQuery('#order-surcharge').html(formatMoney(vars.data.surcharge_amount));
+		if (vars.data.surcharge_amount > 0){
+			jQuery('#order-surcharge-line').show();
+		} else {
+			jQuery('#order-surcharge-line').hide();
+		}
+
 		if (vars.data.coupon && !vars.data.is_trial) {
 			if (jQuery('tr#order-coupon-line').length === 0) {
 				var couponOrderLine = '<tr id="order-coupon-line"><td>' + vars.str.strCoupon + ' "' + vars.data.coupon.code + '"</td><td>- <span id="order-coupon"></span></td></tr>';
@@ -548,11 +565,13 @@ function calcTotal() {
 		}
 	}
 
-	if (vars.data.tax) {
-		var tax = PHP_round(itemSubt * vars.data.tax / 100, 0);
-		vars.data.taxAmount = tax;
-		itemSubt = itemSubt + tax;
+	if (! is_numeric(vars.data.tax)) {
+		vars.data.tax = 0;
 	}
+
+	let taxAmount = PHP_round(itemSubt * vars.data.tax / 100, 0);
+	vars.data.taxAmount = taxAmount;
+	itemSubt = itemSubt + taxAmount;
 
 	tAmount = itemSubt;
 
@@ -560,13 +579,18 @@ function calcTotal() {
 		tAmount = tAmount + vars.data.shipping;
 	}
 
+	let surcharge_amount = 0;
 	if (vars.data.surcharge && !vars.data.is_trial){
-		let surcharge_amount = calc_surcharge(tAmount);
-		vars.data.surcharge_amount = surcharge_amount;
-		tAmount = tAmount + surcharge_amount;
+		surcharge_amount = calc_surcharge(tAmount);
 	}
+	vars.data.surcharge_amount = surcharge_amount;
+	tAmount = tAmount + surcharge_amount;
 
 	vars.data.amount = PHP_round(tAmount, 0);
+}
+
+function is_numeric(value) {
+	return value !== '' && value !== null && Number.isFinite(Number(value));
 }
 
 /**
