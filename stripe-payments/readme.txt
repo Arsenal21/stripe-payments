@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 2.1.0
+Stable tag: 2.1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -156,9 +156,10 @@ Yes, please visit Stripe Payments > Settings screen for options.
 None.
 
 == Changelog ==
-= WIP =
-- Fixed order summary display issue in checkout form popup.
-- WordPress v7 related ui issue fixed in product page.
+
+= 2.1.1 =
+- Regional Tax: Fixed a display issue with the order summary on the checkout form.
+- WordPress 7.0: UI improvements for the product configuration interface.
 
 = 2.1.0 =
 - Fixed an integration issue with the [Bot Protection with Turnstile plugin](https://wordpress.org/plugins/bot-protection-turnstile/).
