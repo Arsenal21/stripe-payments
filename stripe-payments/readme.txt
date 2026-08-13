@@ -156,6 +156,8 @@ Yes, please visit Stripe Payments > Settings screen for options.
 None.
 
 == Changelog ==
+= WIP =
+- Gutenberg block compatibility update for WordPress v7.1.
 
 = 2.1.1 =
 - Regional Tax: Fixed a display issue with the order summary on the checkout form.

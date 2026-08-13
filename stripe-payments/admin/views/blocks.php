@@ -4,6 +4,11 @@ class AcceptStripePayments_Blocks {
 
 	function __construct() {
 		add_action( 'init', array( $this, 'register_block' ) );
+		add_action( 'enqueue_block_assets', array( $this, 'enqueue_block_assets' ) );
+	}
+
+	function enqueue_block_assets() {
+		wp_enqueue_style( 'asp-default-style', WP_ASP_PLUGIN_URL . '/public/views/templates/default/style.css', array(), WP_ASP_PLUGIN_VERSION );
 	}
 
 	function register_block() {
