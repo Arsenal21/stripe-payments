@@ -156,6 +156,8 @@ Yes, please visit Stripe Payments > Settings screen for options.
 None.
 
 == Changelog ==
+= WIP =
+- A coupon code related vulnerability issue fixed.
 
 = 2.1.2 =
 - Gutenberg block compatibility for WordPress v7.1.
