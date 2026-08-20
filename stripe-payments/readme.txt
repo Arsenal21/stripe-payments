@@ -158,6 +158,7 @@ None.
 == Changelog ==
 = WIP =
 - A coupon code related vulnerability issue fixed.
+- Product thumbnail upload related issue fixed.
 
 = 2.1.2 =
 - Gutenberg block compatibility for WordPress v7.1.

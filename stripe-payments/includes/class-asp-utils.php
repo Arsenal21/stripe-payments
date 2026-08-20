@@ -694,7 +694,18 @@ class ASP_Utils {
 		//check if we have 100x100 preview generated
 		$thumb_thumb = get_post_meta( $prod_id, 'asp_product_thumbnail_thumb', true );
 		if ( empty( $thumb_thumb ) || $force_regen ) {
-			//looks like we don't have one. Let's generate it
+			//looks like we don't have one. Let's generate it if its and local file.
+
+			// Try to retrieve the attachment id.
+			$attachment_id = attachment_url_to_postid($curr_thumb);
+			if ( !empty($attachment_id) ) {
+				$image_path = get_attached_file( $attachment_id );
+				$curr_thumb = $image_path;
+			} else {
+				// probably external media file, no need to resize
+				return $ret;
+			}
+
 			$thumb_thumb = '';
 			$image       = wp_get_image_editor( $curr_thumb );
 			if ( ! is_wp_error( $image ) ) {
