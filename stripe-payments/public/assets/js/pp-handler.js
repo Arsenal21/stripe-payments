@@ -108,7 +108,16 @@ if (vars.data.coupons_enabled) {
 		}
 		couponBtn.disabled = true;
 		smokeScreen(true);
-		var ajaxData = 'action=asp_pp_check_coupon&product_id=' + vars.data.product_id + '&coupon_code=' + couponInput.value;
+
+		const applied_coupon = asp_sanitizeCouponCode(couponInput.value);
+
+		const params = new URLSearchParams();
+		params.set('action', 'asp_pp_check_coupon');
+		params.set('product_id', vars.data.product_id);
+		params.set('coupon_code', applied_coupon);
+
+		const ajaxData = params.toString();
+
 		new ajaxRequest(vars.ajaxURL, ajaxData,
 			function (res) {
 				//console.log(res);
@@ -121,14 +130,14 @@ if (vars.data.coupons_enabled) {
 					vars.data.coupon = resp;
 					//console.log(vars.data.coupon);
 					calcTotal();
-					couponInfo.innerHTML = vars.data.coupon.code + ': ' + ' - ';
+					couponInfo.textContent = vars.data.coupon.code + ': ' + ' - ';
 					if (vars.data.coupon.discount_type === 'perc') {
-						couponInfo.innerHTML = couponInfo.innerHTML + vars.data.coupon.discount + '%';
+						couponInfo.textContent = couponInfo.textContent + vars.data.coupon.discount + '%';
 					} else {
-						couponInfo.innerHTML = couponInfo.innerHTML + formatMoney(amount_to_cents(vars.data.coupon.discount, vars.data.currency));
+						couponInfo.textContent = couponInfo.textContent + formatMoney(amount_to_cents(vars.data.coupon.discount, vars.data.currency));
 					}
 					if (vars.data.is_trial) {
-						couponInfo.innerHTML = couponInfo.innerHTML + vars.str.strforRecurringPayments;
+						couponInfo.textContent = couponInfo.textContent + vars.str.strforRecurringPayments;
 					}
 					couponResCont.style.display = 'block';
 					couponInputCont.style.display = 'none';
@@ -464,7 +473,7 @@ function updateAllAmounts() {
 
 		if (vars.data.coupon && !vars.data.is_trial) {
 			if (jQuery('tr#order-coupon-line').length === 0) {
-				var couponOrderLine = '<tr id="order-coupon-line"><td>' + vars.str.strCoupon + ' "' + vars.data.coupon.code + '"</td><td>- <span id="order-coupon"></span></td></tr>';
+				var couponOrderLine = '<tr id="order-coupon-line"><td>' + vars.str.strCoupon + ' "' + asp_sanitizeCouponCode(vars.data.coupon.code) + '"</td><td>- <span id="order-coupon"></span></td></tr>';
 				if (jQuery('tr.variation-line').last().length !== 0) {
 					jQuery('tr.variation-line').last().after(couponOrderLine);
 				} else {
@@ -1036,7 +1045,7 @@ function handlePayment() {
 		reqStr += '&token=' + vars.data.visitor_token;
 
 		if (vars.data.coupon) {
-			reqStr += '&coupon=' + vars.data.coupon.code;
+			reqStr += '&coupon=' + asp_sanitizeCouponCode(vars.data.coupon.code);
 		}
 
 		reqStr = reqStr + '&customer_details=' + JSON.stringify(customerDetails);
@@ -1159,7 +1168,7 @@ function handlePayment() {
 			ct_reqStr = ct_reqStr + '&quantity=' + vars.data.quantity;
 		}
 		if (vars.data.coupon) {
-			ct_reqStr = ct_reqStr + '&coupon=' + vars.data.coupon.code;
+			ct_reqStr = ct_reqStr + '&coupon=' + asp_sanitizeCouponCode(vars.data.coupon.code);
 		}
 		ct_reqStr = ct_reqStr + '&billing_details=' + JSON.stringify(billingDetails);
 		if (shippingDetails) {
@@ -1645,7 +1654,7 @@ jQuery(document).ready(function(){
 		return;
 	}
 
-	const couponCode = urlParams.get(couponQueryParam).trim();
+	const couponCode = asp_sanitizeCouponCode(urlParams.get(couponQueryParam));
 	const couponCodeInput = jQuery("#coupon-code");
 
 	couponCodeInput.val(couponCode);
@@ -1680,6 +1689,43 @@ document.addEventListener('DOMContentLoaded', function(){
 	}
 
 })
+
+/**
+ * Sanitizes a coupon code taken from a URL query param.
+ * Allows letters, numbers, single spaces, and a safe set of common
+ * coupon symbols. Rejects anything that looks like it's trying to
+ * inject extra params, encoded payloads, HTML/script content,
+ * control characters, or double-encoded space tricks.
+ *
+ * @param {string} value - Applied coupon code/ raw coupon_code query param
+ * @returns {string} the original value if valid, otherwise ''
+ */
+function asp_sanitizeCouponCode(value) {
+	if (typeof value !== 'string') return '';
+
+	const trimmed = value.trim();
+
+	// Reject empty or overly long values (coupon codes are short)
+	if (trimmed.length === 0 || trimmed.length > 50) return '';
+
+	// Reject if it contains percent-encoding at all (e.g. %26, %3D, %00...)
+	if (/%[0-9A-Fa-f]{2}/.test(trimmed)) return '';
+
+	// Reject tabs, newlines, other control chars, and any DOM/URL-breaking chars.
+	// Note: plain space (0x20) is intentionally NOT in this list.
+	const forbiddenChars = /[&=?#\/\\<>"';`\t\n\r\x00-\x1F\x7F]/;
+	if (forbiddenChars.test(trimmed)) return '';
+
+	// Reject double spaces / leading-trailing spaces snuck in via trim edge cases
+	if (/\s{2,}/.test(trimmed)) return '';
+	if (trimmed.startsWith(' ') || trimmed.endsWith(' ')) return '';
+
+	// Whitelist: letters, numbers, single internal spaces, and coupon-safe symbols
+	const allowedPattern = /^[A-Za-z0-9\-_.+!* ]+$/;
+	if (!allowedPattern.test(trimmed)) return '';
+
+	return trimmed;
+}
 
 function ASPShippingVariationHandler () {
 	let parent = this;
