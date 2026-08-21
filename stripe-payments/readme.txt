@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 2.1.2
+Stable tag: 2.1.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -156,9 +156,10 @@ Yes, please visit Stripe Payments > Settings screen for options.
 None.
 
 == Changelog ==
-= WIP =
-- A coupon code related vulnerability issue fixed.
-- Product thumbnail upload related issue fixed.
+
+= 2.1.3 =
+- Improved product thumbnail uploads for compatibility with newer PHP versions.
+- Fixed a coupon code related security vulnerability issue.
 
 = 2.1.2 =
 - Gutenberg block compatibility for WordPress v7.1.
