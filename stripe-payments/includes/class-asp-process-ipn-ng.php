@@ -302,8 +302,12 @@ class ASP_Process_IPN_NG {
 
 			// check if the product ID in the original payment intent object matches the submitted product ID.
 			$pi_obj = $p_data->get_obj();
-			$pi_product_id = isset( $pi_obj->metadata['Product ID'] ) ? intval( $pi_obj->metadata['Product ID'] ) : null;
-			if ( $pi_product_id !== null && $pi_product_id !== intval( $prod_id ) ) {
+			// $pi_obj->metadata is a \Stripe\StripeObject when the Stripe PHP SDK is used and a plain stdClass
+			// when the internal API is used (dont_use_stripe_php_sdk). Both support object property access
+			// (StripeObject via __get/__isset), so avoid array access which would fatal on stdClass.
+			$pi_metadata   = ( is_object( $pi_obj ) && isset( $pi_obj->metadata ) ) ? $pi_obj->metadata : null;
+			$pi_product_id = ( is_object( $pi_metadata ) && isset( $pi_metadata->{'Product ID'} ) ) ? intval( $pi_metadata->{'Product ID'} ) : null;
+			if ( ! empty( $prod_id ) && $pi_product_id !== null && $pi_product_id !== intval( $prod_id ) ) {
 				ASP_Debug_Logger::log( sprintf('Product ID mismatch. The submitted product id: %d, does not match the payment intent product id: %d.', intval( $prod_id ), $pi_product_id ), false );
 				$this->ipn_completed( __( 'Product ID mismatch. The submitted product does not match the payment', 'stripe-payments' ) );
 			}
