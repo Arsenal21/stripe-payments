@@ -22,7 +22,7 @@ class ASP_Process_IPN_NG {
 
 		$process_ipn = filter_input( INPUT_POST, 'asp_process_ipn', FILTER_SANITIZE_NUMBER_INT );
 		if ( $process_ipn ) {
-			add_action( 'asp_ng_process_ipn_payment_data_item_override', array( $this, 'payment_data_override' ), 10, 2 );
+			add_action( 'asp_ng_process_ipn_payment_data_item_override', array( $this, 'payment_data_override' ), 10, 2 ); // For zero-value transaction
 			add_action( 'wp_loaded', array( $this, 'process_ipn' ), 2147483647 );
 		}
 
@@ -154,8 +154,11 @@ class ASP_Process_IPN_NG {
 			$this->asp_redirect_url = ASP_Utils::url_to_https( $this->asp_redirect_url );
 		}
 
-		ASP_Debug_Logger::log( sprintf( 'Redirecting to results page "%s"', $this->asp_redirect_url ) . "\r\n" );
-		wp_redirect( $this->asp_redirect_url );
+		// Check if the redirect URL is valid before redirecting. If the url is unsafe, default to the home URL instead.
+		ASP_Debug_Logger::log( sprintf( 'Validating redirect URL "%s"', $this->asp_redirect_url ) );
+		$validated_redirect_url = wp_validate_redirect( $this->asp_redirect_url, home_url( '/' ) );
+		ASP_Debug_Logger::log( sprintf( 'Redirecting to "%s"', $validated_redirect_url ) . "\r\n" );
+		wp_safe_redirect( $validated_redirect_url );
 		exit;
 	}
 
@@ -296,6 +299,14 @@ class ASP_Process_IPN_NG {
 			//Payment data override filter did not return any data. Let's get the data from the payment intent object.
 			//The billing details [example: ASP_Payment_Data->get_billing_details()] and some other transaction data are read from the payment intent object within the ASP_Payment_Data class.
 			$p_data = new ASP_Payment_Data( $pi );
+
+			// check if the product ID in the original payment intent object matches the submitted product ID.
+			$pi_obj = $p_data->get_obj();
+			$pi_product_id = isset( $pi_obj->metadata['Product ID'] ) ? intval( $pi_obj->metadata['Product ID'] ) : null;
+			if ( $pi_product_id !== null && $pi_product_id !== intval( $prod_id ) ) {
+				ASP_Debug_Logger::log( sprintf('Product ID mismatch. The submitted product id: %d, does not match the payment intent product id: %d.', intval( $prod_id ), $pi_product_id ), false );
+				$this->ipn_completed( __( 'Product ID mismatch. The submitted product does not match the payment', 'stripe-payments' ) );
+			}
 		}
 
 		$p_last_err = $p_data->get_last_error();

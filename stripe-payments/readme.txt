@@ -156,6 +156,9 @@ Yes, please visit Stripe Payments > Settings screen for options.
 None.
 
 == Changelog ==
+= WIP =
+- After checkout redirect url is now gets validated before redirection.
+- Now it checks if there is a mismatch of product id during ipn process.
 
 = 2.1.3 =
 - Improved product thumbnail uploads for compatibility with newer PHP versions.
