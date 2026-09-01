@@ -154,8 +154,11 @@ class ASP_Process_IPN_NG {
 			$this->asp_redirect_url = ASP_Utils::url_to_https( $this->asp_redirect_url );
 		}
 
-		ASP_Debug_Logger::log( sprintf( 'Redirecting to results page "%s"', $this->asp_redirect_url ) . "\r\n" );
-		wp_redirect( $this->asp_redirect_url );
+		// Check if the redirect URL is valid before redirecting. If the url is unsafe, default to the home URL instead.
+		ASP_Debug_Logger::log( sprintf( 'Validating redirect URL "%s"', $this->asp_redirect_url ) );
+		$validated_redirect_url = wp_validate_redirect( $this->asp_redirect_url, home_url( '/' ) );
+		ASP_Debug_Logger::log( sprintf( 'Redirecting to "%s"', $validated_redirect_url ) . "\r\n" );
+		wp_safe_redirect( $validated_redirect_url );
 		exit;
 	}
 

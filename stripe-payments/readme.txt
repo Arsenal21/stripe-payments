@@ -156,6 +156,8 @@ Yes, please visit Stripe Payments > Settings screen for options.
 None.
 
 == Changelog ==
+= WIP =
+- After checkout redirect url is now gets validated before redirection.
 
 = 2.1.3 =
 - Improved product thumbnail uploads for compatibility with newer PHP versions.
