@@ -555,24 +555,24 @@ echo wp_kses( '<style>' . $css . '</style>' . "\r\n", ASP_Utils::asp_allowed_tag
 	<?php
 
 	foreach ( $a['styles'] as $style ) {
-		if ( ! $style['footer'] ) {
+		if ( empty( $style['footer'] ) ) {
 			printf( '<link rel="stylesheet" href="%s">' . "\r\n", $style['src'] );
 		}
 	}
 	foreach ( $a['scripts'] as $script ) {
-		if ( ! $script['footer'] ) {
+		if ( empty( $script['footer'] ) ) {
 			printf( '<script src="%s"></script>' . "\r\n",  $script['src'] );
 		}
 	}
 
 	foreach ( $a['scripts'] as $script ) {
-		if ( $script['footer'] ) {
+		if ( ! empty( $script['footer'] ) ) {
 			printf( '<script src="%s"></script>' . "\r\n",  $script['src'] );
 		}
 	}
 
 	foreach ( $a['styles'] as $style ) {
-		if ( $style['footer'] ) {
+		if ( ! empty( $style['footer'] ) ) {
 			printf( '<link rel="stylesheet" href="%s">' . "\r\n", $style['src'] );
 		}
 	}

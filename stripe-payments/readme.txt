@@ -157,6 +157,9 @@ None.
 
 == Changelog ==
 
+= WIP - 2.1.5 =
+- Fixed PHP 8.x "Undefined array key 'footer'" warnings in the payment popup when a script or style is added without the 'footer' parameter.
+
 = 2.1.4 =
 - The post-checkout redirect URL is now validated before redirection.
 - Added product ID mismatch detection during IPN processing.
