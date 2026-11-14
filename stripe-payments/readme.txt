@@ -159,6 +159,7 @@ None.
 
 = WIP - 2.1.5 =
 - Fixed PHP 8.x "Undefined array key 'footer'" warnings in the payment popup when a script or style is added without the 'footer' parameter.
+- Fixed a stored XSS vulnerability in the order event history. Payment confirm parameters are now restricted to an allowlist, and order event comments are sanitized when saved and escaped when displayed in the admin area.
 
 = 2.1.4 =
 - The post-checkout redirect URL is now validated before redirection.

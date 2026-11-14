@@ -39,11 +39,11 @@ class ASP_Admin_Order_Meta_Boxes {
 					</div>
 					<div class="asp-order-event-comment">%s</div>
 					</div>',
-					' os-' . $event['status'],
-					ASPOrder::get_status_str( $event['status'] ),
+					esc_attr( ' os-' . $event['status'] ),
+					esc_html( ASPOrder::get_status_str( $event['status'] ) ),
 					gmdate( 'Y-m-d H:i:s', $event['date'] ),
 					gmdate( 'M d H:i', $event['date'] ),
-					$event['comment']
+					esc_html( $event['comment'] )
 				);
 				if ( count( $order_events ) !== $i ) {
 					echo '<hr>';

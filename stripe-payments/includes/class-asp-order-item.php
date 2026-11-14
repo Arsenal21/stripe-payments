@@ -72,6 +72,11 @@ class ASP_Order_Item {
 			$order_events = array();
 		}
 
+		// Order event comments are plain text. Strip any markup before storing.
+		if ( is_string( $comment ) ) {
+			$comment = wp_strip_all_tags( $comment );
+		}
+
 		$order_events[] = array(
 			'status'  => $new_status,
 			'comment' => $comment,

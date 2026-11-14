@@ -185,7 +185,7 @@ class ASPOrder {
 						case 'error':
 							$order_events = get_post_meta( $post_id, 'asp_order_events', false );
 							if ( ! empty( $order_events ) && is_array( $order_events ) ) {
-								echo sprintf( '<span class="asp-order-status%s" data-balloon-length="medium" data-balloon-pos="up" aria-label="%s">%s</span>', ' ' . $status, end( $order_events[0] )['comment'], self::get_status_str( $status ) );
+								echo sprintf( '<span class="asp-order-status%s" data-balloon-length="medium" data-balloon-pos="up" aria-label="%s">%s</span>', ' ' . $status, esc_attr( end( $order_events[0] )['comment'] ), self::get_status_str( $status ) );
 							} else {
 								echo sprintf( $this->order_status_tpl, ' ' . $status, self::get_status_str( $status ) );
 							}

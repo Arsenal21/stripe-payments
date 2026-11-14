@@ -164,9 +164,25 @@ class ASP_PP_Ajax {
 		if ( ! empty( $opts ) ) {
 			$opts = html_entity_decode( $opts );
 			$opts = json_decode( $opts, true );
-		} else {
+		}
+
+		if ( ! is_array( $opts ) ) {
 			$opts = array();
 		}
+
+		// Only pass the confirm parameters the payment popup actually sends. Any other attacker-supplied key is dropped before calling Stripe.
+		$allowed_opts = apply_filters(
+			'asp_ng_confirm_pi_allowed_opts',
+			array(
+				'payment_method',
+				'payment_method_data',
+				'shipping',
+				'save_payment_method',
+				'setup_future_usage',
+				'receipt_email',
+			)
+		);
+		$opts = array_intersect_key( $opts, array_flip( (array) $allowed_opts ) );
 
 		$opts['use_stripe_sdk'] = false;
 
@@ -224,7 +240,7 @@ class ASP_PP_Ajax {
 				}
 			}
 		} catch ( \Throwable $e ) {
-			$out['err'] = __( 'Stripe API error occurred:', 'stripe-payments' ) . ' ' . $e->getMessage();
+			$out['err'] = __( 'Stripe API error occurred:', 'stripe-payments' ) . ' ' . wp_strip_all_tags( $e->getMessage() );
 			$order      = new ASP_Order_Item();
 			if ( false !== $order->find( 'pi_id', $pi_id ) ) {
 				$order->change_status( 'error', $out['err'] );
