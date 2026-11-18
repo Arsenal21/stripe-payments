@@ -5,7 +5,7 @@ Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortc
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 2.1.4
+Stable tag: 2.1.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -157,9 +157,10 @@ None.
 
 == Changelog ==
 
-= WIP - 2.1.5 =
+= 2.1.5 =
 - Fixed PHP 8.x "Undefined array key 'footer'" warnings in the payment popup when a script or style is added without the 'footer' parameter.
-- Fixed a stored XSS vulnerability in the order event history. Payment confirm parameters are now restricted to an allowlist, and order event comments are sanitized when saved and escaped when displayed in the admin area.
+- Payment confirm parameters are now restricted to an allowlist, and order event comments are sanitized when saved and escaped when displayed in the admin area.
+- The popup iframe and prefetch link are now built safely instead of from HTML strings.
 
 = 2.1.4 =
 - The post-checkout redirect URL is now validated before redirection.

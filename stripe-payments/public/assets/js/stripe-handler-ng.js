@@ -70,7 +70,21 @@ var stripeHandlerNG = function (data) {
 		if (!parent.modal) {
 			parent.modal = jQuery('div[data-asp-iframe-prod-id="' + parent.data.product_id + '"][id="asp-payment-popup-' + parent.data.uniq_id + '"]');
 			if (parent.modal.length === 0) {
-				jQuery('body').append('<div id="asp-payment-popup-' + parent.data.uniq_id + '" style="display: none;" data-asp-iframe-prod-id="' + parent.data.product_id + '" class="asp-popup-iframe-cont"><iframe frameborder="0" allowtransparency="true" class="asp-popup-iframe" allow="payment" allowpaymentrequest="true" src="' + parent.data.iframe_url + '"></iframe></div>');
+				// Build the popup elements via the DOM (not HTML string concatenation) so values like iframe_url can't break out of their attributes.
+				var popupIframe = jQuery('<iframe></iframe>').attr({
+					'frameborder': '0',
+					'allowtransparency': 'true',
+					'class': 'asp-popup-iframe',
+					'allow': 'payment',
+					'allowpaymentrequest': 'true',
+					'src': parent.data.iframe_url
+				});
+				jQuery('<div></div>').attr({
+					'id': 'asp-payment-popup-' + parent.data.uniq_id,
+					'style': 'display: none;',
+					'data-asp-iframe-prod-id': parent.data.product_id,
+					'class': 'asp-popup-iframe-cont'
+				}).append(popupIframe).appendTo('body');
 				parent.modal = jQuery('#asp-payment-popup-' + parent.data.uniq_id);
 			}
 			if (show) {
@@ -153,7 +167,11 @@ var stripeHandlerNG = function (data) {
 		parent.handleModal(false);
 	} else if (parent.data.prefetch) {
 		parent.data.iframe_url = parent.data.iframe_url + '&ckey=' + wpASPNG.ckey;
-		jQuery('body').append('<link rel="prefetch" as="document" href="' + parent.data.iframe_url + '">');
+		jQuery('<link>').attr({
+			'rel': 'prefetch',
+			'as': 'document',
+			'href': parent.data.iframe_url
+		}).appendTo('body');
 	}
 
 	var el = '#asp_ng_button_' + parent.data.uniq_id;
