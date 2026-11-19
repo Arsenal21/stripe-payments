@@ -48,3 +48,6 @@ tests_add_filter(
 
 //Start the WordPress test environment.
 require "{$_tests_dir}/includes/bootstrap.php";
+
+//Test helpers.
+require_once __DIR__ . '/includes/class-asp-test-factory.php';

@@ -38,15 +38,45 @@ The test files must stay PHP 7.4-compatible (the oldest PHP version in the workf
 - `[accept_stripe_payment]` needs the `name` parameter, and shows a buy button when it has one.
 - `[asp_show_all_products]` lists a product.
 
+**Price calculation** (test-price-calculation.php). The expected amounts are exact, because the plugin compares amounts in cents with `!=`.
+- Price, quantity (the product quantity, or the buyer's quantity), tax (rounded to the cent), shipping (once per order, not per item).
+- Prices that aren't exact in floating point (0.29, 1.15) become whole cents.
+- Zero-decimal currencies (JPY, KRW, VND, MGA) aren't multiplied by 100; the default currency is used when the product has none.
+- Flat and percent surcharge (percent of the total with tax).
+- Shipping by region (country, state, city, without case) and tax by region.
+- Coupons: percent (tax on the discounted amount), fixed per item, fixed per order, a discount larger than the price (total 0, never negative), JPY coupons.
+- Price formatting: symbol position, separators, prices in cents.
+
+**Amount check before the PaymentIntent is created** (test-amount-validation.php, `validate_total_amount()`)
+- The correct amount is accepted; a lower or higher amount is rejected with the expected and submitted amounts.
+- The product quantity is used when the buyer sends none; the amount must match the buyer's quantity.
+- A valid coupon lowers the expected amount; the discounted amount without the coupon, an unknown coupon and an expired coupon are rejected.
+- Price variations (also a group name with `_`, and variations that make up the whole price).
+- Tax by billing country, shipping by country, the surcharge, a JPY amount.
+
+**Coupons** (test-coupons.php, `check_coupon()`)
+- A valid coupon is accepted; spaces around the code are ignored.
+- Rejected with the right message: unknown code, empty code, inactive, before the start date, expired, redemption limit reached,
+  coupons turned off (in the settings or for the product), a coupon only for other products. A rejected coupon doesn't stay applied.
+- The product's coupon setting overrides the general setting.
+
+**Orders** (test-orders.php, `ASP_Order_Item`)
+- A new order is a pending "[Test Mode] [Incomplete]" order with the PaymentIntent ID and the product ID; a logged-in buyer's order is linked to the user.
+- An order is found by its PaymentIntent ID.
+- Status changes are saved as order events, without HTML.
+- A paid order gets the title and the order details (transaction, product, quantity, price, tax, total, buyer); a failed payment stays pending with the failure details.
+- Orders can be turned off in the settings.
+
+**Emails** (test-emails.php)
+- No emails when they are turned off.
+- The buyer email goes to the buyer with the product details (and the download link), and without the admin order link.
+- The merge tags are replaced (names, email, transaction, item, price, tax, total, card, coupon, download link).
+- The HTML email type.
+- The seller email goes to the seller, with Reply-To set to the buyer and a link to the order.
+
 ---
 
 ## Not covered yet (ideas for new tests)
-
-Phase B: the price calculation (PHPUnit, no network)
-- `ASP_Product_Item` totals: price, quantity, variations, tax (and tax by region), shipping (and shipping by region), surcharge.
-- Coupons: percent and fixed, expiry, start date, redemption limit, allowed products.
-- Zero-decimal currencies (JPY and others).
-- Creating the order record; the buyer and seller email merge tags.
 
 Phase C: endpoint tests (a real test site with a faked Stripe API)
 - Creating the PaymentIntent (`asp_pp_create_pi`): the amount is calculated on the server; an amount sent by the browser is ignored.
