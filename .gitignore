@@ -9,3 +9,7 @@ stripe-payments_*.zip
 /other-helpful-files/tmp/*
 
 stripe-payments.zip
+
+/tests/phpunit/vendor
+/tests/phpunit/composer.lock
+/tests/phpunit/.phpunit.result.cache

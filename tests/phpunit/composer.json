@@ -1,0 +1,13 @@
+{
+    "name": "tipsandtricks/stripe-payments-tests",
+    "description": "PHPUnit tests for the Accept Stripe Payments plugin (run by the GitHub Actions 'Plugin Tests' workflow).",
+    "type": "project",
+    "license": "GPL-2.0-or-later",
+    "require-dev": {
+        "phpunit/phpunit": "^9.6",
+        "yoast/phpunit-polyfills": "^4.0"
+    },
+    "scripts": {
+        "test": "phpunit --testdox -c phpunit.xml.dist"
+    }
+}
