@@ -50,7 +50,11 @@ $ids = array(
 	),
 	//The payment popup of this product is never loaded (no page load signature).
 	'no_popup' => ASP_Test_Factory::create_product( '10', array(), 'E2E Product Without Popup' ),
+	//A product with no saved product type (like products saved before the product type option, and the products the
+	//[accept_stripe_payment] shortcode creates).
+	'no_type'  => ASP_Test_Factory::create_product( '10', array(), 'E2E Product Without Type' ),
 	'coupon' => ASP_Test_Factory::create_coupon( 'E2E20', '20', 'perc' ),
 );
+delete_post_meta( $ids['no_type'], 'asp_product_type' );
 
 echo "\n" . wp_json_encode( $ids ) . "\n";

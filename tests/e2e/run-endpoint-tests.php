@@ -18,9 +18,28 @@ $wp_path  = getenv( 'E2E_WP_PATH' );
 $db       = new mysqli( getenv( 'E2E_DB_HOST' ), getenv( 'E2E_DB_USER' ), getenv( 'E2E_DB_PASS' ), getenv( 'E2E_DB_NAME' ) );
 $prefix   = 'wp_';
 $failures = 0;
+$skipped  = 0;
 
 //All the requests send this User-Agent: the security token of the create PaymentIntent request is made from it (see load_popup()).
 const E2E_USER_AGENT = 'ASP-E2E-Tests/1.0';
+
+//Known issues that aren't fixed yet (see "Known issues" in tests/TESTS.md). Their checks are skipped.
+//The commit that fixes one removes it from this list, so its check runs from then on.
+const KNOWN_ISSUES = array(
+	'amount-check-skipped-without-product-type' => 'handle_create_pi() only checks the amount when the product type is "one_time", so a product with no saved type gets a PaymentIntent for any amount (the payment processing rejects a lower payment, but only after the card is charged).',
+	'ip-limit-trusts-x-forwarded-for'           => 'get_user_ip_address() uses the X-Forwarded-For header, so a different header value on each request gets around the per-IP limit of create PaymentIntent requests.',
+);
+
+/** Returns true (and prints SKIP) if the check is for a known issue that isn't fixed yet. */
+function skip_known_issue( $issue, $label ) {
+	global $skipped;
+	if ( ! isset( KNOWN_ISSUES[ $issue ] ) ) {
+		return false;
+	}
+	$skipped++;
+	echo "SKIP: {$label}\n    Known issue, not fixed yet: " . KNOWN_ISSUES[ $issue ] . "\n";
+	return true;
+}
 
 function check( $label, $condition, $details = '' ) {
 	global $failures;
@@ -52,7 +71,7 @@ function wp_cli( $command ) {
  *
  * @return array The HTTP status code, the body and the Location header.
  */
-function http_request( $method, $endpoint, $fields = null ) {
+function http_request( $method, $endpoint, $fields = null, $headers = array() ) {
 	global $url;
 	$location = '';
 	$curl     = curl_init( $url . $endpoint );
@@ -60,6 +79,7 @@ function http_request( $method, $endpoint, $fields = null ) {
 		$curl,
 		array(
 			CURLOPT_CUSTOMREQUEST  => $method,
+			CURLOPT_HTTPHEADER     => $headers,
 			CURLOPT_RETURNTRANSFER => true,
 			CURLOPT_FOLLOWLOCATION => false,
 			CURLOPT_TIMEOUT        => 30,
@@ -214,8 +234,8 @@ function find_email( $to ) {
  * Returns its nonces and the security token, which the popup's script makes from the browser's User-Agent and the
  * product's button key: md5( navigator.userAgent + button_key ). The plugin checks it in ASP_Self_Hooks_Handler::check_token().
  */
-function load_popup( $product_id ) {
-	$response = http_request( 'GET', '/?asp_action=show_pp&product_id=' . $product_id );
+function load_popup( $product_id, $headers = array() ) {
+	$response = http_request( 'GET', '/?asp_action=show_pp&product_id=' . $product_id, null, $headers );
 	$popup    = array();
 	if ( preg_match( '/"asp_pp_ajax_create_pi_nonce":"([0-9a-f]+)"/', $response['body'], $m ) ) {
 		$popup['create_pi'] = $m[1];
@@ -236,7 +256,7 @@ function load_popup( $product_id ) {
 /**
  * The create PaymentIntent request, with the nonce and the security token of the loaded popup. Returns the JSON response.
  */
-function create_pi( $product_id, $popup, $amount, $currency = 'USD', $quantity = '1', $extra = array() ) {
+function create_pi( $product_id, $popup, $amount, $currency = 'USD', $quantity = '1', $extra = array(), $headers = array() ) {
 	$response = http_request(
 		'POST',
 		'/wp-admin/admin-ajax.php',
@@ -265,7 +285,8 @@ function create_pi( $product_id, $popup, $amount, $currency = 'USD', $quantity =
 				'customer_details' => '{}',
 			),
 			$extra
-		)
+		),
+		$headers
 	);
 	$json = json_decode( $response['body'], true );
 	return is_array( $json ) ? $json : array( 'err' => 'Not a JSON response. ' . response_text( $response ) );
@@ -460,11 +481,28 @@ function run_round( $label, $via, $ids, $checkout_url ) {
 	check_rejected_payment( "{$t} A payment form with a wrong nonce doesn't complete an order", $pi_id, $response );
 	check( "{$t} A payment form with a wrong nonce shows the nonce error", contains( $response['body'], 'Nonce verification failed' ), response_text( $response ) );
 
-	//9. The limits (last, because they block the create PaymentIntent request).
+	//9. A product with no saved product type ($10).
+	$no_type = load_popup( $ids['no_type'] );
+	$result  = create_pi( $ids['no_type'], $no_type, 1000 );
+	check( "{$t} A product with no saved product type: the correct amount is accepted", ! empty( $result['pi_id'] ), error_of( $result ) );
+	if ( ! skip_known_issue( 'amount-check-skipped-without-product-type', "{$t} A product with no saved product type: a lower amount is rejected" ) ) {
+		$pi_count = count( stripe_state()['payment_intents'] );
+		$result   = create_pi( $ids['no_type'], $no_type, 100 );
+		check( "{$t} A product with no saved product type: a lower amount is rejected", contains( error_of( $result ), 'Price validation failed' ) && count( stripe_state()['payment_intents'] ) === $pi_count, error_of( $result ) );
+	}
+
+	//10. The limits (last, because they block the create PaymentIntent request).
 	set_site_option_value( '_transient_asp_request_usage_count', array( '127.0.0.1' => 20 ) );
 	set_site_option_value( '_transient_timeout_asp_request_usage_count', time() + 3600 );
 	$result = create_pi( $ids['ebook'], $ebook, 1100 );
 	check( "{$t} The 21st create PaymentIntent request from the same IP address is rejected", contains( error_of( $result ), 'Transaction request limit reached for this IP address' ), error_of( $result ) );
+	if ( ! skip_known_issue( 'ip-limit-trusts-x-forwarded-for', "{$t} An X-Forwarded-For header doesn't get around the IP address limit" ) ) {
+		//The same browser (127.0.0.1), with a made-up forwarded address on both requests.
+		$spoofed = array( 'X-Forwarded-For: 203.0.113.7' );
+		$popup   = load_popup( $ids['ebook'], $spoofed );
+		$result  = null === $popup ? array( 'err' => 'The popup did not load.' ) : create_pi( $ids['ebook'], $popup, 1100, 'USD', '1', array(), $spoofed );
+		check( "{$t} An X-Forwarded-For header doesn't get around the IP address limit", contains( error_of( $result ), 'Transaction request limit reached for this IP address' ), error_of( $result ) );
+	}
 	delete_site_option_value( '_transient_asp_request_usage_count' );
 	delete_site_option_value( '_transient_timeout_asp_request_usage_count' );
 
@@ -509,4 +547,7 @@ if ( $plugin_messages ) {
 }
 
 echo "\n" . ( 0 === $failures ? 'All endpoint tests passed.' : "{$failures} endpoint test(s) failed." ) . "\n";
+if ( $skipped ) {
+	echo "{$skipped} check(s) skipped for known issues that aren't fixed yet (see KNOWN_ISSUES).\n";
+}
 exit( 0 === $failures ? 0 : 1 );

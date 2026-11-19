@@ -100,6 +100,45 @@ class Test_Amount_Validation extends WP_UnitTestCase {
 		$this->assertSame( 'Coupon has expired.', $error );
 	}
 
+	/**
+	 * Known issue (see "Known issues" in tests/TESTS.md). The fix removes the markTestSkipped() line.
+	 */
+	public function test_a_coupon_only_for_other_products_is_rejected() {
+		$this->markTestSkipped( 'Known issue, not fixed yet: validate_total_amount() loads the coupon with load_coupon(), which does not check the allowed products. The payment processing does check them (check_coupon()), but only after the card is charged.' );
+
+		$product_id       = ASP_Test_Factory::create_product( '10' );
+		$other_product_id = ASP_Test_Factory::create_product( '10' );
+		ASP_Test_Factory::create_coupon(
+			'ONLYOTHER',
+			'20',
+			'perc',
+			array(
+				'only_for_allowed_products' => 1,
+				'allowed_products'          => array( (string) $other_product_id ),
+			)
+		);
+
+		list( $valid, $error ) = $this->validate( $product_id, '800', '', array( 'coupon_code' => 'ONLYOTHER' ) );
+
+		$this->assertFalse( $valid, 'The discounted amount was accepted with a coupon that is only for another product.' );
+		$this->assertSame( 'Coupon is not allowed for this product.', $error );
+	}
+
+	/**
+	 * Known issue (see "Known issues" in tests/TESTS.md). The fix removes the markTestSkipped() line.
+	 */
+	public function test_a_coupon_is_rejected_when_coupons_are_turned_off_for_the_product() {
+		$this->markTestSkipped( 'Known issue, not fixed yet: validate_total_amount() loads the coupon with load_coupon(), which does not check whether coupons are enabled for the product. The payment processing does check it (check_coupon()), but only after the card is charged.' );
+
+		$product_id = ASP_Test_Factory::create_product( '10', array( 'asp_product_coupons_setting' => '0' ) );
+		ASP_Test_Factory::create_coupon( 'SAVE20', '20', 'perc' );
+
+		list( $valid, $error ) = $this->validate( $product_id, '800', '', array( 'coupon_code' => 'SAVE20' ) );
+
+		$this->assertFalse( $valid, 'The discounted amount was accepted for a product with coupons turned off.' );
+		$this->assertSame( 'Applying coupon is not allowed for this product.', $error );
+	}
+
 	public function test_price_variations_are_added_to_the_price() {
 		$product_id = ASP_Test_Factory::create_product(
 			'10',
