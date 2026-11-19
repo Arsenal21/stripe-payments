@@ -7,6 +7,10 @@ Update it in the same commit when you add or change a test.
 
 GitHub > Actions > **Plugin Tests** > Run workflow. Choose the branch and tick the test groups to run (all are ticked by default).
 The workflow file is [.github/workflows/tests.yml](../.github/workflows/tests.yml).
+Run it before a release and after bigger changes.
+
+A separate, light workflow, [.github/workflows/php-compatibility-test.yml](../.github/workflows/php-compatibility-test.yml), runs on every push and pull request to master
+(it activates the plugin and runs two shortcodes). A pull request can't be merged until it passes, so keep it fast; full tests go in the Plugin Tests workflow.
 
 | Group | What it is | PHP versions | Files |
 |---|---|---|---|
