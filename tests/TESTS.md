@@ -5,8 +5,8 @@ Update it in the same commit when you add or change a test.
 
 ## How to run
 
-GitHub > Actions > **Plugin Tests** > Run workflow. Choose the branch and tick the test groups to run (all are ticked by default).
-The workflow file is [.github/workflows/tests.yml](../.github/workflows/tests.yml).
+GitHub > Actions > **Plugin Tests (ASP Main)** > Run workflow. Choose the branch and tick the test groups to run (all are ticked by default).
+The workflow file is [.github/workflows/plugin-tests-main.yml](../.github/workflows/plugin-tests-main.yml).
 Run it before a release and after bigger changes.
 
 A separate, light workflow, [.github/workflows/php-compatibility-test.yml](../.github/workflows/php-compatibility-test.yml), runs on every push and pull request to master
@@ -16,15 +16,46 @@ A separate, light workflow, [.github/workflows/php-compatibility-test.yml](../.g
 |---|---|---|---|
 | Lint | PHP syntax check of the plugin and the test files (the Stripe PHP library in `includes/stripe` is skipped) | 7.4, 8.5 | (in the workflow) |
 | PHPUnit | Tests with the WordPress test library and a real database | 7.4, 8.4 | [phpunit/](phpunit/) |
+| Endpoint tests | A real WordPress site with the plugin and a fake Stripe API: sends the checkout requests over HTTP and checks the database | 7.4, 8.4 | [e2e/](e2e/) |
 
 Which group a new test belongs in:
 - Plugin functions and classes that need WordPress and the database: **PHPUnit**.
-- The code runs from an incoming request (the payment AJAX calls, the payment processing after checkout) and ends with `exit` or `wp_die()`: **Endpoint tests** (planned, see below).
+- The code runs from an incoming request (the payment AJAX calls, the payment processing after checkout) and ends with `exit` or `wp_die()`: **Endpoint tests**.
 
 PHPUnit converts PHP notices and warnings into test failures, so a notice in the plugin code fails the test that runs it.
 The test files must stay PHP 7.4-compatible (the oldest PHP version in the workflow).
 
 ---
+
+## Endpoint tests ([e2e/run-endpoint-tests.php](e2e/run-endpoint-tests.php))
+
+The site is set up with WP-CLI; [e2e/setup-site.php](e2e/setup-site.php) saves the settings and creates the products and the coupon.
+[e2e/mu-plugin-fake-stripe-api.php](e2e/mu-plugin-fake-stripe-api.php) is a fake Stripe API (customers, PaymentIntents, charges) that answers
+both the Stripe PHP SDK and the plugin's own API client, and keeps the emails instead of sending them.
+There is no browser, so every PaymentIntent is paid as soon as it is created.
+The tests send the same requests as a checkout in the browser: load the payment popup (page load signature and nonces),
+create the PaymentIntent (`asp_pp_create_pi`), then submit the payment form (`asp_process_ipn`).
+
+All the tests run twice: with the Stripe PHP SDK (the default) and with the plugin's own API client ("Don't use Stripe PHP SDK").
+
+**A purchase**
+- The create PaymentIntent request with the correct amount creates the PaymentIntent (amount in cents, currency, product ID) and an incomplete order.
+- The payment completes the same order (paid, title with the quantity and total, the charge ID), counts it in the daily transaction counter,
+  sends the buyer and seller emails and redirects to the checkout result page.
+- Submitting the same payment again doesn't create another order or send the emails again.
+- 3 items (quantity chosen by the buyer); stock control (more items than in stock are rejected, the stock goes down after the payment);
+  a coupon (the coupon check request, the discounted total, the redemption count, the coupon code in the PaymentIntent metadata); JPY (no cents).
+
+**Rejected before the PaymentIntent is created**
+- An amount lower than the product total (and no PaymentIntent is created), a different currency, a wrong nonce,
+  a product whose payment popup wasn't loaded (page load signature), an unknown coupon (coupon check request).
+- The 21st request from the same IP address; the daily transaction limit.
+
+**Rejected by the payment processing** (with paid PaymentIntents added to the fake Stripe API directly)
+- A payment lower than the product total, a payment in another currency, a payment made for another product,
+  a PaymentIntent that doesn't exist (no fatal error), a payment form with a wrong nonce. None of them creates an order or sends an email.
+
+**PHP errors**: a PHP fatal error on the test site fails the tests; the plugin's PHP warnings and notices are listed in the output.
 
 ## PHPUnit ([phpunit/tests/](phpunit/tests/))
 
@@ -78,13 +109,11 @@ The test files must stay PHP 7.4-compatible (the oldest PHP version in the workf
 
 ## Not covered yet (ideas for new tests)
 
-Phase C: endpoint tests (a real test site with a faked Stripe API)
-- Creating the PaymentIntent (`asp_pp_create_pi`): the amount is calculated on the server; an amount sent by the browser is ignored.
-- Processing the payment after checkout: the order is created and the emails are sent.
-- Rejected: a paid amount lower than the price, a different currency.
-- The same PaymentIntent doesn't create a second order.
-- The coupon check AJAX request.
-- The daily transaction limit and the bot mitigation checks.
+Checkout
+- Donation products (the minimum amount), price variations and tax/shipping by region over the endpoints, the surcharge.
+- 100% discount coupons (the zero-value "free_" transaction and its signature check).
+- 3D Secure (`asp_next_action_results`) and authorize-only payments (capture and cancel from the order page).
+- Captcha (reCAPTCHA, hCaptcha) and the daily limit with captcha.
 
 Later
 - The add-ons (for example the Subscriptions add-on webhooks), tested with the core plugin installed.
