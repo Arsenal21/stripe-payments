@@ -1,0 +1,103 @@
+name: Plugin Tests (ASP Main)
+
+# Runs only when started by hand: Actions tab > "Plugin Tests" > Run workflow (choose the branch to test and the test groups to run).
+on:
+  workflow_dispatch:
+    inputs:
+      run_lint:
+        description: Lint (PHP syntax check on the oldest and newest PHP)
+        type: boolean
+        default: true
+      run_phpunit:
+        description: PHPUnit tests (tests/phpunit)
+        type: boolean
+        default: true
+
+jobs:
+  lint:
+    if: ${{ inputs.run_lint }}
+    name: Lint (PHP ${{ matrix.php }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # Oldest supported PHP version and the newest one.
+        php: ['7.4', '8.5']
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v4
+
+      - name: Set up PHP ${{ matrix.php }}
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+
+      - name: Lint the plugin's PHP files (the third-party Stripe library is excluded)
+        run: |
+          failed=0
+          while IFS= read -r -d '' file; do
+            if ! out=$(php -l "$file" 2>&1); then
+              echo "$out"
+              failed=1
+            fi
+          done < <(find stripe-payments tests/phpunit -name '*.php' \
+            -not -path 'stripe-payments/includes/stripe/*' \
+            -not -path 'tests/phpunit/vendor/*' -print0)
+          if [ "$failed" -ne 0 ]; then
+            echo "Syntax errors found."
+            exit 1
+          fi
+          echo "No syntax errors."
+
+  phpunit:
+    if: ${{ inputs.run_phpunit }}
+    name: PHPUnit (PHP ${{ matrix.php }}, WordPress latest)
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['7.4', '8.4']
+
+    services:
+      mysql:
+        image: mariadb:10.6
+        env:
+          MARIADB_ROOT_PASSWORD: root
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+
+    env:
+      WP_TESTS_DIR: /tmp/wordpress-tests-lib
+      WP_CORE_DIR: /tmp/wordpress
+
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v4
+
+      - name: Set up PHP ${{ matrix.php }}
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: mysqli
+          tools: composer
+          coverage: none
+
+      - name: Install Subversion (the WordPress test library is downloaded with it)
+        run: sudo apt-get update && sudo apt-get install -y subversion
+
+      - name: Install WordPress and its test library
+        run: bash tests/bin/install-wp-tests.sh wordpress_test root root 127.0.0.1:3306 latest
+
+      - name: Install the PHPUnit packages
+        working-directory: tests/phpunit
+        run: composer install --no-interaction --no-progress
+
+      - name: Run the PHPUnit tests
+        working-directory: tests/phpunit
+        run: vendor/bin/phpunit --testdox -c phpunit.xml.dist
