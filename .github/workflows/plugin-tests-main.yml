@@ -12,6 +12,10 @@ on:
         description: PHPUnit tests (tests/phpunit)
         type: boolean
         default: true
+      run_endpoint_tests:
+        description: Endpoint tests (checkout requests to a test site with a fake Stripe API)
+        type: boolean
+        default: true
 
 jobs:
   lint:
@@ -41,7 +45,7 @@ jobs:
               echo "$out"
               failed=1
             fi
-          done < <(find stripe-payments tests/phpunit -name '*.php' \
+          done < <(find stripe-payments tests/phpunit tests/e2e -name '*.php' \
             -not -path 'stripe-payments/includes/stripe/*' \
             -not -path 'tests/phpunit/vendor/*' -print0)
           if [ "$failed" -ne 0 ]; then
@@ -101,3 +105,79 @@ jobs:
       - name: Run the PHPUnit tests
         working-directory: tests/phpunit
         run: vendor/bin/phpunit --testdox -c phpunit.xml.dist
+
+  endpoint-tests:
+    # Sends the checkout requests (payment popup, create PaymentIntent, payment form) to a real WordPress test site
+    # with a fake Stripe API (tests/e2e/mu-plugin-fake-stripe-api.php), then checks the database.
+    if: ${{ inputs.run_endpoint_tests }}
+    name: Endpoint tests (PHP ${{ matrix.php }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['7.4', '8.4']
+
+    services:
+      mysql:
+        image: mariadb:10.6
+        env:
+          MARIADB_ROOT_PASSWORD: root
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+
+    env:
+      E2E_URL: http://127.0.0.1:8080
+      E2E_WP_PATH: /tmp/e2e-site
+      E2E_DB_HOST: 127.0.0.1
+      E2E_DB_NAME: wordpress_e2e
+      E2E_DB_USER: root
+      E2E_DB_PASS: root
+
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v4
+
+      - name: Set up PHP ${{ matrix.php }}
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: mysqli, curl
+          tools: wp-cli
+          coverage: none
+
+      - name: Install a WordPress test site with the plugin
+        run: |
+          wp core download --path="$E2E_WP_PATH" --version=latest
+          wp config create --path="$E2E_WP_PATH" --dbname="$E2E_DB_NAME" --dbuser="$E2E_DB_USER" --dbpass="$E2E_DB_PASS" --dbhost="$E2E_DB_HOST:3306"
+          wp config set DISABLE_WP_CRON true --raw --path="$E2E_WP_PATH"
+          wp config set WP_DEBUG true --raw --path="$E2E_WP_PATH"
+          wp config set WP_DEBUG_LOG true --raw --path="$E2E_WP_PATH"
+          wp config set WP_DEBUG_DISPLAY false --raw --path="$E2E_WP_PATH"
+          wp db create --path="$E2E_WP_PATH"
+          wp core install --path="$E2E_WP_PATH" --url="$E2E_URL" --title="ASP Endpoint Tests" --admin_user=admin --admin_password=admin --admin_email=admin@example.com --skip-email
+          wp option update permalink_structure '' --path="$E2E_WP_PATH"
+          cp -r stripe-payments "$E2E_WP_PATH/wp-content/plugins/stripe-payments"
+          mkdir -p "$E2E_WP_PATH/wp-content/mu-plugins"
+          cp tests/e2e/mu-plugin-fake-stripe-api.php "$E2E_WP_PATH/wp-content/mu-plugins/"
+          wp plugin activate stripe-payments --path="$E2E_WP_PATH"
+
+      - name: Start the web server
+        run: |
+          php -S 127.0.0.1:8080 -t "$E2E_WP_PATH" > /tmp/php-server.log 2>&1 &
+          sleep 2
+          curl --silent --fail --output /dev/null "$E2E_URL/" && echo "The test site is running."
+
+      - name: Run the endpoint tests
+        run: php tests/e2e/run-endpoint-tests.php
+
+      - name: Show the plugin's debug log, the PHP error log and the web server log (only when a test failed)
+        if: failure()
+        run: |
+          cat "$E2E_WP_PATH"/wp-content/plugins/stripe-payments/*_debug_log.txt || true
+          cat "$E2E_WP_PATH"/wp-content/debug.log || true
+          cat /tmp/php-server.log || true
