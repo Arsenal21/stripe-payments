@@ -19,6 +19,9 @@ $db       = new mysqli( getenv( 'E2E_DB_HOST' ), getenv( 'E2E_DB_USER' ), getenv
 $prefix   = 'wp_';
 $failures = 0;
 
+//All the requests send this User-Agent: the security token of the create PaymentIntent request is made from it (see load_popup()).
+const E2E_USER_AGENT = 'ASP-E2E-Tests/1.0';
+
 function check( $label, $condition, $details = '' ) {
 	global $failures;
 	if ( $condition ) {
@@ -60,6 +63,7 @@ function http_request( $method, $endpoint, $fields = null ) {
 			CURLOPT_RETURNTRANSFER => true,
 			CURLOPT_FOLLOWLOCATION => false,
 			CURLOPT_TIMEOUT        => 30,
+			CURLOPT_USERAGENT      => E2E_USER_AGENT,
 			CURLOPT_HEADERFUNCTION => function ( $curl, $header ) use ( &$location ) {
 				if ( 0 === stripos( $header, 'Location:' ) ) {
 					$location = trim( substr( $header, 9 ) );
@@ -205,32 +209,42 @@ function find_email( $to ) {
 	return null;
 }
 
-/** Loads the payment popup of a product, like the browser does. Returns its nonces. */
+/**
+ * Loads the payment popup of a product, like the browser does.
+ * Returns its nonces and the security token, which the popup's script makes from the browser's User-Agent and the
+ * product's button key: md5( navigator.userAgent + button_key ). The plugin checks it in ASP_Self_Hooks_Handler::check_token().
+ */
 function load_popup( $product_id ) {
 	$response = http_request( 'GET', '/?asp_action=show_pp&product_id=' . $product_id );
-	$nonces   = array();
+	$popup    = array();
 	if ( preg_match( '/"asp_pp_ajax_create_pi_nonce":"([0-9a-f]+)"/', $response['body'], $m ) ) {
-		$nonces['create_pi'] = $m[1];
+		$popup['create_pi'] = $m[1];
 	}
 	if ( preg_match( '/value="([0-9a-f]+)" name="payment_form_nonce"/', $response['body'], $m ) ) {
-		$nonces['payment_form'] = $m[1];
+		$popup['payment_form'] = $m[1];
 	}
-	if ( 2 !== count( $nonces ) ) {
-		check( "The payment popup of product {$product_id} loads", false, response_text( $response ) );
+	if ( preg_match( '/"button_key":"([0-9a-f]+)"/', $response['body'], $m ) ) {
+		$popup['token'] = md5( E2E_USER_AGENT . $m[1] );
+	}
+	if ( 3 !== count( $popup ) ) {
+		check( "The payment popup of product {$product_id} loads (with the nonces and the button key)", false, response_text( $response ) );
 		return null;
 	}
-	return $nonces;
+	return $popup;
 }
 
-/** The create PaymentIntent request. Returns the JSON response. */
-function create_pi( $product_id, $nonce, $amount, $currency = 'USD', $quantity = '1', $extra = array() ) {
+/**
+ * The create PaymentIntent request, with the nonce and the security token of the loaded popup. Returns the JSON response.
+ */
+function create_pi( $product_id, $popup, $amount, $currency = 'USD', $quantity = '1', $extra = array() ) {
 	$response = http_request(
 		'POST',
 		'/wp-admin/admin-ajax.php',
 		array_merge(
 			array(
 				'action'           => 'asp_pp_create_pi',
-				'nonce'            => $nonce,
+				'nonce'            => $popup['create_pi'],
+				'token'            => $popup['token'],
 				'amount'           => (string) $amount,
 				'curr'             => $currency,
 				'product_id'       => (string) $product_id,
@@ -325,7 +339,7 @@ function run_round( $label, $via, $ids, $checkout_url ) {
 	}
 
 	//1. A purchase: $10 + 10% tax.
-	$result = create_pi( $ids['ebook'], $ebook['create_pi'], 1100 );
+	$result = create_pi( $ids['ebook'], $ebook, 1100 );
 	if ( ! check( "{$t} The create PaymentIntent request with the correct amount succeeds", ! empty( $result['success'] ) && ! empty( $result['pi_id'] ), error_of( $result ) ) ) {
 		return;
 	}
@@ -359,21 +373,24 @@ function run_round( $label, $via, $ids, $checkout_url ) {
 
 	//3. The amount check before the PaymentIntent is created.
 	$pi_count = count( stripe_state()['payment_intents'] );
-	$result   = create_pi( $ids['ebook'], $ebook['create_pi'], 100 );
+	$result   = create_pi( $ids['ebook'], $ebook, 100 );
 	check( "{$t} A lower amount than the product total is rejected", contains( error_of( $result ), 'Price validation failed' ), error_of( $result ) );
 	check( "{$t} No PaymentIntent is created for the rejected amount", count( stripe_state()['payment_intents'] ) === $pi_count );
 
-	$result = create_pi( $ids['ebook'], $ebook['create_pi'], 1100, 'EUR' );
+	$result = create_pi( $ids['ebook'], $ebook, 1100, 'EUR' );
 	check( "{$t} A different currency is rejected", contains( error_of( $result ), 'Currency mismatch' ), error_of( $result ) );
 
-	$result = create_pi( $ids['ebook'], 'badnonce00', 1100 );
+	$result = create_pi( $ids['ebook'], array_merge( $ebook, array( 'create_pi' => 'badnonce00' ) ), 1100 );
 	check( "{$t} A wrong nonce is rejected", contains( error_of( $result ), 'Nonce security verification failed' ), error_of( $result ) );
 
-	$result = create_pi( $ids['no_popup'], $ebook['create_pi'], 1000 );
+	$result = create_pi( $ids['ebook'], array_merge( $ebook, array( 'token' => md5( 'another browser' ) ) ), 1100 );
+	check( "{$t} A wrong security token is rejected", 'Invalid security token.' === error_of( $result ), error_of( $result ) );
+
+	$result = create_pi( $ids['no_popup'], $ebook, 1000 );
 	check( "{$t} A product whose payment popup wasn't loaded is rejected (page load signature)", contains( error_of( $result ), 'Page load signature check failed' ), error_of( $result ) );
 
 	//4. A quantity chosen by the buyer.
-	$result = create_pi( $ids['ebook'], $ebook['create_pi'], 3300, 'USD', '3' );
+	$result = create_pi( $ids['ebook'], $ebook, 3300, 'USD', '3' );
 	check( "{$t} The create PaymentIntent request for 3 items succeeds", ! empty( $result['pi_id'] ), error_of( $result ) );
 	if ( ! empty( $result['pi_id'] ) ) {
 		submit_payment( $ids['ebook'], $ebook['payment_form'], $result['pi_id'], array( 'asp_quantity' => '3' ) );
@@ -383,9 +400,9 @@ function run_round( $label, $via, $ids, $checkout_url ) {
 
 	//5. Stock control (2 items in stock).
 	$stock  = load_popup( $ids['stock'] );
-	$result = create_pi( $ids['stock'], $stock['create_pi'], 1500, 'USD', '3' );
+	$result = create_pi( $ids['stock'], $stock, 1500, 'USD', '3' );
 	check( "{$t} Ordering more items than in stock is rejected", contains( error_of( $result ), 'You cannot order more items than available: 2' ), error_of( $result ) );
-	$result = create_pi( $ids['stock'], $stock['create_pi'], 500, 'USD', '1' );
+	$result = create_pi( $ids['stock'], $stock, 500, 'USD', '1' );
 	if ( check( "{$t} Ordering an item in stock succeeds", ! empty( $result['pi_id'] ), error_of( $result ) ) ) {
 		submit_payment( $ids['stock'], $stock['payment_form'], $result['pi_id'] );
 		check( "{$t} The stock goes down after the payment", '1' === post_meta( $ids['stock'], 'asp_product_stock_items' ), (string) post_meta( $ids['stock'], 'asp_product_stock_items' ) );
@@ -397,7 +414,7 @@ function run_round( $label, $via, $ids, $checkout_url ) {
 	$coupon = check_coupon_request( $ids['ebook'], 'NOSUCHCODE' );
 	check( "{$t} The coupon check rejects an unknown coupon", 'Coupon not found.' === error_of( $coupon ), error_of( $coupon ) );
 	$redemptions = (int) post_meta( $ids['coupon'], 'asp_coupon_red_count' );
-	$result      = create_pi( $ids['ebook'], $ebook['create_pi'], 880, 'USD', '1', array( 'coupon' => 'E2E20' ) );
+	$result      = create_pi( $ids['ebook'], $ebook, 880, 'USD', '1', array( 'coupon' => 'E2E20' ) );
 	if ( check( "{$t} The create PaymentIntent request with the discounted amount and the coupon succeeds", ! empty( $result['pi_id'] ), error_of( $result ) ) ) {
 		submit_payment( $ids['ebook'], $ebook['payment_form'], $result['pi_id'], array( 'asp_coupon-code' => 'E2E20' ) );
 		$orders = orders_for_pi( $result['pi_id'] );
@@ -409,7 +426,7 @@ function run_round( $label, $via, $ids, $checkout_url ) {
 
 	//7. A zero-decimal currency (JPY amounts have no cents).
 	$jpy    = load_popup( $ids['jpy'] );
-	$result = create_pi( $ids['jpy'], $jpy['create_pi'], 1000, 'JPY' );
+	$result = create_pi( $ids['jpy'], $jpy, 1000, 'JPY' );
 	if ( check( "{$t} The create PaymentIntent request for 1000 JPY succeeds", ! empty( $result['pi_id'] ), error_of( $result ) ) ) {
 		$pi = stripe_state()['payment_intents'][ $result['pi_id'] ];
 		check( "{$t} The JPY PaymentIntent amount is 1000 (not multiplied by 100)", 1000 === $pi['amount'] && 'jpy' === $pi['currency'] );
@@ -446,7 +463,7 @@ function run_round( $label, $via, $ids, $checkout_url ) {
 	//9. The limits (last, because they block the create PaymentIntent request).
 	set_site_option_value( '_transient_asp_request_usage_count', array( '127.0.0.1' => 20 ) );
 	set_site_option_value( '_transient_timeout_asp_request_usage_count', time() + 3600 );
-	$result = create_pi( $ids['ebook'], $ebook['create_pi'], 1100 );
+	$result = create_pi( $ids['ebook'], $ebook, 1100 );
 	check( "{$t} The 21st create PaymentIntent request from the same IP address is rejected", contains( error_of( $result ), 'Transaction request limit reached for this IP address' ), error_of( $result ) );
 	delete_site_option_value( '_transient_asp_request_usage_count' );
 	delete_site_option_value( '_transient_timeout_asp_request_usage_count' );
@@ -458,7 +475,7 @@ function run_round( $label, $via, $ids, $checkout_url ) {
 			'counter'      => 25,
 		)
 	);
-	$result = create_pi( $ids['ebook'], $ebook['create_pi'], 1100 );
+	$result = create_pi( $ids['ebook'], $ebook, 1100 );
 	check( "{$t} The create PaymentIntent request is rejected when the daily transaction limit (25) is reached", contains( error_of( $result ), 'has been reached for the day' ), error_of( $result ) );
 }
 
@@ -475,7 +492,9 @@ $checkout_url = $settings['checkout_url'];
 
 run_round( 'Stripe PHP SDK', 'sdk', $ids, $checkout_url );
 
-wp_cli( 'option patch update AcceptStripePayments-settings dont_use_stripe_php_sdk 1' );
+//"Don't use Stripe PHP SDK" (Advanced settings). The setting isn't saved until it is changed, so it is added here.
+$settings['dont_use_stripe_php_sdk'] = 1;
+set_site_option_value( 'AcceptStripePayments-settings', $settings );
 run_round( "Plugin's own API client", 'wp', $ids, $checkout_url );
 
 //PHP errors on the test site (WP_DEBUG_LOG). A fatal error fails the tests; warnings and notices from the plugin are listed.

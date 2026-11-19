@@ -47,7 +47,8 @@ All the tests run twice: with the Stripe PHP SDK (the default) and with the plug
   a coupon (the coupon check request, the discounted total, the redemption count, the coupon code in the PaymentIntent metadata); JPY (no cents).
 
 **Rejected before the PaymentIntent is created**
-- An amount lower than the product total (and no PaymentIntent is created), a different currency, a wrong nonce,
+- An amount lower than the product total (and no PaymentIntent is created), a different currency, a wrong nonce, a wrong security token
+  (the popup makes it from the browser's User-Agent and the product's button key; the tests send a fixed User-Agent),
   a product whose payment popup wasn't loaded (page load signature), an unknown coupon (coupon check request).
 - The 21st request from the same IP address; the daily transaction limit.
 
