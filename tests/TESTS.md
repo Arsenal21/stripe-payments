@@ -29,33 +29,49 @@ The test files must stay PHP 7.4-compatible (the oldest PHP version in the workf
 
 ## Endpoint tests ([e2e/run-endpoint-tests.php](e2e/run-endpoint-tests.php))
 
-The site is set up with WP-CLI; [e2e/setup-site.php](e2e/setup-site.php) saves the settings and creates the products and the coupon.
-[e2e/mu-plugin-fake-stripe-api.php](e2e/mu-plugin-fake-stripe-api.php) is a fake Stripe API (customers, PaymentIntents, charges) that answers
-both the Stripe PHP SDK and the plugin's own API client, and keeps the emails instead of sending them.
-There is no browser, so every PaymentIntent is paid as soon as it is created.
+The site is set up with WP-CLI; [e2e/setup-site.php](e2e/setup-site.php) saves the settings and creates the products, the coupons
+and two pages with the `[accept_stripe_payment]` shortcode.
+[e2e/mu-plugin-fake-stripe-api.php](e2e/mu-plugin-fake-stripe-api.php) is a fake Stripe API (customers, PaymentIntents with confirm/capture/cancel, charges)
+that answers both the Stripe PHP SDK and the plugin's own API client. It also answers the reCAPTCHA and hCaptcha verification
+(the token `e2e-captcha-pass` is solved) and keeps the emails instead of sending them.
+There is no browser, so every PaymentIntent is paid as soon as it is created (or authorized, for authorize-only products);
+the runner adds PaymentIntents in other states directly (needs 3D Secure, not paid, declined card).
 The tests send the same requests as a checkout in the browser: load the payment popup (page load signature and nonces),
 create the PaymentIntent (`asp_pp_create_pi`), then submit the payment form (`asp_process_ipn`).
+Some tests use a browser session (cookies): the checkout result page, the captcha, the 3D Secure return and the admin's orders page.
 
-All the tests run twice: with the Stripe PHP SDK (the default) and with the plugin's own API client ("Don't use Stripe PHP SDK").
+The main tests run twice: with the Stripe PHP SDK (the default) and with the plugin's own API client ("Don't use Stripe PHP SDK").
 
 **A purchase**
 - The create PaymentIntent request with the correct amount creates the PaymentIntent (amount in cents, currency, product ID) and an incomplete order.
 - The payment completes the same order (paid, title with the quantity and total, the charge ID), counts it in the daily transaction counter,
   sends the buyer and seller emails and redirects to the checkout result page.
 - Submitting the same payment again doesn't create another order or send the emails again.
+- The checkout result page shows the order (thank you, product, transaction ID); after a rejected payment it shows the error.
 - 3 items (quantity chosen by the buyer); stock control (more items than in stock are rejected, the stock goes down after the payment);
   a coupon (the coupon check request, the discounted total, the redemption count, the coupon code in the PaymentIntent metadata); JPY (no cents).
+- `[accept_stripe_payment price="10"]` (the amount is checked, the order is paid) and `[accept_stripe_payment price="0"]` (the buyer's amount).
+- A donation with a minimum amount (below it is rejected; the order has the buyer's amount).
+- Tax by billing country (a US buyer pays the tax, a German buyer doesn't) and shipping by shipping country, through to the paid order.
+- Authorize only: the order is authorized, then the admin captures (paid) or cancels (canceled) it from the orders page.
+- 3D Secure: the return request (`asp_next_action_results`, after the form is saved with `asp_pp_save_form_data`) confirms the PaymentIntent and completes the order.
+- A 100% coupon: the coupon check gives a "free_" transaction ID and the order is paid with $0.00.
 
 **Rejected before the PaymentIntent is created**
 - An amount lower than the product total (and no PaymentIntent is created), a different currency, a wrong nonce, a wrong security token
   (the popup makes it from the browser's User-Agent and the product's button key; the tests send a fixed User-Agent),
   a product whose payment popup wasn't loaded (page load signature), an unknown coupon (coupon check request).
+- A coupon only for another product, a coupon for a product with coupons turned off (a coupon only for this product is accepted).
 - The 21st request from the same IP address; the daily transaction limit.
 - A product with no saved product type: the correct amount is accepted, a lower amount is rejected.
 
 **Rejected by the payment processing** (with paid PaymentIntents added to the fake Stripe API directly)
 - A payment lower than the product total, a payment in another currency, a payment made for another product,
-  a PaymentIntent that doesn't exist (no fatal error), a payment form with a wrong nonce. None of them creates an order or sends an email.
+  a PaymentIntent that doesn't exist (no fatal error), a payment form with a wrong nonce, a PaymentIntent without a payment,
+  a made-up "free_" transaction ID, the "free_" transaction ID of a coupon that isn't 100%. None of them creates an order or sends an email.
+
+**Captcha** (once, after the two rounds; reCAPTCHA, then hCaptcha)
+- The create PaymentIntent request is rejected without the captcha and after a wrong captcha token; it succeeds after the solved captcha.
 
 **PHP errors**: a PHP fatal error on the test site fails the tests; the plugin's PHP warnings and notices are listed in the output.
 
@@ -110,19 +126,34 @@ All the tests run twice: with the Stripe PHP SDK (the default) and with the plug
 - The HTML email type.
 - The seller email goes to the seller, with Reply-To set to the buyer and a link to the order.
 
+**`[accept_stripe_payment]` products** (test-shortcode-products.php)
+- The shortcode saves its product (name, price, tax, total) and it gets the amount check; without a price it's checked as a donation.
+- The shipping is saved as entered (known issue, see below).
+
 **IP address** (test-ip-address.php)
 - The connection address (REMOTE_ADDR) is used when there is no X-Forwarded-For header; the first X-Forwarded-For address is used when there is one (see Decisions).
 - The `asp_get_user_ip_address` filter can change the address.
 
 ---
 
-## Known issues (tests skipped until fixed)
+## Known issues (tests that report without failing)
 
-A test for a known bug can be written before the fix and skipped, so the workflow stays green. The commit that fixes the bug turns its test on:
-remove the `markTestSkipped()` line (PHPUnit), or remove the issue from `KNOWN_ISSUES` in [e2e/run-endpoint-tests.php](e2e/run-endpoint-tests.php) (endpoint tests).
-Skipped tests show as skipped in the PHPUnit output and as `SKIP:` lines in the endpoint tests output.
+A test for a known or suspected bug runs, but doesn't fail the workflow, so the output shows on every run whether the problem still happens:
+- Endpoint tests: the issue is in `KNOWN_ISSUES` in [e2e/run-endpoint-tests.php](e2e/run-endpoint-tests.php); its checks print
+  `KNOWN ISSUE (still happens)` or `KNOWN ISSUE NOW PASSES`.
+- PHPUnit: the test calls `markTestIncomplete()` when the bug happens (shown as incomplete, with the reason); any other wrong result fails.
 
-There are none at the moment. Fixed after 2.1.5: the coupon's product rules in the amount check, and the amount check for products with no saved type.
+The commit that fixes an issue removes it from `KNOWN_ISSUES` (or the `markTestIncomplete()` part), so its test becomes a normal test.
+"Unconfirmed" means the tests show what the code does with the fake Stripe API, but it isn't reproduced with real Stripe in a browser yet.
+
+| Issue | Status | Tests |
+|---|---|---|
+| The payment processing (`process_ipn()`) checks the amount, currency and product of the latest charge, but not that the payment succeeded, so a PaymentIntent with a declined (failed) charge may complete a paid order, send the emails and run `asp_stripe_payment_completed`. | Unconfirmed: to reproduce with the decline card 4000 0000 0000 0002 in test mode | Endpoint: `declined-charge-completes-order` |
+| After Capture or Cancel on the orders page, the order's charge data is replaced with `$intent->charges->data[0]`; PaymentIntents of the Stripe API version the plugin uses have no `charges` list, so the order may lose its charge data. | Unconfirmed | Endpoint: `capture-cancel-loses-charge` |
+| With "Don't use Stripe PHP SDK", Capture and Cancel read the order's saved charge (a Stripe SDK object) before the SDK classes are loaded, so the PaymentIntent ID may be lost and the capture or cancel fails. | Unconfirmed | Endpoint (plugin's own API client round): `capture-cancel-fails-without-sdk` |
+| `[accept_stripe_payment shipping="5"]` saves the shipping in cents (500), and the product reads it as $500.00. | Suspected, to check in the browser | PHPUnit: test-shortcode-products.php "the shortcode shipping is saved as entered" |
+
+Fixed after 2.1.5: the coupon's product rules in the amount check, and the amount check for products with no saved type.
 
 ## Decisions (behavior that is kept on purpose)
 
@@ -137,10 +168,15 @@ There are none at the moment. Fixed after 2.1.5: the coupon's product rules in t
 ## Not covered yet (ideas for new tests)
 
 Checkout
-- Donation products (the minimum amount), price variations and tax/shipping by region over the endpoints, the surcharge.
-- 100% discount coupons (the zero-value "free_" transaction and its signature check).
-- 3D Secure (`asp_next_action_results`) and authorize-only payments (capture and cancel from the order page).
-- Captcha (reCAPTCHA, hCaptcha) and the daily limit with captcha.
+- Price variations and the surcharge over the endpoints (the calculation is covered by PHPUnit).
+- Enterprise reCAPTCHA; the daily limit with captcha.
+- Saving the settings page (the sanitize callback needs the whole settings form).
+
+Needs a real browser (a possible later phase with Playwright and Stripe test mode)
+- The payment popup's JavaScript: the Stripe card field, the 3D Secure popup, error messages, the total updating with variations and the address.
+
+Manual
+- Apple Pay / Google Pay; real email delivery; how the admin pages look.
 
 Later
-- The add-ons (for example the Subscriptions add-on webhooks), tested with the core plugin installed.
+- The add-ons (for example the Subscriptions add-on and its webhooks), tested with the core plugin installed.

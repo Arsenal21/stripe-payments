@@ -53,8 +53,75 @@ $ids = array(
 	//A product with no saved product type (like products saved before the product type option, and the products the
 	//[accept_stripe_payment] shortcode creates).
 	'no_type'  => ASP_Test_Factory::create_product( '10', array(), 'E2E Product Without Type' ),
-	'coupon' => ASP_Test_Factory::create_coupon( 'E2E20', '20', 'perc' ),
+	//"Authorize only": the payment is captured or canceled later from the orders page.
+	'auth'     => ASP_Test_Factory::create_product( '10', array( 'asp_product_authorize_only' => '1' ), 'E2E Authorize Only Product' ),
+	//A donation: the buyer enters the amount, at least $5.
+	'donation' => ASP_Test_Factory::create_product(
+		'0',
+		array(
+			'asp_product_type'       => 'donation',
+			'asp_product_min_amount' => '5',
+		),
+		'E2E Donation'
+	),
+	//10% tax for US billing addresses.
+	'tax_region'  => ASP_Test_Factory::create_product(
+		'10',
+		array(
+			'asp_product_collect_billing_addr' => '1',
+			'asp_product_tax_variations_type'  => 'b',
+			'asp_product_tax_variations'       => array(
+				array( 'type' => '0', 'loc' => 'US', 'amount' => '10' ),
+			),
+		),
+		'E2E Tax By Country'
+	),
+	//$3 shipping, plus $7 to the US.
+	'ship_region' => ASP_Test_Factory::create_product(
+		'10',
+		array(
+			'asp_product_shipping'              => '3',
+			'asp_product_collect_billing_addr'  => '1',
+			'asp_product_collect_shipping_addr' => '1',
+			'asp_product_shipping_variations'   => array(
+				array( 'type' => '0', 'loc' => 'US', 'amount' => '7' ),
+			),
+		),
+		'E2E Shipping By Country'
+	),
+	//Coupons turned off for this product (the product setting; coupons are on in the settings).
+	'no_coupons'  => ASP_Test_Factory::create_product( '10', array( 'asp_product_coupons_setting' => '0' ), 'E2E Product Without Coupons' ),
+	'coupon'      => ASP_Test_Factory::create_coupon( 'E2E20', '20', 'perc' ),
+	'free_coupon' => ASP_Test_Factory::create_coupon( 'E2EFREE', '100', 'perc' ),
 );
 delete_post_meta( $ids['no_type'], 'asp_product_type' );
+
+//A coupon only for the $1 product.
+$ids['cheap_coupon'] = ASP_Test_Factory::create_coupon(
+	'E2ECHEAP',
+	'20',
+	'perc',
+	array(
+		'only_for_allowed_products' => 1,
+		'allowed_products'          => array( (string) $ids['cheap'] ),
+	)
+);
+
+//Pages with the [accept_stripe_payment] shortcode. The shortcode creates its product (a "temp" product) when the page is shown.
+foreach (
+	array(
+		'shortcode_priced'   => '[accept_stripe_payment name="E2E Shortcode Product" price="10"]',
+		'shortcode_donation' => '[accept_stripe_payment name="E2E Shortcode Donation" price="0"]',
+	) as $key => $shortcode
+) {
+	$ids[ $key ] = wp_insert_post(
+		array(
+			'post_type'    => 'page',
+			'post_status'  => 'publish',
+			'post_title'   => $key,
+			'post_content' => $shortcode,
+		)
+	);
+}
 
 echo "\n" . wp_json_encode( $ids ) . "\n";

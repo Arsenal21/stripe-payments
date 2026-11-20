@@ -9,9 +9,11 @@
  * in the 'asp_e2e_stripe' option, so the test runner can read it and add PaymentIntents to it.
  *
  * There is no browser, so the buyer never confirms the PaymentIntent with Stripe.js: a PaymentIntent is "succeeded"
- * as soon as it is created, and has one charge for its full amount.
+ * as soon as it is created (or "requires_capture" for the authorize-only option), and has one charge for its full amount.
+ * The runner adds PaymentIntents with other states directly (needs 3D Secure, not paid, declined card).
  *
- * It also keeps the emails the site sends in the 'asp_e2e_emails' option instead of sending them.
+ * It also keeps the emails the site sends in the 'asp_e2e_emails' option instead of sending them,
+ * and answers the reCAPTCHA and hCaptcha verification requests: the token 'e2e-captcha-pass' is solved, any other isn't.
  */
 
 function asp_e2e_stripe_state() {
@@ -73,6 +75,24 @@ function asp_e2e_stripe_customer_response( $customer ) {
 }
 
 /**
+ * The PaymentIntent status: 'succeeded' (paid), 'requires_capture' (authorize-only, not captured yet), 'requires_action'
+ * (needs 3D Secure), 'requires_payment_method' (not paid, or the card was declined) or 'canceled'.
+ */
+function asp_e2e_stripe_pi_status( $pi ) {
+	return isset( $pi['status'] ) ? $pi['status'] : 'succeeded';
+}
+
+/**
+ * The charge of a PaymentIntent: 'succeeded', 'failed' (the card was declined) or 'none' (no payment attempt yet).
+ */
+function asp_e2e_stripe_charge_status( $pi ) {
+	if ( isset( $pi['charge_status'] ) ) {
+		return $pi['charge_status'];
+	}
+	return in_array( asp_e2e_stripe_pi_status( $pi ), array( 'requires_action', 'requires_payment_method' ), true ) ? 'none' : 'succeeded';
+}
+
+/**
  * A PaymentIntent as Stripe API version 2024-12-18 returns it (no 'charges' list: the plugin gets the charge separately).
  */
 function asp_e2e_stripe_pi_response( $pi, $state, $expand_customer ) {
@@ -89,7 +109,8 @@ function asp_e2e_stripe_pi_response( $pi, $state, $expand_customer ) {
 		'customer'            => $customer,
 		'description'         => $pi['description'],
 		'metadata'            => asp_e2e_stripe_object( $pi['metadata'] ),
-		'status'              => 'succeeded',
+		'status'              => asp_e2e_stripe_pi_status( $pi ),
+		'capture_method'      => ! empty( $pi['manual_capture'] ) ? 'manual' : 'automatic',
 		'client_secret'       => $pi['id'] . '_secret_e2e',
 		'confirmation_method' => 'manual',
 		'latest_charge'       => $pi['charge_id'],
@@ -107,18 +128,26 @@ function asp_e2e_stripe_charge_response( $pi, $state ) {
 			'address' => isset( $customer['address'] ) ? $customer['address'] : null,
 		);
 	}
+	$pi_status = asp_e2e_stripe_pi_status( $pi );
+	$failed    = 'failed' === asp_e2e_stripe_charge_status( $pi );
+	//An authorization is captured later; a canceled authorization is released (refunded).
+	$captured = ! $failed && ! in_array( $pi_status, array( 'requires_capture', 'canceled' ), true );
 	return array(
 		'id'                     => $pi['charge_id'],
 		'object'                 => 'charge',
 		'amount'                 => $pi['amount'],
-		'amount_captured'        => $pi['amount'],
+		'amount_captured'        => $captured ? $pi['amount'] : 0,
+		'amount_refunded'        => 'canceled' === $pi_status ? $pi['amount'] : 0,
+		'refunded'               => 'canceled' === $pi_status,
 		'currency'               => $pi['currency'],
 		'created'                => $pi['created'],
 		'customer'               => $pi['customer'],
 		'payment_intent'         => $pi['id'],
-		'paid'                   => true,
-		'captured'               => true,
-		'status'                 => 'succeeded',
+		'paid'                   => ! $failed,
+		'captured'               => $captured,
+		'status'                 => $failed ? 'failed' : 'succeeded',
+		'failure_code'           => $failed ? 'card_declined' : null,
+		'failure_message'        => $failed ? 'Your card was declined.' : null,
 		'billing_details'        => $billing,
 		'shipping'               => null,
 		'metadata'               => asp_e2e_stripe_object( $pi['metadata'] ),
@@ -160,6 +189,7 @@ function asp_e2e_stripe_handle( $via, $method, $url, $params ) {
 	$segments = explode( '/', trim( $path, '/' ) );
 	$resource = $segments[0];
 	$id       = isset( $segments[1] ) ? $segments[1] : '';
+	$action   = isset( $segments[2] ) ? $segments[2] : '';
 	$response = asp_e2e_stripe_error( 404, 'Unrecognized request URL (' . $method . ': /v1/' . $path . ').', 'url_invalid' );
 
 	if ( 'customers' === $resource && 'POST' === $method ) {
@@ -180,17 +210,47 @@ function asp_e2e_stripe_handle( $via, $method, $url, $params ) {
 	} elseif ( 'payment_intents' === $resource && 'POST' === $method && '' === $id ) {
 		$number = $state['next']++;
 		$id     = 'pi_e2e_' . $number;
+		//There is no browser to pay, so the PaymentIntent is paid at once (or authorized, for the authorize-only option).
+		$manual_capture = isset( $params['capture_method'] ) && 'manual' === $params['capture_method'];
 		$state['payment_intents'][ $id ] = array(
-			'id'          => $id,
-			'amount'      => (int) $params['amount'],
-			'currency'    => strtolower( $params['currency'] ),
-			'customer'    => isset( $params['customer'] ) ? $params['customer'] : null,
-			'description' => isset( $params['description'] ) ? $params['description'] : null,
-			'metadata'    => isset( $params['metadata'] ) ? asp_e2e_stripe_metadata( $params['metadata'] ) : array(),
-			'charge_id'   => 'ch_e2e_' . $number,
-			'created'     => time(),
+			'id'             => $id,
+			'amount'         => (int) $params['amount'],
+			'currency'       => strtolower( $params['currency'] ),
+			'customer'       => isset( $params['customer'] ) ? $params['customer'] : null,
+			'description'    => isset( $params['description'] ) ? $params['description'] : null,
+			'metadata'       => isset( $params['metadata'] ) ? asp_e2e_stripe_metadata( $params['metadata'] ) : array(),
+			'charge_id'      => 'ch_e2e_' . $number,
+			'created'        => time(),
+			'manual_capture' => $manual_capture,
+			'status'         => $manual_capture ? 'requires_capture' : 'succeeded',
 		);
 		$response = array( 200, asp_e2e_stripe_pi_response( $state['payment_intents'][ $id ], $state, false ) );
+	} elseif ( 'payment_intents' === $resource && '' !== $id && '' !== $action ) {
+		//confirm (after 3D Secure), capture and cancel (authorize-only).
+		$pi_status = isset( $state['payment_intents'][ $id ] ) ? asp_e2e_stripe_pi_status( $state['payment_intents'][ $id ] ) : '';
+		$allowed   = array(
+			'confirm' => array( 'requires_action', 'requires_confirmation' ),
+			'capture' => array( 'requires_capture' ),
+			'cancel'  => array( 'requires_capture', 'requires_action', 'requires_payment_method', 'requires_confirmation' ),
+		);
+		$new_status = array(
+			'confirm' => 'succeeded',
+			'capture' => 'succeeded',
+			'cancel'  => 'canceled',
+		);
+		if ( '' === $pi_status ) {
+			$response = asp_e2e_stripe_error( 404, "No such payment_intent: '{$id}'" );
+		} elseif ( 'POST' !== $method || ! isset( $allowed[ $action ] ) ) {
+			$response = asp_e2e_stripe_error( 404, 'Unrecognized request URL (' . $method . ': /v1/' . $path . ').', 'url_invalid' );
+		} elseif ( ! in_array( $pi_status, $allowed[ $action ], true ) ) {
+			$response = asp_e2e_stripe_error( 400, "You cannot {$action} this PaymentIntent because it has a status of {$pi_status}.", 'payment_intent_unexpected_state' );
+		} else {
+			$state['payment_intents'][ $id ]['status'] = $new_status[ $action ];
+			if ( 'confirm' === $action ) {
+				$state['payment_intents'][ $id ]['charge_status'] = 'succeeded';
+			}
+			$response = array( 200, asp_e2e_stripe_pi_response( $state['payment_intents'][ $id ], $state, false ) );
+		}
 	} elseif ( 'payment_intents' === $resource && '' !== $id ) {
 		if ( ! isset( $state['payment_intents'][ $id ] ) ) {
 			$response = asp_e2e_stripe_error( 404, "No such payment_intent: '{$id}'" );
@@ -207,7 +267,10 @@ function asp_e2e_stripe_handle( $via, $method, $url, $params ) {
 		}
 	} elseif ( 'charges' === $resource && 'GET' === $method && '' === $id ) {
 		$pi_id = isset( $params['payment_intent'] ) ? $params['payment_intent'] : '';
-		$data  = isset( $state['payment_intents'][ $pi_id ] ) ? array( asp_e2e_stripe_charge_response( $state['payment_intents'][ $pi_id ], $state ) ) : array();
+		$data  = array();
+		if ( isset( $state['payment_intents'][ $pi_id ] ) && 'none' !== asp_e2e_stripe_charge_status( $state['payment_intents'][ $pi_id ] ) ) {
+			$data[] = asp_e2e_stripe_charge_response( $state['payment_intents'][ $pi_id ], $state );
+		}
 		$response = array(
 			200,
 			array(
@@ -223,18 +286,27 @@ function asp_e2e_stripe_handle( $via, $method, $url, $params ) {
 	return $response;
 }
 
-//The plugin's own client (ASP_Stripe_API) uses wp_remote_get().
+//The plugin's own client (ASP_Stripe_API) uses wp_remote_get(); the captcha checks use wp_remote_post().
 add_filter(
 	'pre_http_request',
 	function ( $pre, $args, $url ) {
-		if ( 0 !== strpos( $url, 'https://api.stripe.com/' ) ) {
-			return $pre;
-		}
 		$params = isset( $args['body'] ) ? $args['body'] : array();
 		if ( is_string( $params ) ) {
 			parse_str( $params, $params );
 		}
-		list( $status, $body ) = asp_e2e_stripe_handle( 'wp', isset( $args['method'] ) ? $args['method'] : 'GET', $url, $params );
+		if ( 0 === strpos( $url, 'https://www.google.com/recaptcha/api/siteverify' ) || 0 === strpos( $url, 'https://hcaptcha.com/siteverify' ) ) {
+			//The captcha verification (the plugin sends the token the visitor got from the captcha widget).
+			$solved = isset( $params['response'] ) && 'e2e-captcha-pass' === $params['response'];
+			$status = 200;
+			$body   = $solved ? array( 'success' => true ) : array(
+				'success'     => false,
+				'error-codes' => array( 'invalid-input-response' ),
+			);
+		} elseif ( 0 === strpos( $url, 'https://api.stripe.com/' ) ) {
+			list( $status, $body ) = asp_e2e_stripe_handle( 'wp', isset( $args['method'] ) ? $args['method'] : 'GET', $url, $params );
+		} else {
+			return $pre;
+		}
 		return array(
 			'headers'  => array(),
 			'body'     => wp_json_encode( $body ),
@@ -269,7 +341,23 @@ function asp_e2e_stripe_install_sdk_client() {
 	}
 	\Stripe\ApiRequestor::setHttpClient( new ASP_E2E_Fake_Stripe_Http_Client() );
 }
-add_action( 'init', 'asp_e2e_stripe_install_sdk_client', 1 );
+//Installed only where the plugin is about to use the SDK, so the fake doesn't load the SDK earlier than the plugin would
+//(that could hide a problem, for example a saved Stripe object read before the SDK classes are loaded).
+//The plugin fires 'asp_ng_product_mode_keys' just before it loads the SDK: the payment popup, the create PaymentIntent request,
+//the payment processing and the 3D Secure return.
+add_action( 'asp_ng_product_mode_keys', 'asp_e2e_stripe_install_sdk_client', 999 );
+//Capture and Cancel on the orders page: with the SDK option the plugin loads the SDK first thing, so it can be loaded here too.
+foreach ( array( 'wp_ajax_asp_order_capture_confirm', 'wp_ajax_asp_order_capture_cancel' ) as $asp_e2e_action ) {
+	add_action(
+		$asp_e2e_action,
+		function () {
+			if ( class_exists( 'ASP_Utils' ) && ! ASP_Utils::use_internal_api() ) {
+				asp_e2e_stripe_install_sdk_client();
+			}
+		},
+		1
+	);
+}
 
 //Keep the emails instead of sending them.
 add_filter(

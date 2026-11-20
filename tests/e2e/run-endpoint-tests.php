@@ -11,32 +11,62 @@
  * 4. The popup form is submitted to the same URL with the asp_ prefixed fields; the plugin gets the payment from Stripe,
  *    checks it, completes the order, sends the emails and redirects to the checkout result page.
  *
- * All the tests run twice: with the Stripe PHP SDK (the default) and with the plugin's own API client ("Don't use Stripe PHP SDK").
+ * The main tests run twice: with the Stripe PHP SDK (the default) and with the plugin's own API client ("Don't use Stripe PHP SDK").
  */
-$url      = rtrim( getenv( 'E2E_URL' ), '/' );
-$wp_path  = getenv( 'E2E_WP_PATH' );
-$db       = new mysqli( getenv( 'E2E_DB_HOST' ), getenv( 'E2E_DB_USER' ), getenv( 'E2E_DB_PASS' ), getenv( 'E2E_DB_NAME' ) );
-$prefix   = 'wp_';
-$failures = 0;
-$skipped  = 0;
+$url        = rtrim( getenv( 'E2E_URL' ), '/' );
+$wp_path    = getenv( 'E2E_WP_PATH' );
+$db         = new mysqli( getenv( 'E2E_DB_HOST' ), getenv( 'E2E_DB_USER' ), getenv( 'E2E_DB_PASS' ), getenv( 'E2E_DB_NAME' ) );
+$prefix     = 'wp_';
+$failures   = 0;
+$known      = 0;
+$cookie_jar = null;
 
 //All the requests send this User-Agent: the security token of the create PaymentIntent request is made from it (see load_popup()).
 const E2E_USER_AGENT = 'ASP-E2E-Tests/1.0';
 
-//Known issues that aren't fixed yet (see "Known issues" in tests/TESTS.md). Their checks are skipped.
-//The commit that fixes one removes it from this list, so its check runs from then on. There are none at the moment.
-//Example: 'short-issue-id' => 'What is wrong and what it affects.', and in the test: if ( ! skip_known_issue( 'short-issue-id', $label ) ) { ...the check... }
-const KNOWN_ISSUES = array();
+//Known issues that aren't fixed (see "Known issues" in tests/TESTS.md). Their checks still run, but don't fail the tests:
+//the output shows "KNOWN ISSUE (still happens)" or "KNOWN ISSUE NOW PASSES". The commit that fixes one removes it from this list,
+//so its check becomes a normal check. "Unconfirmed" means the tests show what the code does, but it isn't reproduced with real Stripe yet.
+const KNOWN_ISSUES = array(
+	'declined-charge-completes-order' => 'Unconfirmed: process_ipn() checks the amount, currency and product of the latest charge, but not that the payment succeeded, so a PaymentIntent with a declined (failed) charge may complete a paid order.',
+	'capture-cancel-loses-charge'     => 'Unconfirmed: after Capture or Cancel on the orders page, the order\'s charge data is replaced with $intent->charges->data[0], but PaymentIntents of the Stripe API version the plugin uses have no "charges" list.',
+	'capture-cancel-fails-without-sdk' => 'Unconfirmed: with "Don\'t use Stripe PHP SDK", Capture and Cancel read the order\'s saved charge (a Stripe SDK object) before the SDK classes are loaded, so it may not be readable and the PaymentIntent ID is lost.',
+);
 
-/** Returns true (and prints SKIP) if the check is for a known issue that isn't fixed yet. */
-function skip_known_issue( $issue, $label ) {
-	global $skipped;
+/**
+ * A check for a known issue: a normal check when the issue isn't in KNOWN_ISSUES, otherwise it reports the result without failing.
+ */
+function check_known( $issue, $label, $condition, $details = '' ) {
+	global $known;
 	if ( ! isset( KNOWN_ISSUES[ $issue ] ) ) {
-		return false;
+		return check( $label, $condition, $details );
 	}
-	$skipped++;
-	echo "SKIP: {$label}\n    Known issue, not fixed yet: " . KNOWN_ISSUES[ $issue ] . "\n";
-	return true;
+	$known++;
+	if ( $condition ) {
+		echo "KNOWN ISSUE NOW PASSES: {$label}\n    Remove '{$issue}' from KNOWN_ISSUES if it is fixed: " . KNOWN_ISSUES[ $issue ] . "\n";
+	} else {
+		echo "KNOWN ISSUE (still happens): {$label}\n    " . KNOWN_ISSUES[ $issue ] . "\n";
+		if ( '' !== $details ) {
+			echo '    ' . $details . "\n";
+		}
+	}
+	return $condition;
+}
+
+/**
+ * Starts a browser session: the following requests keep their cookies (the plugin's session cookie, the login cookies).
+ * Returns the cookie file, so a session can be switched back to with use_session().
+ */
+function new_session() {
+	global $cookie_jar;
+	$cookie_jar = tempnam( sys_get_temp_dir(), 'asp-e2e-cookies-' );
+	return $cookie_jar;
+}
+
+/** Switches to a session from new_session(), or to no cookies (null). */
+function use_session( $file ) {
+	global $cookie_jar;
+	$cookie_jar = $file;
 }
 
 function check( $label, $condition, $details = '' ) {
@@ -70,7 +100,7 @@ function wp_cli( $command ) {
  * @return array The HTTP status code, the body and the Location header.
  */
 function http_request( $method, $endpoint, $fields = null, $headers = array() ) {
-	global $url;
+	global $url, $cookie_jar;
 	$location = '';
 	$curl     = curl_init( $url . $endpoint );
 	curl_setopt_array(
@@ -93,9 +123,16 @@ function http_request( $method, $endpoint, $fields = null, $headers = array() ) 
 	if ( null !== $fields ) {
 		curl_setopt( $curl, CURLOPT_POSTFIELDS, http_build_query( $fields ) );
 	}
-	$body = (string) curl_exec( $curl );
+	if ( null !== $cookie_jar ) {
+		curl_setopt( $curl, CURLOPT_COOKIEFILE, $cookie_jar );
+		curl_setopt( $curl, CURLOPT_COOKIEJAR, $cookie_jar );
+	}
+	$body   = (string) curl_exec( $curl );
+	$status = (int) curl_getinfo( $curl, CURLINFO_HTTP_CODE );
+	//The cookie file is written when the handle is freed.
+	unset( $curl );
 	return array(
-		'status'   => (int) curl_getinfo( $curl, CURLINFO_HTTP_CODE ),
+		'status'   => $status,
 		'body'     => $body,
 		'location' => $location,
 	);
@@ -189,28 +226,64 @@ function stripe_state() {
 /**
  * Adds a paid PaymentIntent to the fake Stripe API without the create PaymentIntent request
  * (to test what the payment processing does with a payment that the amount check before the payment would have stopped).
+ *
+ * @param array $state_fields Other states: array( 'status' => 'requires_action' ) needs 3D Secure;
+ *                            array( 'status' => 'requires_payment_method', 'charge_status' => 'none' ) isn't paid;
+ *                            array( 'status' => 'requires_payment_method', 'charge_status' => 'failed' ) has a declined card.
  */
-function add_paid_payment_intent( $amount, $currency, $product_id ) {
+function add_paid_payment_intent( $amount, $currency, $product_id, $state_fields = array() ) {
 	$state  = stripe_state();
 	$number = $state['next']++;
 	$id     = 'pi_e2e_added_' . $number;
-	$state['payment_intents'][ $id ] = array(
-		'id'              => $id,
-		'amount'          => $amount,
-		'currency'        => $currency,
-		'customer'        => null,
-		'description'     => 'Added by the test',
-		'metadata'        => array( 'Product ID' => (string) $product_id ),
-		'charge_id'       => 'ch_e2e_added_' . $number,
-		'created'         => time(),
-		'billing_details' => array(
-			'name'    => 'E2E Buyer',
-			'email'   => 'buyer@example.com',
-			'address' => null,
+	$state['payment_intents'][ $id ] = array_merge(
+		array(
+			'id'              => $id,
+			'amount'          => $amount,
+			'currency'        => $currency,
+			'customer'        => null,
+			'description'     => 'Added by the test',
+			'metadata'        => array( 'Product ID' => (string) $product_id ),
+			'charge_id'       => 'ch_e2e_added_' . $number,
+			'created'         => time(),
+			'status'          => 'succeeded',
+			'billing_details' => array(
+				'name'    => 'E2E Buyer',
+				'email'   => 'buyer@example.com',
+				'address' => null,
+			),
 		),
+		$state_fields
 	);
 	set_site_option_value( 'asp_e2e_stripe', $state );
 	return $id;
+}
+
+/** Changes some of the plugin settings. */
+function update_site_settings( $changes ) {
+	set_site_option_value( 'AcceptStripePayments-settings', array_merge( get_site_option_value( 'AcceptStripePayments-settings' ), $changes ) );
+}
+
+/** The order of a PaymentIntent (0 if there is none). */
+function order_for_pi( $pi_id ) {
+	$orders = orders_for_pi( $pi_id );
+	return isset( $orders[0] ) ? (int) $orders[0] : 0;
+}
+
+/** Billing or shipping details as the popup sends them (JSON). */
+function address_json( $country, $state = '', $city = '' ) {
+	return json_encode(
+		array(
+			'name'    => 'E2E Buyer',
+			'email'   => 'buyer@example.com',
+			'address' => array(
+				'line1'       => '1 Test Street',
+				'city'        => $city,
+				'state'       => $state,
+				'country'     => $country,
+				'postal_code' => '12345',
+			),
+		)
+	);
 }
 
 function emails() {
@@ -244,7 +317,10 @@ function load_popup( $product_id, $headers = array() ) {
 	if ( preg_match( '/"button_key":"([0-9a-f]+)"/', $response['body'], $m ) ) {
 		$popup['token'] = md5( E2E_USER_AGENT . $m[1] );
 	}
-	if ( 3 !== count( $popup ) ) {
+	if ( preg_match( '/"asp_pp_ajax_nonce":"([0-9a-f]+)"/', $response['body'], $m ) ) {
+		$popup['ajax'] = $m[1];
+	}
+	if ( 4 !== count( $popup ) ) {
 		check( "The payment popup of product {$product_id} loads (with the nonces and the button key)", false, response_text( $response ) );
 		return null;
 	}
@@ -326,6 +402,76 @@ function check_coupon_request( $product_id, $code ) {
 	return is_array( $json ) ? $json : array( 'err' => 'Not a JSON response. ' . response_text( $response ) );
 }
 
+/** An AJAX request (admin-ajax.php). Returns the JSON response. */
+function ajax_request( $fields ) {
+	$response = http_request( 'POST', '/wp-admin/admin-ajax.php', $fields );
+	$json     = json_decode( $response['body'], true );
+	return is_array( $json ) ? $json : array( 'err' => 'Not a JSON response. ' . response_text( $response ) );
+}
+
+/**
+ * Shows a page with the [accept_stripe_payment] shortcode (that creates the shortcode's product) and returns the product ID.
+ */
+function shortcode_product_id( $page_id ) {
+	$response = http_request( 'GET', '/?page_id=' . $page_id );
+	if ( preg_match( '/"product_id":"?(\d+)/', $response['body'], $m ) ) {
+		return (int) $m[1];
+	}
+	check( "The [accept_stripe_payment] page {$page_id} shows the buy button", false, response_text( $response ) );
+	return 0;
+}
+
+/** Logs in as the admin in the current session (the login page sets the test cookie that the login form needs). */
+function admin_login() {
+	http_request( 'GET', '/wp-login.php' );
+	$response = http_request(
+		'POST',
+		'/wp-login.php',
+		array(
+			'log'         => 'admin',
+			'pwd'         => 'admin',
+			'wp-submit'   => 'Log In',
+			'redirect_to' => '/wp-admin/',
+			'testcookie'  => '1',
+		)
+	);
+	return check( 'The admin can log in', 302 === $response['status'] && false !== strpos( $response['location'], 'wp-admin' ), response_text( $response ) );
+}
+
+/** The Capture/Cancel nonce of an authorized order, from the orders list (the admin must be logged in). */
+function order_action_nonce( $order_id ) {
+	$response = http_request( 'GET', '/wp-admin/edit.php?post_type=stripe_order' );
+	if ( preg_match( '/data-action="confirm" href="#" data-order-id="' . $order_id . '" data-nonce="([0-9a-f]+)"/', $response['body'], $m ) ) {
+		return $m[1];
+	}
+	return '';
+}
+
+/**
+ * The 3D Secure return: the popup saves its form (asp_pp_save_form_data), then Stripe sends the buyer to the
+ * asp_next_action_results request, which confirms the PaymentIntent and processes the payment. Uses the current session.
+ */
+function three_d_secure_return( $product_id, $popup, $pi_id ) {
+	ajax_request(
+		array(
+			'action'    => 'asp_pp_save_form_data',
+			'nonce'     => $popup['ajax'],
+			'form_data' => http_build_query(
+				array(
+					'product_id'         => (string) $product_id,
+					'payment_form_nonce' => $popup['payment_form'],
+					'is_live'            => '0',
+					'quantity'           => '1',
+					'billing_name'       => 'E2E Buyer',
+					'email'              => 'buyer@example.com',
+					'thankyou_page_url'  => '',
+				)
+			),
+		)
+	);
+	return http_request( 'GET', '/wp-admin/admin-ajax.php?action=asp_next_action_results&is_live=false&payment_intent=' . rawurlencode( $pi_id ) );
+}
+
 function error_of( $json ) {
 	return isset( $json['err'] ) ? $json['err'] : '(no error message) ' . json_encode( $json );
 }
@@ -341,10 +487,27 @@ function check_rejected_payment( $label, $pi_id, $response ) {
 
 /** Starts a round with a clean state: no emails, no request or transaction counts, the stock back to 2. */
 function reset_round( $ids ) {
-	foreach ( array( 'asp_e2e_emails', 'asp_daily_txn_count_args', '_transient_asp_request_usage_count', '_transient_timeout_asp_request_usage_count' ) as $name ) {
+	delete_site_option_value( 'asp_e2e_emails' );
+	reset_limits();
+	set_post_meta( $ids['stock'], 'asp_product_stock_items', '2' );
+}
+
+/** Resets the count of create PaymentIntent requests per IP address (limit 20) and the daily transaction count (limit 25). */
+function reset_limits() {
+	foreach ( array( 'asp_daily_txn_count_args', '_transient_asp_request_usage_count', '_transient_timeout_asp_request_usage_count' ) as $name ) {
 		delete_site_option_value( $name );
 	}
-	set_post_meta( $ids['stock'], 'asp_product_stock_items', '2' );
+}
+
+/** Gets the page the plugin redirected to (a full URL on the test site), in the current session. */
+function follow_redirect( $response ) {
+	global $url;
+	return http_request( 'GET', substr( $response['location'], strlen( $url ) ) );
+}
+
+/** The status of an order (asp_order_status) and its title. */
+function order_summary( $order_id ) {
+	return $order_id ? post_meta( $order_id, 'asp_order_status' ) . ', ' . post_field( $order_id, 'post_title' ) : 'No order.';
 }
 
 function run_round( $label, $via, $ids, $checkout_url ) {
@@ -370,8 +533,13 @@ function run_round( $label, $via, $ids, $checkout_url ) {
 	$orders = orders_for_pi( $pi_id );
 	check( "{$t} An incomplete order is created for the PaymentIntent", 1 === count( $orders ) && 'incomplete' === post_meta( $orders[0], 'asp_order_status' ) );
 
+	//In a browser session: the checkout result page shows the order from the plugin's session (a cookie).
+	new_session();
 	$response = submit_payment( $ids['ebook'], $ebook['payment_form'], $pi_id );
 	check( "{$t} The payment redirects to the checkout result page", 302 === $response['status'] && $checkout_url === $response['location'], response_text( $response ) . ' Location: ' . $response['location'] );
+	$result_page = follow_redirect( $response );
+	use_session( null );
+	check( "{$t} The checkout result page shows the order (thank you, product, transaction ID)", contains( $result_page['body'], 'Thank you for your payment.' ) && contains( $result_page['body'], 'E2E Ebook' ) && contains( $result_page['body'], $pi['charge_id'] ), response_text( $result_page ) );
 	$orders = orders_for_pi( $pi_id );
 	$order  = isset( $orders[0] ) ? $orders[0] : 0;
 	check( "{$t} The payment completes the same order (paid, published)", 1 === count( $orders ) && 'paid' === post_meta( $order, 'asp_order_status' ) && 'publish' === post_field( $order, 'post_status' ) );
@@ -456,9 +624,13 @@ function run_round( $label, $via, $ids, $checkout_url ) {
 
 	//8. The checks of the payment processing, with paid PaymentIntents that the amount check before the payment would have stopped.
 	delete_site_option_value( 'asp_e2e_emails' );
-	$pi_id    = add_paid_payment_intent( 100, 'usd', $ids['ebook'] );
-	$response = submit_payment( $ids['ebook'], $ebook['payment_form'], $pi_id );
+	$pi_id = add_paid_payment_intent( 100, 'usd', $ids['ebook'] );
+	new_session();
+	$response    = submit_payment( $ids['ebook'], $ebook['payment_form'], $pi_id );
+	$result_page = follow_redirect( $response );
+	use_session( null );
 	check_rejected_payment( "{$t} A payment lower than the product total doesn't complete an order", $pi_id, $response );
+	check( "{$t} The checkout result page shows the error", contains( $result_page['body'], 'System was not able to complete the payment.' ) && contains( $result_page['body'], 'Invalid payment amount received' ), response_text( $result_page ) );
 
 	$pi_id    = add_paid_payment_intent( 1100, 'eur', $ids['ebook'] );
 	$response = submit_payment( $ids['ebook'], $ebook['payment_form'], $pi_id );
@@ -483,13 +655,180 @@ function run_round( $label, $via, $ids, $checkout_url ) {
 	$no_type = load_popup( $ids['no_type'] );
 	$result  = create_pi( $ids['no_type'], $no_type, 1000 );
 	check( "{$t} A product with no saved product type: the correct amount is accepted", ! empty( $result['pi_id'] ), error_of( $result ) );
-	if ( ! skip_known_issue( 'amount-check-skipped-without-product-type', "{$t} A product with no saved product type: a lower amount is rejected" ) ) {
-		$pi_count = count( stripe_state()['payment_intents'] );
-		$result   = create_pi( $ids['no_type'], $no_type, 100 );
-		check( "{$t} A product with no saved product type: a lower amount is rejected", contains( error_of( $result ), 'Price validation failed' ) && count( stripe_state()['payment_intents'] ) === $pi_count, error_of( $result ) );
+	$pi_count = count( stripe_state()['payment_intents'] );
+	$result   = create_pi( $ids['no_type'], $no_type, 100 );
+	check( "{$t} A product with no saved product type: a lower amount is rejected", contains( error_of( $result ), 'Price validation failed' ) && count( stripe_state()['payment_intents'] ) === $pi_count, error_of( $result ) );
+
+	//The next sections send many create PaymentIntent requests: start the per-IP and daily counts again.
+	reset_limits();
+
+	//10. The coupon's product rules, before the PaymentIntent is created.
+	$result = create_pi( $ids['ebook'], $ebook, 800, 'USD', '1', array( 'coupon' => 'E2ECHEAP' ) );
+	check( "{$t} A coupon only for another product is rejected before the payment", contains( error_of( $result ), 'Coupon is not allowed for this product.' ), error_of( $result ) );
+	$cheap  = load_popup( $ids['cheap'] );
+	$result = create_pi( $ids['cheap'], $cheap, 80, 'USD', '1', array( 'coupon' => 'E2ECHEAP' ) );
+	check( "{$t} A coupon only for this product is accepted (20% off \$1)", ! empty( $result['pi_id'] ), error_of( $result ) );
+	$no_coupons = load_popup( $ids['no_coupons'] );
+	$result     = create_pi( $ids['no_coupons'], $no_coupons, 800, 'USD', '1', array( 'coupon' => 'E2E20' ) );
+	check( "{$t} A coupon is rejected for a product with coupons turned off", contains( error_of( $result ), 'Applying coupon is not allowed for this product.' ), error_of( $result ) );
+
+	//11. The [accept_stripe_payment] shortcode's products (they have no saved product type).
+	$product_id = shortcode_product_id( $ids['shortcode_priced'] );
+	$popup      = $product_id ? load_popup( $product_id ) : null;
+	if ( null !== $popup ) {
+		$result = create_pi( $product_id, $popup, 100 );
+		check( "{$t} [accept_stripe_payment price=\"10\"]: a lower amount is rejected", contains( error_of( $result ), 'Price validation failed' ), error_of( $result ) );
+		$result = create_pi( $product_id, $popup, 1000 );
+		if ( check( "{$t} [accept_stripe_payment price=\"10\"]: the create PaymentIntent request succeeds", ! empty( $result['pi_id'] ), error_of( $result ) ) ) {
+			submit_payment( $product_id, $popup['payment_form'], $result['pi_id'] );
+			$order = order_for_pi( $result['pi_id'] );
+			check( "{$t} [accept_stripe_payment price=\"10\"]: the order is paid", 'paid' === post_meta( $order, 'asp_order_status' ) && '[Test Mode] 1 x E2E Shortcode Product - $10.00' === post_field( $order, 'post_title' ), order_summary( $order ) );
+		}
+	}
+	$product_id = shortcode_product_id( $ids['shortcode_donation'] );
+	$popup      = $product_id ? load_popup( $product_id ) : null;
+	if ( null !== $popup ) {
+		$result = create_pi( $product_id, $popup, 700 );
+		if ( check( "{$t} [accept_stripe_payment price=\"0\"] (the buyer enters the amount): the create PaymentIntent request succeeds", ! empty( $result['pi_id'] ), error_of( $result ) ) ) {
+			submit_payment( $product_id, $popup['payment_form'], $result['pi_id'], array( 'asp_amount' => '700' ) );
+			$order = order_for_pi( $result['pi_id'] );
+			check( "{$t} [accept_stripe_payment price=\"0\"]: the order is paid with the buyer's amount", 'paid' === post_meta( $order, 'asp_order_status' ) && contains( post_field( $order, 'post_title' ), '$7.00' ), order_summary( $order ) );
+		}
 	}
 
-	//10. The limits (last, because they block the create PaymentIntent request).
+	//12. A donation with a minimum amount ($5).
+	$donation = load_popup( $ids['donation'] );
+	$result   = create_pi( $ids['donation'], $donation, 300 );
+	check( "{$t} A donation lower than the minimum amount is rejected", contains( error_of( $result ), 'Minimum amount is' ), error_of( $result ) );
+	$result = create_pi( $ids['donation'], $donation, 700 );
+	if ( check( "{$t} A donation above the minimum amount succeeds", ! empty( $result['pi_id'] ), error_of( $result ) ) ) {
+		submit_payment( $ids['donation'], $donation['payment_form'], $result['pi_id'], array( 'asp_amount' => '700' ) );
+		$order = order_for_pi( $result['pi_id'] );
+		check( "{$t} The donation order is paid with the buyer's amount", 'paid' === post_meta( $order, 'asp_order_status' ) && contains( post_field( $order, 'post_title' ), '$7.00' ), order_summary( $order ) );
+	}
+
+	//13. Tax and shipping by country (the buyer's address).
+	$tax    = load_popup( $ids['tax_region'] );
+	$result = create_pi( $ids['tax_region'], $tax, 1000 );
+	check( "{$t} Tax by country: the amount without the US tax is rejected for a US buyer", contains( error_of( $result ), 'Price validation failed' ), error_of( $result ) );
+	$result = create_pi( $ids['tax_region'], $tax, 1100 );
+	if ( check( "{$t} Tax by country: a US buyer pays the 10% tax", ! empty( $result['pi_id'] ), error_of( $result ) ) ) {
+		submit_payment( $ids['tax_region'], $tax['payment_form'], $result['pi_id'] );
+		$order = order_for_pi( $result['pi_id'] );
+		check( "{$t} Tax by country: the US order is paid with the tax", 'paid' === post_meta( $order, 'asp_order_status' ) && contains( post_field( $order, 'post_title' ), '$11.00' ), order_summary( $order ) );
+	}
+	$result = create_pi( $ids['tax_region'], $tax, 1000, 'USD', '1', array( 'billing_details' => address_json( 'DE', '', 'Berlin' ) ) );
+	if ( check( "{$t} Tax by country: a German buyer pays no tax", ! empty( $result['pi_id'] ), error_of( $result ) ) ) {
+		submit_payment( $ids['tax_region'], $tax['payment_form'], $result['pi_id'] );
+		$order = order_for_pi( $result['pi_id'] );
+		check( "{$t} Tax by country: the German order is paid without the tax", 'paid' === post_meta( $order, 'asp_order_status' ) && contains( post_field( $order, 'post_title' ), '$10.00' ), order_summary( $order ) );
+	}
+	$ship     = load_popup( $ids['ship_region'] );
+	$shipping = array( 'shipping_details' => address_json( 'US', 'TX', 'Austin' ) );
+	$result   = create_pi( $ids['ship_region'], $ship, 1300, 'USD', '1', $shipping );
+	check( "{$t} Shipping by country: the amount without the US shipping is rejected", contains( error_of( $result ), 'Price validation failed' ), error_of( $result ) );
+	$result = create_pi( $ids['ship_region'], $ship, 2000, 'USD', '1', $shipping );
+	if ( check( "{$t} Shipping by country: \$10 + \$3 shipping + \$7 to the US", ! empty( $result['pi_id'] ), error_of( $result ) ) ) {
+		submit_payment( $ids['ship_region'], $ship['payment_form'], $result['pi_id'] );
+		$order = order_for_pi( $result['pi_id'] );
+		check( "{$t} Shipping by country: the order is paid with the US shipping", 'paid' === post_meta( $order, 'asp_order_status' ) && contains( post_field( $order, 'post_title' ), '$20.00' ), order_summary( $order ) );
+	}
+
+	reset_limits();
+
+	//14. Authorize only: the payment is authorized, then captured or canceled from the orders page by the admin.
+	$auth   = load_popup( $ids['auth'] );
+	$orders = array();
+	foreach ( array( 'capture', 'cancel' ) as $action ) {
+		$result = create_pi( $ids['auth'], $auth, 1000 );
+		if ( ! empty( $result['pi_id'] ) ) {
+			submit_payment( $ids['auth'], $auth['payment_form'], $result['pi_id'] );
+			$orders[ $action ] = array( order_for_pi( $result['pi_id'] ), $result['pi_id'] );
+		}
+	}
+	if ( check( "{$t} Authorize only: the create PaymentIntent requests succeed", 2 === count( $orders ) ) ) {
+		list( $capture_order, $capture_pi ) = $orders['capture'];
+		list( $cancel_order, $cancel_pi )   = $orders['cancel'];
+		$pi = stripe_state()['payment_intents'][ $capture_pi ];
+		check( "{$t} Authorize only: the PaymentIntent is created for a later capture", 'requires_capture' === $pi['status'], json_encode( $pi ) );
+		check( "{$t} Authorize only: the order is authorized (not paid)", 'authorized' === post_meta( $capture_order, 'asp_order_status' ), order_summary( $capture_order ) );
+
+		$admin = new_session();
+		if ( admin_login() ) {
+			foreach ( array( 'capture' => array( $capture_order, $capture_pi, 'asp_order_capture_confirm', 'paid', 'succeeded' ), 'cancel' => array( $cancel_order, $cancel_pi, 'asp_order_capture_cancel', 'canceled', 'canceled' ) ) as $action => $case ) {
+				list( $order, $order_pi, $ajax_action, $order_status, $pi_status ) = $case;
+				$nonce  = order_action_nonce( $order );
+				$result = '' === $nonce ? array( 'err_msg' => 'No Capture/Cancel links for the order on the orders page.' ) : ajax_request(
+					array(
+						'action'   => $ajax_action,
+						'order_id' => (string) $order,
+						'nonce'    => $nonce,
+					)
+				);
+				//With the plugin's own API client, Capture and Cancel are a known issue (see KNOWN_ISSUES); with the SDK, normal checks.
+				$issue = 'wp' === $via ? 'capture-cancel-fails-without-sdk' : '';
+				check_known( $issue, "{$t} Authorize only: {$action} from the orders page succeeds", ! empty( $result['success'] ), json_encode( $result ) );
+				check_known( $issue, "{$t} Authorize only: after {$action}, the order is {$order_status} and the PaymentIntent is {$pi_status}", $order_status === post_meta( $order, 'asp_order_status' ) && $pi_status === stripe_state()['payment_intents'][ $order_pi ]['status'], order_summary( $order ) );
+				check_known( 'capture-cancel-loses-charge', "{$t} Authorize only: after {$action}, the order still has its charge data", contains( post_meta( $order, 'order_data' ), $order_pi ) );
+			}
+		}
+		use_session( null );
+	}
+
+	//15. 3D Secure: the PaymentIntent needs authentication; after it, Stripe sends the buyer back to the plugin, which confirms it.
+	new_session();
+	$pi_id    = add_paid_payment_intent( 1100, 'usd', $ids['ebook'], array( 'status' => 'requires_action' ) );
+	$response = three_d_secure_return( $ids['ebook'], $ebook, $pi_id );
+	use_session( null );
+	$order = order_for_pi( $pi_id );
+	check( "{$t} 3D Secure: the return confirms the PaymentIntent and completes the paid order", 302 === $response['status'] && 'succeeded' === stripe_state()['payment_intents'][ $pi_id ]['status'] && 'paid' === post_meta( $order, 'asp_order_status' ), response_text( $response ) . ' ' . order_summary( $order ) );
+
+	//16. A 100% discount coupon: no payment, a "free_" transaction ID from the coupon check.
+	$coupon = check_coupon_request( $ids['ebook'], 'E2EFREE' );
+	$free   = isset( $coupon['zero_value_id'] ) ? $coupon['zero_value_id'] : '';
+	if ( check( "{$t} The coupon check of a 100% coupon gives a free transaction ID", 0 === strpos( $free, 'free_' ), json_encode( $coupon ) ) ) {
+		submit_payment( $ids['ebook'], $ebook['payment_form'], $free, array( 'asp_coupon-code' => 'E2EFREE' ) );
+		$order = order_for_pi( $free );
+		check( "{$t} A 100% coupon completes a free paid order", 'paid' === post_meta( $order, 'asp_order_status' ) && contains( post_field( $order, 'post_title' ), '$0.00' ), order_summary( $order ) );
+	}
+	delete_site_option_value( 'asp_e2e_emails' );
+	$response = submit_payment( $ids['ebook'], $ebook['payment_form'], 'free_e2eforged', array( 'asp_coupon-code' => 'E2EFREE' ) );
+	check_rejected_payment( "{$t} A made-up free transaction ID doesn't complete an order", 'free_e2eforged', $response );
+	$coupon = check_coupon_request( $ids['ebook'], 'E2E20' );
+	if ( isset( $coupon['zero_value_id'] ) ) {
+		$response = submit_payment( $ids['ebook'], $ebook['payment_form'], $coupon['zero_value_id'], array( 'asp_coupon-code' => 'E2E20' ) );
+		check_rejected_payment( "{$t} The free transaction ID of a coupon that isn't 100% doesn't complete an order", $coupon['zero_value_id'], $response );
+	}
+
+	//17. PaymentIntents that weren't paid.
+	delete_site_option_value( 'asp_e2e_emails' );
+	$pi_id = add_paid_payment_intent(
+		1100,
+		'usd',
+		$ids['ebook'],
+		array(
+			'status'        => 'requires_payment_method',
+			'charge_status' => 'none',
+		)
+	);
+	$response = submit_payment( $ids['ebook'], $ebook['payment_form'], $pi_id );
+	check_rejected_payment( "{$t} A PaymentIntent without a payment doesn't complete an order", $pi_id, $response );
+	$pi_id = add_paid_payment_intent(
+		1100,
+		'usd',
+		$ids['ebook'],
+		array(
+			'status'        => 'requires_payment_method',
+			'charge_status' => 'failed',
+		)
+	);
+	$response = submit_payment( $ids['ebook'], $ebook['payment_form'], $pi_id );
+	$order    = order_for_pi( $pi_id );
+	check_known( 'declined-charge-completes-order', "{$t} A PaymentIntent with a declined card doesn't complete an order", 0 === $order && 0 === count( emails() ), 'Order: ' . order_summary( $order ) . '. Emails sent: ' . count( emails() ) . '.' );
+
+	reset_limits();
+
+	//18. The limits (last, because they block the create PaymentIntent request).
 	set_site_option_value( '_transient_asp_request_usage_count', array( '127.0.0.1' => 20 ) );
 	set_site_option_value( '_transient_timeout_asp_request_usage_count', time() + 3600 );
 	$result = create_pi( $ids['ebook'], $ebook, 1100 );
@@ -508,6 +847,51 @@ function run_round( $label, $via, $ids, $checkout_url ) {
 	check( "{$t} The create PaymentIntent request is rejected when the daily transaction limit (25) is reached", contains( error_of( $result ), 'has been reached for the day' ), error_of( $result ) );
 }
 
+/**
+ * The captcha check before the PaymentIntent is created ('recaptcha' or 'hcaptcha'). The popup sends the captcha widget's token
+ * to the plugin (asp_recaptcha_check / asp_hcaptcha_check), the plugin verifies it (the fake answers) and saves the result
+ * in the buyer's session, and the create PaymentIntent request needs it.
+ */
+function run_captcha_tests( $type, $label, $ids ) {
+	$t = "[{$label}]";
+	reset_limits();
+	update_site_settings(
+		array(
+			'captcha_type'       => $type,
+			"{$type}_site_key"   => 'e2e-site-key',
+			"{$type}_secret_key" => 'e2e-secret-key',
+		)
+	);
+	new_session();
+	$ebook = load_popup( $ids['ebook'] );
+	if ( null !== $ebook ) {
+		$result = create_pi( $ids['ebook'], $ebook, 1100 );
+		check( "{$t} The create PaymentIntent request without the captcha is rejected", contains( error_of( $result ), 'check failed' ), error_of( $result ) );
+
+		$check = ajax_request(
+			array(
+				'action'            => "asp_{$type}_check",
+				"{$type}_response" => 'e2e-captcha-wrong',
+			)
+		);
+		check( "{$t} A wrong captcha token is rejected by the captcha check", ! empty( $check['error'] ), json_encode( $check ) );
+		$result = create_pi( $ids['ebook'], $ebook, 1100 );
+		check( "{$t} The create PaymentIntent request after a failed captcha is rejected", contains( error_of( $result ), 'check failed' ), error_of( $result ) );
+
+		$check = ajax_request(
+			array(
+				'action'            => "asp_{$type}_check",
+				"{$type}_response" => 'e2e-captcha-pass',
+			)
+		);
+		check( "{$t} A solved captcha passes the captcha check", empty( $check['error'] ), json_encode( $check ) );
+		$result = create_pi( $ids['ebook'], $ebook, 1100 );
+		check( "{$t} The create PaymentIntent request after the solved captcha succeeds", ! empty( $result['pi_id'] ), error_of( $result ) );
+	}
+	use_session( null );
+	update_site_settings( array( 'captcha_type' => '' ) );
+}
+
 //Create the test data.
 $setup_output = wp_cli( 'eval-file ' . escapeshellarg( __DIR__ . '/setup-site.php' ) );
 $lines        = array_filter( array_map( 'trim', explode( "\n", $setup_output ) ) );
@@ -522,9 +906,13 @@ $checkout_url = $settings['checkout_url'];
 run_round( 'Stripe PHP SDK', 'sdk', $ids, $checkout_url );
 
 //"Don't use Stripe PHP SDK" (Advanced settings). The setting isn't saved until it is changed, so it is added here.
-$settings['dont_use_stripe_php_sdk'] = 1;
-set_site_option_value( 'AcceptStripePayments-settings', $settings );
+update_site_settings( array( 'dont_use_stripe_php_sdk' => 1 ) );
 run_round( "Plugin's own API client", 'wp', $ids, $checkout_url );
+update_site_settings( array( 'dont_use_stripe_php_sdk' => 0 ) );
+
+echo "--- Captcha ---\n";
+run_captcha_tests( 'recaptcha', 'reCAPTCHA', $ids );
+run_captcha_tests( 'hcaptcha', 'hCaptcha', $ids );
 
 //PHP errors on the test site (WP_DEBUG_LOG). A fatal error fails the tests; warnings and notices from the plugin are listed.
 echo "--- PHP errors ---\n";
@@ -538,7 +926,7 @@ if ( $plugin_messages ) {
 }
 
 echo "\n" . ( 0 === $failures ? 'All endpoint tests passed.' : "{$failures} endpoint test(s) failed." ) . "\n";
-if ( $skipped ) {
-	echo "{$skipped} check(s) skipped for known issues that aren't fixed yet (see KNOWN_ISSUES).\n";
+if ( $known ) {
+	echo "{$known} check(s) for known issues ran without failing the tests (see the KNOWN ISSUE lines and KNOWN_ISSUES).\n";
 }
 exit( 0 === $failures ? 0 : 1 );
