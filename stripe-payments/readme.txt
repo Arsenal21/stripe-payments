@@ -157,6 +157,10 @@ None.
 
 == Changelog ==
 
+= WIP =
+- The coupon's product restrictions ("only for these products", coupons disabled for the product) are now also checked before the payment is created.
+- Products without a saved product type (older products and [accept_stripe_payment] products) now get the payment amount check.
+
 = 2.1.5 =
 - Fixed PHP 8.x "Undefined array key 'footer'" warnings in the payment popup when a script or style is added without the 'footer' parameter.
 - Payment confirm parameters are now restricted to an allowlist, and order event comments are sanitized when saved and escaped when displayed in the admin area.
