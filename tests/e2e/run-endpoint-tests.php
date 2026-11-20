@@ -29,8 +29,6 @@ const E2E_USER_AGENT = 'ASP-E2E-Tests/1.0';
 //so its check becomes a normal check. "Unconfirmed" means the tests show what the code does, but it isn't reproduced with real Stripe yet.
 const KNOWN_ISSUES = array(
 	'declined-charge-completes-order' => 'Unconfirmed: process_ipn() checks the amount, currency and product of the latest charge, but not that the payment succeeded, so a PaymentIntent with a declined (failed) charge may complete a paid order.',
-	'capture-cancel-loses-charge'     => 'Unconfirmed: after Capture or Cancel on the orders page, the order\'s charge data is replaced with $intent->charges->data[0], but PaymentIntents of the Stripe API version the plugin uses have no "charges" list.',
-	'capture-cancel-fails-without-sdk' => 'Unconfirmed: with "Don\'t use Stripe PHP SDK", Capture and Cancel read the order\'s saved charge (a Stripe SDK object) before the SDK classes are loaded, so it may not be readable and the PaymentIntent ID is lost.',
 );
 
 /**
@@ -753,7 +751,7 @@ function run_round( $label, $via, $ids, $checkout_url ) {
 		check( "{$t} Authorize only: the PaymentIntent is created for a later capture", 'requires_capture' === $pi['status'], json_encode( $pi ) );
 		check( "{$t} Authorize only: the order is authorized (not paid)", 'authorized' === post_meta( $capture_order, 'asp_order_status' ), order_summary( $capture_order ) );
 
-		$admin = new_session();
+		new_session();
 		if ( admin_login() ) {
 			foreach ( array( 'capture' => array( $capture_order, $capture_pi, 'asp_order_capture_confirm', 'paid', 'succeeded' ), 'cancel' => array( $cancel_order, $cancel_pi, 'asp_order_capture_cancel', 'canceled', 'canceled' ) ) as $action => $case ) {
 				list( $order, $order_pi, $ajax_action, $order_status, $pi_status ) = $case;
@@ -765,11 +763,11 @@ function run_round( $label, $via, $ids, $checkout_url ) {
 						'nonce'    => $nonce,
 					)
 				);
-				//With the plugin's own API client, Capture and Cancel are a known issue (see KNOWN_ISSUES); with the SDK, normal checks.
-				$issue = 'wp' === $via ? 'capture-cancel-fails-without-sdk' : '';
-				check_known( $issue, "{$t} Authorize only: {$action} from the orders page succeeds", ! empty( $result['success'] ), json_encode( $result ) );
-				check_known( $issue, "{$t} Authorize only: after {$action}, the order is {$order_status} and the PaymentIntent is {$pi_status}", $order_status === post_meta( $order, 'asp_order_status' ) && $pi_status === stripe_state()['payment_intents'][ $order_pi ]['status'], order_summary( $order ) );
-				check_known( 'capture-cancel-loses-charge', "{$t} Authorize only: after {$action}, the order still has its charge data", contains( post_meta( $order, 'order_data' ), $order_pi ) );
+				//Fixed after 2.1.5: Capture and Cancel failed with the plugin's own API client, and the order lost its charge data.
+				check( "{$t} Authorize only: {$action} from the orders page succeeds", ! empty( $result['success'] ), json_encode( $result ) );
+				check( "{$t} Authorize only: after {$action}, the order is {$order_status} and the PaymentIntent is {$pi_status}", $order_status === post_meta( $order, 'asp_order_status' ) && $pi_status === stripe_state()['payment_intents'][ $order_pi ]['status'], order_summary( $order ) );
+				$order_data = (string) post_meta( $order, 'order_data' );
+				check( "{$t} Authorize only: after {$action}, the order still has its charge data (the PaymentIntent's latest charge)", contains( $order_data, $order_pi ) && contains( $order_data, stripe_state()['payment_intents'][ $order_pi ]['charge_id'] ) );
 			}
 		}
 		use_session( null );

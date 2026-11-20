@@ -231,13 +231,14 @@ class ASPOrder {
 		$order = new ASP_Order_Item();
 		$order->set_id( $post_id );
 
-                ASP_Utils::load_stripe_php_sdk_if_enabled();//Load the Stripe SDK (if enabled) so it can read the Stripe classes in the order object.
+		//Load the Stripe SDK classes before the order data is read: the saved charge is a Stripe SDK object (also with the
+		//"Don't use Stripe PHP SDK" option, because the payment processing gets the charge with the SDK).
+		ASP_Utils::load_stripe_lib();
 		$data = get_post_meta( $post_id, 'order_data', true );
 
 		$asp_main = AcceptStripePayments::get_instance();
 
 		try {
-			ASP_Utils::load_stripe_lib();
 			$key = $data['is_live'] ? $asp_main->APISecKey : $asp_main->APISecKeyTest;
 			\Stripe\Stripe::setApiKey( $key );
 
@@ -252,8 +253,7 @@ class ASPOrder {
 
 			if ( 'requires_capture' !== $intent->status ) {
 				//already captured or canceled
-				$data['charge'] = $intent->charges->data[0];
-				update_post_meta( $post_id, 'order_data', $data );
+				$this->update_order_charge( $post_id, $data, $intent, $api );
 
 				if ( 'canceled' === $intent->status ) {
 					$order->change_status( 'canceled' );
@@ -286,8 +286,7 @@ class ASPOrder {
 			);
 		}
 
-		$data['charge'] = $intent->charges->data[0];
-		update_post_meta( $post_id, 'order_data', $data );
+		$this->update_order_charge( $post_id, $data, $intent, $api );
 
 		$order->change_status( 'paid' );
 
@@ -323,13 +322,13 @@ class ASPOrder {
 		$order = new ASP_Order_Item();
 		$order->set_id( $post_id );
 
-                ASP_Utils::load_stripe_php_sdk_if_enabled();//Load the Stripe SDK (if enabled) so it can read the Stripe classes in the order object.
+		//Load the Stripe SDK classes before the order data is read (see order_capture_confirm()).
+		ASP_Utils::load_stripe_lib();
 		$data = get_post_meta( $post_id, 'order_data', true );
 
 		$asp_main = AcceptStripePayments::get_instance();
 
 		try {
-			ASP_Utils::load_stripe_lib();
 			$key = $data['is_live'] ? $asp_main->APISecKey : $asp_main->APISecKeyTest;
 			\Stripe\Stripe::setApiKey( $key );
 
@@ -344,8 +343,7 @@ class ASPOrder {
 
 			if ( 'requires_capture' !== $intent->status ) {
 				//already captured or canceled
-				$data['charge'] = $intent->charges->data[0];
-				update_post_meta( $post_id, 'order_data', $data );
+				$this->update_order_charge( $post_id, $data, $intent, $api );
 
 				if ( 'canceled' === $intent->status ) {
 					$order->change_status( 'canceled' );
@@ -378,8 +376,7 @@ class ASPOrder {
 			);
 		}
 
-		$data['charge'] = $intent->charges->data[0];
-		update_post_meta( $post_id, 'order_data', $data );
+		$this->update_order_charge( $post_id, $data, $intent, $api );
 
 		$order->change_status( 'canceled' );
 
@@ -389,6 +386,55 @@ class ASPOrder {
 				'order_status' => sprintf( $this->order_status_tpl, ' ' . $order->get_status(), self::get_status_str( $order->get_status() ) ),
 			)
 		);
+	}
+
+	/**
+	 * Saves the PaymentIntent's latest charge (after a capture or cancel) in the order data.
+	 * The order keeps its current charge data if the charge can't be retrieved.
+	 *
+	 * @param int    $post_id The order ID.
+	 * @param array  $data    The order data (order_data post meta).
+	 * @param object $intent  The PaymentIntent (Stripe SDK object, or plain object with the "Don't use Stripe PHP SDK" option).
+	 * @param object $api     The plugin's own API client (ASP_Stripe_API).
+	 */
+	private function update_order_charge( $post_id, $data, $intent, $api ) {
+		$charge = $this->get_intent_charge( $intent, $api );
+		if ( empty( $charge ) ) {
+			return;
+		}
+		$data['charge'] = $charge;
+		update_post_meta( $post_id, 'order_data', $data );
+	}
+
+	/**
+	 * Returns the latest charge of a PaymentIntent, or false.
+	 * Older Stripe API versions include it in $intent->charges; the API version the plugin uses (since 2022-11-15) only has
+	 * the charge ID in $intent->latest_charge, so the charge is retrieved.
+	 */
+	private function get_intent_charge( $intent, $api ) {
+		if ( ! is_object( $intent ) ) {
+			return false;
+		}
+		if ( isset( $intent->charges ) && isset( $intent->charges->data[0] ) ) {
+			return $intent->charges->data[0];
+		}
+		$charge_id = isset( $intent->latest_charge ) ? $intent->latest_charge : '';
+		if ( is_object( $charge_id ) ) {
+			//Expanded charge.
+			return $charge_id;
+		}
+		if ( empty( $charge_id ) ) {
+			return false;
+		}
+		try {
+			if ( ASP_Utils::use_internal_api() ) {
+				return $api->get( 'charges/' . $charge_id );
+			}
+			return \Stripe\Charge::retrieve( $charge_id );
+		} catch ( \Exception $e ) {
+			ASP_Debug_Logger::log( 'Could not retrieve the charge ' . $charge_id . ' of the PaymentIntent: ' . $e->getMessage(), false );
+			return false;
+		}
 	}
 
 	public static function get_status_str( $status ) {

@@ -39,18 +39,25 @@ class Test_Shortcode_Products extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Suspected bug, not confirmed yet (see "Known issues" in tests/TESTS.md): the shortcode converts the shipping to cents
-	 * before it saves the product, but the product's shipping is read as an amount (not cents), so shipping="5" may become $500.
-	 * If that happens, the test is marked incomplete (with the value) instead of failing. Once fixed, remove the markTestIncomplete() part.
+	 * Fixed after 2.1.5: the shortcode saved the shipping in cents (shipping="5" became $500.00).
 	 */
 	public function test_the_shortcode_shipping_is_saved_as_entered() {
-		$item     = $this->shortcode_product( '[accept_stripe_payment name="Shortcode Shipping" price="10" shipping="5"]' );
-		$shipping = $item->get_shipping();
+		$item = $this->shortcode_product( '[accept_stripe_payment name="Shortcode Shipping" price="10" shipping="5"]' );
 
-		if ( 500 == $shipping ) {
-			$this->markTestIncomplete( 'Known issue (suspected, not confirmed in the browser yet): [accept_stripe_payment shipping="5"] saves the shipping as 500 (cents), and the product reads it as $500.00.' );
-		}
-		$this->assertEquals( 5, $shipping );
+		$this->assertEquals( 5, $item->get_shipping() );
 		$this->assertEquals( 1500, $item->get_total( true ) );
+	}
+
+	/**
+	 * A product saved by an older version (shipping in cents) is corrected the next time the shortcode is shown.
+	 */
+	public function test_the_shipping_of_a_product_saved_by_an_older_version_is_corrected() {
+		$shortcode = '[accept_stripe_payment name="Shortcode Old Shipping" price="10" shipping="5"]';
+		$item      = $this->shortcode_product( $shortcode );
+		update_post_meta( $item->get_product_id(), 'asp_product_shipping', 500 );
+
+		$item = $this->shortcode_product( $shortcode );
+
+		$this->assertEquals( 5, $item->get_shipping() );
 	}
 }

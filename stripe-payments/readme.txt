@@ -160,6 +160,9 @@ None.
 = WIP =
 - The coupon's product restrictions ("only for these products", coupons disabled for the product) are now also checked before the payment is created.
 - Products without a saved product type (older products and [accept_stripe_payment] products) now get the payment amount check.
+- Fixed: Capture and Cancel on the orders page no longer remove the order's charge details (Stripe API 2022-11-15 and later).
+- Fixed: Capture and Cancel on the orders page failed with "Funds already captured or refunded" when the "Don't use Stripe PHP SDK" option was enabled.
+- Fixed: The deprecated [accept_stripe_payment] shortcode's "shipping" amount was charged incorrectly. Existing shortcode products are corrected when their page is viewed.
 
 = 2.1.5 =
 - Fixed PHP 8.x "Undefined array key 'footer'" warnings in the payment popup when a script or style is added without the 'footer' parameter.

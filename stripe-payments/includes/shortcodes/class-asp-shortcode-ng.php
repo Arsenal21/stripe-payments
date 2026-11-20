@@ -451,6 +451,9 @@ class ASP_Shortcode_NG {
 			$item_price     = $price * 100;
 		}
 
+		//The shipping as entered in the shortcode (an amount, not cents). This is what the shortcode's product saves.
+		$shipping_entered = empty( $shipping ) ? 0 : round( $shipping, 2 );
+
 		if ( ! empty( $shipping ) ) {
 			$shipping_filt = round( $shipping, 2 );
 			if ( ! AcceptStripePayments::is_zero_cents( $currency ) ) {
@@ -498,7 +501,7 @@ class ASP_Shortcode_NG {
 					'asp_product_custom_quantity'          => $custom_quantity,
 					'asp_product_price'                    => $price,
 					'asp_product_tax'                      => $tax,
-					'asp_product_shipping'                 => $shipping,
+					'asp_product_shipping'                 => $shipping_entered,
 					'asp_product_currency_variable'        => $currency_variable,
 					'asp_product_currency'                 => $currency,
 					'asp_product_description'              => $description,
@@ -518,6 +521,10 @@ class ASP_Shortcode_NG {
 				$temp_post               = get_post( $post_id );
 			} else {
 				$temp_post = $temp_post[0];
+				//Products saved by older versions have the shipping in cents (100 times too high). Save it as entered.
+				if ( (float) get_post_meta( $temp_post->ID, 'asp_product_shipping', true ) !== (float) $shipping_entered ) {
+					update_post_meta( $temp_post->ID, 'asp_product_shipping', $shipping_entered );
+				}
 			}
 			$atts['id'] = $temp_post->ID;
 			$ret        = $this->shortcode_asp_product( $atts );

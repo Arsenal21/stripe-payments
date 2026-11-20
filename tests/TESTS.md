@@ -53,7 +53,7 @@ The main tests run twice: with the Stripe PHP SDK (the default) and with the plu
 - `[accept_stripe_payment price="10"]` (the amount is checked, the order is paid) and `[accept_stripe_payment price="0"]` (the buyer's amount).
 - A donation with a minimum amount (below it is rejected; the order has the buyer's amount).
 - Tax by billing country (a US buyer pays the tax, a German buyer doesn't) and shipping by shipping country, through to the paid order.
-- Authorize only: the order is authorized, then the admin captures (paid) or cancels (canceled) it from the orders page.
+- Authorize only: the order is authorized, then the admin captures (paid) or cancels (canceled) it from the orders page, and the order keeps its charge data.
 - 3D Secure: the return request (`asp_next_action_results`, after the form is saved with `asp_pp_save_form_data`) confirms the PaymentIntent and completes the order.
 - A 100% coupon: the coupon check gives a "free_" transaction ID and the order is paid with $0.00.
 
@@ -128,7 +128,7 @@ The main tests run twice: with the Stripe PHP SDK (the default) and with the plu
 
 **`[accept_stripe_payment]` products** (test-shortcode-products.php)
 - The shortcode saves its product (name, price, tax, total) and it gets the amount check; without a price it's checked as a donation.
-- The shipping is saved as entered (known issue, see below).
+- The shipping is saved as entered; a product saved by an older version (shipping in cents) is corrected.
 
 **IP address** (test-ip-address.php)
 - The connection address (REMOTE_ADDR) is used when there is no X-Forwarded-For header; the first X-Forwarded-For address is used when there is one (see Decisions).
@@ -149,11 +149,15 @@ The commit that fixes an issue removes it from `KNOWN_ISSUES` (or the `markTestI
 | Issue | Status | Tests |
 |---|---|---|
 | The payment processing (`process_ipn()`) checks the amount, currency and product of the latest charge, but not that the payment succeeded, so a PaymentIntent with a declined (failed) charge may complete a paid order, send the emails and run `asp_stripe_payment_completed`. | Unconfirmed: to reproduce with the decline card 4000 0000 0000 0002 in test mode | Endpoint: `declined-charge-completes-order` |
-| After Capture or Cancel on the orders page, the order's charge data is replaced with `$intent->charges->data[0]`; PaymentIntents of the Stripe API version the plugin uses have no `charges` list, so the order may lose its charge data. | Unconfirmed | Endpoint: `capture-cancel-loses-charge` |
-| With "Don't use Stripe PHP SDK", Capture and Cancel read the order's saved charge (a Stripe SDK object) before the SDK classes are loaded, so the PaymentIntent ID may be lost and the capture or cancel fails. | Unconfirmed | Endpoint (plugin's own API client round): `capture-cancel-fails-without-sdk` |
-| `[accept_stripe_payment shipping="5"]` saves the shipping in cents (500), and the product reads it as $500.00. | Suspected, to check in the browser | PHPUnit: test-shortcode-products.php "the shortcode shipping is saved as entered" |
 
-Fixed after 2.1.5: the coupon's product rules in the amount check, and the amount check for products with no saved type.
+Fixed after 2.1.5 (their tests are normal tests now):
+- The coupon's product rules in the amount check, and the amount check for products with no saved type.
+- Capture and Cancel on the orders page saved `$intent->charges->data[0]` as the order's charge, which is empty with the Stripe API version the plugin uses;
+  they now save the PaymentIntent's latest charge (`latest_charge`).
+- With "Don't use Stripe PHP SDK", Capture and Cancel failed ("Funds already captured or refunded"), because the saved charge (a Stripe SDK object)
+  was read before the SDK classes were loaded.
+- `[accept_stripe_payment shipping="5"]` saved the shipping in cents ($500.00); it is saved as entered now, and a product saved by an older version
+  is corrected the next time the shortcode is shown.
 
 ## Decisions (behavior that is kept on purpose)
 

@@ -265,6 +265,15 @@ function asp_e2e_stripe_handle( $via, $method, $url, $params ) {
 			}
 			$response = array( 200, asp_e2e_stripe_pi_response( $state['payment_intents'][ $id ], $state, in_array( 'customer', $expand, true ) ) );
 		}
+	} elseif ( 'charges' === $resource && 'GET' === $method && '' !== $id ) {
+		//Retrieve one charge (the PaymentIntent's latest_charge).
+		$response = asp_e2e_stripe_error( 404, "No such charge: '{$id}'" );
+		foreach ( $state['payment_intents'] as $pi ) {
+			if ( $pi['charge_id'] === $id && 'none' !== asp_e2e_stripe_charge_status( $pi ) ) {
+				$response = array( 200, asp_e2e_stripe_charge_response( $pi, $state ) );
+				break;
+			}
+		}
 	} elseif ( 'charges' === $resource && 'GET' === $method && '' === $id ) {
 		$pi_id = isset( $params['payment_intent'] ) ? $params['payment_intent'] : '';
 		$data  = array();
