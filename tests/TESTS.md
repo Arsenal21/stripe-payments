@@ -51,7 +51,7 @@ All the tests run twice: with the Stripe PHP SDK (the default) and with the plug
   (the popup makes it from the browser's User-Agent and the product's button key; the tests send a fixed User-Agent),
   a product whose payment popup wasn't loaded (page load signature), an unknown coupon (coupon check request).
 - The 21st request from the same IP address; the daily transaction limit.
-- A product with no saved product type: the correct amount is accepted (the lower amount check is a known issue, see below).
+- A product with no saved product type: the correct amount is accepted, a lower amount is rejected.
 
 **Rejected by the payment processing** (with paid PaymentIntents added to the fake Stripe API directly)
 - A payment lower than the product total, a payment in another currency, a payment made for another product,
@@ -84,8 +84,11 @@ All the tests run twice: with the Stripe PHP SDK (the default) and with the plug
 - The correct amount is accepted; a lower or higher amount is rejected with the expected and submitted amounts.
 - The product quantity is used when the buyer sends none; the amount must match the buyer's quantity.
 - A valid coupon lowers the expected amount; the discounted amount without the coupon, an unknown coupon and an expired coupon are rejected.
+- The coupon's product rules are checked too (fixed after 2.1.5): a coupon only for other products, and coupons turned off for the product, are rejected.
 - Price variations (also a group name with `_`, and variations that make up the whole price).
 - Tax by billing country, shipping by country, the surcharge, a JPY amount.
+- The type used for the amount check (fixed after 2.1.5): a product with no saved type is checked as `one_time` when it has a price
+  (or the variations make up the price) and as `donation` when the buyer enters the amount; a saved type and subscription products are kept.
 
 **Coupons** (test-coupons.php, `check_coupon()`)
 - A valid coupon is accepted; spaces around the code are ignored.
@@ -108,21 +111,26 @@ All the tests run twice: with the Stripe PHP SDK (the default) and with the plug
 - The seller email goes to the seller, with Reply-To set to the buyer and a link to the order.
 
 **IP address** (test-ip-address.php)
-- The connection address (REMOTE_ADDR) is used.
+- The connection address (REMOTE_ADDR) is used when there is no X-Forwarded-For header; the first X-Forwarded-For address is used when there is one (see Decisions).
+- The `asp_get_user_ip_address` filter can change the address.
 
 ---
 
 ## Known issues (tests skipped until fixed)
 
-These tests are written but skipped, so the workflow stays green. The commit that fixes an issue turns its tests on:
+A test for a known bug can be written before the fix and skipped, so the workflow stays green. The commit that fixes the bug turns its test on:
 remove the `markTestSkipped()` line (PHPUnit), or remove the issue from `KNOWN_ISSUES` in [e2e/run-endpoint-tests.php](e2e/run-endpoint-tests.php) (endpoint tests).
 Skipped tests show as skipped in the PHPUnit output and as `SKIP:` lines in the endpoint tests output.
 
-| Issue | Tests | Effect |
-|---|---|---|
-| The amount check before the PaymentIntent is created (`validate_total_amount()`) loads the coupon with `load_coupon()`, which doesn't check the coupon's allowed products or whether coupons are enabled for the product. Fix: use `check_coupon()`. | test-amount-validation.php: "a coupon only for other products is rejected", "a coupon is rejected when coupons are turned off for the product" | A tampered request gets a PaymentIntent for the discounted amount; the payment processing then rejects the payment, but only after the card is charged (no order). |
-| `handle_create_pi()` only runs the amount check when the product type is `one_time`. Products with no saved type (saved before the product type option, and the products of `[accept_stripe_payment]`) skip it. | Endpoint tests: `amount-check-skipped-without-product-type` | Same as above: a PaymentIntent for any amount; the payment processing rejects a lower payment after the card is charged. |
-| `ASP_Utils::get_user_ip_address()` uses the X-Forwarded-For header when there is one. | test-ip-address.php: "an X-Forwarded-For header sent by the visitor is not trusted"; endpoint tests: `ip-limit-trusts-x-forwarded-for` | A different header value on each request gets around the limit of 20 create PaymentIntent requests per IP address (the card testing protection). Sites behind a proxy may need the forwarded address (an option or a filter). |
+There are none at the moment. Fixed after 2.1.5: the coupon's product rules in the amount check, and the amount check for products with no saved type.
+
+## Decisions (behavior that is kept on purpose)
+
+- **The visitor's IP address comes from the X-Forwarded-For header when there is one** (`ASP_Utils::get_user_ip_address()`).
+  A visitor can send any value in that header, so the limit of 20 create PaymentIntent requests per IP address (and the page load signature, which is per IP address)
+  can be bypassed by changing it on each request. It is kept because sites behind a proxy (a load balancer, Varnish, Cloudflare without the real IP restored)
+  only see the proxy's address otherwise, and all their buyers would share one limit. The daily transaction limit and the captcha options still apply.
+  The `asp_get_user_ip_address` filter lets a site use another address. Decided in November 2026.
 
 ---
 

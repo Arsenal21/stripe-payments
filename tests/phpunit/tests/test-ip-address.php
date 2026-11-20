@@ -25,16 +25,26 @@ class Test_IP_Address extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Known issue (see "Known issues" in tests/TESTS.md). The fix removes the markTestSkipped() line.
-	 * A site behind a proxy (for example Cloudflare) may need the forwarded address; that can be an option or a filter,
-	 * but by default a header sent by the visitor must not replace the connection address.
+	 * The X-Forwarded-For header is used when there is one (so sites behind a proxy get the buyer's address).
+	 * This is a decision, not a missing fix: see "Decisions" in tests/TESTS.md.
 	 */
-	public function test_an_x_forwarded_for_header_sent_by_the_visitor_is_not_trusted() {
-		$this->markTestSkipped( 'Known issue, not fixed yet: get_user_ip_address() uses the X-Forwarded-For header when there is one, so a visitor can send any IP address and get around the per-IP limit of create PaymentIntent requests.' );
-
-		$_SERVER['REMOTE_ADDR']          = '198.51.100.1';
-		$_SERVER['HTTP_X_FORWARDED_FOR'] = '203.0.113.7';
+	public function test_the_first_x_forwarded_for_address_is_used() {
+		$_SERVER['REMOTE_ADDR']          = '10.0.0.5';
+		$_SERVER['HTTP_X_FORWARDED_FOR'] = '198.51.100.1, 10.0.0.5';
 
 		$this->assertSame( '198.51.100.1', ASP_Utils::get_user_ip_address() );
+	}
+
+	public function test_the_address_can_be_changed_with_the_filter() {
+		$_SERVER['REMOTE_ADDR'] = '10.0.0.5';
+		unset( $_SERVER['HTTP_X_FORWARDED_FOR'] );
+		add_filter(
+			'asp_get_user_ip_address',
+			function () {
+				return '198.51.100.2';
+			}
+		);
+
+		$this->assertSame( '198.51.100.2', ASP_Utils::get_user_ip_address() );
 	}
 }

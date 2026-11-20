@@ -357,7 +357,9 @@ class ASP_PP_Ajax {
 		// >>>> Start of pre API submission validation.
 		$item_for_validation = new ASP_Product_Item( $product_id );
 		//Do the API pre-submission price/amount validation.
-		if ( $item_for_validation->get_type() === 'one_time' ) {
+		//A product with no saved type is checked as the type the edit product page shows for it (see get_type_for_amount_check()).
+		$type_for_validation = $item_for_validation->get_type_for_amount_check();
+		if ( $type_for_validation === 'one_time' ) {
 			//It's a one-time payment product.
 
 			$custom_inputs = array(
@@ -375,7 +377,7 @@ class ASP_PP_Ajax {
 
 			//Validation passed.
 
-		} else if ( $item_for_validation->get_type() === 'donation' ) {
+		} else if ( $type_for_validation === 'donation' ) {
 			//It's a donation product. Don't need to validate the amount since the user can enter any amount to donate.
 			ASP_Debug_Logger::log( "This is a donation type product. API pre-submission amount validation is not required.", true );
 		}

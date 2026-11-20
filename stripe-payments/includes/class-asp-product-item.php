@@ -275,6 +275,27 @@ class ASP_Product_Item {
 		return $type;
 	}
 
+	/**
+	 * Returns the product type to use for the amount check before the payment (in the create PaymentIntent request).
+	 *
+	 * Products with no saved type (saved before the product type option, or created by the [accept_stripe_payment]
+	 * shortcode) get the type that the edit product page shows for them: 'one_time' when the product has a price
+	 * (or the variations make up the price), 'donation' when the buyer enters the amount.
+	 * Subscription products (with a plan ID) keep their saved type.
+	 *
+	 * @return string
+	 */
+	public function get_type_for_amount_check() {
+		$type = $this->get_type();
+		if ( ! empty( $type ) || ! empty( $this->get_meta( 'asp_sub_plan_id' ) ) ) {
+			return $type;
+		}
+		if ( empty( $this->get_meta( 'asp_product_price' ) ) && empty( $this->get_meta( 'asp_product_hide_amount_input' ) ) ) {
+			return 'donation';
+		}
+		return 'one_time';
+	}
+
 	public function apply_discount_to_amount( $amount, $in_cents = false ) {
 		if ( $this->coupon ) {
 			if ( 'perc' === $this->coupon['discount_type'] ) {
@@ -791,8 +812,10 @@ class ASP_Product_Item {
 		$coupon_code = $custom_inputs['coupon_code'];
 		if ( !empty( $coupon_code ) ) {
 			// Get the coupon and evaluate it (if submitted).
-			if ( !$this->load_coupon( $coupon_code ) ) {
-				// Invalid coupon. The 'load_coupon' method will handle appending appropriate error message.
+			// Use the same check as the coupon check request and the payment processing, so that the product rules
+			// (coupons enabled for the product, the coupon's allowed products) are also checked before the payment.
+			if ( !$this->check_coupon( $coupon_code ) ) {
+				// Invalid coupon. The 'check_coupon' method will handle appending appropriate error message.
 				return false;
 			};
 		}

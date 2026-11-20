@@ -101,11 +101,9 @@ class Test_Amount_Validation extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Known issue (see "Known issues" in tests/TESTS.md). The fix removes the markTestSkipped() line.
+	 * The coupon's product rules are checked before the payment too, not only by the payment processing after the card is charged.
 	 */
 	public function test_a_coupon_only_for_other_products_is_rejected() {
-		$this->markTestSkipped( 'Known issue, not fixed yet: validate_total_amount() loads the coupon with load_coupon(), which does not check the allowed products. The payment processing does check them (check_coupon()), but only after the card is charged.' );
-
 		$product_id       = ASP_Test_Factory::create_product( '10' );
 		$other_product_id = ASP_Test_Factory::create_product( '10' );
 		ASP_Test_Factory::create_coupon(
@@ -124,12 +122,7 @@ class Test_Amount_Validation extends WP_UnitTestCase {
 		$this->assertSame( 'Coupon is not allowed for this product.', $error );
 	}
 
-	/**
-	 * Known issue (see "Known issues" in tests/TESTS.md). The fix removes the markTestSkipped() line.
-	 */
 	public function test_a_coupon_is_rejected_when_coupons_are_turned_off_for_the_product() {
-		$this->markTestSkipped( 'Known issue, not fixed yet: validate_total_amount() loads the coupon with load_coupon(), which does not check whether coupons are enabled for the product. The payment processing does check it (check_coupon()), but only after the card is charged.' );
-
 		$product_id = ASP_Test_Factory::create_product( '10', array( 'asp_product_coupons_setting' => '0' ) );
 		ASP_Test_Factory::create_coupon( 'SAVE20', '20', 'perc' );
 
@@ -137,6 +130,34 @@ class Test_Amount_Validation extends WP_UnitTestCase {
 
 		$this->assertFalse( $valid, 'The discounted amount was accepted for a product with coupons turned off.' );
 		$this->assertSame( 'Applying coupon is not allowed for this product.', $error );
+	}
+
+	/**
+	 * The type used for the amount check (the create PaymentIntent request only checks the amount of 'one_time' products).
+	 */
+	public function test_the_type_for_the_amount_check() {
+		$product_id = ASP_Test_Factory::create_product( '10' );
+		$this->assertSame( 'one_time', ( new ASP_Product_Item( $product_id ) )->get_type_for_amount_check() );
+
+		$product_id = ASP_Test_Factory::create_product( '0', array( 'asp_product_type' => 'donation' ) );
+		$this->assertSame( 'donation', ( new ASP_Product_Item( $product_id ) )->get_type_for_amount_check(), 'A saved type must be kept.' );
+
+		//No saved type, like products saved before the product type option and the [accept_stripe_payment] products.
+		$product_id = ASP_Test_Factory::create_product( '10' );
+		delete_post_meta( $product_id, 'asp_product_type' );
+		$this->assertSame( 'one_time', ( new ASP_Product_Item( $product_id ) )->get_type_for_amount_check(), 'A product with a price and no saved type must be checked as one_time.' );
+
+		$product_id = ASP_Test_Factory::create_product( '0' );
+		delete_post_meta( $product_id, 'asp_product_type' );
+		$this->assertSame( 'donation', ( new ASP_Product_Item( $product_id ) )->get_type_for_amount_check(), 'A product without a price (the buyer enters the amount) must not be checked as one_time.' );
+
+		$product_id = ASP_Test_Factory::create_product( '0', array( 'asp_product_hide_amount_input' => '1' ) );
+		delete_post_meta( $product_id, 'asp_product_type' );
+		$this->assertSame( 'one_time', ( new ASP_Product_Item( $product_id ) )->get_type_for_amount_check(), 'Variations that make up the price must be checked as one_time.' );
+
+		$product_id = ASP_Test_Factory::create_product( '10', array( 'asp_sub_plan_id' => 'plan_test' ) );
+		delete_post_meta( $product_id, 'asp_product_type' );
+		$this->assertSame( '', ( new ASP_Product_Item( $product_id ) )->get_type_for_amount_check(), 'A subscription product keeps its saved type (the Subscriptions add-on checks it).' );
 	}
 
 	public function test_price_variations_are_added_to_the_price() {

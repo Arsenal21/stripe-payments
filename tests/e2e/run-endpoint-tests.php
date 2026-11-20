@@ -24,11 +24,9 @@ $skipped  = 0;
 const E2E_USER_AGENT = 'ASP-E2E-Tests/1.0';
 
 //Known issues that aren't fixed yet (see "Known issues" in tests/TESTS.md). Their checks are skipped.
-//The commit that fixes one removes it from this list, so its check runs from then on.
-const KNOWN_ISSUES = array(
-	'amount-check-skipped-without-product-type' => 'handle_create_pi() only checks the amount when the product type is "one_time", so a product with no saved type gets a PaymentIntent for any amount (the payment processing rejects a lower payment, but only after the card is charged).',
-	'ip-limit-trusts-x-forwarded-for'           => 'get_user_ip_address() uses the X-Forwarded-For header, so a different header value on each request gets around the per-IP limit of create PaymentIntent requests.',
-);
+//The commit that fixes one removes it from this list, so its check runs from then on. There are none at the moment.
+//Example: 'short-issue-id' => 'What is wrong and what it affects.', and in the test: if ( ! skip_known_issue( 'short-issue-id', $label ) ) { ...the check... }
+const KNOWN_ISSUES = array();
 
 /** Returns true (and prints SKIP) if the check is for a known issue that isn't fixed yet. */
 function skip_known_issue( $issue, $label ) {
@@ -496,13 +494,6 @@ function run_round( $label, $via, $ids, $checkout_url ) {
 	set_site_option_value( '_transient_timeout_asp_request_usage_count', time() + 3600 );
 	$result = create_pi( $ids['ebook'], $ebook, 1100 );
 	check( "{$t} The 21st create PaymentIntent request from the same IP address is rejected", contains( error_of( $result ), 'Transaction request limit reached for this IP address' ), error_of( $result ) );
-	if ( ! skip_known_issue( 'ip-limit-trusts-x-forwarded-for', "{$t} An X-Forwarded-For header doesn't get around the IP address limit" ) ) {
-		//The same browser (127.0.0.1), with a made-up forwarded address on both requests.
-		$spoofed = array( 'X-Forwarded-For: 203.0.113.7' );
-		$popup   = load_popup( $ids['ebook'], $spoofed );
-		$result  = null === $popup ? array( 'err' => 'The popup did not load.' ) : create_pi( $ids['ebook'], $popup, 1100, 'USD', '1', array(), $spoofed );
-		check( "{$t} An X-Forwarded-For header doesn't get around the IP address limit", contains( error_of( $result ), 'Transaction request limit reached for this IP address' ), error_of( $result ) );
-	}
 	delete_site_option_value( '_transient_asp_request_usage_count' );
 	delete_site_option_value( '_transient_timeout_asp_request_usage_count' );
 
