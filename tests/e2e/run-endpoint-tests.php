@@ -798,6 +798,60 @@ function run_round( $label, $via, $ids, $checkout_url ) {
 		check_rejected_payment( "{$t} The free transaction ID of a coupon that isn't 100% doesn't complete an order", $coupon['zero_value_id'], $response );
 	}
 
+	//The security report of November 2026 (fixed after 2.1.5): a flat coupon is taken off each item, and the free order
+	//check used the product's quantity for the discount but one item's price; with a quantity of -1 the total became negative
+	//(then 0). A product sold in a quantity of 2 at $50, with the flat $30 coupon: $60 off, but the order is $100.
+	$pack = load_popup( $ids['qty2'] );
+	foreach ( array( '-1', '1' ) as $quantity ) {
+		delete_site_option_value( 'asp_e2e_emails' );
+		$coupon = check_coupon_request( $ids['qty2'], 'E2EFLAT30' );
+		if ( check( "{$t} The coupon check of the flat coupon gives a free transaction ID (quantity {$quantity})", isset( $coupon['zero_value_id'] ), json_encode( $coupon ) ) ) {
+			$response = submit_payment(
+				$ids['qty2'],
+				$pack['payment_form'],
+				$coupon['zero_value_id'],
+				array(
+					'asp_coupon-code' => 'E2EFLAT30',
+					'asp_quantity'    => $quantity,
+				)
+			);
+			check_rejected_payment( "{$t} A flat coupon worth less than the order doesn't complete a free order (quantity {$quantity})", $coupon['zero_value_id'], $response );
+		}
+	}
+
+	//A donation (the buyer enters the amount) with any coupon: the free order check compared a discount of 0 with a price of 0.
+	delete_site_option_value( 'asp_e2e_emails' );
+	$coupon = check_coupon_request( $ids['donation'], 'E2E20' );
+	if ( check( "{$t} The coupon check of a donation gives a free transaction ID", isset( $coupon['zero_value_id'] ), json_encode( $coupon ) ) ) {
+		$response = submit_payment( $ids['donation'], $donation['payment_form'], $coupon['zero_value_id'], array( 'asp_coupon-code' => 'E2E20' ) );
+		check_rejected_payment( "{$t} A donation with a coupon doesn't complete a free order", $coupon['zero_value_id'], $response );
+	}
+
+	//The quantity: only 1 or more, and only the product's quantity when the buyer can't change it.
+	$result = create_pi( $ids['ebook'], $ebook, 0, 'USD', '-1' );
+	check( "{$t} A quantity of -1 is rejected before the PaymentIntent is created", contains( error_of( $result ), 'Invalid quantity' ), error_of( $result ) );
+	$result = create_pi( $ids['ebook'], $ebook, 0, 'USD', '0' );
+	check( "{$t} A quantity of 0 is rejected before the PaymentIntent is created", contains( error_of( $result ), 'Invalid quantity' ), error_of( $result ) );
+	$result = create_pi( $ids['qty2'], $pack, 5000, 'USD', '1' );
+	check( "{$t} A product sold in a quantity of 2: the price of 1 item is rejected (the buyer can't change the quantity)", contains( error_of( $result ), 'Price validation failed' ), error_of( $result ) );
+	$result = create_pi( $ids['qty2'], $pack, 10000, 'USD', '1' );
+	if ( check( "{$t} A product sold in a quantity of 2: the price of 2 items is accepted", ! empty( $result['pi_id'] ), error_of( $result ) ) ) {
+		submit_payment( $ids['qty2'], $pack['payment_form'], $result['pi_id'], array( 'asp_quantity' => '1' ) );
+		$order = order_for_pi( $result['pi_id'] );
+		check( "{$t} A product sold in a quantity of 2: the order is for 2 items", 'paid' === post_meta( $order, 'asp_order_status' ) && '[Test Mode] 2 x E2E Pack Of Two - $100.00' === post_field( $order, 'post_title' ), order_summary( $order ) );
+	}
+	delete_site_option_value( 'asp_e2e_emails' );
+	$stock_before = (string) post_meta( $ids['stock'], 'asp_product_stock_items' );
+	$pi_id        = add_paid_payment_intent( 500, 'usd', $ids['stock'] );
+	$response     = submit_payment( $ids['stock'], $stock['payment_form'], $pi_id, array( 'asp_quantity' => '-1' ) );
+	check_rejected_payment( "{$t} A payment form with a quantity of -1 doesn't complete an order", $pi_id, $response );
+	check( "{$t} A payment form with a quantity of -1 doesn't change the stock", $stock_before === (string) post_meta( $ids['stock'], 'asp_product_stock_items' ), $stock_before . ' -> ' . post_meta( $ids['stock'], 'asp_product_stock_items' ) );
+
+	//A donation lower than the minimum ($5) that was paid without the create PaymentIntent request.
+	$pi_id    = add_paid_payment_intent( 300, 'usd', $ids['donation'] );
+	$response = submit_payment( $ids['donation'], $donation['payment_form'], $pi_id, array( 'asp_amount' => '300' ) );
+	check_rejected_payment( "{$t} A donation payment lower than the minimum amount doesn't complete an order", $pi_id, $response );
+
 	//17. PaymentIntents that weren't paid.
 	delete_site_option_value( 'asp_e2e_emails' );
 	$pi_id = add_paid_payment_intent(

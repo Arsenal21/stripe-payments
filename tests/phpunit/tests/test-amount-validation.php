@@ -133,6 +133,27 @@ class Test_Amount_Validation extends WP_UnitTestCase {
 	}
 
 	/**
+	 * The order quantity (security report of November 2026): only the product's quantity when the buyer can't change it,
+	 * and only a whole number of 1 or more when the buyer can.
+	 */
+	public function test_the_order_quantity() {
+		$fixed = new ASP_Product_Item( ASP_Test_Factory::create_product( '50', array( 'asp_product_quantity' => '2' ) ) );
+		$this->assertSame( 2, $fixed->get_order_quantity( '1' ), 'The buyer can\'t change a fixed quantity.' );
+		$this->assertSame( 2, $fixed->get_order_quantity( '-1' ) );
+		$this->assertSame( 2, $fixed->get_order_quantity( '' ) );
+
+		$default = new ASP_Product_Item( ASP_Test_Factory::create_product( '10' ) );
+		$this->assertSame( 1, $default->get_order_quantity( '5' ), 'A product without a quantity setting is sold one at a time.' );
+
+		$custom = new ASP_Product_Item( ASP_Test_Factory::create_product( '10', array( 'asp_product_custom_quantity' => '1' ) ) );
+		$this->assertSame( 3, $custom->get_order_quantity( '3' ) );
+		$this->assertSame( 1, $custom->get_order_quantity( '' ), 'No quantity sent: the product\'s quantity.' );
+		foreach ( array( '-1', '0', '1.5', 'abc', '-0' ) as $invalid ) {
+			$this->assertFalse( $custom->get_order_quantity( $invalid ), "The quantity '{$invalid}' must be rejected." );
+		}
+	}
+
+	/**
 	 * The type used for the amount check (the create PaymentIntent request only checks the amount of 'one_time' products).
 	 */
 	public function test_the_type_for_the_amount_check() {

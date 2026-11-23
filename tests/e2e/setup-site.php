@@ -91,6 +91,9 @@ $ids = array(
 	),
 	//Coupons turned off for this product (the product setting; coupons are on in the settings).
 	'no_coupons'  => ASP_Test_Factory::create_product( '10', array( 'asp_product_coupons_setting' => '0' ), 'E2E Product Without Coupons' ),
+	//Sold in a quantity of 2 that the buyer can't change ($50 each), and a flat $30 coupon (taken off each item).
+	'qty2'        => ASP_Test_Factory::create_product( '50', array( 'asp_product_quantity' => '2' ), 'E2E Pack Of Two' ),
+	'flat_coupon' => ASP_Test_Factory::create_coupon( 'E2EFLAT30', '30', 'fixed' ),
 	'coupon'      => ASP_Test_Factory::create_coupon( 'E2E20', '20', 'perc' ),
 	'free_coupon' => ASP_Test_Factory::create_coupon( 'E2EFREE', '100', 'perc' ),
 );

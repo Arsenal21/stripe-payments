@@ -56,6 +56,7 @@ The main tests run twice: with the Stripe PHP SDK (the default) and with the plu
 - Authorize only: the order is authorized, then the admin captures (paid) or cancels (canceled) it from the orders page, and the order keeps its charge data.
 - 3D Secure: the return request (`asp_next_action_results`, after the form is saved with `asp_pp_save_form_data`) confirms the PaymentIntent and completes the order.
 - A 100% coupon: the coupon check gives a "free_" transaction ID and the order is paid with $0.00.
+- A product sold in a fixed quantity of 2: the buyer can't change the quantity (the price of 1 item is rejected; the order is for 2 items).
 
 **Rejected before the PaymentIntent is created**
 - An amount lower than the product total (and no PaymentIntent is created), a different currency, a wrong nonce, a wrong security token
@@ -69,6 +70,9 @@ The main tests run twice: with the Stripe PHP SDK (the default) and with the plu
 - A payment lower than the product total, a payment in another currency, a payment made for another product,
   a PaymentIntent that doesn't exist (no fatal error), a payment form with a wrong nonce, a PaymentIntent without a payment,
   a made-up "free_" transaction ID, the "free_" transaction ID of a coupon that isn't 100%. None of them creates an order or sends an email.
+- The security report of November 2026 (fixed after 2.1.5): a flat coupon worth less than the whole order (it was compared with one item's price)
+  with a quantity of -1 or 1; a donation with any coupon (it was compared with a price of 0); a quantity of -1 (and the stock doesn't change);
+  a donation payment lower than the minimum amount. A quantity of -1 or 0 is also rejected before the PaymentIntent is created.
 
 **Captcha** (once, after the two rounds; reCAPTCHA, then hCaptcha)
 - The create PaymentIntent request is rejected without the captcha and after a wrong captcha token; it succeeds after the solved captcha.
@@ -103,6 +107,7 @@ The main tests run twice: with the Stripe PHP SDK (the default) and with the plu
 - The coupon's product rules are checked too (fixed after 2.1.5): a coupon only for other products, and coupons turned off for the product, are rejected.
 - Price variations (also a group name with `_`, and variations that make up the whole price).
 - Tax by billing country, shipping by country, the surcharge, a JPY amount.
+- The order quantity (fixed after 2.1.5): the product's quantity when the buyer can't change it; otherwise a whole number of 1 or more.
 - The type used for the amount check (fixed after 2.1.5): a product with no saved type is checked as `one_time` when it has a price
   (or the variations make up the price) and as `donation` when the buyer enters the amount; a saved type and subscription products are kept.
 

@@ -337,10 +337,16 @@ class ASP_Process_IPN_NG {
 		//Button key
 		$button_key = $item->get_button_key();
 
-		//Item quantity
-		$post_quantity = $this->get_post_var( 'asp_quantity', FILTER_SANITIZE_NUMBER_INT );
-		if ( $post_quantity ) {
-			$item->set_quantity( $post_quantity );
+		//Item quantity: the product's quantity when the buyer can't change it, otherwise a whole number of 1 or more.
+		$post_quantity = $this->get_post_var( 'asp_quantity' );
+		if ( method_exists( $item, 'get_order_quantity' ) ) {
+			$order_quantity = $item->get_order_quantity( is_string( $post_quantity ) ? sanitize_text_field( $post_quantity ) : '' );
+			if ( false === $order_quantity ) {
+				$this->ipn_completed( __( 'Invalid quantity.', 'stripe-payments' ) );
+			}
+			$item->set_quantity( $order_quantity );
+		} elseif ( $post_quantity ) {
+			$item->set_quantity( absint( $post_quantity ) );
 		}
 
 		//Item price
@@ -501,6 +507,21 @@ class ASP_Process_IPN_NG {
 			);
 			//The following function will also log the error to the debug log.
 			$this->ipn_completed( $err );
+		}
+
+		//Check the minimum amount of a donation (the buyer enters the amount, so the expected amount above comes from the browser).
+		//The create PaymentIntent request checks it too, but a payment can also come without that request.
+		if ( method_exists( $item, 'get_type_for_amount_check' ) && 'donation' === $item->get_type_for_amount_check() ) {
+			$min_amount = $item->get_min_amount( true );
+			if ( ! empty( $min_amount ) && $amount_paid < $min_amount ) {
+				$err = sprintf(
+					// translators: placeholders are expected and received amounts
+					__( 'Invalid payment amount received. Expected %1$s, got %2$s.', 'stripe-payments' ),
+					AcceptStripePayments::formatted_price( $min_amount, $p_curr, true ),
+					AcceptStripePayments::formatted_price( $amount_paid, $p_curr, true )
+				);
+				$this->ipn_completed( $err );
+			}
 		}
 
 		$opt = get_option( 'AcceptStripePayments-settings' );
@@ -850,11 +871,23 @@ class ASP_Process_IPN_NG {
 				return $p_data;
 			}
 
-			$coupon_discount_amount = $this->item->get_coupon_discount_amount();
+			//A donation (the buyer enters the amount) can't be a free order: there is no price for the coupon to cover.
+			if ( method_exists( $this->item, 'get_type_for_amount_check' ) && 'donation' === $this->item->get_type_for_amount_check() ) {
+				return $p_data;
+			}
 
-			$price_no_discount = $this->item->get_price();
+			//The coupon must cover the whole order (all the items), not the price of one item: a flat coupon is taken off
+			//each item, so it is compared with the order's subtotal for the order quantity.
+			$order_quantity = method_exists( $this->item, 'get_order_quantity' ) ? $this->item->get_order_quantity( sanitize_text_field( (string) $this->get_post_var( 'asp_quantity' ) ) ) : 1;
+			if ( false === $order_quantity ) {
+				return $p_data;
+			}
+			$this->item->set_quantity( $order_quantity );
 
-			if ( $coupon_discount_amount < $price_no_discount ) {
+			$subtotal               = ( $this->item->get_price() + $this->item->get_items_total() ) * $order_quantity;
+			$coupon_discount_amount = $this->item->get_discount_amount( $subtotal );
+
+			if ( $coupon_discount_amount < $subtotal ) {
 				return $p_data;
 			}
 

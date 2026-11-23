@@ -356,6 +356,15 @@ class ASP_PP_Ajax {
 
 		// >>>> Start of pre API submission validation.
 		$item_for_validation = new ASP_Product_Item( $product_id );
+
+		//The order quantity: the product's quantity when the buyer can't change it, otherwise a whole number of 1 or more.
+		$order_quantity = $item_for_validation->get_order_quantity( $quantity );
+		if ( false === $order_quantity ) {
+			$out['err'] = __( 'Error occurred:', 'stripe-payments' ) . ' ' . __( 'Invalid quantity.', 'stripe-payments' );
+			wp_send_json( $out );
+		}
+		$quantity = $order_quantity;
+
 		//Do the API pre-submission price/amount validation.
 		//A product with no saved type is checked as the type the edit product page shows for it (see get_type_for_amount_check()).
 		$type_for_validation = $item_for_validation->get_type_for_amount_check();

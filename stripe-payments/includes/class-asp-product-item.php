@@ -180,6 +180,35 @@ class ASP_Product_Item {
 		return $this->quantity;
 	}
 
+	/**
+	 * Returns the quantity of an order from the quantity the browser sent.
+	 *
+	 * When the product doesn't let the buyer change the quantity, it is always the product's quantity (the sent value is ignored).
+	 * When it does, the sent quantity must be a whole number of 1 or more; no quantity sent means the product's quantity.
+	 *
+	 * @param mixed $buyer_quantity The quantity sent by the browser (a string, or empty).
+	 *
+	 * @return int|false The quantity, or false when the sent quantity isn't valid.
+	 */
+	public function get_order_quantity( $buyer_quantity ) {
+		$product_quantity = get_post_meta( $this->post_id, 'asp_product_quantity', true );
+		$product_quantity = ( is_numeric( $product_quantity ) && (int) $product_quantity >= 1 ) ? (int) $product_quantity : 1;
+
+		if ( empty( get_post_meta( $this->post_id, 'asp_product_custom_quantity', true ) ) ) {
+			return $product_quantity;
+		}
+
+		if ( null === $buyer_quantity || false === $buyer_quantity || '' === (string) $buyer_quantity ) {
+			return $product_quantity;
+		}
+
+		$buyer_quantity = (string) $buyer_quantity;
+		if ( ! preg_match( '/^\d+$/', $buyer_quantity ) || (int) $buyer_quantity < 1 ) {
+			return false;
+		}
+		return (int) $buyer_quantity;
+	}
+
 	public function get_coupon_discount_amount() {
 		$price           = $this->get_price();
 		$items_total     = $this->get_items_total();
