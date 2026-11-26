@@ -726,6 +726,12 @@ class ASP_PP_Ajax {
 
 		$coupon = $item->get_coupon();
 
+		//A donation can't be made free (the payment processing rejects free donations). Partial coupons still work.
+		if ( 'donation' === $item->get_type_for_amount_check() && 'perc' === $coupon['discount_type'] && floatval( $coupon['discount'] ) >= 100 ) {
+			$out['err'] = __( 'This coupon can\'t be used for a donation.', 'stripe-payments' );
+			wp_send_json( $out );
+		}
+
 		$zero_value_id           = str_replace( '.', '', uniqid( 'free_', true ) );
 		$coupon['zero_value_id'] = $zero_value_id;
 

@@ -164,6 +164,8 @@ None.
 - Fixed: Capture and Cancel on the orders page failed with "Funds already captured or refunded" when the "Don't use Stripe PHP SDK" option was enabled.
 - Fixed: The deprecated [accept_stripe_payment] shortcode's "shipping" amount was charged incorrectly. Existing shortcode products are corrected when their page is viewed.
 - Security: Fixed an issue where a free (zero-value) order could be completed with a coupon that doesn't cover the whole order, an invalid quantity, or on a donation product. The order quantity is now validated (the product's quantity is used when the buyer can't change it), and the donation minimum amount is also checked when the payment is processed.
+- Security: The payment processing now checks that the Stripe payment succeeded (or is authorized, or still processing for payment methods that confirm later) before completing the order. A payment with a failed charge no longer completes an order.
+- A 100% coupon can no longer be applied to a donation product (partial coupons still work), and a clear error is shown if a free donation is attempted.
 
 = 2.1.5 =
 - Fixed PHP 8.x "Undefined array key 'footer'" warnings in the payment popup when a script or style is added without the 'footer' parameter.

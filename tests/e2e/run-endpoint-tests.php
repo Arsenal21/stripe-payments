@@ -27,9 +27,9 @@ const E2E_USER_AGENT = 'ASP-E2E-Tests/1.0';
 //Known issues that aren't fixed (see "Known issues" in tests/TESTS.md). Their checks still run, but don't fail the tests:
 //the output shows "KNOWN ISSUE (still happens)" or "KNOWN ISSUE NOW PASSES". The commit that fixes one removes it from this list,
 //so its check becomes a normal check. "Unconfirmed" means the tests show what the code does, but it isn't reproduced with real Stripe yet.
-const KNOWN_ISSUES = array(
-	'declined-charge-completes-order' => 'Unconfirmed: process_ipn() checks the amount, currency and product of the latest charge, but not that the payment succeeded, so a PaymentIntent with a declined (failed) charge may complete a paid order.',
-);
+//There are none at the moment. Example: 'short-issue-id' => 'What is wrong and what it affects.', and in the test:
+//check_known( 'short-issue-id', $label, $condition, $details );
+const KNOWN_ISSUES = array();
 
 /**
  * A check for a known issue: a normal check when the issue isn't in KNOWN_ISSUES, otherwise it reports the result without failing.
@@ -820,11 +820,18 @@ function run_round( $label, $via, $ids, $checkout_url ) {
 	}
 
 	//A donation (the buyer enters the amount) with any coupon: the free order check compared a discount of 0 with a price of 0.
+	//Partial coupons still work for donations; a 100% coupon is rejected by the coupon check, so the popup doesn't offer a free order.
 	delete_site_option_value( 'asp_e2e_emails' );
+	$coupon = check_coupon_request( $ids['donation'], 'E2EFREE' );
+	check( "{$t} The coupon check rejects a 100% coupon for a donation", "This coupon can't be used for a donation." === error_of( $coupon ), error_of( $coupon ) );
 	$coupon = check_coupon_request( $ids['donation'], 'E2E20' );
-	if ( check( "{$t} The coupon check of a donation gives a free transaction ID", isset( $coupon['zero_value_id'] ), json_encode( $coupon ) ) ) {
-		$response = submit_payment( $ids['donation'], $donation['payment_form'], $coupon['zero_value_id'], array( 'asp_coupon-code' => 'E2E20' ) );
+	if ( check( "{$t} The coupon check accepts a partial coupon for a donation", isset( $coupon['zero_value_id'] ), json_encode( $coupon ) ) ) {
+		new_session();
+		$response    = submit_payment( $ids['donation'], $donation['payment_form'], $coupon['zero_value_id'], array( 'asp_coupon-code' => 'E2E20' ) );
+		$result_page = follow_redirect( $response );
+		use_session( null );
 		check_rejected_payment( "{$t} A donation with a coupon doesn't complete a free order", $coupon['zero_value_id'], $response );
+		check( "{$t} A free donation shows a clear error on the checkout result page", contains( $result_page['body'], 'A coupon can&#8217;t be used to make a donation free.' ) || contains( $result_page['body'], "A coupon can't be used to make a donation free." ), response_text( $result_page ) );
 	}
 
 	//The quantity: only 1 or more, and only the product's quantity when the buyer can't change it.
@@ -874,9 +881,29 @@ function run_round( $label, $via, $ids, $checkout_url ) {
 			'charge_status' => 'failed',
 		)
 	);
-	$response = submit_payment( $ids['ebook'], $ebook['payment_form'], $pi_id );
-	$order    = order_for_pi( $pi_id );
-	check_known( 'declined-charge-completes-order', "{$t} A PaymentIntent with a declined card doesn't complete an order", 0 === $order && 0 === count( emails() ), 'Order: ' . order_summary( $order ) . '. Emails sent: ' . count( emails() ) . '.' );
+	//Fixed after 2.1.5 (reproduced with real Stripe in test mode): a declined card completed a paid order.
+	new_session();
+	$response    = submit_payment( $ids['ebook'], $ebook['payment_form'], $pi_id );
+	$result_page = follow_redirect( $response );
+	use_session( null );
+	$order = order_for_pi( $pi_id );
+	check( "{$t} A PaymentIntent with a declined card doesn't complete an order", 0 === $order && 0 === count( emails() ), 'Order: ' . order_summary( $order ) . '. Emails sent: ' . count( emails() ) . '.' );
+	check( "{$t} A declined card shows the error on the checkout result page", contains( $result_page['body'], 'System was not able to complete the payment.' ), response_text( $result_page ) );
+
+	//A payment method that confirms later (like ACH Direct Debit): the PaymentIntent is "processing" and its charge is pending.
+	//The order must still be completed (the ACH add-on sets the order status to "processing").
+	$pi_id = add_paid_payment_intent(
+		1100,
+		'usd',
+		$ids['ebook'],
+		array(
+			'status'        => 'processing',
+			'charge_status' => 'pending',
+		)
+	);
+	submit_payment( $ids['ebook'], $ebook['payment_form'], $pi_id );
+	$order = order_for_pi( $pi_id );
+	check( "{$t} A processing payment (a payment method that confirms later) still completes the order", 0 !== $order && '' !== (string) post_meta( $order, 'asp_order_status' ), order_summary( $order ) );
 
 	reset_limits();
 

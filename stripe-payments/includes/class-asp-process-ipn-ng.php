@@ -319,6 +319,15 @@ class ASP_Process_IPN_NG {
 			$this->ipn_completed( $p_last_err );
 		}
 
+		//Check that the PaymentIntent was paid (a declined card leaves a failed charge for the full amount).
+		//Only for the plugin's own payment data: add-ons that replace it (for example subscriptions) check their own objects.
+		if ( 'ASP_Payment_Data' === get_class( $p_data ) && empty( $p_data->is_zero_value ) ) {
+			$payment_status_err = $p_data->get_payment_status_error();
+			if ( ! empty( $payment_status_err ) ) {
+				$this->ipn_completed( $payment_status_err );
+			}
+		}
+
 		$this->p_data = $p_data;
 		//End retrieval of payment data
 
@@ -873,7 +882,7 @@ class ASP_Process_IPN_NG {
 
 			//A donation (the buyer enters the amount) can't be a free order: there is no price for the coupon to cover.
 			if ( method_exists( $this->item, 'get_type_for_amount_check' ) && 'donation' === $this->item->get_type_for_amount_check() ) {
-				return $p_data;
+				$this->ipn_completed( __( 'A coupon can\'t be used to make a donation free.', 'stripe-payments' ) );
 			}
 
 			//The coupon must cover the whole order (all the items), not the price of one item: a flat coupon is taken off

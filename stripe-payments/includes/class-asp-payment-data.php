@@ -37,9 +37,49 @@ class ASP_Payment_Data {
 		return $price;
 	}
 
+	/**
+	 * The latest charge of the PaymentIntent, or null when there is none (for example, no payment attempt yet).
+	 */
+	protected function get_latest_charge() {
+		if ( is_object( $this->obj ) && isset( $this->obj->charges ) && isset( $this->obj->charges->data[0] ) ) {
+			return $this->obj->charges->data[0];
+		}
+		return null;
+	}
+
+	/**
+	 * Returns an error message when the PaymentIntent wasn't paid, or an empty string.
+	 *
+	 * A PaymentIntent is paid when its status is 'succeeded', 'requires_capture' (the "Authorize only" option) or
+	 * 'processing' (payment methods that confirm later, like ACH Direct Debit), and its latest charge didn't fail.
+	 * A declined card leaves the PaymentIntent in 'requires_payment_method' with a failed charge for the full amount.
+	 * Objects that aren't PaymentIntents (for example a subscription) are not checked here.
+	 *
+	 * @return string
+	 */
+	public function get_payment_status_error() {
+		if ( ! is_object( $this->obj ) || ! isset( $this->obj->object ) || 'payment_intent' !== $this->obj->object ) {
+			return '';
+		}
+		$status = isset( $this->obj->status ) ? (string) $this->obj->status : '';
+		if ( ! in_array( $status, array( 'succeeded', 'requires_capture', 'processing' ), true ) ) {
+			// translators: %s is the PaymentIntent status, for example requires_payment_method
+			return sprintf( __( 'The payment was not completed (payment status: %s).', 'stripe-payments' ), $status );
+		}
+		$charge = $this->get_latest_charge();
+		if ( empty( $charge ) ) {
+			return __( 'The payment was not completed (no charge found).', 'stripe-payments' );
+		}
+		if ( isset( $charge->status ) && 'failed' === $charge->status ) {
+			return __( 'The payment failed.', 'stripe-payments' );
+		}
+		return '';
+	}
+
 	public function get_amount() {
 		if ( false === $this->amount ) {
-			$this->amount = $this->obj->charges->data[0]->amount;
+			$charge       = $this->get_latest_charge();
+			$this->amount = $charge ? $charge->amount : 0;
 		}
 		return $this->amount;
 	}
@@ -67,28 +107,31 @@ class ASP_Payment_Data {
 
 	public function get_currency() {
 		if ( false === $this->currency ) {
-			$this->currency = $this->obj->charges->data[0]->currency;
+			$charge         = $this->get_latest_charge();
+			$this->currency = $charge ? $charge->currency : '';
 		}
 		return $this->currency;
 	}
 
 	public function get_charge_data() {
 		if ( false === $this->charge_data ) {
-			$this->charge_data = $this->obj->charges->data[0];
+			$this->charge_data = $this->get_latest_charge();
 		}
 		return $this->charge_data;
 	}
 
 	public function get_charge_created() {
 		if ( false === $this->charge_created ) {
-			$this->charge_created = $this->obj->charges->data[0]->created;
+			$charge               = $this->get_latest_charge();
+			$this->charge_created = $charge ? $charge->created : 0;
 		}
 		return $this->charge_created;
 	}
 
 	public function get_trans_id() {
 		if ( false === $this->trans_id ) {
-			$this->trans_id = $this->obj->charges->data[0]->id;
+			$charge         = $this->get_latest_charge();
+			$this->trans_id = $charge ? $charge->id : '';
 		}
 		return $this->trans_id;
 	}
@@ -98,7 +141,8 @@ class ASP_Payment_Data {
 			return $this->billing_details_obj;
 		}
 		$billing_addr = new stdClass();
-		$bd           = $this->obj->charges->data[0]->billing_details;
+		$charge       = $this->get_latest_charge();
+		$bd           = $charge ? $charge->billing_details : null;
 
 		$billing_addr->name        = ! empty( $bd->name ) ? sanitize_text_field($bd->name) : ( isset( $this->obj->customer->name ) ? sanitize_text_field(  $this->obj->customer->name  ): '' );
 		$billing_addr->email       = ! empty( $bd->email ) ? sanitize_text_field($bd->email) : ( isset( $this->obj->customer->email ) ? sanitize_text_field( $this->obj->customer->email) : '' );
@@ -123,7 +167,8 @@ class ASP_Payment_Data {
 		}
 		$shipping_addr = new stdClass();
 
-		$sd = $this->obj->charges->data[0]->shipping;
+		$charge = $this->get_latest_charge();
+		$sd     = $charge ? $charge->shipping : null;
 		if ( empty( $sd ) ) {
 			if ( ! empty( $this->obj->customer ) ) {
 					$sd = $this->obj->customer->shipping;

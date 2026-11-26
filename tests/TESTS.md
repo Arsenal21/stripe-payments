@@ -73,6 +73,10 @@ The main tests run twice: with the Stripe PHP SDK (the default) and with the plu
 - The security report of November 2026 (fixed after 2.1.5): a flat coupon worth less than the whole order (it was compared with one item's price)
   with a quantity of -1 or 1; a donation with any coupon (it was compared with a price of 0); a quantity of -1 (and the stock doesn't change);
   a donation payment lower than the minimum amount. A quantity of -1 or 0 is also rejected before the PaymentIntent is created.
+- A free donation shows a clear error ("A coupon can't be used to make a donation free."); the coupon check rejects a 100% coupon
+  for a donation, and accepts a partial one.
+- A PaymentIntent with a declined (failed) charge: no order, no email, the error on the checkout result page.
+- A "processing" PaymentIntent with a pending charge (payment methods that confirm later, like ACH) still completes the order.
 
 **Captcha** (once, after the two rounds; reCAPTCHA, then hCaptcha)
 - The create PaymentIntent request is rejected without the captcha and after a wrong captcha token; it succeeds after the solved captcha.
@@ -151,11 +155,12 @@ A test for a known or suspected bug runs, but doesn't fail the workflow, so the 
 The commit that fixes an issue removes it from `KNOWN_ISSUES` (or the `markTestIncomplete()` part), so its test becomes a normal test.
 "Unconfirmed" means the tests show what the code does with the fake Stripe API, but it isn't reproduced with real Stripe in a browser yet.
 
-| Issue | Status | Tests |
-|---|---|---|
-| The payment processing (`process_ipn()`) checks the amount, currency and product of the latest charge, but not that the payment succeeded, so a PaymentIntent with a declined (failed) charge may complete a paid order, send the emails and run `asp_stripe_payment_completed`. | Unconfirmed: to reproduce with the decline card 4000 0000 0000 0002 in test mode | Endpoint: `declined-charge-completes-order` |
+There are none at the moment.
 
 Fixed after 2.1.5 (their tests are normal tests now):
+- Security: a declined card completed a paid order (reproduced with real Stripe in test mode). The payment processing now requires the
+  PaymentIntent status `succeeded`, `requires_capture` (authorize only) or `processing` (payment methods that confirm later, like ACH),
+  and a charge that didn't fail.
 - The coupon's product rules in the amount check, and the amount check for products with no saved type.
 - Capture and Cancel on the orders page saved `$intent->charges->data[0]` as the order's charge, which is empty with the Stripe API version the plugin uses;
   they now save the PaymentIntent's latest charge (`latest_charge`).

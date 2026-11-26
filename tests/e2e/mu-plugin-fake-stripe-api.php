@@ -83,7 +83,8 @@ function asp_e2e_stripe_pi_status( $pi ) {
 }
 
 /**
- * The charge of a PaymentIntent: 'succeeded', 'failed' (the card was declined) or 'none' (no payment attempt yet).
+ * The charge of a PaymentIntent: 'succeeded', 'failed' (the card was declined), 'pending' (a payment method that confirms
+ * later, like ACH Direct Debit; the PaymentIntent is 'processing') or 'none' (no payment attempt yet).
  */
 function asp_e2e_stripe_charge_status( $pi ) {
 	if ( isset( $pi['charge_status'] ) ) {
@@ -130,8 +131,9 @@ function asp_e2e_stripe_charge_response( $pi, $state ) {
 	}
 	$pi_status = asp_e2e_stripe_pi_status( $pi );
 	$failed    = 'failed' === asp_e2e_stripe_charge_status( $pi );
+	$pending   = 'pending' === asp_e2e_stripe_charge_status( $pi );
 	//An authorization is captured later; a canceled authorization is released (refunded).
-	$captured = ! $failed && ! in_array( $pi_status, array( 'requires_capture', 'canceled' ), true );
+	$captured = ! $failed && ! $pending && ! in_array( $pi_status, array( 'requires_capture', 'canceled' ), true );
 	return array(
 		'id'                     => $pi['charge_id'],
 		'object'                 => 'charge',
@@ -143,9 +145,9 @@ function asp_e2e_stripe_charge_response( $pi, $state ) {
 		'created'                => $pi['created'],
 		'customer'               => $pi['customer'],
 		'payment_intent'         => $pi['id'],
-		'paid'                   => ! $failed,
+		'paid'                   => ! $failed && ! $pending,
 		'captured'               => $captured,
-		'status'                 => $failed ? 'failed' : 'succeeded',
+		'status'                 => $failed ? 'failed' : ( $pending ? 'pending' : 'succeeded' ),
 		'failure_code'           => $failed ? 'card_declined' : null,
 		'failure_message'        => $failed ? 'Your card was declined.' : null,
 		'billing_details'        => $billing,
