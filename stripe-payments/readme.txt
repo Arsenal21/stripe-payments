@@ -3,9 +3,9 @@ Contributors: Tips and Tricks HQ, wptipsntricks, alexanderfoxc
 Donate link: https://s-plugins.com
 Tags: stripe, stripe payments, stripe gateway, payment, payments, button, shortcode, digital goods, payment gateway, commerce, digital downloads, downloads, e-commerce, e-store, ecommerce, eshop, donation
 Requires at least: 6.0
-Tested up to: 7.1
+Tested up to: 7.2
 Requires PHP: 7.4
-Stable tag: 2.1.5
+Stable tag: 2.1.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -157,14 +157,14 @@ None.
 
 == Changelog ==
 
-= WIP =
+= 2.1.6 =
 - The coupon's product restrictions ("only for these products", coupons disabled for the product) are now also checked before the payment is created.
 - Products without a saved product type (older products and [accept_stripe_payment] products) now get the payment amount check.
 - Fixed: Capture and Cancel on the orders page no longer remove the order's charge details (Stripe API 2022-11-15 and later).
 - Fixed: Capture and Cancel on the orders page failed with "Funds already captured or refunded" when the "Don't use Stripe PHP SDK" option was enabled.
 - Fixed: The deprecated [accept_stripe_payment] shortcode's "shipping" amount was charged incorrectly. Existing shortcode products are corrected when their page is viewed.
-- Security: Fixed an issue where a free (zero-value) order could be completed with a coupon that doesn't cover the whole order, an invalid quantity, or on a donation product. The order quantity is now validated (the product's quantity is used when the buyer can't change it), and the donation minimum amount is also checked when the payment is processed.
-- Security: The payment processing now checks that the Stripe payment succeeded (or is authorized, or still processing for payment methods that confirm later) before completing the order. A payment with a failed charge no longer completes an order.
+- Fixed an issue where a free (zero-value) order could be completed with a coupon that doesn't cover the whole order, an invalid quantity, or on a donation product. The order quantity is now validated (the product's quantity is used when the buyer can't change it), and the donation minimum amount is also checked when the payment is processed.
+- The payment processing now checks that the Stripe payment succeeded (or is authorized, or still processing for payment methods that confirm later) before completing the order. A payment with a failed charge no longer completes an order.
 - A 100% coupon can no longer be applied to a donation product (partial coupons still work), and a clear error is shown if a free donation is attempted.
 
 = 2.1.5 =
