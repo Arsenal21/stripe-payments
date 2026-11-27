@@ -147,8 +147,14 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           extensions: mysqli, curl
-          tools: wp-cli
           coverage: none
+
+      - name: Install WP-CLI 2.12.0
+        # Installed here (not with setup-php "tools: wp-cli"), so a failed download stops this step instead of a later one.
+        run: |
+          curl -sSL --fail --retry 3 -o /tmp/wp-cli.phar https://github.com/wp-cli/wp-cli/releases/download/v2.12.0/wp-cli-2.12.0.phar
+          sudo install -m 755 /tmp/wp-cli.phar /usr/local/bin/wp
+          wp --version
 
       - name: Install a WordPress test site with the plugin
         run: |
